@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>中医儿童健康</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <script type='text/javascript' src='/static/webim/webim.config.js'></script>
+    <script type='text/javascript' src='/static/webim/strophe-1.2.8.min.js'></script>
+    <script>
+        window.onresize = function () {
+            var iWidth = document.documentElement.clientWidth;
+            iWidth = iWidth > 414 ? 540 : iWidth;
+            document.getElementsByTagName('html')[0].style.fontSize = iWidth / 23.4375 + 'px';
+        }
+        window.onresize();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <%=htmlWebpackPlugin.files.webpackManifest%>
+  </body>
+</html>

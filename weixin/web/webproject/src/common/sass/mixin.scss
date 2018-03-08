@@ -1,0 +1,141 @@
+@function unit($value) {//使用函数变量单位
+    @return $value/32;
+}
+@function rem($value) {
+  @return $value/32 + rem;
+}
+@mixin font($value){//定义字体
+    font-size: ($value/32);
+}
+@mixin width($value){//定义宽度
+    width: ($value/32);
+}
+@mixin height($value){//定义高度
+    height: ($value/32);
+}
+@mixin line-height($value){//定义行高
+    line-height: ($value/32);
+}
+@mixin padding($t:0,$r:0,$b:0,$l:0){//定义padding
+    padding: ($t/32) ($r/32) ($b/32) ($l/32);
+}
+@mixin margin($t:0,$r:0,$b:0,$l:0){//定义margin
+    margin: ($t/32) ($r/32) ($b/32) ($l/32);
+}
+
+$color333: #333;
+$color666: #666;
+$color999: #999;
+$coloraaa: #aaa;
+$colorbbb: #bbb;
+$colorccc: #ccc;
+$colorbg: #f8f8f8;
+$btncolor: #e2705a;
+
+$formtitle: #010101;
+
+
+
+@mixin bg-image($url){//设置图标
+    background-image: url($url + "@2x.png");
+    @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3){
+        background-image: url($url + "@3x.png");
+    }
+}
+
+@mixin clearfix(){//清除浮动
+    &:after{
+        display: block;
+        content: "";
+        height: 0;
+        clear: both;
+        overflow: hidden;
+        visibility: hidden;
+    }
+}
+
+@mixin wordbreak() {//文本自动换行
+    word-wrap: break-word;
+    word-break:break-all;
+}
+
+@mixin defaultlabel() {//设置如表单元素可编辑样式
+    appearance: normal;
+}
+
+@mixin textoverflow() {//单行文本缩略
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow:hidden;
+}
+%textoverflow {//单行文本缩略
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow:hidden;
+}
+%centerblock{//设置垂直居中
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+%centercontent{//设置内容居中
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+%weui_top_border{//after设置为边线
+    &:last-child{
+      .weui-cells{
+        &:after{
+          display: none;
+        }
+      }
+    }
+    .weui-cells{
+      margin-top:0;
+      &:before{
+        display: none;
+      }
+      &:after{
+        width: 96%;
+        right: 0;
+        left: auto;
+      }
+    }
+}
+
+%weui_bottom_border{//before设置为边线  group 添加一个类名  extend继承
+    &:last-child{
+      .weui-cells{
+        &:after{
+          display: none;
+        }
+      }
+    }
+    .weui-cells{
+      margin-top:0;
+      &:before{
+        display: none;
+      }
+      &:after{
+        width: 96%;
+        right: 0;
+        left: auto;
+      }
+    }
+}
+
+%weui_no_border{
+    &:before,&:after{
+        display: none;
+    }
+}
+
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}

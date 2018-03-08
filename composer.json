@@ -1,0 +1,61 @@
+{
+  "name": "yiisoft/yii2-app-advanced",
+  "description": "Yii 2 Advanced Project Template",
+  "keywords": [
+    "yii2",
+    "framework",
+    "advanced",
+    "project template"
+  ],
+  "homepage": "http://www.yiiframework.com/",
+  "type": "project",
+  "license": "BSD-3-Clause",
+  "support": {
+    "issues": "https://github.com/yiisoft/yii2/issues?state=open",
+    "forum": "http://www.yiiframework.com/forum/",
+    "wiki": "http://www.yiiframework.com/wiki/",
+    "irc": "irc://irc.freenode.net/yii",
+    "source": "https://github.com/yiisoft/yii2"
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.4.0",
+    "yiisoft/yii2": "~2.0.6",
+    "yiisoft/yii2-bootstrap": "~2.0.0",
+    "yiisoft/yii2-swiftmailer": "~2.0.0",
+    "callmez/yii2-wechat-sdk": "dev-master",
+    "bower-asset/jquery": "1.12.1-patch1",
+    "gmars/yii2-sms": "dev-master",
+    "kucha/ueditor": "*",
+    "moonlandsoft/yii2-phpexcel": "*",
+    "2amigos/qrcode-library": "1.0.3",
+    "kartik-v/yii2-widget-datepicker": "@dev",
+    "yiisoft/yii2-redis": "^2.0",
+    "yiidoc/yii2-redactor": "*",
+    "dmstr/yii2-adminlte-asset": "^2.1",
+    "mdmsoft/yii2-admin": "~2.0"
+  },
+  "require-dev": {
+    "yiisoft/yii2-debug": "~2.0.0",
+    "yiisoft/yii2-gii": "~2.0.0",
+    "yiisoft/yii2-faker": "~2.0.0",
+    "codeception/base": "^2.2.3",
+    "codeception/verify": "~0.3.1",
+    "gmars/yii2-sms": "dev-master",
+    "bower-asset/jquery": "1.12.1-patch1",
+    "kucha/ueditor": "*",
+    "2amigos/qrcode-library": "1.0.3"
+  },
+  "config": {
+    "process-timeout": 1800,
+    "github-oauth": {
+      "github.com": "569cab8db73f1f0c157c2394398a51bc0488bdc5"
+    },
+    "fxp-asset": {
+      "installer-paths": {
+        "npm-asset-library": "vendor/npm",
+        "bower-asset-library": "vendor/bower"
+      }
+    }
+  }
+}
