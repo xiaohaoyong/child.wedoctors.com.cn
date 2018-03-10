@@ -42,8 +42,13 @@ class ActionColumn extends \yii\grid\ActionColumn{
                 $options = array_merge([
                     'title' => Yii::t('yii', 'Delete'),
                     'aria-label' => Yii::t('yii', 'Delete'),
+<<<<<<< HEAD
+                    'data-confirm' => Yii::t('yii', '是否确定删除'),
+                    'data-method' => 'post',
+=======
                     //'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                     //'data-method' => 'post',
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
                     'data-pjax' => '0',
                 ], $this->buttonOptions);
                 return Html::a('<span class="glyphicon glyphicon-trash"></span> 删除', $url, $options);

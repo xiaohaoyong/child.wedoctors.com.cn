@@ -23,7 +23,11 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
 
     public static function tableName()
     {
+<<<<<<< HEAD
+        return 'auth_admin';
+=======
         return 'auto_user';
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
     }
 
     public static function findIdentity($id)

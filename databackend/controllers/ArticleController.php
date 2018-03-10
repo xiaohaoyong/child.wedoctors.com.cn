@@ -30,7 +30,24 @@ class ArticleController extends BaseController
             ]
         ];
     }
+<<<<<<< HEAD
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+=======
 
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
     /**
      * Lists all Article models.
      * @return mixed

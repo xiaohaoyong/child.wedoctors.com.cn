@@ -36,11 +36,28 @@ class Push extends Model
     }
 
     public function userid(){
+<<<<<<< HEAD
+        $hospitals=[];
+        $childs=[];
+        if($this->hospital)
+        {
+
+            $hospitals=[];
+            foreach($this->hospital as $k=>$v)
+            {
+                $hospital=DoctorParent::find()->select('parentid')
+                    ->andFilterWhere(['in','doctorid',$v])
+                    ->column();
+                $hospitals=array_merge($hospital,$hospitals);
+
+            }
+=======
         if($this->hospital)
         {
             $hospitals=DoctorParent::find()->select('parentid')
                 ->andFilterWhere(['in','doctorid',$this->hospital])
                 ->column();
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
         }
         if($this->age)
         {
@@ -56,9 +73,16 @@ class Push extends Model
                 $childs=array_merge($childs,$ages);
             }
         }
+<<<<<<< HEAD
+        $userids=[];
+        if($this->age[0]==0 && $this->hospital[0]==0)
+        {
+            $userids=UserLogin::find()->select('userid')->where(['!=', 'openid',''])->column();
+=======
         if($this->age==0 && $this->hospital==0)
         {
             $userids=UserParent::find()->select('userid')->column();
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
         }else{
             $userids=array_unique(array_merge($hospitals,$childs));
         }
@@ -79,7 +103,11 @@ class Push extends Model
         ];
         $miniprogram=[
             "appid"=>\Yii::$app->params['wxXAppId'],
+<<<<<<< HEAD
+            "pagepath"=>"/pages/article/view/index?id=".$this->id,
+=======
             "pagepath"=>"/pages/article/view/index?id".$this->id,
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
         ];
 
 
@@ -89,11 +117,19 @@ class Push extends Model
 
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
+<<<<<<< HEAD
+                    //WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['yiyuan'],'',$miniprogram);
+                }
+                if($article->art_type!=2)
+                {
+                    Notice::setList($v, 5, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$this->id,]);
+=======
                     WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['yiyuan'],'',$miniprogram);
                 }
                 if($article->art_type!=2)
                 {
                     Notice::setList($v, 5, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/pages/article/view/index?id".$this->id,]);
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
                 }
             }
         }

@@ -33,6 +33,9 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+<<<<<<< HEAD
+
+=======
     public function actionJkgj(){
 
         $contentJson= "
@@ -79,6 +82,7 @@ class DataController extends Controller
 
 
     }
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
     public function actionBd()
     {
         $text=[
@@ -323,7 +327,11 @@ class DataController extends Controller
                     echo $i."===";
                     $i++;
                     $row=explode(",",trim($line));
+<<<<<<< HEAD
+                    if(strlen(intval($row[31]))<11 && strlen(intval($row[35]))<11 && strlen(intval($row[12]))<11)
+=======
                     if(!intval($row[31]) && !intval($row[35]) && !intval($row[12]))
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
                     {
                         echo "--31-".$row['31'];
                         echo "--35-".$row['35'];
@@ -333,7 +341,15 @@ class DataController extends Controller
                         continue;
                     }
 
+<<<<<<< HEAD
+                    $phone=strlen(intval($row[31]))==11?intval($row[31]):strlen(intval($row[12]))==11?intval($row[12]):intval($row[35]);
+                    if(!$phone || strlen($phone)!=11) {
+                        echo "手机号不合法\n";
+                        continue;
+                    }
+=======
                     $phone=intval($row[31])?intval($row[31]):intval($row[12])?intval($row[12]):intval($row[35]);
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
                     $user = User::findOne(['phone' => $phone]);
                     $user = $user ? $user : new User();
                     $user->phone = $phone;

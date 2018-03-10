@@ -70,13 +70,21 @@ class UserController extends Controller
         }
 
         $huanxin = md5($xopenid.'7Z9WL3s2');
+<<<<<<< HEAD
+        //HuanxinUserHelper::getUserInfo($huanxin);
+=======
         HuanxinUserHelper::getUserInfo($huanxin);
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
 
         //对第一次登陆用户发送欢迎消息
         $cache = \Yii::$app->rdmp;
         $firstLogin=$cache->hget('firstLogin',$xopenid);
         if(!$firstLogin){
+<<<<<<< HEAD
+            //HuanxinHelper::setTxtMessage('wangzhentest',$huanxin,'欢迎使用中医儿童健康管理工具');
+=======
             HuanxinHelper::setTxtMessage('wangzhentest',$huanxin,'欢迎使用中医儿童健康管理工具');
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
         }
         $cache->hset('firstLogin',$xopenid,time());
 
@@ -159,7 +167,11 @@ class UserController extends Controller
             $doctorParent=DoctorParent::findOne(['parentid'=>$userid]);
             if($doctorParent->doctorid) {
                 $doctorLogin=UserLogin::findOne(['userid'=>$doctorParent->doctorid]);
+<<<<<<< HEAD
+                //return HuanxinHelper::setTxtMessage($doctorLogin->hxusername, $userLogin->hxusername, '恭喜你，已成功签约儿保顾问，育儿保健问题可以问我哦！医生在线时回给您回复~');
+=======
                 return HuanxinHelper::setTxtMessage($doctorLogin->hxusername, $userLogin->hxusername, '恭喜你，已成功签约儿保顾问，育儿保健问题可以问我哦！医生在线时回给您回复~');
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
             }
 
 
@@ -182,6 +194,10 @@ class UserController extends Controller
         $code1 = $pc->decryptData($encryptedData, $iv, $userJson);
         $user = json_decode($userJson, true);
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
         $wxInfo = WxInfo::findOne(['openid' => $openid]);
         if (!$wxInfo && $this->userid) {
             $wxInfo = new WxInfo();
@@ -214,6 +230,10 @@ class UserController extends Controller
             $wxInfo->img = $img;
             $wxInfo->userid = $this->userid ? $this->userid : 0;
             $wxInfo->save();
+<<<<<<< HEAD
+        }
+
+=======
         }else{
             $wxInfo['img']=$user['avatarUrl'];
             $wxInfo['name'] = $user['nickName'];
@@ -221,6 +241,7 @@ class UserController extends Controller
         }
 
 
+>>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
         return $wxInfo;
     }
 
