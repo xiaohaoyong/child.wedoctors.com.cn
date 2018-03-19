@@ -20,17 +20,10 @@ class NoticeController extends Controller
 {
     public function actionIndex(){
 
-<<<<<<< HEAD
 
         //未登录，未注册 用户默认内容
         if(!$this->userid) {
             Notice::setList($this->userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
-=======
-        Notice::setList($this->userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
-
-        //未登录，未注册 用户默认内容
-        if(!$this->userid) {
->>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
             Notice::setList($this->userid, 3, ['title' => '儿童中医药健康管理内容及平台服务', 'ftitle' => '点击查看服务内容', 'id' => '/article/view/index?id=200',]);
             //  Notice::setList($this->userid, 4, ['title' => '您好！医生给您发来了一份0-3岁儿童中医健康指导。', 'ftitle' => '0-3岁儿童中医健康知识', 'id' => '/article/guidance/index?t=0']);
         }else{

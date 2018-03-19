@@ -50,6 +50,7 @@ class UserDoctor extends \common\models\UserDoctor {
         $result['titlename'] = \common\models\UserDoctor::$titleText[$data->title];
         //医院
         $result['hospital'] = $data->hospital->toArray();
+        $result['phone']=$data->phone;
         return $result;
     }
 

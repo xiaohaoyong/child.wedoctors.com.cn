@@ -86,6 +86,8 @@ class DoctorController extends BaseWeixinController {
             $data['skilful'] = $model->skilful;
             //医生简介
             $data['intro'] = $model->intro;
+            $data['phone'] = $model->phone;
+
             return $this->returnJson('200', 'success', $data);
         } else {
             return $this->returnJson('11001', '查无此人');

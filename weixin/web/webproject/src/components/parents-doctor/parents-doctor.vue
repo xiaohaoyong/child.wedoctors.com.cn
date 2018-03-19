@@ -44,6 +44,8 @@
             </ul>
           </dd>
         </dl>
+        <!--  -->
+        <span class="tel" v-if="docterInfo.phone">儿保电话：<a :href="`tel: ${docterInfo.phone}`">{{docterInfo.phone}}</a></span>
         <button class="fixed-btn" disabled="true">暂未开通服务</button>
         <!-- <button class="fixed-btn" @click="next">立即咨询</button> -->
       </section>
@@ -221,6 +223,19 @@
             }
           }
         }
+      }
+    }
+    .tel{
+      position: fixed;
+      bottom: 4rem;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: unit(28rem);
+      color: #999;
+      letter-spacing: unit(1rem);
+      a{
+        color: inherit;
       }
     }
     .control{

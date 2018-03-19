@@ -96,7 +96,6 @@ $updateJs = <<<JS
 JS;
 $this->registerJs($updateJs);
 
-<<<<<<< HEAD
 
 
 
@@ -107,14 +106,6 @@ echo $form->field($model,'id')->hiddenInput();
 echo $form->field($model,'hospital')->checkboxList(array_merge([0=>'全部'],\common\models\UserDoctor::find()->select('name')->column()));
 echo $form->field($model,'age')->checkboxList(\common\models\Article::$childText);
 
-=======
-$form = \yii\widgets\ActiveForm::begin(['action'=>'/article/push','enableAjaxValidation' => true, ]);
-$model=new \backend\models\Push();
-echo $form->field($model,'id')->hiddenInput();
-echo $form->field($model,'area')->checkboxList(array_merge([0=>'全部'],\common\models\Area::$county[11]));
-echo $form->field($model,'hospital')->checkboxList(array_merge([0=>'全部'],\common\models\UserDoctor::find()->select('name')->column()));
-echo $form->field($model,'age')->checkboxList(\common\models\Article::$childText);
->>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
 echo "<div class=\"form-group\">".Html::submitButton('提交', ['class' => 'btn btn-primary'])."</div>";
 \yii\widgets\ActiveForm::end();
 Modal::end();

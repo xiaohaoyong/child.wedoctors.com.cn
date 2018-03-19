@@ -28,7 +28,6 @@ class ArticleController extends BaseController
             ]
         ];
     }
-<<<<<<< HEAD
     /**
      * @inheritdoc
      */
@@ -43,8 +42,6 @@ class ArticleController extends BaseController
             ],
         ];
     }
-=======
->>>>>>> eabc1625d436a17f2766a1bc9c0c48efafe4622e
 
     /**
      * Lists all Article models.
