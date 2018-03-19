@@ -34,7 +34,7 @@ class TestController extends Controller
         $weOpenid->save();
         exit;*/
 
-        $array=[38, 4118, 4119, 4127, 4128, 4134, 4135, 4146, 4147, 4153, 4154, 18464, 18465, 18469, 18471, 18491, 18492];
+        $array=[5];
         foreach($array as $k=>$v) {
 
             $data = ['action_name' => "QR_LIMIT_SCENE", 'action_info' => ['scene' => ['scene_id' => $v]]];

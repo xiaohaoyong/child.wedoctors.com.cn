@@ -210,7 +210,7 @@ class ArticleController extends BaseWeixinController
         if($doctorParent) {
             //获取年龄范围
             $mouth = ChildInfo::getChildType($k);
-            $childCount = ChildInfo::find()->where(['>', 'birthday', $mouth['firstday']])->andFilterWhere(['<', 'birthday', $mouth['lastday']])->andFilterWhere(['in', 'userid', array_values($users)])->all();
+            $childCount = ChildInfo::find()->where(['>=', 'birthday', $mouth['firstday']])->andFilterWhere(['<=', 'birthday', $mouth['lastday']])->andFilterWhere(['in', 'userid', array_values($users)])->all();
         }
         return $childCount;
     }
