@@ -265,6 +265,9 @@ class DataController extends Controller
 
     public function actionGet()
     {
+        ini_set("max_execution_time", "0");
+
+
         $file_list=glob("data/*.csv");
         foreach($file_list as $fk=>$fv)
         {
@@ -278,7 +281,7 @@ class DataController extends Controller
                     echo $i."===";
                     $i++;
                     $row=explode(",",trim($line));
-                    if(strlen(intval($row[31]))<11 && strlen(intval($row[35]))<11 && strlen(intval($row[12]))<11)
+                    if(strlen($row[31])<11 && strlen($row[35])<11 && strlen($row[12])<11)
                     {
                         echo "--31-".$row['31'];
                         echo "--35-".$row['35'];
@@ -288,11 +291,12 @@ class DataController extends Controller
                         continue;
                     }
 
-                    $phone=strlen(intval($row[31]))==11?intval($row[31]):strlen(intval($row[12]))==11?intval($row[12]):intval($row[35]);
+                    $phone=strlen($row[31])==11?$row[31]:strlen($row[12])==11?$row[12]:$row[35];
                     if(!$phone || strlen($phone)!=11) {
                         echo "手机号不合法\n";
                         continue;
                     }
+                    continue;
                     $user = User::findOne(['phone' => $phone]);
                     $user = $user ? $user : new User();
                     $user->phone = $phone;
