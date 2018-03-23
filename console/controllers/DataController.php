@@ -266,7 +266,7 @@ class DataController extends Controller
     public function actionGet()
     {
         ini_set("max_execution_time", "0");
-
+        set_time_limit(0);
 
         $file_list=glob("data/*.csv");
         foreach($file_list as $fk=>$fv)
@@ -296,7 +296,6 @@ class DataController extends Controller
                         echo "手机号不合法\n";
                         continue;
                     }
-                    continue;
                     $user = User::findOne(['phone' => $phone]);
                     $user = $user ? $user : new User();
                     $user->phone = $phone;
