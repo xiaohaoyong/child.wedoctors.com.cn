@@ -24,6 +24,15 @@
                         ],
                     ],
                     [
+                        'label' => '功能',
+                        'icon' => 'database',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '外链推送', 'icon' => 'list', 'url' => ['/chain'],],
+
+                        ],
+                    ],
+                    [
                         'label' => '系统应用',
                         'icon' => 'file-code-o',
                         'url' => '#',
