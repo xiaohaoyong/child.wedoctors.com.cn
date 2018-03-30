@@ -13,6 +13,7 @@ use common\components\HttpRequest;
 use common\helpers\WechatSendTmp;
 use common\models\DoctorParent;
 use common\models\Notice;
+use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\vendor\MpWechat;
@@ -81,10 +82,30 @@ class Push extends Model
 
         $article=\common\models\Article::findOne($this->id);
 
+
+        if($this->hospital)
+        {
+            $hos=UserDoctor::findOne(['userid'=>$this->hospital]);
+            $hospital=$hos?$hos->name:'';
+        }
+
+        if($this->age)
+        {
+            foreach($this->age as $k=>$v)
+            {
+                $rs[]=\common\models\Article::$childText[$v];
+            }
+            $age=implode(',',$rs);
+        }
+
         $data = [
             'first' => array('value' => $article->info->title."\n",),
             'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
-            'keyword2' => ARRAY('value' => mb_substr(strip_tags($article->info->content),0,30,'utf-8'),),
+            'keyword2' => ARRAY('value' =>'儿宝宝'),
+            'keyword3' => ARRAY('value' =>'儿宝宝'),
+            'keyword4' => ARRAY('value' =>$hospital.$age),
+            'keyword5' => ARRAY('value' =>$article->info->title),
+
             'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
         ];
         $miniprogram=[
@@ -99,7 +120,7 @@ class Push extends Model
 
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
-                    //WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['yiyuan'],'',$miniprogram);
+                    WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['zhidao'],'',$miniprogram);
                 }
                 if($article->art_type!=2)
                 {

@@ -12,7 +12,7 @@ if($_GET['we']=='new' || $_COOKIE["we"]) {
     $yiyuan = "AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE";
     $tongzhi = "76RQgMta_l3giMkUChvZM6xHC1Bwg67dKlNRndck92o";
     $chenggong = "KJKgdarbimWIeuVMAYu1VyurMUOuPve48ywc3RT6uxY";
-
+    $push="HxqZZEXIH8LsPDXu-rYbojEGHvZvFV11WfllXaY2OaI";
 }else{
     $AppSecret = "ea489de7644965b2f4a215956751aa83";
     $AppID="wx55f9c1fde0c7d496";
@@ -23,6 +23,8 @@ if($_GET['we']=='new' || $_COOKIE["we"]) {
     $yiyuan = "8cOQvdECBjnzGEEH6fTe1LN9PkPHFBg0w47JmeQ7ows";
     $tongzhi = "nzMbtvtjgUGtAOSXqDE8WTjVwTDqYg0XX8dnINbdt1c";
     $chenggong = "ttPl6uAIpxdYjcELoIQWqooV1fnUvcmqn3huhbdISmY";
+    $push="HxqZZEXIH8LsPDXu-rYbojEGHvZvFV11WfllXaY2OaI";
+
 }
 return [
     'wxXAppId'=>'wx240286cc3d77ba35',
@@ -44,6 +46,7 @@ return [
     'yiyuan'  =>$yiyuan,
     'tongzhi'  =>$tongzhi,
     'chenggong'  =>$chenggong,
+    'push'  =>$push,
     'hx_url' => 'https://a1.easemob.com/1176170313115487/childhealth/',
     'hx_id' =>'YXA6KTGS4LkmEeeJI3lkRutH2g',
     'hx_secret' =>'YXA6tqys6qGSuxN4BjVzaLn84QqGszM',
