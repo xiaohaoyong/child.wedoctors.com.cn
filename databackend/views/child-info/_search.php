@@ -16,13 +16,13 @@ use yii\widgets\ActiveForm;
         'options' => ['class' => 'form-inline'],
     ]); ?>
 
-    <?= $form->field($model->doctorParent, 'level')->dropdownList(\common\models\DoctorParent::$levelText,['prompt'=>'请选择']) ?>
-    <?= $form->field($model->doctorParent, 'createtime')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+    <?= $form->field($model, 'level')->dropdownList(\common\models\DoctorParent::$levelText,['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'docpartime')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true
     ]])?>
-    <?= $form->field($model->userParent, 'field11')?>
-    <?= $form->field($model->userParent, 'field12')?>
+    <?= $form->field($model, 'username')?>
+    <?= $form->field($model, 'userphone')?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>

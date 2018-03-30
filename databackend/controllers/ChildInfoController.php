@@ -22,7 +22,7 @@ class ChildInfoController extends BaseController
      */
     public function actionIndex()
     {
-        $params=!Yii::$app->request->queryParams;
+        $params=Yii::$app->request->queryParams;
         $searchModel = new ChildInfoSearchModel();
         if(!$params)
         {

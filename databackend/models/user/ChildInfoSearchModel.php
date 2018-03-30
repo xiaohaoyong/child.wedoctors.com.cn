@@ -15,6 +15,11 @@ use yii\data\ActiveDataProvider;
  */
 class ChildInfoSearchModel extends ChildInfo
 {
+    public $level;
+    public $docpartime;
+    public $username;
+    public $userphone;
+
     public function behaviors()
     {
         return [
@@ -29,8 +34,21 @@ class ChildInfoSearchModel extends ChildInfo
     public function rules()
     {
         return [
-            [['id', 'userid', 'birthday', 'createtime'], 'integer'],
+            [['id', 'userid', 'birthday', 'createtime', 'level'], 'integer'],
+            [['docpartime', 'username'], 'string'],
+            [['userphone'], 'integer'],
+
             [['name'], 'safe'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'level' => '签约',
+            'docpartime' => '签约时间',
+            'username' => '母亲姓名',
+            'userphone' => '母亲手机号'
         ];
     }
 
@@ -59,7 +77,6 @@ class ChildInfoSearchModel extends ChildInfo
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -67,26 +84,42 @@ class ChildInfoSearchModel extends ChildInfo
             // $query->where('0=1');
             return $dataProvider;
         }
+        //签约条件
+        //$doctorParent = $this->doctorParent->load($params);
+        if (isset($this->level) || isset($this->docpartime)) {
+            //var_dump($params);
+            $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
 
-        if(\Yii::$app->user->identity->hospital!=0) {
-            //签约条件
-            $doctorParent = $this->doctorParent->search($params);
-
-            if (isset($this->doctorParent->level) || isset($this->doctorParent->createtime)) {
-                $query->andFilterWhere(['in', 'userid', $doctorParent->query->select('parentid')->column()]);
+            if ($this->level) {
+                $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
             }
-            //var_dump($query->createCommand()->getRawSql());exit;
-
-            //var_dump($doctorParent->query->select('parentid')->column());exit;
-            $userDoctor = $this->userParent->search($params);
-            if ($this->userParent->field11 || $this->userParent->field12) {
-                $query->andFilterWhere(['in', 'userid', $userDoctor->query->select('userid')->column()]);
+            if ($this->level) {
+                $state = strtotime($this->docpartime . " 00:00:00");
+                $end = strtotime($this->docpartime . " 23:59:59");
+                $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
+                $query->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
             }
+        }
+//        'username' => '联系人姓名',
+//            'userphone' => '联系人电话'
+        if ($this->username || $this->userphone) {
+            $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
+
+            if ($this->username) {
+                $query->andFilterWhere(['`user_parent`.`mother`' => $this->username]);
+            }
+            if ($this->userphone) {
+                $query->andFilterWhere(['`user_parent`.`mother_phone`' => $this->userphone]);
+
+            }
+        }
+        if(\Yii::$app->user->identity->hospital) {
             $query->andFilterWhere(['source' => \Yii::$app->user->identity->hospital]);
         }
 
-        $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+        $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
 
+        //var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
     }
 }
