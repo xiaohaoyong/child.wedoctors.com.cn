@@ -11,6 +11,7 @@ namespace backend\models;
 
 use common\components\HttpRequest;
 use common\helpers\WechatSendTmp;
+use common\models\Chain;
 use common\models\DoctorParent;
 use common\models\Notice;
 use common\models\UserDoctor;
@@ -129,5 +130,44 @@ class Push extends Model
             }
         }
     }
+    public function sendUrl(){
+        $userids=$this->userid();
 
+        $model=Chain::findOne($this->id);
+        if($this->hospital)
+        {
+            $hos=UserDoctor::findOne(['userid'=>$this->hospital]);
+            $hospital=$hos?$hos->name:'';
+        }
+
+        if($this->age)
+        {
+            foreach($this->age as $k=>$v)
+            {
+                $rs[]=\common\models\Article::$childText[$v];
+            }
+            $age=implode(',',$rs);
+        }
+
+        $data = [
+            'first' => array('value' => $model->title."\n",),
+            'keyword1' => ARRAY('value' =>$model->title),
+            'keyword2' => ARRAY('value' =>'儿宝宝'),
+            'keyword3' => ARRAY('value' =>'儿宝宝'),
+            'keyword4' => ARRAY('value' => date('Y年m月d H:i'),),
+            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+        ];
+
+
+        if($model)
+        {
+            foreach($userids as $k=>$v) {
+
+                $userLogin=UserLogin::findOne(['userid'=>$v]);
+                if($userLogin->openid) {
+                    WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['push'],$model->url);
+                }
+             }
+        }
+    }
 }
