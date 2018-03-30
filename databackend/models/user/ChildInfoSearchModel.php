@@ -81,10 +81,11 @@ class ChildInfoSearchModel extends ChildInfo
         if($this->userParent->field11 || $this->userParent->field12) {
             $query->andFilterWhere(['in', 'userid', $userDoctor->query->select('userid')->column()]);
         }
-
+        $query->andFilterWhere(['source'=>\Yii::$app->user->identity->hospital]);
 
 
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+
         return $dataProvider;
     }
 }
