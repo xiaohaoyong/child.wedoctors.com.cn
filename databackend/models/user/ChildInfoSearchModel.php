@@ -92,8 +92,11 @@ class ChildInfoSearchModel extends ChildInfo
 
             if ($this->level) {
                 $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
+
+                $doctorid=UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital])->userid;
+                $query->andFilterWhere(['`doctor_parent`.`doctorid`'=>$doctorid]);
             }
-            if ($this->level) {
+            if ($this->docpartime) {
                 $state = strtotime($this->docpartime . " 00:00:00");
                 $end = strtotime($this->docpartime . " 23:59:59");
                 $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
@@ -113,7 +116,7 @@ class ChildInfoSearchModel extends ChildInfo
 
             }
         }
-        if(\Yii::$app->user->identity->hospital) {
+        if(\Yii::$app->user->identity->hospital && !$this->level && !$this->docpartime) {
             $query->andFilterWhere(['source' => \Yii::$app->user->identity->hospital]);
         }
 
