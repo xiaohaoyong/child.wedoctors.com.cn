@@ -364,7 +364,7 @@ class DoctorController extends BaseWeixinController {
 
                 //微信模板消息
                 $data = [
-                    'first' => array('value' => "您好！医生给您发来了一份新的健康指导。\n"),
+                    'first' => array('value' => "您好！医生给您发来一份新的儿童中医药健康指导。\n"),
                     'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
                     'keyword2' => ARRAY('value' => $doctor->hospital->name),
                     'keyword3' => ARRAY('value' => $doctor->name),
