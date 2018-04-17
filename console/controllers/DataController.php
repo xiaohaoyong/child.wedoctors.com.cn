@@ -36,6 +36,16 @@ class DataController extends Controller
 
     public function actionBd()
     {
+
+        for($i=1;$i<10;$i++)
+        {
+            echo $i."\n";
+            $row=ChildInfo::getChildType($i);
+            echo date('Y-m-d',$row['firstday'])."\n";
+            echo date('Y-m-d',$row['lastday'])."\n";
+        }exit;
+
+
         $text=[
             '2018-01-01',
             '2019-02-01',

@@ -195,6 +195,14 @@ class ArticleController extends BaseWeixinController
 
     public function noSendChild($k)
     {
+//        $mouth = ChildInfo::getChildType($k);
+//        $child=ChildInfo::find()
+//            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+//            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+//            ->andFilterWhere(['`doctor_parent`.`doctorid`'=>$this->userData['userid']])
+//            ->andFilterWhere(['>=', 'birthday', $mouth['firstday']])
+//            ->andFilterWhere(['<=', 'birthday', $mouth['lastday']])
+//            ->all();
         //已签约的用户
         $doctorParent= DoctorParent::find()->select('parentid')->where(['doctorid'=>$this->userData['userid']])->andFilterWhere(['level'=>1])->column();
 
@@ -202,7 +210,7 @@ class ArticleController extends BaseWeixinController
         //该类型 本月已发送的儿童
         $articleUser=ArticleUser::find()->select('touserid')
             ->where(['child_type'=>$k,'userid'=>$this->userData['userid']])
-            ->andFilterWhere(['>','createtime',strtotime($lmount)])
+            //->andFilterWhere(['>','createtime',strtotime($lmount)])
             ->groupBy('childid')
             ->column();
 
