@@ -231,6 +231,6 @@ class ArticleController extends BaseWeixinController
     public function noSendChildNum($k)
     {
         return count($this->noSendChild($k));
-    }
+}
 
 }
