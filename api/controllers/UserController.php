@@ -118,6 +118,7 @@ class UserController extends Controller
                 $user->level = 0;
                 $user->type = 1;
                 $user->save();
+                var_dump($wephone);
                 var_dump($user->firstErrors);exit;
                 $userid = $user->id;
             }
