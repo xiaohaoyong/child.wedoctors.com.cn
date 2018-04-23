@@ -102,7 +102,7 @@ class UserController extends Controller
         $openid = $session[0];
         $unionid = $session[2];
 
-        $wephone=$phone;
+        $wephone=$phone['phoneNumber'];
         if ($code == 0) {
             $user = User::findOne(['phone' => $wephone]);
             if (!$user) {
@@ -118,8 +118,6 @@ class UserController extends Controller
                 $user->level = 0;
                 $user->type = 1;
                 $user->save();
-                var_dump($wephone);
-                var_dump($user->firstErrors);exit;
                 $userid = $user->id;
             }
 
