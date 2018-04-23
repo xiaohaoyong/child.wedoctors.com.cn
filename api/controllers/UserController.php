@@ -103,9 +103,6 @@ class UserController extends Controller
         $unionid = $session[2];
 
         $wephone=$phone;
-        var_dump($wephone);
-        var_dump($code);
-        exit;
         if ($code == 0) {
             $user = User::findOne(['phone' => $wephone]);
             if (!$user) {
@@ -115,7 +112,7 @@ class UserController extends Controller
                 }
             }
             //注册
-
+            var_dump($userid);exit;
             if (!$userid) {
                 $user = new User();
                 $user->phone = $wephone;
