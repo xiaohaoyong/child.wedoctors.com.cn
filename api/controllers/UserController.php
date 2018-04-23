@@ -112,13 +112,13 @@ class UserController extends Controller
                 }
             }
             //注册
-            var_dump($userid);exit;
             if (!$userid) {
                 $user = new User();
                 $user->phone = $wephone;
                 $user->level = 0;
                 $user->type = 1;
                 $user->save();
+                var_dump($user->firstErrors);exit;
                 $userid = $user->id;
             }
 
