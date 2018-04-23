@@ -72,6 +72,7 @@ class SuiteController extends Controller
 
                     $userid = UserLogin::findOne(['openid' => $openid])->userid;
                     if ($userid && $doctor_id) {
+                        //已注册用户签约流程
                         $doctorParent=DoctorParent::findOne(['parentid' => $userid]);
                         if ($doctorParent) {
                             $doctorName=UserDoctor::findOne(['userid'=>$doctorParent->doctorid])->name;
@@ -95,15 +96,45 @@ class SuiteController extends Controller
                                 $touser = UserLogin::findOne(['userid' => $doctor_id])->openid;
                                 $url = Url::to(\Yii::$app->params['site_url'].'#/docters-user?p=1');
                                 WechatSendTmp::send($data, $touser, \Yii::$app->params['tongzhi'], $url);
-                                return self::sendText($openid, $xml['ToUserName'], "您已成功签约".UserDoctor::findOne($doctor_id)->name);
+
+                                //发送签约成功消息
+                                $doctor = UserDoctor::findOne($doctor_id);
+                                //微信模板消息
+
+                                $data = [
+                                    'first' => array('value' => "恭喜您，已成功签约。\n"),
+                                    'keyword1' => ARRAY('value' => $doctor->name, ),
+                                    'keyword2' => ARRAY('value' => $doctor->hospital->name),
+                                    'keyword3' => ARRAY('value' => date('Y年m月d日')),
+                                    'remark' => ARRAY('value' => "\n 点击授权并添加宝宝信息，可以免费享受个性化中医儿童健康指导等服务。", 'color' => '#221d95'),
+                                ];
+                                $url = \Yii::$app->params['site_url']."#/add-docter";
+                                WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url,['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
+                                return '';
+                                //return self::sendText($openid, $xml['ToUserName'], "您已成功签约".UserDoctor::findOne($doctor_id)->name);
                             } else {
                                 return self::sendText($openid, $xml['ToUserName'], "失败：".json_encode($doctorParent->firstErrors));
 
                             }
                         }
                     } elseif ($doctor_id) {
+                        //未注册用户签约流程
                         $url = Yii::$app->params['index_url'];
-                        return self::sendText($openid, $xml['ToUserName'], UserDoctor::findOne($doctor_id)->name."：恭喜你签约成功，针对不同月龄儿童，可享受以下服务：\n1.解答儿童日常健康问题\n2.个性化中医儿童健康指导\n3.记录和查看儿童健康档案\n4.体检及疫苗服务的温馨提醒\n\n <a href='{$url}'>点击查看预防保健团队，并完善信息</a>");
+                        //发送签约成功消息
+                        $doctor = UserDoctor::findOne($doctor_id);
+                        //微信模板消息
+
+                        $data = [
+                            'first' => array('value' => "恭喜您，已成功签约。\n"),
+                            'keyword1' => ARRAY('value' => $doctor->name, ),
+                            'keyword2' => ARRAY('value' => $doctor->hospital->name),
+                            'keyword3' => ARRAY('value' => date('Y年m月d日')),
+                            'remark' => ARRAY('value' => "\n 点击授权并添加宝宝信息，可以免费享受个性化中医儿童健康指导等服务。", 'color' => '#221d95'),
+                        ];
+                        $url = \Yii::$app->params['site_url']."#/add-docter";
+                        WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url,['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
+                        return '';
+                        //return self::sendText($openid, $xml['ToUserName'], UserDoctor::findOne($doctor_id)->name."：恭喜你签约成功，针对不同月龄儿童，可享受以下服务：\n1.解答儿童日常健康问题\n2.个性化中医儿童健康指导\n3.记录和查看儿童健康档案\n4.体检及疫苗服务的温馨提醒\n\n <a href='{$url}'>点击查看预防保健团队，并完善信息</a>");
                     } else {
                         $url = \Yii::$app->params['htmlUrl']."#/sign?usertype=parent";
                         $url_doctor = \Yii::$app->params['htmlUrl']."#/accountdocter?usertype=docter";
