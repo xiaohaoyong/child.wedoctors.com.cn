@@ -24,6 +24,7 @@ use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\Vaccine;
+use common\models\WeOpenid;
 use Faker\Provider\File;
 use yii\base\Controller;
 use yii\helpers\Html;
@@ -33,6 +34,28 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionText(){
+
+
+        $connection = new \yii\db\Connection([
+            'dsn' => 'mysql:host=139.129.246.51;dbname=child_health',
+            'username' => 'wedoctors_admin',
+            'password' => 'trd7V37v3PXeU9vn',
+        ]);
+        $connection->open();
+
+        $f=fopen("data/doctor_parent.sql",'r');
+        $i=0;
+        while(($line=fgets($f))!==false) {
+            echo $line;
+            $command = $connection->createCommand(trim($line));
+            $command->execute();
+            echo "\n";
+            //var_dump($post);exit;
+        }
+        exit;
+    }
+
 
     public function actionBd()
     {
