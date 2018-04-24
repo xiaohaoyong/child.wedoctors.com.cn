@@ -111,6 +111,8 @@ class UserController extends Controller
                 if ($userParent) {
                     $userid = $userParent->userid;
                 }
+            }else{
+                $userid=$user->id;
             }
             //注册
             if (!$userid) {
