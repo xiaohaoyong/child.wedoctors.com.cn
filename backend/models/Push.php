@@ -45,14 +45,9 @@ class Push extends Model
         {
 
             $hospitals=[];
-            foreach($this->hospital as $k=>$v)
-            {
-                $hospital=DoctorParent::find()->select('parentid')
-                    ->andFilterWhere(['in','doctorid',$v])
-                    ->column();
-                $hospitals=array_merge($hospital,$hospitals);
-
-            }
+            $hospitals=DoctorParent::find()->select('parentid')
+                ->andFilterWhere(['in','doctorid',$this->hospital])
+                ->column();
         }
         var_dump($hospitals);
         if($this->age)
