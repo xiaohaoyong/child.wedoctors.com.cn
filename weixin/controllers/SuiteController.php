@@ -39,7 +39,6 @@ class SuiteController extends Controller
                 $xml = $this->mpWechat->parseRequestXml($postStr, $_GET['msg_signature'], $_GET['timestamp'], $nonce = $_GET['nonce'], $_GET['encrypt_type']);
                 $openid = $xml['FromUserName'];
                 $doctor_id = str_replace('qrscene_', '', $xml['EventKey']);
-                return self::sendText($openid, $xml['ToUserName'], json_encode($xml));
 
                 //扫码记录
                 $weOpenid=WeOpenid::findOne(['openid'=>$openid,'doctorid'=>$doctor_id]);
@@ -58,8 +57,6 @@ class SuiteController extends Controller
                         $path = '/cgi-bin/user/info?access_token='.$access_token."&openid=".$openid."&lang=zh_CN";
                         $curl = new HttpRequest(\Yii::$app->params['wxUrl'].$path, true, 2);
                         $userJson = $curl->get();
-                        return self::sendText($openid, $xml['ToUserName'], $userJson);
-
                         $userInfo=json_decode($userJson,true);
                         if($userInfo['unionid']) {
                             $weOpenid->unionid=$userInfo['unionid'];
