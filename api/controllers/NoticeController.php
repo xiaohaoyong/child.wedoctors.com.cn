@@ -63,16 +63,15 @@ class NoticeController extends Controller
             Notice::setList($this->userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
             Notice::setList($this->userid, 3, ['title' => '儿童中医药健康管理内容及平台服务', 'ftitle' => '点击查看服务内容', 'id' => '/article/view/index?id=200',]);
 
-        }
-
-        $list=Notice::getList($this->userid);
-        foreach($list as $k=>$v)
-        {
-            $rs['key']=$k;
-            $rs['name']=Notice::$user[$k];
-            $rs['date']=date('Y-m-d H:i',$v);
-            $rs['info']=Notice::getRow($this->userid,$k);
-            $data[]=$rs;
+            $list=Notice::getList($this->userid);
+            foreach($list as $k=>$v)
+            {
+                $rs['key']=$k;
+                $rs['name']=Notice::$user[$k];
+                $rs['date']=date('Y-m-d H:i',$v);
+                $rs['info']=Notice::getRow($this->userid,$k);
+                $data[]=$rs;
+            }
         }
         return $data;
 
