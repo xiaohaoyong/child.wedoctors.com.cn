@@ -15,6 +15,7 @@ use common\components\Code;
 use common\components\HttpRequest;
 use common\components\wx\WxBizDataCrypt;
 use common\models\DoctorParent;
+use common\models\Notice;
 use common\models\User;
 use common\models\UserLogin;
 use common\models\UserParent;
@@ -121,6 +122,8 @@ class UserController extends Controller
                 $userid = $user->id;
             }
 
+            Notice::setList($userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
+            Notice::setList($userid, 3, ['title' => '儿童中医药健康管理内容及平台服务', 'ftitle' => '点击查看服务内容', 'id' => '/article/view/index?id=200',]);
 
             $userLogin = UserLogin::findOne(['userid' => $userid]);
             $userLogin = $userLogin ? $userLogin : new UserLogin();
