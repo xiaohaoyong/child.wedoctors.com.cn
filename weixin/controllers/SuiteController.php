@@ -40,7 +40,7 @@ class SuiteController extends Controller
                 $openid = $xml['FromUserName'];
                 $doctor_id = str_replace('qrscene_', '', $xml['EventKey']);
 
-                return self::sendText($openid, $xml['ToUserName'], $openid);
+                return self::sendText($openid, $xml['ToUserName'], $postStr);
 
                 //扫码记录
                 $weOpenid=WeOpenid::findOne(['openid'=>$openid,'doctorid'=>$doctor_id]);
