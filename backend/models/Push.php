@@ -40,7 +40,6 @@ class Push extends Model
     public function userid(){
         $hospitals=[];
         $childs=[];
-        var_dump($this->hospital);
         if($this->hospital)
         {
 
@@ -49,7 +48,6 @@ class Push extends Model
                 ->andFilterWhere(['in','doctorid',$this->hospital])
                 ->column();
         }
-        var_dump($hospitals);
         if($this->age)
         {
             $childs=[];
@@ -71,7 +69,6 @@ class Push extends Model
         }else{
             $userids=array_unique(array_merge($hospitals,$childs));
         }
-        var_dump($userids);exit;
         return $userids;
     }
 
