@@ -109,9 +109,9 @@ class Push extends Model
             "pagepath"=>"/pages/article/view/index?id=".$this->id,
         ];
 
-
         if($article)
         {
+            var_dump($userids);exit;
             foreach($userids as $k=>$v) {
 
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
