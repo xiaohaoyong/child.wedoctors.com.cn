@@ -74,6 +74,7 @@ class Push extends Model
         }else{
             $userids=array_unique(array_merge($hospitals,$childs));
         }
+        var_dump($userids);exit;
         return $userids;
     }
 
