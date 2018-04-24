@@ -99,7 +99,7 @@ class Push extends Model
             'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
             'keyword2' => ARRAY('value' =>'儿宝宝'),
             'keyword3' => ARRAY('value' =>'儿宝宝'),
-            'keyword4' => ARRAY('value' =>$hospital.$age),
+            'keyword4' => ARRAY('value' =>'宝爸宝妈'),
             'keyword5' => ARRAY('value' =>$article->info->title),
 
             'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
