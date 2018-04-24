@@ -37,6 +37,8 @@ class DataController extends Controller
     public function actionBd()
     {
 
+        echo md5(md5("139110083832QH@6%3(87"));exit;
+
         for($i=1;$i<10;$i++)
         {
             echo $i."\n";
