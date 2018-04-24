@@ -116,14 +116,12 @@ class Push extends Model
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
                     $rs=WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['zhidao'],'',$miniprogram);
-                    var_dump($rs);
                 }
                 if($article->art_type!=2)
                 {
                     Notice::setList($v, 5, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$this->id,]);
                 }
             }
-            exit;
         }
     }
     public function sendUrl(){
