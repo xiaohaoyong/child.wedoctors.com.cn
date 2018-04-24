@@ -129,7 +129,7 @@ class SuiteController extends Controller
                             'keyword1' => ARRAY('value' => $doctor->name, ),
                             'keyword2' => ARRAY('value' => $doctor->hospital->name),
                             'keyword3' => ARRAY('value' => date('Y年m月d日')),
-                            'remark' => ARRAY('value' => "\n 点击授权并添加宝宝信息，可以免费享受个性化中医儿童健康指导等服务。", 'color' => '#221d95'),
+                            'remark' => ARRAY('value' => "\n 点击添加宝宝并授权，就可以免费享受个性化中医儿童健康指导等服务，如果授权的手机号码与建档时不一致，则宝宝的信息不会显示，正常添加宝宝信息即可（需准确），不影响功能使用", 'color' => '#221d95'),
                         ];
                         $url = \Yii::$app->params['site_url']."#/add-docter";
                         WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url,['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
