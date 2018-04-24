@@ -40,6 +40,7 @@ class Push extends Model
     public function userid(){
         $hospitals=[];
         $childs=[];
+        var_dump($this->hospital);
         if($this->hospital)
         {
 
@@ -53,6 +54,7 @@ class Push extends Model
 
             }
         }
+        var_dump($hospitals);
         if($this->age)
         {
             $childs=[];
