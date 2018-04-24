@@ -71,7 +71,7 @@ class UserController extends Controller
         }
 
         $huanxin = md5($xopenid.'7Z9WL3s2');
-        //HuanxinUserHelper::getUserInfo($huanxin);
+        HuanxinUserHelper::getUserInfo($huanxin);
 
         //对第一次登陆用户发送欢迎消息
         $cache = \Yii::$app->rdmp;
