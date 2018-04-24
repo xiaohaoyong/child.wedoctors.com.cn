@@ -103,7 +103,6 @@ class UserController extends Controller
         $openid = $session[0];
         $unionid = $session[2];
 
-        var_dump($phone['phoneNumber']);exit;
         $wephone=$phone['phoneNumber'];
         if ($code == 0) {
             $user = User::findOne(['phone' => $wephone]);
