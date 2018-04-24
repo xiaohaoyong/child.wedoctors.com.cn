@@ -63,7 +63,7 @@ class SuiteController extends Controller
                             $weOpenid->unionid=$userInfo['unionid'];
                         }
                     }
-                    return self::sendText($openid, $xml['ToUserName'], json_encode($access_token).$userJson);
+                    return self::sendText($openid, $xml['ToUserName'], json_encode($access_token).$userJsons);
 
                     $weOpenid->openid = $openid;
                     $weOpenid->doctorid = $doctor_id;
