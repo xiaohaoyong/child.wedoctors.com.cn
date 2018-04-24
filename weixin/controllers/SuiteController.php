@@ -40,7 +40,6 @@ class SuiteController extends Controller
                 $openid = $xml['FromUserName'];
                 $doctor_id = str_replace('qrscene_', '', $xml['EventKey']);
 
-
                 //扫码记录
                 $weOpenid=WeOpenid::findOne(['openid'=>$openid,'doctorid'=>$doctor_id]);
                 if(!$weOpenid) {
@@ -58,13 +57,13 @@ class SuiteController extends Controller
                         $path = '/cgi-bin/user/info?access_token='.$access_token."&openid=".$openid."&lang=zh_CN";
                         $curl = new HttpRequest(\Yii::$app->params['wxUrl'].$path, true, 2);
                         $userJson = $curl->get();
+                        return self::sendText($openid, $xml['ToUserName'], $userJson);
+
                         $userInfo=json_decode($userJson,true);
                         if($userInfo['unionid']) {
                             $weOpenid->unionid=$userInfo['unionid'];
                         }
                     }
-                    return self::sendText($openid, $xml['ToUserName'], json_encode($access_token).$userJsons);
-
                     $weOpenid->openid = $openid;
                     $weOpenid->doctorid = $doctor_id;
                     $weOpenid->createtime = time();
