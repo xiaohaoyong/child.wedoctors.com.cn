@@ -36,6 +36,7 @@ class Notice
 
         $redis=\Yii::$app->rdmp;
         $list=$redis->zrevrange('noticeList'.$userid,0,-1,'WITHSCORES');
+        $row=[];
         foreach($list as $k=>$v)
         {
             if($k%2==0){

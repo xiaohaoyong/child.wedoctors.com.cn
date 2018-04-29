@@ -37,11 +37,11 @@ class DoctorController extends Controller
             $row['source']=$row['source']?$row['source']:"儿宝宝";
             $data[]=$row;
         }
-        $huanxin = md5($doctorParent->doctorid.'7Z9WL3s2');
-        HuanxinUserHelper::getUserInfo($huanxin);
-        $userlogin=UserLogin::findOne(['userid'=>$doctorParent->doctorid]);
-        $userlogin->hxusername=$huanxin;
-        $userlogin->save();
+//        $huanxin = md5($doctorParent->doctorid.'7Z9WL3s2');
+//        HuanxinUserHelper::getUserInfo($huanxin);
+//        $userlogin=UserLogin::findOne(['userid'=>$doctorParent->doctorid]);
+//        //$userlogin->hxusername=$huanxin;
+//        $userlogin->save();
         return ['doctor'=>$doctor,'list'=>$data,'username'=>$huanxin];
     }
 

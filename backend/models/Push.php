@@ -44,14 +44,9 @@ class Push extends Model
         {
 
             $hospitals=[];
-            foreach($this->hospital as $k=>$v)
-            {
-                $hospital=DoctorParent::find()->select('parentid')
-                    ->andFilterWhere(['in','doctorid',$v])
-                    ->column();
-                $hospitals=array_merge($hospital,$hospitals);
-
-            }
+            $hospitals=DoctorParent::find()->select('parentid')
+                ->andFilterWhere(['in','doctorid',$this->hospital])
+                ->column();
         }
         if($this->age)
         {
@@ -104,7 +99,7 @@ class Push extends Model
             'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
             'keyword2' => ARRAY('value' =>'儿宝宝'),
             'keyword3' => ARRAY('value' =>'儿宝宝'),
-            'keyword4' => ARRAY('value' =>$hospital.$age),
+            'keyword4' => ARRAY('value' =>'宝爸宝妈'),
             'keyword5' => ARRAY('value' =>$article->info->title),
 
             'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
@@ -114,14 +109,13 @@ class Push extends Model
             "pagepath"=>"/pages/article/view/index?id=".$this->id,
         ];
 
-
         if($article)
         {
             foreach($userids as $k=>$v) {
 
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
-                    WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['zhidao'],'',$miniprogram);
+                    $rs=WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['zhidao'],'',$miniprogram);
                 }
                 if($article->art_type!=2)
                 {
