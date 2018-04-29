@@ -139,7 +139,6 @@ class UserDoctorController extends BaseController
             $userInfo->userid=$model->id;
             if($userInfo->save()) {
 
-                $userLogin->userid = $model->id;
                 $userLogin->password = md5(md5($model->phone."2QH@6%3(87"));
                 $userLogin->save();
                 \Yii::$app->getSession()->setFlash('success');
