@@ -118,7 +118,7 @@ class UserDoctorController extends BaseController
         $model = User::findOne($id);
         $userInfo=\common\models\UserDoctor::findOne(['userid'=>$id]);
         $userInfo=$userInfo?$userInfo:new \common\models\UserDoctor;
-        $userLogin=new UserLogin();
+        $userLogin=$model->login;
         $model->loadDefaultValues();
         $userInfo->loadDefaultValues();
         $userLogin->loadDefaultValues();
