@@ -118,7 +118,10 @@ class UserDoctorController extends BaseController
         $model = User::findOne($id);
         $userInfo=\common\models\UserDoctor::findOne(['userid'=>$id]);
         $userInfo=$userInfo?$userInfo:new \common\models\UserDoctor;
-
+        $userLogin=new UserLogin();
+        $model->loadDefaultValues();
+        $userInfo->loadDefaultValues();
+        $userLogin->loadDefaultValues();
         if(Yii::$app->request->isPost){
             $model->load(Yii::$app->request->post());
             $userid=$model->save();
@@ -134,8 +137,15 @@ class UserDoctorController extends BaseController
                 $userInfo->avatar=UserDoctor::findOne(['userid'=>$id])->avatar;
             }
             $userInfo->userid=$model->id;
-            $userInfo->save();
-            \Yii::$app->getSession()->setFlash('success');
+            if($userInfo->save()) {
+
+                $userLogin->userid = $model->id;
+                $userLogin->password = md5(md5($model->phone."2QH@6%3(87"));
+                $userLogin->save();
+                \Yii::$app->getSession()->setFlash('success');
+                return $this->redirect(['update', 'id' => $model->id]);
+
+            }
             return $this->redirect(['update', 'id' => $model->id]);
         }
 
