@@ -21,7 +21,11 @@ use yii\widgets\ActiveForm;
     <?php }?>
 
     <?= $form->field($model, 'level')->dropdownList(\common\models\DoctorParent::$levelText,['prompt'=>'请选择']) ?>
-    <?= $form->field($model, 'docpartime')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+    <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
+    <?= $form->field($model, 'docpartimeE')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true
     ]])?>

@@ -16,7 +16,9 @@ use yii\data\ActiveDataProvider;
 class ChildInfoSearchModel extends ChildInfo
 {
     public $level;
-    public $docpartime;
+    public $docpartimeS;
+    public $docpartimeE;
+
     public $username;
     public $userphone;
 
@@ -35,7 +37,7 @@ class ChildInfoSearchModel extends ChildInfo
     {
         return [
             [['id', 'userid', 'birthday', 'createtime', 'level','admin'], 'integer'],
-            [['docpartime', 'username'], 'string'],
+            [['docpartimeS','docpartimeE', 'username'], 'string'],
             [['userphone'], 'integer'],
 
             [['name'], 'safe'],
@@ -46,7 +48,8 @@ class ChildInfoSearchModel extends ChildInfo
     {
         return [
             'level' => '签约',
-            'docpartime' => '签约时间',
+            'docpartimeS' => '签约时间',
+            'docpartimeE' => '~',
             'username' => '母亲姓名',
             'admin'=>'管理机构',
             'userphone' => '母亲手机号'
@@ -97,7 +100,6 @@ class ChildInfoSearchModel extends ChildInfo
 
                 if (\Yii::$app->user->identity->type != 1){
                     $hospital=\Yii::$app->user->identity->hospital;
-
                 }
                 if($this->admin){
                     $hospital=$this->admin;
@@ -107,9 +109,9 @@ class ChildInfoSearchModel extends ChildInfo
                 $doctorid=UserDoctor::findOne(['hospitalid'=>$hospital])->userid;
                 $query->andFilterWhere(['`doctor_parent`.`doctorid`'=>$doctorid]);
             }
-            if ($this->docpartime) {
-                $state = strtotime($this->docpartime . " 00:00:00");
-                $end = strtotime($this->docpartime . " 23:59:59");
+            if ($this->docpartimeS && $this->docpartimeE) {
+                $state = strtotime($this->docpartimeS . " 00:00:00");
+                $end = strtotime($this->docpartimeE . " 23:59:59");
                 $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
                 $query->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
             }
@@ -127,13 +129,15 @@ class ChildInfoSearchModel extends ChildInfo
 
             }
         }
-        if(\Yii::$app->user->identity->hospital && !$this->level && !$this->docpartime) {
+        if(\Yii::$app->user->identity->hospital && !$this->level && !$this->docpartimeS) {
             $query->andFilterWhere(['source' => \Yii::$app->user->identity->hospital]);
         }
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'source' => $this->admin,
-        ]);
+        if($this->admin && ($this->level!=='' || $this->level!==null) && \Yii::$app->user->identity->type != 1) {
+            // grid filtering conditions
+            $query->andFilterWhere([
+                'source' => $this->admin,
+            ]);
+        }
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
 
         //var_dump($query->createCommand()->getRawSql());exit;
