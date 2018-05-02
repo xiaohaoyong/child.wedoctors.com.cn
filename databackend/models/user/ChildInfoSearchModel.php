@@ -120,7 +120,10 @@ class ChildInfoSearchModel extends ChildInfo
         if(\Yii::$app->user->identity->hospital && !$this->level && !$this->docpartime) {
             $query->andFilterWhere(['source' => \Yii::$app->user->identity->hospital]);
         }
-
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'admin' => $this->admin,
+        ]);
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
 
         //var_dump($query->createCommand()->getRawSql());exit;
