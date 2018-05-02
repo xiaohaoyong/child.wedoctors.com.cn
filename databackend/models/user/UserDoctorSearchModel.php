@@ -86,7 +86,7 @@ class UserDoctorSearchModel extends UserDoctor
             ->andFilterWhere(['like', 'idnum', $this->idnum])
             ->andFilterWhere(['like', 'authimg', $this->authimg]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
-
+        $query->andFilterWhere(['>','userid','37'])->andFilterWhere(['!=','county','1114']);
         return $dataProvider;
     }
 }
