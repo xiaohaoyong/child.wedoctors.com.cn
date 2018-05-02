@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
     ]); ?>
     <?php if(\Yii::$app->user->identity->type == 1){?>
 
-        <?= $form->field($model, 'level')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->column(),['prompt'=>'请选择']) ?>
+        <?= $form->field($model, 'level')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->andFilterWhere(['>','id','37'])->column(),['prompt'=>'请选择']) ?>
     <?php }?>
 
     <?= $form->field($model, 'level')->dropdownList(\common\models\DoctorParent::$levelText,['prompt'=>'请选择']) ?>
