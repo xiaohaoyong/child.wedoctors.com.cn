@@ -91,7 +91,7 @@ class ChildInfoSearchModel extends ChildInfo
 
         //签约条件
         //$doctorParent = $this->doctorParent->load($params);
-        if (($this->level!=='' and $this->level!==null) || ($this->docpartime!=='' and $this->docpartime!==null)) {
+        if (($this->level!=='' and $this->level!==null) || ($this->docpartimeS!=='' and $this->docpartimeS!==null)) {
             //var_dump($params);
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
 
