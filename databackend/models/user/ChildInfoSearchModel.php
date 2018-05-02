@@ -34,7 +34,7 @@ class ChildInfoSearchModel extends ChildInfo
     public function rules()
     {
         return [
-            [['id', 'userid', 'birthday', 'createtime', 'level'], 'integer'],
+            [['id', 'userid', 'birthday', 'createtime', 'level','admin'], 'integer'],
             [['docpartime', 'username'], 'string'],
             [['userphone'], 'integer'],
 
