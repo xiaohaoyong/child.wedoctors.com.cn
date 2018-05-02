@@ -86,18 +86,25 @@ class ChildInfoSearchModel extends ChildInfo
             return $dataProvider;
         }
 
-
-
         //签约条件
         //$doctorParent = $this->doctorParent->load($params);
-        if ($this->level!=='' || $this->docpartime!=='') {
+        if (($this->level!=='' and $this->level!==null) || ($this->docpartime!=='' and $this->docpartime!==null)) {
             //var_dump($params);
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
 
             if ($this->level) {
                 $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
 
-                $doctorid=UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital])->userid;
+                if (\Yii::$app->user->identity->type != 1){
+                    $hospital=\Yii::$app->user->identity->hospital;
+
+                }
+                if($this->admin){
+                    $hospital=$this->admin;
+                }
+
+
+                $doctorid=UserDoctor::findOne(['hospitalid'=>$hospital])->userid;
                 $query->andFilterWhere(['`doctor_parent`.`doctorid`'=>$doctorid]);
             }
             if ($this->docpartime) {
@@ -125,7 +132,7 @@ class ChildInfoSearchModel extends ChildInfo
         }
         // grid filtering conditions
         $query->andFilterWhere([
-            'admin' => $this->admin,
+            'source' => $this->admin,
         ]);
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
 

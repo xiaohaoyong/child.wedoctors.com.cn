@@ -109,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>function($e)
                 {
 
-                    return $e->sign->createtime?date('Y-m-d H:i',$e->sign->createtime):"未签约";
+                    return $e->sign->level==1?date('Y-m-d H:i',$e->sign->createtime):"未签约";
                 }
             ],
             [
