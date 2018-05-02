@@ -85,6 +85,7 @@ class ChildInfo extends \yii\db\ActiveRecord
             'birthday' => 'Birthday',
             'createtime' => 'Createtime',
             'gender' => '1男2女',
+            'admin'=>'管理机构',
             'source' => '导入来源医院ID',
             'field54' => '新建地点',
             'field53' => '其他遗传代谢病',
