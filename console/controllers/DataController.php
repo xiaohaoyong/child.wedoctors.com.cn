@@ -268,7 +268,7 @@ class DataController extends Controller
 
     public function actionSet()
     {
-        $userParent=UserParent::find()->where(['source'=>110555])->all();
+        $userParent=UserParent::find()->andFilterWhere(['in','source',[110564,110559]])->all();
         foreach($userParent as $k=>$v)
         {
             echo "parentid=".$v->userid.",";
