@@ -85,9 +85,12 @@ class ChildInfoSearchModel extends ChildInfo
             // $query->where('0=1');
             return $dataProvider;
         }
+
+
+
         //签约条件
         //$doctorParent = $this->doctorParent->load($params);
-        if (isset($this->level) || isset($this->docpartime)) {
+        if ($this->level!=='' || $this->docpartime!=='') {
             //var_dump($params);
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
 
