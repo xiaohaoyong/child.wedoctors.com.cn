@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\UserDoctor;
 use databackend\models\behaviors\UserParent;
 use databackend\models\user\ChildInfo;
 use common\models\User;
