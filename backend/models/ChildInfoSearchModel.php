@@ -2,24 +2,57 @@
 
 namespace backend\models;
 
+use databackend\models\behaviors\UserParent;
+use databackend\models\user\ChildInfo;
+use common\models\User;
+use databackend\controllers\ChildInfoController;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\ChildInfo;
 
 /**
- * ChildInfoSearchModel represents the model behind the search form about `backend\models\ChildInfo`.
+ * ChildInfoSearchModel represents the model behind the search form about `app\models\user\ChildInfo`.
  */
 class ChildInfoSearchModel extends ChildInfo
 {
+    public $level;
+    public $docpartimeS;
+    public $docpartimeE;
+
+    public $username;
+    public $userphone;
+
+    public function behaviors()
+    {
+        return [
+            \databackend\models\behaviors\DoctorParent::className(),
+            \databackend\models\behaviors\UserParent::className()
+        ];
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'userid', 'birthday', 'createtime', 'gender', 'source'], 'integer'],
+            [['id', 'userid', 'birthday', 'createtime', 'level','admin'], 'integer'],
+            [['docpartimeS','docpartimeE', 'username'], 'string'],
+            [['userphone'], 'integer'],
+
             [['name'], 'safe'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'level' => '签约',
+            'docpartimeS' => '签约时间',
+            'docpartimeE' => '~',
+            'username' => '母亲姓名',
+            'admin'=>'管理机构',
+            'userphone' => '母亲手机号'
         ];
     }
 
@@ -41,14 +74,13 @@ class ChildInfoSearchModel extends ChildInfo
      */
     public function search($params)
     {
-        $query = ChildInfo::find();
+        $query = \common\models\ChildInfo::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -57,18 +89,53 @@ class ChildInfoSearchModel extends ChildInfo
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'userid' => $this->userid,
-            'birthday' => $this->birthday,
-            'createtime' => $this->createtime,
-            'gender' => $this->gender,
-            'source' => $this->source,
-        ]);
+        //签约条件
+        //$doctorParent = $this->doctorParent->load($params);
+        if (($this->level!=='' and $this->level!==null) || ($this->docpartimeS!=='' and $this->docpartimeS!==null)) {
+            //var_dump($params);
+            $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+            if ($this->level) {
+                $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
 
+                if($this->admin){
+                    $hospital=$this->admin;
+                }
+
+
+                $doctorid=UserDoctor::findOne(['hospitalid'=>$hospital])->userid;
+                $query->andFilterWhere(['`doctor_parent`.`doctorid`'=>$doctorid]);
+            }
+            if ($this->docpartimeS && $this->docpartimeE) {
+                $state = strtotime($this->docpartimeS . " 00:00:00");
+                $end = strtotime($this->docpartimeE . " 23:59:59");
+                $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
+                $query->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
+            }
+        }
+//        'username' => '联系人姓名',
+//            'userphone' => '联系人电话'
+        if ($this->username || $this->userphone) {
+            $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
+
+            if ($this->username) {
+                $query->andFilterWhere(['`user_parent`.`mother`' => $this->username]);
+            }
+            if ($this->userphone) {
+                $query->andFilterWhere(['`user_parent`.`mother_phone`' => $this->userphone]);
+
+            }
+        }
+
+        if($this->admin && ($this->level!=='' || $this->level!==null)) {
+            // grid filtering conditions
+            $query->andFilterWhere([
+                'source' => $this->admin,
+            ]);
+        }
+        $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+
+        //var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
     }
 }

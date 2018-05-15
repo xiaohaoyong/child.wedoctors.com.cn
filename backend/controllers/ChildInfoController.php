@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\ChildInfo;
-use common\models\ChildInfoSearchModel;
+use backend\models\ChildInfoSearchModel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,20 +14,7 @@ use yii\filters\VerbFilter;
  */
 class ChildInfoController extends BaseController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+
 
     /**
      * Lists all ChildInfo models.
@@ -35,8 +22,13 @@ class ChildInfoController extends BaseController
      */
     public function actionIndex()
     {
-        $searchModel = new \backend\models\ChildInfoSearchModel();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $params=Yii::$app->request->queryParams;
+        $searchModel = new ChildInfoSearchModel();
+        if(!$params)
+        {
+            $params['DoctorParentSearchModel']['createtime']=strtotime(date('-30 day'));
+        }
+        $dataProvider = $searchModel->search($params);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -50,10 +42,10 @@ class ChildInfoController extends BaseController
      * @param string $name
      * @return mixed
      */
-    public function actionView($id, $name)
+    public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id, $name),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -117,9 +109,9 @@ class ChildInfoController extends BaseController
      * @return ChildInfo the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id, $name)
+    protected function findModel($id)
     {
-        if (($model = ChildInfo::findOne(['id' => $id, 'name' => $name])) !== null) {
+        if (($model = ChildInfo::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

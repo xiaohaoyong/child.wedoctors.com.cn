@@ -9,6 +9,15 @@
                 'items' => [
                     ['label' => '管理目录', 'options' => ['class' => 'header']],
                     [
+                        'label' => '用户管理',
+                        'icon' => 'user',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '账户管理', 'icon' => 'list', 'url' => ['/user'],],
+
+                        ],
+                    ],
+                    [
                         'label' => '数据管理',
                         'icon' => 'database',
                         'url' => '#',

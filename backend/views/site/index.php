@@ -2,52 +2,185 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = '首页';
+\backend\assets\EasyAsset::register($this);
+
 ?>
-<div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+    <div class="site-index">
+        <div class="body-content">
+            <div class="row">
+                <div class="col-md-4 col-sm-4">
+                    <div class="portlet light ">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-cursor font-purple-intense hide"></i>
+                                <span class="caption-subject font-yellow-saffron bold uppercase">儿童管理率</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="row">
+                                <div class="col-md-8" style="min-height: 167px">
+                                    <table class="table table-hover table-light">
+                                        <tr>
+                                            <td>
+                                                今日管理总数
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" class="primary-link"><?=$data['todayNum']?></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                辖区内儿童数
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" class="primary-link"><?=$data['childNum']?></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                管理儿童数
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" class="primary-link"><?=$data['todayNumTotal']?></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="easy-pie-chart">
+                                        <div class="number transactions" data-percent="<?=$data['baifen']?>">
+											<span>
+											+<?=$data['baifen']?> </span>
+                                            %
+                                        </div>
+                                        <span class="title" style="color: #8896a0;vertical-align: middle; padding-right: 9px;">管理率</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="portlet light ">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-cursor font-purple-intense hide"></i>
+                                <span class="caption-subject font-green bold uppercase">规范化管理率</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="row">
+                                <div class="col-md-8"  style="min-height: 167px">
+                                    <table class="table table-hover table-light">
+                                        <tr>
+                                            <td>
+                                                宣教总次数
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" class="primary-link"><?=$data['articleNum']?></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                规范化指导次数
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" class="primary-link"><?=$data['articleNumType']?></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                宣教查看次数
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" class="primary-link"><?=$data['articleLockNum1']?>+<?=$data['articleLockNum2']?></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                宣教覆盖儿童数
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" class="primary-link"><?=$data['articleChildNum']?></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="easy-pie-chart">
+                                        <div class="number visits" data-percent="100">
+                                            <span>100</span>
+                                            %
+                                        </div>
+                                        <span class="title" style="color: #8896a0;vertical-align: middle; padding-right: 9px;">规范化管理率</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="portlet light ">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-cursor font-purple-intense hide"></i>
+                                <span class="caption-subject font-green bold uppercase">知晓率/满意度</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="row">
+                                <div class="col-md-10"  style="min-height: 167px">
+                                    <table class="table table-hover table-light">
+                                        <tr>
+                                            <td>
+                                                用户知晓数据
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" class="primary-link"></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                用户满意数据
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" class="primary-link"></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
             </div>
         </div>
-
     </div>
-</div>
+<?php
+$js = <<<JS
+    $('.easy-pie-chart .number.transactions').easyPieChart({
+                animate: 1000,
+                size: 75,
+                lineWidth: 3,
+                barColor: '#F8CB00'
+            });
+$('.easy-pie-chart .number.visits').easyPieChart({
+                animate: 1000,
+                size: 75,
+                lineWidth: 3,
+                barColor: '#1bbc9b'
+            });
+$('.easy-pie-chart .number.visits1').easyPieChart({
+                animate: 1000,
+                size: 75,
+                lineWidth: 3,
+                barColor: '#89C4F4'
+            });
+
+JS;
+$this->registerJs($js);
+?>

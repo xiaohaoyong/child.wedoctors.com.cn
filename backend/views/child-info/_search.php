@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\user\ChildInfoSearchModel */
+/* @var $model databackend\models\user\ChildInfoSearchModel */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -15,16 +15,20 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
+    <?= $form->field($model, 'admin')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->column(),['prompt'=>'请选择']) ?>
 
-    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'userid') ?>
-
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'birthday') ?>
-
-    <?= $form->field($model, 'createtime') ?>
+    <?= $form->field($model, 'level')->dropdownList(\common\models\DoctorParent::$levelText,['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
+    <?= $form->field($model, 'docpartimeE')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
+    <?= $form->field($model, 'username')?>
+    <?= $form->field($model, 'userphone')?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
