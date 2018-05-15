@@ -130,7 +130,7 @@ class ChainController extends Controller
         $model->id          =$post['Push']['id'];
         $model->hospital    =$post['Push']['hospital'];
         $model->age         =$post['Push']['age'];
-        $model->area        =$post['Push']['area'];
+       // $model->area        =$post['Push']['area'];
 
 
         $model->sendUrl();

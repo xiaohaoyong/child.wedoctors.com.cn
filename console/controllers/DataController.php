@@ -34,6 +34,27 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+
+    public function actionTe(){
+        $weOpenid=WeOpenid::find()->andFilterWhere(['level'=>1])->andFilterWhere(['>','createtime','1524067200'])->all();
+        foreach($weOpenid as $k=>$v)
+        {
+            $user=UserLogin::findOne(['openid'=>$v->openid]);
+            if($user) {
+                $parentid = $user->userid;
+                $doctorParent=DoctorParent::findOne(['parentid'=>$parentid]);
+                if($doctorParent){
+                    $doctorParent->parentid=$parentid;
+                    $doctorParent->doctorid=$v->doctorid;
+                    $doctorParent->createtime=$v->createtime;
+                    $doctorParent->level=1;
+                    $doctorParent->save();
+                    echo $parentid;
+                }
+            }
+        }
+        exit;
+    }
     public function actionText(){
 
 
@@ -94,7 +115,11 @@ class DataController extends Controller
             echo "\n";
         }
     }
+    /**
+     * 体检数据
+     */
     public function actionEx(){
+        error_reporting(E_ALL & ~E_NOTICE);
 
         $file_list=glob("data/ex/*.csv");
         foreach($file_list as $fk=>$fv) {
@@ -107,7 +132,7 @@ class DataController extends Controller
                 if($i==0) {$i++; continue;}
                 $i++;
                 echo $i."===";
-                $row=explode(";",trim($line));
+                $row=explode(",",trim($line));
 
                 $row[3]=substr($row[3],0,strlen($row[3])-11);
                 $ex=Examination::find()->andFilterWhere(['field1'=>$row[0]])
@@ -130,7 +155,6 @@ class DataController extends Controller
                     echo "--儿童存在";
                     $ex->childid=$child->id;
                 }
-
 
                 $ex->field1 =$row[0];
                 $ex->field2 =$row[1];
@@ -235,7 +259,6 @@ class DataController extends Controller
             }
         }
     }
-
     public function actionGetUid()
     {
         $wechat = new MpWechat([
@@ -265,7 +288,6 @@ class DataController extends Controller
         }
 
     }
-
     public function actionSet()
     {
         $userParent=UserParent::find()->andFilterWhere(['in','source',[110564,110559]])->all();
@@ -298,6 +320,9 @@ class DataController extends Controller
 
     }
 
+    /**
+     * 妇幼二期数据
+     */
     public function actionGet()
     {
         ini_set("max_execution_time", "0");
@@ -429,7 +454,6 @@ class DataController extends Controller
             }
         }
     }
-
     public function actionDelete()
     {
         $user=User::findAll(['source'=>2]);
@@ -438,7 +462,6 @@ class DataController extends Controller
            // $v->delete();
         }
     }
-
     public function actionLogin()
     {
         $user=User::findAll(['source'=>2]);

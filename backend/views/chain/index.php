@@ -80,7 +80,7 @@ $form = \yii\widgets\ActiveForm::begin(['action'=>'/chain/push','enableAjaxValid
 $model=new \backend\models\Push();
 echo $form->field($model,'id')->hiddenInput();
 //echo $form->field($model,'area')->checkboxList(array_merge([0=>'全部'],\common\models\Area::$county[11]));
-echo $form->field($model,'hospital')->checkboxList(array_merge([0=>'全部'],\common\models\UserDoctor::find()->select('name')->column()));
+echo $form->field($model,'hospital')->checkboxList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->column());
 echo $form->field($model,'age')->checkboxList(\common\models\Article::$childText);
 
 echo "<div class=\"form-group\">".Html::submitButton('提交', ['class' => 'btn btn-primary'])."</div>";
