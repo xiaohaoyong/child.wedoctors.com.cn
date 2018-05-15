@@ -4,6 +4,7 @@ namespace databackend\controllers;
 use databackend\models\article\ArticleUser;
 use databackend\models\user\ChildInfo;
 use databackend\models\user\DoctorParent;
+use databackend\models\user\UserDoctor;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -46,8 +47,19 @@ class SiteController extends BaseController
 
         //管理儿童数
         $doctorParentTotal=DoctorParent::find()->select('parentid')->andFilterWhere(['level'=>1])->column();
+
+        //管理儿童数
+        $childQuery=\common\models\ChildInfo::find();
+        $childQuery->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+        $childQuery->andFilterWhere(['`doctor_parent`.`level`' => 1]);
+        if(\Yii::$app->user->identity->hospital) {
+            $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital])->userid;
+            $childQuery->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid]);
+        }
+        $doctorParentTotal = $childQuery->count();
+
         if($doctorParentTotal) {
-            $data['todayNumTotal'] = \common\models\ChildInfo::find()->andFilterWhere(['in', 'userid', $doctorParentTotal])->count();
+            $data['todayNumTotal'] =$doctorParentTotal;
         }else{
             $data['todayNumTotal']=0;
         }

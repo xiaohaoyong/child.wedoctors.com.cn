@@ -158,19 +158,19 @@ $js = <<<JS
                 animate: 1000,
                 size: 75,
                 lineWidth: 3,
-                barColor: Metronic.getBrandColor('yellow')
+                barColor: '#F8CB00'
             });
 $('.easy-pie-chart .number.visits').easyPieChart({
                 animate: 1000,
                 size: 75,
                 lineWidth: 3,
-                barColor: Metronic.getBrandColor('green')
+                barColor: '#1bbc9b'
             });
 $('.easy-pie-chart .number.visits1').easyPieChart({
                 animate: 1000,
                 size: 75,
                 lineWidth: 3,
-                barColor: Metronic.getBrandColor('blue')
+                barColor: '#89C4F4'
             });
 
 JS;

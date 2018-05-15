@@ -89,33 +89,39 @@ class ChildInfoSearchModel extends ChildInfo
             // $query->where('0=1');
             return $dataProvider;
         }
-
-        //签约条件
-        //$doctorParent = $this->doctorParent->load($params);
         if (($this->level!=='' and $this->level!==null) || ($this->docpartimeS!=='' and $this->docpartimeS!==null)) {
-            //var_dump($params);
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+        }
 
-            if ($this->level) {
-                $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
-
-                if($this->admin){
-                    $hospital=$this->admin;
-                }
-
-
-                $doctorid=UserDoctor::findOne(['hospitalid'=>$hospital])->userid;
-                $query->andFilterWhere(['`doctor_parent`.`doctorid`'=>$doctorid]);
-            }
-            if ($this->docpartimeS && $this->docpartimeE) {
-                $state = strtotime($this->docpartimeS . " 00:00:00");
-                $end = strtotime($this->docpartimeE . " 23:59:59");
-                $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
-                $query->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
+        //管理机构
+        if($this->admin)
+        {
+            $hospital=$this->admin;
+        }else {
+            $hospital=0;
+        }
+        if($hospital && !$this->level) {
+            // grid filtering conditions
+            $query->andFilterWhere(['source' => $hospital,]);
+        }
+        if($this->level!=='' and $this->level!==null)
+        {
+            $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
+            if($hospital) {
+                $doctorid = UserDoctor::findOne(['hospitalid' => $hospital])->userid;
+                $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid]);
             }
         }
-//        'username' => '联系人姓名',
-//            'userphone' => '联系人电话'
+        if($this->docpartimeS!=='' and $this->docpartimeS!==null){
+            $state = strtotime($this->docpartimeS . " 00:00:00");
+            $end = strtotime($this->docpartimeE . " 23:59:59");
+            $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
+            $query->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
+        }
+
+
+        //        'username' => '联系人姓名',
+        //            'userphone' => '联系人电话'
         if ($this->username || $this->userphone) {
             $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
 
@@ -127,14 +133,8 @@ class ChildInfoSearchModel extends ChildInfo
 
             }
         }
-
-        if($this->admin && ($this->level!=='' || $this->level!==null)) {
-            // grid filtering conditions
-            $query->andFilterWhere([
-                'source' => $this->admin,
-            ]);
-        }
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+
 
         //var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
