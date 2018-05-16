@@ -141,7 +141,7 @@ class DataController extends Controller
                     ->andFilterWhere(['field4'=>$row[3]])
                     ->andFilterWhere(['source'=>$hospitalid])
                     ->andFilterWhere(['field19'=>$row[18]])->one();
-
+                $isupdate=$ex?0:1;
                 $ex=$ex?$ex:new Examination();
 
                 $child=ChildInfo::find()->andFilterWhere(['name'=>trim($row[0])])
@@ -249,6 +249,7 @@ class DataController extends Controller
                 $ex->field91=$row[90];
                 $ex->field92=$row[91];
                 $ex->source=$hospitalid;
+                $ex->isupdate=$isupdate;
                 $ex->save();
                 if($ex->firstErrors)
                 {
@@ -290,7 +291,7 @@ class DataController extends Controller
     }
     public function actionSet()
     {
-        $userParent=UserParent::find()->andFilterWhere(['in','source',[110564,110559]])->all();
+        $userParent=UserParent::find()->andFilterWhere(['in','source',[110565]])->all();
         foreach($userParent as $k=>$v)
         {
             echo "parentid=".$v->userid.",";
@@ -340,7 +341,7 @@ class DataController extends Controller
                 while(($line=fgets($f))!==false) {
                     echo $i."===";
                     $i++;
-                    $row=explode(",",trim($line));
+                    $row=explode(";",trim($line));
                     if(strlen($row[31])<11 && strlen($row[35])<11 && strlen($row[12])<11)
                     {
                         echo "--31-".$row['31'];

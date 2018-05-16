@@ -101,6 +101,7 @@ use Yii;
  * @property string $field90 预警征象描述
  * @property string $field91 心理行为问题
  * @property string $field92 心理行为问题描述
+ * @property string $isupdate 是否发送更新提醒
  * @property int $source
  */
 class Examination extends \yii\db\ActiveRecord
