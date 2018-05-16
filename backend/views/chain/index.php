@@ -25,6 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'url:url',
             'title',
          [
+             'attribute' => 'type',
+             'value' => function($e)
+             {
+                 return \common\models\Chain::$typeText[$e->type];
+             }
+         ],
+         [
              'attribute' => 'createtime',
              'format' => ['date', 'php:Y-m-d']
          ],

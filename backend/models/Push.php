@@ -143,14 +143,33 @@ class Push extends Model
             $age=implode(',',$rs);
         }
 
-        $data = [
-            'first' => array('value' => $model->title."\n",),
-            'keyword1' => ARRAY('value' =>$model->title),
-            'keyword2' => ARRAY('value' =>'儿宝宝'),
-            'keyword3' => ARRAY('value' =>'儿宝宝'),
-            'keyword4' => ARRAY('value' => date('Y年m月d H:i'),),
-            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
-        ];
+
+        switch ($model->type)
+        {
+            case 0:
+                $data = [
+                    'first' => array('value' => $model->title."\n",),
+                    'keyword1' => ARRAY('value' =>$model->title),
+                    'keyword2' => ARRAY('value' =>'儿宝宝'),
+                    'keyword3' => ARRAY('value' =>'儿宝宝'),
+                    'keyword4' => ARRAY('value' => date('Y年m月d H:i'),),
+                    'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+                ];
+                $temp=\Yii::$app->params['push'];
+                break;
+            case 1:
+                $data = [
+                    'first' => array('value' => $model->title."\n",),
+                    'keyword1' => ARRAY('value' =>$model->title),
+                    'keyword2' => ARRAY('value' =>'儿宝宝'),
+                    'keyword3' => ARRAY('value' =>'儿宝宝'),
+                    'keyword4' => ARRAY('value' => date('Y年m月d H:i'),),
+                    'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+                ];
+                $temp="";
+                break;
+        }
+
 
 
         if($model)
@@ -159,7 +178,7 @@ class Push extends Model
 
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
-                    WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['push'],$model->url);
+                    WechatSendTmp::send($data, $userLogin->openid, $temp,$model->url);
                 }
              }
         }
