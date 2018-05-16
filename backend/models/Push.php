@@ -143,29 +143,25 @@ class Push extends Model
             $age=implode(',',$rs);
         }
 
+        $data = [
+            'first' => array('value' => $model->title."\n",),
+            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+        ];
+
+        $content=explode(',',$model->content);
+        $i=1;
+        foreach($content as $k=>$v)
+        {
+            $data['keyword'.$i]=['value'=>$v];
+            $i++;
+        }
 
         switch ($model->type)
         {
             case 0:
-                $data = [
-                    'first' => array('value' => $model->title."\n",),
-                    'keyword1' => ARRAY('value' =>$model->title),
-                    'keyword2' => ARRAY('value' =>'儿宝宝'),
-                    'keyword3' => ARRAY('value' =>'儿宝宝'),
-                    'keyword4' => ARRAY('value' => date('Y年m月d H:i'),),
-                    'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
-                ];
                 $temp=\Yii::$app->params['push'];
                 break;
             case 1:
-                $data = [
-                    'first' => array('value' => $model->title."\n",),
-                    'keyword1' => ARRAY('value' =>$model->title),
-                    'keyword2' => ARRAY('value' =>'儿宝宝'),
-                    'keyword3' => ARRAY('value' =>'儿宝宝'),
-                    'keyword4' => ARRAY('value' => date('Y年m月d H:i'),),
-                    'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
-                ];
                 $temp="";
                 break;
         }
