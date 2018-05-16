@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>',
                 'buttons'=>[
                         'datalog'=>function($url,$model,$key){
-                            return Html::a('<span class="fa fa-database"></span> 宣教记录', \yii\helpers\Url::to(['article-user/index',"userid"=>$model->userid]));
+                            return Html::a('<span class="fa fa-database"></span> 宣教记录', \yii\helpers\Url::to(['article-user/index',"ArticleUserSearchModel[userid]"=>$model->userid]));
                         }
                 ],
             ],
