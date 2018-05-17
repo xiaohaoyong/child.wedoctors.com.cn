@@ -36,6 +36,41 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionArticlePush(){
+        $article=\common\models\Article::findOne(200);
+
+        $data = [
+            'first' => array('value' => $article->info->title."\n",),
+            'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
+            'keyword2' => ARRAY('value' =>'儿宝宝'),
+            'keyword3' => ARRAY('value' =>'儿宝宝'),
+            'keyword4' => ARRAY('value' =>'宝爸宝妈'),
+            'keyword5' => ARRAY('value' =>$article->info->title),
+
+            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+        ];
+        $miniprogram=[
+            "appid"=>\Yii::$app->params['wxXAppId'],
+            "pagepath"=>"/pages/article/view/index?id=".$this->id,
+        ];
+        $userids=UserLogin::find()->where(['userid'=>47388])->all();
+
+        if($article)
+        {
+            foreach($userids as $k=>$v) {
+
+                $userLogin=$v;
+                if($userLogin->openid) {
+                    $rs=WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['zhidao'],'',$miniprogram);
+                }
+                if($article->art_type!=2)
+                {
+                    $key=$article->catid==6?3:5;
+                    Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$this->id,]);
+                }
+            }
+        }
+    }
 
     public function actionTe(){
         $weOpenid=WeOpenid::find()->andFilterWhere(['level'=>1])->andFilterWhere(['>','createtime','1524067200'])->all();
