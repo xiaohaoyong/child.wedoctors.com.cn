@@ -47,25 +47,25 @@ class ArticleUserController extends BaseController
 
 
         //报表头的输出
-        $excel->getActiveSheet()->mergeCells('A1:M1');
+        $excel->getActiveSheet()->mergeCells('A1:N1');
         //设置居中
-        $excel->getActiveSheet()->getStyle('A1:M1')
+        $excel->getActiveSheet()->getStyle('A1:N1')
             ->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $excel->getActiveSheet()->getStyle('A2:M6')
+        $excel->getActiveSheet()->getStyle('A2:N6')
             ->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);//垂直居中
 
-        $excel->getActiveSheet()->getStyle('A2:M3')
+        $excel->getActiveSheet()->getStyle('A2:N3')
             ->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-        $excel->getActiveSheet()->getStyle('A5:M6')
+        $excel->getActiveSheet()->getStyle('A5:N6')
             ->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         $excel->getActiveSheet()->setCellValue('A1',$chileInfo->name.'-儿童中医药健康管理服务表');
         $excel->setActiveSheetIndex(0)->getStyle('A1')->getFont()->setSize(24);
-        $excel->setActiveSheetIndex(0)->getStyle('A1:M6')->getFont()->setName('宋体');
-        $excel->getActiveSheet()->getStyle('A2:M6')->getAlignment()->setWrapText(true);
+        $excel->setActiveSheetIndex(0)->getStyle('A1:N6')->getFont()->setName('宋体');
+        $excel->getActiveSheet()->getStyle('A2:N6')->getAlignment()->setWrapText(true);
         $excel->getActiveSheet()->getStyle('A1:A6')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $excel->setActiveSheetIndex(0)->getStyle('A2:M6')->getFont()->setSize(16);
+        $excel->setActiveSheetIndex(0)->getStyle('A2:N6')->getFont()->setSize(16);
 
 
         $excel->setActiveSheetIndex(0)->setCellValue('A2','月龄');
@@ -79,7 +79,7 @@ class ArticleUserController extends BaseController
         $excel->getActiveSheet()->getRowDimension('5')->setRowHeight(30);
         $excel->getActiveSheet()->getRowDimension('6')->setRowHeight(30);
 
-        $excel->getActiveSheet()->getStyle('A1:M6')->getBorders()->getAllBorders()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);;
+        $excel->getActiveSheet()->getStyle('A1:N6')->getBorders()->getAllBorders()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);;
 
         $chile_type=Article::$childText;
 
@@ -110,7 +110,7 @@ class ArticleUserController extends BaseController
             $ascii++;
         }
 
-        $excel->getActiveSheet()->getStyle('A2:M2')
+        $excel->getActiveSheet()->getStyle('A2:N2')
             ->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         ob_end_clean();
