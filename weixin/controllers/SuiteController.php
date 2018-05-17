@@ -163,7 +163,7 @@ class SuiteController extends Controller
                         'name'=>'我是家长',
                         'url'=>Yii::$app->params['index_url'],
                         'appid'=>\Yii::$app->params['wxXAppId'],
-                        'pagepath'=>'pages/index/index'
+                        'pagepath'=>'pages/user/index/index'
                     ],
                     [
                         'type'=>'view',
