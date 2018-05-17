@@ -286,7 +286,6 @@ class DataController extends Controller
                         "pagepath"=>"/pages/user/examination/index?id=".$child->id,
                     ];
                     $rs=WechatSendTmp::send($data, $login->openid, \Yii::$app->params['tijian'],'',$miniprogram);
-                    var_dump($rs);exit;
                 }
             }
         }
