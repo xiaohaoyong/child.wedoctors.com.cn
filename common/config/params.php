@@ -33,6 +33,7 @@ return [
     'tongzhi'  =>$tongzhi,
     'chenggong'  =>$chenggong,
     'push'  =>$push,
+    'tijian'=>'ZyHYaQwXG1TWylumjaOnXI3M6Qh2TG5hbYIMSOqGQyg',
     'hx_url' => 'https://a1.easemob.com/1176170313115487/childhealth/',
     'hx_id' =>'YXA6KTGS4LkmEeeJI3lkRutH2g',
     'hx_secret' =>'YXA6tqys6qGSuxN4BjVzaLn84QqGszM',

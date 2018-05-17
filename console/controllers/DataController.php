@@ -12,6 +12,7 @@ namespace console\controllers;
 use callmez\wechat\sdk\components\BaseWechat;
 use callmez\wechat\sdk\MpWechat;
 use common\components\HttpRequest;
+use common\helpers\WechatSendTmp;
 use common\models\Area;
 use common\models\BabyTool;
 use common\models\BabyToolTag;
@@ -257,6 +258,36 @@ class DataController extends Controller
                     var_dump($ex->firstErrors);
                 }
                 echo "\n";
+            }
+        }
+    }
+
+    /**
+     * 体检更新提醒
+     */
+    public function actionExUpdate(){
+        $ex=Examination::find()->andFilterWhere(['isupdate'=>1])->andFilterWhere(['>','childid','0'])->all();
+        foreach($ex as $k=>$v)
+        {
+            $child=ChildInfo::findOne(['id'=>$v->childid]);
+            if($child) {
+                $login = $child->login;
+                if($login->openid){
+                    $data = [
+                        'first' => array('value' => "您好，宝宝近期的体检结果已更新\n",),
+                        'keyword1' => ARRAY('value' =>$child->name),
+                        'keyword2' => ARRAY('value' =>"身高:{$v->field40},体重:{$v->field70},头围:{$v->field80}"),
+                        'keyword3' => ARRAY('value' =>$v->field9),
+                        'keyword4' => ARRAY('value' =>$v->field4),
+                        'remark' => ARRAY('value' => "\n 点击可查看本体检报告的详细内容信息", 'color' => '#221d95'),
+                    ];
+                    $miniprogram=[
+                        "appid"=>\Yii::$app->params['wxXAppId'],
+                        "pagepath"=>"/user/examination/index?id=".$child->id,
+                    ];
+                    $rs=WechatSendTmp::send($data, $login->openid, \Yii::$app->params['tijian'],'',$miniprogram);
+                    var_dump($rs);exit;
+                }
             }
         }
     }

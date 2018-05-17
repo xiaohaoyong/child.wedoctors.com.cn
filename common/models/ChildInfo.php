@@ -235,6 +235,11 @@ class ChildInfo extends \yii\db\ActiveRecord
         return $this->hasMany(UserDoctor::className(), ['userid' => 'doctorid'])
             ->viaTable('doctor_parent', ['parentid' => 'userid']);
     }
+
+    public function getLogin()
+    {
+        return $this->hasOne(UserLogin::className(),['userid'=>'userid']);
+    }
     public function beforeSave($insert)
     {
         if($insert)
