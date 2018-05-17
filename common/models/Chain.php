@@ -35,7 +35,7 @@ class Chain extends \yii\db\ActiveRecord
             [['url'], 'string', 'max' => 255],
             [['content'], 'string', 'max' => 100],
 
-            [['title'], 'string', 'max' => 20],
+            [['title'], 'string', 'max' => 40],
         ];
     }
 
