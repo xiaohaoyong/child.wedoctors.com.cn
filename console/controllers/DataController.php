@@ -53,7 +53,7 @@ class DataController extends Controller
             "appid"=>\Yii::$app->params['wxXAppId'],
             "pagepath"=>"/pages/article/view/index?id=".$article->id,
         ];
-        $userids=UserLogin::find()->where(['userid'=>47388])->all();
+        $userids=UserLogin::find()->where(['!=','openid',''])->all();
 
         if($article)
         {
