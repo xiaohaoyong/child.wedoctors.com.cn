@@ -51,7 +51,7 @@ class DataController extends Controller
         ];
         $miniprogram=[
             "appid"=>\Yii::$app->params['wxXAppId'],
-            "pagepath"=>"/pages/article/view/index?id=".$this->id,
+            "pagepath"=>"/pages/article/view/index?id=".$article->id,
         ];
         $userids=UserLogin::find()->where(['userid'=>47388])->all();
 
