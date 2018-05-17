@@ -66,7 +66,7 @@ class DataController extends Controller
                 if($article->art_type!=2)
                 {
                     $key=$article->catid==6?3:5;
-                    Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$this->id,]);
+                    Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$article->id,]);
                 }
             }
         }
