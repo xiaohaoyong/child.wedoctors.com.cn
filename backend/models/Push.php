@@ -119,7 +119,8 @@ class Push extends Model
                 }
                 if($article->art_type!=2)
                 {
-                    Notice::setList($v, 5, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$this->id,]);
+                    $key=$article->catid==6?3:5;
+                    Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$this->id,]);
                 }
             }
         }
