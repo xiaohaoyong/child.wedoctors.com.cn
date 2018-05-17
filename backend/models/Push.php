@@ -162,7 +162,7 @@ class Push extends Model
                 $temp=\Yii::$app->params['push'];
                 break;
             case 1:
-                $temp="";
+                $temp="SL8_gfaDXsda0GkO2WRk2049qAL7oj9F47qeVvkcR5U";
                 break;
         }
 
