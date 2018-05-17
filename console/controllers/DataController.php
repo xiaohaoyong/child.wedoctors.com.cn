@@ -20,6 +20,7 @@ use common\models\ChatRecord;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Examination;
+use common\models\Notice;
 use common\models\User;
 use common\models\UserDoctor;
 use common\models\UserLogin;
@@ -286,6 +287,9 @@ class DataController extends Controller
                         "pagepath"=>"/pages/user/examination/index?id=".$child->id,
                     ];
                     $rs=WechatSendTmp::send($data, $login->openid, \Yii::$app->params['tijian'],'',$miniprogram);
+                    //小程序首页通知
+                    Notice::setList($v, 1, ['title' => "宝宝近期的体检结果已更新", 'ftitle' => "点击可查看本体检报告的详细内容信息", 'id' => "/pages/user/examination/index?id=".$child->id,]);
+
                 }
             }
         }
