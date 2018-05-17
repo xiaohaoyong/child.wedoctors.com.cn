@@ -283,7 +283,7 @@ class DataController extends Controller
                     ];
                     $miniprogram=[
                         "appid"=>\Yii::$app->params['wxXAppId'],
-                        "pagepath"=>"/user/examination/index?id=".$child->id,
+                        "pagepath"=>"/pages/user/examination/index?id=".$child->id,
                     ];
                     $rs=WechatSendTmp::send($data, $login->openid, \Yii::$app->params['tijian'],'',$miniprogram);
                     var_dump($rs);exit;
