@@ -37,9 +37,6 @@ class ArticleController extends Controller
         $data['cat'][2]['name']=$cat[2];
 
 
-        unset($data['cat'][6]);
-
-
         $carousel=Carousel::find()->andFilterWhere(['type'=>1])->orderBy('sort desc ,id desc')->all();
         $data['imgs']=$carousel;
 
