@@ -304,7 +304,7 @@ class DataController extends Controller
      * 体检更新提醒
      */
     public function actionExUpdate(){
-        $ex=Examination::find()->andFilterWhere(['userid'=>47388])->andFilterWhere(['isupdate'=>1])->andFilterWhere(['>','childid','0'])->all();
+        $ex=Examination::find()->andFilterWhere(['childid'=>58170])->andFilterWhere(['isupdate'=>1])->andFilterWhere(['>','childid','0'])->all();
         foreach($ex as $k=>$v)
         {
             $child=ChildInfo::findOne(['id'=>$v->childid]);
