@@ -325,7 +325,7 @@ class DataController extends Controller
                     ];
                     $rs=WechatSendTmp::send($data, $login->openid, \Yii::$app->params['tijian'],'',$miniprogram);
                     //小程序首页通知
-                    Notice::setList($v, 1, ['title' => "宝宝近期的体检结果已更新", 'ftitle' => "点击可查看本体检报告的详细内容信息", 'id' => "/pages/user/examination/index?id=".$child->id,]);
+                    Notice::setList($login->userid, 1, ['title' => "宝宝近期的体检结果已更新", 'ftitle' => "点击可查看本体检报告的详细内容信息", 'id' => "/pages/user/examination/index?id=".$child->id,]);
 
                 }
             }
