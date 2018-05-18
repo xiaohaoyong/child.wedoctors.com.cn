@@ -28,11 +28,11 @@ class SendHelper {
         $smsObj = new Sms('ALIDAYU', ['appkey' => '23785111', 'secretkey' => 'b98c1d4ee116f7f8316750542d49f914']);
         $sendData = $smsObj->send([
             'mobile' => $mobile,
-            'signname' => '儿保宝',
+            'signname' => '儿宝宝',
             'templatecode' => $templatecode,
             'data' => [
                 'code' => $str, //验证吗
-                'product' => '儿保宝'//
+                'product' => '儿宝宝'//
             ],
         ]);
         //$sendData = json_decode($sendData, true);

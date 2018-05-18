@@ -169,7 +169,7 @@ class DataController extends Controller
             while(($line=fgets($f))!==false) {
                 if($i==0) {$i++; continue;}
                 $i++;
-                echo $i."===";
+                echo $hospitalid."=".$i."===";
                 $row=explode(",",trim($line));
 
                 $row[3]=substr($row[3],0,strlen($row[3])-11);
@@ -179,7 +179,7 @@ class DataController extends Controller
                     ->andFilterWhere(['field4'=>$row[3]])
                     ->andFilterWhere(['source'=>$hospitalid])
                     ->andFilterWhere(['field19'=>$row[18]])->one();
-                if($ex){ continue;}
+                if($ex){ echo "jump\n";continue;}
                 $isupdate=$ex?0:1;
                 $ex=$ex?$ex:new Examination();
 
@@ -362,7 +362,7 @@ class DataController extends Controller
     }
     public function actionSet()
     {
-        $userParent=UserParent::find()->andFilterWhere(['in','source',[110565]])->all();
+        $userParent=UserParent::find()->andFilterWhere(['>','userid',47388])->andFilterWhere(['>','source',38])->all();
         foreach($userParent as $k=>$v)
         {
             echo "parentid=".$v->userid.",";

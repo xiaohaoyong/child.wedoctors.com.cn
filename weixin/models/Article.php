@@ -70,7 +70,7 @@ class Article extends \common\models\Article {
         $result['title'] = $InfoData->title;
         $result['content'] = $InfoData->content;
         $result['img'] = empty($InfoData->img) ? 11 : $InfoData->img;
-        $result['source']=$InfoData->source?$InfoData->source:"儿保宝";
+        $result['source']=$InfoData->source?$InfoData->source:"儿宝宝";
         return $result;
     }
 
