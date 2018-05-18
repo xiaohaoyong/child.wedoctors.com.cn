@@ -53,7 +53,7 @@ class DataController extends Controller
             "appid"=>\Yii::$app->params['wxXAppId'],
             "pagepath"=>"/pages/article/view/index?id=".$article->id,
         ];
-        $userids=UserLogin::find()->where(['!=','openid',''])->all();
+        $userids=UserLogin::find()->where(['userid'=>'47388'])->all();
 
         if($article)
         {
@@ -178,6 +178,7 @@ class DataController extends Controller
                     ->andFilterWhere(['field4'=>$row[3]])
                     ->andFilterWhere(['source'=>$hospitalid])
                     ->andFilterWhere(['field19'=>$row[18]])->one();
+                if($ex){ continue;}
                 $isupdate=$ex?0:1;
                 $ex=$ex?$ex:new Examination();
 
@@ -395,6 +396,8 @@ class DataController extends Controller
      */
     public function actionGet()
     {
+        error_reporting(E_ALL & ~E_NOTICE);
+
         ini_set("max_execution_time", "0");
         set_time_limit(0);
 
@@ -410,7 +413,7 @@ class DataController extends Controller
                 while(($line=fgets($f))!==false) {
                     echo $i."===";
                     $i++;
-                    $row=explode(";",trim($line));
+                    $row=explode(",",trim($line));
                     if(strlen($row[31])<11 && strlen($row[35])<11 && strlen($row[12])<11)
                     {
                         echo "--31-".$row['31'];
