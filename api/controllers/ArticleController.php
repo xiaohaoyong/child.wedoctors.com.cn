@@ -21,16 +21,16 @@ class ArticleController extends Controller
     public function actionIndex(){
 
         $cat=Article::$catText;
-        $data['cat']["5"]['sore']=1;
-        $data['cat']["5"]['name']=$cat[5];
-        $data['cat']["3"]['sore']=2;
-        $data['cat']["3"]['name']=$cat[3];
-        $data['cat']["4"]['sore']=3;
-        $data['cat']["4"]['name']=$cat[4];
-        $data['cat']["1"]['sore']=4;
-        $data['cat']["1"]['name']=$cat[1];
-        $data['cat']["2"]['sore']=5;
-        $data['cat']["2"]['name']=$cat[2];
+        $data['cat'][1]['key']=5;
+        $data['cat'][1]['name']=$cat[5];
+        $data['cat'][2]['key']=3;
+        $data['cat'][2]['name']=$cat[3];
+        $data['cat'][3]['key']=4;
+        $data['cat'][3]['name']=$cat[4];
+        $data['cat'][4]['key']=1;
+        $data['cat'][4]['name']=$cat[1];
+        $data['cat'][5]['key']=2;
+        $data['cat'][5]['name']=$cat[2];
 
 
         $carousel=Carousel::find()->andFilterWhere(['type'=>1])->orderBy('sort desc ,id desc')->all();
