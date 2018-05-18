@@ -162,7 +162,7 @@ class DataController extends Controller
         $file_list=glob("data/ex/*.csv");
         foreach($file_list as $fk=>$fv) {
             preg_match("#\d+#", $fv, $m);
-            $hospitalid = $m[0];
+            $hospitalid = substr($m[0],0,6);
             echo $hospitalid."\n";
             $f=fopen($fv,'r');
             $i=0;

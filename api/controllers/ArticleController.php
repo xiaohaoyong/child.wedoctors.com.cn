@@ -35,7 +35,7 @@ class ArticleController extends Controller
         $data['cat'][5]['name']=$cat[2];
 
 
-        $carousel=Carousel::find()->andFilterWhere(['type'=>1])->orderBy('sort desc ,id desc')->all();
+        $carousel=Carousel::find()->andFilterWhere(['!=','catid',6])->andFilterWhere(['type'=>1])->orderBy('sort desc ,id desc')->all();
         $data['imgs']=$carousel;
 
         return $data;
