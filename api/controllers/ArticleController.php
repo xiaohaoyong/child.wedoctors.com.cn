@@ -21,6 +21,8 @@ class ArticleController extends Controller
     public function actionIndex(){
 
         $cat=Article::$catText;
+        $data['cat'][0]['key']=0;
+        $data['cat'][0]['name']='推荐';
         $data['cat'][1]['key']=5;
         $data['cat'][1]['name']=$cat[5];
         $data['cat'][2]['key']=3;
