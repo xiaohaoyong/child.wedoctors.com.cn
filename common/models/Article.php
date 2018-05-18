@@ -52,12 +52,12 @@ class Article extends \yii\db\ActiveRecord
     ];
 
     public static $catText=[
-        '5'=>'育儿保健',
-        '3'=>'饮食',
-        '4'=>'预防疾病',
-        '1'=>'视频',
-        '2'=>'运动',
-        '6'=>'官方通知'
+        5=>'育儿保健',
+        3=>'饮食',
+        4=>'预防疾病',
+        1=>'视频',
+        2=>'运动',
+        6=>'官方通知'
     ];
     public static $typeText=[
         0=>"宣教",
