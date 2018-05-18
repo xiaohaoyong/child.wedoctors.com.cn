@@ -35,7 +35,7 @@ class CommentController extends Controller
         $list = $comment->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
         foreach($list as $k=>$v){
             $row=$v->toArray();
-            $row['createtime']=date('Y-m-s H:i',$v->createtime);
+            $row['createtime']=date('Y-m-d H:i',$v->createtime);
             $user=WxInfo::findOne(['userid'=>$v->userid]);
             $row['user']=[];
             if($user) {

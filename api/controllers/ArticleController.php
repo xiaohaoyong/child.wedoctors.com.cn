@@ -53,7 +53,7 @@ class ArticleController extends Controller
         foreach($list as $k=>$v)
         {
             $row=$v->info->toArray();
-            $row['createtime']=date('Y-m-d H:i',$v->createtime);
+            $row['createtime']=date('Y/m/d',$v->createtime);
             $row['source']=$row['source']?$row['source']:"儿宝宝";
             $data['list'][]=$row;
         }
