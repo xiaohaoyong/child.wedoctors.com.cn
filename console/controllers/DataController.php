@@ -51,7 +51,7 @@ class DataController extends Controller
         ];
         $userids=UserLogin::find()->where(['userid'=>'47388'])->all();
 
-        $userids = DoctorParent::find()->andFilterWhere(['doctorid'=>39889])->all();
+        //$userids = DoctorParent::find()->andFilterWhere(['doctorid'=>39889])->limit(0,1)->all();
 
         if($article)
         {
