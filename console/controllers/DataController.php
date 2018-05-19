@@ -56,8 +56,8 @@ class DataController extends Controller
         if($article)
         {
             foreach($userids as $k=>$v) {
-                echo $v->parentid."==";
-                $userLogin=UserLogin::findOne(['userid'=>$v->parentid]);
+                echo $v->userid."==";
+                $userLogin=UserLogin::findOne(['userid'=>$v->userid]);
                 //$userLogin=$v;
                 if($userLogin->openid) {
                     $rs=WechatSendTmp::send($data, $userLogin->openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE','',$miniprogram);
