@@ -103,7 +103,7 @@ class ChildInfoSearchModel extends ChildInfo
         }
         if($hospital && !$this->level) {
             // grid filtering conditions
-            $query->andFilterWhere(['source' => $hospital,]);
+            $query->andFilterWhere(['`child_info`.`source`' => $hospital,]);
         }
         if($this->level!=='' and $this->level!==null)
         {
