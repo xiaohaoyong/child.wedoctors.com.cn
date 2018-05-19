@@ -37,6 +37,7 @@ use yii\helpers\ArrayHelper;
 class DataController extends Controller
 {
     public function actionArticlePush(){
+        exit;
         $article=\common\models\Article::findOne(297);
 
         $data = [
