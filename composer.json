@@ -33,7 +33,8 @@
     "yiisoft/yii2-redis": "^2.0",
     "yiidoc/yii2-redactor": "*",
     "dmstr/yii2-adminlte-asset": "^2.1",
-    "mdmsoft/yii2-admin": "~2.0"
+    "mdmsoft/yii2-admin": "~2.0",
+    "udokmeci/yii2-beanstalk": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
