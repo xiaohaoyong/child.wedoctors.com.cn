@@ -42,7 +42,7 @@ class DataController extends Controller
         $data = [
             'first' => array('value' => $article->info->title."\n",),
             'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
-            'keyword2' => ARRAY('value' =>$article->info->content),
+            'keyword2' => ARRAY('value' =>strip_tags($article->info->content)),
             'remark' => ARRAY('value' => "\n 点击查看社区卫生服务中心通知详情", 'color' => '#221d95'),
         ];
         $miniprogram=[
