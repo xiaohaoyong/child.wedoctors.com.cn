@@ -305,6 +305,8 @@ class DataController extends Controller
      * 体检更新提醒
      */
     public function actionExUpdate(){
+
+        ini_set('memory_limit', '1024M');
         $ex=Examination::find()->andFilterWhere(['isupdate'=>1])->andFilterWhere(['>','childid','0'])->groupBy('childid')->all();
         foreach($ex as $k=>$v)
         {
