@@ -51,19 +51,24 @@ class DataController extends Controller
         ];
         $userids=UserLogin::find()->where(['userid'=>'47388'])->all();
 
+        $userids = DoctorParent::find()->andFilterWhere(['doctorid'=>39889])->all();
+
         if($article)
         {
             foreach($userids as $k=>$v) {
-
-                $userLogin=$v;
+                echo $v->parentid."==";
+                $userLogin=UserLogin::findOne(['userid'=>$v->parentid]);
+                //$userLogin=$v;
                 if($userLogin->openid) {
                     $rs=WechatSendTmp::send($data, $userLogin->openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE','',$miniprogram);
+                    echo $rs;
                 }
                 if($article->art_type!=2)
                 {
                     $key=$article->catid==6?3:5;
                     Notice::setList($userLogin->userid, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$article->id,]);
                 }
+                echo "\n";
             }
         }
     }
