@@ -309,6 +309,7 @@ class DataController extends Controller
         {
             $child=ChildInfo::findOne(['id'=>$v->childid]);
             if($child) {
+                echo $child->id."===$k"."===";
                 $login = $child->login;
                 if($login->openid){
                     $data = [
@@ -327,6 +328,7 @@ class DataController extends Controller
                     //小程序首页通知
                     Notice::setList($login->userid, 1, ['title' => "宝宝近期的体检结果已更新", 'ftitle' => "点击可查看本体检报告的详细内容信息", 'id' => "/user/examination/index?id=".$child->id,],"id=".$child->id);
 
+                    echo "true\n";
                 }
             }
         }
