@@ -49,15 +49,15 @@ class DataController extends Controller
             "appid"=>\Yii::$app->params['wxXAppId'],
             "pagepath"=>"/pages/article/view/index?id=".$article->id,
         ];
-        $userids=UserLogin::find()->where(['userid'=>'47388'])->all();
+        //$userids=UserLogin::find()->where(['userid'=>'47388'])->all();
 
-        //$userids = DoctorParent::find()->andFilterWhere(['doctorid'=>39889])->limit(0,1)->all();
+        $userids = DoctorParent::find()->andFilterWhere(['doctorid'=>39889])->all();
 
         if($article)
         {
             foreach($userids as $k=>$v) {
-                echo $v->userid."==";
-                $userLogin=UserLogin::findOne(['userid'=>$v->userid]);
+                echo $v->parentid."==";
+                $userLogin=UserLogin::findOne(['userid'=>$v->parentid]);
                 //$userLogin=$v;
                 if($userLogin->openid) {
                     $rs=WechatSendTmp::send($data, $userLogin->openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE','',$miniprogram);
