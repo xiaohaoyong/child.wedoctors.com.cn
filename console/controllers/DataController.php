@@ -51,7 +51,7 @@ class DataController extends Controller
             //$userLogin=UserLogin::findOne(['userid'=>$v->parentid]);
             $userLogin=$v;
             if($userLogin->openid) {
-                $rs=WechatSendTmp::send($data, $userLogin->openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE','',$miniprogram);
+                $rs=WechatSendTmp::send($data, $userLogin->openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE','https://jinshuju.net/f/Sfodlu');
                 echo $rs;
             }
             echo "\n";
