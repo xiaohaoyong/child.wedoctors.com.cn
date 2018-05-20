@@ -36,6 +36,28 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionUrlPush(){
+        $data = [
+            'first' => array('value' => "参与社区儿童中医健康指导服务调查问卷，必得现金红包，先到先得\n",),
+            'keyword1' => ARRAY('value' =>"2018-05-20"),
+            'keyword2' => ARRAY('value' =>"为了更好的服务每一个家庭，请参与我们社区中医健康指导服务的问卷调查，希望各位家长抽出宝贵时间支持我们的工作"),
+            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+        ];
+
+
+        $userids = UserLogin::find()->where(['!=','openid',''])->count();
+        foreach($userids as $k=>$v) {
+            echo $v->userid."==";
+            //$userLogin=UserLogin::findOne(['userid'=>$v->parentid]);
+            $userLogin=$v;
+            if($userLogin->openid) {
+                $rs=WechatSendTmp::send($data, $userLogin->openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE','',$miniprogram);
+                echo $rs;
+            }
+            echo "\n";
+        }
+
+    }
     public function actionArticlePush(){
         exit;
         $article=\common\models\Article::findOne(297);
