@@ -45,7 +45,7 @@ class DataController extends Controller
         ];
 
 
-        $userids = UserLogin::find()->where(['!=','openid',''])->andFilterWhere(['userid'=>47388])->all();
+        $userids = UserLogin::find()->where(['!=','openid',''])->all();
         foreach($userids as $k=>$v) {
             echo $v->userid."==";
             //$userLogin=UserLogin::findOne(['userid'=>$v->parentid]);
