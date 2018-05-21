@@ -9,22 +9,34 @@ use yii\grid\GridView;
 
 $this->title = '儿童健康档案';
 $this->params['breadcrumbs'][] = $this->title;
-\common\helpers\HeaderActionHelper::$action = [0 => ['name' => '返回健康档案', 'url' => ['child-info/index']]];
 ?>
 <div class="child-health-record-index">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body">
+                <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                    <div class="row">
+                        <?= GridView::widget([
+                            'options'=>['class' => 'col-sm-12'],
+                            'dataProvider' => $dataProvider,
+                            'columns' => [
+                                ['attribute' => 'childid', 'value' => function ($e) {
+                                    return \common\models\ChildInfo::findOne($e->childid)->name;
+                                }
 
-    <?= GridView::widget(['dataProvider' => $dataProvider,
+                                ], ['attribute' => 'userid', 'value' => function ($e) {
+                                    return \databackend\models\user\UserDoctor::findOne([$e->userid])->name;
+                                }
 
-        'columns' => [['attribute' => 'childid', 'value' => function ($e) {
-            return \common\models\ChildInfo::findOne($e->childid)->name;
-        }
-
-        ], ['attribute' => 'userid', 'value' => function ($e) {
-            return \databackend\models\user\UserDoctor::findOne([$e->userid])->name;
-        }
-
-        ], 'content', ['attribute' => 'createtime', 'format' => ['date', 'php:Y-m-d H:i:s']]
+                                ], 'content', ['attribute' => 'createtime', 'format' => ['date', 'php:Y-m-d H:i:s']]
 
 
-        ],]); ?>
+                            ]
+                        ]); ?>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
 </div>
