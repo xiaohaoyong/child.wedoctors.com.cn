@@ -202,7 +202,7 @@ class DataController extends Controller
                     ->andFilterWhere(['field4'=>$row[3]])
                     ->andFilterWhere(['source'=>$hospitalid])
                     ->andFilterWhere(['field19'=>$row[18]])->one();
-                if($ex){ echo "jump\n";continue;}
+               // if($ex){ echo "jump\n";continue;}
                 $isupdate=$ex?0:1;
                 $ex=$ex?$ex:new Examination();
 
@@ -389,7 +389,7 @@ class DataController extends Controller
     }
     public function actionSet()
     {
-        $userParent=UserParent::find()->andFilterWhere(['>','userid',47388])->andFilterWhere(['>','source',38])->all();
+        $userParent=UserParent::find()->andFilterWhere(['userid'=>49015])->andFilterWhere(['>','userid',47388])->andFilterWhere(['>','source',38])->all();
         foreach($userParent as $k=>$v)
         {
             echo "parentid=".$v->userid.",";
@@ -582,7 +582,11 @@ class DataController extends Controller
     }
     public function actionTest()
     {
-        ChatRecord::updateAll(['read'=>1],['touserid'=>18486,'userid'=>4146]);
+        $return = \Yii::$app->beanstalk
+            ->putInTube('push', ['artid'=>301,'userids'=>[49016]]);
+        var_dump($return);exit;
+
+        //ChatRecord::updateAll(['read'=>1],['touserid'=>18486,'userid'=>4146]);
     }
 
 }
