@@ -101,11 +101,13 @@ class SuiteController extends Controller
                         $url = \Yii::$app->params['htmlUrl']."#/sign?usertype=parent";
                         $url_doctor = \Yii::$app->params['htmlUrl']."#/accountdocter?usertype=docter";
 
-                        $text = "您好，感谢关注儿宝宝！ \n如果管辖社区卫生服务中心已经开通签约儿保医生服务，请到管辖社区完成扫面签约哦！ \n签约后即可享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务 \n如果社区还没开通此项服务，可完善宝宝信息优先免费享受中医健康指导服务，点击完善";
+                        $text = "您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，请到管辖社区完成扫面签约哦！签约后即可享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
                         return self::sendText($openid, $xml['ToUserName'], $text);
                     }
                 }
                 else {
+                    return self::sendText($xml['FromUserName'], $xml['ToUserName'],'...');
+
                     return self::forwardToCustomService($xml['FromUserName'], $xml['ToUserName']);
                 }
             }
@@ -170,7 +172,7 @@ XML;
     <MsgType><![CDATA[transfer_customer_service]]></MsgType>
 </xml>
 XML;
-        return sprintf($template, $tousername, $fromusername, time());
+        return sprintf($template,$fromusername,$tousername, time());
     }
 
 }
