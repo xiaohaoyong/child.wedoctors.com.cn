@@ -117,7 +117,8 @@ class SuiteController extends Controller
 
                             }
                         }
-                    } elseif ($doctor_id) {
+                    }
+                    elseif ($doctor_id) {
                         //未注册用户签约流程
                         $url = Yii::$app->params['index_url'];
                         //发送签约成功消息
@@ -135,11 +136,12 @@ class SuiteController extends Controller
                         WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url,['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
                         return '';
                         //return self::sendText($openid, $xml['ToUserName'], UserDoctor::findOne($doctor_id)->name."：恭喜你签约成功，针对不同月龄儿童，可享受以下服务：\n1.解答儿童日常健康问题\n2.个性化中医儿童健康指导\n3.记录和查看儿童健康档案\n4.体检及疫苗服务的温馨提醒\n\n <a href='{$url}'>点击查看预防保健团队，并完善信息</a>");
-                    } else {
+                    }
+                    else {
                         $url = \Yii::$app->params['htmlUrl']."#/sign?usertype=parent";
                         $url_doctor = \Yii::$app->params['htmlUrl']."#/accountdocter?usertype=docter";
 
-                        $text = "如果您是儿童家长：\n1.微信扫医生提供二维码，可以添加儿保医生。\n2.注册完善信息，将可以查看家长课堂，包括儿童饮食、运动、中医按摩等视频文章。\n<a href='{$url}'>点击去注册</a>\n如果您是医生：\n<a href='{$url_doctor}'>点击去登录医生账号</a>";
+                        $text = "$openid.如果您是儿童家长：\n1.微信扫医生提供二维码，可以添加儿保医生。\n2.注册完善信息，将可以查看家长课堂，包括儿童饮食、运动、中医按摩等视频文章。\n<a href='{$url}'>点击去注册</a>\n如果您是医生：\n<a href='{$url_doctor}'>点击去登录医生账号</a>";
                         return self::sendText($openid, $xml['ToUserName'], $text);
                     }
                 } else {
