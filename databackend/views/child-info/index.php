@@ -37,7 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'母亲姓名',
                 'value'=>function($e)
                 {
-                    return $e->parent->mother;
+                    return $e->parent->mother?$e->parent->mother:"待完善信息";
+
 
                 }
             ],
@@ -45,39 +46,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'母亲电话',
                 'value'=>function($e)
                 {
-                    return $e->parent->mother_phone;
-
+                    return $e->parent->mother_phone?$e->parent->mother_phone:"待完善信息";
                 }
             ],
             [
                 'attribute'=>'父亲姓名',
                 'value'=>function($e)
                 {
-                    return $e->parent->father;
+                    return $e->parent->father?$e->parent->father:"待完善信息";
+
                 }
             ],
             [
                 'attribute'=>'父亲电话',
                 'value'=>function($e)
                 {
-                    return $e->parent->father_phone;
-
+                    return $e->parent->father_phone?$e->parent->father_phone:"待完善信息";
                 }
             ],
             [
                 'attribute'=>'联系人姓名',
                 'value'=>function($e)
                 {
-                    return $e->parent->field11;
-
+                    return $e->parent->field11?$e->parent->field11:"待完善信息";
                 }
             ],
             [
                 'attribute'=>'联系人电话',
                 'value'=>function($e)
                 {
-                    return $e->parent->field12;
-
+                    return $e->parent->field12?$e->parent->field12:"待完善信息";
                 }
             ],
             [
