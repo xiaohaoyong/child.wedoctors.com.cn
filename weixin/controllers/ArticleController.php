@@ -209,7 +209,7 @@ class ArticleController extends BaseWeixinController
         $lmount=date('Y-m-01');
         //该类型 本月已发送的儿童
         $articleUser=ArticleUser::find()->select('touserid')
-            ->where(['child_type'=>$k,'userid'=>$this->userData['userid']])
+            ->where(['child_type'=>$k])
             //->andFilterWhere(['>','createtime',strtotime($lmount)])
             ->groupBy('childid')
             ->column();
