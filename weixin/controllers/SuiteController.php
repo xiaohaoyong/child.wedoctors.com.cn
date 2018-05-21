@@ -37,90 +37,47 @@ class SuiteController extends Controller
             $postStr = file_get_contents("php://input");
             if (!empty($postStr)) {
                 $xml = $this->mpWechat->parseRequestXml($postStr, $_GET['msg_signature'], $_GET['timestamp'], $nonce = $_GET['nonce'], $_GET['encrypt_type']);
-                $openid = $xml['FromUserName'];
-                $doctor_id = str_replace('qrscene_', '', $xml['EventKey']);
-                $doctor_id=$doctor_id?$doctor_id:0;
-                //扫码记录
-                $weOpenid=WeOpenid::findOne(['openid'=>$openid,'doctorid'=>$doctor_id]);
-                if(!$weOpenid) {
-                    $weOpenid = $weOpenid ? $weOpenid : new WeOpenid();
-                    $mpWechat = new MpWechat([
-                        'token' => \Yii::$app->params['WeToken'],
-                        'appId' => \Yii::$app->params['AppID'],
-                        'appSecret' => \Yii::$app->params['AppSecret'],
-                        'encodingAesKey' => \Yii::$app->params['encodingAesKey']
-                    ]);
-                    $access_token=$mpWechat->getAccessToken();
 
-                    if($access_token){
-
-                        $path = '/cgi-bin/user/info?access_token='.$access_token."&openid=".$openid."&lang=zh_CN";
-                        $curl = new HttpRequest(\Yii::$app->params['wxUrl'].$path, true, 2);
-                        $userJson = $curl->get();
-                        $userInfo=json_decode($userJson,true);
-                        if($userInfo['unionid']) {
-                            $weOpenid->unionid=$userInfo['unionid'];
-                        }
-                    }
-                    $weOpenid->openid = $openid;
-                    $weOpenid->doctorid = $doctor_id;
-                    $weOpenid->createtime = time();
-                    $weOpenid->save();
-                }
                 //分享是的二维码
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
+                    $openid = $xml['FromUserName'];
+                    $doctor_id = str_replace('qrscene_', '', $xml['EventKey']);
+                    $doctor_id=$doctor_id?$doctor_id:0;
+                    $weOpenid=WeOpenid::action($xml);
 
-                    $userid = UserLogin::findOne(['openid' => $openid])->userid;
-                    if ($userid && $doctor_id) {
-                        //已注册用户签约流程
-                        $doctorParent=DoctorParent::findOne(['parentid' => $userid]);
-                        if ($doctorParent) {
-                            $doctorName=UserDoctor::findOne(['userid'=>$doctorParent->doctorid])->name;
-                            //发送提醒已签约其他医生
-                            $url = \Yii::$app->params['htmlUrl']."#/first-login-adviser?doctor_id=".$doctorParent->doctorid;
+                    if($doctor_id)
+                    {
+                        //扫描社区医院二维码操作
+                        $userid = UserLogin::findOne(['openid' => $openid])->userid;
+                        if($userid)
+                        {
+                            $doctorParent=DoctorParent::findOne(['parentid' => $userid]);
+                            if ($doctorParent->level==1) {
+                                $doctorName=UserDoctor::findOne(['userid'=>$doctorParent->doctorid])->name;
+                                //发送提醒已签约其他医生
+                                $url = \Yii::$app->params['htmlUrl']."#/first-login-adviser?doctor_id=".$doctorParent->doctorid;
 
-                            return self::sendText($openid, $xml['ToUserName'], "您已经签约了【{$doctorName}】\n\n <a href='{$url}'>点击查看团队</a>");
-                        } elseif ($doctor_id) {
-                            //发送提醒"已提交申请，等待医生审核"
-                            //给医生发送提醒消息
-                            //不需要审核 直接审核通过
+                                return self::sendText($openid, $xml['ToUserName'], "您已经签约了【{$doctorName}】\n\n <a href='{$url}'>点击查看团队</a>");
+                            }
                             $doctorParent = DoctorParent::findOne(['doctorid' => $doctor_id, "parentid" => $userid]);
                             $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
                             $doctorParent->doctorid = $doctor_id;
                             $doctorParent->parentid = $userid;
                             $doctorParent->level = 1;
-                            if ($doctorParent->save()) {
-                                $user = UserParent::findOne($userid);
-                                //微信模板消息
-                                $data = ['first' => array('value' => "您有一个新的签约儿童\n"), 'keyword1' => ARRAY('value' => date('Y-m-d H:i')), 'keyword2' => ARRAY('value' => $user->father), 'remark' => ARRAY('value' => "\n点击查看！", 'color' => '#221d95'),];
-                                $touser = UserLogin::findOne(['userid' => $doctor_id])->openid;
-                                $url = Url::to(\Yii::$app->params['site_url'].'#/docters-user?p=1');
-                                WechatSendTmp::send($data, $touser, \Yii::$app->params['tongzhi'], $url);
+                            $doctorParent->createtime=time();
+                            $doctorParent->save();
+                            //已注册用户直接签约成功
 
-                                //发送签约成功消息
-                                $doctor = UserDoctor::findOne($doctor_id);
-                                //微信模板消息
+                            $user = UserParent::findOne($userid);
+                            //微信模板消息
+                            $data = ['first' => array('value' => "您有一个新的签约儿童\n"), 'keyword1' => ARRAY('value' => date('Y-m-d H:i')), 'keyword2' => ARRAY('value' => $user->father), 'remark' => ARRAY('value' => "\n点击查看！", 'color' => '#221d95'),];
+                            $touser = UserLogin::findOne(['userid' => $doctor_id])->openid;
+                            $url = Url::to(\Yii::$app->params['site_url'].'#/docters-user?p=1');
+                            WechatSendTmp::send($data, $touser, \Yii::$app->params['tongzhi'], $url);
 
-                                $data = [
-                                    'first' => array('value' => "恭喜您，已成功签约。\n"),
-                                    'keyword1' => ARRAY('value' => $doctor->name, ),
-                                    'keyword2' => ARRAY('value' => $doctor->hospital->name),
-                                    'keyword3' => ARRAY('value' => date('Y年m月d日')),
-                                    'remark' => ARRAY('value' => "\n 点击添加宝宝并授权，就可以免费享受个性化中医儿童健康指导等服务，如果授权的手机号码与建档时不一致，则宝宝的信息不会显示，正常添加宝宝信息即可（需准确），不影响功能使用", 'color' => '#221d95'),
-                                ];
-                                $url = \Yii::$app->params['site_url']."#/add-docter";
-                                WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url,['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
-                                return '';
-                                //return self::sendText($openid, $xml['ToUserName'], "您已成功签约".UserDoctor::findOne($doctor_id)->name);
-                            } else {
-                                return self::sendText($openid, $xml['ToUserName'], "失败：".json_encode($doctorParent->firstErrors));
-
-                            }
                         }
-                    }
-                    elseif ($doctor_id) {
-                        //未注册用户签约流程
-                        $url = Yii::$app->params['index_url'];
+
+
                         //发送签约成功消息
                         $doctor = UserDoctor::findOne($doctor_id);
                         //微信模板消息
@@ -135,16 +92,17 @@ class SuiteController extends Controller
                         $url = \Yii::$app->params['site_url']."#/add-docter";
                         WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url,['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
                         return '';
-                        //return self::sendText($openid, $xml['ToUserName'], UserDoctor::findOne($doctor_id)->name."：恭喜你签约成功，针对不同月龄儿童，可享受以下服务：\n1.解答儿童日常健康问题\n2.个性化中医儿童健康指导\n3.记录和查看儿童健康档案\n4.体检及疫苗服务的温馨提醒\n\n <a href='{$url}'>点击查看预防保健团队，并完善信息</a>");
+
                     }
                     else {
                         $url = \Yii::$app->params['htmlUrl']."#/sign?usertype=parent";
                         $url_doctor = \Yii::$app->params['htmlUrl']."#/accountdocter?usertype=docter";
 
-                        $text = "$openid.如果您是儿童家长：\n1.微信扫医生提供二维码，可以添加儿保医生。\n2.注册完善信息，将可以查看家长课堂，包括儿童饮食、运动、中医按摩等视频文章。\n<a href='{$url}'>点击去注册</a>\n如果您是医生：\n<a href='{$url_doctor}'>点击去登录医生账号</a>";
+                        $text = "您好，感谢关注儿宝宝！ \n如果管辖社区卫生服务中心已经开通签约儿保医生服务，请到管辖社区完成扫面签约哦！ \n签约后即可享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务 \n如果社区还没开通此项服务，可完善宝宝信息优先免费享受中医健康指导服务，点击完善";
                         return self::sendText($openid, $xml['ToUserName'], $text);
                     }
-                } else {
+                }
+                else {
                     return self::forwardToCustomService($xml['FromUserName'], $xml['ToUserName']);
                 }
             }
@@ -209,7 +167,7 @@ XML;
     <MsgType><![CDATA[transfer_customer_service]]></MsgType>
 </xml>
 XML;
-        return sprintf($template, $fromusername, $tousername, time());
+        return sprintf($template, $tousername, $fromusername, time());
     }
 
 }

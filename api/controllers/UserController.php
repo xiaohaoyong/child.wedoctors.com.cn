@@ -134,19 +134,23 @@ class UserController extends Controller
             $weOpenid = WeOpenid::findOne(['unionid' => $unionid, 'level' => 0]);
             if ($weOpenid) {
                 $doctorid = $weOpenid->doctorid;
-                $doctorParent = DoctorParent::findOne(['doctorid' => $doctorid, "parentid" => $userid]);
-                $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
-                $doctorParent->doctorid = $doctorid;
-                $doctorParent->parentid = $userid;
-                $doctorParent->level = 1;
-                $doctorParent->createtime = time();
-                if ($doctorParent->save()) {
-                    $weOpenid->level = 1;
-                    $weOpenid->save();
-                    //签约成功 删除签约提醒
-                }
-                $userLogin->openid = $weOpenid->openid;
+
             }
+
+            if(!$doctorid) $doctorid=47156;
+
+            $doctorParent = DoctorParent::findOne(['doctorid' => $doctorid, "parentid" => $userid]);
+            $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
+            $doctorParent->doctorid = $doctorid;
+            $doctorParent->parentid = $userid;
+            $doctorParent->level = 1;
+            $doctorParent->createtime = time();
+            if ($doctorParent->save()) {
+                $weOpenid->level = 1;
+                $weOpenid->save();
+                //签约成功 删除签约提醒
+            }
+            $userLogin->openid = $weOpenid->openid;
             //更新登陆状态
             $userLogin->xopenid = $openid;
             $userLogin->unionid = $unionid;
