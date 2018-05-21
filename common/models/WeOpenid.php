@@ -82,7 +82,7 @@ class WeOpenid extends \yii\db\ActiveRecord
     }
 
     public static function action($xml){
-        if($xml['Event'] == 'subscribe')
+        if($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN')
         {
             $openid = $xml['FromUserName'];
             $doctor_id = str_replace('qrscene_', '', $xml['EventKey']);
