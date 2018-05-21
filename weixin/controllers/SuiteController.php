@@ -52,14 +52,17 @@ class SuiteController extends Controller
                         if($userid)
                         {
                             $doctorParent=DoctorParent::findOne(['parentid' => $userid]);
-                            if ($doctorParent->level==1) {
+
+                            //已签约 并且签约的医院不是互联网社区医院则 发送提醒
+                            if ($doctorParent->level==1 && $doctorParent->doctorid!=47156) {
                                 $doctorName=UserDoctor::findOne(['userid'=>$doctorParent->doctorid])->name;
                                 //发送提醒已签约其他医生
                                 $url = \Yii::$app->params['htmlUrl']."#/first-login-adviser?doctor_id=".$doctorParent->doctorid;
-
                                 return self::sendText($openid, $xml['ToUserName'], "您已经签约了【{$doctorName}】\n\n <a href='{$url}'>点击查看团队</a>");
                             }
-                            $doctorParent = DoctorParent::findOne(['doctorid' => $doctor_id, "parentid" => $userid]);
+                            //$doctorParent = DoctorParent::findOne(['doctorid' => $doctor_id, "parentid" => $userid]);
+
+                            //未签约 或 签约了互联网社区医院（修改签约对象）
                             $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
                             $doctorParent->doctorid = $doctor_id;
                             $doctorParent->parentid = $userid;

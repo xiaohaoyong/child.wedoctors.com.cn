@@ -130,27 +130,30 @@ class UserController extends Controller
             $userLogin = UserLogin::findOne(['userid' => $userid]);
             $userLogin = $userLogin ? $userLogin : new UserLogin();
 
+            $doctorid=47156;
             //扫码签约
             $weOpenid = WeOpenid::findOne(['unionid' => $unionid, 'level' => 0]);
             if ($weOpenid) {
-                $doctorid = $weOpenid->doctorid;
+                $doctorid = $weOpenid->doctorid?$weOpenid->doctorid:47156;
+                $userLogin->openid = $weOpenid->openid;
+
+            }
+            $doctorParent=DoctorParent::findOne(['parentid'=>$userid]);
+            if(!$doctorParent || $doctorParent->level!=1)
+            {
+                $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
+                $doctorParent->doctorid = $doctorid;
+                $doctorParent->parentid = $userid;
+                $doctorParent->level = 1;
+                $doctorParent->createtime = time();
+                if ($doctorParent->save() && $weOpenid) {
+                    $weOpenid->level = 1;
+                    $weOpenid->save();
+                    //签约成功 删除签约提醒
+                }
 
             }
 
-            if(!$doctorid) $doctorid=47156;
-
-            $doctorParent = DoctorParent::findOne(['doctorid' => $doctorid, "parentid" => $userid]);
-            $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
-            $doctorParent->doctorid = $doctorid;
-            $doctorParent->parentid = $userid;
-            $doctorParent->level = 1;
-            $doctorParent->createtime = time();
-            if ($doctorParent->save()) {
-                $weOpenid->level = 1;
-                $weOpenid->save();
-                //签约成功 删除签约提醒
-            }
-            $userLogin->openid = $weOpenid->openid;
             //更新登陆状态
             $userLogin->xopenid = $openid;
             $userLogin->unionid = $unionid;
