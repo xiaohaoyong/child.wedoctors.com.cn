@@ -9,6 +9,8 @@ use Yii;
  *
  * @property string $id
  * @property integer $catid
+ * @property integer $subject
+ * @property integer $subject_pid
  * @property integer $level
  * @property string $createtime
  * @property integer $child_type
@@ -80,7 +82,7 @@ class Article extends \yii\db\ActiveRecord
     {
         return [
             [['catid'], 'required'],
-            [['catid', 'level', 'createtime', 'child_type', 'num', 'type','art_type'], 'integer'],
+            [['catid', 'level', 'createtime', 'child_type', 'num', 'type','art_type','subject','subject_pid'], 'integer'],
         ];
     }
 
@@ -98,6 +100,8 @@ class Article extends \yii\db\ActiveRecord
             'num' => '宣教次数',
             'type' => '文章类型',
             'art_type' => '内容类型',
+            'subject'=>'频道',
+            'subject_pid'=>'主频道',
 
             'img' => '封面'
         ];

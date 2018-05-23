@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\ArticleCategory;
 use backend\models\ArticleCategorySearch;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -42,6 +43,21 @@ class ArticleCategoryController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    /**
+     * Lists all Hospital models.
+     * @return mixed
+     */
+    public function actionGet()
+    {
+        $searchModel = new ArticleCategorySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        echo Html::tag('option',Html::encode("请选择"),array('value'=>0));
+        foreach($dataProvider->query->all() as $k=>$v)
+        {
+            echo Html::tag('option',Html::encode($v->name),array('value'=>$v->id));
+        }
     }
 
     /**

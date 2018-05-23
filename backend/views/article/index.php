@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'data-target' => "#push",//关联模拟框(模拟框的ID)
                                 'data-toggle' => "modal", //定义为模拟框 触发按钮
-                                'data-id' => $model-id,
+                                'data-id' => $model->id,
                                 'class' => 'data-update',
 
                                 'title' => 'PUSH',

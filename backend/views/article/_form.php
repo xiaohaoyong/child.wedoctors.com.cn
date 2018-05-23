@@ -17,6 +17,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model,'catid')->radioList(\common\models\Article::$catText)?>
 
+    <?= $form->field($model, 'subject_pid')->dropDownList(\common\models\ArticleCategory::find()->select('name')->indexBy('id')->where(['pid'=>0])->column(), [
+        'prompt'=>'请选择',
+        'onchange'=>'
+            $("#'.Html::getInputId($model,'subject').'").html(\''.Html::tag('option',Html::encode("请选择"),array('value'=>0)).'\');
+            $.post("'.\yii\helpers\Url::to(['article-category/get']).'?ArticleCategorySearch[pid]="+$(this).val(),function(data){
+                $("#'.Html::getInputId($model,'subject').'").html(data);
+            });',
+    ]) ?>
+    <?= $form->field($model,'subject')->dropDownList(\common\models\ArticleCategory::find()->select('name')->indexBy('id')->where(['pid'=>$model->subject_pid])->column(), ['prompt'=>'请选择'])?>
+
+
     <?= $form->field($model,'child_type')->radioList(\common\models\Article::$childText)?>
     <?= $form->field($article, 'img')->fileInput() ?>
     <?php
