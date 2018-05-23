@@ -21,6 +21,7 @@ use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\WeOpenid;
 use common\models\WxInfo;
+use databackend\models\user\ChildInfo;
 
 class UserController extends Controller
 {
@@ -130,13 +131,15 @@ class UserController extends Controller
             $userLogin = UserLogin::findOne(['userid' => $userid]);
             $userLogin = $userLogin ? $userLogin : new UserLogin();
 
-            $doctorid=47156;
-            //扫码签约
+            $childInfo=ChildInfo::find()->andFilterWhere(['userid'=>$userid])->andFilterWhere(['>','source',38])->one();
+
+            $default=$childInfo?$childInfo->source:47156;
+            $doctorid=$default;
+//扫码签约
             $weOpenid = WeOpenid::findOne(['unionid' => $unionid, 'level' => 0]);
             if ($weOpenid) {
-                $doctorid = $weOpenid->doctorid?$weOpenid->doctorid:47156;
+                $doctorid = $weOpenid->doctorid?$weOpenid->doctorid:$default;
                 $userLogin->openid = $weOpenid->openid;
-
             }
             $doctorParent=DoctorParent::findOne(['parentid'=>$userid]);
             if(!$doctorParent || $doctorParent->level!=1)
@@ -153,6 +156,7 @@ class UserController extends Controller
                 }
 
             }
+
 
             //更新登陆状态
             $userLogin->xopenid = $openid;
