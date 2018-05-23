@@ -36,6 +36,42 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+
+    public function actionEbb(){
+        $doctorParent=DoctorParent::find()->where(['doctorid'=>47156])->all();
+        foreach($doctorParent as $k=>$v)
+        {
+            echo $v->parentid."===";
+            $userParent=UserParent::findOne(['userid'=>$v->parentid]);
+            if($userParent->source>38)
+            {
+                $doctor=UserDoctor::findOne(['hospitalid'=>$userParent->source]);
+                if($doctor){
+                    echo $doctor->userid;
+                    $v->doctorid=$doctor->userid;
+                    $v->save();
+                }
+            }
+            echo "\n";
+        }
+
+
+        exit;
+        $user=User::find()->where(['soutce'=>1])->all();
+        foreach($user as $k=>$v){
+            $doctorParent =DoctorParent::find()->andFilterWhere(['parentid'=>$v->id])->one();
+            if(!$doctorParent or $doctorParent->level!=1)
+            {
+                echo $v->id."==";
+                $doctorParent=new DoctorParent();
+                $doctorParent->doctorid=47156;
+                $doctorParent->parentid=$v->id;
+                $doctorParent->save();
+            }
+            echo "\n";
+        }
+        exit;
+    }
     public function actionDoctoridn()
     {
         ini_set('memory_limit', '1024M');
