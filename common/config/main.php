@@ -10,6 +10,13 @@ $config= [
         'formatter'=>[
             'dateFormat'=>'php:Y-m-d',
         ],
+        'beanstalk' => [
+            'class' => 'udokmeci\yii2beanstalk\Beanstalk',
+            'host' => '127.0.0.1', // default host
+            'port' => 11300,
+            'connectTimeout' => 1,
+            'sleep' => false, // or int for usleep after every job
+        ],
     ],
     'modules' => [
         'redactor' => [
