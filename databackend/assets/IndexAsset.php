@@ -16,7 +16,9 @@ class IndexAsset extends AssetBundle
     ];
     public $depends = [
         'dmstr\web\AdminLteAsset',
-        'databackend\assets\MorrisAsset'
+        'databackend\assets\MorrisAsset',
+        'databackend\assets\DatabasesAsset'
+
     ];
 }
 

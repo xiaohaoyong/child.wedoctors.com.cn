@@ -48,6 +48,11 @@ class DoctorParent extends \yii\db\ActiveRecord
             'level' => '签约状态',
         ];
     }
+    public function getDoctor()
+    {
+        return $this->hasOne(UserDoctor::className(),['userid'=>'parentid']);
+    }
+
 
     public function getChild()
     {

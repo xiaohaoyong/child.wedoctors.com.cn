@@ -9,17 +9,16 @@ databackend\assets\IndexAsset::register($this);
 
     <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box bg-green">
-            <span class="info-box-icon" style="height: 128px; line-height: 128px;"><i class="fa fa-heart-o"></i></span>
 
-            <div class="info-box-content" style="height: 128px; padding-top: 10px">
+            <div class="info-box-content" style="margin-left:0px;height: 128px; padding-top: 10px">
                 <span class="info-box-text" style="height: 30px; line-height: 30px">管理儿童总数：<?=$data['childNum']?></span>
-                <span class="info-box-number" style="height: 30px; line-height: 30px"><?=$data['todayNum']?>/<?=$data['todayNumTotal']?></span>
+                <span class="info-box-number" style="height: 30px; line-height: 30px"><?=$data['todayNumTotal']?>/<?=$data['childNum']?>&nbsp;&nbsp;&nbsp;<?=$data['baifen']?>% </span>
 
                 <div class="progress">
                     <div class="progress-bar" style="width: <?=$data['baifen']?>%"></div>
                 </div>
                 <span class="progress-description" style="height: 30px; line-height: 30px">
-                    <?=$data['baifen']?>% 今日签约/已完成签约
+                    已完成签约/管理儿童总数
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -27,6 +26,22 @@ databackend\assets\IndexAsset::register($this);
         <!-- /.info-box -->
     </div>
     <!-- /.col -->
+<div class="col-md-3 col-sm-6 col-xs-12">
+    <!-- small box -->
+    <div class="small-box bg-yellow">
+        <div class="inner">
+            <h3><?=$data['todayNum']?></h3>
+            <p>今日签约</p>
+        </div>
+        <div class="icon">
+            <i class="fa fa-user-plus"></i>
+        </div>
+        <a href="<?=\yii\helpers\Url::to(['child-info/index'])?>" class="small-box-footer">点击查看<i class="fa fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+<!-- /.col -->
+
     <div class="col-md-3 col-sm-6 col-xs-12">
         <!-- small box -->
         <div class="small-box bg-green">
@@ -42,21 +57,7 @@ databackend\assets\IndexAsset::register($this);
         </div>
     </div>
     <!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <!-- small box -->
-        <div class="small-box bg-yellow">
-            <div class="inner">
-                <h3><?=$data['childNum']?></h3>
-                <p>辖区内管理儿童数</p>
-            </div>
-            <div class="icon">
-                <i class="fa fa-user-plus"></i>
-            </div>
-            <a href="<?=\yii\helpers\Url::to(['child-info/index'])?>" class="small-box-footer">点击查看<i class="fa fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
-    <!-- /.col -->
+
     <div class="col-md-3 col-sm-6 col-xs-12">
         <!-- small box -->
         <div class="small-box bg-red">
@@ -88,13 +89,13 @@ databackend\assets\IndexAsset::register($this);
             </div>
             <!-- /.box-body -->
             <div class="box-footer no-border">
-                <div class="row" style="height: 50px; line-height: 50px; color: #000;">
+                <div class="row" style="height: 53px; line-height: 53px; color: #000;">
                     <div class="col-xs-6 text-center">
-                        今日已宣教儿童数：
+                        今日已宣教儿童数：<?=$data['articleNumToday']?>
                     </div>
                     <!-- ./col -->
                     <div class="col-xs-6 text-center">
-                        今日未宣教儿童数：
+                        本月未宣教儿童数：<?=$data['articleNoMonth']?>
                     </div>
                     <!-- ./col -->
                 </div>
@@ -107,6 +108,51 @@ databackend\assets\IndexAsset::register($this);
     <div class="col-lg-7">
         <div class="box">
             <div class="box-header">
+                <h3 class="box-title">最近签约儿童</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover" style="font-size: 12px;">
+                    <tr>
+                        <th>姓名</th>
+                        <th>年龄</th>
+                        <th>签约团队</th>
+                        <th>父母</th>
+                        <th>签约时间</th>
+                        <th>联系电话</th>
+                    </tr>
+                    <?php foreach($now as $k=>$v){
+
+                        $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v->birthday));
+                        if($DiffDate[0]) {
+                            $age=$DiffDate[0]."岁";
+                        }elseif($DiffDate[1]){
+                            $age=$DiffDate[1]."月";
+                        }else{
+                            $age=$DiffDate[2]."天";
+                        }
+                        ?>
+                    <tr>
+                        <td><?=$v->name?></td>
+                        <td><?=$age?></td>
+                        <td><?=$v->doctor[0]->name?></td>
+                        <td><?=$v->parent->father."/".$v->parent->mother?></td>
+                        <td><?=date('Y-m-d',\common\models\DoctorParent::findOne(['parentid'=>$v->userid])->createtime)?></td>
+                        <td><?=$v->parent->mother_phone?$v->parent->mother_phone:$v->parent->father_phone?$v->parent->father_phone:$v->parent->field12?></td>
+                    </tr>
+                    <?php }?>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
                 <h3 class="box-title">社区服务中心签约管理数据</h3>
                 <div class="box-tools">
                     <a href="<?=\yii\helpers\Url::to(['user-doctor/index'])?>">查看更多</a>
@@ -114,199 +160,82 @@ databackend\assets\IndexAsset::register($this);
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
-                <table class="table table-condensed">
-                    <tbody><tr>
-                        <th style="width: 10px">#</th>
-                        <th>社区卫生服务中心</th>
-                        <th>辖区内管理儿童数</th>
-                        <th>今日 / 已签约数</th>
-                        <th>今日 / 已宣教数</th>
-                        <th>管理服务器率</th>
-                        <th style="width: 40px">规范</th>
-                    </tr>
+                <table id="example2" class="table table-bordered table-hover"  style="font-size: 12px;">
+                    <thead>
+                        <tr>
+                            <th>社区卫生服务中心</th>
+                            <th>辖区内管理儿童数</th>
+                            <th>今日签约 </th>
+                            <th>签约总数</th>
+                            <th>今日宣教</th>
+                            <th>已宣教数</th>
+                            <th>管理服务率</th>
+                            <th>规范化</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        foreach($doctor as $k=>$v){
+                    ?>
                     <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
+                        <td><?=$v->name?></td>
+                        <td><?=$total=\common\models\ChildInfo::find()->where(['admin'=>$v->hospitalid])->andFilterWhere(['>','birthday',strtotime('-3 year')])->count()?></td>
+                        <td><?php
+                            $today=strtotime(date('Y-m-d 00:00:00'));
+                            //今日已签约
+                            echo  \common\models\ChildInfo::find()
+                                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                                ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
+                                ->andFilterWhere(['`doctor_parent`.level'=>1])
+                                ->andFilterWhere([">",'`doctor_parent`.createtime',$today])->count();
+                            ?>
+                        </td>
+                        <td><?php
+                            //已签约总数
+                            echo  $q=\common\models\ChildInfo::find()
+                                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                                ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
+                                ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
+                            ?>
+                        </td>
+                        <td><?php
+                            $today=strtotime(date('Y-m-d 00:00:00'));
+                            //今日宣教
+                            echo  \common\models\ArticleUser::find()
+                                ->andFilterWhere(['userid'=>$v->userid])
+                                ->andFilterWhere([">",'createtime',$today])->count();
+                            ?></td>
+                        <td><?php
+                            //已宣教
+                            echo  \common\models\ArticleUser::find()
+                                ->andFilterWhere(['userid'=>$v->userid])->count();
+                            ?></td>
                         <td>
+                            <?php
+                            if($total) {$baifen= round(($q/$total) * 100,1);}else{$baifen= 0;}
+
+                            if($baifen>44){
+
+                                $color='bg-green';
+                                $color1='progress-bar-success';
+                            }elseif($baifen>34){
+                                $color='bg-yellow';
+                                $color1='progress-bar-yellow';
+                            }else{
+                                $color='bg-red';
+                                $color1='progress-bar-danger';
+                            }
+
+                            ?>
                             <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                                <div class="progress-bar <?=$color1?>" style="width: <?=$baifen?>%"></div>
                             </div>
                         </td>
-                        <td><span class="badge bg-red">55%</span></td>
+                        <td><span class="badge <?=$color?>"><?=$baifen?>%</span></td>
                     </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>Update software</td>
-                        <td>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    </tbody></table>
+                    <?php }?>
+                    </tbody>
+                </table>
             </div>
             <!-- /.box-body -->
         </div>
@@ -314,3 +243,30 @@ databackend\assets\IndexAsset::register($this);
     </div>
 </div>
 <div>
+
+
+    <?php
+    $updateJs = <<<JS
+        $(function () {
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "iDisplayLength":100,
+                "bPaginate":false,
+                "bInfo":false
+            });
+        });
+JS;
+    $this->registerJs($updateJs);
+
+    ?>
+    <script>
+        var line_data=<?=json_encode($line_data)?>;
+
+
+
+    </script>

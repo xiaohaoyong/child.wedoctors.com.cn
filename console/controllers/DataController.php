@@ -462,7 +462,6 @@ class DataController extends Controller
                     $user->phone = $phone;
                     $user->source = 2;
                     $user->type = 1;
-                    $user->createtime=time();
                     echo $user->id."====";
                     if($user->save())
                     {
@@ -582,6 +581,40 @@ class DataController extends Controller
     }
     public function actionTest()
     {
+        $list = DoctorParent::find()->andFilterWhere(['level'=>1])->andFilterWhere(['doctorid'=>0])->all();
+        foreach($list as $k=>$v)
+        {
+            echo $v->parentid;
+//            $doctorParent=DoctorParent::find()->where(['>','doctorid',0])->andFilterWhere(['parentid'=>$v->parentid])->all();
+//            if(count($doctorParent)==1)
+//            {
+//                $v->doctorid=$doctorParent[0]->doctorid;
+//                $v->save();
+//                $doctorParent[0]->delete();
+//                echo "==del";
+//            }
+            $childInfo = ChildInfo::findOne(['userid'=>$v->parentid]);
+            if($childInfo->source)
+            {
+                $doctor=UserDoctor::findOne(['hospitalid'=>$childInfo->source]);
+                if($doctor) {
+                    $v->doctorid =$doctor->userid;
+                    $v->save();
+                }
+                if($childInfo->source==38)
+                {
+                    $v->doctorid =38;
+                    $v->save();
+                }
+
+            }else{
+                $v->doctorid =47156;
+                $v->save();
+            }
+            echo "\n";
+        }
+
+
         $return = \Yii::$app->beanstalk
             ->putInTube('push', ['artid'=>301,'userids'=>[49016]]);
         var_dump($return);exit;
