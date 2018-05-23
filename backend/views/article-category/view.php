@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\User */
+/* @var $model common\models\ArticleCategory */
 
 $this->title = '详情';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Article Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 \common\helpers\HeaderActionHelper::$action=[
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 1=>['name'=>'添加','url'=>['create']]
 ];
 ?>
-<div class="user-view">
+<div class="article-category-view">
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -31,11 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'phone',
-            'level',
-            'type',
+            'name',
+            'pid',
+            'pids',
             'createtime:datetime',
-            'source',
+            'level',
         ],
     ]) ?>
 

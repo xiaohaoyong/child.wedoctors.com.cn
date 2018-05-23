@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\User */
+/* @var $model common\models\ArticleCategory */
 
 $this->title ='编辑';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => 'Article Categories', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 
 \common\helpers\HeaderActionHelper::$action=[
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = 'Update';
 1=>['name'=>'添加','url'=>['create']]
 ];
 ?>
-<div class="user-update">
+<div class="article-category-update">
 
     <?= $this->render('_form', [
         'model' => $model,

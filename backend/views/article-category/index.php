@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\UserSearchModel */
+/* @var $searchModel backend\models\ArticleCategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '管理列表';
@@ -13,34 +13,20 @@ $this->params['breadcrumbs'][] = $this->title;
     0=>['name'=>'添加','url'=>['create']]
 ];
 ?>
-<div class="user-index">
+<div class="article-category-index">
 
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-    <hr>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         
      'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
             'id',
-            'phone',
-         [
-             'attribute' => 'level',
-             'value' => function($e)
-             {
-                 return \common\models\User::$levelText[$e->level];
-             }
-         ],
-         [
-             'attribute' => 'type',
-             'value' => function($e)
-             {
-                 return \common\models\User::$typeText[$e->type];
-             }
-         ],            [
-             'attribute' => 'createtime',
-             'format' => ['date', 'php:Y-m-d']
-         ],
-            // 'source',
+            'name',
+            'pid',
+            'pids',
+            'createtime:datetime',
+            // 'level',
 
             [
                 'class' => 'common\components\grid\ActionColumn',

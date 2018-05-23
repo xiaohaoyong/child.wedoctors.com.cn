@@ -4,16 +4,16 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\User */
+/* @var $model common\models\ArticleCategory */
 
 $this->title ='添加';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Article Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \common\helpers\HeaderActionHelper::$action=[
 0=>['name'=>'列表','url'=>['index']]
 ];
 ?>
-<div class="user-create">
+<div class="article-category-create">
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

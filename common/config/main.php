@@ -7,6 +7,9 @@ $config= [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'formatter'=>[
+            'dateFormat'=>'php:Y-m-d',
+        ],
     ],
     'modules' => [
         'redactor' => [

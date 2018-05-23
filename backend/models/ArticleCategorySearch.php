@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\User;
+use common\models\ArticleCategory;
 
 /**
- * UserSearchModel represents the model behind the search form about `common\models\User`.
+ * ArticleCategorySearch represents the model behind the search form about `common\models\ArticleCategory`.
  */
-class UserSearchModel extends User
+class ArticleCategorySearch extends ArticleCategory
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class UserSearchModel extends User
     public function rules()
     {
         return [
-            [['id', 'phone', 'createtime'], 'integer'],
-            [['level', 'type', 'source'], 'safe'],
+            [['id', 'pid', 'createtime', 'level'], 'integer'],
+            [['name', 'pids'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class UserSearchModel extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = ArticleCategory::find();
 
         // add conditions that should always apply here
 
@@ -60,13 +60,13 @@ class UserSearchModel extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'phone' => $this->phone,
+            'pid' => $this->pid,
             'createtime' => $this->createtime,
+            'level' => $this->level,
         ]);
 
-        $query->andFilterWhere(['like', 'level', $this->level])
-            ->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'source', $this->source]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'pids', $this->pids]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;
