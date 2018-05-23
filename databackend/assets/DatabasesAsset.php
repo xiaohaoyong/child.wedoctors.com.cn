@@ -23,6 +23,8 @@ class DatabasesAsset extends AssetBundle
         'datatables/dataTables.bootstrap4.min.js',
     ];
     public $depends = [
+        'dmstr\web\AdminLteAsset',
+
         'yii\bootstrap\BootstrapAsset',
 
     ];

@@ -14,9 +14,11 @@ use common\helpers\HuanxinUserHelper;
 use common\components\Code;
 use common\components\HttpRequest;
 use common\components\wx\WxBizDataCrypt;
+use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Notice;
 use common\models\User;
+use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\WeOpenid;
@@ -147,6 +149,13 @@ class UserController extends Controller
                 $doctorParent->level = 1;
                 $doctorParent->createtime = time();
                 if ($doctorParent->save() && $weOpenid) {
+                    $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
+                    if($userDoctor)
+                    {
+                        $hospital=$userDoctor->hospitalid;
+                    }
+                    ChildInfo::updateAll(['doctorid'=>$hospital],'userid='.$userid);
+
                     $weOpenid->level = 1;
                     $weOpenid->save();
                     //签约成功 删除签约提醒

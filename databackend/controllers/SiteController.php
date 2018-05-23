@@ -70,13 +70,13 @@ class SiteController extends BaseController
 
 
         //管辖儿童数
-        $child=\common\models\ChildInfo::find()->andFilterWhere(['>','birthday',strtotime('-3 year')]);
+        $child=\common\models\ChildInfo::find()->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')]);
         if(\Yii::$app->user->identity->type != 1)
         {
-            $child->andFilterWhere(['admin'=>\Yii::$app->user->identity->hospital]);
+            $child->andFilterWhere(['child_info.source'=>\Yii::$app->user->identity->hospital]);
         }else{
-            $child->andFilterWhere(['>','admin',0]);
-            $child->andFilterWhere(['not in','admin',[110564,110559]]);
+            $child->andFilterWhere(['>','child_info.source',38]);
+            $child->andFilterWhere(['not in','child_info.source',[110564,110559]]);
 
         }
         $data['childNum']=$child->count();
