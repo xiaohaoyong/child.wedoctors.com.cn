@@ -23,7 +23,6 @@ use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\WeOpenid;
 use common\models\WxInfo;
-use databackend\models\user\ChildInfo;
 
 class UserController extends Controller
 {
