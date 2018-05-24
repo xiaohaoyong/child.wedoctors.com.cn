@@ -67,10 +67,12 @@ class ArticleSearchModel extends Article
             'num' => $this->num,
             'type' => $this->type,
         ]);
-        if(\Yii::$app->user->identity->type != 1)
-        {
-            $query->andFilterWhere(['datauserid'=>\Yii::$app->user->identity->hospital]);
+        if (\Yii::$app->user->identity->type != 1) {
+            $query->andFilterWhere(['datauserid' => \Yii::$app->user->identity->hospital]);
         }
+        if (\Yii::$app->user->identity->hospital != 110564 || \Yii::$app->user->identity->hospital != 110559){
+            $query->andFilterWhere(['not in', 'datauserid', [110564, 110559]]);
+    }
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
         return $dataProvider;
     }
