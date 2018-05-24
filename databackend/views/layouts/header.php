@@ -22,14 +22,14 @@ use yii\helpers\Html;
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="hidden-xs">Alexander Pierce</span>
+                        <span class="hidden-xs">我的</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-right">
                                 <?= Html::a(
-                                    'Sign out',
+                                    '退出',
                                     ['/site/logout'],
                                     ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                 ) ?>

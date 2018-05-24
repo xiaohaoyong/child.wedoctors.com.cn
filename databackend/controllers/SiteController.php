@@ -154,7 +154,7 @@ class SiteController extends BaseController
         if ($model->load(Yii::$app->request->post()) && $model->login()) {      //③
             return $this->goBack();          //④
         }
-        return $this->renderPartial('login', [      //⑤
+        return $this->render('login', [
             'model' => $model,
         ]);
     }

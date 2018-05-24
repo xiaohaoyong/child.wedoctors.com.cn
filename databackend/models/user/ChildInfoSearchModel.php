@@ -88,10 +88,19 @@ class ChildInfoSearchModel extends ChildInfo
             // $query->where('0=1');
             return $dataProvider;
         }
-        if(\Yii::$app->user->identity->type != 1){
-            $query->andFilterWhere(['`child_info`.doctorid'=>\Yii::$app->user->identity->hospital]);
-        }else {
-            $query->andFilterWhere(['not in', '`child_info`.doctorid', [110564, 110559, 110565, 0]]);
+        if(!$this->level) {
+            if (\Yii::$app->user->identity->type != 1) {
+                $query->andFilterWhere(['`child_info`.source' => \Yii::$app->user->identity->hospital]);
+            } else {
+                $query->andFilterWhere(['>', '`child_info`.source', 38]);
+                $query->andFilterWhere(['not in', '`child_info`.source', [110564, 110559, 110565]]);
+            }
+        }else{
+            if (\Yii::$app->user->identity->type != 1) {
+                $query->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospital]);
+            }else{
+                $query->andFilterWhere(['not in', '`child_info`.doctorid', [110564, 110559, 110565, 0]]);
+            }
         }
 
         if($this->level!=1) {
@@ -104,6 +113,7 @@ class ChildInfoSearchModel extends ChildInfo
 
         if($this->level==1)
         {
+
             $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
         }
         if($this->level==3){
