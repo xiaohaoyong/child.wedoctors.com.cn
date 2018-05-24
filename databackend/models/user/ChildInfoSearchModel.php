@@ -89,15 +89,18 @@ class ChildInfoSearchModel extends ChildInfo
             return $dataProvider;
         }
         if(!$this->level) {
-            if (\Yii::$app->user->identity->type != 1) {
-                $query->andFilterWhere(['`child_info`.source' => \Yii::$app->user->identity->hospital]);
+            if (\Yii::$app->user->identity->type != 1 || $this->admin) {
+
+                $hospitalid=$this->admin?$this->admin:\Yii::$app->user->identity->hospital;
+                $query->andFilterWhere(['`child_info`.source' => $hospitalid]);
             } else {
                 $query->andFilterWhere(['>', '`child_info`.source', 38]);
                 $query->andFilterWhere(['not in', '`child_info`.source', [110564, 110559, 110565]]);
             }
         }else{
-            if (\Yii::$app->user->identity->type != 1) {
-                $query->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospital]);
+            if (\Yii::$app->user->identity->type != 1 || $this->admin) {
+                $hospitalid=$this->admin?$this->admin:\Yii::$app->user->identity->hospital;
+                $query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
             }else{
                 $query->andFilterWhere(['not in', '`child_info`.doctorid', [110564, 110559, 110565, 0]]);
             }
@@ -137,12 +140,13 @@ class ChildInfoSearchModel extends ChildInfo
 //        'username' => '联系人姓名',
 //            'userphone' => '联系人电话'
         if ($this->username || $this->userphone) {
+            $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
 
             if ($this->username) {
-                $query->andFilterWhere(['`user_parent`.`mother`' => $this->username]);
+                $query->andWhere(['or',['`user_parent`.`mother`' => $this->username],['`user_parent`.`father`' => $this->username],['`user_parent`.`field11`' => $this->username]]);
             }
             if ($this->userphone) {
-                $query->andFilterWhere(['`user_parent`.`mother_phone`' => $this->userphone]);
+                $query->andWhere(['or',['`user_parent`.`mother_phone`' => $this->userphone],['`user_parent`.`father_phone`' => $this->userphone],['`user_parent`.`field12`' => $this->userphone]]);
 
             }
         }
