@@ -51,9 +51,9 @@ class ChildInfoSearchModel extends ChildInfo
             'level' => '签约',
             'docpartimeS' => '签约时间',
             'docpartimeE' => '~',
-            'username' => '母亲姓名',
+            'username' => '姓名',
             'admin'=>'管理机构',
-            'userphone' => '母亲手机号'
+            'userphone' => '手机号'
         ];
     }
 
