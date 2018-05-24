@@ -621,6 +621,8 @@ class DataController extends Controller
                             $child->birthday = intval(strtotime($row[5]));
                             $child->createtime=time();
                             $child->source=$hospitalid;
+                            $child->doctorid=$hospitalid;
+
                             $child->field54= $row[54];
                             $child->field53= $row[53];
                             $child->field52= $row[52];

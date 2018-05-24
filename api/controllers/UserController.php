@@ -134,7 +134,9 @@ class UserController extends Controller
 
             $childInfo=ChildInfo::find()->andFilterWhere(['userid'=>$userid])->andFilterWhere(['>','source',38])->one();
 
-            $default=$childInfo?$childInfo->source:47156;
+            $doctor=UserDoctor::findOne(['hospitalid'=>$childInfo->source]);
+            $default=$doctor?$doctor->userid:47156;
+
             $doctorid=$default;
 //扫码签约
             $weOpenid = WeOpenid::findOne(['unionid' => $unionid, 'level' => 0]);
