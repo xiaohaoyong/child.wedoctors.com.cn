@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
-        'options' => ['class' => 'form-inline'],
+        'options' => ['id'=>'child','class' => 'form-inline'],
     ]); ?>
     <?php if(\Yii::$app->user->identity->type == 1){?>
 
@@ -35,9 +35,21 @@ use yii\widgets\ActiveForm;
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
+        <?= Html::button('下载', ['id'=>'down','class' => 'btn btn-primary']) ?>
+
         <div class="help-block"></div>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+$updateJs = <<<JS
+    jQuery("#down").click(function () {
+        jQuery("#child").attr('action',"/down/child");    //通过jquery为action属性赋值
+        jQuery("#child").submit();    //提交ID为myform的表单
+    });
+JS;
+$this->registerJs($updateJs);
+?>

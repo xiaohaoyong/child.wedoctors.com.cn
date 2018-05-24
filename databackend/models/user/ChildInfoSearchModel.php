@@ -88,6 +88,10 @@ class ChildInfoSearchModel extends ChildInfo
             // $query->where('0=1');
             return $dataProvider;
         }
+        $query->select('child_info.*,user_parent.*');
+
+        $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
+
         if(!$this->level) {
             if (\Yii::$app->user->identity->type != 1 || $this->admin) {
 
@@ -140,7 +144,6 @@ class ChildInfoSearchModel extends ChildInfo
 //        'username' => '联系人姓名',
 //            'userphone' => '联系人电话'
         if ($this->username || $this->userphone) {
-            $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
 
             if ($this->username) {
                 $query->andWhere(['or',['`user_parent`.`mother`' => $this->username],['`user_parent`.`father`' => $this->username],['`user_parent`.`field11`' => $this->username]]);
