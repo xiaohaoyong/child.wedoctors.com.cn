@@ -64,11 +64,26 @@ class ArticleController extends BaseController
      */
     public function actionTindex()
     {
-        Yii::$app->request->queryParams['ArticleSearchModel']['catid']=6;
         $searchModel = new \databackend\models\article\ArticleSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('tindex', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+
+    /**
+     * Lists all Article models.
+     * @return mixed
+     */
+    public function actionZindex()
+    {
+        $searchModel = new \databackend\models\article\ArticleSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('zindex', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -132,6 +147,53 @@ class ArticleController extends BaseController
         ]);
     }
 
+
+
+    /**
+     * Creates a new Article model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionZhongyi($id=0)
+    {
+        $model=\databackend\models\article\Article::findOne($id);
+        $model=$model?$model:new \databackend\models\article\Article();
+
+        $article=ArticleInfo::findOne($id);
+        $article=$article?$article:new ArticleInfo();
+
+        if($article->load(Yii::$app->request->post())){
+            $model->catid=0;
+            $model->subject_pid=7;
+            $model->type=0;
+            if($model->save())
+            {
+
+                $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($article,'img'));
+                if($imagesFile) {
+                    $upload= new UploadForm();
+                    $upload->imageFiles = $imagesFile;
+                    $image = $upload->upload();
+                    $article->img = $image[0];
+                }
+
+
+                $article->id=$model->id;
+                $article->save();
+
+            }
+        }
+
+        if($model->firstErrors){
+            \Yii::$app->getSession()->setFlash('error', implode(',',$model->firstErrors).implode(',',$article->firstErrors));
+
+        }
+        return $this->render('zhongyi', [
+            'article'=>$article,
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Creates a new Article model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -143,7 +205,8 @@ class ArticleController extends BaseController
         $article= new ArticleInfo();
 
         if ($model->load(Yii::$app->request->post()) && $article->load(Yii::$app->request->post())) {
-
+            $model->catid=0;
+            $model->type=0;
             if($model->save())
             {
                 $article->id=$model->id;

@@ -26,8 +26,8 @@ class Article extends \common\models\Article
     public function rules()
     {
         return [
-            [['catid','child_type','type'], 'required'],
-            [['catid', 'level', 'createtime', 'child_type', 'num', 'type'], 'integer'],
+            [['child_type','type'], 'required'],
+            [['subject','subject_pid','catid', 'level', 'createtime', 'child_type', 'num', 'type'], 'integer'],
         ];
     }
 
@@ -41,6 +41,8 @@ class Article extends \common\models\Article
             'id' => 'ID',
             'catid' => '分类ID',
             'createtime' => '创建时间',
+            'subject' => '子频道',
+            'subject_pid' => '主频道',
             'child_type' => '针对儿童',
             'num' => '宣教次数',
             'type' => '文章类型',

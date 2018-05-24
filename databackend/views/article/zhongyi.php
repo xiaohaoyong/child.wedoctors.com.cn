@@ -7,6 +7,8 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Article */
 /* @var $article common\models\ArticleInfo */
 /* @var $form yii\widgets\ActiveForm */
+$this->title = '中医健康宣教';
+
 ?>
 
 <div class="article-form">
@@ -16,17 +18,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($article, 'title')->textInput() ?>
     <?= $form->field($article, 'ftitle')->textInput()->label('导语') ?>
 
-    <?= $form->field($model, 'subject_pid')->dropDownList(\common\models\ArticleCategory::find()->select('name')->indexBy('id')->where(['pid'=>0])->column(), [
-        'prompt'=>'请选择',
-        'onchange'=>'
-            $("#'.Html::getInputId($model,'subject').'").html(\''.Html::tag('option',Html::encode("请选择"),array('value'=>0)).'\');
-            $.post("'.\yii\helpers\Url::to(['article-category/get']).'?ArticleCategorySearch[pid]="+$(this).val(),function(data){
-                $("#'.Html::getInputId($model,'subject').'").html(data);
-            });',
-    ]) ?>
-    <?= $form->field($model,'subject')->dropDownList(\common\models\ArticleCategory::find()->select('name')->indexBy('id')->where(['pid'=>$model->subject_pid])->column(), ['prompt'=>'请选择'])?>
-
+    <?= $form->field($model,'subject')->dropDownList(\common\models\ArticleCategory::find()->select('name')->indexBy('id')->where(['pid'=>7])->column(), ['prompt'=>'请选择'])?>
     <?= $form->field($model,'child_type')->radioList(\common\models\Article::$childText)?>
+
     <?= $form->field($article, 'img')->fileInput() ?>
     <?php
     if($article->img){
@@ -46,7 +40,6 @@ use yii\widgets\ActiveForm;
             'plugins' => ['clips', 'fontcolor','imagemanager']
         ]
     ]) ?>
-
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
