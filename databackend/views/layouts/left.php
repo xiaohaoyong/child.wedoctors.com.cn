@@ -17,7 +17,12 @@
                             ['label' => '添加', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['article/create'])],
                         ]
                     ],
-
+                    ['label' => '中医宣教','icon' => 'file-text-o','url' => "#",
+                        'items' => [
+                            ['label' => '列表', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[subject]=7'])],
+                            ['label' => '添加', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['article/zhongyi'])],
+                        ]
+                    ],
 
                     ['label' => '发布通知','icon' => 'send','url' => "#",
                         'items' => [
