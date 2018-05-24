@@ -36,6 +36,122 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+
+    public function actionEbb(){
+        $doctorParent=DoctorParent::find()->where(['doctorid'=>47156])->all();
+        foreach($doctorParent as $k=>$v)
+        {
+            echo $v->parentid."===";
+            $userParent=UserParent::findOne(['userid'=>$v->parentid]);
+            if($userParent->source>38)
+            {
+                $doctor=UserDoctor::findOne(['hospitalid'=>$userParent->source]);
+                if($doctor){
+                    echo $doctor->userid;
+                    $v->doctorid=$doctor->userid;
+                    $v->save();
+                }
+            }
+            echo "\n";
+        }
+
+
+        exit;
+        $user=User::find()->where(['soutce'=>1])->all();
+        foreach($user as $k=>$v){
+            $doctorParent =DoctorParent::find()->andFilterWhere(['parentid'=>$v->id])->one();
+            if(!$doctorParent or $doctorParent->level!=1)
+            {
+                echo $v->id."==";
+                $doctorParent=new DoctorParent();
+                $doctorParent->doctorid=47156;
+                $doctorParent->parentid=$v->id;
+                $doctorParent->save();
+            }
+            echo "\n";
+        }
+        exit;
+    }
+    public function actionDoctoridn()
+    {
+        ini_set('memory_limit', '1024M');
+        $doctorParent = DoctorParent::find()->where(['level'=>1])->all();
+        foreach($doctorParent as $k=>$v)
+        {
+            $userDoctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+            if($userDoctor)
+            {
+                $hospital=$userDoctor->hospitalid;
+            }
+            ChildInfo::updateAll(['doctorid'=>$hospital],'userid='.$v->parentid);
+
+            echo $v->doctorid."==";
+            echo $v->parentid."==";
+            echo $hospital;
+            echo "\n";
+        }
+    }
+    public function actionDoctorid()
+    {
+        ini_set('memory_limit', '1024M');
+
+        $child=ChildInfo::find()->andFilterWhere(['>','source',38])->all();
+        foreach($child as $k=>$v)
+        {
+            echo $v->id."==";
+            echo $v->source;
+            $v->doctorid=$v->source;
+            $v->save();
+            echo "\n";
+        }
+    }
+    public function actionArc(){
+
+        $user=User::find()
+            ->andFilterWhere(['`user`.source'=>1])
+            ->leftJoin('child_info', '`child_info`.`userid` = `user`.`id`')
+            ->andWhere(['!=','`child_info`.`userid`','']);
+        $i=0;
+        foreach ($user->all() as $k=>$v){
+            echo $v->id."==";
+            $childInfo=ChildInfo::findOne(['userid'=>$v->id]);
+            $child=ChildInfo::find()->andFilterWhere(['name'=>$childInfo->name])->andFilterWhere(['birthday'=>$childInfo->birthday])
+                ->andFilterWhere(['gender'=>$childInfo->gender])->andFilterWhere(['>','source',38])->one();
+            if($child)
+            {
+                echo $child->name;
+                $i++;
+            }
+            echo "\n";
+        }
+        var_dump($i);exit;
+
+
+    }
+    public function actionArea(){
+        ini_set('memory_limit', '1024M');
+        $child  = ChildInfo::find()->andFilterWhere(['>','source',38])->all();
+        foreach($child as $k=>$v)
+        {
+            echo "userid=>".$v->userid;
+            $doctor=UserDoctor::findOne(['hospitalid'=>$v->source]);
+            if($doctor)
+            {
+                echo ",doctorid=>".$doctor->userid;
+
+                $userParent = UserParent::findOne(['userid'=>$v->userid]);
+                if($userParent)
+                {
+                    $userParent->province   = $doctor->province;
+                    $userParent->city       = $doctor->city;
+                    $userParent->county     = $doctor->county;
+                    echo ",county=>".$userParent->county;
+                    $userParent->save();
+                }
+            }
+            echo "\n";
+        }
+    }
     public function actionUrlPush(){
         $data = [
             'first' => array('value' => "参与社区儿童中医健康指导服务调查问卷，必得现金红包，先到先得\n",),
@@ -389,23 +505,25 @@ class DataController extends Controller
     }
     public function actionSet()
     {
-        $userParent=UserParent::find()->andFilterWhere(['userid'=>49015])->andFilterWhere(['>','userid',47388])->andFilterWhere(['>','source',38])->all();
+        ini_set('memory_limit', '1024M');
+
+        $userParent=UserParent::find()->andFilterWhere(['>','source',38])->all();
         foreach($userParent as $k=>$v)
         {
-            echo "parentid=".$v->userid.",";
-            $userid=UserDoctor::findOne(['hospitalid'=>$v->source])->userid;
-            echo "doctorid=".$userid.",";
-            if($userid) {
-                $doctorParent = DoctorParent::findOne(['doctorid'=>$userid,'parentid'=>$v->userid]);
-                if(!$doctorParent)
-                {
-                    $doctorP=new DoctorParent();
-                    $doctorP->doctorid=$userid;
-                    $doctorP->parentid=$v->userid;
-                    $doctorP->level=-1;
-                    if($doctorP->save()) {
+            echo "parentid=" . $v->userid . ",";
+            $doctorParent = DoctorParent::findOne(['parentid'=>$v->userid]);
+            if(!$doctorParent) {
+                $userid = UserDoctor::findOne(['hospitalid' => $v->source])->userid;
+                echo "doctorid=" . $userid . ",";
+                if ($userid) {
+
+                    $doctorP = new DoctorParent();
+                    $doctorP->doctorid = $userid;
+                    $doctorP->parentid = $v->userid;
+                    $doctorP->level = -1;
+                    if ($doctorP->save()) {
                         echo "成功\n";
-                    }else{
+                    } else {
                         var_dump($doctorP->firstErrors);
                         echo "\n";
                     }
@@ -462,7 +580,6 @@ class DataController extends Controller
                     $user->phone = $phone;
                     $user->source = 2;
                     $user->type = 1;
-                    $user->createtime=time();
                     echo $user->id."====";
                     if($user->save())
                     {
@@ -582,6 +699,40 @@ class DataController extends Controller
     }
     public function actionTest()
     {
+        $list = DoctorParent::find()->andFilterWhere(['level'=>1])->andFilterWhere(['doctorid'=>0])->all();
+        foreach($list as $k=>$v)
+        {
+            echo $v->parentid;
+//            $doctorParent=DoctorParent::find()->where(['>','doctorid',0])->andFilterWhere(['parentid'=>$v->parentid])->all();
+//            if(count($doctorParent)==1)
+//            {
+//                $v->doctorid=$doctorParent[0]->doctorid;
+//                $v->save();
+//                $doctorParent[0]->delete();
+//                echo "==del";
+//            }
+            $childInfo = ChildInfo::findOne(['userid'=>$v->parentid]);
+            if($childInfo->source)
+            {
+                $doctor=UserDoctor::findOne(['hospitalid'=>$childInfo->source]);
+                if($doctor) {
+                    $v->doctorid =$doctor->userid;
+                    $v->save();
+                }
+                if($childInfo->source==38)
+                {
+                    $v->doctorid =38;
+                    $v->save();
+                }
+
+            }else{
+                $v->doctorid =47156;
+                $v->save();
+            }
+            echo "\n";
+        }
+
+
         $return = \Yii::$app->beanstalk
             ->putInTube('push', ['artid'=>301,'userids'=>[49074]]);
         var_dump($return);exit;

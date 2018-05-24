@@ -11,7 +11,12 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'databackend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+            'layout' => 'left-menu',//yii2-admin的导航菜单
+        ]
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-databackend',
@@ -44,6 +49,12 @@ return [
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
+    ],'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            '*'
+
+        ]
     ],
     'language'=>'zh-CN',
     'params' => $params,

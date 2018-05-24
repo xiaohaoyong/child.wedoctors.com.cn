@@ -13,6 +13,7 @@ use Yii;
  * @property int $createtime
  * @property int $gender 1男2女
  * @property int $source 导入来源医院ID
+ * @property int $doctorid 所属医院ID
  * @property string $field54 新建地点
  * @property string $field53 其他遗传代谢病
  * @property string $field52 新生儿疾病筛查耳
@@ -86,6 +87,7 @@ class ChildInfo extends \yii\db\ActiveRecord
             'createtime' => 'Createtime',
             'gender' => '1男2女',
             'admin'=>'管理机构',
+            'doctorid'=>'所属医院ID',
             'source' => '导入来源医院ID',
             'field54' => '新建地点',
             'field53' => '其他遗传代谢病',

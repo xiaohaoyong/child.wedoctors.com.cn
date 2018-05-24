@@ -18,7 +18,7 @@ class ChildInfo extends \common\models\ChildInfo
     {
         if(\Yii::$app->user->identity->type != 1)
         {
-            return parent::find()->andFilterWhere(['source'=>\Yii::$app->user->identity->hospital]);
+            return parent::find()->andFilterWhere(['`child_info`.source'=>\Yii::$app->user->identity->hospital]);
         }
         return parent::find();
     }

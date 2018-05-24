@@ -54,12 +54,11 @@ class UserDoctorController extends BaseController
      */
     public function actionIndex()
     {
-        $searchModel = new \databackend\models\user\UserDoctorSearchModel();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $doctor=UserDoctor::find()->andFilterWhere(['county'=>1102])->andFilterWhere(['>','userid',37])->all();
+
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'doctor' => $doctor,
         ]);
     }
 

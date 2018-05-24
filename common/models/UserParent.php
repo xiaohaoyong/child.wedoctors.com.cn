@@ -25,6 +25,9 @@ use Yii;
  * @property string $field12 联系人电话
  * @property string $field11 联系人姓名
  * @property string $field1 户口
+ * @property integer $province
+ * @property string $county
+ * @property integer $city
  */
 class UserParent extends \yii\db\ActiveRecord {
 
@@ -41,7 +44,7 @@ class UserParent extends \yii\db\ActiveRecord {
     public function rules() {
         return [
            // [['userid', 'mother', 'mother_phone', 'father'], 'required'],
-            [['userid', 'mother_phone', 'father_phone'], 'integer'],
+            [['userid', 'mother_phone', 'father_phone','province','county','city'], 'integer'],
         ];
     }
 
@@ -71,6 +74,7 @@ class UserParent extends \yii\db\ActiveRecord {
             'field12' => '联系人电话',
             'field11' => '联系人姓名',
             'field1' => '户口',
+            'province' => '省', 'county' => '县', 'city' => '市',
         ];
     }
     public function getChild()
