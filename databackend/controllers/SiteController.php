@@ -36,6 +36,9 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+
+        $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital])->userid;
+
         //今日签约数
         $today=strtotime(date('Y-m-d 00:00:00'));
         $month=strtotime(date('Y-m-01 00:00:00'));
@@ -54,7 +57,6 @@ class SiteController extends BaseController
         $childQuery->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
         $childQuery->andFilterWhere(['`doctor_parent`.`level`' => 1]);
         if(\Yii::$app->user->identity->hospital) {
-            $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital])->userid;
             $childQuery->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid]);
         }else{
             $childQuery->andFilterWhere(['not in','`doctor_parent`.`doctorid`',[47118,39889,47156]]);
@@ -104,12 +106,16 @@ class SiteController extends BaseController
             $childQuery=\common\models\ChildInfo::find()
                 ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                 ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-                ->andFilterWhere(['>','`doctor_parent`.createtime',$st])->andFilterWhere(['<','`doctor_parent`.createtime',$end])
-                ->andFilterWhere(['not in','`doctor_parent`.`doctorid`',[47118,39889,47156]])
-                ->count();
+                ->andFilterWhere(['>','`doctor_parent`.createtime',$st])->andFilterWhere(['<','`doctor_parent`.createtime',$end]);
+                if(\Yii::$app->user->identity->type != 1)
+                {
+                    $childQuery->andFilterWhere(['doctor_parent.doctorid'=>$doctorid]);
+                }else{
+                    $childQuery ->andFilterWhere(['not in','`doctor_parent`.`doctorid`',[47118,39889,47156]]);
+                }
 
             //$rs['item1']=ArticleUser::find()->andFilterWhere(['>','createtime',$st])->andFilterWhere(['<','createtime',$end])->count();
-            $rs['item1']=$childQuery;
+            $rs['item1']=$childQuery->count();
 
             $rs['day']=$date;
             $line_data[]=$rs;

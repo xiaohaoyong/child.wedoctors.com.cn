@@ -149,6 +149,7 @@ databackend\assets\IndexAsset::register($this);
     </div>
 
 </div>
+<?php if(\Yii::$app->user->identity->type == 1){?>
 <div class="row">
     <div class="col-lg-12">
         <div class="box">
@@ -242,8 +243,10 @@ databackend\assets\IndexAsset::register($this);
         <!-- /.box -->
     </div>
 </div>
+<?php }?>
 <div>
 
+    <?php if(\Yii::$app->user->identity->type == 1){?>
 
     <?php
     $updateJs = <<<JS
@@ -264,6 +267,8 @@ JS;
     $this->registerJs($updateJs);
 
     ?>
+    <?php }?>
+
     <script>
         var line_data=<?=json_encode($line_data)?>;
 
