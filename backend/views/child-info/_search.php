@@ -15,9 +15,12 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
-    <?= $form->field($model, 'admin')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->column(),['prompt'=>'请选择']) ?>
+    <?php if(\Yii::$app->user->identity->type == 1){?>
 
-    <?= $form->field($model, 'level')->dropdownList(\common\models\DoctorParent::$levelText,['prompt'=>'请选择']) ?>
+        <?= $form->field($model, 'admin')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->andFilterWhere(['>','userid','37'])->andFilterWhere(['county'=>'1102'])->column(),['prompt'=>'请选择']) ?>
+    <?php }?>
+
+    <?= $form->field($model, 'level')->dropdownList([1=>'已签约',2=>'已签约未关联',3=>'未签约'],['prompt'=>'请选择']) ?>
     <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true

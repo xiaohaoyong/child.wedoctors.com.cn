@@ -89,29 +89,28 @@ class ChildInfoSearchModel extends ChildInfo
             // $query->where('0=1');
             return $dataProvider;
         }
-        if (($this->level!=='' and $this->level!==null) || ($this->docpartimeS!=='' and $this->docpartimeS!==null)) {
+        if($this->admin) {
+            $query->andFilterWhere(['`child_info`.`doctorid`' => $this->admin]);
+        }
+
+        if ($this->level || ($this->docpartimeS!=='' and $this->docpartimeS!==null)) {
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
         }
 
-        //管理机构
-        if($this->admin)
-        {
-            $hospital=$this->admin;
-        }else {
-            $hospital=0;
-        }
-        if($hospital && !$this->level) {
-            // grid filtering conditions
-            $query->andFilterWhere(['source' => $hospital,]);
-        }
-        if($this->level!=='' and $this->level!==null)
+        if($this->level==1)
         {
             $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
-            if($hospital) {
-                $doctorid = UserDoctor::findOne(['hospitalid' => $hospital])->userid;
-                $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid]);
-            }
         }
+        if($this->level==3){
+            $query->andWhere(['or',['<>','`doctor_parent`.`level`' ,1],['`doctor_parent`.`parentid`'=>null]]);
+        }
+
+
+        if($this->level==2)
+        {
+            $query->andFilterWhere(['<=','`child_info`.`source`',38]);
+        }
+
         if($this->docpartimeS!=='' and $this->docpartimeS!==null){
             $state = strtotime($this->docpartimeS . " 00:00:00");
             $end = strtotime($this->docpartimeE . " 23:59:59");
@@ -120,21 +119,25 @@ class ChildInfoSearchModel extends ChildInfo
         }
 
 
-        //        'username' => '联系人姓名',
-        //            'userphone' => '联系人电话'
+//        'username' => '联系人姓名',
+//            'userphone' => '联系人电话'
         if ($this->username || $this->userphone) {
             $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
 
             if ($this->username) {
-                $query->andFilterWhere(['`user_parent`.`mother`' => $this->username]);
+                $query->andWhere(['or',['`user_parent`.`mother`' => $this->username],['`user_parent`.`father`' => $this->username],['`user_parent`.`field11`' => $this->username]]);
             }
             if ($this->userphone) {
-                $query->andFilterWhere(['`user_parent`.`mother_phone`' => $this->userphone]);
+                $query->andWhere(['or',['`user_parent`.`mother_phone`' => $this->userphone],['`user_parent`.`father_phone`' => $this->userphone],['`user_parent`.`field12`' => $this->userphone]]);
 
             }
         }
-        $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+        if($this->level==1) {
+            $query->orderBy('`doctor_parent`.createtime desc');
 
+        }else {
+            $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+        }
 
         //var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;

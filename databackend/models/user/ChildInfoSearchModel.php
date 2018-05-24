@@ -150,8 +150,12 @@ class ChildInfoSearchModel extends ChildInfo
 
             }
         }
-        $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+        if($this->level==1) {
+            $query->orderBy('`doctor_parent`.createtime desc');
 
+        }else {
+            $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+        }
 
         //var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
