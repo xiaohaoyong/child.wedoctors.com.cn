@@ -99,7 +99,7 @@ class User extends \yii\db\ActiveRecord {
 
             //用户登录信息
             $userL=UserLogin::findOne(['userid'=>$this->id]);
-            if($child)
+            if($userL)
             {
                 UserLogin::deleteAll(['userid'=>$this->id]);
             }
