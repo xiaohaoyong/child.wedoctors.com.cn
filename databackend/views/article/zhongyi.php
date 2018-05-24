@@ -12,7 +12,10 @@ $this->title = '中医健康宣教';
 ?>
 
 <div class="article-form">
-
+    <div class="col-xs-12">
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($article, 'title')->textInput() ?>
@@ -46,4 +49,7 @@ $this->title = '中医健康宣教';
 
     <?php ActiveForm::end(); ?>
 
+</div>
+        </div>
+    </div>
 </div>
