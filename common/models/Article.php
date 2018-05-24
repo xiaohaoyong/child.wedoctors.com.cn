@@ -81,7 +81,7 @@ class Article extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['catid'], 'required'],
+            [['subject_pid','subject'], 'required'],
             [['catid', 'level', 'createtime', 'child_type', 'num', 'type','art_type','subject','subject_pid'], 'integer'],
         ];
     }

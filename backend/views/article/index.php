@@ -31,10 +31,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'catid',
+                'attribute' => 'subject_pid',
                 'value' => function($e)
                 {
-                    return \common\models\Article::$catText[$e->catid];
+                    return \common\models\ArticleCategory::findOne([$e->subject_pid])->name;
+                }
+            ],
+            [
+                'attribute' => 'subject',
+                'value' => function($e)
+                {
+                    return \common\models\ArticleCategory::findOne([$e->subject])->name;
                 }
             ],
             [

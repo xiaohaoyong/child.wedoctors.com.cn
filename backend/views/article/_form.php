@@ -15,8 +15,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($article, 'title')->textInput() ?>
 
-    <?= $form->field($model,'catid')->radioList(\common\models\Article::$catText)?>
-
     <?= $form->field($model, 'subject_pid')->dropDownList(\common\models\ArticleCategory::find()->select('name')->indexBy('id')->where(['pid'=>0])->column(), [
         'prompt'=>'请选择',
         'onchange'=>'

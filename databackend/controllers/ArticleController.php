@@ -100,6 +100,8 @@ class ArticleController extends BaseController
 
         if($article->load(Yii::$app->request->post())){
             $model->catid=6;
+            $model->subject=0;
+            $model->subject_pid=0;
             $model->type=6;
             $model->child_type=0;
             if($model->save())
