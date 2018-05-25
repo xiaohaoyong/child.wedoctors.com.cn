@@ -9,6 +9,9 @@
 namespace databackend\controllers;
 
 
+use common\models\Article;
+use common\models\ArticleInfo;
+use common\models\ArticleUser;
 use databackend\models\user\ChildInfoSearchModel;
 use databackend\models\user\DoctorParent;
 
@@ -56,7 +59,7 @@ class DownController extends BaseController
             ->setCellValue('O'.$key1, '宣教内容')
             ->setCellValue('P'.$key1, '宣教时间');
 //写入内容
-        foreach($dataProvider->query->asArray()->all() as $k=>$v) {
+        foreach($dataProvider->query->limit(200)->asArray()->all() as $k=>$v) {
             $e=$v;
             $sign = DoctorParent::findOne(['parentid'=>$v['userid']]);
 
@@ -80,24 +83,43 @@ class DownController extends BaseController
                 }
             }
 
+            $article=ArticleUser::findAll(['touserid'=>$v['userid']]);
+
+            $date='';
+            $child_type='';
+            $title='';
+
+            if($article) {
+                foreach ($article as $ak => $av) {
+                    $date.="，".date('Y-m-d',$av->createtime);
+                    $child_type.="，".Article::$childText[$av->child_type];
+                    $articleInfo=ArticleInfo::findOne(['id'=>$av->artid]);
+                    $title.=$articleInfo?"，".$articleInfo->title:"";
+                }
+                $is_article="是";
+            }else{
+                $is_article="否";
+            }
+
+
             $key1 = $k + 2;
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $key1, $v['name'])
-                ->setCellValue('B' . $key1, \common\models\User::findOne($v['userid'])->phone)
+                ->setCellValue('B' . $key1, " ".\common\models\User::findOne($v['userid'])->phone)
                 ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                 ->setCellValue('D' . $key1, $age)
                 ->setCellValue('E' . $key1, $v['mother'] || $v['father']?$v['mother']."/".$v['father']:"无")
-                ->setCellValue('F' . $key1, $v['mother_phone'] ? $v['mother_phone'] : "无")
-                ->setCellValue('G' . $key1, $v['father_phone'] ?  $v['father_phone'] : "无")
+                ->setCellValue('F' . $key1, $v['mother_phone'] ? " ".$v['mother_phone'] : "无")
+                ->setCellValue('G' . $key1, $v['father_phone'] ?  " ".$v['father_phone'] : "无")
                 ->setCellValue('H' . $key1, $v['field11'] ? $v['field11'] : "无")
-                ->setCellValue('I' . $key1, $v['field12'] ? $v['field12'] : "无")
-                ->setCellValue('J' . $key1, $file3=$sign->level==1 ? \common\models\UserDoctor::findOne(['userid'=>$v['userid']])->name : "--")
+                ->setCellValue('I' . $key1, $v['field12'] ? " ".$v['field12'] : "无")
+                ->setCellValue('J' . $key1, $sign->level==1 ? \common\models\UserDoctor::findOne(['userid'=>$sign->doctorid])->name : "--")
                 ->setCellValue('K' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
                 ->setCellValue('L' . $key1, $return)
-                ->setCellValue('M' . $key1, '是否宣教')
-                ->setCellValue('N' . $key1, '宣教月龄')
-                ->setCellValue('O' . $key1, '宣教内容')
-                ->setCellValue('P' . $key1, '宣教时间');
+                ->setCellValue('M' . $key1, $is_article)
+                ->setCellValue('N' . $key1, $child_type)
+                ->setCellValue('O' . $key1, $title)
+                ->setCellValue('P' . $key1, $date);
         }
         // $objPHPExcel->setActiveSheetIndex(0);
 
@@ -105,7 +127,7 @@ class DownController extends BaseController
         ob_start();
 
         header('Content-Type : application/vnd.ms-excel');
-        header('Content-Disposition:attachment;filename="-儿童中医药健康管理服务表-'.date("Y年m月j日").'.xls"');
+        header('Content-Disposition:attachment;filename="儿童中医药健康管理服务表-'.date("Y年m月j日").'.xls"');
         $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
         $objWriter->save('php://output');
     }

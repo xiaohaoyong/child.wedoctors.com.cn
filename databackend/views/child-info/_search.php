@@ -49,6 +49,42 @@ $updateJs = <<<JS
     jQuery("#down").click(function () {
         jQuery("#child").attr('action',"/down/child");    //通过jquery为action属性赋值
         jQuery("#child").submit();    //提交ID为myform的表单
+        alert("点击确定开始下载，请勿刷新或关闭窗口（目前最多下载200条数据）");
+
+         // if ("WebSocket" in window)
+         //    {
+         //       alert("您的浏览器支持 WebSocket!");
+         //      
+         //       // 打开一个 web socket
+         //       var ws = new WebSocket("ws://127.0.0.1:8081/");
+         //       
+         //       ws.onopen = function()
+         //       {
+         //           ws.send('测试');
+         //           console.log("测试");
+         //       };
+         //       
+         //       ws.onmessage = function (evt) 
+         //       { 
+         //          var received_msg = evt.data;
+         //          alert("数据已接收...");
+         //       };
+         //       
+         //       ws.onclose = function()
+         //       { 
+         //          // 关闭 websocket
+         //          alert("连接已关闭..."); 
+         //       };
+         //    }
+         //   
+         //    else
+         //    {
+         //       // 浏览器不支持 WebSocket
+         //       alert("您的浏览器不支持 WebSocket!");
+         //    }
+        
+        
+        
     });
 JS;
 $this->registerJs($updateJs);
