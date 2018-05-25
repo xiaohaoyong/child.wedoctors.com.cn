@@ -19,7 +19,7 @@
                     ],
                     ['label' => '中医知识库','icon' => 'file-text-o','url' => "#",
                         'items' => [
-                            ['label' => '列表', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[subject]=7'])],
+                            ['label' => '列表', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[subject_pid]=7'])],
                             ['label' => '添加', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['article/zhongyi'])],
                         ]
                     ],
