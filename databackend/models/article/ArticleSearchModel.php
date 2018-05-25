@@ -37,7 +37,7 @@ class ArticleSearchModel extends Article
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$is_z=1)
     {
         $query = Article::find();
 
@@ -67,6 +67,13 @@ class ArticleSearchModel extends Article
             'num' => $this->num,
             'type' => $this->type,
         ]);
+
+        if($is_z!=1)
+        {
+            $query->andFilterWhere(['!=', 'subject_pid', 7]);
+
+        }
+
         if (\Yii::$app->user->identity->type != 1) {
             $query->andFilterWhere(['datauserid' => \Yii::$app->user->identity->hospital]);
         }

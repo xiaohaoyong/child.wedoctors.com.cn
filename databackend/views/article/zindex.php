@@ -7,13 +7,11 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\ArticleSearchModel */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '通知';
+$this->title = '中医知识库';
 $this->params['breadcrumbs'][] = $this->title;
-\common\helpers\HeaderActionHelper::$action=[
-0=>['name'=>'添加指导','url'=>['zhongyi']]
-];
 ?>
 <div class="article-index">
+
     <div class="col-xs-12">
         <div class="box">
             <!-- /.box-header -->
@@ -21,16 +19,37 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
                         <?= GridView::widget([
+                            'options'=>['class' => 'col-sm-12'],
                             'dataProvider' => $dataProvider,
-
                             'columns' => [
 
                                 'id',
                                 [
-                                    'attribute' => '通知标题',
+                                    'attribute' => '标题',
                                     'value' => function($e)
                                     {
                                         return $e->info->title;
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'subject_pid',
+                                    'value' => function($e)
+                                    {
+                                        return \common\models\ArticleCategory::findOne([$e->subject_pid])->name;
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'subject',
+                                    'value' => function($e)
+                                    {
+                                        return \common\models\ArticleCategory::findOne([$e->subject])->name;
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'child_type',
+                                    'value' => function($e)
+                                    {
+                                        return \common\models\Article::$childText[$e->child_type];
                                     }
                                 ],
                                 [
@@ -49,12 +68,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <ul class="dropdown-menu pull-right" role="menu">
                         <li>{update} </li><li>{delete}</li>
                     </ul>
-                </div>',
-                                    'buttons'=>[
-                                        'update'=>function($url,$model,$key){
-                                            return Html::a('<span class="fa fa-database"></span> 修改',\yii\helpers\Url::to(['article/zhongyi','id'=>$model->id]));
-                                        },
-                                    ],
+                </div>
+                ',
                                 ],
                             ],
                         ]); ?>
