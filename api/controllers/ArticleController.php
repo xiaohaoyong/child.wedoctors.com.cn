@@ -68,7 +68,7 @@ class ArticleController extends Controller
         $article=Article::findOne($id);
         if(!$article) {
 
-            $article=$article::findOne(301);
+            $article=Article::findOne(311);
 
         }
         $row=$article->toArray();
