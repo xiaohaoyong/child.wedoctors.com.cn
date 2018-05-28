@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\ArticleSearchModel */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '中医知识库';
+$this->title = '中医指导库';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="article-index">

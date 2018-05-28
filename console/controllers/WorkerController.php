@@ -55,7 +55,6 @@ class WorkerController extends BeanstalkController
         if($article)
         {
             foreach($userids as $k=>$v) {
-                echo $v."\n";
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
                     $rs=WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['zhidao'],'',$miniprogram);
