@@ -66,8 +66,11 @@ class ArticleController extends Controller
 
     public function actionView($id){
         $article=Article::findOne($id);
-        if($article)
-        {
+        if(!$article) {
+
+            $article=$article::findOne(301);
+
+        }
             $row=$article->toArray();
             $row['createtime']=date('Y-m-d',$row['createtime']);
             $row['info']=$article->info->toArray();
@@ -88,7 +91,7 @@ class ArticleController extends Controller
                 $article_user->save();
             }
 
-        }
+
         return $row;
     }
     public function actionLike($artid){
