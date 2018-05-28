@@ -30,7 +30,7 @@ databackend\assets\DatabasesAsset::register($this);
                         <th>今日宣教</th>
                         <th>已宣教数</th>
                         <th>管理服务率</th>
-                        <th>规范化</th>
+                        <th>数据</th>
                     </tr>
                     </thead>
                     <tbody>
