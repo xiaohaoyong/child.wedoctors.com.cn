@@ -749,7 +749,7 @@ class DataController extends Controller
 
 
         $return = \Yii::$app->beanstalk
-            ->putInTube('push', ['artid'=>301,'userids'=>[49074]]);
+            ->putInTube('push', ['artid'=>301,'userids'=>[49106]]);
         var_dump($return);exit;
 
         //ChatRecord::updateAll(['read'=>1],['touserid'=>18486,'userid'=>4146]);
