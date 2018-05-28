@@ -38,6 +38,8 @@ return [
             'frontend/web/assets',
             'databackend/runtime',
             'databackend/web/assets',
+            'hospital/runtime',
+            'hospital/web/assets',
             'weixin/runtime',
             'weixin/web/assets',
             'api/runtime',
@@ -50,6 +52,7 @@ return [
         'setCookieValidationKey' => [
             'backend/config/main-local.php',
             'databackend/config/main-local.php',
+            'hospital/config/main-local.php',
 
             'frontend/config/main-local.php',
             'weixin/config/main-local.php',
@@ -66,6 +69,8 @@ return [
             'frontend/web/assets',
             'databackend/runtime',
             'databackend/web/assets',
+            'hospital/runtime',
+            'hospital/web/assets',
             'weixin/runtime',
             'weixin/web/assets',
             'api/runtime',
@@ -78,6 +83,7 @@ return [
             'backend/config/main-local.php',
             'frontend/config/main-local.php',
             'databackend/config/main-local.php',
+            'hospital/config/main-local.php',
 
             'weixin/config/main-local.php',
             'api/config/main-local.php',

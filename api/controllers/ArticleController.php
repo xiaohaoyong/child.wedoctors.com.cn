@@ -66,29 +66,32 @@ class ArticleController extends Controller
 
     public function actionView($id){
         $article=Article::findOne($id);
-        if($article)
-        {
-            $row=$article->toArray();
-            $row['createtime']=date('Y-m-d',$row['createtime']);
-            $row['info']=$article->info->toArray();
-            $row['info']['source']=$row['info']['source']?$row['info']['source']:"儿宝宝";
+        if(!$article) {
 
-            $like=ArticleLike::find()->andFilterWhere(['artid'=>$id]);
-            $row['likeNum']=$like->count();
-            $row['isLike']=$like->andFilterWhere(['userid'=>$this->userid])->one()?1:0;
-
-            if (!ArticleLog::findOne(['userid' => $this->userid, 'artid' => $id])) {
-                $article_log = new ArticleLog();
-                $article_log->userid = $this->userid;
-                $article_log->artid = $id;
-                $article_log->save();
-            }
-            if ($article_user = ArticleUser::findOne(['touserid' => $this->userid, 'artid' => $id])) {
-                $article_user->level = 2;
-                $article_user->save();
-            }
+            $article=$article::findOne(301);
 
         }
+        $row=$article->toArray();
+        $row['createtime']=date('Y-m-d',$row['createtime']);
+        $row['info']=$article->info->toArray();
+        $row['info']['source']=$row['info']['source']?$row['info']['source']:"儿宝宝";
+
+        $like=ArticleLike::find()->andFilterWhere(['artid'=>$id]);
+        $row['likeNum']=$like->count();
+        $row['isLike']=$like->andFilterWhere(['userid'=>$this->userid])->one()?1:0;
+
+        if (!ArticleLog::findOne(['userid' => $this->userid, 'artid' => $id])) {
+            $article_log = new ArticleLog();
+            $article_log->userid = $this->userid;
+            $article_log->artid = $id;
+            $article_log->save();
+        }
+        if ($article_user = ArticleUser::findOne(['touserid' => $this->userid, 'artid' => $id])) {
+            $article_user->level = 2;
+            $article_user->save();
+        }
+
+
         return $row;
     }
     public function actionLike($artid){
