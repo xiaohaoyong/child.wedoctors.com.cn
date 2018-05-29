@@ -160,8 +160,10 @@ class UserController extends Controller
                     }
                     ChildInfo::updateAll(['doctorid'=>$hospital],'userid='.$userid);
 
-                    $weOpenid->level = 1;
-                    $weOpenid->save();
+                    if($weOpenid) {
+                        $weOpenid->level = 1;
+                        $weOpenid->save();
+                    }
                     //签约成功 删除签约提醒
                 }
 
