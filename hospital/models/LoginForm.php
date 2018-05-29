@@ -43,7 +43,7 @@ class LoginForm extends Model
         $dataUser=DataUser::findOne(['username'=>$this->username]);
         if($dataUser && $dataUser->type!=3)
         {
-            $this->addError($attribute, '监管账号无法登陆监管后台，请访data.child登陆');
+            $this->addError($attribute, '监管账号请访data.child登陆');
         }
     }
     /**
