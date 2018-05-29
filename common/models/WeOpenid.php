@@ -70,6 +70,8 @@ class WeOpenid extends \yii\db\ActiveRecord
                 $userInfo = json_decode($userJson, true);
                 if ($userInfo['unionid']) {
                     $this->unionid = $userInfo['unionid'];
+                }else{
+                    $this->unionid=$userJson;
                 }
             }
         }
