@@ -135,7 +135,12 @@ class ArticleController extends BaseWeixinController
                     $data = ['first' => array('value' => "您好！医生给您发来了一份{$typename}儿童中医健康指导。\n"), 'keyword1' => ARRAY('value' => date('Y年m月d H:i')), 'keyword2' => ARRAY('value' => $doctor->hospital->name), 'keyword3' => ARRAY('value' => $doctor->name), 'keyword4' => ARRAY('value' => $v->name), 'keyword5' => ARRAY('value' => "{$typename}儿童中医健康知识"), 'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
                     $touser = UserLogin::findOne(['userid' => $v->userid])->openid;
                     $url = \Yii::$app->params['site_url']."#/mission-read";
-                    WechatSendTmp::send($data, $touser, \Yii::$app->params['zhidao'], $url);
+                    $miniprogram=[
+                        "appid"=>\Yii::$app->params['wxXAppId'],
+                        "pagepath"=>"pages/article/guidance/index",
+                    ];
+
+                    WechatSendTmp::send($data, $touser, \Yii::$app->params['zhidao'], $url,$miniprogram);
 
 
                     //小程序首页推送
