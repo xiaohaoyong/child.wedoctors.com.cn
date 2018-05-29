@@ -1,15 +1,12 @@
 <?php
 namespace databackend\controllers;
 
-use databackend\models\article\ArticleUser;
-use databackend\models\user\ChildInfo;
-use databackend\models\user\DoctorParent;
-use databackend\models\user\UserDoctor;
+use common\models\ArticleUser;
+use common\models\ChildInfo;
+use common\models\UserDoctor;
 use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use common\models\LoginForm;
+use yii\helpers\ArrayHelper;
 
 /**
  * Site controller
@@ -38,50 +35,37 @@ class SiteController extends BaseController
     {
 
         $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital])->userid;
+        $hospitalids=ArrayHelper::getColumn($this->doctor,'hospitalid');
+        $doctorids=ArrayHelper::getColumn($this->doctor,'userid');
 
         //今日签约数
         $today=strtotime(date('Y-m-d 00:00:00'));
         $month=strtotime(date('Y-m-01 00:00:00'));
-        $doctorParent=DoctorParent::find()->select('parentid')->andFilterWhere([">",'createtime',$today])->andFilterWhere(['level'=>1])->column();
-        if($doctorParent) {
-            $data['todayNum'] = \common\models\ChildInfo::find()->andFilterWhere(['in', 'userid', $doctorParent])->count();
-        }else{
-            $data['todayNum']=0;
-        }
 
-        //管理儿童数
-        $doctorParentTotal=DoctorParent::find()->select('parentid')->andFilterWhere(['level'=>1])->column();
 
-        //管理儿童数
-        $childQuery=\common\models\ChildInfo::find();
-        $childQuery->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
-        $childQuery->andFilterWhere(['`doctor_parent`.`level`' => 1]);
-        if(\Yii::$app->user->identity->hospital) {
-            $childQuery->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid]);
-        }else{
-            $childQuery->andFilterWhere(['not in','`doctor_parent`.`doctorid`',[47118,39889,47156]]);
-        }
-        $doctorParentTotal = $childQuery->count();
 
-        if($doctorParentTotal) {
-            $data['todayNumTotal'] =$doctorParentTotal;
-        }else{
-            $data['todayNumTotal']=0;
-        }
+        //今日签约数
+        $data['todayNum']=ChildInfo::find()
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->andFilterWhere(['in','`doctor_parent`.`doctorid`' ,$doctorids])
+            ->andFilterWhere([">",'`doctor_parent`.createtime',$today])
+            ->count();
 
+        //签约儿童总数
+        $data['todayNumTotal']=ChildInfo::find()
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->andFilterWhere(['in','`doctor_parent`.`doctorid`' ,$doctorids])
+            ->count();
 
 
         //管辖儿童数
-        $child=\common\models\ChildInfo::find()->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')]);
-        if(\Yii::$app->user->identity->type != 1)
-        {
-            $child->andFilterWhere(['child_info.source'=>\Yii::$app->user->identity->hospital]);
-        }else{
-            $child->andFilterWhere(['>','child_info.source',38]);
-            $child->andFilterWhere(['not in','child_info.source',[110564,110559]]);
+        $data['childNum']=ChildInfo::find()
+            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+            ->andFilterWhere(['in','child_info.source',$hospitalids])
+            ->count();
 
-        }
-        $data['childNum']=$child->count();
         //签约率
         if($data['childNum']) {
             $data['baifen'] = round(($data['todayNumTotal'] / $data['childNum']) * 100,1);
@@ -90,12 +74,20 @@ class SiteController extends BaseController
         }
 
         //宣教总次数
-        $data['articleNum']=ArticleUser::find()->andFilterWhere(['not in','`userid`',[47118,39889,47156]])->count();
+        $data['articleNum']=ArticleUser::find()
+            ->andFilterWhere(['in','article_user.userid' ,$doctorids])
+            ->count();
 
-        $data['articleNumToday']=ArticleUser::find()->andFilterWhere(['>','createtime',$today])->andFilterWhere(['not in','`userid`',[47118,39889,47156]])->count('distinct childid');
-        $data['articleNumMonth']=ArticleUser::find()->andFilterWhere(['>','createtime',$month])->andFilterWhere(['not in','`userid`',[47118,39889,47156]])->count('distinct childid');
+        $data['articleNumToday']=ArticleUser::find()
+            ->andFilterWhere(['>','createtime',$today])
+            ->andFilterWhere(['in','article_user.userid' ,$doctorids])
+            ->count('distinct childid');
+        $data['articleNumMonth']=ArticleUser::find()
+            ->andFilterWhere(['>','createtime',$month])
+            ->andFilterWhere(['in','article_user.userid' ,$doctorids])
+            ->count('distinct childid');
 
-        $data['articleNoMonth']=$doctorParentTotal-$data['articleNumMonth'];
+        $data['articleNoMonth']=$data['todayNumTotal']-$data['articleNumMonth'];
 
         for($i=9;$i>-1;$i--)
         {
@@ -103,19 +95,13 @@ class SiteController extends BaseController
             $date=date('Y-m-d',$time);
             $st=strtotime($date."00:00:00");
             $end=$st+3600*24;
-            $childQuery=\common\models\ChildInfo::find()
+            $rs['item1']=ChildInfo::find()
                 ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                 ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-                ->andFilterWhere(['>','`doctor_parent`.createtime',$st])->andFilterWhere(['<','`doctor_parent`.createtime',$end]);
-                if(\Yii::$app->user->identity->type != 1)
-                {
-                    $childQuery->andFilterWhere(['doctor_parent.doctorid'=>$doctorid]);
-                }else{
-                    $childQuery ->andFilterWhere(['not in','`doctor_parent`.`doctorid`',[47118,39889,47156]]);
-                }
-
-            //$rs['item1']=ArticleUser::find()->andFilterWhere(['>','createtime',$st])->andFilterWhere(['<','createtime',$end])->count();
-            $rs['item1']=$childQuery->count();
+                ->andFilterWhere(['>','`doctor_parent`.createtime',$st])
+                ->andFilterWhere(['<','`doctor_parent`.createtime',$end])
+                ->andFilterWhere(['in','`doctor_parent`.`doctorid`' ,$doctorids])
+                ->count();
 
             $rs['day']=$date;
             $line_data[]=$rs;
@@ -124,17 +110,12 @@ class SiteController extends BaseController
         $now=ChildInfo::find()
             ->leftJoin('user','`user`.`id`=`child_info`.`userid`')
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-            ->andFilterWhere(['`user`.`source`'=>2])
             ->andFilterWhere(['`doctor_parent`.`level`'=>1])
-            ->andFilterWhere(['not in','`doctor_parent`.`doctorid`',[47118,39889,47156]])
+            ->andFilterWhere(['in','`doctor_parent`.`doctorid`' ,$doctorids])
             ->orderBy('`doctor_parent`.`createtime` desc')->limit(9)->all();
 
 
         $doctor=UserDoctor::find()->andFilterWhere(['county'=>1102])->andFilterWhere(['>','userid',37])->all();
-
-
-
-
 
         return $this->render('index',[
             'data'=>$data,

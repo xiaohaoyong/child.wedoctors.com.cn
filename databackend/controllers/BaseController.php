@@ -3,17 +3,22 @@
 namespace databackend\controllers;
 
 
+use common\models\UserDoctor;
+
 class BaseController extends \yii\web\Controller {
     private $notCheckAccess = ['/rbac/access-error', 'site/index'];
 
     private $ignore = [
         'site/login', 'site/logout'
     ];
+    public $doctor;
 
     public function beforeAction($action)
     {
         parent::beforeAction($action);
 
+
+        $this->doctor=UserDoctor::find()->andFilterWhere(['county'=> \Yii::$app->user->identity->county])->asArray()->all();
         $path = \Yii::$app->request->pathInfo;
 
         if (in_array($path, $this->ignore))

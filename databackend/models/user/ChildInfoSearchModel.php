@@ -2,13 +2,10 @@
 
 namespace databackend\models\user;
 
-use databackend\models\behaviors\UserParent;
-use databackend\models\user\ChildInfo;
-use common\models\User;
-use databackend\controllers\ChildInfoController;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 
 /**
  * ChildInfoSearchModel represents the model behind the search form about `app\models\user\ChildInfo`.
@@ -21,14 +18,6 @@ class ChildInfoSearchModel extends ChildInfo
 
     public $username;
     public $userphone;
-
-    public function behaviors()
-    {
-        return [
-            \databackend\models\behaviors\DoctorParent::className(),
-            \databackend\models\behaviors\UserParent::className()
-        ];
-    }
 
     /**
      * @inheritdoc
@@ -76,6 +65,10 @@ class ChildInfoSearchModel extends ChildInfo
     {
         $query = \common\models\ChildInfo::find();
 
+        $doctor=UserDoctor::find()->andFilterWhere(['county'=> \Yii::$app->user->identity->county])->asArray()->all();
+
+        $hospitalids=ArrayHelper::getColumn($doctor,'hospitalid');
+        $doctorids=ArrayHelper::getColumn($doctor,'userid');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -89,25 +82,13 @@ class ChildInfoSearchModel extends ChildInfo
             return $dataProvider;
         }
         $query->select('child_info.*,user_parent.mother,user_parent.father,user_parent.mother_phone,user_parent.father_phone,user_parent.field11,user_parent.field12');
-
         $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
 
-        if(!$this->level) {
-            if (\Yii::$app->user->identity->type != 1 || $this->admin) {
 
-                $hospitalid=$this->admin?$this->admin:\Yii::$app->user->identity->hospital;
-                $query->andFilterWhere(['`child_info`.source' => $hospitalid]);
-            } else {
-                $query->andFilterWhere(['>', '`child_info`.source', 38]);
-                $query->andFilterWhere(['not in', '`child_info`.source', [110564, 110559, 110565]]);
-            }
+        if(!$this->level) {
+            $query->andFilterWhere(['in', '`child_info`.source',$hospitalids]);
         }else{
-            if (\Yii::$app->user->identity->type != 1 || $this->admin) {
-                $hospitalid=$this->admin?$this->admin:\Yii::$app->user->identity->hospital;
-                $query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
-            }else{
-                $query->andFilterWhere(['not in', '`child_info`.doctorid', [110564, 110559, 110565, 0]]);
-            }
+            $query->andFilterWhere(['in', '`child_info`.doctorid',$hospitalids]);
         }
 
         if($this->level!=1) {

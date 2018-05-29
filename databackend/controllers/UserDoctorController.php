@@ -54,13 +54,7 @@ class UserDoctorController extends BaseController
      */
     public function actionIndex()
     {
-        $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital])->userid;
-
-        if(\Yii::$app->user->identity->type != 1) {
-            $doctor = UserDoctor::find()->where(['userid'=>$doctorid])->all();
-        }else{
-            $doctor=UserDoctor::find()->andFilterWhere(['county'=>1102])->andFilterWhere(['>','userid',37])->all();
-        }
+        $doctor=UserDoctor::find()->andFilterWhere(['county'=>\Yii::$app->user->identity->county])->andFilterWhere(['>','userid',37])->all();
 
         return $this->render('index', [
             'doctor' => $doctor,
