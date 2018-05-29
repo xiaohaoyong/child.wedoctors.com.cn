@@ -40,8 +40,8 @@ class LoginForm extends Model
 
     public function validateUsername($attribute, $params)
     {
-        $dataUser=DataUser::findOne(['username',$this->username]);
-        if($dataUser->type!=1)
+        $dataUser=DataUser::findOne(['username'=>$this->username]);
+        if($dataUser && $dataUser->type!=1)
         {
             $this->addError($attribute, '医院账号无法登陆监管后台，请访问hospital.child登陆');
         }
