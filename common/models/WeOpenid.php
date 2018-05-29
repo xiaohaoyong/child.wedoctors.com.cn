@@ -73,6 +73,8 @@ class WeOpenid extends \yii\db\ActiveRecord
                 }else{
                     $this->unionid=$userJson;
                 }
+            }else{
+                $this->unionid=$access_token;
             }
         }
         if(!$this->createtime)
