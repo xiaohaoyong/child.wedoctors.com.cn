@@ -108,7 +108,7 @@ class DataController extends Controller
     {
         ini_set('memory_limit', '1024M');
 
-        $child=ChildInfo::find()->andFilterWhere(['>','source',38])->all();
+        $child=ChildInfo::find()->andFilterWhere(['source'=>110559])->all();
         foreach($child as $k=>$v)
         {
             echo $v->id."==";
