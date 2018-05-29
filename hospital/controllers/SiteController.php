@@ -109,6 +109,7 @@ class SiteController extends BaseController
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`user`.`source`'=>2])
             ->andFilterWhere(['`doctor_parent`.`level`'=>1])
+            ->andFilterWhere(['doctor_parent.doctorid'=>$doctorid])
             ->orderBy('`doctor_parent`.`createtime` desc')->limit(9)->all();
 
 
