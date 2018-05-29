@@ -13,6 +13,23 @@ use common\models\DataUser;
 
 class LoginForm extends \common\models\LoginForm
 {
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            // username and password are both required
+            [['username', 'password'], 'required'],
+            // rememberMe must be a boolean value
+            ['rememberMe', 'boolean'],
+            // password is validated by validatePassword()
+            ['password', 'validatePassword'],
+            ['username', 'validateUsername'],
+
+        ];
+    }
+
     public function validateUsername($attribute, $params)
     {
         $dataUser=DataUser::findOne(['username',$this->username]);
