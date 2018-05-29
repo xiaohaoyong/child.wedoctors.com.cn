@@ -130,7 +130,7 @@ class SiteController extends BaseController
             return $this->goHome();
         }
 
-        $model = new LoginForm();             //②
+        $model = new \hospital\models\LoginForm();             //②
         if ($model->load(Yii::$app->request->post()) && $model->login()) {      //③
             return $this->goBack();          //④
         }
