@@ -156,39 +156,13 @@ class ArticleController extends BaseController
      */
     public function actionZhongyi($id=0)
     {
-        $model=\databackend\models\article\Article::findOne($id);
-        $model=$model?$model:new \databackend\models\article\Article();
+        $model=\hospital\models\article\Article::findOne($id);
+        $model=$model?$model:new \hospital\models\article\Article();
 
         $article=ArticleInfo::findOne($id);
         $article=$article?$article:new ArticleInfo();
 
-        if($article->load(Yii::$app->request->post())){
-            $model->catid=0;
-            $model->subject_pid=7;
-            $model->type=0;
-            if($model->save())
-            {
-
-                $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($article,'img'));
-                if($imagesFile) {
-                    $upload= new UploadForm();
-                    $upload->imageFiles = $imagesFile;
-                    $image = $upload->upload();
-                    $article->img = $image[0];
-                }
-
-
-                $article->id=$model->id;
-                $article->save();
-
-            }
-        }
-
-        if($model->firstErrors){
-            \Yii::$app->getSession()->setFlash('error', implode(',',$model->firstErrors).implode(',',$article->firstErrors));
-
-        }
-        return $this->render('zhongyi', [
+        return $this->render('view', [
             'article'=>$article,
             'model' => $model,
         ]);

@@ -66,10 +66,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
                         <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
                     <ul class="dropdown-menu pull-right" role="menu">
-                        <li>{update} </li><li>{delete}</li>
+                        <li>{show} </li>
                     </ul>
                 </div>
-                ',
+                ','buttons' => [
+                                    'show' => function ($url, $model, $key) {
+                                        return Html::a('<span class="fa fa-database"></span> 查看', \yii\helpers\Url::to(['zhongyi', 'id' => $model->id]));
+                                    }
+                                ],
                                 ],
                             ],
                         ]); ?>

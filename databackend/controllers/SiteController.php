@@ -34,7 +34,6 @@ class SiteController extends BaseController
     public function actionIndex()
     {
 
-        $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital])->userid;
         $hospitalids=ArrayHelper::getColumn($this->doctor,'hospitalid');
         $doctorids=ArrayHelper::getColumn($this->doctor,'userid');
 
@@ -115,7 +114,7 @@ class SiteController extends BaseController
             ->orderBy('`doctor_parent`.`createtime` desc')->limit(9)->all();
 
 
-        $doctor=UserDoctor::find()->andFilterWhere(['county'=>1102])->andFilterWhere(['>','userid',37])->all();
+        $doctor=UserDoctor::find()->andFilterWhere(['county'=>\Yii::$app->user->identity->county])->andFilterWhere(['>','userid',37])->all();
 
         return $this->render('index',[
             'data'=>$data,
@@ -137,7 +136,7 @@ class SiteController extends BaseController
             return $this->goHome();
         }
 
-        $model = new LoginForm();             //②
+        $model = new \databackend\models\LoginForm();             //②
         if ($model->load(Yii::$app->request->post()) && $model->login()) {      //③
             return $this->goBack();          //④
         }

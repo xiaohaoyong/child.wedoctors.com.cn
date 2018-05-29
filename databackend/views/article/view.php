@@ -16,28 +16,50 @@ $this->params['breadcrumbs'][] = $this->title;
 ];
 ?>
 <div class="article-view">
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+    <div class="col-xs-12">
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        [
+                            'attribute' => '标题',
+                            'value' => function($e)
+                            {
+                                return $e->info->title;
+                            }
+                        ],
+                        [
+                            'attribute' => 'subject_pid',
+                            'value' => function($e)
+                            {
+                                return \common\models\ArticleCategory::findOne([$e->subject_pid])->name;
+                            }
+                        ],
+                        [
+                            'attribute' => 'subject',
+                            'value' => function($e)
+                            {
+                                return \common\models\ArticleCategory::findOne([$e->subject])->name;
+                            }
+                        ],
+                        [
+                            'attribute' => '内容',
+                            'format'=>'html',
+                            'value' => function($e)
+                            {
+                                return $e->info->content;
+                            }
+                        ],
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'catid',
-            'level',
-            'createtime:datetime',
-            'child_type',
-            'num',
-            'type',
-        ],
-    ]) ?>
-
+                        [
+                            'attribute' => 'createtime',
+                            'format' => ['date', 'php:Y-m-d']
+                        ],
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </div>
 </div>
