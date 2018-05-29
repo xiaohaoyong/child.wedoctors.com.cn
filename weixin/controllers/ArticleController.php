@@ -137,7 +137,7 @@ class ArticleController extends BaseWeixinController
                     $url = \Yii::$app->params['site_url']."#/mission-read";
                     $miniprogram=[
                         "appid"=>\Yii::$app->params['wxXAppId'],
-                        "pagepath"=>"pages/article/guidance/index",
+                        "pagepath"=>"pages/article/guidance/index?t=0",
                     ];
 
                     WechatSendTmp::send($data, $touser, \Yii::$app->params['zhidao'], $url,$miniprogram);
