@@ -138,7 +138,7 @@ hospital\assets\IndexAsset::register($this);
                         <td><?=$v->doctor[0]->name?></td>
                         <td><?=$v->parent->father."/".$v->parent->mother?></td>
                         <td><?=date('Y-m-d',\common\models\DoctorParent::findOne(['parentid'=>$v->userid])->createtime)?></td>
-                        <td><?=$v->parent->mother_phone?$v->parent->mother_phone:$v->parent->father_phone?$v->parent->father_phone:$v->parent->field12?></td>
+                        <td><?=$v->parent->mother_phone?$v->parent->mother_phone:$v->parent->father_phone?$v->parent->father_phone:$v->parent->field12?$v->parent->field12:$v->user->phone?></td>
                     </tr>
                     <?php }?>
                 </table>

@@ -226,7 +226,10 @@ class ChildInfo extends \yii\db\ActiveRecord
     {
         return$this->hasOne(DoctorParent::className(),['userid'=>'parentid']);
     }
-
+    public function getUser()
+    {
+        return $this->hasOne(User::className(),['id'=>'userid']);
+    }
     public function getSign()
     {
         return $this->hasOne(DoctorParent::className(),['parentid'=>'userid']);
