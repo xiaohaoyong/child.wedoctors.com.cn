@@ -131,7 +131,7 @@ class ArticleController extends BaseController
                     {
                         Notice::setList($v->parentid, 3, ['title' => $article->title, 'ftitle' => $article->ftitle, 'id' => '/article/view/index?id='.$article->id,]);
                     }
-                    return $this->redirect(['tindex']);
+                    return $this->redirect(['tindex?ArticleSearchModel[type]=2']);
                 }
 
             }
@@ -251,8 +251,7 @@ class ArticleController extends BaseController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**

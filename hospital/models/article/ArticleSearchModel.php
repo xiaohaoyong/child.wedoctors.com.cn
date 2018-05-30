@@ -68,8 +68,7 @@ class ArticleSearchModel extends Article
             'type' => $this->type,
         ]);
 
-
-        if (\Yii::$app->user->identity->type != 1 && $this->type!=1 && $this->type!=2) {
+        if ($this->type==2) {
             $query->andFilterWhere(['datauserid' => \Yii::$app->user->identity->hospital]);
         }
 
@@ -81,8 +80,7 @@ class ArticleSearchModel extends Article
 
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
-
-        //echo $query->createCommand()->getRawSql();exit;
+//echo $query->createCommand()->getRawSql();exit;
         return $dataProvider;
     }
 }

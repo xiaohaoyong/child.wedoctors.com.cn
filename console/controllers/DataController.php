@@ -36,6 +36,63 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionName(){
+        $childInfo=ChildInfo::find()->andFilterWhere(['source'=>0])->all();
+        foreach($childInfo as $k=>$v)
+        {
+            $child=ChildInfo::find()
+
+                ->andFilterWhere(['child_info.name'=>$v->name])
+                ->andWhere(['>','child_info.source',0])
+                ->andWhere(['child_info.source'=>$v->doctorid])
+                ->andFilterWhere(['child_info.birthday'=>$v->birthday])
+                ->andFilterWhere(['child_info.gender'=>$v])
+                ->andFilterWhere(['!=','child_info.userid',$v->userid])
+                ->one();
+            $doctorP=DoctorParent::findOne(['parentid'=>$child->userid]);
+
+            if($child && $doctorP->level!=1)
+            {
+                echo implode(',',$v->toArray());
+                echo "\n";
+                echo implode(',',$child->toArray());
+                echo "\n";
+                echo implode(',',User::findOne($v->userid)->toArray());
+                echo "\n";
+                echo implode(',',User::findOne($v->userid)->toArray());
+                echo "\n=======================";
+
+
+                $vuserid=$v->userid;
+                $cuserid=$child->userid;
+
+                $userParent=UserParent::findOne(['userid'=>$cuserid]);
+                $userParent1 = UserParent::findOne(['userid' => $vuserid]);
+
+                if($userParent && $userParent1) {
+                    $userParent->userid = 0;
+                    $userParent->save();
+
+                    $child->userid = $vuserid;
+                    $child->save();
+
+
+                    $userParent1->userid = $cuserid;
+                    $userParent1->save();
+
+
+                    $userParent->userid = $vuserid;
+                    $userParent->save();
+
+                    $v->userid = $cuserid;
+                    $v->save();
+                    exit;
+                    echo "\n";
+                }
+            }
+        }
+       // echo $childInfo->count();exit;
+    }
 
     public function actionEbb(){
 //        $doctorParent=DoctorParent::find()->where(['doctorid'=>47156])->all();
