@@ -2,9 +2,11 @@
 
 namespace databackend\models\article;
 
+use databackend\models\user\UserDoctor;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 
 /**
  * ArticleSearchModel represents the model behind the search form about `app\models\article\Article`.
@@ -73,13 +75,14 @@ class ArticleSearchModel extends Article
             $query->andFilterWhere(['!=', 'subject_pid', 7]);
 
         }
+        $doctor=UserDoctor::find()->andFilterWhere(['county'=> \Yii::$app->user->identity->county])->asArray()->all();
+        $hospitalids=ArrayHelper::getColumn($doctor,'hospitalid');
 
-        if (\Yii::$app->user->identity->type != 1) {
-            $query->andFilterWhere(['datauserid' => \Yii::$app->user->identity->hospital]);
+
+
+        if($this->type==2) {
+            $query->andFilterWhere(['in','datauserid',$hospitalids]);
         }
-        if (\Yii::$app->user->identity->hospital != 110564 || \Yii::$app->user->identity->hospital != 110559){
-            $query->andFilterWhere(['not in', 'datauserid', [110564, 110559]]);
-    }
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
         return $dataProvider;
     }
