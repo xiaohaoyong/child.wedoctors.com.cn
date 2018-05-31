@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -20,8 +19,8 @@
 
     <div class="box Infor_line">
         <div class="box-flex">
-            <div class="box" style="padding: 0px 0.4rem;">
-                <div class="box-flex article_txt article_topTxt f12">
+            <div class="box">
+                <div class="box-flex article_txt article_topTxt f12" style="padding: 0px 0.4rem;">
                     <span class="f15"><?=$article['createtime']?> <?=$article['info']['source']?> </span>
                 </div>
             </div>
