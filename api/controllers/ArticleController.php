@@ -47,6 +47,7 @@ class ArticleController extends Controller
             $articles->andFilterWhere(['catid'=>$catid]);
         }else{
             $articles->andFilterWhere(['!=','catid',6]);
+            $articles->andFilterWhere(['!=','type',2]);
         }
 
         $pages = new Pagination(['totalCount' => $articles->count(), 'pageSize' => 10]);
