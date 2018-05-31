@@ -37,18 +37,20 @@ use yii\helpers\ArrayHelper;
 class DataController extends Controller
 {
     public function actionName(){
-        $childInfo=ChildInfo::find()->andFilterWhere(['source'=>0])->all();
+        $childInfo=ChildInfo::find()->andFilterWhere(['source'=>0])->andFilterWhere(['id'=>60413])->all();
         foreach($childInfo as $k=>$v)
         {
+            //var_dump($v->toArray());
             $child=ChildInfo::find()
 
                 ->andFilterWhere(['child_info.name'=>$v->name])
                 ->andWhere(['>','child_info.source',0])
-                ->andWhere(['child_info.source'=>$v->doctorid])
+                //->andWhere(['child_info.source'=>$v->doctorid])
                 ->andFilterWhere(['child_info.birthday'=>$v->birthday])
-                ->andFilterWhere(['child_info.gender'=>$v])
+                ->andFilterWhere(['child_info.gender'=>$v->gender])
                 ->andFilterWhere(['!=','child_info.userid',$v->userid])
                 ->one();
+            //var_dump($child);exit;
             $doctorP=DoctorParent::findOne(['parentid'=>$child->userid]);
 
             if($child && $doctorP->level!=1)
@@ -66,8 +68,11 @@ class DataController extends Controller
                 $vuserid=$v->userid;
                 $cuserid=$child->userid;
 
+                var_dump($vuserid);
+                var_dump($cuserid);
                 $userParent=UserParent::findOne(['userid'=>$cuserid]);
                 $userParent1 = UserParent::findOne(['userid' => $vuserid]);
+
 
                 if($userParent && $userParent1) {
                     $userParent->userid = 0;
@@ -86,6 +91,7 @@ class DataController extends Controller
 
                     $v->userid = $cuserid;
                     $v->save();
+                    echo "====end";
                     exit;
                     echo "\n";
                 }
