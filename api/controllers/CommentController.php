@@ -33,6 +33,7 @@ class CommentController extends Controller
         $comment=ArticleComment::find()->andFilterWhere(['artid'=>$id]);
         $pages = new Pagination(['totalCount' => $comment->count(), 'pageSize' => 10]);
         $list = $comment->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
+        $data['list']=[];
         foreach($list as $k=>$v){
             $row=$v->toArray();
             $row['createtime']=date('Y-m-d H:i',$v->createtime);
