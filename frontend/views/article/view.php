@@ -10,6 +10,93 @@
     <link href="http://static.c.wedoctors.com.cn/css.css?t=14323" rel="stylesheet">    <script src="http://static.j.wedoctors.com.cn/js/flexible.js"></script>
     <style>
         .article_Com video{width: 100%}
+
+        .bottom{
+            bottom: 0;
+            position: fixed;
+            width: 100%;
+            background: #f5f8f8;
+        }
+
+        .input{
+            display: flex;
+            height: 91rpx;
+            align-items: center;
+            border-top: 1rpx solid #e7e6ec;
+        }
+        .input .text{
+            padding: 0 32rpx 0 32rpx;
+        }
+        .input .text input{
+            width: 575rpx;
+            height: 69rpx;
+            background: #f9fcfc;
+            border: 1rpx solid #e5e8e8;
+            border-radius: 34rpx;
+            padding-left:16rpx;
+        }
+        .input .text button{
+            width: 575rpx;
+            height: 69rpx;
+            background: #f9fcfc;
+            border: 1rpx solid #e5e8e8;
+            border-radius: 34rpx;
+            line-height:69rpx;
+        }
+        .input .like{
+            display: flex;
+            align-items: center;
+        }
+        .input .like text{
+            width: 89rpx;
+            font-size: 30rpx;
+            line-height: 30rpx;
+            color: #333;
+        }
+        .input .like button{
+            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAYAAACMo1E1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjg5NkY1QjI5Rjc4RjExRTc5QzYzRkYwQjY0ODU3NkJBIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjg5NkY1QjJBRjc4RjExRTc5QzYzRkYwQjY0ODU3NkJBIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ODk2RjVCMjdGNzhGMTFFNzlDNjNGRjBCNjQ4NTc2QkEiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ODk2RjVCMjhGNzhGMTFFNzlDNjNGRjBCNjQ4NTc2QkEiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6N8ykTAAACJ0lEQVR42syYTUgUYRjHZ8al0jADk7YS20si9EXsJchLbhu7guAhzGtdEgXpJnlM6OuoEnQJuoR5ECEwqPbUireIQhRhqd0uQXSIJRRx1f+L/1eGYabdHWd3ngd+PMN8/nifd9533jHj8bgRYJwFD0AaRMEvsACegHy1N7MCFEuBb+Ae6ACHmIe4PxWWXAy8Ac3MF8Bh5lnb/lgYcqqUxygwCJbBJvNtCqrjY2HIpZknPI4/ZO4NQ+4086rHcb3/TBhyDcwlj+Mlx3l1kzth1CiCkLsoWa7f0enFyKlZ4A7YATOS5EwwxQF2HqxIkTM5X94Cf8H9WvS5iI9rToFJim2BAVAI84VQw0UCPAdrFCuCPvC+ymfu/Id/4AsYsbfcOZbpBufAcjd/C0bBj4AbqwlcBtNgXcl1gSVwvIKLH/Ot/Oqzn5aL8+AFuKaqo8r6iGLvOEeaLugY9ylWaaivmGfcPhphKVXc5Zdr2BFlzlscpwwhYip6mLOWISssWyUz0uSugFbwHeSkyelW+xD06iuISOqSSpNr5Pi2LVGuGxwBn8EfaXK6v32sxYr/oHFTqlwbuKQme7AoTS5Bl09gQ5pc0llSaS23P/hKkus09v7r/XZ+jlmChpAMB2BRckm3kmq5IrdPhjRlXXd7GbSc3vkStNdRTD3rFWhhXyu4rVvHaa9+7P30+aAsJ22/8dTry1P92LsK5mwlrkeoJWYODIPXbifsCjAAKfJmoJV7JwIAAAAASUVORK5CYII=") no-repeat;
+            background-size: 39rpx;
+            width: 39rpx;
+            height: 39rpx;
+            border-radius: 0;
+        }
+        .input .like button::after{
+            display: none;
+        }
+
+
+        .input .islike{
+            display: flex;
+            align-items: center;
+        }
+        .input .islike text{
+            width: 89rpx;
+            font-size: 30rpx;
+            line-height: 30rpx;
+            color: #333;
+        }
+        .input .islike button{
+            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAYAAACMo1E1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkM5ODM4OEVGMDBENzExRThCRjJGRjYyNEFCQ0IxOTE4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkM5ODM4OEYwMDBENzExRThCRjJGRjYyNEFCQ0IxOTE4Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6Qzk4Mzg4RUQwMEQ3MTFFOEJGMkZGNjI0QUJDQjE5MTgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6Qzk4Mzg4RUUwMEQ3MTFFOEJGMkZGNjI0QUJDQjE5MTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6LgMVqAAABb0lEQVR42tyXP0tCURjGz71Fg2E4KPQHyiVokdZ2HdQpyA/QZugHiPoAUWtJHyFoaXTxOqm4RdQSgYRNgQSFhE3Wc+AIDVe95jmdBx/4ccHzXvlxXj2H1/nYywqN2QBHIAOWwSsog1PQnvTLXI1iafAA8mAdLKjngfo8bUsuDq5BeMh6WK3HbcjJVi6NqZHrhzbkMgHrsjbkVgPWrdmQm9Ncp00uJgxFh1yCWW6XVU7eAvuMcg64GHHwWpNz1H2ZEwYz/4d3VsC5abFJdi4KkuASPE0p9j2CT3AHir93blO1KRXgjjSZENgGJdCTclugCSKCKznZ1hNCMZlFV7WSMW3X5Dk1Zequ4E2VVe4ZtFjlKrqnL60tZZXrM8vdgjdWOc/ExD/zcj3QYJWrgS9WOc/EUK318GWU64B7VrmqOoAp5Sp+A06X8c8wkPMIxORv7cVP7hi8W5Y7Gza3PoIdcPPPLZZzagsUwJVfwY8AAwAUQD/WWCmtUQAAAABJRU5ErkJggg==") no-repeat;
+            background-size: 39rpx;
+            width: 39rpx;
+            height: 39rpx;
+            border-radius: 0;
+        }
+        .input .islike button::after{
+            display: none;
+        }
+
+
+        .input .service button{
+            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAlCAYAAADFniADAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjg3MzQ3ODVERjc4RjExRTdCQ0FBQUZBRjQ2QTUwQjM3IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjg3MzQ3ODVFRjc4RjExRTdCQ0FBQUZBRjQ2QTUwQjM3Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ODczNDc4NUJGNzhGMTFFN0JDQUFBRkFGNDZBNTBCMzciIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ODczNDc4NUNGNzhGMTFFN0JDQUFBRkFGNDZBNTBCMzciLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7KuxooAAACN0lEQVR42uyYTShEURTHZzQoCSGfWShfSVkMpWx8pVCKpWJjIyxIiiiirChCWaBk7bNEUljRREoZiiwsEAtfsyHif+s/9Tyjeea9+8xiTv26d2bum/efc88597yx2u12iwmWAuLAoZbFQRZzbBUcgEWQ5i+ixoEL1IATMAyi/lvULMjgaAMd4Bw087VHUelgATyBTx/QYjegEeSBHRALJrmtRWpRmcABakGECV47AsW83yXIBdvKeBOihri/6yAJWH3AF1sCOaBXFW91Yj/LuKiRLpZp0fRSPsgGqSBGEVchwnM2xZbJEhQJGkA9sP+SXG8cn8GITaJXwkEXaAdhfO8WrIFdcMYMdDHOxFYOgjtZoqrBFEgE72CemebwkK3NFHTBemaRIaqPWJlVrcD5y1qRYAOcd4JXGcVTVOp+znuYRE4vPyCG4pfdbxrpqSZW6g9m8pyX9aI+tnB9m4xjJguMct6tQZCwERAMZsCxDFETIBRscgu9WTmoYgnolXEgi2JYyixr1XgWtnMUQX6v/tCImHLHwyLrjhYT5eLUXQKMFiVO+grOx/5w3QqR0k+VM1ivwZ5RaaxXVCHHjT/0VdJFZXPcN7IC6xWVyfHMn0TFc7zyF1FhiusfdHzPjz5fj6g3xfzZSE/pqVPvOvpzv3gYDYgKiAqI8iTKXWMS/+H+CRxdalFbnE8rFplhyezPLWyjvxVP8ShUAipN+C/Bkz1SwzdPiRO+gO3si4liXnjPAnWX8SXAACFLeiDRsMBKAAAAAElFTkSuQmCC") no-repeat;
+            background-size: 37rpx;
+            width: 37rpx;
+            height: 37rpx;
+            border-radius: 0;
+        }
+        .input .service button::after{
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -58,6 +145,18 @@
     </div>
 
 </article>
+<view class='bottom'>
+    <view class='input'>
+        <view class='text'>
+            <input cursor-spacing='10' confirm-type='send' bindfocus='{{isLogin}}' bindconfirm='toSend' value='{{comment_content}}' wx:if="{{isLogin!='getPhoneNumber'}}"></input>
+            <button class='noChildB'  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">登陆后评论</button>
+        </view>
+        <view class="islike"><button bindtap='onLike'></button><text>{{likeNum}}</text></view>
+        <!--<view class='service' bindtap='onChangeShowState'><button></button></view>-->
+    </view>
+</view>
+<view class='footer'>---已经没有了---</view>
+
 
 <script src="http://static.j.wedoctors.com.cn/js/zepto.min.js"></script>
 <script src="http://static.j.wedoctors.com.cn/js/article.js?t=070401"></script></body>
