@@ -7,7 +7,7 @@
     <meta content="telephone=no" name="format-detection" />
 
     <title><?=$article['info']['title']?></title>
-    <link href="http://static.c.wedoctors.com.cn/css.css?t=14323" rel="stylesheet">    <script src="http://static.j.wedoctors.com.cn/js/flexible.js"></script>
+    <link href="/css/css.css?t=14323" rel="stylesheet">    <script src="/js/flexible.js"></script>
     <style>
         .article_Com video{width: 100%}
     </style>
@@ -59,6 +59,6 @@
 
 </article>
 
-<script src="http://static.j.wedoctors.com.cn/js/zepto.min.js"></script>
-<script src="http://static.j.wedoctors.com.cn/js/article.js?t=070401"></script></body>
+<script src="/js/zepto.min.js"></script>
+<script src="/js/article.js?t=070401"></script></body>
 </html>
