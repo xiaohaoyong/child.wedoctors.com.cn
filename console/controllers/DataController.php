@@ -646,7 +646,15 @@ class DataController extends Controller
                         continue;
                     }
 
-                    $phone=strlen($row[31])==11?$row[31]:strlen($row[12])==11?$row[12]:$row[35];
+
+                    if(strlen($row[31])==11) {
+                        $phone=$row[31];
+                    }elseif(strlen($row[12])==11){
+                        $phone=$row[12];
+                    }elseif(strlen($row[35])==11) {
+                        $phone=$row[35];
+                    }
+
                     if(!$phone || strlen($phone)!=11) {
                         echo "手机号不合法\n";
                         continue;

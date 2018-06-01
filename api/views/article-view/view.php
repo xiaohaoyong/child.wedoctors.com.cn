@@ -10,6 +10,7 @@
     <link href="/css/css.css?t=14323" rel="stylesheet">    <script src="/js/flexible.js"></script>
     <style>
         .article_Com video{width: 100%}
+        .article-box {padding-bottom: 50px}
     </style>
 </head>
 <body>

@@ -31,6 +31,8 @@ hospital\assets\DatabasesAsset::register($this);
                         <th>已宣教数</th>
                         <th>管理服务率</th>
                         <th>数据</th>
+                        <th>宣教记录</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -92,6 +94,8 @@ hospital\assets\DatabasesAsset::register($this);
                                 </div>
                             </td>
                             <td><span class="badge <?=$color?>"><?=$baifen?>%</span></td>
+                            <td><?=Html::a('<span class="fa fa-database"></span> 宣教记录', \yii\helpers\Url::to(['article-user/index',"ArticleUserSearchModel[userid]"=>$v->userid]));?></td>
+
                         </tr>
                     <?php }?>
                     </tbody>
