@@ -7,6 +7,7 @@ use common\models\UserDoctor;
 use Yii;
 use common\models\LoginForm;
 use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 
 /**
  * Site controller
@@ -22,6 +23,26 @@ class SiteController extends BaseController
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'height' => 50,
+                'width' => 100,
+                'maxLength' => 4,
+                'minLength' => 4
+            ],
+        ];
+    }
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['logout','index','login', 'error', 'captcha'],
+                        'allow' => true,
+                    ],
+                ],
             ],
         ];
     }

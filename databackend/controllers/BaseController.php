@@ -9,7 +9,7 @@ class BaseController extends \yii\web\Controller {
     private $notCheckAccess = ['/rbac/access-error', 'site/index'];
 
     private $ignore = [
-        'site/login', 'site/logout'
+        'site/login', 'site/logout','site/captcha'
     ];
     public $doctor;
 
