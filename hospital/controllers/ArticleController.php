@@ -191,6 +191,10 @@ class ArticleController extends BaseController
                     $image = $upload->upload();
                     $article->img = $image[0];
                 }
+                $doctor=UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+                if($doctor) {
+                    $article->source = $doctor->name;
+                }
 
                 if($article->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
