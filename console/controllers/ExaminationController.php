@@ -20,7 +20,7 @@ class ExaminationController extends Controller
     public function actionRemind(){
         $date=date('Y-m-d',strtotime('+1 day'));
 
-        $ex=Examination::find()->andFilterWhere(['childid'=>60398])->andWhere(['!=','childid',0])->andFilterWhere(['field52'=>$date])->all();
+        $ex=Examination::find()->andWhere(['!=','childid',0])->andFilterWhere(['field52'=>$date])->all();
        // echo $ex->createCommand()->getRawSql();exit;
         foreach ($ex as $k=>$v){
 
