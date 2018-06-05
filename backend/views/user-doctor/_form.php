@@ -58,6 +58,7 @@ use yii\widgets\ActiveForm;
 
 
     <?= $form->field($model,'phone')->textInput()?>
+    <?= $form->field($userInfo,'phone')->textInput()?>
 
 
     <?= $form->field($userInfo,'subject_b')->dropDownList(\common\models\Subject::$subject_b,
