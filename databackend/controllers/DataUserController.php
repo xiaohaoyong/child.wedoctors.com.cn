@@ -2,6 +2,7 @@
 
 namespace databackend\controllers;
 
+use common\models\DataUserPassword;
 use Yii;
 use common\models\DataUser;
 use common\models\DataUserSearchModel;
@@ -83,21 +84,30 @@ class DataUserController extends BaseController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
+        $id=Yii::$app->user->id;
         $model = $this->findModel($id);
-        $password1=$model->password;
         $model->load(Yii::$app->request->post());
 
-        if(Yii::$app->request->isPost && $model->password!=$password1)
-        {
-            $model->password=md5(md5("data.wedoctors").$model->password);
-        }
+        if (Yii::$app->request->isPost) {
+            $model->setScenario('update');
+            if($model->validate()){
+                $model->setScenario(Model::SCENARIO_DEFAULT);
+                $model->password=User::setPassword($model->password1);
+                if($model->save()){
+                    \Yii::$app->getSession()->setFlash('success',"密码修改成功");
 
+                }else{
+                    \Yii::$app->getSession()->setFlash('error', implode(',',$model->firstErrors));
+                }
+            }else{
+                \Yii::$app->getSession()->setFlash('error', implode(',',$model->firstErrors));
+            }
+            return $this->redirect(['update', 'id' => $model->id]);
 
-        if (Yii::$app->request->isPost && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            $model->password='';
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -126,7 +136,7 @@ class DataUserController extends BaseController
      */
     protected function findModel($id)
     {
-        if (($model = DataUser::findOne($id)) !== null) {
+        if (($model = DataUserPassword::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

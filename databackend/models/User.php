@@ -61,6 +61,10 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return $this->password === md5(md5("data.wedoctors").$password);
     }
 
+    public static function setPassword($password){
+        return md5(md5("data.wedoctors").$password);
+    }
+
     /**
      *
      * <span style="white-space:pre">    </span> * Generates "remember me" authentication key

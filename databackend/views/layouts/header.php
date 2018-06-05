@@ -27,6 +27,13 @@ use yii\helpers\Html;
                     <ul class="dropdown-menu">
                         <!-- Menu Footer-->
                         <li class="user-footer">
+                            <div class="pull-left">
+                                <?= Html::a(
+                                    '修改密码',
+                                    ['/data-user/update'],
+                                    [ 'class' => 'btn btn-default btn-flat']
+                                ) ?>
+                            </div>
                             <div class="pull-right">
                                 <?= Html::a(
                                     '退出',
