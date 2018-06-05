@@ -45,7 +45,7 @@ class ExaminationController extends Controller
                         "pagepath"=>"/pages/user/examination/index?id=".$v->childid,
                     ];
                     WechatSendTmp::send($data, $openid, 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '',$miniprogram);
-                    Notice::setList($userid, 1, ['title' => '宝宝马上就要体检啦，请做好准备', 'ftitle' => $date, 'id' => '/user/examination/index?id='.$userid,],"id=".$userid);
+                    Notice::setList($userid, 1, ['title' => '宝宝马上就要体检啦，请做好准备', 'ftitle' => $date, 'id' => '/user/examination/index?id='.$v->childid,],"id=".$v->childid);
                 }
             }
             if(!$openid)
