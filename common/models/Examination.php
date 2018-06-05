@@ -124,6 +124,11 @@ class Examination extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getChild()
+    {
+        return $this->hasOne(ChildInfo::className(),['id'=>'childid']);
+    }
+
     /**
      * @inheritdoc
      */
