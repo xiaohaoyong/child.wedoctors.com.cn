@@ -14,7 +14,7 @@ use common\models\Examination;
 class ExaController extends Controller
 {
     public function actionChildEx($id){
-        $ex=Examination::find()->andFilterWhere(['childid'=>$id])->orderBy('field2 desc,field3 desc')->all();
+        $ex=Examination::find()->andFilterWhere(['childid'=>$id])->orderBy('field52 desc,field4 desc,field2 desc,field3 desc')->all();
         $data=[];
         foreach($ex as $k=>$v)
         {
