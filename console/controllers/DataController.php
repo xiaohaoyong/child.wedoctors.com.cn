@@ -572,7 +572,6 @@ class DataController extends Controller
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'].$path, true, 2);
             $userJson = $curl->get();
             $userInfo=json_decode($userJson,true);
-            var_dump($userInfo);exit;
             if($userInfo['unionid']) {
                 $userLogin->unionid = $userInfo['unionid'];
                 $userLogin->save();
