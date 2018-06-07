@@ -564,7 +564,7 @@ class DataController extends Controller
             'encodingAesKey' => '1ktMUR9QDYv4TZNh3dr7x6KWiymVXJRysSSrZ4oWMW7'
         ]);
         $access_token=$wechat->getAccessToken();
-        $user=UserLogin::find()->where(['!=','openid',''])->andWhere(["=",'xopenid',''])->orderBy('userid desc')->all();
+        $user=UserLogin::find()->where(['!=','openid',''])->andWhere(["=",'unionid',''])->orderBy('userid desc')->all();
         foreach($user as $k=>$v) {
             $userLogin=UserLogin::findOne(['userid'=>$v->userid]);
             $openid = $userLogin->openid;
