@@ -5,7 +5,7 @@ $config= [
     'timeZone' => 'Asia/Shanghai',
     'components' => [
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => 'yii\redis\Cache',
         ],
         'formatter'=>[
             'dateFormat'=>'php:Y-m-d',
