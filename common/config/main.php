@@ -7,6 +7,13 @@ $config= [
         'cache' => [
             'class' => 'yii\redis\Cache',
         ],
+        'redis'=>[
+            'class' => 'yii\redis\Connection',
+            'hostname' => '139.129.246.51',
+            'port' => 6379,
+            'password' => '06ef54b23a0af',
+            'database' => 1,
+        ],
         'formatter'=>[
             'dateFormat'=>'php:Y-m-d',
         ],
