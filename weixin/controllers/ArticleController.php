@@ -132,7 +132,7 @@ class ArticleController extends BaseWeixinController
                     ->andFilterWhere(['>','createtime',strtotime($lmount)])->one();
                 if(!$articleUser) {
                     //微信模板消息
-                    $data = ['first' => array('value' => "您好！医生给您发来了一份{$typename}儿童中医健康指导。\n"), 'keyword1' => ARRAY('value' => date('Y年m月d H:i')), 'keyword2' => ARRAY('value' => $doctor->hospital->name), 'keyword3' => ARRAY('value' => $doctor->name), 'keyword4' => ARRAY('value' => $v->name), 'keyword5' => ARRAY('value' => "{$typename}儿童中医健康指导"), 'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
+                    $data = ['first' => array('value' => "您好！医生给您发来了一份{$typename}儿童中医药健康指导。\n"), 'keyword1' => ARRAY('value' => date('Y年m月d H:i')), 'keyword2' => ARRAY('value' => $doctor->hospital->name), 'keyword3' => ARRAY('value' => $doctor->name), 'keyword4' => ARRAY('value' => $v->name), 'keyword5' => ARRAY('value' => "{$typename}儿童中医药健康指导"), 'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
                     $touser = UserLogin::findOne(['userid' => $v->userid])->openid;
                     $url = \Yii::$app->params['site_url']."#/mission-read";
                     $miniprogram=[

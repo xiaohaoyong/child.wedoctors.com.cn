@@ -230,7 +230,7 @@ class DataController extends Controller
     }
     public function actionUrlPush(){
         $data = [
-            'first' => array('value' => "参与社区儿童中医健康指导服务调查问卷，必得现金红包，先到先得\n",),
+            'first' => array('value' => "参与社区儿童中医药健康指导服务调查问卷，必得现金红包，先到先得\n",),
             'keyword1' => ARRAY('value' =>"2018-05-20"),
             'keyword2' => ARRAY('value' =>"为了更好的服务每一个家庭，请参与我们社区中医健康指导服务的问卷调查，希望各位家长抽出宝贵时间支持我们的工作"),
             'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
@@ -705,14 +705,11 @@ class DataController extends Controller
                             $child = $child ? $child : new ChildInfo();
                             $child->userid = $user->id;
                             $child->name = $row[3];
-                            echo $row[3]."====";
-
                             $child->gender = $row[4] == "男" ? 1 : 2;
                             $child->birthday = intval(strtotime($row[5]));
                             $child->createtime=time();
                             $child->source=$hospitalid;
                             $child->doctorid=$hospitalid;
-
                             $child->field54= $row[54];
                             $child->field53= $row[53];
                             $child->field52= $row[52];
@@ -762,6 +759,61 @@ class DataController extends Controller
                 }
                 echo "失败\n";
             }
+        }
+    }
+
+
+    public function actionGetTest($sheet=0){
+        error_reporting(E_ALL & ~E_NOTICE);
+
+        ini_set("max_execution_time", "0");
+        set_time_limit(0);
+
+        $file_list=glob("data/*.xlsx");
+        foreach($file_list as $fk=>$file) {
+            $file = iconv("utf-8", "gb2312", $file);   //转码
+            if (empty($file) OR !file_exists($file)) {
+                die('file not exists!');
+            }
+            $objRead = new \PHPExcel_Reader_Excel2007();   //建立reader对象
+            if (!$objRead->canRead($file)) {
+                $objRead = new \PHPExcel_Reader_Excel5();
+                if (!$objRead->canRead($file)) {
+                    die('No Excel!');
+                }
+            }
+
+            $cellName = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            $obj = $objRead->load($file);  //建立excel对象
+            $currSheet = $obj->getSheet($sheet);   //获取指定的sheet表
+            $columnH = $currSheet->getHighestColumn();   //取得最大的列号
+
+            $a1 = array_search($columnH[0], $cellName);
+            $a2 = array_search($columnH[1], $cellName);
+            $columnCnt=85;
+            $rowCnt = $currSheet->getHighestRow();   //获取总行数
+
+            $data = array();
+            for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
+                $rs=[];
+                for ($_column = 0; $_column <= $columnCnt; $_column++) {
+                    $a="";
+                    $b=$_column%26;
+                    $c=floor($_column/26);
+                    if($c>0){
+                        $a=chr($c-1+65);
+                    }
+                    $a=$a.chr($b+65);
+
+                    $cellId = $a . $_row;
+                    $cellValue = $currSheet->getCell($cellId)->getValue();
+                    $rs[$_column]=$cellValue;
+                }
+
+                echo "\n";
+            }
+            //var_dump($data);exit;
         }
     }
     public function actionDelete()

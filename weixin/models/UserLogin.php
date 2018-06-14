@@ -52,7 +52,7 @@ class UserLogin extends \common\models\UserLogin {
      * slx
      */
     public static function updateData($userid, $attributes) {
-        $model = self::findOne($userid);
+        $model = self::findOne(['userid'=>$userid]);
         if (empty($model)) {
             return false;
         }
