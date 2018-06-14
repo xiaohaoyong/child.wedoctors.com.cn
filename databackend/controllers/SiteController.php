@@ -77,6 +77,8 @@ class SiteController extends BaseController
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['in','`doctor_parent`.`doctorid`' ,$doctorids])
+            ->andFilterWhere(['in','child_info.doctorid',$hospitalids])
+
             ->count();
 
 

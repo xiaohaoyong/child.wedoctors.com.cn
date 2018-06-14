@@ -57,7 +57,8 @@ hospital\assets\DatabasesAsset::register($this);
                                 echo  $q=\common\models\ChildInfo::find()
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                     ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
-                                    ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
+                                    ->andFilterWhere(['`child_info`.`doctorid`' =>$v->hospitalid])
+                                        ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
                                 ?>
                             </td>
                             <td><?php

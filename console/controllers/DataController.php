@@ -121,7 +121,9 @@ class DataController extends Controller
 
             if($child)
             {
-                $child->doctorid=$v->doctorid;
+                $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
+
+                $child->doctorid=$doctor->hospitalid;
                 $child->save();
                 echo $child->userid;
             }
