@@ -113,23 +113,38 @@ class DataController extends Controller
     }
 
     public function actionEbb(){
-//        $doctorParent=DoctorParent::find()->where(['doctorid'=>47156])->all();
-//        foreach($doctorParent as $k=>$v)
-//        {
-//            echo $v->parentid."===";
-//            $userParent=UserParent::findOne(['userid'=>$v->parentid]);
-//            if($userParent->source>38)
-//            {
-//                $doctor=UserDoctor::findOne(['hospitalid'=>$userParent->source]);
-//                if($doctor){
-//                    echo $doctor->userid;
-//                    $v->doctorid=$doctor->userid;
-//                    $v->save();
-//                }
-//            }
-//            echo "\n";
-//        }
-//        exit;
+        $doctorParent=DoctorParent::find()->andFilterWhere(['level'=>1])->andFilterWhere(['>','createtime','1528630100'])->all();
+
+        foreach($doctorParent as $k=>$v)
+        {
+            $child=ChildInfo::findOne(['userid'=>$v->parentid]);
+
+            if($child)
+            {
+                $child->doctorid=$v->doctorid;
+                $child->save();
+                echo $child->userid;
+            }
+
+        }
+        exit;
+
+        foreach($doctorParent as $k=>$v)
+        {
+            echo $v->parentid."===";
+            $userParent=UserParent::findOne(['userid'=>$v->parentid]);
+            if($userParent->source>38)
+            {
+                $doctor=UserDoctor::findOne(['hospitalid'=>$userParent->source]);
+                if($doctor){
+                    echo $doctor->userid;
+                    $v->doctorid=$doctor->userid;
+                    $v->save();
+                }
+            }
+            echo "\n";
+        }
+        exit;
         $user=User::find()->where(['source'=>1])->all();
         foreach($user as $k=>$v){
             $doctorParent =DoctorParent::find()->andFilterWhere(['parentid'=>$v->id])->one();
