@@ -87,7 +87,7 @@ class SuiteController extends Controller
                         //微信模板消息
 
                         $data = [
-                            'first' => array('value' => "恭喜您，已成功签约。\n"),
+                            'first' => array('value' => $openid."恭喜您，已成功签约。\n"),
                             'keyword1' => ARRAY('value' => $doctor->name, ),
                             'keyword2' => ARRAY('value' => $doctor->hospital->name),
                             'keyword3' => ARRAY('value' => date('Y年m月d日')),
