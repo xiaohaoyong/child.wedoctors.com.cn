@@ -70,7 +70,7 @@ class SiteController extends BaseController
             ->count();
 
         //签约儿童总数
-        $data['todayNumTotal']=ChildInfo::find()
+             $data['todayNumTotal']=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
