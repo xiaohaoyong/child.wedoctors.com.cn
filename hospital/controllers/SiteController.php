@@ -81,6 +81,8 @@ class SiteController extends BaseController
         $data['childNum']=ChildInfo::find()
             ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
             ->andFilterWhere(['child_info.source'=>\Yii::$app->user->identity->hospital])
+            ->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospital])
+
             ->count();
 
         //签约率
