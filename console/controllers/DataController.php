@@ -36,6 +36,18 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionData(){
+
+        $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()),"2017-06-20");
+        var_dump($DiffDate);exit;
+        $weOpenid = WeOpenid::find()->andFilterWhere(['>','createtime','1528646400'])->andFilterWhere(['level'=>1])->all();
+        foreach($weOpenid as $k=>$v)
+        {
+            var_dump($v->toArray());
+        }
+    }
+
+
     public function actionName(){
         $childInfo=ChildInfo::find()->andFilterWhere(['source'=>0])->andFilterWhere(['id'=>60413])->all();
         foreach($childInfo as $k=>$v)

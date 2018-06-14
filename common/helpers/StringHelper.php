@@ -185,7 +185,11 @@ class StringHelper {
             $m -= 1;
             $d += date('j', mktime(0, 0, 0, $m2, 0, $y2));
         }
-        $m < 0 && $y -= 1;
+        if($m < 0)
+        {
+            $y -= 1;
+            $m = 11;
+        }
         return array($y, $m, $d);
     }
 

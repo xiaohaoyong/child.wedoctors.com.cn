@@ -44,7 +44,7 @@ class UserParent extends \yii\db\ActiveRecord {
     public function rules() {
         return [
            // [['userid', 'mother', 'mother_phone', 'father'], 'required'],
-            [['userid', 'mother_phone', 'father_phone','province','county','city'], 'integer'],
+            [['userid','province','county','city'], 'integer'],
         ];
     }
 

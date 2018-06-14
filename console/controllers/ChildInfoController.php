@@ -9,11 +9,14 @@
 namespace console\controllers;
 
 
+use common\models\WeOpenid;
 use console\models\ChildInfoInput;
 use yii\base\Controller;
 
 class ChildInfoController extends Controller
 {
+
+
 
     public function actionInput(){
         error_reporting(E_ALL & ~E_NOTICE);
@@ -68,7 +71,7 @@ class ChildInfoController extends Controller
 
                 $cellId = $a . $_row;
                 $cellValue = $currSheet->getCell($cellId)->getValue();
-                $rs[$_column]=$cellValue;
+                $rs[$_column]=$cellValue?$cellValue:0;
             }
             if($rs[1]!='本市' && $rs[1]!='外地')
             {
