@@ -102,10 +102,10 @@ class ChildInfoSearchModel extends ChildInfo
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
         }
 
-        if($this->level==1)
+        if($this->level==1 || $this->level==2)
         {
 
-            $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
+            $query->andFilterWhere(['`doctor_parent`.`level`' =>1]);
         }
         if($this->level==3){
             $query->andWhere(['or',['<>','`doctor_parent`.`level`' ,1],['`doctor_parent`.`parentid`'=>null]]);
@@ -144,7 +144,7 @@ class ChildInfoSearchModel extends ChildInfo
             $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
         }
 
-        //var_dump($query->createCommand()->getRawSql());exit;
+        var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
     }
 }

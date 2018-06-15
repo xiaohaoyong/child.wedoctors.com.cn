@@ -51,25 +51,27 @@ class ChildInfoInput
         $this->childInfo = ChildInfo::findOne(['field7' => $value[7]]);
         if ($this->childInfo) {
             $this->addLog("条形码");
-
             $this->user = User::findOne($this->childInfo->userid);
             $this->userParent = UserParent::findOne(['userid' => $this->childInfo->userid]);
         } else {
-            $this->addLog("手机");
             if (!$this->phoneSelect($value)) {
-                $this->addLog(">无");
 
                 //五项查询
-                $this->addLog("五项");
                 if (!$this->fiveSelect($value)) {
-                    $this->addLog(">无");
-                    $this->addLog("三项");
                     if (!$this->threeSelect($value)) {
-                        //$this->fatherAndMother($value);
-                        $this->addLog(">无");
-                        $this->addLog($value[3] . "无");
+                        if(!$this->fatherAndMother($value)){
+                            $this->addLog($value[3] . "无");
+                        }else{
+                            $this->addLog("父母");
+                        }
+                    }else{
+                        $this->addLog("三项");
                     }
+                }else{
+                    $this->addLog("五项");
                 }
+            }else{
+                $this->addLog("手机");
             }
         }
 
@@ -107,7 +109,7 @@ class ChildInfoInput
 
             $userParent = $this->userParent;
 
-            $userParentData['UserParent']=[
+            $userParentData=[
                 'userid'        => $this->user->id,
                 'mother'        => $value[9],
                 'mother_phone'  => $value[37],
@@ -127,14 +129,19 @@ class ChildInfoInput
                 'field11'       => $value[12],
             ];
             array_filter($userParentData);
-            $userParent->load($userParentData);
+
+            foreach($userParentData as $k=>$v)
+            {
+                $userParent->$k=$v;
+            }
+            $this->addLog("保存父母");
             if (!$userParent->save()) {
                 $this->addLog("父母信息保存失败" . json_encode($userParent->firstErrors));
             }
 
             //插入儿童数据
             $child = $this->childInfo;
-            $childData['ChildInfo']=[
+            $childData=[
                 'userid'    => $this->user->id,
                 'name'      => $value[3],
                 'gender'    => $value[4] == "男" ? 1 : 2,
@@ -180,7 +187,13 @@ class ChildInfoInput
             ];
 
             array_filter($childData);
-            $child->load($childData);
+            //var_dump($childData);
+            $this->addLog("保存儿童");
+
+            foreach($childData as $k=>$v)
+            {
+                $child->$k=$v;
+            }
             if (!$child->save()) {
                 $this->addLog("儿童信息保存失败" . json_encode($child->firstErrors));
             }
@@ -249,46 +262,35 @@ class ChildInfoInput
         $father_phone = $value[37];
         $mother_phone = $value[41];
         $phone = $value[13];
-
-        $user = User::findOne(['phone' => $mother_phone]);
-        if (!$user) {
-            $user = User::findOne(['phone' => $father_phone]);
-        }
-        if (!$user) {
-            $user = User::findOne(['phone' => $phone]);
-        }
-
-        if (!$user) {
-            $userParent = UserParent::find()
-                ->orFilterWhere(['father_phone' => $father_phone])
-                ->orFilterWhere(['mother_phone' => $father_phone])
-                ->orFilterWhere(['field12' => $father_phone])->one();
-
-            if (!$userParent) {
+        if (preg_match("/^1[34578]{1}\d{9}$/", $mother_phone)) {
+            $user = User::findOne(['phone' => $mother_phone]);
+            if(!$user){
                 $userParent = UserParent::find()
-                    ->orFilterWhere(['father_phone' => $mother_phone])
-                    ->orFilterWhere(['mother_phone' => $mother_phone])
-                    ->orFilterWhere(['field12' => $mother_phone])->one();
-            }
-            if (!$userParent) {
-                $userParent = UserParent::find()
-                    ->orFilterWhere(['father_phone' => $phone])
-                    ->orFilterWhere(['mother_phone' => $phone])
-                    ->orFilterWhere(['field12' => $phone])->one();
-            }
-            if ($userParent) {
-                $this->userParent = $userParent;
-                $childInfo = ChildInfo::find()
-                    ->andFilterWhere(['userid' => $userParent->userid])
-                    ->andFilterWhere(['name' => $value[3]])
+                    ->andFilterWhere(['mother_phone' => $mother_phone])
                     ->one();
-                $user = User::findOne($childInfo->userid);
-                $this->childInfo = $childInfo ? $childInfo : new ChildInfo();
-                $this->user = $user ? $user : new User();
-
-                return true;
             }
-        } else {
+        }
+        if(!$user && !$userParent && preg_match("/^1[34578]{1}\d{9}$/", $father_phone))
+        {
+            $user = User::findOne(['phone' => $father_phone]);
+            if(!$user){
+                $userParent = UserParent::find()
+                    ->andFilterWhere(['father_phone' => $father_phone])
+                    ->one();
+            }
+        }
+
+        if(!$user && !$userParent && preg_match("/^1[34578]{1}\d{9}$/", $phone))
+        {
+            $user = User::findOne(['phone' => $phone]);
+            if(!$user){
+                $userParent = UserParent::find()
+                    ->andFilterWhere(['field12' => $phone])
+                    ->one();
+            }
+        }
+
+        if($user){
             $this->user = $user;
             $childInfo = ChildInfo::find()
                 ->andFilterWhere(['userid' => $this->user->id])
@@ -297,10 +299,20 @@ class ChildInfoInput
             $this->childInfo = $childInfo ? $childInfo : new ChildInfo();
             $userParent = UserParent::findOne(['userid' => $this->user->id]);
             $this->userParent = $userParent ? $userParent : new UserParent();
+            return true;
 
+        }elseif($userParent)
+        {
+            $this->userParent = $userParent;
+            $childInfo = ChildInfo::find()
+                ->andFilterWhere(['userid' => $userParent->userid])
+                ->andFilterWhere(['name' => $value[3]])
+                ->one();
+            $user = User::findOne($childInfo->userid);
+            $this->childInfo = $childInfo ? $childInfo : new ChildInfo();
+            $this->user = $user ? $user : new User();
             return true;
         }
-
         return false;
     }
 
@@ -376,12 +388,13 @@ class ChildInfoInput
             ->andFilterWhere(["mother" => $mother])
             ->andFilterWhere(["father" => $father])
             ->andFilterWhere(["source" => $this->hospitalid])
+            ->orderBy('userid asc')
             ->one();
 
         if ($userParent) {
-            $this->childInfo = $childInfo;
-            $this->user = User::findOne($childInfo->userid);
-            $this->userParent = UserParent::findOne(['userid' => $childInfo->userid]);
+            $this->childInfo = new ChildInfo();
+            $this->user = User::findOne($userParent->userid);
+            $this->userParent = $userParent;
             return true;
         }
 

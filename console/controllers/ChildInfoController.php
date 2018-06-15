@@ -19,6 +19,7 @@ class ChildInfoController extends Controller
 
 
     public function actionInput(){
+        ini_set('memory_limit','2048M');
         error_reporting(E_ALL & ~E_NOTICE);
         ini_set("max_execution_time", "0");
         set_time_limit(0);

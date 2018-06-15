@@ -21,7 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
                             'columns' => [
                                 ['attribute' => 'childid', 'value' => function ($e) {
-                                    return \common\models\ChildInfo::findOne($e->childid)->name;
+                                    if(!$name=\common\models\ChildInfo::findOne($e->childid)->name){
+                                        $name=\common\models\ChildInfo::findOne(['userid'=>$e->touserid])->name;
+                                    }
+                                    return $name;
                                 }
 
                                 ], ['attribute' => 'touserid', 'value' => function ($e) {
