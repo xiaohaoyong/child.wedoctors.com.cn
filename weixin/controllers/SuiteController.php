@@ -71,8 +71,7 @@ class SuiteController extends Controller
                                     'remark' => ARRAY('value' => "\n ﻿点击查看详情，如果想变更签约社区请联系工作人员核实信息，感谢！", 'color' => '#221d95'),
                                 ];
                                 WechatSendTmp::send($data, $openid, "H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY", "",['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
-
-
+                                return '';
                             }
                             //$doctorParent = DoctorParent::findOne(['doctorid' => $doctor_id, "parentid" => $userid]);
 
