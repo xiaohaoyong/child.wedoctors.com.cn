@@ -586,13 +586,30 @@ class DataController extends Controller
      */
     public function actionGetUid()
     {
-        $wechat = new MpWechat([
-            'token' => 'UWCE9B33CYcjaHFodunQPGCFFvfbd2Yz',
-            'appId' => 'wx1147c2e491dfdf1d',
-            'appSecret' => '98001ba41e010dea2861f3e0d95cbb15',
-            'encodingAesKey' => '1ktMUR9QDYv4TZNh3dr7x6KWiymVXJRysSSrZ4oWMW7'
+        $wechat = new \common\vendor\MpWechat([
+            'token' => \Yii::$app->params['WeToken'],
+            'appId' => \Yii::$app->params['AppID'],
+            'appSecret' => \Yii::$app->params['AppSecret'],
+            'encodingAesKey' => \Yii::$app->params['encodingAesKey']
         ]);
-        $access_token=$wechat->getAccessToken();
+        $access_token=$wechat->getAccessToken(true);
+
+        $weOpenid=WeOpenid::find()->andFilterWhere(['level'=>0])->andWhere(['!=','openid',''])->all();
+        foreach($weOpenid as $k=>$v){
+
+            $path = '/cgi-bin/user/info?access_token='.$access_token."&openid=".$v->openid."&lang=zh_CN";
+            $curl = new HttpRequest(\Yii::$app->params['wxUrl'].$path, true, 2);
+            $userJson = $curl->get();
+            $userInfo=json_decode($userJson,true);
+            if($userInfo['unionid']) {
+                $v->unionid=$userInfo['unionid'];
+                $v->save();
+            }
+        }
+        exit;
+
+
+
         $user=UserLogin::find()->where(['!=','openid',''])->andWhere(["=",'unionid',''])->orderBy('userid desc')->all();
         foreach($user as $k=>$v) {
             $userLogin=UserLogin::findOne(['userid'=>$v->userid]);

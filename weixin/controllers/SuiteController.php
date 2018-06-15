@@ -4,6 +4,7 @@ namespace weixin\controllers;
 
 use common\components\HttpRequest;
 use common\helpers\WechatSendTmp;
+use common\models\ChildInfo;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\WeOpenid;
@@ -57,9 +58,21 @@ class SuiteController extends Controller
                             //已签约 并且签约的医院不是互联网社区医院则 发送提醒
                             if ($doctorParent->level==1 && $doctorParent->doctorid!=47156) {
                                 $doctorName=UserDoctor::findOne(['userid'=>$doctorParent->doctorid])->name;
-                                //发送提醒已签约其他医生
-                                $url = \Yii::$app->params['htmlUrl']."#/first-login-adviser?doctor_id=".$doctorParent->doctorid;
-                                return self::sendText($openid, $xml['ToUserName'], "您已经签约了【{$doctorName}】\n\n <a href='{$url}'>点击查看团队</a>");
+
+                                $child=ChildInfo::findOne(['userid'=>$userid]);
+                                $childName=$child->name;
+
+                                $data = [
+                                    'first' => array('value' => "﻿您已经签约了".$doctorName."\n"),
+                                    'keyword1' => ARRAY('value' => $doctorName, ),
+                                    'keyword2' => ARRAY('value' => $childName?$childName:"未添加宝宝"),
+                                    'keyword3' => ARRAY('value' => date('Y年m月d日',$doctorParent->createtime)),
+                                    'keyword4' => ARRAY('value' => "﻿儿童中医药健康指导"),
+                                    'remark' => ARRAY('value' => "\n ﻿点击查看详情，如果想变更签约社区请联系工作人员核实信息，感谢！", 'color' => '#221d95'),
+                                ];
+                                WechatSendTmp::send($data, $openid, "H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY", "",['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
+
+
                             }
                             //$doctorParent = DoctorParent::findOne(['doctorid' => $doctor_id, "parentid" => $userid]);
 
