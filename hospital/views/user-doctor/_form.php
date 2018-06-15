@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
                 <?php $form = ActiveForm::begin(); ?>
 
                 <?= $form->field($userInfo,'phone')->textInput()?>
-                <?= $form->field($userInfo,'intro')->textarea(['rows'=>5])?>
+                <?= $form->field($userInfo,'skilful')->textarea(['rows'=>5])->label("简介")?>
 
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? 'Create' : '更新', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
