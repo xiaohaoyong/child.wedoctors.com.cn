@@ -60,7 +60,7 @@ class WeOpenid extends \yii\db\ActiveRecord
                 'appSecret' => \Yii::$app->params['AppSecret'],
                 'encodingAesKey' => \Yii::$app->params['encodingAesKey']
             ]);
-            $access_token = $mpWechat->getAccessToken();
+            $access_token = $mpWechat->getAccessToken(true);
 
             if ($access_token) {
 
