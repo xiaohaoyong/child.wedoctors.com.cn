@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Users */
 
-$this->title = '编辑医生' ;
+$this->title = '编辑信息' ;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 \common\helpers\HeaderActionHelper::$action=[

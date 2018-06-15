@@ -25,6 +25,14 @@ use yii\helpers\Html;
                         <span class="hidden-xs">我的</span>
                     </a>
                     <ul class="dropdown-menu">
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <?= Html::a(
+                                '编辑信息',
+                                ['/user-doctor/update']
+                            ) ?>
+                        </li>
+                        <li role="separator" class="divider"></li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">

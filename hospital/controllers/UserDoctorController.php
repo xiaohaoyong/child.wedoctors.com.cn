@@ -130,8 +130,9 @@ class UserDoctorController extends BaseController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
+        $id = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital])->userid;
         $model = User::findOne($id);
         $userInfo=\hospital\models\user\UserDoctor::findOne(['userid'=>$id]);
         $userInfo=$userInfo?$userInfo:new \hospital\models\user\UserDoctor();
