@@ -180,7 +180,7 @@ databackend\assets\IndexAsset::register($this);
                     ?>
                     <tr>
                         <td><?=$v->name?></td>
-                        <td><?=$total=\common\models\ChildInfo::find()->where(['source'=>$v->hospitalid])->andFilterWhere(['>','birthday',strtotime('-3 year')])->count()?></td>
+                        <td><?=$total=\common\models\ChildInfo::find()->where(['source'=>$v->hospitalid])->andFilterWhere(['doctorid'=>$v->hospitalid])->andFilterWhere(['>','birthday',strtotime('-3 year')])->count()?></td>
                         <td><?php
                             $today=strtotime(date('Y-m-d 00:00:00'));
                             //今日已签约
@@ -196,7 +196,9 @@ databackend\assets\IndexAsset::register($this);
                             echo  $q=\common\models\ChildInfo::find()
                                 ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                 ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
-                                ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
+                                ->andFilterWhere(['`child_info`.`doctorid`' =>$v->hospitalid])
+
+                                    ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
                             ?>
                         </td>
                         <td><?php
