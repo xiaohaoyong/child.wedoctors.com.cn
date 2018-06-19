@@ -9,6 +9,7 @@
 namespace console\controllers;
 
 
+use common\models\ChildInfo;
 use common\models\WeOpenid;
 use console\models\ChildInfoInput;
 use yii\base\Controller;
@@ -78,6 +79,8 @@ class ChildInfoController extends Controller
             {
                 continue;
             }
+
+            ChildInfo::updateAll(['doctorid'=>0],'source ='.$hospitalid);
             $ChildInfoInput=new ChildInfoInput();
             $ChildInfoInput->hospitalid=$hospitalid;
             $ChildInfoInput->inputData($rs);

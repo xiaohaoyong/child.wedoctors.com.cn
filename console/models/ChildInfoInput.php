@@ -329,19 +329,21 @@ class ChildInfoInput
         $barthday = intval(strtotime($value[5]));
         $gender = $value[4] == "男" ? 1 : 2;
 
-        $childInfo = ChildInfo::find()
-            ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-            ->andFilterWhere(["`user_parent`.`mother`" => $mother])
-            ->andFilterWhere(["`user_parent`.`father`" => $father])
-            ->andFilterWhere(["`child_info`.`name`" => $name])
-            ->andFilterWhere(["`child_info`.`birthday`" => $barthday])
-            ->andFilterWhere(["`child_info`.`gender`" => $gender])
-            ->one();
-        if ($childInfo) {
-            $this->childInfo = $childInfo;
-            $this->user = User::findOne($childInfo->userid);
-            $this->userParent = UserParent::findOne(['userid' => $childInfo->userid]);
-            return true;
+        if($mother && $father && $name && $barthday && $gender) {
+            $childInfo = ChildInfo::find()
+                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                ->andFilterWhere(["`user_parent`.`mother`" => $mother])
+                ->andFilterWhere(["`user_parent`.`father`" => $father])
+                ->andFilterWhere(["`child_info`.`name`" => $name])
+                ->andFilterWhere(["`child_info`.`birthday`" => $barthday])
+                ->andFilterWhere(["`child_info`.`gender`" => $gender])
+                ->one();
+            if ($childInfo) {
+                $this->childInfo = $childInfo;
+                $this->user = User::findOne($childInfo->userid);
+                $this->userParent = UserParent::findOne(['userid' => $childInfo->userid]);
+                return true;
+            }
         }
         return false;
     }
@@ -381,23 +383,21 @@ class ChildInfoInput
     {
 
         $mother = $value[9];
-        $father = $value[11];
+        if($mother!='' && $value[34]!='') {
+            $userParent = UserParent::find()
+                ->andFilterWhere(["mother" => $mother])
+                ->andFilterWhere(["field28" => $value[34]])
+                ->andFilterWhere(["source" => $this->hospitalid])
+                ->orderBy('userid asc')
+                ->one();
 
-
-        $userParent = UserParent::find()
-            ->andFilterWhere(["mother" => $mother])
-            ->andFilterWhere(["father" => $father])
-            ->andFilterWhere(["source" => $this->hospitalid])
-            ->orderBy('userid asc')
-            ->one();
-
-        if ($userParent) {
-            $this->childInfo = new ChildInfo();
-            $this->user = User::findOne($userParent->userid);
-            $this->userParent = $userParent;
-            return true;
+            if ($userParent) {
+                $this->childInfo = ChildInfo::findOne(['name' => $value[3]]);
+                $this->user = User::findOne($userParent->userid);
+                $this->userParent = $userParent;
+                return true;
+            }
         }
-
         return false;
     }
 }
