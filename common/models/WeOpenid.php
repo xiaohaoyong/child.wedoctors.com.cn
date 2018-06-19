@@ -2,8 +2,8 @@
 
 namespace common\models;
 
+use callmez\wechat\sdk\MpWechat;
 use common\components\HttpRequest;
-use common\vendor\MpWechat;
 use Yii;
 
 /**
@@ -60,7 +60,7 @@ class WeOpenid extends \yii\db\ActiveRecord
                 'appSecret' => \Yii::$app->params['AppSecret'],
                 'encodingAesKey' => \Yii::$app->params['encodingAesKey']
             ]);
-            $access_token = $mpWechat->getAccessToken(true);
+            $access_token = $mpWechat->getAccessToken();
 
             if ($access_token) {
 

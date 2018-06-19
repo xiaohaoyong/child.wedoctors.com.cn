@@ -17,7 +17,6 @@ use common\models\Notice;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
-use common\vendor\MpWechat;
 use yii\base\Model;
 
 class Push extends Model

@@ -586,13 +586,13 @@ class DataController extends Controller
      */
     public function actionGetUid()
     {
-        $wechat = new \common\vendor\MpWechat([
+        $wechat = new MpWechat([
             'token' => \Yii::$app->params['WeToken'],
             'appId' => \Yii::$app->params['AppID'],
             'appSecret' => \Yii::$app->params['AppSecret'],
             'encodingAesKey' => \Yii::$app->params['encodingAesKey']
         ]);
-        $access_token=$wechat->getAccessToken(true);
+        $access_token=$wechat->getAccessToken();
 
         $weOpenid=WeOpenid::find()->andFilterWhere(['level'=>0])->andWhere(['!=','openid',''])->all();
         foreach($weOpenid as $k=>$v){
