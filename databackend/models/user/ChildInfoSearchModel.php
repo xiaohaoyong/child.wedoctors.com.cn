@@ -18,6 +18,7 @@ class ChildInfoSearchModel extends ChildInfo
 
     public $username;
     public $userphone;
+    public $admin;
 
     /**
      * @inheritdoc
@@ -27,7 +28,7 @@ class ChildInfoSearchModel extends ChildInfo
         return [
             [['id', 'userid', 'birthday', 'createtime', 'level','admin'], 'integer'],
             [['docpartimeS','docpartimeE', 'username'], 'string'],
-            [['userphone'], 'integer'],
+            [['userphone','admin'], 'integer'],
 
             [['name'], 'safe'],
         ];
@@ -65,16 +66,21 @@ class ChildInfoSearchModel extends ChildInfo
     {
         $query = \common\models\ChildInfo::find();
 
-        $doctor=UserDoctor::find()->andFilterWhere(['county'=> \Yii::$app->user->identity->county])->asArray()->all();
-
-        $hospitalids=ArrayHelper::getColumn($doctor,'hospitalid');
-        $doctorids=ArrayHelper::getColumn($doctor,'userid');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
         $this->load($params);
+
+        if(!$this->admin) {
+            $doctor = UserDoctor::find()->andFilterWhere(['county' => \Yii::$app->user->identity->county])->asArray()->all();
+            $hospitalids=ArrayHelper::getColumn($doctor,'hospitalid');
+
+        }else{
+            $hospitalids=[$this->admin];
+        }
+
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

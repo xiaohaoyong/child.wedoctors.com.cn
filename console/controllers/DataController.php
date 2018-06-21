@@ -747,112 +747,123 @@ class DataController extends Controller
 
                 $child = ChildInfo::find()->andFilterWhere(['name' => trim($row[0])])
                     ->andFilterWhere(['birthday' => strtotime($row[18])])
-                    ->andFilterWhere(['field32' => strtotime($row[32])])
                     ->andFilterWhere(['source'=>$hospitalid])
                     ->one();
                 echo $row[0];
                 if (!$child) {
                     echo "--儿童不存在";
-                    $ex->childid = 0;
+                   // $childData['childid'] = 0;
                 } else {
                     echo "--儿童存在";
-                    $ex->childid = $child->id;
+                    $childData['childid'] = $child->id;
                 }
 
-                $ex->field1 = $row[0];
-                $ex->field2 = $row[1];
-                $ex->field3 = $row[2];
-                $ex->field4 = $row[3];
-                $ex->field5 = $row[4];
-                $ex->field6 = $row[5];
-                $ex->field7 = $row[6];
-                $ex->field8 = $row[7];
-                $ex->field9 = $row[8];
-                $ex->field10 = $row[9];
-                $ex->field11 = $row[10];
-                $ex->field12 = $row[11];
-                $ex->field13 = $row[12];
-                $ex->field14 = $row[13];
-                $ex->field15 = $row[14];
-                $ex->field16 = $row[15];
-                $ex->field17 = $row[16];
-                $ex->field18 = $row[17];
-                $ex->field19 = $row[18];
-                $ex->field20 = $row[19];
-                $ex->field21 = $row[20];
-                $ex->field22 = $row[21];
-                $ex->field23 = $row[22];
-                $ex->field24 = $row[23];
-                $ex->field25 = $row[24];
-                $ex->field26 = $row[25];
-                $ex->field27 = $row[26];
-                $ex->field28 = $row[27];
-                $ex->field29 = $row[28];
-                $ex->field30 = $row[29];
-                $ex->field31 = $row[30];
-                $ex->field32 = $row[31];
-                $ex->field33 = $row[32];
-                $ex->field34 = $row[33];
-                $ex->field35 = $row[34];
-                $ex->field36 = $row[35];
-                $ex->field37 = $row[36];
-                $ex->field38 = $row[37];
-                $ex->field39 = $row[38];
-                $ex->field40 = $row[39];
-                $ex->field41 = $row[40];
-                $ex->field42 = $row[41];
-                $ex->field43 = $row[42];
-                $ex->field44 = $row[43];
-                $ex->field45 = $row[44];
-                $ex->field46 = $row[45];
-                $ex->field47 = $row[46];
-                $ex->field48 = $row[47];
-                $ex->field49 = $row[48];
-                $ex->field50 = $row[49];
-                $ex->field51 = $row[50];
-                $ex->field52 = $row[51];
-                $ex->field53 = $row[52];
-                $ex->field54 = $row[53];
-                $ex->field55 = $row[54];
-                $ex->field56 = $row[55];
-                $ex->field57 = $row[56];
-                $ex->field58 = $row[57];
-                $ex->field59 = $row[58];
-                $ex->field60 = $row[59];
-                $ex->field61 = $row[60];
-                $ex->field62 = $row[61];
-                $ex->field63 = $row[62];
-                $ex->field64 = $row[63];
-                $ex->field65 = $row[64];
-                $ex->field66 = $row[65];
-                $ex->field67 = $row[66];
-                $ex->field68 = $row[67];
-                $ex->field69 = $row[68];
-                $ex->field70 = $row[69];
-                $ex->field71 = $row[70];
-                $ex->field72 = $row[71];
-                $ex->field73 = $row[72];
-                $ex->field74 = $row[73];
-                $ex->field75 = $row[74];
-                $ex->field76 = $row[75];
-                $ex->field77 = $row[76];
-                $ex->field78 = $row[77];
-                $ex->field79 = $row[78];
-                $ex->field80 = $row[79];
-                $ex->field81 = $row[80];
-                $ex->field82 = $row[81];
-                $ex->field83 = $row[82];
-                $ex->field84 = $row[83];
-                $ex->field85 = $row[84];
-                $ex->field86 = $row[85];
-                $ex->field87 = $row[86];
-                $ex->field88 = $row[87];
-                $ex->field89 = $row[88];
-                $ex->field90 = $row[89];
-                $ex->field91 = $row[90];
-                $ex->field92 = $row[91];
-                $ex->source = $hospitalid;
-                $ex->isupdate = $isupdate;
+                $childData=[
+
+                    'field1' => $row[0],
+                    'field2' => $row[1],
+                    'field3' => $row[2],
+                    'field4' => $row[3],
+                    'field5' => $row[4],
+                    'field6' => $row[5],
+                    'field7' => $row[6],
+                    'field8' => $row[7],
+                    'field9' => $row[8],
+                    'field10' => $row[9],
+                    'field11' => $row[10],
+                    'field12' => $row[11],
+                    'field13' => $row[12],
+                    'field14' => $row[13],
+                    'field15' => $row[14],
+                    'field16' => $row[15],
+                    'field17' => $row[16],
+                    'field18' => $row[17],
+                    'field19' => $row[18],
+                    'field20' => $row[19],
+                    'field21' => $row[20],
+                    'field22' => $row[21],
+                    'field23' => $row[22],
+                    'field24' => $row[23],
+                    'field25' => $row[24],
+                    'field26' => $row[25],
+                    'field27' => $row[26],
+                    'field28' => $row[27],
+                    'field29' => $row[28],
+                    'field30' => $row[29],
+                    'field31' => $row[30],
+                    'field32' => $row[31],
+                    'field33' => $row[32],
+                    'field34' => $row[33],
+                    'field35' => $row[34],
+                    'field36' => $row[35],
+                    'field37' => $row[36],
+                    'field38' => $row[37],
+                    'field39' => $row[38],
+                    'field40' => $row[39],
+                    'field41' => $row[40],
+                    'field42' => $row[41],
+                    'field43' => $row[42],
+                    'field44' => $row[43],
+                    'field45' => $row[44],
+                    'field46' => $row[45],
+                    'field47' => $row[46],
+                    'field48' => $row[47],
+                    'field49' => $row[48],
+                    'field50' => $row[49],
+                    'field51' => $row[50],
+                    'field52' => $row[51],
+                    'field53' => $row[52],
+                    'field54' => $row[53],
+                    'field55' => $row[54],
+                    'field56' => $row[55],
+                    'field57' => $row[56],
+                    'field58' => $row[57],
+                    'field59' => $row[58],
+                    'field60' => $row[59],
+                    'field61' => $row[60],
+                    'field62' => $row[61],
+                    'field63' => $row[62],
+                    'field64' => $row[63],
+                    'field65' => $row[64],
+                    'field66' => $row[65],
+                    'field67' => $row[66],
+                    'field68' => $row[67],
+                    'field69' => $row[68],
+                    'field70' => $row[69],
+                    'field71' => $row[70],
+                    'field72' => $row[71],
+                    'field73' => $row[72],
+                    'field74' => $row[73],
+                    'field75' => $row[74],
+                    'field76' => $row[75],
+                    'field77' => $row[76],
+                    'field78' => $row[77],
+                    'field79' => $row[78],
+                    'field80' => $row[79],
+                    'field81' => $row[80],
+                    'field82' => $row[81],
+                    'field83' => $row[82],
+                    'field84' => $row[83],
+                    'field85' => $row[84],
+                    'field86' => $row[85],
+                    'field87' => $row[86],
+                    'field88' => $row[87],
+                    'field89' => $row[88],
+                    'field90' => $row[89],
+                    'field91' => $row[90],
+                    'field92' => $row[91],
+                    'source'=>$hospitalid,
+                    'isupdate' => $isupdate,
+                ];
+                
+                $childData=array_filter($childData,function($e){
+                    if($e!='' || $e!=null) return true;
+                    return false;
+                });
+                foreach($childData as $k=>$v)
+                {
+                    $ex->$k=$v;
+                }
                 $ex->save();
                 if ($ex->firstErrors) {
                     echo "error";
