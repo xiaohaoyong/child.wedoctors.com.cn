@@ -30,9 +30,9 @@ class ChildInfoController extends Controller
         foreach($file_list as $fk=>$fv) {
             preg_match("#\d+#", $fv, $m);
             if ($hospitalid = $m[0]) {
-               // ChildInfo::updateAll(['doctorid'=>$hospitalid],'source ='.$hospitalid);
+               ChildInfo::updateAll(['doctorid'=>$hospitalid],'source ='.$hospitalid);
 
-                $this->getExcel($fv,$hospitalid);
+                //$this->getExcel($fv,$hospitalid);
             }
         }
 

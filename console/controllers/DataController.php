@@ -348,6 +348,7 @@ class DataController extends Controller
     }
 
 
+    //禁用危险
     public function actionName()
     {
         $childInfo = ChildInfo::find()->andFilterWhere(['source' => 0])->andFilterWhere(['id' => 60413])->all();
@@ -412,35 +413,48 @@ class DataController extends Controller
 
     public function actionEbb()
     {
-        $doctorParent = DoctorParent::find()->andFilterWhere(['level' => 1])->andFilterWhere(['>', 'createtime', '1528630100'])->all();
+        $childs = ChildInfo::find()->andFilterWhere(['doctorid'=>110565])->all();
+        foreach ($childs as $k => $v) {
+            $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid,'level'=>1]);
+            $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
 
-        foreach ($doctorParent as $k => $v) {
-            $child = ChildInfo::findOne(['userid' => $v->parentid]);
-
-            if ($child) {
-                $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
-
-                $child->doctorid = $doctor->hospitalid;
-                $child->save();
-                echo $child->userid;
-            }
+            $v->doctorid = $doctor->hospitalid;
+            $v->save();
+            echo $v->userid;
+            echo "\n";
 
         }
         exit;
+        $doctorParent = DoctorParent::find()->andFilterWhere(['level' => 1])->andFilterWhere(['doctorid'=>47156])->all();
 
-        foreach ($doctorParent as $k => $v) {
-            echo $v->parentid . "===";
-            $userParent = UserParent::findOne(['userid' => $v->parentid]);
-            if ($userParent->source > 38) {
-                $doctor = UserDoctor::findOne(['hospitalid' => $userParent->source]);
-                if ($doctor) {
-                    echo $doctor->userid;
-                    $v->doctorid = $doctor->userid;
-                    $v->save();
-                }
-            }
-            echo "\n";
-        }
+//        foreach ($doctorParent as $k => $v) {
+//            $child = ChildInfo::findOne(['userid' => $v->parentid]);
+//
+//            if ($child) {
+//                $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
+//
+//                $child->doctorid = $doctor->hospitalid;
+//                $child->save();
+//                echo $child->userid;
+//                echo "\n";
+//            }
+//
+//        }
+//        exit;
+
+//        foreach ($doctorParent as $k => $v) {
+//            echo $v->parentid . "===";
+//            $userParent = UserParent::findOne(['userid' => $v->parentid]);
+//            if ($userParent->source > 38) {
+//                $doctor = UserDoctor::findOne(['hospitalid' => $userParent->source]);
+//                if ($doctor) {
+//                    echo $doctor->userid;
+//                    $v->doctorid = $doctor->userid;
+//                    $v->save();
+//                }
+//            }
+//            echo "\n";
+//        }
         exit;
         $user = User::find()->where(['source' => 1])->all();
         foreach ($user as $k => $v) {

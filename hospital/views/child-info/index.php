@@ -97,8 +97,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'format'=>'raw',
                                     'value' => function ($e) {
 
-
-                                        $file3=$e->sign->level==1 ? $e->doctor[0]->name : "--";
+                                        $file3="--";
+                                        if($e->sign->level==1){
+                                            $doctorParent=\common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
+                                            $doctor=\common\models\UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
+                                            $file3=$doctor?$doctor->name:'--';
+                                        }
 
                                         return $file3;
 
