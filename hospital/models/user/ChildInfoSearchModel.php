@@ -104,7 +104,8 @@ class ChildInfoSearchModel extends ChildInfo
 
         if($this->level==1 || $this->level==2)
         {
-
+            $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+            $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
         }
         if($this->level==3){

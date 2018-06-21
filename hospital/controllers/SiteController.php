@@ -77,6 +77,8 @@ class SiteController extends BaseController
             ->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospital])
             ->count();
 
+        //var_dump($data['todayNumTotal']->createCommand()->getRawSql());exit;
+
 
         //管辖儿童数
         $data['childNum']=ChildInfo::find()
