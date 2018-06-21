@@ -61,7 +61,7 @@ class DoctorParent extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-        if($insert)
+        if($insert && !$this->createtime)
         {
             $this->createtime=time();
         }

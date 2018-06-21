@@ -128,7 +128,10 @@ class ChildInfoInput
                 'field12'       => $value[13],
                 'field11'       => $value[12],
             ];
-            array_filter($userParentData);
+            $userParentData=array_filter($userParentData,function($e){
+                if($e!='' || $e!=null) return true;
+                return false;
+            });
 
             foreach($userParentData as $k=>$v)
             {
@@ -186,7 +189,10 @@ class ChildInfoInput
                 'field0'    => $value[0],
             ];
 
-            array_filter($childData);
+            $childData=array_filter($childData,function($e){
+                if($e!='' || $e!=null) return true;
+                return false;
+            });
             //var_dump($childData);
             $this->addLog("保存儿童");
 
