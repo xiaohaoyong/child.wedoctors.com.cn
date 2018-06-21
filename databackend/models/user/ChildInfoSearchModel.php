@@ -67,6 +67,8 @@ class ChildInfoSearchModel extends ChildInfo
         $query = \common\models\ChildInfo::find();
 
         // add conditions that should always apply here
+        $doctor = UserDoctor::find()->andFilterWhere(['county' => \Yii::$app->user->identity->county])->asArray()->all();
+        $doctorids=ArrayHelper::getColumn($doctor,'userid');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -74,11 +76,12 @@ class ChildInfoSearchModel extends ChildInfo
         $this->load($params);
 
         if(!$this->admin) {
-            $doctor = UserDoctor::find()->andFilterWhere(['county' => \Yii::$app->user->identity->county])->asArray()->all();
             $hospitalids=ArrayHelper::getColumn($doctor,'hospitalid');
 
         }else{
             $hospitalids=[$this->admin];
+            $doctor = UserDoctor::find()->andFilterWhere(['in','hospitalid',$hospitalids])->asArray()->all();
+            $doctorids=ArrayHelper::getColumn($doctor,'userid');
         }
 
 
@@ -108,6 +111,7 @@ class ChildInfoSearchModel extends ChildInfo
         if($this->level==1)
         {
 
+            $query->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
         }
         if($this->level==3){
