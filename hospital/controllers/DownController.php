@@ -109,7 +109,7 @@ class DownController extends BaseController
                 ->setCellValue('B' . $key1, " ".\common\models\User::findOne($v['userid'])->phone)
                 ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                 ->setCellValue('D' . $key1, $age)
-                ->setCellValue('E' . $key1, '出生日期')
+                ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
                 ->setCellValue('F' . $key1, $v['mother'] || $v['father']?$v['mother']."/".$v['father']:"无")
                 ->setCellValue('G' . $key1, $v['mother_phone'] ? " ".$v['mother_phone'] : "无")
                 ->setCellValue('H' . $key1, $v['father_phone'] ?  " ".$v['father_phone'] : "无")
