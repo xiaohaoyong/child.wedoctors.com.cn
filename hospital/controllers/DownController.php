@@ -62,7 +62,7 @@ class DownController extends BaseController
 //写入内容
         foreach($dataProvider->query->limit(500)->asArray()->all() as $k=>$v) {
             $e=$v;
-            $sign = DoctorParent::findOne(['parentid'=>$v['userid']]);
+            $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid']]);
 
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
             if($DiffDate[0]) {
@@ -105,7 +105,7 @@ class DownController extends BaseController
 
             $key1 = $k + 2;
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $key1, $v['userid'].$v['name'])
+                ->setCellValue('A' . $key1, $v['name'])
                 ->setCellValue('B' . $key1, " ".\common\models\User::findOne($v['userid'])->phone)
                 ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                 ->setCellValue('D' . $key1, $age)
