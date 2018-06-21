@@ -105,7 +105,7 @@ class DownController extends BaseController
 
             $key1 = $k + 2;
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $key1, $v['name'])
+                ->setCellValue('A' . $key1, $v['userid'].$v['name'])
                 ->setCellValue('B' . $key1, " ".\common\models\User::findOne($v['userid'])->phone)
                 ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                 ->setCellValue('D' . $key1, $age)

@@ -67,12 +67,11 @@ class UserController extends Controller
                 }
 
                 $weOpenid = WeOpenid::findOne(['unionid' => $user['unionid']]);
-                if (!$weOpenid) {
-                    $weOpenid = new WeOpenid();
-                    $weOpenid->unionid = $user['unionid'];
+                if ($weOpenid) {
+                    $weOpenid->xopenid = $user['openid'];
+                    $weOpenid->save();
                 }
-                $weOpenid->xopenid = $user['openid'];
-                $weOpenid->save();
+
             }
 
             $xopenid=$user['openid'];
@@ -144,7 +143,7 @@ class UserController extends Controller
                 Notice::setList($userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
                 Notice::setList($userid, 3, ['title' => '儿童中医药健康管理内容及平台服务', 'ftitle' => '点击查看服务内容', 'id' => '/article/view/index?id=200',]);
 
-                $userLogin = UserLogin::findOne(['userid' => $userid]);
+                $userLogin = UserLogin::findOne(['userid' => $userid,'phone'=>$wephone]);
                 $userLogin = $userLogin ? $userLogin : new UserLogin();
 
                 $childInfo = ChildInfo::find()->andFilterWhere(['userid' => $userid])->andFilterWhere(['>', 'source', 38])->one();
@@ -189,6 +188,7 @@ class UserController extends Controller
                 $userLogin->logintime = time();
                 $userLogin->userid = $userid;
                 $userLogin->hxusername = $this->hxusername;
+                $userLogin->phone=$wephone;
                 $userLogin->save();
                 $useridx = $userLogin ? md5($userLogin->userid . "6623cXvY") : 0;
             }
