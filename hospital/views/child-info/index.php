@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => '性别',
                                     'value' => function ($e) {
-                                        return $e->userid.\common\models\ChildInfo::$genderText[$e->gender];
+                                        return \common\models\ChildInfo::$genderText[$e->gender];
                                     }
                                 ],
                                 [
@@ -126,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 $return = "已签约";
                                             }
                                         }
-                                        return $e->sign->id.$return;
+                                        return $return;
                                     }
                                 ],
                                 [
