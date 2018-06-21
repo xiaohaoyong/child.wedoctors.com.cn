@@ -62,7 +62,7 @@ class DownController extends BaseController
 //写入内容
         foreach($dataProvider->query->limit(500)->asArray()->all() as $k=>$v) {
             $e=$v;
-            $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid']]);
+            $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid'],'level'=>1]);
 
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
             if($DiffDate[0]) {
