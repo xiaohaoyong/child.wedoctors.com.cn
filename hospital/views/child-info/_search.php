@@ -47,9 +47,11 @@ use yii\widgets\ActiveForm;
 <?php
 $updateJs = <<<JS
     jQuery("#down").click(function () {
-        jQuery("#child").attr('action',"/down/child");    //通过jquery为action属性赋值
-        jQuery("#child").submit();    //提交ID为myform的表单
-        alert("点击确定开始下载，请勿刷新或关闭窗口（目前最多下载200条数据）");
+        //过jquery为action属性赋值
+        if(confirm("点击确定开始下载，请勿刷新或关闭窗口（目前最多下载500条数据），可按照时间筛选")){
+            jQuery("#child").attr('action',"/down/child");    //通
+            jQuery("#child").submit();    //提交ID为myform的表单
+        }
 
          // if ("WebSocket" in window)
          //    {
