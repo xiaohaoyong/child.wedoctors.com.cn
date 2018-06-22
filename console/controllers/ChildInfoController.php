@@ -71,12 +71,12 @@ class ChildInfoController extends Controller
             ->setCellValue('P'.$key1, '宣教内容')
             ->setCellValue('Q'.$key1, '宣教时间');
 
-        $hospitalid=UserDoctor::findOne(['userid'=>$doctorid])->hospitalid;
+        $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
         $data=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-            ->andFilterWhere(['`child_info`.`doctorid`' =>$hospitalid])
+            ->andFilterWhere(['`child_info`.`doctorid`' =>$userDoctor->hospitalid])
             ->asArray()->all();
 //写入内容
 
@@ -154,7 +154,7 @@ class ChildInfoController extends Controller
 
 
         $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
-        $objWriter->save("static/".$hospitalid.".xlsx");
+        $objWriter->save("static/".$userDoctor->hospitalid.".xlsx");
         return ;
     }
 
