@@ -12,8 +12,10 @@ namespace hospital\controllers;
 use common\models\Article;
 use common\models\ArticleInfo;
 use common\models\ArticleUser;
+use hospital\models\User;
 use hospital\models\user\ChildInfoSearchModel;
 use hospital\models\user\DoctorParent;
+use hospital\models\user\UserParent;
 
 class DownController extends BaseController
 {
@@ -63,6 +65,7 @@ class DownController extends BaseController
         foreach($dataProvider->query->limit(500)->asArray()->all() as $k=>$v) {
             $e=$v;
             $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid'],'level'=>1]);
+            $userParent = UserParent::findOne(['userid'=>$e->userid]);
 
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
             if($DiffDate[0]) {

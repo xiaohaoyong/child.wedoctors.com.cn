@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         if($e->sign->level==1){
                                             $doctorParent=\common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
                                             $doctor=\common\models\UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
-                                            $file3=$doctor?$doctor->name:'--';
+                                            $file3=$doctor?$doctor->name:"==";
                                         }
 
                                         return $file3;
@@ -119,11 +119,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '签约状态',
                                     'value' => function ($e) {
+                                        $userParent = UserParent::findOne(['userid'=>$e->userid]);
+
                                         if($e->sign->level!=1)
                                         {
                                             $return="未签约";
                                         }else{
-                                            if($e->source<=38){
+                                            if($userParent->source<=38){
                                                 $return="已签约未关联";
 
                                             }else {

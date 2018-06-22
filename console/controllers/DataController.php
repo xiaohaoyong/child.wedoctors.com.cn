@@ -750,13 +750,6 @@ class DataController extends Controller
                     ->andFilterWhere(['source'=>$hospitalid])
                     ->one();
                 echo $row[0];
-                if (!$child) {
-                    echo "--儿童不存在";
-                   // $childData['childid'] = 0;
-                } else {
-                    echo "--儿童存在";
-                    $childData['childid'] = $child->id;
-                }
 
                 $childData=[
 
@@ -855,7 +848,16 @@ class DataController extends Controller
                     'source'=>$hospitalid,
                     'isupdate' => $isupdate,
                 ];
-                
+
+                if (!$child) {
+                    echo "--儿童不存在";
+                   // $childData['childid'] = 0;
+                } else {
+                    echo "--儿童存在";
+                    $childData['childid'] = $child->id;
+                }
+
+
                 $childData=array_filter($childData,function($e){
                     if($e!='' || $e!=null) return true;
                     return false;
