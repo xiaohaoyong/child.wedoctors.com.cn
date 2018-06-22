@@ -103,7 +103,7 @@ class ChildInfoSearchModel extends ChildInfo
         {
             $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
             $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
-            $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
+            $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
         }
         if($this->level==3){
             $query->andWhere(['or',['<>','`doctor_parent`.`level`' ,1],['`doctor_parent`.`parentid`'=>null]]);

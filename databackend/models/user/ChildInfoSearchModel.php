@@ -109,7 +109,7 @@ class ChildInfoSearchModel extends ChildInfo
         if($this->level==1 || $this->level==2)
         {
             $query->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids]);
-            $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
+            $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
         }
 
         if($this->level==3){
