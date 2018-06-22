@@ -98,7 +98,7 @@ databackend\assets\DatabasesAsset::register($this);
                             <td><span class="badge <?=$color?>"><?=$baifen?>%</span></td>
                             <td>
                                 <?=Html::a('<span class="fa fa-database"></span> 宣教记录', \yii\helpers\Url::to(['article-user/index',"ArticleUserSearchModel[userid]"=>$v->userid]));?>
-                                <?= Html::a('一键导出已签约服务表',"http://static.wedoctors.com.cn/".$v->hospitalid.".xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
+                                <?= Html::a('一键导出已签约服务表',"http://static.wedoctors.com.cn/".$v->hospitalid.".xlsx", ['id'=>'downnew','target'=>'_blank']) ?>
 
                             </td>
                         </tr>
