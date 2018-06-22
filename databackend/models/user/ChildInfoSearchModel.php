@@ -91,10 +91,10 @@ class ChildInfoSearchModel extends ChildInfo
             return $dataProvider;
         }
 
+        $query->andFilterWhere(['in', '`child_info`.doctorid',$hospitalids]);
+
         if(!$this->level) {
             $query->andFilterWhere(['in', '`child_info`.source',$hospitalids]);
-        }else{
-            $query->andFilterWhere(['in', '`child_info`.doctorid',$hospitalids]);
         }
 
         if($this->level!=1) {
@@ -105,21 +105,22 @@ class ChildInfoSearchModel extends ChildInfo
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
         }
 
-        if($this->level==1)
-        {
 
+        if($this->level==1 || $this->level==2)
+        {
             $query->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
         }
+
         if($this->level==3){
             $query->andWhere(['or',['<>','`doctor_parent`.`level`' ,1],['`doctor_parent`.`parentid`'=>null]]);
         }
-
 
         if($this->level==2)
         {
             $query->andFilterWhere(['<=','`child_info`.`source`',38]);
         }
+
 
         if($this->docpartimeS!=='' and $this->docpartimeS!==null){
             $state = strtotime($this->docpartimeS . " 00:00:00");
