@@ -119,7 +119,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '签约状态',
                                     'value' => function ($e) {
-                                        $userParent = \common\models\UserParent::findOne(['userid'=>$e->userid]);
 
                                         if($e->sign->level!=1)
                                         {
