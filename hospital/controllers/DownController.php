@@ -63,10 +63,10 @@ class DownController extends BaseController
             ->setCellValue('P'.$key1, '宣教内容')
             ->setCellValue('Q'.$key1, '宣教时间');
 //写入内容
-        foreach($dataProvider->query->limit(500)->all() as $v) {
-            $e=$v;
-            $sign = \common\models\DoctorParent::findOne(['parentid'=>$v->userid,'level'=>1]);
-            $userParent = UserParent::findOne(['userid'=>$v->userid]);
+        foreach($dataProvider->query->limit(500)->all() as $k=>$e) {
+            $v=$e->toArray();
+            $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid'],'level'=>1]);
+            $userParent = UserParent::findOne(['userid'=>$v['userid']]);
 
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
             if($DiffDate[0]) {

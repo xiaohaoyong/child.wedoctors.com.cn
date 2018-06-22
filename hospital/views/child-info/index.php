@@ -96,9 +96,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute' => '签约社区',
                                     'format'=>'raw',
                                     'value' => function ($e) {
+                                        $sign = \common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
 
                                         $file3="--";
-                                        if($e->sign->level==1){
+                                        if($sign->level==1){
                                             $doctorParent=\common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
                                             $doctor=\common\models\UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
                                             $file3=$doctor?$doctor->name:"==";
@@ -112,17 +113,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '签约时间',
                                     'value' => function ($e) {
+                                        $sign = \common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
 
-                                        return $e->sign->level == 1 ? date('Y-m-d H:i', $e->sign->createtime) : "无";
+                                        return $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无";
                                     }
                                 ],
                                 [
                                     'attribute' => '签约状态',
                                     'value' => function ($e) {
 
-                                        if($e->sign->level!=1)
+                                        $sign = \common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
+
+                                        if($sign->level!=1)
                                         {
-                                            $return="未签约";
+                                            $return=$e->userid."未签约";
                                         }else{
                                             if($e->parent->source<=38){
                                                 $return="已签约未关联";
