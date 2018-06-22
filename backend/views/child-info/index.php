@@ -117,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => '体检数据',
                 'value' => function ($e) {
-                    $count = \common\models\Examination::find()->andFilterWhere(['childid'=>$e->id]);
+                    $count = \common\models\Examination::find()->andFilterWhere(['childid'=>$e->id])->count();
                     return $count;
                 }
             ],
