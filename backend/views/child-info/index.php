@@ -115,6 +115,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => '体检数据',
+                'value' => function ($e) {
+                    $count = \common\models\Examination::find()->andFilterWhere(['childid'=>$e->id]);
+                    return $count;
+                }
+            ],
+            [
                 'class' => 'common\components\grid\ActionColumn',
                 'template' => '
                 <div class="btn-group dropup">
