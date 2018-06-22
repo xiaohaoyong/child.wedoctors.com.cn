@@ -36,6 +36,7 @@ use yii\widgets\ActiveForm;
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
         <?= Html::button('下载', ['id'=>'down','class' => 'btn btn-primary']) ?>
+        <?= Html::a('一键导出已签约服务表',"http://static.wedoctors.com.cn/".\Yii::$app->user->identity->hospital.".xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
 
         <div class="help-block"></div>
     </div>
