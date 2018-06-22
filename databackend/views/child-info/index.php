@@ -97,11 +97,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'format'=>'raw',
                                     'value' => function ($e) {
 
+                                        $sign = \common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
 
-                                        $file3=$e->sign->level==1 ? $e->doctor[0]->name : "--";
+                                        $file3="--";
+                                        if($sign->level==1){
+                                            $doctorParent=\common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
+                                            $doctor=\common\models\UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
+                                            $file3=$doctor?$doctor->name:"==";
+                                        }
 
                                         return $file3;
-
                                     }
                                 ],
 
@@ -109,17 +114,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute' => '签约时间',
                                     'value' => function ($e) {
 
-                                        return $e->sign->level == 1 ? date('Y-m-d H:i', $e->sign->createtime) : "无";
+                                        $sign = \common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
+
+                                        return $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无";
                                     }
                                 ],
                                 [
                                     'attribute' => '签约状态',
                                     'value' => function ($e) {
-                                        if($e->sign->level!=1)
+                                        $sign = \common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
+
+                                        if($sign->level!=1)
                                         {
                                             $return="未签约";
                                         }else{
-                                            if($e->source<=38){
+                                            if($e->parent->source<=38){
                                                 $return="已签约未关联";
 
                                             }else {
