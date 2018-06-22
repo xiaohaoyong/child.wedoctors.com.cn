@@ -20,6 +20,26 @@ use yii\helpers\ArrayHelper;
 
 class DownController extends BaseController
 {
+    public function actionChildnew(){
+
+
+        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+
+
+        //以只读和二进制模式打开文件
+        $file=dirname(__ROOT__) . "/static/".\Yii::$app->user->identity->hospital.".xlsx";
+        if (file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            exit;
+        }
+    }
     public function actionChild(){
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
