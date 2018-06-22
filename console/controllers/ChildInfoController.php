@@ -154,7 +154,7 @@ class ChildInfoController extends Controller
 
 
         $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
-        $objWriter->save($hospitalid.".xlsx");
+        $objWriter->save("static/".$hospitalid.".xlsx");
         return ;
     }
 
