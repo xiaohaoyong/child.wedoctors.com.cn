@@ -119,13 +119,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '签约状态',
                                     'value' => function ($e) {
-                                        $userParent = UserParent::findOne(['userid'=>$e->userid]);
+                                        $userParent = \common\models\UserParent::findOne(['userid'=>$e->userid]);
 
                                         if($e->sign->level!=1)
                                         {
                                             $return="未签约";
                                         }else{
-                                            if($userParent->source<=38){
+                                            if($e->parent->source<=38){
                                                 $return="已签约未关联";
 
                                             }else {

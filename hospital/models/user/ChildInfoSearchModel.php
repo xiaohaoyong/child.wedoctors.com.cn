@@ -82,9 +82,6 @@ class ChildInfoSearchModel extends ChildInfo
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->select('child_info.*,user_parent.mother,user_parent.father,user_parent.mother_phone,user_parent.father_phone,user_parent.field11,user_parent.field12');
-
-        $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
 
         $hospitalid=$this->admin?$this->admin:\Yii::$app->user->identity->hospital;
         $query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
