@@ -77,6 +77,7 @@ class ChildInfoController extends Controller
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
             ->andFilterWhere(['`child_info`.`doctorid`' =>$userDoctor->hospitalid])
+            ->orderBy("`doctor_parent`.`createtime` desc")
             ->asArray()->all();
 //写入内容
 

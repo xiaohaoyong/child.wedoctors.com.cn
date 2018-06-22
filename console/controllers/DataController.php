@@ -151,50 +151,106 @@ class DataController extends Controller
         }
     }
 
+
+    public function actionDataaa()
+    {
+        $doctorParent = DoctorParent::find()->andFilterWhere(['level' => 1])->all();
+        $i = 0;
+        foreach ($doctorParent as $k => $v) {
+            $userParent = UserParent::findOne(['userid' => $v->parentid]);
+            if ($userParent->mother && $userParent->father) {
+                $parents = UserParent::find()->andFilterWhere(['mother' => $userParent->mother])
+                    ->andFilterWhere(['father' => $userParent->father])
+                    ->all();
+                if (count($parents) > 1) {
+
+                    $row=[];
+                    foreach ($parents as $pk => $pv) {
+                        //$rs=$pv->toArray();
+                        $tmp=count(array_filter($pv->toArray(),function($e){
+                            if($e) return true;
+                            return false;
+                        }));
+                        $rs['v']=$pv;
+                        $rs['tmp']=$tmp;
+                        $row[]=$rs;
+                    }
+                    ArrayHelper::multisort($row, ['tmp'], [SORT_DESC]);
+
+                    $master=$row[0]['v'];
+                    foreach($row as $rk=>$rv)
+                    {
+                        if($rk==0 && $rv['tmp']!=$row[0]['tmp']) continue;
+
+                        if(DoctorParent::findOne(['parentid'=>$rv['v']->userid,'level'=>1])) {
+                            $i++;
+                            echo $master->userid . "===" . $rv['v']->userid;
+                        }
+                    }
+
+
+                }
+                echo "\n";
+            }
+        }
+        echo $i;
+    }
+
     public function actionDataa()
     {
         $child = ChildInfo::find()
-            ->select('count(*) as c,field7')
-            ->andWhere(["!=", "field7", ""])
-            ->groupBy('field7')->having(['>', 'c', 1])->all();
+            ->select('count(*) as c,name,birthday,doctorid')
+           // ->andFilterWhere(['doctorid'=>110555])
+            ->groupBy('name,birthday,doctorid')->having(['>', 'c', 1])->all();
         foreach ($child as $k => $v) {
-            echo "field7:" . $v->field7 . "==";
-            $childAll = ChildInfo::find()->andWhere(['field7' => $v->field7])->all();
+            echo "name:" . $v->name . "==";
+            $childAll = ChildInfo::find()
+                ->andWhere(['name' => $v->name])
+                ->andWhere(['birthday' => $v->birthday])
+                ->andWhere(['doctorid' => $v->doctorid])
+                ->andWhere(['<','source','39'])
+                ->all();
             if ($childAll) {
 
                 foreach ($childAll as $cv) {
                     echo "cv->id:" . $cv->id . "==";
                     echo "cv->userid:" . $cv->userid . "==";
 
-//                    $oldChild = ChildInfo::find()
-//                        ->andFilterWhere(['name' => $cv->name])
-//                        ->andFilterWhere(['birthday' => $cv->birthday])
-//                        ->andFilterWhere(['source' => $cv->source])
-//                        ->andWhere(['!=', 'field7', ''])
-//                        ->andFilterWhere(['!=', 'id', $cv->id])
-//                        ->one();
                     $oldChild = ChildInfo::find()
+                        ->andFilterWhere(['name' => $cv->name])
                         ->andFilterWhere(['birthday' => $cv->birthday])
-                        ->andFilterWhere(['userid'=>$cv->userid])
+                        ->andFilterWhere(['source' => $cv->doctorid])
                         ->andFilterWhere(['!=', 'id', $cv->id])
                         ->one();
+//                    $oldChild = ChildInfo::find()
+//                        ->andFilterWhere(['birthday' => $cv->birthday])
+//                        ->andFilterWhere(['userid' => $cv->userid])
+//                        ->andFilterWhere(['!=', 'id', $cv->id])
+//                        ->one();
+                    //var_dump($oldChild);
                     if ($oldChild) {
                         // echo implode(',', $oldChild->toArray()) . "\n";
 
                         $childid = $oldChild->id;
                         $userid = $oldChild->userid;
-                        $this->articleUser($childid,$userid,$cv->id);
-                        //$this->doctorParent($userid, $cv->userid);
+                        //$this->articleUser($childid, $userid, $cv->id);
+                       // $this->doctorParent($userid, $cv->userid);
                         //$this->loginWeOpenid($cv->userid);
                         //$this->userLogin($userid,$cv->userid);
+                        $user=User::findOne($cv->userid);
+                        if ($user) {
+                            $user->delete();
+                        } else {
+                            $cv->delete();
+                        }
 
-                        //删除错误数据
-                        $cv->delete();
+//                        //删除错误数据
+//                        $cv->delete();
 
                     }
-                    echo "\n";
                 }
             }
+            echo "\n";
         }
 
     }
@@ -413,9 +469,9 @@ class DataController extends Controller
 
     public function actionEbb()
     {
-        $childs = ChildInfo::find()->andFilterWhere(['doctorid'=>110565])->all();
+        $childs = ChildInfo::find()->andFilterWhere(['doctorid' => 110565])->all();
         foreach ($childs as $k => $v) {
-            $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid,'level'=>1]);
+            $doctorParent = DoctorParent::findOne(['parentid' => $v->userid, 'level' => 1]);
             $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
 
             $v->doctorid = $doctor->hospitalid;
@@ -425,7 +481,7 @@ class DataController extends Controller
 
         }
         exit;
-        $doctorParent = DoctorParent::find()->andFilterWhere(['level' => 1])->andFilterWhere(['doctorid'=>47156])->all();
+        $doctorParent = DoctorParent::find()->andFilterWhere(['level' => 1])->andFilterWhere(['doctorid' => 47156])->all();
 
 //        foreach ($doctorParent as $k => $v) {
 //            $child = ChildInfo::findOne(['userid' => $v->parentid]);
@@ -747,11 +803,11 @@ class DataController extends Controller
 
                 $child = ChildInfo::find()->andFilterWhere(['name' => trim($row[0])])
                     ->andFilterWhere(['birthday' => strtotime($row[18])])
-                    ->andFilterWhere(['source'=>$hospitalid])
+                    ->andFilterWhere(['source' => $hospitalid])
                     ->one();
                 echo $row[0];
 
-                $childData=[
+                $childData = [
 
                     'field1' => $row[0],
                     'field2' => $row[1],
@@ -845,26 +901,25 @@ class DataController extends Controller
                     'field90' => $row[89],
                     'field91' => $row[90],
                     'field92' => $row[91],
-                    'source'=>$hospitalid,
+                    'source' => $hospitalid,
                     'isupdate' => $isupdate,
                 ];
 
                 if (!$child) {
                     echo "--儿童不存在";
-                   // $childData['childid'] = 0;
+                    // $childData['childid'] = 0;
                 } else {
                     echo "--儿童存在";
                     $childData['childid'] = $child->id;
                 }
 
 
-                $childData=array_filter($childData,function($e){
-                    if($e!='' || $e!=null) return true;
+                $childData = array_filter($childData, function ($e) {
+                    if ($e != '' || $e != null) return true;
                     return false;
                 });
-                foreach($childData as $k=>$v)
-                {
-                    $ex->$k=$v;
+                foreach ($childData as $k => $v) {
+                    $ex->$k = $v;
                 }
                 $ex->save();
                 if ($ex->firstErrors) {

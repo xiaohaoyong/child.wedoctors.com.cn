@@ -81,4 +81,9 @@ class UserParent extends \yii\db\ActiveRecord {
     {
         return $this->hasMany(ChildInfo::className(),['userid'=>'userid']);
     }
+
+    public function getUser()
+    {
+        return $this->hasMany(User::className(),['id'=>'userid']);
+    }
 }
