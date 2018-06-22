@@ -16,6 +16,7 @@ use hospital\models\User;
 use hospital\models\user\ChildInfoSearchModel;
 use hospital\models\user\DoctorParent;
 use hospital\models\user\UserParent;
+use yii\helpers\ArrayHelper;
 
 class DownController extends BaseController
 {
@@ -62,10 +63,10 @@ class DownController extends BaseController
             ->setCellValue('P'.$key1, '宣教内容')
             ->setCellValue('Q'.$key1, '宣教时间');
 //写入内容
-        foreach($dataProvider->query->limit(500)->asArray()->all() as $k=>$v) {
+        foreach($dataProvider->query->limit(500)->all() as $v) {
             $e=$v;
-            $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid'],'level'=>1]);
-            $userParent = UserParent::findOne(['userid'=>$e->userid]);
+            $sign = \common\models\DoctorParent::findOne(['parentid'=>$v->userid,'level'=>1]);
+            $userParent = UserParent::findOne(['userid'=>$v->userid]);
 
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
             if($DiffDate[0]) {
@@ -79,7 +80,7 @@ class DownController extends BaseController
             {
                 $return="未签约";
             }else{
-                if($e['source']<=38){
+                if($userParent->source<=38){
                     $return="已签约未关联";
 
                 }else {
@@ -88,6 +89,7 @@ class DownController extends BaseController
             }
 
             $article=ArticleUser::findAll(['touserid'=>$v['userid']]);
+            $articleid=ArrayHelper::getColumn($article,'id');
 
             $date='';
             $child_type='';
@@ -97,14 +99,17 @@ class DownController extends BaseController
                 foreach ($article as $ak => $av) {
                     $date.="，".date('Y-m-d',$av->createtime);
                     $child_type.="，".Article::$childText[$av->child_type];
-                    $articleInfo=ArticleInfo::findOne(['id'=>$av->artid]);
-                    $title.=$articleInfo?"，".$articleInfo->title:"";
+                    //$articleInfo=ArticleInfo::findOne(['id'=>$av->artid]);
+                    //$title.=$articleInfo?"，".$articleInfo->title:"";
                 }
+                $articleInfo=ArticleInfo::find()->andFilterWhere(['in','id',$articleid])->select('title')->column();
+                $title=implode(',',$articleInfo);
+
                 $is_article="是";
             }else{
                 $is_article="否";
             }
-
+            echo "\n";
 
             $key1 = $k + 2;
             $objPHPExcel->setActiveSheetIndex(0)
@@ -113,11 +118,11 @@ class DownController extends BaseController
                 ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                 ->setCellValue('D' . $key1, $age)
                 ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
-                ->setCellValue('F' . $key1, $v['mother'] || $v['father']?$v['mother']."/".$v['father']:"无")
-                ->setCellValue('G' . $key1, $v['mother_phone'] ? " ".$v['mother_phone'] : "无")
-                ->setCellValue('H' . $key1, $v['father_phone'] ?  " ".$v['father_phone'] : "无")
-                ->setCellValue('I' . $key1, $v['field11'] ? $v['field11'] : "无")
-                ->setCellValue('J' . $key1, $v['field12'] ? " ".$v['field12'] : "无")
+                ->setCellValue('F' . $key1, $userParent->mother || $userParent->father?$userParent->mother."/".$userParent->father:"无")
+                ->setCellValue('G' . $key1, $userParent->mother_phone ? " ".$userParent->mother_phone : "无")
+                ->setCellValue('H' . $key1, $userParent->father_phone ?  " ".$userParent->father_phone  : "无")
+                ->setCellValue('I' . $key1, $userParent->field11 ?  $userParent->field11 : "无")
+                ->setCellValue('J' . $key1, $userParent->field12 ? " ".$userParent->field12 : "无")
                 ->setCellValue('K' . $key1, $sign->level==1 ? \common\models\UserDoctor::findOne(['userid'=>$sign->doctorid])->name : "--")
                 ->setCellValue('L' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
                 ->setCellValue('M' . $key1, $return)
