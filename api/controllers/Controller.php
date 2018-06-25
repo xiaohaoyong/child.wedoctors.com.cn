@@ -40,6 +40,10 @@ class Controller extends \yii\web\Controller
         if($this->seaver_token && $session[0])
         {
             $userLogin=UserLogin::findOne(['xopenid'=>$session[0]]);
+            if(!$userLogin){
+                $cache=\Yii::$app->rdmp;
+                $session=$cache->push("user_login_error",$session[0]);
+            }
             $this->userid=$userLogin->userid;
             $this->user=$userLogin->user;
             $this->appToken=$session;
