@@ -19,7 +19,7 @@ use yii\web\Response;
 
 class Controller extends \yii\web\Controller
 {
-    private $result = [];
+    private $result = ['user/login'];
     protected $userid = 0;
     protected $user;
     protected $seaver_token;
@@ -36,14 +36,14 @@ class Controller extends \yii\web\Controller
         $cache=\Yii::$app->rdmp;
         $session=$cache->get($this->seaver_token);
         $session=explode('@@',$session);
+        $controllerID = \Yii::$app->controller->id;
+        $actionID = \Yii::$app->controller->action->id;
+
 
         if($this->seaver_token && $session[0])
         {
             $userLogin=UserLogin::findOne(['xopenid'=>$session[0]]);
-            if(!$userLogin){
-                $cache=\Yii::$app->rdmp;
-                $session=$cache->lpush("user_login_error",$session[0]);
-            }
+
             $this->userid=$userLogin->userid;
             $this->user=$userLogin->user;
             $this->appToken=$session;
