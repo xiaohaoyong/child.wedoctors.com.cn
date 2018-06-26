@@ -923,15 +923,18 @@ class DataController extends Controller
      */
     public function actionExUpdate()
     {
-
+        $login = [];
+        $i=0;
         ini_set('memory_limit', '1024M');
-        $ex = Examination::find()->andFilterWhere(['isupdate' => 1])->andFilterWhere(['>', 'childid', '0'])->groupBy('childid')->all();
+        $ex = Examination::find()->andFilterWhere(['isupdate' => 1])->andFilterWhere(['>', 'childid', '0'])->andFilterWhere(['>','field4','2018-05-15'])->groupBy('childid')->all();
+
+
         foreach ($ex as $k => $v) {
             $child = ChildInfo::findOne(['id' => $v->childid]);
             if ($child) {
-                echo $child->id . "===$k" . "===";
+                //echo $child->id . "===$k" . "===";
                 $login = $child->login;
-                if ($login->openid) {
+                if ($login->openid && !in_array($login->openid,$login)) {
                     $data = [
                         'first' => array('value' => "您好，宝宝近期的体检结果已更新\n",),
                         'keyword1' => ARRAY('value' => $child->name),
@@ -948,6 +951,8 @@ class DataController extends Controller
                     //小程序首页通知
                     Notice::setList($login->userid, 1, ['title' => "宝宝近期的体检结果已更新", 'ftitle' => "点击可查看本体检报告的详细内容信息", 'id' => "/user/examination/index?id=" . $child->id,], "id=" . $child->id);
 
+                    $i++;
+                    echo $i;
                     echo "true\n";
                 }
             }
