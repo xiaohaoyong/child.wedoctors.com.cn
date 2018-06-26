@@ -34,10 +34,10 @@ class ExaminationController extends Controller
                     $openid=$login->openid;
                     echo $openid;
                     $data = [
-                        'first' => array('value' => "宝宝马上就要体检啦，请做好准备。\n"),
+                        'first' => array('value' => "宝宝近期有健康体检，请做好准备。\n"),
                         'keyword1' => ARRAY('value' => '﻿社区健康体检', ),
-                        'keyword2' => ARRAY('value' => $date),
-                        'remark' => ARRAY('value' => "\n ﻿请按时前往社区医院进行体检，点击查看", 'color' => '#221d95'),
+                        'keyword2' => ARRAY('value' => '近期'),
+                        'remark' => ARRAY('value' => "\n ﻿具体时间以社区通知为准，如不确定请在儿保顾问页面拨打社区电话咨询，谢谢", 'color' => '#221d95'),
                     ];
 
                     $miniprogram=[

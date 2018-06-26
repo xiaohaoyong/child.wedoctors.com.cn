@@ -151,53 +151,14 @@ class DataController extends Controller
         }
     }
 
-
-    public function actionDataaa()
-    {
-        $doctorParent = DoctorParent::find()->andFilterWhere(['level' => 1])->all();
-        $i = 0;
-        foreach ($doctorParent as $k => $v) {
-            $userParent = UserParent::findOne(['userid' => $v->parentid]);
-            if ($userParent->mother && $userParent->father) {
-                $parents = UserParent::find()->andFilterWhere(['mother' => $userParent->mother])
-                    ->andFilterWhere(['father' => $userParent->father])
-                    ->all();
-                if (count($parents) > 1) {
-
-                    $row=[];
-                    foreach ($parents as $pk => $pv) {
-                        //$rs=$pv->toArray();
-                        $tmp=count(array_filter($pv->toArray(),function($e){
-                            if($e) return true;
-                            return false;
-                        }));
-                        $rs['v']=$pv;
-                        $rs['tmp']=$tmp;
-                        $row[]=$rs;
-                    }
-                    ArrayHelper::multisort($row, ['tmp'], [SORT_DESC]);
-
-                    $master=$row[0]['v'];
-                    foreach($row as $rk=>$rv)
-                    {
-                        if($rk==0 && $rv['tmp']!=$row[0]['tmp']) continue;
-
-                        if(DoctorParent::findOne(['parentid'=>$rv['v']->userid,'level'=>1])) {
-                            $i++;
-                            echo $master->userid . "===" . $rv['v']->userid;
-                        }
-                    }
-
-
-                }
-                echo "\n";
-            }
-        }
-        echo $i;
-    }
-
+    /**
+     * 清除重复记录
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionDataa()
     {
+        exit;
         $child = ChildInfo::find()
             ->select('count(*) as c,name,birthday,doctorid')
            // ->andFilterWhere(['doctorid'=>110555])
@@ -254,9 +215,14 @@ class DataController extends Controller
         }
 
     }
-
+    /**
+     * 清除重复记录
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionData()
     {
+        exit;
         $field7 = ChildInfo::find()->select('field7')->andFilterWhere(['like', 'field7', 'E'])->column();
         $child = ChildInfo::find()
             ->select('count(*) as c,field7')
@@ -407,6 +373,7 @@ class DataController extends Controller
     //禁用危险
     public function actionName()
     {
+        exit;
         $childInfo = ChildInfo::find()->andFilterWhere(['source' => 0])->andFilterWhere(['id' => 60413])->all();
         foreach ($childInfo as $k => $v) {
             //var_dump($v->toArray());
@@ -624,12 +591,32 @@ class DataController extends Controller
 
     public function actionUrlPush()
     {
+//        $data = [
+//            'first' => array('value' => "参与社区儿童中医药健康指导服务调查问卷，必得现金红包，先到先得\n",),
+//            'keyword1' => ARRAY('value' => "2018-05-20"),
+//            'keyword2' => ARRAY('value' => "为了更好的服务每一个家庭，请参与我们社区中医健康指导服务的问卷调查，希望各位家长抽出宝贵时间支持我们的工作"),
+//            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+//        ];
+
         $data = [
-            'first' => array('value' => "参与社区儿童中医药健康指导服务调查问卷，必得现金红包，先到先得\n",),
-            'keyword1' => ARRAY('value' => "2018-05-20"),
-            'keyword2' => ARRAY('value' => "为了更好的服务每一个家庭，请参与我们社区中医健康指导服务的问卷调查，希望各位家长抽出宝贵时间支持我们的工作"),
-            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+            'first' => array('value' => "您好，为确保享受体检通知服务,请尽快完善宝宝信息\n",),
+            'keyword1' => ARRAY('value' => "宝宝基本信息"),
+            'keyword2' => ARRAY('value' => "广外社区区卫生服务中心"),
+            'remark' => ARRAY('value' => "\n 点击完善宝宝信息", 'color' => '#221d95'),
         ];
+
+        $rs = WechatSendTmp::send($data, 'o5ODa0wc1u3Ihu5WvCVqoACeQ-HA', 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', 'https://jinshuju.net/f/Sfodlu');
+        exit;
+
+        $weOpenid=WeOpenid::find()->andWhere(['>','createtime','1529942400'])->andWhere(['level'=>0])->all();
+        foreach($weOpenid as $k=>$v) {
+            $data = [
+                'first' => array('value' => "您好，为确保享受体检通知服务,请尽快完善宝宝信息\n",),
+                'keyword1' => ARRAY('value' => "宝宝基本信息"),
+                'keyword2' => ARRAY('value' => "为了更好的服务每一个家庭，请参与我们社区中医健康指导服务的问卷调查，希望各位家长抽出宝贵时间支持我们的工作"),
+                'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+            ];
+        }
 
 
         $userids = UserLogin::find()->where(['!=', 'openid', ''])->all();
@@ -638,7 +625,7 @@ class DataController extends Controller
             //$userLogin=UserLogin::findOne(['userid'=>$v->parentid]);
             $userLogin = $v;
             if ($userLogin->openid) {
-                $rs = WechatSendTmp::send($data, $userLogin->openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE', 'https://jinshuju.net/f/Sfodlu');
+                $rs = WechatSendTmp::send($data,'o5ODa0wc1u3Ihu5WvCVqoACeQ-HA', '﻿wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', 'https://jinshuju.net/f/Sfodlu');
                 echo $rs;
             }
             echo "\n";
@@ -774,7 +761,7 @@ class DataController extends Controller
     {
         error_reporting(E_ALL & ~E_NOTICE);
 
-        $file_list = glob("data/ex/*.csv");
+        $file_list = glob("data/ex/110555.csv");
         foreach ($file_list as $fk => $fv) {
             preg_match("#\d+#", $fv, $m);
             $hospitalid = substr($m[0], 0, 6);
