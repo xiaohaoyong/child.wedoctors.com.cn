@@ -923,7 +923,7 @@ class DataController extends Controller
      */
     public function actionExUpdate()
     {
-        $login = [];
+        $logins = [];
         $i=0;
         ini_set('memory_limit', '1024M');
         $ex = Examination::find()->andFilterWhere(['isupdate' => 1])->andFilterWhere(['>', 'childid', '0'])->andFilterWhere(['>','field4','2018-05-15'])->groupBy('childid')->all();
@@ -934,7 +934,7 @@ class DataController extends Controller
             if ($child) {
                 //echo $child->id . "===$k" . "===";
                 $login = $child->login;
-                if ($login->openid && !in_array($login->openid,$login)) {
+                if ($login->openid && !in_array($login->openid,$logins)) {
                     $data = [
                         'first' => array('value' => "您好，宝宝近期的体检结果已更新\n",),
                         'keyword1' => ARRAY('value' => $child->name),
