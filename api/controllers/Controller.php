@@ -19,7 +19,7 @@ use yii\web\Response;
 
 class Controller extends \yii\web\Controller
 {
-    private $result = ['user/login'];
+    private $result = ['user/login','user/wx-user-info'];
     protected $userid = 0;
     protected $user;
     protected $seaver_token;
@@ -39,11 +39,15 @@ class Controller extends \yii\web\Controller
         $controllerID = \Yii::$app->controller->id;
         $actionID = \Yii::$app->controller->action->id;
 
-
         if($this->seaver_token && $session[0])
         {
             $userLogin=UserLogin::findOne(['xopenid'=>$session[0]]);
-
+            if(!$userLogin && !in_array($controllerID."/".$actionID,$this->result)){
+                $cache=\Yii::$app->rdmp;
+                $cache->lpush("user_login_error",$session[0]);
+                \Yii::$app->response->data = ['code' => 30001, 'msg' => '未授权访问'];
+                return false;
+            }
             $this->userid=$userLogin->userid;
             $this->user=$userLogin->user;
             $this->appToken=$session;
