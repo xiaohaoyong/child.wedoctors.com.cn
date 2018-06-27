@@ -83,6 +83,12 @@ class ArticleSearchModel extends Article
         if($this->type==2) {
             $query->andFilterWhere(['in','datauserid',$hospitalids]);
         }
+        if($this->type!=2)
+        {
+            $query->andFilterWhere(['!=','type',2]);
+
+        }
+
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
         return $dataProvider;
     }
