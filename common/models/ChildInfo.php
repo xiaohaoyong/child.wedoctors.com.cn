@@ -174,6 +174,9 @@ class ChildInfo extends \yii\db\ActiveRecord
             case 11:
                 $n=72;$l=12;
                 break;
+            case 12:
+                $n=84;$l=12;
+                break;
             default :
                 $n=0;$l=0;
                 break;

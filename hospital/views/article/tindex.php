@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             return Html::a('<span class="fa fa-database"></span> 修改',\yii\helpers\Url::to(['article/tongzhi','id'=>$model->id]));
                                         },
                                         'push' =>function($url,$model,$key){
-                                            return \yii\helpers\Html::a('<span class="fa fa-share"> PUSH</span>', '#',
+                                            return \yii\helpers\Html::a('<span class="fa fa-share"> 推送</span>', '#',
                                                 [
                                                     'data-target' => "#push",//关联模拟框(模拟框的ID)
                                                     'data-toggle' => "modal", //定义为模拟框 触发按钮
