@@ -18,7 +18,7 @@ $this->title = '通知';
                 <?php $form = ActiveForm::begin(); ?>
 
                 <?= $form->field($article, 'title')->textInput()->label('通知标题') ?>
-                <?= $form->field($article, 'ftitle')->textInput()->label('通知副标题') ?>
+                <?= $form->field($article, 'ftitle')->textInput()->label('通知内容简介') ?>
 
 
 

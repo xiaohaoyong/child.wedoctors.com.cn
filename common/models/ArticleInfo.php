@@ -47,7 +47,7 @@ class ArticleInfo extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => '文章标题',
-            'ftitle' => '通知内容简介',
+            'ftitle' => '副标题',
 
             'content' => '文章内容',
             'img' =>'封面',
