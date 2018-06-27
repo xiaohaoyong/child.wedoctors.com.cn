@@ -634,8 +634,7 @@ class DataController extends Controller
 
     public function actionArticlePush()
     {
-        exit;
-        $article = \common\models\Article::findOne(297);
+        $article = \common\models\Article::findOne(323);
 
         $data = [
             'first' => array('value' => $article->info->title . "\n",),
@@ -649,7 +648,7 @@ class DataController extends Controller
         ];
         //$userids=UserLogin::find()->where(['userid'=>'47388'])->all();
 
-        $userids = DoctorParent::find()->andFilterWhere(['doctorid' => 39889])->all();
+        $userids = DoctorParent::find()->andFilterWhere(['parentid' => 77094])->all();
 
         if ($article) {
             foreach ($userids as $k => $v) {
