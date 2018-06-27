@@ -33,7 +33,7 @@ class ArticleInfo extends \yii\db\ActiveRecord
         return [
             [['id', 'title',], 'required'],
             [['id'], 'integer'],
-            [['content','video_url','ftitle'], 'string'],
+            [['content','video_url','ftitle','source'], 'string'],
             [['title','ftitle'], 'string', 'max' => 50],
 
         ];
