@@ -436,18 +436,18 @@ class DataController extends Controller
 
     public function actionEbb()
     {
-        $childs = ChildInfo::find()->andFilterWhere(['doctorid' => 110565])->all();
-        foreach ($childs as $k => $v) {
-            $doctorParent = DoctorParent::findOne(['parentid' => $v->userid, 'level' => 1]);
-            $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-
-            $v->doctorid = $doctor->hospitalid;
-            $v->save();
-            echo $v->userid;
-            echo "\n";
-
-        }
-        exit;
+//        $childs = ChildInfo::find()->andFilterWhere(['doctorid' => 110565])->all();
+//        foreach ($childs as $k => $v) {
+//            $doctorParent = DoctorParent::findOne(['parentid' => $v->userid, 'level' => 1]);
+//            $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
+//
+//            $v->doctorid = $doctor->hospitalid;
+//            $v->save();
+//            echo $v->userid;
+//            echo "\n";
+//
+//        }
+//        exit;
         $doctorParent = DoctorParent::find()->andFilterWhere(['level' => 1])->andFilterWhere(['doctorid' => 47156])->all();
 
 //        foreach ($doctorParent as $k => $v) {
@@ -465,19 +465,19 @@ class DataController extends Controller
 //        }
 //        exit;
 
-//        foreach ($doctorParent as $k => $v) {
-//            echo $v->parentid . "===";
-//            $userParent = UserParent::findOne(['userid' => $v->parentid]);
-//            if ($userParent->source > 38) {
-//                $doctor = UserDoctor::findOne(['hospitalid' => $userParent->source]);
-//                if ($doctor) {
-//                    echo $doctor->userid;
-//                    $v->doctorid = $doctor->userid;
-//                    $v->save();
-//                }
-//            }
-//            echo "\n";
-//        }
+        foreach ($doctorParent as $k => $v) {
+            echo $v->parentid . "===";
+            $userParent = UserParent::findOne(['userid' => $v->parentid]);
+            if ($userParent->source > 38) {
+                $doctor = UserDoctor::findOne(['hospitalid' => $userParent->source]);
+                if ($doctor) {
+                    echo $doctor->userid;
+                    $v->doctorid = $doctor->userid;
+                    $v->save();
+                }
+            }
+            echo "\n";
+        }
         exit;
         $user = User::find()->where(['source' => 1])->all();
         foreach ($user as $k => $v) {
@@ -517,12 +517,11 @@ class DataController extends Controller
             $userDoctor = UserDoctor::findOne(['userid' => $v->doctorid]);
             if ($userDoctor) {
                 $hospital = $userDoctor->hospitalid;
+                ChildInfo::updateAll(['doctorid' => $hospital], 'userid=' . $v->parentid);
+                echo $v->doctorid . "==";
+                echo $v->parentid . "==";
+                echo $hospital;
             }
-            ChildInfo::updateAll(['doctorid' => $hospital], 'userid=' . $v->parentid);
-
-            echo $v->doctorid . "==";
-            echo $v->parentid . "==";
-            echo $hospital;
             echo "\n";
         }
     }
@@ -761,7 +760,7 @@ class DataController extends Controller
     {
         error_reporting(E_ALL & ~E_NOTICE);
 
-        $file_list = glob("data/ex/110555.csv");
+        $file_list = glob("data/ex/*.csv");
         foreach ($file_list as $fk => $fv) {
             preg_match("#\d+#", $fv, $m);
             $hospitalid = substr($m[0], 0, 6);
