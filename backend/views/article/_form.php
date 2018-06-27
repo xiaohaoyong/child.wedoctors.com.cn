@@ -14,6 +14,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($article, 'title')->textInput() ?>
+    <?= $form->field($article, 'source')->textInput() ?>
 
     <?= $form->field($model, 'subject_pid')->dropDownList(\common\models\ArticleCategory::find()->select('name')->indexBy('id')->where(['pid'=>0])->column(), [
         'prompt'=>'请选择',

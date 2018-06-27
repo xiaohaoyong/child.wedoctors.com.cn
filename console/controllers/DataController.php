@@ -636,19 +636,36 @@ class DataController extends Controller
     {
         $article = \common\models\Article::findOne(323);
 
+//        $data = [
+//            'first' => array('value' => $article->info->title . "\n",),
+//            'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
+//            'keyword2' => ARRAY('value' => strip_tags($article->info->content)),
+//            'remark' => ARRAY('value' => "\n 点击查看社区卫生服务中心通知详情", 'color' => '#221d95'),
+//        ];
+//        $miniprogram = [
+//            "appid" => \Yii::$app->params['wxXAppId'],
+//            "pagepath" => "/pages/article/view/index?id=" . $article->id,
+//        ];
+
+
+
         $data = [
-            'first' => array('value' => $article->info->title . "\n",),
+            'first' => array('value' => $article->info->title."\n",),
             'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
-            'keyword2' => ARRAY('value' => strip_tags($article->info->content)),
-            'remark' => ARRAY('value' => "\n 点击查看社区卫生服务中心通知详情", 'color' => '#221d95'),
+            'keyword2' => ARRAY('value' =>'儿宝宝'),
+            'keyword3' => ARRAY('value' =>'儿宝宝'),
+            'keyword4' => ARRAY('value' =>'宝爸宝妈'),
+            'keyword5' => ARRAY('value' =>$article->info->title),
+
+            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
         ];
-        $miniprogram = [
-            "appid" => \Yii::$app->params['wxXAppId'],
-            "pagepath" => "/pages/article/view/index?id=" . $article->id,
+        $miniprogram=[
+            "appid"=>\Yii::$app->params['wxXAppId'],
+            "pagepath"=>"/pages/article/view/index?id=".$article->id,
         ];
         //$userids=UserLogin::find()->where(['userid'=>'47388'])->all();
 
-        $userids = DoctorParent::find()->andFilterWhere(['parentid' => 77094])->all();
+        $userids = DoctorParent::find()->andFilterWhere(['parentid' => 77107])->all();
 
         if ($article) {
             foreach ($userids as $k => $v) {
@@ -656,7 +673,7 @@ class DataController extends Controller
                 $userLogin = UserLogin::findOne(['userid' => $v->parentid]);
                 //$userLogin=$v;
                 if ($userLogin->openid) {
-                    $rs = WechatSendTmp::send($data, $userLogin->openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE', '', $miniprogram);
+                    $rs = WechatSendTmp::send($data, $userLogin->openid,  \Yii::$app->params['zhidao'], '', $miniprogram);
                     echo $rs;
                 }
                 if ($article->art_type != 2) {
