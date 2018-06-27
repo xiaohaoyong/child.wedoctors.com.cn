@@ -76,6 +76,7 @@ class WorkerController extends BeanstalkController
 
 
             foreach($userids as $k=>$v) {
+                echo $v;
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
                     $rs=WechatSendTmp::send($data, $userLogin->openid,$temp,'',$miniprogram);
@@ -85,6 +86,7 @@ class WorkerController extends BeanstalkController
                     $key=$article->catid==6?3:5;
                     Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$artid,]);
                 }
+                echo "\n";
             }
         }
         return self::DELETE;
