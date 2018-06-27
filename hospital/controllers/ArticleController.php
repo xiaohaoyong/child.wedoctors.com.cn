@@ -3,6 +3,7 @@
 namespace hospital\controllers;
 
 use app\components\UploadForm;
+use backend\models\Push;
 use common\models\ArticleInfo;
 use common\models\Notice;
 use hospital\models\user\DoctorParent;
@@ -124,13 +125,13 @@ class ArticleController extends BaseController
                 $article->id=$model->id;
 
                 if($article->save()) {
-                    //发送通知
-                    $doctorid=UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital])->userid;
-                    $doctorParent=DoctorParent::findAll(['doctorid'=>$doctorid]);
-                    foreach($doctorParent as $k=>$v)
-                    {
-                        Notice::setList($v->parentid, 3, ['title' => $article->title, 'ftitle' => $article->ftitle, 'id' => '/article/view/index?id='.$article->id,]);
-                    }
+//                    //发送通知
+//                    $doctorid=UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital])->userid;
+//                    $doctorParent=DoctorParent::findAll(['doctorid'=>$doctorid]);
+//                    foreach($doctorParent as $k=>$v)
+//                    {
+//                        Notice::setList($v->parentid, 3, ['title' => $article->title, 'ftitle' => $article->ftitle, 'id' => '/article/view/index?id='.$article->id,]);
+//                    }
                     return $this->redirect(['tindex?ArticleSearchModel[type]=2']);
                 }
 
@@ -272,5 +273,21 @@ class ArticleController extends BaseController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    public function actionPush()
+    {
+        $model=new Push();
+        $post=Yii::$app->request->post();
+        $model->id          =$post['Push']['id'];
+        $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+        $model->hospital    =[$doctorid];
+        $model->age         =$post['Push']['age'];
+
+
+        $model->send();
+
+        \Yii::$app->getSession()->setFlash('success','发送成功');
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 }

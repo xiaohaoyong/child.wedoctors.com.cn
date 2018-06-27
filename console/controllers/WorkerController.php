@@ -36,28 +36,49 @@ class WorkerController extends BeanstalkController
         $artid=$sentData->artid;
         $userids=$sentData->userids;
         $article=\common\models\Article::findOne($artid);
-        $data = [
-            'first' => array('value' => $article->info->title."\n",),
-            'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
-            'keyword2' => ARRAY('value' =>'儿宝宝'),
-            'keyword3' => ARRAY('value' =>'儿宝宝'),
-            'keyword4' => ARRAY('value' =>'宝爸宝妈'),
-            'keyword5' => ARRAY('value' =>$article->info->title),
 
-            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
-        ];
-        $miniprogram=[
-            "appid"=>\Yii::$app->params['wxXAppId'],
-            "pagepath"=>"/pages/article/view/index?id=".$artid,
-        ];
+
 
 
         if($article)
         {
+
+            if($article->type==2){
+
+                $data = [
+                    'first' => array('value' => $article->info->title."\n",),
+                    'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
+                    'keyword2' => ARRAY('value' => strip_tags($article->info->ftitle)),
+                    'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
+                ];
+
+                $temp='AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE';
+            }else{
+
+                $data = [
+                    'first' => array('value' => $article->info->title."\n",),
+                    'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
+                    'keyword2' => ARRAY('value' =>'儿宝宝'),
+                    'keyword3' => ARRAY('value' =>'儿宝宝'),
+                    'keyword4' => ARRAY('value' =>'宝爸宝妈'),
+                    'keyword5' => ARRAY('value' =>$article->info->title),
+
+                    'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+                ];
+
+                $temp= \Yii::$app->params['zhidao'];
+            }
+
+            $miniprogram=[
+                "appid"=>\Yii::$app->params['wxXAppId'],
+                "pagepath"=>"/pages/article/view/index?id=".$artid,
+            ];
+
+
             foreach($userids as $k=>$v) {
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
-                    $rs=WechatSendTmp::send($data, $userLogin->openid, \Yii::$app->params['zhidao'],'',$miniprogram);
+                    $rs=WechatSendTmp::send($data, $userLogin->openid,$temp,'',$miniprogram);
                 }
                 if($article->art_type!=2)
                 {
