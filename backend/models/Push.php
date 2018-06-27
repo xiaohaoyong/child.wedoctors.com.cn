@@ -72,7 +72,7 @@ class Push extends Model
     }
 
     public function send(){
-        $userids=$this->userid();
+        $userids=[77107];
         $return = \Yii::$app->beanstalk
             ->putInTube('push', ['artid'=>$this->id,'userids'=>$userids]);
     }
