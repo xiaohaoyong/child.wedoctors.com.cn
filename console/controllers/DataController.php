@@ -665,20 +665,27 @@ class DataController extends Controller
         ];
         //$userids=UserLogin::find()->where(['userid'=>'47388'])->all();
 
-        $userids = DoctorParent::find()->andFilterWhere(['parentid' => 77107])->all();
+        //$userids = DoctorParent::find()->andFilterWhere(['parentid' => 77107])->all();
 
+
+        $userids=WeOpenid::find()->andFilterWhere([">",'createtime','1529942400'])
+            ->andFilterWhere(['level'=>0])
+            ->andWhere(['!=','openid',''])
+            ->all();
+        $openids=[];
         if ($article) {
             foreach ($userids as $k => $v) {
-                echo $v->parentid . "==";
-                $userLogin = UserLogin::findOne(['userid' => $v->parentid]);
+                //$userLogin = UserLogin::findOne(['userid' => $v->userid]);
                 //$userLogin=$v;
-                if ($userLogin->openid) {
-                    $rs = WechatSendTmp::send($data, $userLogin->openid,  \Yii::$app->params['zhidao'], '', $miniprogram);
+                if(in_array($v->openid,$openids))
+                    $openids[]=$v->openid;
+                if ($v->openid) {
+                    $rs = WechatSendTmp::send($data, $v->openid,  \Yii::$app->params['zhidao'], '', $miniprogram);
                     echo $rs;
                 }
                 if ($article->art_type != 2) {
                     $key = $article->catid == 6 ? 3 : 5;
-                    Notice::setList($userLogin->userid, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=" . $article->id,]);
+                    Notice::setList($v->userid, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=" . $article->id,]);
                 }
                 echo "\n";
             }
