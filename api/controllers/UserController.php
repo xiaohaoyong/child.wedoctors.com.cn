@@ -63,7 +63,11 @@ class UserController extends Controller
 
                 //$userLogin=UserLogin::findOne(['unionid'=>$user['unionid']]);
                 //$userLogin=UserLogin::find()->andFilterWhere(['or',['xopenid'=>$user['openid'],'unionid'=>$user['unionid']]])->one();
-
+                $weOpenid = WeOpenid::findOne(['unionid' => $user['unionid']]);
+                if ($weOpenid) {
+                    $weOpenid->xopenid = $user['openid'];
+                    $weOpenid->save();
+                }
 
                 $login = UserLogin::find();
                 if ($user['xopenid'] != '') {
@@ -78,16 +82,15 @@ class UserController extends Controller
 
                 $userid = $userLogin ? $userLogin->userid : 0;
                 if ($userLogin && !$userLogin->xopenid) {
+                    if($weOpenid->openid) {
+                        $userLogin->openid = $weOpenid->openid;
+                    }
                     $userLogin->xopenid = $user['openid'];
                     $userLogin->unionid = $user['unionid'];
                     $userLogin->save();
                 }
 
-                $weOpenid = WeOpenid::findOne(['unionid' => $user['unionid']]);
-                if ($weOpenid) {
-                    $weOpenid->xopenid = $user['openid'];
-                    $weOpenid->save();
-                }
+
 
             }
 
