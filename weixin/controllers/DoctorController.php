@@ -36,24 +36,20 @@ class DoctorController extends BaseWeixinController {
      */
     public function actionDoctorIndex() {
         $doctorid = $this->userData['userid'];
-        $model = UserDoctor::GetOneById($doctorid); //此处需要修改为用户uid
-
+        $model = UserDoctor::findOne(['userid'=>$doctorid]); //此处需要修改为用户uid
         if (!empty($model)) {
             //医生头像
             $data['avatar'] = $model->avatar;
             //医生名字
             $data['name'] = $model->name;
-            //签约儿童数
 
             //签约儿童总数
             $data['child_num']=ChildInfo::find()
                 ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                 ->andFilterWhere(['`doctor_parent`.`level`' => 1])
                 ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-                ->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospital])
+                ->andFilterWhere(['`child_info`.`doctorid`' => $model->hospitalid])
                 ->count();
-
-
 
             //宣教次数
             $data['teach_num'] = UserDoctor::GetArticleNum($doctorid); //此处需要修改为用户uid
