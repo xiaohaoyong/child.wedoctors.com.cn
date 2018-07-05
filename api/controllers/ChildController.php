@@ -153,6 +153,7 @@ class ChildController extends Controller
             }
             $doctor_parent->level = 1;
             $doctor_parent->parentid = $userid;
+            $doctor_parent->createtime=time();
             $doctor_parent->save();
         }
 
