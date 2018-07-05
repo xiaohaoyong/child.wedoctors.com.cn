@@ -36,26 +36,26 @@ class UserController extends Controller
     public function actionLogin($code)
     {
         //已登录
-        if($this->userid && $this->seaver_token){
+        if ($this->userid && $this->seaver_token) {
             $session_key = $this->seaver_token;
-            $login=UserLogin::findOne(['userid'=>$this->userid]);
-            $xopenid=$login->xopenid;
-            $unionid=$login->unionid;
-            $useridKey= md5($this->userid."6623cXvY");
-        }else{
+            $login = UserLogin::findOne(['userid' => $this->userid]);
+            $xopenid = $login->xopenid;
+            $unionid = $login->unionid;
+            $useridKey = md5($this->userid . "6623cXvY");
+        } else {
             //获取用户微信登陆信息
-            $path = "/sns/jscode2session?appid=".\Yii::$app->params['wxXAppId']."&secret=".\Yii::$app->params['wxXAppSecret']."&js_code=".$code."&grant_type=authorization_code";
-            $curl = new HttpRequest(\Yii::$app->params['wxUrl'].$path, true, 10);
+            $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
+            $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
             $userJson = $curl->get();
             $user = json_decode($userJson, true);
-            if($user['errcode']==40029){
-                return new Code(30001,$user['errmsg']);
+            if ($user['errcode'] == 40029) {
+                return new Code(30001, $user['errmsg']);
             }
-            $value = $user['openid'].'@@'.$user['session_key'].'@@'.$user['unionid'];
+            $value = $user['openid'] . '@@' . $user['session_key'] . '@@' . $user['unionid'];
 
             //生成session key
             $cache = \Yii::$app->rdmp;
-            $session_key = md5($value.time());
+            $session_key = md5($value . time());
             $cache->set($session_key, $value);
 
             //更新用户平台id
@@ -65,24 +65,21 @@ class UserController extends Controller
                 //$userLogin=UserLogin::find()->andFilterWhere(['or',['xopenid'=>$user['openid'],'unionid'=>$user['unionid']]])->one();
 
 
-                $login=UserLogin::find();
-                if($user['xopenid']!='')
-                {
-                    $login->orWhere(['and',['xopenid'=>$user['openid']]]);
+                $login = UserLogin::find();
+                if ($user['xopenid'] != '') {
+                    $login->orWhere(['and', ['xopenid' => $user['openid']]]);
                 }
-                if($user['unionid']!=''){
-                    $login->orWhere(['and',['unionid'=>$user['unionid']]]);
+                if ($user['unionid'] != '') {
+                    $login->orWhere(['and', ['unionid' => $user['unionid']]]);
                 }
-                if($user['unionid'] || $user['xopenid'])
-                {
-                    $userLogin=$login->one();
+                if ($user['unionid'] || $user['xopenid']) {
+                    $userLogin = $login->one();
                 }
 
-                $userid=$userLogin?$userLogin->userid:0;
-                if($userLogin && !$userLogin->xopenid)
-                {
-                    $userLogin->xopenid=$user['openid'];
-                    $userLogin->unionid=$user['unionid'];
+                $userid = $userLogin ? $userLogin->userid : 0;
+                if ($userLogin && !$userLogin->xopenid) {
+                    $userLogin->xopenid = $user['openid'];
+                    $userLogin->unionid = $user['unionid'];
                     $userLogin->save();
                 }
 
@@ -94,22 +91,22 @@ class UserController extends Controller
 
             }
 
-            $xopenid=$user['openid'];
-            $useridKey=$userid? md5($userid."6623cXvY"):0;
+            $xopenid = $user['openid'];
+            $useridKey = $userid ? md5($userid . "6623cXvY") : 0;
 
 
         }
 
-        $huanxin = md5($xopenid.'7Z9WL3s2');
+        $huanxin = md5($xopenid . '7Z9WL3s2');
         HuanxinUserHelper::getUserInfo($huanxin);
 
         //对第一次登陆用户发送欢迎消息
         $cache = \Yii::$app->rdmp;
-        $firstLogin=$cache->hget('firstLogin',$xopenid);
-        if(!$firstLogin){
+        $firstLogin = $cache->hget('firstLogin', $xopenid);
+        if (!$firstLogin) {
             //HuanxinHelper::setTxtMessage('wangzhentest',$huanxin,'欢迎使用中医儿童健康管理工具');
         }
-        $cache->hset('firstLogin',$xopenid,time());
+        $cache->hset('firstLogin', $xopenid, time());
 
         return ['sessionKey' => $session_key, 'userKey' => $useridKey, 'userName' => $huanxin];
 
@@ -117,46 +114,38 @@ class UserController extends Controller
 
     public function actionWxUserInfo()
     {
-        if($this->userid){
-            $type=0;
-            $useridx =  md5($this->userid . "6623cXvY");
+        if ($this->userid) {
+            $type = 0;
+            $useridx = md5($this->userid . "6623cXvY");
             $userLogin = UserLogin::findOne(['userid' => $this->userid]);
             $userLogin->logintime = time();
             $userLogin->save();
-        }else {
-
+        } else {
 
 
             $appid = \Yii::$app->params['wxXAppId'];
             $cache = \Yii::$app->rdmp;
             $session = $cache->get($this->seaver_token);
             $session = explode('@@', $session);
-            $openid=$session[0];
-            $unionid=$session[2];
+            $openid = $session[0];
+            $unionid = $session[2];
 
-
-
-            $login=UserLogin::find();
-            if($openid!='')
-            {
-                $login->orWhere(['and',['xopenid'=>$openid]]);
+            $login = UserLogin::find();
+            if ($openid != '') {
+                $login->orWhere(['and', ['xopenid' => $openid]]);
             }
-            if($unionid!=''){
-                $login->orWhere(['and',['unionid'=>$unionid]]);
+            if ($unionid != '') {
+                $login->orWhere(['and', ['unionid' => $unionid]]);
             }
-            if($openid || $unionid)
-            {
-                $userLogin=$login->one();
+            if ($openid || $unionid) {
+                $userLogin = $login->one();
             }
-
-            if($userLogin)
-            {
-                $type=1;
-                $useridx =  md5($userLogin->userid . "6623cXvY");
+            if ($userLogin) {
+                $type = 1;
+                $useridx = md5($userLogin->userid . "6623cXvY");
                 $userLogin->logintime = time();
                 $userLogin->save();
-            }
-            else {
+            } else {
 
                 //获取用户手机号
                 $phoneEncryptedData = \Yii::$app->request->post('phoneEncryptedData');
@@ -169,14 +158,14 @@ class UserController extends Controller
                     $wephone = $phone['phoneNumber'];
                     $userLogin = UserLogin::findOne(['phone' => $wephone]);
                     if ($userLogin) {
-                        $type=2;
+                        $type = 2;
                         $useridx = md5($userLogin->userid . "6623cXvY");
-                        $userLogin->xopenid=$openid;
-                        $userLogin->unionid=$unionid;
+                        $userLogin->xopenid = $openid;
+                        $userLogin->unionid = $unionid;
                         $userLogin->logintime = time();
                         $userLogin->save();
                     } else {
-                        $type=3;
+                        $type = 3;
                         $user = User::findOne(['phone' => $wephone]);
                         if (!$user) {
                             $userParent = UserParent::find()->where(['mother_phone' => $wephone])->orFilterWhere(['father_phone' => $wephone])->orFilterWhere(['field12' => $wephone])->one();
@@ -250,7 +239,7 @@ class UserController extends Controller
                 }
             }
         }
-        return ['useridx'=>$useridx,'type'=>$type];
+        return ['useridx' => $useridx, 'type' => $type];
     }
 
     public function actionWxInfo()
@@ -273,7 +262,6 @@ class UserController extends Controller
             $wxInfo = new WxInfo();
 
 
-
             $curl = new HttpRequest($user['avatarUrl'], true, 2);
             $wxImg = $curl->get();
             $type = getimagesize($user['avatarUrl']);
@@ -290,9 +278,9 @@ class UserController extends Controller
             }
 
             $time = time();
-            $filename = substr(md5($time), 4, 14).".".$img_type;
-            if (file_put_contents(__ROOT__."/../../".\Yii::$app->params['imageDir']."/upload/".$filename, $wxImg)) {
-                $img = \Yii::$app->params['imageUrl'].$filename;
+            $filename = substr(md5($time), 4, 14) . "." . $img_type;
+            if (file_put_contents(__ROOT__ . "/../../" . \Yii::$app->params['imageDir'] . "/upload/" . $filename, $wxImg)) {
+                $img = \Yii::$app->params['imageUrl'] . $filename;
             }
 
             $wxInfo->openid = $openid;

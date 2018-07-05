@@ -195,6 +195,8 @@ class ChildController extends Controller
         $child->save();
 
         $parent=UserParent::findOne(['userid'=>$this->userid]);
+        $parent=$parent?$parent:new UserParent();
+        $parent->userid=$this->userid;
         $parent->mother=$params['mother'];
         $parent->father=$params['father'];
         $parent->save();
