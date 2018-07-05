@@ -162,44 +162,48 @@ class ChildController extends Controller
      */
     public function actionFive($childid=0){
         $params=\Yii::$app->request->post();
-        $child=ChildInfo::find()
-            ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-            ->andWhere(['user_parent.mother'=>$params['mother']])
-            ->andWhere(['user_parent.father'=>$params['father']])
-            ->andWhere(['child_info.name'=>$params['name']])
-            ->andWhere(['child_info.birthday'=>strtotime($params['birthday'])])
-            ->andWhere(['child_info.gender'=>$params['sex']])
-            ->one();
-        if($child){
-            if($child->userid==$this->userid)
-            {
-                return new Code(21000,'请勿重复添加宝宝！');
-            }
-            $this->userLogin->userid=$child->userid;
-            $this->userLogin->save();
-            $this->doctor_parent($child->userid,$child->id);
 
+        if($childid){
+            $child=ChildInfo::findOne($childid);
         }else{
-            if($childid){
-                $child=ChildInfo::findOne($childid);
-            }else{
-                $child=new ChildInfo();
-            }
-            $child->userid      =$this->userid;
-            $child->name        =$params['name'];
-            $child->birthday    =strtotime($params['birthday']);
-            $child->gender      =$params['sex'];
-            $child->save();
-
-            $parent=UserParent::findOne(['userid'=>$this->userid]);
-            $parent->mother=$params['mother'];
-            $parent->father=$params['father'];
-            $parent->save();
-            if($child->firstErrors)
-            {
-                return new Code(20010,'失败');
+            $child=ChildInfo::find()
+                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                ->andWhere(['user_parent.mother'=>$params['mother']])
+                ->andWhere(['user_parent.father'=>$params['father']])
+                ->andWhere(['child_info.name'=>$params['name']])
+                ->andWhere(['child_info.birthday'=>strtotime($params['birthday'])])
+                ->andWhere(['child_info.gender'=>$params['sex']])
+                ->one();
+            if($child) {
+                if ($child->userid == $this->userid) {
+                    return new Code(21000, '请勿重复添加宝宝！');
+                }
+                $this->userLogin->userid = $child->userid;
+                $this->userLogin->save();
+                $this->doctor_parent($child->userid, $child->id);
+                return ['childid'=>$child->id,'userid'=>$child->userid];
             }
         }
+
+        if(!$child){
+            $child=new ChildInfo();
+        }
+
+        $child->userid      =$this->userid;
+        $child->name        =$params['name'];
+        $child->birthday    =strtotime($params['birthday']);
+        $child->gender      =$params['sex'];
+        $child->save();
+
+        $parent=UserParent::findOne(['userid'=>$this->userid]);
+        $parent->mother=$params['mother'];
+        $parent->father=$params['father'];
+        $parent->save();
+        if($child->firstErrors)
+        {
+            return new Code(20010,'失败');
+        }
+
         return ['childid'=>$child->id,'userid'=>$child->userid];
 
     }
