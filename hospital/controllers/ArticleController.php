@@ -279,8 +279,8 @@ class ArticleController extends BaseController
         $model=new Push();
         $post=Yii::$app->request->post();
         $model->id          =$post['Push']['id'];
-        $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
-        $model->hospital    =[$doctorid];
+        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+        $model->hospital    =[$doctor->userid];
         $model->age         =$post['Push']['age'];
 
 

@@ -66,13 +66,15 @@ class Push extends Model
         {
             $userids=UserLogin::find()->select('userid')->where(['!=', 'openid',''])->column();
         }else{
-            $userids=array_unique(array_merge($hospitals,$childs));
+            $userids=array_intersect($hospitals,$childs);
         }
         return $userids;
     }
 
     public function send(){
         $userids=$this->userid();
+
+        var_dump($userids);exit;
         $return = \Yii::$app->beanstalk
             ->putInTube('push', ['artid'=>$this->id,'userids'=>$userids]);
     }

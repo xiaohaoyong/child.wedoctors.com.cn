@@ -44,10 +44,17 @@ class DoctorController extends BaseWeixinController {
             //医生名字
             $data['name'] = $model->name;
             //签约儿童数
-            $model = DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid]);
-            $model->andFilterWhere(['level'=>1]);
-            $child=ChildInfo::find()->where(['in','userid',$model->column()]);
-            $data['child_num'] = $child->count(); //此处需要修改为用户uid
+
+            //签约儿童总数
+            $data['child_num']=ChildInfo::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+                ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+                ->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospital])
+                ->count();
+
+
+
             //宣教次数
             $data['teach_num'] = UserDoctor::GetArticleNum($doctorid); //此处需要修改为用户uid
             $data['doctorid'] = $doctorid; //此处需要修改为用户uid
