@@ -48,6 +48,9 @@ class UserController extends Controller
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'].$path, true, 10);
             $userJson = $curl->get();
             $user = json_decode($userJson, true);
+            if($user['errcode']==40029){
+                return new Code(30001,$user['errmsg']);
+            }
             $value = $user['openid'].'@@'.$user['session_key'].'@@'.$user['unionid'];
 
             //生成session key
@@ -58,11 +61,28 @@ class UserController extends Controller
             //更新用户平台id
             if ($user['unionid']) {
 
-                $userLogin=UserLogin::findOne(['unionid'=>$user['unionid']]);
+                //$userLogin=UserLogin::findOne(['unionid'=>$user['unionid']]);
+                //$userLogin=UserLogin::find()->andFilterWhere(['or',['xopenid'=>$user['openid'],'unionid'=>$user['unionid']]])->one();
+
+
+                $login=UserLogin::find();
+                if($user['xopenid']!='')
+                {
+                    $login->orWhere(['and',['xopenid'=>$user['openid']]]);
+                }
+                if($user['unionid']!=''){
+                    $login->orWhere(['and',['unionid'=>$user['unionid']]]);
+                }
+                if($user['unionid'] || $user['xopenid'])
+                {
+                    $userLogin=$login->one();
+                }
+
                 $userid=$userLogin?$userLogin->userid:0;
                 if($userLogin && !$userLogin->xopenid)
                 {
                     $userLogin->xopenid=$user['openid'];
+                    $userLogin->unionid=$user['unionid'];
                     $userLogin->save();
                 }
 
@@ -98,102 +118,139 @@ class UserController extends Controller
     public function actionWxUserInfo()
     {
         if($this->userid){
+            $type=0;
             $useridx =  md5($this->userid . "6623cXvY");
             $userLogin = UserLogin::findOne(['userid' => $this->userid]);
             $userLogin->logintime = time();
             $userLogin->save();
         }else {
-            $phoneEncryptedData = \Yii::$app->request->post('phoneEncryptedData');
-            $phoneIv = \Yii::$app->request->post('phoneIv');
+
 
 
             $appid = \Yii::$app->params['wxXAppId'];
             $cache = \Yii::$app->rdmp;
             $session = $cache->get($this->seaver_token);
             $session = explode('@@', $session);
-            $pc = new WxBizDataCrypt($appid, $session[1]);
-            $code = $pc->decryptData($phoneEncryptedData, $phoneIv, $phoneJson);
+            $openid=$session[0];
+            $unionid=$session[2];
 
 
-            $phone = json_decode($phoneJson, true);
-            $openid = $session[0];
-            $unionid = $session[2];
 
-            $wephone = $phone['phoneNumber'];
-            if ($code == 0) {
-                $user = User::findOne(['phone' => $wephone]);
-                if (!$user) {
-                    $userParent = UserParent::find()->where(['mother_phone' => $wephone])->orFilterWhere(['father_phone' => $wephone])->orFilterWhere(['field12' => $wephone])->one();
-                    if ($userParent) {
-                        $userid = $userParent->userid;
-                    }
-                } else {
-                    $userid = $user->id;
-                }
-                //注册
-                if (!$userid) {
-                    $user = new User();
-                    $user->phone = $wephone;
-                    $user->level = 0;
-                    $user->type = 1;
-                    $user->save();
-                    $userid = $user->id;
-                }
+            $login=UserLogin::find();
+            if($openid!='')
+            {
+                $login->orWhere(['and',['xopenid'=>$openid]]);
+            }
+            if($unionid!=''){
+                $login->orWhere(['and',['unionid'=>$unionid]]);
+            }
+            if($openid || $unionid)
+            {
+                $userLogin=$login->one();
+            }
 
-                Notice::setList($userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
-                Notice::setList($userid, 3, ['title' => '儿童中医药健康管理内容及平台服务', 'ftitle' => '点击查看服务内容', 'id' => '/article/view/index?id=200',]);
-
-                $userLogin = UserLogin::findOne(['userid' => $userid,'phone'=>$wephone]);
-                $userLogin = $userLogin ? $userLogin : new UserLogin();
-
-                $childInfo = ChildInfo::find()->andFilterWhere(['userid' => $userid])->andFilterWhere(['>', 'source', 38])->one();
-
-                $doctor = UserDoctor::findOne(['hospitalid' => $childInfo->source]);
-                $default = $doctor ? $doctor->userid : 47156;
-
-                $doctorid = $default;
-//扫码签约
-                $weOpenid = WeOpenid::findOne(['unionid' => $unionid, 'level' => 0]);
-                if ($weOpenid) {
-                    $doctorid = $weOpenid->doctorid ? $weOpenid->doctorid : $default;
-                    $userLogin->openid = $weOpenid->openid;
-                }
-                $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
-                if (!$doctorParent || $doctorParent->level != 1) {
-                    $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
-                    $doctorParent->doctorid = $doctorid;
-                    $doctorParent->parentid = $userid;
-                    $doctorParent->level = 1;
-                    $doctorParent->createtime = time();
-                    if ($doctorParent->save() && $weOpenid) {
-                        $userDoctor = UserDoctor::findOne(['userid' => $doctorid]);
-                        if ($userDoctor) {
-                            $hospital = $userDoctor->hospitalid;
-                        }
-                        ChildInfo::updateAll(['doctorid' => $hospital], 'userid=' . $userid);
-
-                        if ($weOpenid) {
-                            $weOpenid->level = 1;
-                            $weOpenid->save();
-                        }
-                        //签约成功 删除签约提醒
-                    }
-
-                }
-
-
-                //更新登陆状态
-                $userLogin->xopenid = $openid;
-                $userLogin->unionid = $unionid;
+            if($userLogin)
+            {
+                $type=1;
+                $useridx =  md5($userLogin->userid . "6623cXvY");
                 $userLogin->logintime = time();
-                $userLogin->userid = $userid;
-                $userLogin->hxusername = $this->hxusername;
-                $userLogin->phone=$wephone;
                 $userLogin->save();
-                $useridx = $userLogin ? md5($userLogin->userid . "6623cXvY") : 0;
+            }
+            else {
+
+                //获取用户手机号
+                $phoneEncryptedData = \Yii::$app->request->post('phoneEncryptedData');
+                $phoneIv = \Yii::$app->request->post('phoneIv');
+                $pc = new WxBizDataCrypt($appid, $session[1]);
+                $code = $pc->decryptData($phoneEncryptedData, $phoneIv, $phoneJson);
+                $phone = json_decode($phoneJson, true);
+
+                if ($code == 0) {
+                    $wephone = $phone['phoneNumber'];
+                    $userLogin = UserLogin::findOne(['phone' => $wephone]);
+                    if ($userLogin) {
+                        $type=2;
+                        $useridx = md5($userLogin->userid . "6623cXvY");
+                        $userLogin->xopenid=$openid;
+                        $userLogin->unionid=$unionid;
+                        $userLogin->logintime = time();
+                        $userLogin->save();
+                    } else {
+                        $type=3;
+                        $user = User::findOne(['phone' => $wephone]);
+                        if (!$user) {
+                            $userParent = UserParent::find()->where(['mother_phone' => $wephone])->orFilterWhere(['father_phone' => $wephone])->orFilterWhere(['field12' => $wephone])->one();
+                            if ($userParent) {
+                                $userid = $userParent->userid;
+                            }
+                        } else {
+                            $userid = $user->id;
+                        }
+                        //注册
+                        if (!$userid) {
+                            $user = new User();
+                            $user->phone = $wephone;
+                            $user->level = 0;
+                            $user->type = 1;
+                            $user->save();
+                            $userid = $user->id;
+                        }
+
+                        Notice::setList($userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
+                        Notice::setList($userid, 3, ['title' => '儿童中医药健康管理内容及平台服务', 'ftitle' => '点击查看服务内容', 'id' => '/article/view/index?id=200',]);
+
+                        $userLogin = UserLogin::findOne(['userid' => $userid, 'phone' => $wephone]);
+                        $userLogin = $userLogin ? $userLogin : new UserLogin();
+
+                        $childInfo = ChildInfo::find()->andFilterWhere(['userid' => $userid])->andFilterWhere(['>', 'source', 38])->one();
+
+                        $doctor = UserDoctor::findOne(['hospitalid' => $childInfo->source]);
+                        $default = $doctor ? $doctor->userid : 47156;
+
+                        $doctorid = $default;
+//扫码签约
+                        $weOpenid = WeOpenid::findOne(['unionid' => $unionid, 'level' => 0]);
+                        if ($weOpenid) {
+                            $doctorid = $weOpenid->doctorid ? $weOpenid->doctorid : $default;
+                            $userLogin->openid = $weOpenid->openid;
+                        }
+                        $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
+                        if (!$doctorParent || $doctorParent->level != 1) {
+                            $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
+                            $doctorParent->doctorid = $doctorid;
+                            $doctorParent->parentid = $userid;
+                            $doctorParent->level = 1;
+                            $doctorParent->createtime = time();
+                            if ($doctorParent->save() && $weOpenid) {
+                                $userDoctor = UserDoctor::findOne(['userid' => $doctorid]);
+                                if ($userDoctor) {
+                                    $hospital = $userDoctor->hospitalid;
+                                }
+                                ChildInfo::updateAll(['doctorid' => $hospital], 'userid=' . $userid);
+
+                                if ($weOpenid) {
+                                    $weOpenid->level = 1;
+                                    $weOpenid->save();
+                                }
+                                //签约成功 删除签约提醒
+                            }
+
+                        }
+
+                        //更新登陆状态
+                        $userLogin->xopenid = $openid;
+                        $userLogin->unionid = $unionid;
+                        $userLogin->logintime = time();
+                        $userLogin->userid = $userid;
+                        $userLogin->hxusername = $this->hxusername;
+                        $userLogin->phone = $wephone;
+                        $userLogin->save();
+                        $useridx = $userLogin ? md5($userLogin->userid . "6623cXvY") : 0;
+                    }
+                }
             }
         }
-        return $useridx;
+        return ['useridx'=>$useridx,'type'=>$type];
     }
 
     public function actionWxInfo()

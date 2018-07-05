@@ -25,6 +25,7 @@ class Controller extends \yii\web\Controller
     protected $seaver_token;
     protected $appToken;
     protected $hxusername;
+    protected $userLogin;
 
     public function beforeAction($action)
     {
@@ -51,6 +52,10 @@ class Controller extends \yii\web\Controller
             $this->userid=$userLogin->userid;
             $this->user=$userLogin->user;
             $this->appToken=$session;
+            $this->userLogin=$userLogin;
+        }elseif(!in_array($controllerID."/".$actionID,$this->result)){
+            \Yii::$app->response->data = ['code' => 30001,'msg' => '数字签证错误'];
+            return false;
         }
 
 

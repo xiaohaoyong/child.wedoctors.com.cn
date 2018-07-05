@@ -12,7 +12,6 @@ use dmstr\widgets\Alert;
 </style>
 
 <div class="content-wrapper">
-    <div class="wz-content">
     <section class="content-header">
         <?php if (isset($this->blocks['content-header'])) { ?>
             <h1><?= $this->blocks['content-header'] ?></h1>
@@ -57,10 +56,11 @@ use dmstr\widgets\Alert;
             </div>
         <?php }?>
     <section class="content">
-        <?= Alert::widget() ?>
-        <?= $content ?>
+        <div class="row">
+            <?= Alert::widget() ?>
+            <?= $content ?>
+        </div>
     </section>
-    </div>
 </div>
 
 <footer class="main-footer">

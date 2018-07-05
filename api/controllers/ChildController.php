@@ -11,7 +11,12 @@ namespace api\controllers;
 
 use common\components\Code;
 use common\models\ChildInfo;
+use common\models\DoctorParent;
 use common\models\Examination;
+use common\models\UserDoctor;
+use common\models\UserLogin;
+use common\models\UserParent;
+use common\models\WeOpenid;
 
 class ChildController extends Controller
 {
@@ -53,6 +58,7 @@ class ChildController extends Controller
             $row['birthday']=date('Y-m-d',$child->birthday);
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $child->birthday));
             $row['age'] = $DiffDate[0].'岁'.$DiffDate[1].'个月'.$DiffDate[2].'天';
+            $row['parent']=$child->parent->toArray();
             return $row;
         }else{
             return new Code(20010,'失败');
@@ -95,5 +101,102 @@ class ChildController extends Controller
             }
         }
         return $data;
+    }
+    /**
+     * 根据条形码查找儿童
+     */
+    public function actionCode($code){
+        $childInfo = ChildInfo::findOne(['field7'=>$code]);
+        if($childInfo->userid==$this->userid){
+            return new Code(21000,'宝宝已添加过！');
+
+        }elseif($childInfo)
+        {
+            $parent=UserParent::findOne(['userid'=>$childInfo->userid]);
+            return ['childid'=>$childInfo->id,'userid'=>$childInfo->userid,'mother'=>mb_substr($parent->mother,0,1,'utf-8')];
+        }else{
+            return new Code(20010,'无');
+        }
+    }
+    /**
+     * 根据条形码确认宝妈姓名
+     */
+    public function actionConfirm($userid,$childid,$mother){
+        $parent=UserParent::findOne($userid);
+        if($parent)
+        {
+            if($parent->mother!=$mother){
+                return new Code(20010);
+            }else{
+                $this->userLogin->userid=$userid;
+                $this->userLogin->save();
+                $this->doctor_parent($userid,$childid);
+            }
+        }else{
+            return new Code(20010);
+        }
+    }
+
+    public function doctor_parent($userid,$childid){
+        $doctor_parent=DoctorParent::findOne(['parentid'=>$userid]);
+        if(!$doctor_parent || $doctor_parent->level!=1){
+
+            $weOpenid=WeOpenid::findOne(['unionid'=>$this->userLogin->unionid]);
+            $doctor_parent = $doctor_parent ? $doctor_parent : new DoctorParent();
+
+            if($weOpenid) {
+                $doctor_parent->doctorid = $weOpenid->doctorid;
+            }else{
+                $source=ChildInfo::findOne($childid)->source;
+                $doctorid=UserDoctor::findOne(['hospitalid'=>$source])->userid;
+                $doctor_parent->doctorid=$doctorid;
+            }
+            $doctor_parent->level = 1;
+            $doctor_parent->parentid = $userid;
+            $doctor_parent->save();
+        }
+
+    }
+    /**
+     * 五项添加/查询儿童
+     */
+    public function actionFive(){
+        $params=\Yii::$app->request->post();
+        $child=ChildInfo::find()
+            ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+            ->andWhere(['user_parent.mother'=>$params['mother']])
+            ->andWhere(['user_parent.father'=>$params['father']])
+            ->andWhere(['child_info.name'=>$params['name']])
+            ->andWhere(['child_info.birthday'=>strtotime($params['birthday'])])
+            ->andWhere(['child_info.gender'=>$params['sex']])
+            ->one();
+        if($child){
+            if($child->userid==$this->userid)
+            {
+                return new Code(21000,'请勿重复添加宝宝！');
+            }
+            $this->userLogin->userid=$child->userid;
+            $this->userLogin->save();
+            $this->doctor_parent($child->userid,$child->id);
+
+        }else{
+            $child=new ChildInfo();
+            $child->userid      =$this->userid;
+            $child->name        =$params['name'];
+            $child->birthday    =strtotime($params['birthday']);
+            $child->gender      =$params['sex'];
+            $child->save();
+
+            $parent=UserParent::findOne(['userid'=>$this->userid]);
+            $parent->mother=$params['mother'];
+            $parent->father=$params['father'];
+            $parent->save();
+            if($child->firstErrors)
+            {
+                return new Code(20010,'失败');
+            }
+        }
+        return ['childid'=>$child->id,'userid'=>$child->userid];
+
     }
 }
