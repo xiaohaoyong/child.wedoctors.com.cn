@@ -160,7 +160,7 @@ class ChildController extends Controller
     /**
      * 五项添加/查询儿童
      */
-    public function actionFive(){
+    public function actionFive($childid=0){
         $params=\Yii::$app->request->post();
         $child=ChildInfo::find()
             ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
@@ -180,7 +180,11 @@ class ChildController extends Controller
             $this->doctor_parent($child->userid,$child->id);
 
         }else{
-            $child=new ChildInfo();
+            if($childid){
+                $child=ChildInfo::findOne($childid);
+            }else{
+                $child=new ChildInfo();
+            }
             $child->userid      =$this->userid;
             $child->name        =$params['name'];
             $child->birthday    =strtotime($params['birthday']);
