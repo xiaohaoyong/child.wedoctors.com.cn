@@ -188,18 +188,26 @@ class ChildController extends Controller
             $child=new ChildInfo();
         }
 
-        $child->userid      =$this->userid;
-        $child->name        =$params['name'];
-        $child->birthday    =strtotime($params['birthday']);
-        $child->gender      =$params['sex'];
-        $child->save();
-
         $parent=UserParent::findOne(['userid'=>$this->userid]);
         $parent=$parent?$parent:new UserParent();
         $parent->userid=$this->userid;
         $parent->mother=$params['mother'];
         $parent->father=$params['father'];
         $parent->save();
+
+        $child->userid      =$this->userid;
+        $child->name        =$params['name'];
+        $child->birthday    =strtotime($params['birthday']);
+        $child->gender      =$params['sex'];
+        $doctorParent = DoctorParent::findOne(['parentid'=>$this->userid]);
+        if($doctorParent && $doctorParent->level==1)
+        {
+            $hospatilid=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
+            $child->doctorid=$hospatilid;
+        }
+        $child->save();
+
+
         if($child->firstErrors)
         {
             return new Code(20010,'失败');
