@@ -22,6 +22,7 @@ use common\models\ChatRecord;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Examination;
+use common\models\Hospital;
 use common\models\Notice;
 use common\models\User;
 use common\models\UserDoctor;
@@ -597,17 +598,92 @@ class DataController extends Controller
 //            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
 //        ];
 
+//        $data = [
+//            'first' => array('value' => "您好，为确保享受体检通知服务,请尽快完善宝宝信息\n",),
+//            'keyword1' => ARRAY('value' => "宝宝基本信息"),
+//            'keyword2' => ARRAY('value' => "广外社区区卫生服务中心"),
+//            'remark' => ARRAY('value' => "\n 点击完善宝宝信息", 'color' => '#221d95'),
+//        ];
+//
+//        $rs = WechatSendTmp::send($data, 'o5ODa0wc1u3Ihu5WvCVqoACeQ-HA', 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', 'https://jinshuju.net/f/Sfodlu');
+//        exit;
+
+
         $data = [
             'first' => array('value' => "您好，为确保享受体检通知服务,请尽快完善宝宝信息\n",),
             'keyword1' => ARRAY('value' => "宝宝基本信息"),
-            'keyword2' => ARRAY('value' => "广外社区区卫生服务中心"),
-            'remark' => ARRAY('value' => "\n 点击完善宝宝信息", 'color' => '#221d95'),
+            'keyword2' => ARRAY('value' => "为了更好的服务每一个家庭，请参与我们社区中医健康指导服务的问卷调查，希望各位家长抽出宝贵时间支持我们的工作"),
+            'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
         ];
+//
+        $rs=[];
+        $file=fopen("openid2.log",'r');
+        while(($line=fgets($file))!==false){
+            $row=explode(',',trim($line));
+            $openid=$row[0];
+            $doctor=$row[1];
+            $rs[$openid]=$doctor;
+        }
+//        $openidl=[];
+//        $file1=fopen("openidl",'r');
+//        while(($line1=fgets($file1))!==false){
+//            $rsa=trim($line1);
+//            if(!in_array($rs,$openidl))
+//            {
+//                $openidl[]=$rsa;
+//            }
+//        }
+//        foreach($rs as $k=>$v){
+//            if(!in_array($k,$openidl))
+//            {
+//                echo $k.",".$v."\n";
+//            }
+//        }
+//        exit;
 
-        $rs = WechatSendTmp::send($data, 'o5ODa0wc1u3Ihu5WvCVqoACeQ-HA', 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', 'https://jinshuju.net/f/Sfodlu');
+
+
+
+        foreach($rs as $k=>$v){
+
+            $data = [
+                'first' => array('value' => "您好，为确保享受儿童中医健康指导服务,请尽快完善宝宝信息\n",),
+                'keyword1' => ARRAY('value' => "宝宝基本信息"),
+                'keyword2' => ARRAY('value' => $v),
+                'remark' => ARRAY('value' => "\n 点击完善宝宝信息", 'color' => '#221d95'),
+            ];
+            $rs = WechatSendTmp::send($data, $k,'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '',['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
+            echo $k."\n";
+        }
+exit;
+
+        $weOpenid=WeOpenid::find()->andWhere(['level'=>0])->all();
+        foreach($weOpenid as $k=>$v){
+            if($v->openid){
+                $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+                $hospital=Hospital::findOne($doctor->hospitalid);
+                echo $v->openid.",".$hospital->name."\n";
+            }
+        }
+
+        $doctorParent= DoctorParent::findAll(['level'=>1]);
+        foreach($doctorParent as $k=>$v){
+
+            if(!ChildInfo::findOne(['userid'=>$v->parentid])) {
+                $userLogin =UserLogin::findOne(['userid'=>$v->parentid]);
+                $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+                $hospital=Hospital::findOne($doctor->hospitalid);
+                if($userLogin && $userLogin->openid){
+                    echo $userLogin->openid.",".$hospital->name;
+                    echo "\n";
+                }
+            }
+        }
         exit;
 
-        $weOpenid=WeOpenid::find()->andWhere(['>','createtime','1529942400'])->andWhere(['level'=>0])->all();
+
+
+
         foreach($weOpenid as $k=>$v) {
             $data = [
                 'first' => array('value' => "您好，为确保享受体检通知服务,请尽快完善宝宝信息\n",),
@@ -995,7 +1071,7 @@ class DataController extends Controller
         ]);
         $access_token = $wechat->getAccessToken();
 
-        $weOpenid = WeOpenid::find()->andFilterWhere(['level' => 0])->andWhere(['!=', 'openid', ''])->all();
+        $weOpenid = WeOpenid::find()->andWhere(['unionid' => ''])->andWhere(['!=', 'openid', ''])->all();
         foreach ($weOpenid as $k => $v) {
 
             $path = '/cgi-bin/user/info?access_token=' . $access_token . "&openid=" . $v->openid . "&lang=zh_CN";
@@ -1005,6 +1081,9 @@ class DataController extends Controller
             if ($userInfo['unionid']) {
                 $v->unionid = $userInfo['unionid'];
                 $v->save();
+                echo "成功\n";
+            }else{
+                echo "失败\n";
             }
         }
         exit;
