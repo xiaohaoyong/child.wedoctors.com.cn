@@ -14,8 +14,8 @@ use common\components\HttpRequest;
 class SiteController extends \yii\web\Controller
 {
     public function actionIndex(){
-
         $postStr = file_get_contents("php://input");
+        file_put_contents("kefu.log",$postStr,FILE_APPEND);
         $xml = simplexml_load_string($postStr, null, LIBXML_NOCDATA);
         $xmlArray=json_encode($xml);
         $xmlArray=json_decode($xmlArray,true);
