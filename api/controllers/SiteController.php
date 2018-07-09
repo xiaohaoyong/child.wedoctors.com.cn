@@ -15,7 +15,20 @@ class SiteController extends \yii\web\Controller
 {
     public function actionIndex(){
 
-        return $_GET['echostr'];
+        $postStr = file_get_contents("php://input");
+        $xml = simplexml_load_string($postStr, null, LIBXML_NOCDATA);
+        $xmlArray=json_encode($xml);
+        $xmlArray=json_decode($xmlArray,true);
+
+        $template = <<<XML
+ <xml>
+     <ToUserName><![CDATA[%s]]></ToUserName>
+     <FromUserName><![CDATA[%s]]></FromUserName>
+     <CreateTime>%s</CreateTime>
+     <MsgType><![CDATA[transfer_customer_service]]></MsgType>
+ </xml>
+XML;
+        return sprintf($template, $xmlArray['FromUserName'], $xmlArray['ToUserName'], time());
     }
 
     private function checkSignature()
