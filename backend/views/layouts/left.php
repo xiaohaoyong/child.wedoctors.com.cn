@@ -14,6 +14,8 @@
                         'url' => '#',
                         'items' => [
                             ['label' => '账户管理', 'icon' => 'list', 'url' => ['/user'],],
+                            ['label' => '用户登录信息', 'icon' => 'list', 'url' => ['/user-login'],],
+
 
                         ],
                     ],
@@ -24,6 +26,8 @@
                         'items' => [
                             ['label' => '医院管理', 'icon' => 'list', 'url' => ['/hospital'],],
                             ['label' => '儿童列表', 'icon' => 'list', 'url' => ['/child-info'],],
+                            ['label' => '儿童体检数据', 'icon' => 'list', 'url' => ['/examination'],],
+
                             ['label' => '医生列表', 'icon' => 'list', 'url' => ['/user-doctor'],],
                             ['label' => '宣教指导文章管理', 'icon' => 'list', 'url' => ['/article'],],
                             ['label' => '宣教指导分类管理', 'icon' => 'list', 'url' => ['/article-category'],],

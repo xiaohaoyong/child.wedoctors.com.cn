@@ -25,18 +25,25 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
+    <div class="col-xs-12">
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <?= "<?php " ?>$form = ActiveForm::begin(); ?>
 
-    <?= "<?php " ?>$form = ActiveForm::begin(); ?>
+                <?php foreach ($generator->getColumnNames() as $attribute) {
+                    if (in_array($attribute, $safeAttributes)) {
+                        echo "    <?= " . $generator->generateActiveField($attribute) . " ?>\n\n";
+                    }
+                } ?>
+                <div class="form-group">
+                    <?= "<?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('提交') ?>
+                    : <?= $generator->generateString('提交') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' :
+                    'btn btn-primary']) ?>
+                </div>
 
-<?php foreach ($generator->getColumnNames() as $attribute) {
-    if (in_array($attribute, $safeAttributes)) {
-        echo "    <?= " . $generator->generateActiveField($attribute) . " ?>\n\n";
-    }
-} ?>
-    <div class="form-group">
-        <?= "<?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('提交') ?> : <?= $generator->generateString('提交') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                <?= "<?php " ?>ActiveForm::end(); ?>
+            </div>
+        </div>
     </div>
-
-    <?= "<?php " ?>ActiveForm::end(); ?>
-
 </div>
