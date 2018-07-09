@@ -15,10 +15,26 @@ class SiteController extends \yii\web\Controller
 {
     public function actionIndex(){
 
-        $curl = new HttpRequest( "http://toc.minganonline.com/pages/everydayRead.html?SHARE_LEVEL=1", true, 2);
-        $html=$curl->get();
-        $html=str_replace('../','https://toc.minganonline.com/',$html);
-        return $this->renderPartial('index',['html'=>$html]);
+        return $_GET['echostr'];
+    }
+
+    private function checkSignature()
+    {
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+
+        $token = TOKEN;
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature ){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
