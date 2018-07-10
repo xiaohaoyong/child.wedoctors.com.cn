@@ -16,6 +16,7 @@ use common\helpers\WechatSendTmp;
 use common\models\Area;
 use common\models\ArticleComment;
 use common\models\ArticleUser;
+use common\models\BabyGuide;
 use common\models\BabyTool;
 use common\models\BabyToolTag;
 use common\models\ChatRecord;
@@ -39,6 +40,26 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionDatac(){
+        exit;
+        $file=fopen('data.txt','r');
+        $i=1;
+        while (($line=fgets($file))!==false){
+            if($i>124) break;
+            $i++;
+            $rs1=explode('||',trim($line));
+            $babyGuide=new BabyGuide();
+            $babyGuide->sort        =$rs1[4];
+            $babyGuide->title       =$rs1[0];
+            $babyGuide->introduction=strip_tags($rs1[1]);
+            $babyGuide->content     =strip_tags($rs1[3]);
+            $babyGuide->content_title=$rs1[2];
+            $babyGuide->save();
+        }
+    }
+
+
+
     public function userLogin($userid, $buserid)
     {
         //登录
