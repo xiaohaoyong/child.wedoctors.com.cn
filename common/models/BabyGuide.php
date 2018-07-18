@@ -31,9 +31,8 @@ class BabyGuide extends \yii\db\ActiveRecord
     {
         return [
             [['sort'], 'integer'],
-            [['introduction', 'content'], 'string'],
+            [['content'], 'string'],
             [['title'], 'string', 'max' => 20],
-            [['content_title'], 'string', 'max' => 200],
         ];
     }
 

@@ -247,53 +247,18 @@ class UserController extends Controller
 
     public function actionWxInfo()
     {
-        $cache = \Yii::$app->rdmp;
-        $session = $cache->get($this->seaver_token);
-        $session = explode('@@', $session);
-        $openid = $session[0];
+        $params= \Yii::$app->request->post();
 
-        $encryptedData = \Yii::$app->request->post('encryptedData');
-        $iv = \Yii::$app->request->post('iv');
-        $appid = \Yii::$app->params['wxXAppId'];
-        $pc = new WxBizDataCrypt($appid, $session[1]);
-        $code1 = $pc->decryptData($encryptedData, $iv, $userJson);
-        $user = json_decode($userJson, true);
-
-
-        $wxInfo = WxInfo::findOne(['openid' => $openid]);
-        if (!$wxInfo && $this->userid) {
-            $wxInfo = new WxInfo();
-
-
-            $curl = new HttpRequest($user['avatarUrl'], true, 2);
-            $wxImg = $curl->get();
-            $type = getimagesize($user['avatarUrl']);
-            switch ($type[2]) {//判读图片类型
-                case 1:
-                    $img_type = "gif";
-                    break;
-                case 2:
-                    $img_type = "jpg";
-                    break;
-                case 3:
-                    $img_type = "png";
-                    break;
-            }
-
-            $time = time();
-            $filename = substr(md5($time), 4, 14) . "." . $img_type;
-            if (file_put_contents(__ROOT__ . "/../../" . \Yii::$app->params['imageDir'] . "/upload/" . $filename, $wxImg)) {
-                $img = \Yii::$app->params['imageUrl'] . $filename;
-            }
-
-            $wxInfo->openid = $openid;
-            $wxInfo->name = $user['nickName'];
-            $wxInfo->img = $img;
-            $wxInfo->userid = $this->userid ? $this->userid : 0;
+        if($params) {
+            $wxInfo = WxInfo::findOne(['loginid' => $this->userLogin->id]);
+            $wxInfo = $wxInfo ? $wxInfo : new WxInfo();
+            $params['userid'] = $this->userid;
+            $params['loginid'] = $this->userLogin->id;
+            $wxInfo->load(['WxInfo' => $params]);
             $wxInfo->save();
+        }else{
+            return new Code(20000,'失败');
         }
-
-        return $wxInfo;
     }
 
 }

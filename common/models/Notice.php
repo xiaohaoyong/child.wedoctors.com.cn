@@ -22,6 +22,8 @@ class Notice
         4=>'健康指导',
         5=>'育儿课堂',
         6=>'健康工具',
+        7=>'今日知识',
+
     ];
     public static $pages=[
         1=>'/user/examination/index',
@@ -30,6 +32,8 @@ class Notice
         4=>'/article/guidance/index',
         5=>'/article/index/index',
         6=>'/tool/index/index',
+        7=>'/tool/baby/index',
+
     ];
 
     public static function getList($userid){
@@ -57,8 +61,12 @@ class Notice
         }
     }
 
-    public static function setList($userid,$key,$data=[],$id=''){
-        $data['headerPage']=self::$pages[$key];
+    public static function setList($userid,$key,$data=[],$id='',$headerPage=''){
+        if($headerPage){
+            $data['headerPage'] = $headerPage;
+        }else {
+            $data['headerPage'] = self::$pages[$key];
+        }
         if($id)
         {
             $data['headerPage']=$data['headerPage']."?".$id;

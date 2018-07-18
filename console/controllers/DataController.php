@@ -41,20 +41,41 @@ use yii\helpers\ArrayHelper;
 class DataController extends Controller
 {
     public function actionDatac(){
+
+        $babyTag=BabyToolTag::find()->all();
+        foreach($babyTag as $k=>$v){
+            echo $v->id.$v->name."\n";
+            BabyGuide::updateAll(['period' => $v->id], 'tag = "'.$v->name.'"');
+        }
         exit;
         $file=fopen('data.txt','r');
-        $i=1;
+        $j=1;
         while (($line=fgets($file))!==false){
-            if($i>124) break;
-            $i++;
+            $i=1;
+            if($j>124) break;
+            $j++;
             $rs1=explode('||',trim($line));
-            $babyGuide=new BabyGuide();
-            $babyGuide->sort        =$rs1[4];
-            $babyGuide->title       =$rs1[0];
-            $babyGuide->introduction=strip_tags($rs1[1]);
-            $babyGuide->content     =strip_tags($rs1[3]);
-            $babyGuide->content_title=$rs1[2];
-            $babyGuide->save();
+            if($rs1[1]){
+                $babyGuide=new BabyGuide();
+                $babyGuide->sort        =$i;
+                $babyGuide->title       ='孕期注意事项';
+                $babyGuide->content     =strip_tags($rs1[1]);
+                $babyGuide->tag= $rs1[0];
+                $babyGuide->save();
+                $i++;
+            }
+            $rs2=explode('|=|',$rs1[2]);
+            $rs3=explode('|=|',$rs1[3]);
+            foreach($rs2 as $k=>$v){
+                $babyGuide=new BabyGuide();
+                $babyGuide->sort        =$i;
+                $babyGuide->title       =$v;
+                $babyGuide->content     =html_entity_decode(strip_tags($rs3[$k]));
+                $babyGuide->tag= $rs1[0];
+
+                $babyGuide->save();
+                $i++;
+            }
         }
     }
 

@@ -49,6 +49,10 @@ class WeOpenid extends \yii\db\ActiveRecord
             'openid' => '微信唯一键',
             'createtime' => '扫码时间',
             'doctorid' => '医生ID',
+            'xopenid' => '小程序openid',
+            'unionid' => 'unionid',
+            'level' => '签约关系',
+
         ];
     }
     public function beforeSave($insert)

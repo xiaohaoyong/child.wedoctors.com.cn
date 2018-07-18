@@ -23,6 +23,8 @@ databackend\assets\DatabasesAsset::register($this);
                 <thead>
                 <tr>
                     <th>社区卫生服务中心</th>
+                    <th>电话</th>
+
                     <th>辖区内管理儿童数</th>
                     <th>今日签约 </th>
                     <th>签约总数</th>
@@ -38,6 +40,8 @@ databackend\assets\DatabasesAsset::register($this);
                     ?>
                     <tr>
                         <td><?=$v->name?></td>
+                        <td><?=$v->phone?></td>
+
                         <td><?=$total=\common\models\ChildInfo::find()->where(['source'=>$v->hospitalid])->andFilterWhere(['doctorid'=>$v->hospitalid])->andFilterWhere(['>','birthday',strtotime('-3 year')])->count()?></td>
                         <td><?php
                             $today=strtotime(date('Y-m-d 00:00:00'));

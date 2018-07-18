@@ -26,6 +26,7 @@ class Controller extends \yii\web\Controller
     protected $appToken;
     protected $hxusername;
     protected $userLogin;
+    protected $version;
 
     public function beforeAction($action)
     {
@@ -33,6 +34,7 @@ class Controller extends \yii\web\Controller
 
         $this->seaver_token=\Yii::$app->request->headers->get('sessionkey');
         $this->hxusername=\Yii::$app->request->headers->get('hxusername');
+        $this->version=\Yii::$app->request->headers->get('version');
 
         $cache=\Yii::$app->rdmp;
         $session=$cache->get($this->seaver_token);

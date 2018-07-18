@@ -11,13 +11,25 @@ $this->title = '健康档案';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="child-info-index">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">检索：</h3>
+                <div>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-    <hr>
-    <div class="row">
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                    <div class="row">
         <?= GridView::widget([
             'options'=>['class' => 'col-sm-12','style'=>"font-size: 12px;"],
             'dataProvider' => $dataProvider,
             'columns' => [
+                'id',
+                'userid',
 
                 'name',
                 [
@@ -155,5 +167,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
