@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'admin')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->andFilterWhere(['>','userid','37'])->andFilterWhere(['county'=>\Yii::$app->user->identity->county])->column(),['prompt'=>'请选择']) ?>
     <?php }?>
 
+    <?= $form->field($model, 'child_type')->dropDownList(\common\models\Article::$childText,['prompt'=>'请选择']) ?>
+
     <?= $form->field($model, 'level')->dropdownList([1=>'已签约',2=>'已签约未关联',3=>'未签约'],['prompt'=>'请选择']) ?>
     <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',

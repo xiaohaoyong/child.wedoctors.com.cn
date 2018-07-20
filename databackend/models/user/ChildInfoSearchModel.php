@@ -19,6 +19,7 @@ class ChildInfoSearchModel extends ChildInfo
     public $username;
     public $userphone;
     public $admin;
+    public $child_type;
 
     /**
      * @inheritdoc
@@ -28,7 +29,7 @@ class ChildInfoSearchModel extends ChildInfo
         return [
             [['id', 'userid', 'birthday', 'createtime', 'level','admin'], 'integer'],
             [['docpartimeS','docpartimeE', 'username'], 'string'],
-            [['userphone','admin'], 'integer'],
+            [['userphone','admin','child_type'], 'integer'],
 
             [['name'], 'safe'],
         ];
@@ -42,7 +43,9 @@ class ChildInfoSearchModel extends ChildInfo
             'docpartimeE' => '~',
             'username' => '父母联系人姓名',
             'admin'=>'管理机构',
-            'userphone' => '父母联系人手机号'
+            'userphone' => '父母联系人手机号',
+            'child_type' => '儿童月龄'
+
         ];
     }
 
@@ -74,6 +77,15 @@ class ChildInfoSearchModel extends ChildInfo
             'query' => $query,
         ]);
         $this->load($params);
+
+
+        if($this->child_type){
+            $mouth = ChildInfo::getChildType($this->child_type);
+            $query->andFilterWhere(['>=', 'child_info.birthday', $mouth['firstday']]);
+            $query->andFilterWhere(['<=', 'child_info.birthday', $mouth['lastday']]);
+
+        }
+
 
         if(!$this->admin) {
             $hospitalids=ArrayHelper::getColumn($doctor,'hospitalid');
