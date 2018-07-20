@@ -15,22 +15,11 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
+    <?= $form->field($model, 'userid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->andFilterWhere(['>','userid','37'])->andFilterWhere(['county'=>\Yii::$app->user->identity->county])->column(),['prompt'=>'请选择']) ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?php  echo $form->field($model, 'level')->dropDownList(\common\models\ArticleUser::$levelText,['prompt'=>'请选择']) ?>
 
-    <?= $form->field($model, 'childid') ?>
-
-    <?= $form->field($model, 'touserid') ?>
-
-    <?= $form->field($model, 'artid') ?>
-
-    <?= $form->field($model, 'createtime') ?>
-
-    <?php // echo $form->field($model, 'userid') ?>
-
-    <?php // echo $form->field($model, 'level') ?>
-
-    <?php // echo $form->field($model, 'child_type') ?>
+    <?php  echo $form->field($model, 'child_type')->dropDownList(\common\models\Article::$childText,['prompt'=>'请选择']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>

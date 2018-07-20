@@ -10,6 +10,7 @@
                     ['label' => '管理目录', 'options' => ['class' => 'header']],
                     ['label' => '仪表盘','icon' => 'dashboard','url' => \yii\helpers\Url::to(['site/index']),],
                     ['label' => '管辖儿童','icon' => 'archive','url' => \yii\helpers\Url::to(['child-info/index']),],
+                    ['label' => '宣教记录','icon' => 'database','url' => \yii\helpers\Url::to(['article-user/index']),],
                     ['label' => '社区管理','icon' => 'hospital-o','url' => \yii\helpers\Url::to(['user-doctor/index']),],
                     ['label' => '中医指导库','icon' => 'file-text-o','url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[type]=1'])],
                     ['label' => '宣教知识库','icon' => 'file-text-o','url' => "#",

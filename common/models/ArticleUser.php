@@ -13,9 +13,11 @@ use Yii;
  * @property string $artid
  * @property string $createtime
  * @property string $userid
+ * @property string $level
  */
 class ArticleUser extends \yii\db\ActiveRecord
 {
+    public static $levelText=[0=>'未查看',2=>'已查看'];
     /**
      * @inheritdoc
      */
@@ -46,7 +48,10 @@ class ArticleUser extends \yii\db\ActiveRecord
             'touserid' => '家长',
             'artid' => '文章',
             'createtime' => '推送时间',
-            'userid' => '医生',
+            'userid' => '医院',
+            'level' => '是否查看',
+            'child_type' => '儿童年龄',
+
         ];
     }
     public function getArticle()

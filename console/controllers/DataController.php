@@ -479,18 +479,17 @@ class DataController extends Controller
 
     public function actionEbb()
     {
-//        $childs = ChildInfo::find()->andFilterWhere(['doctorid' => 110565])->all();
-//        foreach ($childs as $k => $v) {
-//            $doctorParent = DoctorParent::findOne(['parentid' => $v->userid, 'level' => 1]);
-//            $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-//
-//            $v->doctorid = $doctor->hospitalid;
-//            $v->save();
-//            echo $v->userid;
-//            echo "\n";
-//
-//        }
-//        exit;
+        $childs = ChildInfo::find()->andFilterWhere(['doctorid' => 0])->all();
+        foreach ($childs as $k => $v) {
+            $doctorParent = DoctorParent::findOne(['parentid' => $v->userid, 'level' => 1]);
+            if(!$doctorParent) {
+                $v->doctorid = $v->source;
+                $v->save();
+                echo $v->userid;
+                echo "\n";
+            }
+        }
+        exit;
         $doctorParent = DoctorParent::find()->andFilterWhere(['level' => 1])->andFilterWhere(['doctorid' => 47156])->all();
 
 //        foreach ($doctorParent as $k => $v) {

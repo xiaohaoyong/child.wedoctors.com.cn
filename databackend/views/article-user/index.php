@@ -13,6 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="article-user-index">
     <div class="col-xs-12">
         <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">检索：</h3>
+                <div>
+                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
+                <!-- /.box-tools -->
+            </div>
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
@@ -35,6 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 ], ['attribute' => 'artid', 'value' => function ($e) {
                                     return \common\models\ArticleInfo::findOne($e->artid)->title;
+                                }
+
+                                ], ['attribute' => 'level', 'value' => function ($e) {
+                                    return \common\models\ArticleUser::$levelText[$e->level];
+                                }
+
+                                ], ['attribute' => 'child_type', 'value' => function ($e) {
+                                    return \common\models\Article::$childText[$e->child_type];
                                 }
 
                                 ], ['attribute' => 'createtime', 'format' => ['date', 'php:Y-m-d H:i:s']],            // 'userid',

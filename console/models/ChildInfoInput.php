@@ -30,7 +30,6 @@ class ChildInfoInput
     public function saveLog()
     {
         $file = "log/" . date('Y-m-d') . "-f-" . $this->hospitalid . ".log";
-        echo $this->lineLog."\n";
         file_put_contents($file, $this->lineLog . "\n", FILE_APPEND);
     }
 
@@ -150,7 +149,7 @@ class ChildInfoInput
                 'gender'    => $value[4] == "男" ? 1 : 2,
                 'birthday'  => intval(strtotime($value[5])),
                 'source'    => $this->hospitalid,
-                'doctorid'  => $this->hospitalid,
+                //'doctorid'  => $this->hospitalid,
                 'field54'   => $value[85],
                 'field53'   => $value[70],
                 'field52'   => $value[69],
@@ -369,7 +368,7 @@ class ChildInfoInput
             ->andFilterWhere(["`child_info`.`name`" => $name])
             ->andFilterWhere(["`child_info`.`birthday`" => $barthday])
             ->andFilterWhere(["`child_info`.`gender`" => $gender])
-            ->andFilterWhere(["`child_info`.`doctorid`" => $this->hospitalid])
+            ->andFilterWhere(["`child_info`.`source`" => $this->hospitalid])
             ->one();
         if ($childInfo) {
             $this->childInfo = $childInfo;
