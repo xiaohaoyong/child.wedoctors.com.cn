@@ -479,7 +479,7 @@ class DataController extends Controller
 
     public function actionEbb()
     {
-        $childs = ChildInfo::find()->andFilterWhere(['doctorid' => 0])->all();
+        $childs = ChildInfo::find()->andFilterWhere(['doctorid' => 110555])->all();
         foreach ($childs as $k => $v) {
             $doctorParent = DoctorParent::findOne(['parentid' => $v->userid, 'level' => 1]);
             if(!$doctorParent) {
