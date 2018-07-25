@@ -48,6 +48,12 @@ class BabyToolLike extends \yii\db\ActiveRecord
             'loginid' => 'Loginid',
         ];
     }
+
+    public function getTag(){
+        return $this->hasOne(BabyToolTag::className(),['id'=>'bid']);
+    }
+
+
     public function beforeSave($insert)
     {
         if($insert){

@@ -8,6 +8,7 @@
 
 namespace api\controllers;
 
+use api\controllers\Controller;
 
 use common\models\Examination;
 

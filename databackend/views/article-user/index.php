@@ -36,6 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return $UserParent->father."/".$UserParent->mother;
                                 }
 
+                                ],['attribute' => '手机号', 'value' => function ($e) {
+                                    $UserParent = \common\models\UserParent::findOne($e->touserid);
+                                    return $UserParent->father_phone."/".$UserParent->mother_phone;
+                                }
+
                                 ],['attribute' => 'userid', 'value' => function ($e) {
                                     return \databackend\models\user\UserDoctor::findOne([$e->userid])->name;
                                 }
