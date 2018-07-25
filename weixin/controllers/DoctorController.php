@@ -366,18 +366,22 @@ class DoctorController extends BaseWeixinController {
                 $doctor = UserDoctor::findOne($this->userData['userid']);
 
                 //微信模板消息
-                $data = [
-                    'first' => array('value' => "您好！医生给您发来一份新的儿童中医药健康指导。\n"),
+                $data = ['first' => array(
+                    'value' => "您好！医生给您发来一份新的儿童中医药健康指导\n"),
                     'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
                     'keyword2' => ARRAY('value' => $doctor->hospital->name),
                     'keyword3' => ARRAY('value' => $doctor->name),
                     'keyword4' => ARRAY('value' => ChildInfo::findOne($childid)->name),
-                    'keyword5' => ARRAY('value' => $model_article->info->title),
+                    'keyword5' => ARRAY('value' =>  $model_article->info->title),
                     'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),
-                ];
+                    ];
                 $touser = UserLogin::findOne(['userid' => $parentid])->openid;
                 $url = \Yii::$app->params['site_url']."#/article/".$artid;
-                WechatSendTmp::send($data, $touser, \Yii::$app->params['zhidao'], $url);
+                $miniprogram=[
+                    "appid"=>\Yii::$app->params['wxXAppId'],
+                    "pagepath"=>"pages/article/view/index?id=$artid",
+                ];
+                WechatSendTmp::send($data, $touser, \Yii::$app->params['zhidao'], $url,$miniprogram);
             }
             return $this->returnJson('200', '发送成功');
         }
