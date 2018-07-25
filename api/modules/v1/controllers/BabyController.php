@@ -16,7 +16,7 @@ class BabyController extends \api\controllers\BabyController
 {
     public function actionCollectionList()
     {
-        $query=BabyToolLike::find()->andFilterWhere(['userid'=>77905])->andFilterWhere(['type'=>3]);
+        $query=BabyToolLike::find()->andFilterWhere(['userid'=>$this->userid])->andFilterWhere(['type'=>3]);
         $totle=$query->count();
         $pages = new Pagination(['totalCount' =>$totle, 'pageSize' => 10]);
         $datas = $query->offset($pages->offset)->limit($pages->limit)->all();
