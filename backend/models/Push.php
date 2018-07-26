@@ -25,6 +25,7 @@ class Push extends Model
     public $hospital;
     public $age;
     public $area;
+    public $test;
 
     public function attributeLabels()
     {
@@ -33,6 +34,7 @@ class Push extends Model
             'hospital' => '社区医院',
             'age' => '年龄范围',
             'area' => '地区',
+            'test'=>'测试'
         ];
     }
 
@@ -61,12 +63,18 @@ class Push extends Model
                 $childs=array_merge($childs,$ages);
             }
         }
+
         $userids=[];
         if($this->age[0]==0 && $this->hospital[0]==0)
         {
             $userids=UserLogin::find()->select('userid')->where(['!=', 'openid',''])->column();
         }else{
             $userids=array_intersect($hospitals,$childs);
+        }
+        if($this->test)
+        {
+            $userids[]=77907;
+            $userids[]=78256;
         }
         return $userids;
     }

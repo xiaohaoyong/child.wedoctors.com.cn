@@ -22,6 +22,22 @@ class WorkerController extends BeanstalkController
         return ['push'];
     }
 
+    public $lineLog;
+    /**
+     *
+     * 日志
+     * @param $value
+     */
+    public function addLog($value)
+    {
+        $this->lineLog .= "==" . $value;
+    }
+
+    public function saveLog()
+    {
+        $file = "/home/wwwlogs/child.wedoctors.com.cn/worker/push" . date('Y-m-d') . ".log";
+        file_put_contents($file, $this->lineLog . "\n", FILE_APPEND);
+    }
 
     /**
      * 采集数据
@@ -35,11 +51,10 @@ class WorkerController extends BeanstalkController
         $sentData = $job->getData();
         $artid=$sentData->artid;
         $userids=$sentData->userids;
+        $this->addLog($artid);
+        $this->addLog(implode("||",$userids));
+
         $article=\common\models\Article::findOne($artid);
-
-
-
-
         if($article)
         {
 
@@ -76,17 +91,18 @@ class WorkerController extends BeanstalkController
 
 
             foreach($userids as $k=>$v) {
-                echo $v;
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
                     $rs=WechatSendTmp::send($data, $userLogin->openid,$temp,'',$miniprogram);
+                    $this->addLog($rs);
+
                 }
                 if($article->art_type!=2)
                 {
                     $key=$article->catid==6?3:5;
                     Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$artid,]);
                 }
-                echo "\n";
+                $this->saveLog();
             }
         }
         return self::DELETE;

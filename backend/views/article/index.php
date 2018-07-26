@@ -113,7 +113,7 @@ echo $form->field($model,'id')->hiddenInput();
 
 echo $form->field($model,'hospital')->checkboxList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->column());
 echo $form->field($model,'age')->checkboxList(\common\models\Article::$childText);
-
+echo $form->field($model,'test')->checkboxList([1=>'测试']);
 echo "<div class=\"form-group\">".Html::submitButton('提交', ['class' => 'btn btn-primary'])."</div>";
 \yii\widgets\ActiveForm::end();
 Modal::end();
