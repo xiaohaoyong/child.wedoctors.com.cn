@@ -37,8 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
 
                                 ],['attribute' => '手机号', 'value' => function ($e) {
-                                    $UserParent = \common\models\UserParent::findOne($e->touserid);
-                                    return $UserParent->father_phone."/".$UserParent->mother_phone;
+                                    $UserParent = \common\models\UserLogin::findOne(['userid'=>$e->touserid]);
+                                    return $UserParent->phone;
                                 }
 
                                 ],['attribute' => 'userid', 'value' => function ($e) {
