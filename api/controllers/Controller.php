@@ -19,7 +19,7 @@ use yii\web\Response;
 
 class Controller extends \yii\web\Controller
 {
-    private $result = ['user/login','user/wx-user-info','article/view','baby/collection-list'];
+    private $result = ['user/login','user/wx-user-info','article/view','baby/collection-list','text/text'];
     protected $userid = 0;
     protected $user;
     protected $seaver_token;
