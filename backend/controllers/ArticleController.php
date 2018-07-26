@@ -184,6 +184,7 @@ class ArticleController extends BaseController
         $model->hospital    =$post['Push']['hospital'];
         $model->age         =$post['Push']['age'];
         $model->area        =$post['Push']['area'];
+        $model->test        =$post['Push']['test'];
 
 
         $model->send();
