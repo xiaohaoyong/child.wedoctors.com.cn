@@ -32,6 +32,7 @@ databackend\assets\DatabasesAsset::register($this);
                     <th>已宣教数</th>
                     <th>管理服务率</th>
                     <th>数据</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -97,6 +98,9 @@ databackend\assets\DatabasesAsset::register($this);
                             </div>
                         </td>
                         <td><span class="badge <?=$color?>"><?=$baifen?>%</span></td>
+                        <td>
+                            <?=Html::a('<span class="fa fa-database"></span> 编辑', \yii\helpers\Url::to(['user-doctor/update',"id"=>$v->userid]));?>
+                        </td>
                     </tr>
                 <?php }?>
                 </tbody>
