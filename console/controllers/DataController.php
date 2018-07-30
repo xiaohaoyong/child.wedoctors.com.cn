@@ -41,7 +41,7 @@ use yii\helpers\ArrayHelper;
 class DataController extends Controller
 {
     public function actionDatac(){
-
+        var_dump(__LOG__);exit;
         $babyTag=BabyToolTag::find()->all();
         foreach($babyTag as $k=>$v){
             echo $v->id.$v->name."\n";
