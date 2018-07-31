@@ -47,19 +47,43 @@ use yii\widgets\ActiveForm;
     </div>
 
 <?php
+$sessionid=Yii::$app->session->getId();
 $updateJs = <<<JS
     jQuery("#down").click(function () {
        
 
         var wsl = 'ws://127.0.0.1:9501';
         ws = new WebSocket(wsl);// 新建立一个连接
+                $('#myModal').modal('show')
+
+         
         // 如下指定事件处理
         ws.onopen = function () {
-             ws.send('Test!');
+            var data={};
+            data.type='Apply';
+            data.token="$sessionid";
+            data.data=jQuery('#child').serialize();
+            ws.send(JSON.stringify(data));
         };
         // 接收消息
         ws.onmessage = function (evt) {
             console.log(evt.data);
+            var obj =eval('('+evt.data+')');
+            if (obj.state==1){
+                if(obj.line==100){
+                    jQuery('#progress_title').html('即将完成请稍后');
+                }else{
+                    jQuery('#progress_title').html('正在准备Excel文件');
+                }
+                jQuery('#progress_line').width(obj.line+"%");
+                jQuery('#progress_down').show();
+            }
+            if (obj.state==2){
+                jQuery('#progress_title').html('文件已生成，请点击下方链接下载');
+                jQuery('#progress_down').hide();
+                jQuery('#progress_content').html(obj.url);
+                
+            }
             /*ws.close();*/
         };
         // 关闭
@@ -75,3 +99,22 @@ $updateJs = <<<JS
 JS;
 $this->registerJs($updateJs);
 ?>
+
+<?php
+use yii\bootstrap\Modal;
+
+Modal::begin([
+    'id' => 'myModal',
+    'header'=>'下载提示',
+]);
+?>
+<h4 id="progress_title">数据准备中请稍等</h4>
+<div class="progress active" id="progress_down" style="display: none;" >
+    <div id='progress_line' class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 1%">
+        <span class="sr-only">40% Complete (success)</span>
+    </div>
+</div>
+<div id="progress_content">
+
+</div>
+<?php Modal::end(); ?>

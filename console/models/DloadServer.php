@@ -9,7 +9,11 @@
 namespace console\models;
 
 
+use common\models\DataUser;
+use common\models\DataUserTask;
+use http\Url;
 use jianyan\websocket\server\WebSocketServer;
+use yii\helpers\Html;
 
 class DloadServer extends WebSocketServer
 {
@@ -48,8 +52,51 @@ class DloadServer extends WebSocketServer
 
     public function onMessage($server, $frame)
     {
-        echo "receive from {$frame->fd}:{$frame->data},opcode:{$frame->opcode},fin:{$frame->finish}\n";
-        $this->_server->push($frame->fd, "this is server");
+        $data=json_decode($frame->data,true);
+        if($data['type']=='Apply') {
+            $dataUser=DataUser::findOne(['token'=>$data['token']]);
+
+            if($dataUser) {
+                $dataUserTask = DataUserTask::findOne(['datauserid' => $dataUser->id, 'state' => 0]);
+                if ($dataUserTask) {
+                    $dataUserTask->fd=$frame->fd;
+                    $dataUserTask->save();
+                    $this->_server->push($frame->fd, json_encode(['type' => 'Apply', 'Result' => '成功', 'state' => 3]));
+                } else {
+                    //创建任务
+                    $dataUserTask = new DataUserTask();
+                    $dataUserTask->createtime = time();
+                    $dataUserTask->datauserid = $dataUser->id;
+                    $dataUserTask->note=$data['data'];
+                    $dataUserTask->fd=$frame->fd;
+                    $dataUserTask->save();
+                    $data['task_id']=$dataUserTask->id;
+                    $server->task($data);
+                }
+            }else{
+                $this->_server->push($frame->fd, json_encode(['type' => 'Apply', 'Result' => '失败', 'state' => 0]));
+            }
+
+        }
+    }
+    public function onTask($server, $task_id, $from_id, $data)
+    {
+
+
+        $childDow=new ChildDown();
+        $childDow->_server=$this->_server;
+        $childDow->_server_fd=$frame->fd;
+
+        parse_str(urldecode($data['data']),$postData);
+        $childDow->setData($postData,$dataUser);
+        $filename=$childDow->excel();
+        $server->finish($filename);
+    }
+
+    public function onFinish($server, $task_id, $data)
+    {
+        $url=Html::a('点击下载','http://static.wedoctors.com.cn/'.$data,['target'=>"_blank"]);
+        $this->_server->push($frame->fd, json_encode(['type' => 'Apply', 'Result' => '成功', 'state' => 2,'url'=>$url]));
     }
 
 }
