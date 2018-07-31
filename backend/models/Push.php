@@ -86,9 +86,7 @@ class Push extends Model
 
     public function send(){
         $userids=$this->userid();
-
-        $n=ceil(count($userids)/100);
-        $input_array=array_chunk($userids,$n);
+        $input_array=array_chunk($userids,100);
         foreach ($input_array as $v){
             $return = \Yii::$app->beanstalk
                 ->putInTube('push', ['artid'=>$this->id,'userids'=>$v]);
