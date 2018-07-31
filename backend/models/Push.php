@@ -65,7 +65,7 @@ class Push extends Model
         }
 
         $userids=[];
-        if($this->age[0]==0 && $this->hospital[0]==0 && !$this->test)
+        if(!$childs && !$hospitals && !$this->test)
         {
             $userids=UserLogin::find()->select('userid')->where(['!=', 'openid',''])->column();
         }else{

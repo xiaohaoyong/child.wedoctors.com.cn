@@ -10,6 +10,7 @@ namespace console\models;
 
 
 use common\models\DataUser;
+use common\models\DataUserTask;
 use console\models\ChildInfoSearchModel;
 use common\models\Article;
 use common\models\ArticleInfo;
@@ -19,8 +20,10 @@ class ChildDown
     public $data;
     public $_server;
     public $_server_fd;
+    public $dataUser;
     public function setData($data,DataUser $dataUser){
 
+        $this->dataUser=$dataUser;
         $searchModel = new ChildInfoSearchModel();
         if($dataUser->type==1){
             $searchModel->county=$dataUser->county;
@@ -128,9 +131,14 @@ class ChildDown
                 ->setCellValue('O' . $key1, $child_type)
                 ->setCellValue('P' . $key1, $title)
                 ->setCellValue('Q' . $key1, $date);
-            echo $v['name'];
             if($this->_server){
                 $line=round(($k+1)/$totle,4)*100;
+//                if(ceil($line)%5==0){
+//                    $dataUserTask = DataUserTask::findOne(['datauserid' => $this->dataUser->id, 'state' => 0]);
+//                    if($dataUserTask){
+//                        $this->_server_fd=$dataUserTask->fd;
+//                    }
+//                }
                 $this->_server->push($this->_server_fd, json_encode(['type' => 'Apply', 'Result' => '成功', 'state' => 1, 'line' => $line]));
             }
 

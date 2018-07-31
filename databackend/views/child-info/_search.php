@@ -8,50 +8,55 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-    <div class="child-info-search">
+<div class="child-info-search">
 
-        <?php $form = ActiveForm::begin([
-            'action' => ['index'],
-            'method' => 'get',
-            'options' => ['id' => 'child', 'class' => 'form-inline'],
-        ]); ?>
-        <?php if (\Yii::$app->user->identity->type == 1) { ?>
+    <?php $form = ActiveForm::begin([
+        'action' => ['index'],
+        'method' => 'get',
+        'options' => ['id' => 'child', 'class' => 'form-inline'],
+    ]); ?>
+    <?php if (\Yii::$app->user->identity->type == 1) { ?>
 
-            <?= $form->field($model, 'admin')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->andFilterWhere(['>', 'userid', '37'])->andFilterWhere(['county' => \Yii::$app->user->identity->county])->column(), ['prompt' => '请选择']) ?>
-        <?php } ?>
+        <?= $form->field($model, 'admin')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->andFilterWhere(['>', 'userid', '37'])->andFilterWhere(['county' => \Yii::$app->user->identity->county])->column(), ['prompt' => '请选择']) ?>
+    <?php } ?>
 
-        <?= $form->field($model, 'child_type')->dropDownList(\common\models\Article::$childText, ['prompt' => '请选择']) ?>
+    <?= $form->field($model, 'child_type')->dropDownList(\common\models\Article::$childText, ['prompt' => '请选择']) ?>
 
-        <?= $form->field($model, 'level')->dropdownList([1 => '已签约', 2 => '已签约未关联', 3 => '未签约'], ['prompt' => '请选择']) ?>
-        <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
-            'format' => 'yyyy-mm-dd',
-            'todayHighlight' => true
-        ]]) ?>
-        <?= $form->field($model, 'docpartimeE')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
-            'format' => 'yyyy-mm-dd',
-            'todayHighlight' => true
-        ]]) ?>
-        <?= $form->field($model, 'username') ?>
-        <?= $form->field($model, 'userphone') ?>
+    <?= $form->field($model, 'level')->dropdownList([1 => '已签约', 2 => '已签约未关联', 3 => '未签约'], ['prompt' => '请选择']) ?>
+    <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'docpartimeE')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'username') ?>
+    <?= $form->field($model, 'userphone') ?>
 
-        <div class="form-group">
-            <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
-            <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
-            <?= Html::button('下载', ['id' => 'down', 'class' => 'btn btn-primary']) ?>
+    <div class="form-group">
+        <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
+        <?= Html::button('下载', ['id' => 'down', 'class' => 'btn btn-primary']) ?>
 
-            <div class="help-block"></div>
-        </div>
-
-        <?php ActiveForm::end(); ?>
-
+        <div class="help-block"></div>
     </div>
 
+    <?php ActiveForm::end(); ?>
+
+</div>
+
 <?php
-$sessionid=Yii::$app->session->getId();
+$sessionid = Yii::$app->session->getId();
 $updateJs = <<<JS
     jQuery("#down").click(function () {
        
-
+        jQuery('#progress_title').html('数据准备中请稍等');
+        jQuery('#progress_content').hide();
+        jQuery('#progress_line').width("0%");
+        jQuery('#progress_down').hide();
+        
+        
         var wsl = 'ws://127.0.0.1:9501';
         ws = new WebSocket(wsl);// 新建立一个连接
                 $('#myModal').modal('show')
@@ -63,6 +68,7 @@ $updateJs = <<<JS
             data.type='Apply';
             data.token="$sessionid";
             data.data=jQuery('#child').serialize();
+            console.log("open");
             ws.send(JSON.stringify(data));
         };
         // 接收消息
@@ -101,16 +107,18 @@ $this->registerJs($updateJs);
 ?>
 
 <?php
+
 use yii\bootstrap\Modal;
 
 Modal::begin([
     'id' => 'myModal',
-    'header'=>'下载提示',
+    'header' => '下载提示',
 ]);
 ?>
 <h4 id="progress_title">数据准备中请稍等</h4>
-<div class="progress active" id="progress_down" style="display: none;" >
-    <div id='progress_line' class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 1%">
+<div class="progress active" id="progress_down" style="display: none;">
+    <div id='progress_line' class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar"
+         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 1%">
         <span class="sr-only">40% Complete (success)</span>
     </div>
 </div>
