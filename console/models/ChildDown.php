@@ -133,13 +133,13 @@ class ChildDown
                 ->setCellValue('Q' . $key1, $date);
             if($this->_server){
                 $line=round(($k+1)/$totle,4)*100;
-//                if(ceil($line)%5==0){
-//                    $dataUserTask = DataUserTask::findOne(['datauserid' => $this->dataUser->id, 'state' => 0]);
-//                    if($dataUserTask){
-//                        $this->_server_fd=$dataUserTask->fd;
-//                    }
-//                }
-                $this->_server->push($this->_server_fd, json_encode(['type' => 'Apply', 'Result' => '成功', 'state' => 1, 'line' => $line]));
+                if(ceil($line)%5==0){
+                    $dataUserTask = DataUserTask::findOne(['datauserid' => $this->dataUser->id, 'state' => 0]);
+                    if($dataUserTask){
+                        $this->_server_fd=$dataUserTask->fd;
+                    }
+                }
+                $this->_server->send(json_encode(['type' => 'Schedule','id'=>$dataUserTask->id,'fd'=>$this->_server_fd,'line'=>$line]));
             }
 
         }
@@ -148,7 +148,7 @@ class ChildDown
 
         $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
 
-        $title="child_info_".date('Y-m-d H:i').".xlsx";
+        $title="child_info_".date('Y-m-d_H:i').".xlsx";
         $objWriter->save(dirname(__ROOT__)."/static/".$title);
         return $title;
     }

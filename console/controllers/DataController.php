@@ -1367,7 +1367,7 @@ exit;
 
 
         $return = \Yii::$app->beanstalk
-            ->putInTube('push', ['artid' => 301, 'userids' => [49106]]);
+            ->putInTube('export', ['artid' => 301, 'userids' => [49106]]);
         var_dump($return);
         exit;
 

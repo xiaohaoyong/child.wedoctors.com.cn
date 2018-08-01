@@ -37,7 +37,7 @@ use yii\widgets\ActiveForm;
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
-        <?= Html::button('下载', ['id' => 'down', 'class' => 'btn btn-primary']) ?>
+        <?= Html::button('下载', ['data-toggle' => 'modal', 'data-target' => '#myModal','class' => 'btn btn-primary']) ?>
 
         <div class="help-block"></div>
     </div>
@@ -51,17 +51,16 @@ $sessionid = Yii::$app->session->getId();
 $updateJs = <<<JS
     jQuery("#down").click(function () {
        
+        jQuery('#progress_title').show();
         jQuery('#progress_title').html('数据准备中请稍等');
         jQuery('#progress_content').hide();
         jQuery('#progress_line').width("0%");
         jQuery('#progress_down').hide();
+        jQuery('#down').hide();
         
         
         var wsl = 'ws://127.0.0.1:9501';
-        ws = new WebSocket(wsl);// 新建立一个连接
-                $('#myModal').modal('show')
-
-         
+        ws = new WebSocket(wsl);// 新建立一个连接         
         // 如下指定事件处理
         ws.onopen = function () {
             var data={};
@@ -85,10 +84,11 @@ $updateJs = <<<JS
                 jQuery('#progress_down').show();
             }
             if (obj.state==2){
+                jQuery('#down').show();
                 jQuery('#progress_title').html('文件已生成，请点击下方链接下载');
                 jQuery('#progress_down').hide();
+                jQuery('#progress_content').show();
                 jQuery('#progress_content').html(obj.url);
-                
             }
             /*ws.close();*/
         };
@@ -115,14 +115,35 @@ Modal::begin([
     'header' => '下载提示',
 ]);
 ?>
-<h4 id="progress_title">数据准备中请稍等</h4>
+<?= Html::button('重新下载', ['id' => 'down', 'class' => 'btn btn-primary']) ?>
+<h4 id="progress_title" style="display: none">数据准备中请稍等</h4>
 <div class="progress active" id="progress_down" style="display: none;">
     <div id='progress_line' class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar"
          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 1%">
         <span class="sr-only">40% Complete (success)</span>
     </div>
 </div>
-<div id="progress_content">
+<div id="progress_content" style="display: none">
 
+</div>
+<div id="progress_list">
+    <h4 id="progress_title">下载历史</h4>
+    <table class="table table-striped">
+        <tbody><tr>
+            <th style="width: 10px">#</th>
+            <th>链接</th>
+            <th>下载</th>
+        </tr>
+        <?php
+            $dataUserTask=\common\models\DataUserTask::findAll(['datauserid'=>Yii::$app->user->id,'state'=>1]);
+            foreach($dataUserTask as $k=>$v){
+        ?>
+        <tr>
+            <td><?=$k+1?>.</td>
+            <td><?=$v->result?></td>
+            <td><a href="http://static.wedoctors.com.cn/<?=$v->result?>" target="_blank">点击下载</a> </td>
+        </tr>
+        <?php }?>
+        </tbody></table>
 </div>
 <?php Modal::end(); ?>

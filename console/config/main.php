@@ -19,6 +19,9 @@ return [
         'worker'=>[
             'class' => 'console\controllers\WorkerController',
         ],
+        'childexc'=>[
+            'class' => 'console\controllers\ChildExcController',
+        ],
         'websocket' => [
             'class' => 'jianyan\websocket\console\WebSocketController',
             'server' => 'console\models\DloadServer',
