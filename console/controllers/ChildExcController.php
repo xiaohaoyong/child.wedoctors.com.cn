@@ -59,7 +59,6 @@ class ChildExcController extends BeanstalkController
     public function actionExport($job='')
     {
         $sentData = $job->getData();
-        var_dump($sentData);
         if ($sentData) {
             $server=self::server();
 

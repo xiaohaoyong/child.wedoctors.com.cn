@@ -59,7 +59,7 @@ $updateJs = <<<JS
         jQuery('#down').hide();
         
         
-        var wsl = 'ws://127.0.0.1:9501';
+        var wsl = 'ws://192.168.1.103:9501';
         ws = new WebSocket(wsl);// 新建立一个连接         
         // 如下指定事件处理
         ws.onopen = function () {
