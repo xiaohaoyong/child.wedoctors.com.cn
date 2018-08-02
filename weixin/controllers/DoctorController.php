@@ -135,25 +135,32 @@ class DoctorController extends BaseWeixinController {
     public function actionChildHave($type,$age=0,$page=1) {
         $doctorid = $this->userData['userid'];
 
-        $model = DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid]);
+        $userDoctor = UserDoctor::findOne(['userid'=>$doctorid]); //此处需要修改为用户uid
+
+        //签约儿童总数
+        $model=ChildInfo::find()
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+            ->andFilterWhere(['`child_info`.`doctorid`' => $userDoctor->hospitalid]);
+
+
         if($type==0)
         {
             $type=-1;
         }
-        $model->andFilterWhere(['level'=>$type]);
-        $child=ChildInfo::find()->where(['in','userid',$model->column()]);
+        $model->andFilterWhere(['doctor_parent.level'=>$type]);
         if($age) {
             $mouth = ChildInfo::getChildType($age);
-            $child->andFilterWhere(['>', 'birthday', $mouth['firstday']])->andFilterWhere(['<', 'birthday', $mouth['lastday']]);
+            $model->andFilterWhere(['>', 'child_info.birthday', $mouth['firstday']])->andFilterWhere(['<', 'child_info.birthday', $mouth['lastday']]);
         }
-        if($page>ceil($child->count()/20))
+        if($page>ceil($model->count()/20))
         {
             $model=[];
         }else {
-            $pages = new Pagination(['totalCount' => $child->count()]);
-            $model = $child->offset($pages->offset)->limit($pages->limit)->all();
+            $pages = new Pagination(['totalCount' => $model->count()]);
+            $child = $model->offset($pages->offset)->limit($pages->limit)->all();
         }
-        if (!$model) {
+        if (!$child) {
             if ($type == 0) {
                 return $this->returnJson('11001', '暂无待签约儿童');
             } else if ($type == 1) {
@@ -162,7 +169,7 @@ class DoctorController extends BaseWeixinController {
                 return $this->returnJson('11001', '暂无未签约儿童');
             }
         } else {
-            foreach ($model as $v) {
+            foreach ($child as $v) {
                 //儿童名字
                 $data['name'] = $v->name;
                 //儿童年龄
@@ -174,7 +181,7 @@ class DoctorController extends BaseWeixinController {
                 $data['type'] = $type;
                 $array[] = $data;
             }
-            return $this->returnJson('200', 'success', ['list'=>$array,'num'=>$child->count()]);
+            return $this->returnJson('200', 'success', ['list'=>$array,'num'=>$model->count()]);
         }
     }
 
