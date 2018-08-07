@@ -11,6 +11,7 @@ namespace console\models;
 
 use common\models\DataUser;
 use common\models\DataUserTask;
+use console\controllers\ChildExcController;
 use http\Url;
 use jianyan\websocket\server\WebSocketServer;
 use yii\helpers\Html;
@@ -72,10 +73,7 @@ class DloadServer extends WebSocketServer
                     $dataUserTask->save();
                     $data['task_id'] = $dataUserTask->id;
 
-
-                    $return = \Yii::$app->beanstalk
-                        ->putInTube('export', $data);
-
+                    ChildExcController::push(json_encode($data));
                     echo "结束";
                 }
             } else {

@@ -115,7 +115,7 @@ Modal::begin([
     'header' => '下载提示',
 ]);
 ?>
-<?= Html::button('重新下载', ['id' => 'down', 'class' => 'btn btn-primary']) ?>
+<?= Html::button('生成新文件', ['id' => 'down', 'class' => 'btn btn-primary']) ?>
 <h4 id="progress_title" style="display: none">数据准备中请稍等</h4>
 <div class="progress active" id="progress_down" style="display: none;">
     <div id='progress_line' class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar"

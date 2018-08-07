@@ -131,6 +131,8 @@ class ChildDown
                 ->setCellValue('O' . $key1, $child_type)
                 ->setCellValue('P' . $key1, $title)
                 ->setCellValue('Q' . $key1, $date);
+            var_dump($this->_server);
+
             if($this->_server){
                 $line=round(($k+1)/$totle,4)*100;
                 if(ceil($line)%5==0){
