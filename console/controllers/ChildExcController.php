@@ -55,16 +55,16 @@ class ChildExcController extends Controller
     }
     public static function srun($value){
         echo "开始任务:".$value;
-        $sentData=json_decode($value,true);
+        $sentData=json_decode($value);
         $server=self::server();
-        $dataUser=DataUser::findOne(['token'=>'n7udcm4l1fk69ipu9teuqkn1qq']);
+        $dataUser=DataUser::findOne(['token'=>$sentData->token]);
         $dataUserTask = DataUserTask::findOne(['datauserid' => $dataUser->id, 'state' => 0]);
 
         $childDow=new ChildDown();
         $childDow->_server=$server;
         $childDow->_server_fd=$dataUserTask->fd;
 
-        parse_str(urldecode($sentData['data']),$postData);
+        parse_str(urldecode($sentData->data),$postData);
         echo "开始生成表格:\n";
         $childDow->setData($postData,$dataUser);
         $filename=$childDow->excel();
