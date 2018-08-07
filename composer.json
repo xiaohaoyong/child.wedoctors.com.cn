@@ -34,7 +34,8 @@
     "yiidoc/yii2-redactor": "*",
     "dmstr/yii2-adminlte-asset": "^2.1",
     "mdmsoft/yii2-admin": "~2.0",
-    "udokmeci/yii2-beanstalk": "dev-master"
+    "udokmeci/yii2-beanstalk": "dev-master",
+    "jianyan74/yii2-websocket": "^1.1"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
@@ -45,7 +46,8 @@
     "gmars/yii2-sms": "dev-master",
     "bower-asset/jquery": "1.12.1-patch1",
     "kucha/ueditor": "*",
-    "2amigos/qrcode-library": "1.0.3"
+    "2amigos/qrcode-library": "1.0.3",
+    "eaglewu/swoole-ide-helper": "dev-master"
   },
   "config": {
     "process-timeout": 1800,

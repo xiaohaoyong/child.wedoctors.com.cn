@@ -26,36 +26,32 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
                         <?= GridView::widget([
-                            'options'=>['class' => 'col-sm-12'],
+                            'options' => ['class' => 'col-sm-12'],
                             'dataProvider' => $dataProvider,
                             'columns' => [
 
                                 'id',
                                 [
                                     'attribute' => '标题',
-                                    'value' => function($e)
-                                    {
+                                    'value' => function ($e) {
                                         return $e->info->title;
                                     }
                                 ],
                                 [
                                     'attribute' => 'subject_pid',
-                                    'value' => function($e)
-                                    {
+                                    'value' => function ($e) {
                                         return \common\models\ArticleCategory::findOne([$e->subject_pid])->name;
                                     }
                                 ],
                                 [
                                     'attribute' => 'subject',
-                                    'value' => function($e)
-                                    {
+                                    'value' => function ($e) {
                                         return \common\models\ArticleCategory::findOne([$e->subject])->name;
                                     }
                                 ],
                                 [
                                     'attribute' => 'child_type',
-                                    'value' => function($e)
-                                    {
+                                    'value' => function ($e) {
                                         return \common\models\Article::$childText[$e->child_type];
                                     }
                                 ],
@@ -68,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 [
                                     'class' => 'common\components\grid\ActionColumn',
-                                    'template'=>'
+                                    'template' => '
                 <div class="btn-group dropup">
                     <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
                         <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>

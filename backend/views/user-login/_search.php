@@ -30,7 +30,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'hxusername') ?>
 
-    <?php // echo $form->field($model, 'phone') ?>
+    <?php  echo $form->field($model, 'phone') ?>
 
     <?php // echo $form->field($model, 'id') ?>
 
