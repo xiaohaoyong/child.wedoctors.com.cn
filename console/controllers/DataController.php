@@ -21,6 +21,7 @@ use common\models\BabyTool;
 use common\models\BabyToolTag;
 use common\models\ChatRecord;
 use common\models\ChildInfo;
+use common\models\DataUser;
 use common\models\DoctorParent;
 use common\models\Examination;
 use common\models\Hospital;
@@ -41,6 +42,17 @@ use yii\helpers\ArrayHelper;
 class DataController extends Controller
 {
     public function actionDatac(){
+
+        $dataUser=DataUser::find()->all();
+        foreach($dataUser as $k=>$v)
+        {
+            $v->token=md5($v->id."wwdsa");
+            $v->save();
+
+        }
+        exit;
+
+
         var_dump(__LOG__);exit;
         $babyTag=BabyToolTag::find()->all();
         foreach($babyTag as $k=>$v){

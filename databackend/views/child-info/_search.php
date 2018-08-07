@@ -47,7 +47,7 @@ use yii\widgets\ActiveForm;
 </div>
 
 <?php
-$sessionid = Yii::$app->session->getId();
+$sessionid = \common\models\DataUser::findOne(['id'=>Yii::$app->user->id])->token;
 $updateJs = <<<JS
     jQuery("#down").click(function () {
        
