@@ -11,6 +11,7 @@ namespace console\models;
 
 use common\models\DataUser;
 use common\models\DataUserTask;
+use common\models\UserParent;
 use console\models\ChildInfoSearchModel;
 use common\models\Article;
 use common\models\ArticleInfo;
@@ -72,6 +73,8 @@ class ChildDown
         foreach($this->data as $k=>$v) {
             $e=$v;
             $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid'],'level'=>1]);
+            $parent= UserParent::findOne(['userid'=>$v['userid']]);
+            $parentValue=$parent->toArray();
 
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
             if($DiffDate[0]) {
@@ -119,11 +122,11 @@ class ChildDown
                 ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                 ->setCellValue('D' . $key1, $age)
                 ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
-                ->setCellValue('F' . $key1, $v['mother'] || $v['father']?$v['mother']."/".$v['father']:"无")
-                ->setCellValue('G' . $key1, $v['mother_phone'] ? " ".$v['mother_phone'] : "无")
-                ->setCellValue('H' . $key1, $v['father_phone'] ?  " ".$v['father_phone'] : "无")
-                ->setCellValue('I' . $key1, $v['field11'] ? $v['field11'] : "无")
-                ->setCellValue('J' . $key1, $v['field12'] ? " ".$v['field12'] : "无")
+                ->setCellValue('F' . $key1, $parentValue['mother'] || $parentValue['father']?$parentValue['mother']."/".$parentValue['father']:"无")
+                ->setCellValue('G' . $key1, $parentValue['mother_phone'] ? " ".$parentValue['mother_phone'] : "无")
+                ->setCellValue('H' . $key1, $parentValue['father_phone'] ?  " ".$parentValue['father_phone'] : "无")
+                ->setCellValue('I' . $key1, $parentValue['field11'] ? $parentValue['field11'] : "无")
+                ->setCellValue('J' . $key1, $parentValue['field12'] ? " ".$parentValue['field12'] : "无")
                 ->setCellValue('K' . $key1, $sign->level==1 ? \common\models\UserDoctor::findOne(['userid'=>$sign->doctorid])->name : "--")
                 ->setCellValue('L' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
                 ->setCellValue('M' . $key1, $return)
