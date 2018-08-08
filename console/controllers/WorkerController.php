@@ -46,7 +46,7 @@ class WorkerController extends BeanstalkController
      */
     public function actionPush($job='')
     {
-
+        $this->lineLog="";
         /** @var object $sentData */
         $sentData = $job->getData();
         $artid=$sentData->artid;
