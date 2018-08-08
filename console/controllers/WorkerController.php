@@ -93,14 +93,14 @@ class WorkerController extends BeanstalkController
             foreach($userids as $k=>$v) {
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
-                    $rs=WechatSendTmp::send($data, $userLogin->openid,$temp,'',$miniprogram);
+                    //$rs=WechatSendTmp::send($data, $userLogin->openid,$temp,'',$miniprogram);
                     $this->addLog($userLogin->openid);
 
                 }
                 if($article->art_type!=2)
                 {
                     $key=$article->catid==6?3:5;
-                    Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$artid,]);
+                    //Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$artid,]);
                 }
             }
             $this->saveLog();
