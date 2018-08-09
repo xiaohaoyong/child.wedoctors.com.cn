@@ -27,6 +27,8 @@
                         'items' => [
                             ['label' => '医院管理', 'icon' => 'hospital-o', 'url' => ['/hospital'],],
                             ['label' => '儿童列表', 'icon' => 'child', 'url' => ['/child-info'],],
+                            ['label' => '家庭数据', 'icon' => 'child', 'url' => ['/user-parent'],],
+                            ['label' => '儿童数据', 'icon' => 'child', 'url' => ['/child'],],
                             ['label' => '儿童体检数据', 'icon' => 'heartbeat', 'url' => ['/examination'],],
 
                             ['label' => '医生列表', 'icon' => 'building-o', 'url' => ['/user-doctor'],],

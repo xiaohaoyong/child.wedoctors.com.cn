@@ -41,6 +41,68 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionDeleteMotherFather(){
+
+        $file=fopen('test3.log','r');
+        while(($line=fgets($file))!==false){
+            $tmp=explode(',',trim($line));
+            $this->userLogin($tmp[0],$tmp[1]);
+            $this->doctorParent($tmp[0],$tmp[1]);
+            $this->articleUser($tmp[0],$tmp[1]);
+            $this->child($tmp[0],$tmp[1]);
+            echo "==".$tmp[0].",".$tmp[1]."\n";
+            $user=User::findOne($tmp[1]);
+            if($user)
+            {
+                $user->delete();
+            }else{
+                $userParent=UserParent::findOne(['userid'=>$tmp[1]]);
+                $userParent->delete();
+            }
+        }
+        exit;
+
+
+        $userParent=UserParent::find()->select('count(*) as c,mother_id,mother,father')
+            ->groupBy('mother_id,father')->andWhere(['!=','mother',''])->andWhere(['!=','mother_id',''])
+            ->andWhere(['!=','father',''])->andWhere(['!=','source',0])->having('c > 1')->all();
+        foreach($userParent as $k=>$v)
+        {
+            $tmp=[];
+            $master=[];
+            $up=UserParent::find()->where(['mother'=>$v->mother])->andWhere(['father'=>$v->father])->orderBy('userid desc')->all();
+            foreach($up as $uk=>$uv){
+                $tmp[]=array_filter($uv->toArray(),function ($v){
+                    return $v?true:false;
+                });
+                if(!$uk){
+                    $master=$tmp[$uk];
+                }else{
+                    if(count($tmp[$uk])>count($tmp[$uk-1])){
+                        $master=$tmp[$uk];
+                    }
+                }
+            }
+            foreach($tmp as $tk=>$tv){
+                if($master['userid']!=$tv['userid']){
+                    $this->userLogin($master['userid'],$tv['userid']);
+                    $this->doctorParent($master['userid'],$tv['userid']);
+                    $this->articleUser($master['userid'],$tv['userid']);
+                    $this->child($master['userid'],$tv['userid']);
+                    echo "==".$master['userid'].",".$tv['userid']."\n";
+                    $user=User::findOne($tv['userid']);
+                    if($user)
+                    {
+                        $user->delete();
+                    }else{
+                        $userParent=UserParent::findOne(['userid'=>$tv['userid']]);
+                        $userParent->delete();
+                    }
+                }
+            }
+        }
+    }
+
     public function actionDatac(){
 
         $dataUser=DataUser::find()->all();
@@ -166,6 +228,9 @@ class DataController extends Controller
     {
         $dp1 = DoctorParent::findOne(['parentid' => $buserid, 'level' => 1]);
         $dp = DoctorParent::findOne(['parentid' => $userid, 'level' => 1]);
+        if($dp){
+            echo "主已签约";
+        }
         if (!$dp && $dp1) {
             $dp = new DoctorParent();
             $dp->doctorid = $dp1->doctorid;
@@ -174,36 +239,31 @@ class DataController extends Controller
             $dp->parentid = $userid;
             $dp->save();
             echo "dp update==";
-        } else {
-            if (DoctorParent::deleteAll('parentid =' . $buserid)) {
-                echo "dp delete==";
-            }
+        }
+        if ($dp1) {
+            DoctorParent::deleteAll('parentid =' . $buserid);
+            echo "dp delete==";
         }
     }
 
-    public function articleUser($childid, $userid, $bchildid)
+    public function articleUser($userid, $buserid)
     {
         //修改宣教记录所属儿童
-        $articleUser = ArticleUser::findAll(['childid' => $bchildid]);
+        $articleUser = ArticleUser::findAll(['touserid' => $buserid]);
         if ($articleUser) {
             foreach ($articleUser as $av) {
-                echo "artid1:" . $av->id . "==";
-                $au = ArticleUser::find()->andWhere(['childid' => $childid])
-                    ->andFilterWhere(['artid' => $av->artid])->one();
-                echo "artid2:" . $au->id . "==";
-                if (!$au) {
-                    echo "update==";
-                    $av->touserid = $userid;
-                    $av->childid = $childid;
-                    $av->save();
-                } else {
-                    echo "delete==";
-                    $av->delete();
-                }
+                $av->touserid = $userid;
+                $av->save();
+                echo "article:".$av->artid;
             }
         } else {
             echo "article:无";
         }
+    }
+
+    public function child($userid, $buserid){
+        echo "==child:";
+        echo ChildInfo::updateAll(['userid'=>$userid],'userid='.$buserid);
     }
 
     /**
