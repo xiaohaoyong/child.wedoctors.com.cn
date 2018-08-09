@@ -2,9 +2,13 @@
 
 namespace backend\controllers;
 
+use backend\models\ChildInfo;
 use common\models\ArticleUser;
 use common\models\DoctorParent;
+use common\models\UserDoctor;
+use common\models\UserParent;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -65,28 +69,27 @@ class SiteController extends Controller
     {
         //今日签约数
         $today=strtotime(date('Y-m-d 00:00:00'));
-        $doctorParent=DoctorParent::find()->select('parentid')->andFilterWhere([">",'createtime',$today])->andFilterWhere(['level'=>1])->column();
-        if($doctorParent) {
-            $data['todayNum'] = \common\models\ChildInfo::find()->andFilterWhere(['in', 'userid', $doctorParent])->count();
-        }else{
-            $data['todayNum']=0;
-        }
-
-        //管理儿童数
-        $doctorParentTotal=DoctorParent::find()->select('parentid')->andFilterWhere(['level'=>1])->column();
-        if($doctorParentTotal) {
-            $data['todayNumTotal'] = \common\models\ChildInfo::find()->andFilterWhere(['in', 'userid', $doctorParentTotal])->count();
-        }else{
-            $data['todayNumTotal']=0;
-        }
+        $month=strtotime(date('Y-m-01 00:00:00'));
 
 
+
+        //今日签约数
+        $data['todayNum']=ChildInfo::find()
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->andFilterWhere([">",'`doctor_parent`.createtime',$today])
+            ->count();
+        //签约儿童总数
+        $data['todayNumTotal']=ChildInfo::find()
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->count();
 
         //管辖儿童数
-        $child=\common\models\ChildInfo::find()->andFilterWhere(['>','birthday',strtotime('-3 year')]);
-        $child->andFilterWhere(['>','admin',0]);
-
-        $data['childNum']=$child->count();
+        $data['childNum']=ChildInfo::find()
+            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+            ->andFilterWhere(['>','child_info.doctorid',0])
+            ->count();
         //签约率
         if($data['childNum']) {
             $data['baifen'] = round(($data['todayNumTotal'] / $data['childNum']) * 100,1);
@@ -94,38 +97,51 @@ class SiteController extends Controller
             $data['baifen'] = 0;
         }
 
-
-
-
-
         //宣教总次数
-        $data['articleNum']=ArticleUser::find()->count();
-        //规范化指导次数
-        $data['articleNumType']=ArticleUser::find()->innerJoinWith('article')->andFilterWhere(['article.type'=>1])->count();
+        $data['articleNum']=ArticleUser::find()
+            ->count();
 
+        $data['articleNumToday']=ArticleUser::find()
+            ->andFilterWhere(['>','createtime',$today])
+            ->count('distinct childid');
+        $data['articleNumMonth']=ArticleUser::find()
+            ->andFilterWhere(['>','createtime',$month])
+            ->count('distinct childid');
 
+        $data['articleNoMonth']=$data['todayNumTotal']-$data['articleNumMonth'];
 
-        //宣教查看次数
-        $data['articleLockNum1']=ArticleUser::find()->innerJoinWith('article')->andFilterWhere(['article.type'=>1])->andFilterWhere(['article_user.level'=>2])->count();
+        for($i=9;$i>-1;$i--)
+        {
+            $time=strtotime("-$i day");
+            $date=date('Y-m-d',$time);
+            $st=strtotime($date."00:00:00");
+            $end=$st+3600*24;
+            $rs['item1']=ChildInfo::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+                ->andFilterWhere(['>','`doctor_parent`.createtime',$st])
+                ->andFilterWhere(['<','`doctor_parent`.createtime',$end])
+                ->count();
 
-        $data['articleLockNum2']=ArticleUser::find()->innerJoinWith('article')->andFilterWhere(['article.type'=>0])->andFilterWhere(['article_user.level'=>2])->count();
-
-        //var_dump($parents);exit;
-
-
-        //宣教覆盖儿童数
-        $parents=ArticleUser::find()->select('touserid')->groupBy('touserid')->column();
-        if($parents) {
-            $article_child = \common\models\ChildInfo::find()->andFilterWhere(['in', 'userid', $parents]);
-            $data['articleChildNum'] = $article_child->andFilterWhere(['in', 'userid', $parents])->count();
-
-        }else{
-            $data['articleChildNum'] = 0;
+            $rs['day']=$date;
+            $line_data[]=$rs;
         }
 
+        $now=ChildInfo::find()
+            ->leftJoin('user','`user`.`id`=`child_info`.`userid`')
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`level`'=>1])
+            ->orderBy('`doctor_parent`.`createtime` desc')->limit(9)->all();
+
+
+        $doctor=UserDoctor::find()->all();
 
         return $this->render('index',[
             'data'=>$data,
+            'line_data'=>$line_data,
+            'now'=>$now,
+            'doctor'=>$doctor
+
         ]);
     }
 
