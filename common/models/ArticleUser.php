@@ -70,4 +70,50 @@ class ArticleUser extends \yii\db\ActiveRecord
     {
         return ArticleUser::find()->where(['id'=>$id])->one();
     }
+
+    /**
+     * 获取年龄段未推送的用户
+     * @param $k 儿童年龄段类型
+     * @return int|string
+     */
+
+    public static function noSendChild($k,$doctorid)
+    {
+//        $mouth = ChildInfo::getChildType($k);
+//        $child=ChildInfo::find()
+//            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+//            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+//            ->andFilterWhere(['`doctor_parent`.`doctorid`'=>$this->userData['userid']])
+//            ->andFilterWhere(['>=', 'birthday', $mouth['firstday']])
+//            ->andFilterWhere(['<=', 'birthday', $mouth['lastday']])
+//            ->all();
+        //已签约的用户
+        $doctorParent= DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid])->andFilterWhere(['level'=>1])->column();
+
+        $lmount=date('Y-m-01');
+        //该类型 本月已发送的儿童
+        $articleUser=ArticleUser::find()->select('touserid')
+            ->where(['child_type'=>$k])
+            //->andFilterWhere(['>','createtime',strtotime($lmount)])
+            ->groupBy('childid')
+            ->column();
+
+        $users=array_diff($doctorParent,$articleUser);
+        if($doctorParent) {
+            //获取年龄范围
+            $mouth = ChildInfo::getChildType($k);
+            $childCount = ChildInfo::find()->where(['>=', 'birthday', $mouth['firstday']])->andFilterWhere(['<=', 'birthday', $mouth['lastday']])->andFilterWhere(['in', 'userid', array_values($users)])->all();
+        }
+        return $childCount;
+    }
+    /**
+     * 获取年龄段未推送的用户
+     * @param $k 儿童年龄段类型
+     * @return int|string
+     */
+
+    public static function noSendChildNum($k,$doctorid)
+    {
+        return count(self::noSendChild($k,$doctorid));
+    }
 }
