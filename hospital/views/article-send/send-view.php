@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr><th>宣教发送基本内容</th><th>可选宣教内容</th></tr>
                         <tr><td>
                                 <?php foreach($article as $k=>$v){?>
-                                    <?=$v."--".Html::a('查看详情',['article/view','id'=>$k])?>
+                                    <?=$v."--".Html::a('查看详情',['article/view','id'=>$k])?><br>
                                 <?php }?>
                             </td><td>
                                 <?php foreach($article2 as $k=>$v){?>

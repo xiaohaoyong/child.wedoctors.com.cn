@@ -48,7 +48,6 @@ class ArticleSend extends \yii\db\ActiveRecord
         }else{
             $list = $article;
         }
-
         if($list && $child_type && $this->doctorid) {
             $child = ArticleUser::noSendChild($child_type, $this->doctorid);
 
@@ -87,7 +86,7 @@ class ArticleSend extends \yii\db\ActiveRecord
                                 $au->childid = $v->id;
                                 $au->touserid = $v->userid;
                                 $au->createtime = time();
-                                $au->userid = $this->userData['userid'];
+                                $au->userid = $this->doctorid;
                                 $au->artid = $lv;
                                 $au->child_type = $child_type;
                                 $au->save();
