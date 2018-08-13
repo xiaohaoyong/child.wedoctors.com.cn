@@ -16,10 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box">
             <div class="box-header with-border">
 
-                <div>
-                    <h3 class="box-title">设置：</h3>
-                    自动宣教：<?=Html::checkbox('name',false)?> （勾选后每月2日将由平台自动发送全部年龄段宣教任务）
-                </div>
+<!--                <div>-->
+<!--                    <h3 class="box-title">设置：</h3>-->
+<!--                    自动宣教：--><?//=Html::checkbox('name',false)?><!-- （勾选后每月2日将由平台自动发送全部年龄段宣教任务）-->
+<!--                </div>-->
                 <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
