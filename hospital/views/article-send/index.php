@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </thead>
                     <tbody>
                     <?php
-                    $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospital]);
+                    $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospital])->userid;
                     foreach(\common\models\Article::$childText as $k=>$v){
                         if($k){
                     ?>

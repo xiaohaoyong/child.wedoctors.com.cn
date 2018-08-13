@@ -77,7 +77,7 @@ class ArticleUser extends \yii\db\ActiveRecord
      * @return int|string
      */
 
-    public static function noSendChild($k,$doctorid)
+    public static function noSendChild($k,int $doctorid)
     {
 //        $mouth = ChildInfo::getChildType($k);
 //        $child=ChildInfo::find()
