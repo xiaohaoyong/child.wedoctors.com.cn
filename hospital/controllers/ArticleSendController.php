@@ -30,6 +30,8 @@ class ArticleSendController extends BaseController
             $articleSend->doctorid=$doctorid;
             $articleSend->send();
             \Yii::$app->getSession()->setFlash('success','成功');
+            return $this->redirect(['index']);
+
         }
 
         return $this->render('send-view',['type'=>$type]);

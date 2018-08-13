@@ -12,7 +12,7 @@
                     ['label' => '管辖儿童','icon' => 'archive','url' => \yii\helpers\Url::to(['child-info/index']),],
                     ['label' => '社区管理','icon' => 'hospital-o','url' => \yii\helpers\Url::to(['user-doctor/index']),],
                     ['label' => '中医指导库','icon' => 'file-text-o','url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[type]=1'])],
-                  //  ['label' => '宣教任务','icon' => 'send','url' => \yii\helpers\Url::to(['/article-send'])],
+                    ['label' => '宣教任务','icon' => 'send','url' => \yii\helpers\Url::to(['/article-send'])],
 
                     ['label' => '宣教知识库','icon' => 'file-text-o','url' => "#",
                         'items' => [
