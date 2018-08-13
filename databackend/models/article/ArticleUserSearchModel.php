@@ -2,6 +2,7 @@
 
 namespace databackend\models\article;
 
+use databackend\models\user\UserDoctor;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -55,6 +56,9 @@ class ArticleUserSearchModel extends ArticleUser
             return $dataProvider;
         }
 
+        $doctors = UserDoctor::find()->select('userid')->andFilterWhere(['county' => \Yii::$app->user->identity->county])->column();
+
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -62,10 +66,10 @@ class ArticleUserSearchModel extends ArticleUser
             'touserid' => $this->touserid,
             'artid' => $this->artid,
             'createtime' => $this->createtime,
-            'userid' => $this->userid,
             'level' => $this->level,
             'child_type' => $this->child_type,
         ]);
+        $query->andFilterWhere(['in','userid',$doctors]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;
