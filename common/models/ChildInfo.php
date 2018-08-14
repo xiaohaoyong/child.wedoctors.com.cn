@@ -256,7 +256,7 @@ class ChildInfo extends \yii\db\ActiveRecord
         }
         $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid,'level'=>1]);
         if($doctorParent){
-            $doctor = UserDoctor::findOne(['userid'=>$this->userid]);
+            $doctor = UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
             $this->doctorid=$doctor->hospitalid;
         }else{
             $this->doctorid=$this->source;

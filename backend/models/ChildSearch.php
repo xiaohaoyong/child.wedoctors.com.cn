@@ -67,8 +67,6 @@ class ChildSearch extends ChildInfo
             'admin' => $this->admin,
             'doctorid' => $this->doctorid,
         ]);
-        $query->andFilterWhere(['in','userid',explode(',',$this->userid)]);
-
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'field54', $this->field54])
             ->andFilterWhere(['like', 'field53', $this->field53])

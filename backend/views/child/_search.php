@@ -28,9 +28,9 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'gender') ?>
 
-    <?php // echo $form->field($model, 'source') ?>
+    <?php  echo $form->field($model, 'source') ?>
 
-    <?php // echo $form->field($model, 'admin') ?>
+    <?php  echo $form->field($model, 'admin') ?>
 
     <?php // echo $form->field($model, 'field54') ?>
 

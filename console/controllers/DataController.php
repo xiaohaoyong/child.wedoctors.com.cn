@@ -11,6 +11,7 @@ namespace console\controllers;
 
 use callmez\wechat\sdk\components\BaseWechat;
 use callmez\wechat\sdk\MpWechat;
+use callmez\wechat\sdk\Wechat;
 use common\components\HttpRequest;
 use common\helpers\WechatSendTmp;
 use common\models\Area;
@@ -41,6 +42,39 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionDoctorChild(){
+        $doctorids=[];
+        $weopenid=WeOpenid::findAll(['level'=>0]);
+        foreach ($weopenid as $k => $v) {
+            $doctor=$doctorids[$v->doctorid];
+            if(!$doctor){
+                $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+                $doctorids[$v->doctorid]=$doctor;
+            }
+
+
+
+            $data = [
+                'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
+                'keyword1' => ARRAY('value' => "宝宝基本信息"),
+                'keyword2' => ARRAY('value' => $doctor->name),
+                'remark' => ARRAY('value' => "\n 点击授权并完善宝宝信息，如果已添加宝宝请忽略此条提醒", 'color' => '#221d95'),
+            ];
+            //var_dump($doctor->name);
+            $rs = WechatSendTmp::send($data, $v->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+            echo $v->openid . "\n";
+            usleep(300000);
+        }
+        exit;
+
+        $doctorParent=DoctorParent::find()->andWhere(['level'=>1])->all();
+        foreach($doctorParent as $k=>$v){
+            $child=ChildInfo::findOne(['userid'=>$v->parentid]);
+            if(!$child){
+                echo $v->parentid."\n";
+            }
+        }
+    }
     public function actionDeleteMotherFather(){
 
         $file=fopen('test3.log','r');
