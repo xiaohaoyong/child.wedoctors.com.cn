@@ -112,7 +112,7 @@ class ChildInfoSearchModel extends ChildInfo
 
         if($this->level==2)
         {
-            $query->andFilterWhere(['<=','`child_info`.`source`',38]);
+            $query->andWhere(['`child_info`.`source`'=>0]);
         }
 
         if($this->docpartimeS!=='' and $this->docpartimeS!==null){

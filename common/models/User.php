@@ -105,10 +105,10 @@ class User extends \yii\db\ActiveRecord {
             }
 
             //微信扫码记录
-            $weOpen=WeOpenid::findOne(['openid'=>$userL->openid]);
+            $weOpen=WeOpenid::findOne(['unionid'=>$userL->unionid]);
             if($weOpen)
             {
-                WeOpenid::deleteAll(['openid'=>$userL->openid]);
+                WeOpenid::deleteAll(['unionid'=>$userL->unionid]);
             }
 
             //删除签约关系

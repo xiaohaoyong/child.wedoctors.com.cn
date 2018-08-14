@@ -149,7 +149,7 @@ class ChildInfoInput
                 'gender'    => $value[4] == "男" ? 1 : 2,
                 'birthday'  => intval(strtotime($value[5])),
                 'source'    => $this->hospitalid,
-                //'doctorid'  => $this->hospitalid,
+                'admin'     => $this->hospitalid,
                 'field54'   => $value[85],
                 'field53'   => $value[70],
                 'field52'   => $value[69],

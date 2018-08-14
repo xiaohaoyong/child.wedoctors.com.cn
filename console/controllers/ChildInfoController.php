@@ -204,7 +204,7 @@ class ChildInfoController extends Controller
         $a2 = array_search($columnH[1], $cellName);
         $columnCnt=85;
         $rowCnt = $currSheet->getHighestRow();   //获取总行数
-        //ChildInfo::updateAll(['doctorid'=>0],'source ='.$hospitalid);
+        ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);
 
         $data = array();
         for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
