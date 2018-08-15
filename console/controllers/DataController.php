@@ -52,8 +52,6 @@ class DataController extends Controller
                 $doctorids[$v->doctorid]=$doctor;
             }
 
-
-
             $data = [
                 'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
                 'keyword1' => ARRAY('value' => "宝宝基本信息"),
