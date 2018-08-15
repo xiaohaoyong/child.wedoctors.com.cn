@@ -58,7 +58,7 @@ class PushController extends Controller
                     //$rs = WechatSendTmp::send($data, $v->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                     $log=new Log('RegisterUnfinished');
                     $log->addLog($v->openid);
-                    $log->addLog($rs['errcode'].$rs['errmsg']);
+                    //$log->addLog($rs['errcode'].$rs['errmsg']);
                     $log->saveLog();
                     $openids[$v->openid] = 1;
                     usleep(300000);
