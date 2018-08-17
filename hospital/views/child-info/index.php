@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => '联系电话',
                                     'value' => function ($e) {
-                                        return $e->userid;
+                                        return \common\models\User::findOne($e->userid)->phone;
                                     }
                                 ],
                                 [
