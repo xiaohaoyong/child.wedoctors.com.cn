@@ -88,7 +88,7 @@ class SiteController extends Controller
         //管辖儿童数
         $data['childNum']=ChildInfo::find()
             ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-            ->andFilterWhere(['>','child_info.doctorid',0])
+            ->andFilterWhere(['>','child_info.admin',0])
             ->count();
         //签约率
         if($data['childNum']) {
