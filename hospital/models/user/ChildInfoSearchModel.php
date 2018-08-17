@@ -104,7 +104,7 @@ class ChildInfoSearchModel extends ChildInfo
 
         }else{
             $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
-            $query->andFilterWhere(['`child_info`.`admin`' => $hospitalid]);
+            $query->andFilterWhere(['`child_info`.`source`' => $hospitalid]);
         }
 
 

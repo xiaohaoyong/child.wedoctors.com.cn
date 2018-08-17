@@ -128,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         {
                                             $return="未签约";
                                         }else{
-                                            if($e->parent->source<=38){
+                                            if($e->source<=38){
                                                 $return="已签约未关联";
 
                                             }else {

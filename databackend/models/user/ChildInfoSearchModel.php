@@ -121,7 +121,7 @@ class ChildInfoSearchModel extends ChildInfo
             $query->andFilterWhere(['in', '`child_info`.source',$hospitalids]);
         }else{
             $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
-            $query->andFilterWhere(['in', '`child_info`.admin',$hospitalids]);
+            $query->andFilterWhere(['in', '`child_info`.source',$hospitalids]);
         }
 
         if($this->docpartimeS!=='' and $this->docpartimeS!==null){
