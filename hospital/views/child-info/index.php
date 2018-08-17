@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => '联系电话',
                                     'value' => function ($e) {
-                                        return \common\models\User::findOne($e->userid)->phone;
+                                        return $e->userid;
                                     }
                                 ],
                                 [
@@ -129,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         {
                                             $return="未签约";
                                         }else{
-                                            if($e->parent->source<=38){
+                                            if($e->source<=38){
                                                 $return="已签约未关联";
 
                                             }else {

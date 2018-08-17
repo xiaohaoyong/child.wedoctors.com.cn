@@ -83,7 +83,6 @@ class ChildInfoSearchModel extends ChildInfo
             $mouth = ChildInfo::getChildType($this->child_type);
             $query->andFilterWhere(['>=', 'child_info.birthday', $mouth['firstday']]);
             $query->andFilterWhere(['<=', 'child_info.birthday', $mouth['lastday']]);
-
         }
 
 
@@ -102,37 +101,28 @@ class ChildInfoSearchModel extends ChildInfo
             // $query->where('0=1');
             return $dataProvider;
         }
-
-        $query->andFilterWhere(['in', '`child_info`.doctorid',$hospitalids]);
-
-        if(!$this->level) {
-            $query->andFilterWhere(['in', '`child_info`.source',$hospitalids]);
-        }
-
-        if($this->level!=1) {
-            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
-        }
-
-        if ($this->level || ($this->docpartimeS!=='' and $this->docpartimeS!==null)) {
+        if($this->level==1){
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
-        }
-
-
-        if($this->level==1 || $this->level==2)
-        {
             $query->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
-        }
+            $query->andFilterWhere(['in', '`child_info`.doctorid',$hospitalids]);
 
-        if($this->level==3){
-            $query->andWhere(['or',['<>','`doctor_parent`.`level`' ,1],['`doctor_parent`.`parentid`'=>null]]);
-        }
+        }elseif($this->level==2){
+            $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+            $query->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids]);
+            $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
+            $query->andFilterWhere(['in', '`child_info`.doctorid',$hospitalids]);
+            $query->andWhere(['child_info.source'=>0]);
+        }elseif($this->level==3){
 
-        if($this->level==2)
-        {
-            $query->andFilterWhere(['<=','`child_info`.`source`',38]);
+            $parentids=\hospital\models\user\DoctorParent::find()->select('parentid')->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids])->column();
+            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+            $query->andFilterWhere(['not in', '`child_info`.userid',$parentids]);
+            $query->andFilterWhere(['in', '`child_info`.source',$hospitalids]);
+        }else{
+            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+            $query->andFilterWhere(['in', '`child_info`.admin',$hospitalids]);
         }
-
 
         if($this->docpartimeS!=='' and $this->docpartimeS!==null){
             $state = strtotime($this->docpartimeS . " 00:00:00");

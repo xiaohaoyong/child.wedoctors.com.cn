@@ -59,7 +59,11 @@ class ChildInfoInput
                 if (!$this->fiveSelect($value)) {
                     if (!$this->threeSelect($value)) {
                         if(!$this->fatherAndMother($value)){
-                            $this->addLog($value[3] . "无");
+                            if(!$this->MotherId($value)) {
+                                $this->addLog($value[3] . "无");
+                            }else{
+                                $this->addLog("母亲身份证");
+                            }
                         }else{
                             $this->addLog("父母");
                         }
@@ -393,6 +397,26 @@ class ChildInfoInput
                 ->andFilterWhere(["mother" => $mother])
                 ->andFilterWhere(["field28" => $value[34]])
                 ->andFilterWhere(["source" => $this->hospitalid])
+                ->orderBy('userid asc')
+                ->one();
+
+            if ($userParent) {
+                $this->childInfo = ChildInfo::findOne(['name' => $value[3]]);
+                $this->user = User::findOne($userParent->userid);
+                $this->userParent = $userParent;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function MotherId($value){
+        $motherid = $value['10'];
+        if($motherid!='') {
+            $userParent = UserParent::find()
+                ->andFilterWhere(["mother_id" => $motherid])
+                //->andFilterWhere(["field28" => $value[34]])
+               // ->andFilterWhere(["source" => $this->hospitalid])
                 ->orderBy('userid asc')
                 ->one();
 

@@ -84,36 +84,29 @@ class ChildInfoSearchModel extends ChildInfo
         }
 
         $hospitalid=$this->admin?$this->admin:\Yii::$app->user->identity->hospital;
-        $query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
+        $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
 
-        if(!$this->level) {
-            $hospitalid=$this->admin?$this->admin:\Yii::$app->user->identity->hospital;
-            $query->andFilterWhere(['`child_info`.source' => $hospitalid]);
-        }
-
-        if($this->level!=1) {
-            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
-        }
-
-        if ($this->level || ($this->docpartimeS!=='' and $this->docpartimeS!==null)) {
+        if($this->level==1){
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
-        }
-
-        if($this->level==1 || $this->level==2)
-        {
-            $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
             $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
-        }
-        if($this->level==3){
-            $query->andWhere(['or',['<>','`doctor_parent`.`level`' ,1],['`doctor_parent`.`parentid`'=>null]]);
-        }
-
-
-        if($this->level==2)
-        {
+            $query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
+        }elseif($this->level==2){
+            $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+            $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
+            $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
             $query->andWhere(['`child_info`.`source`'=>0]);
+        }elseif($this->level==3){
+            $parentids=\common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`'=>$doctorid->userid])->column();
+            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+            $query->andFilterWhere(['not in', '`child_info`.userid',$parentids]);
+            $query->andWhere(['`child_info`.`source`'=>$hospitalid]);
+
+        }else{
+            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+            $query->andFilterWhere(['`child_info`.`admin`' => $hospitalid]);
         }
+
 
         if($this->docpartimeS!=='' and $this->docpartimeS!==null){
             $state = strtotime($this->docpartimeS . " 00:00:00");
@@ -133,7 +126,6 @@ class ChildInfoSearchModel extends ChildInfo
             }
             if ($this->userphone) {
                 $query->andWhere(['or',['`user_parent`.`mother_phone`' => $this->userphone],['`user_parent`.`father_phone`' => $this->userphone],['`user_parent`.`field12`' => $this->userphone]]);
-
             }
         }
         if($this->level==1) {
@@ -143,7 +135,7 @@ class ChildInfoSearchModel extends ChildInfo
             $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
         }
 
-        //var_dump($query->createCommand()->getRawSql());exit;
+//        var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
     }
 }

@@ -17,7 +17,10 @@ use yii\web\Controller;
 class ArticleSendController extends BaseController
 {
     public function actionIndex(){
-        return $this->render('index');
+
+        $redis=\Yii::$app->rdmp;
+        $ispush=$redis->hget('article_send_ispush',\Yii::$app->user->identity->hospital);
+        return $this->render('index',['ispush'=>$ispush]);
     }
 
     public function actionSendView($type){
@@ -36,4 +39,10 @@ class ArticleSendController extends BaseController
 
         return $this->render('send-view',['type'=>$type]);
     }
+    public function actionIspush($id){
+
+        $redis=\Yii::$app->rdmp;
+        $redis->hset('article_send_ispush',\Yii::$app->user->identity->hospital,$id);
+    }
+
 }

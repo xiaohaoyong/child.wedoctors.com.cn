@@ -36,7 +36,7 @@ class ArticleSend extends \yii\db\ActiveRecord
             'artid' => '文章id',
         ];
     }
-    public function send(){
+    public function send($source='',$test=false){
         $list=$this->artid;
         $child_type=$this->type;
 
@@ -68,32 +68,35 @@ class ArticleSend extends \yii\db\ActiveRecord
                             "appid" => \Yii::$app->params['wxXAppId'],
                             "pagepath" => "pages/article/guidance/index?t=0",
                         ];
-
-                        WechatSendTmp::send($data, $touser, \Yii::$app->params['zhidao'], $url, $miniprogram);
-
-
-                        //小程序首页推送
-                        Notice::setList($v->userid, 4, [
-                            'title' => "{$typename}儿童中医药健康指导。",
-                            'ftitle' => $doctor->name . '提醒您及时查看',
-                            'id' => '/article/guidance/index?t=0'
-                        ]);
-
-                        foreach ($list as $lk => $lv) {
-                            $au = ArticleUser::findOne(['touserid' => $v->userid, 'artid' => $lv]);
-                            if (!$au) {
-                                $au = new ArticleUser();
-                                $au->childid = $v->id;
-                                $au->touserid = $v->userid;
-                                $au->createtime = time();
-                                $au->userid = $this->doctorid;
-                                $au->artid = $lv;
-                                $au->child_type = $child_type;
-                                $au->save();
-                                unset($au);
+                        $log=new \common\components\Log('ArticleSend'.$source);
+                        $log->addLog($touser."=".$v->userid);
+                        $aids='';
+                        if(!$test and $touser) {
+                            WechatSendTmp::send($data, $touser, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                            //小程序首页推送
+                            Notice::setList($v->userid, 4, [
+                                'title' => "{$typename}儿童中医药健康指导。",
+                                'ftitle' => $doctor->name . '提醒您及时查看',
+                                'id' => '/article/guidance/index?t=0'
+                            ]);
+                            foreach ($list as $lk => $lv) {
+                                $au = ArticleUser::findOne(['touserid' => $v->userid, 'artid' => $lv]);
+                                if (!$au) {
+                                    $au = new ArticleUser();
+                                    $au->childid = $v->id;
+                                    $au->touserid = $v->userid;
+                                    $au->createtime = time();
+                                    $au->userid = $this->doctorid;
+                                    $au->artid = $lv;
+                                    $au->child_type = $child_type;
+                                    $au->save();
+                                    $aids.=$lv."--";
+                                    unset($au);
+                                }
                             }
-
+                            $log->addLog($aids);
                         }
+                        $log->saveLog();
                     }
                 }
             }

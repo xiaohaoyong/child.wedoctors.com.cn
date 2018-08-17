@@ -9,6 +9,8 @@
 namespace console\controllers;
 use common\components\Log;
 use common\helpers\WechatSendTmp;
+use common\models\Article;
+use common\models\ArticleSend;
 use common\models\ChildInfo;
 use common\models\UserDoctor;
 use common\models\UserLogin;
@@ -66,5 +68,36 @@ class PushController extends Controller
             }
         }
         exit;
+    }
+
+    public function actionArticleSend(){
+        $articleids=[];
+        $child_types=Article::$childText;
+        foreach($child_types as $k=>$v){
+            $article=\common\models\Article::find()
+                ->select('article_info.title')->indexBy('id')
+                ->leftJoin('article_info', '`article_info`.`id` = `article`.`id`')
+                ->where(['article.child_type'=>$v,'article.type'=>0])->column();
+            $articleids[$k][]=$article;
+        }
+
+        $redis=\Yii::$app->rdmp;
+        $hospital=$redis->hgetall('article_send_ispush');
+        foreach($hospital as $k=>$v){
+            if($k%2==0){
+                $key=$v;
+            }else {
+                $doctorid = UserDoctor::findOne(['hospitalid' => $key])->userid;
+                if($v==1){
+                    foreach($articleids as $ak=>$av) {
+                        $articleSend = new ArticleSend();
+                        //$articleSend->artid=$av;
+                        $articleSend->type = $ak;
+                        $articleSend->doctorid = $doctorid;
+                        $articleSend->send('automatic',true);
+                    }
+                }
+            }
+        }
     }
 }
