@@ -52,7 +52,7 @@ hospital\assets\IndexAsset::register($this);
             <div class="icon">
                 <i class="fa fa-bar-chart"></i>
             </div>
-            <a href="<?=\yii\helpers\Url::to(['child-info/index'])?>" class="small-box-footer">点击查看<i class="fa fa-arrow-circle-right"></i>
+            <a href="<?=\yii\helpers\Url::to(['child-info/index?ChildInfoSearchModel[level]=1'])?>" class="small-box-footer">点击查看<i class="fa fa-arrow-circle-right"></i>
             </a>
         </div>
     </div>

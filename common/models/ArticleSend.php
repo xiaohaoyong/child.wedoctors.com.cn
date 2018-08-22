@@ -103,4 +103,23 @@ class ArticleSend extends \yii\db\ActiveRecord
         }
     }
 
+    public function sendDay($source='',$test=false)
+    {
+        $list = $this->artid;
+        $child_type = $this->type;
+
+        $article = \common\models\Article::find()
+            ->select('id')
+            ->where(['child_type' => $child_type, 'type' => 1])->column();
+        if ($list) {
+            $list = array_merge($article, $list);
+        } else {
+            $list = $article;
+        }
+
+        if ($list && $child_type && $this->doctorid) {
+
+        }
+    }
+
 }

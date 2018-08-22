@@ -1178,6 +1178,7 @@ exit;
                 //echo $child->id . "===$k" . "===";
                 $login = $child->login;
                 if ($login->openid && !in_array($login->openid,$logins)) {
+                    $logins[]=$login->openid;
                     $data = [
                         'first' => array('value' => "您好，宝宝近期的体检结果已更新\n",),
                         'keyword1' => ARRAY('value' => $child->name),
@@ -1192,6 +1193,8 @@ exit;
                     ];
                     $rs = WechatSendTmp::send($data, $login->openid, \Yii::$app->params['tijian'], '', $miniprogram);
                     echo $child->userid."======";
+                    echo $login->openid."======";
+
                     echo json_encode($rs);
                     echo "\n";
                     //小程序首页通知

@@ -109,6 +109,9 @@ class ChildInfoSearchModel extends ChildInfo
 
 
         if($this->docpartimeS!=='' and $this->docpartimeS!==null){
+            if($this->level!=1 && $this->level!=2) {
+                $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+            }
             $state = strtotime($this->docpartimeS . " 00:00:00");
             $end = strtotime($this->docpartimeE . " 23:59:59");
             $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
