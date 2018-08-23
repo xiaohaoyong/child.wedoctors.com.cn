@@ -37,6 +37,10 @@ class UserLogin extends \yii\db\ActiveRecord {
             [['createtime'], 'integer'],
             [['password'], 'string', 'max' => 32],
             [['openid'], 'string', 'max' => 30],
+            [['xopenid'], 'string', 'max' => 30],
+
+            [['unionid'], 'string', 'max' => 30],
+
         ];
     }
 

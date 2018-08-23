@@ -94,7 +94,7 @@ class PushController extends Controller
                         //$articleSend->artid=$av;
                         $articleSend->type = $ak;
                         $articleSend->doctorid = $doctorid;
-                        $articleSend->send('automatic',true);
+                        $articleSend->send('automatic',false,'day');
                     }
                 }
             }

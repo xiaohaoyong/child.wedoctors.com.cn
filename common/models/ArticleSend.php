@@ -36,7 +36,7 @@ class ArticleSend extends \yii\db\ActiveRecord
             'artid' => '文章id',
         ];
     }
-    public function send($source='',$test=false){
+    public function send($source='',$test=false,$type=''){
         $list=$this->artid;
         $child_type=$this->type;
 
@@ -49,8 +49,7 @@ class ArticleSend extends \yii\db\ActiveRecord
             $list = $article;
         }
         if($list && $child_type && $this->doctorid) {
-            $child = ArticleUser::noSendChild($child_type, $this->doctorid);
-
+            $child = ArticleUser::noSendChild($child_type, $this->doctorid,$type);
             if ($child) {
                 $typename = Article::$childText[$child_type];
                 $doctor = UserDoctor::findOne($this->doctorid);
@@ -69,6 +68,8 @@ class ArticleSend extends \yii\db\ActiveRecord
                             "pagepath" => "pages/article/guidance/index?t=0",
                         ];
                         $log=new \common\components\Log('ArticleSend'.$source);
+                        $log->addLog($this->doctorid);
+                        $log->addLog($child_type);
                         $log->addLog($touser."=".$v->userid);
                         $aids='';
                         if(!$test and $touser) {
@@ -100,25 +101,6 @@ class ArticleSend extends \yii\db\ActiveRecord
                     }
                 }
             }
-        }
-    }
-
-    public function sendDay($source='',$test=false)
-    {
-        $list = $this->artid;
-        $child_type = $this->type;
-
-        $article = \common\models\Article::find()
-            ->select('id')
-            ->where(['child_type' => $child_type, 'type' => 1])->column();
-        if ($list) {
-            $list = array_merge($article, $list);
-        } else {
-            $list = $article;
-        }
-
-        if ($list && $child_type && $this->doctorid) {
-
         }
     }
 

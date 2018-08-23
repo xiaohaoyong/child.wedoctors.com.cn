@@ -77,7 +77,7 @@ class ArticleUser extends \yii\db\ActiveRecord
      * @return int|string
      */
 
-    public static function noSendChild($k,int $doctorid)
+    public static function noSendChild($k,int $doctorid,$type='')
     {
 //        $mouth = ChildInfo::getChildType($k);
 //        $child=ChildInfo::find()
@@ -100,12 +100,19 @@ class ArticleUser extends \yii\db\ActiveRecord
 
         $users=array_diff($doctorParent,$articleUser);
         if($doctorParent) {
-            //获取年龄范围
-            $mouth = ChildInfo::getChildType($k);
-            $childCount = ChildInfo::find()->where(['>=', 'birthday', $mouth['firstday']])->andFilterWhere(['<=', 'birthday', $mouth['lastday']])->andFilterWhere(['in', 'userid', array_values($users)])->all();
+            if($type=='day'){
+                $mouth = ChildInfo::getChildTypeDay($k);
+                $childCount = ChildInfo::find()->where([ 'birthday'=>$mouth])->andFilterWhere(['in', 'userid', array_values($users)])->all();
+            }else {
+                //获取年龄范围
+                $mouth = ChildInfo::getChildType($k);
+                $childCount = ChildInfo::find()->where(['>=', 'birthday', $mouth['firstday']])->andFilterWhere(['<=', 'birthday', $mouth['lastday']])->andFilterWhere(['in', 'userid', array_values($users)])->all();
+            }
         }
         return $childCount;
     }
+
+
     /**
      * 获取年龄段未推送的用户
      * @param $k 儿童年龄段类型

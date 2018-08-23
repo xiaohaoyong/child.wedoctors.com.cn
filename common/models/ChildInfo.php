@@ -136,6 +136,23 @@ class ChildInfo extends \yii\db\ActiveRecord
         }
         return $model->all();
     }
+    public static function getChildTypeDay($childType){
+        $childText=[
+            1=>1,
+            2=>3,
+            3=>6,
+            4=>8,
+            5=>12,
+            6=>18,
+            7=>24,
+            8=>30,
+            9=>36,
+            10=>48,
+            11=>60,
+            12=>72,
+        ];
+        return $childText[$childType]?strtotime(date('Y-m-d',strtotime('-'.$childText[$childType]." month -1 day"))):0;
+    }
 
     public static function getChildType($childType)
     {

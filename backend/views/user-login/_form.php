@@ -19,11 +19,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'openid')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'phone')->textInput() ?>
 
     <?= $form->field($model, 'createtime')->textInput() ?>
+                <?= $form->field($model, 'openid')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'xopenid')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'unionid')->textInput(['maxlength' => true]) ?>
+
 
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
