@@ -91,16 +91,16 @@ class ArticleSend extends \yii\db\ActiveRecord
                             foreach ($list as $lk => $lv) {
                                 $au = ArticleUser::findOne(['touserid' => $v->userid, 'artid' => $lv]);
                                 if (!$au) {
-                                    $au = new ArticleUser();
-                                    $au->childid = $v->id;
-                                    $au->touserid = $v->userid;
-                                    $au->createtime = time();
-                                    $au->userid = $this->doctorid;
-                                    $au->artid = $lv;
-                                    $au->child_type = $child_type;
-                                    $au->save();
-                                    $aids.=$lv."--";
-                                    unset($au);
+//                                    $au = new ArticleUser();
+//                                    $au->childid = $v->id;
+//                                    $au->touserid = $v->userid;
+//                                    $au->createtime = time();
+//                                    $au->userid = $this->doctorid;
+//                                    $au->artid = $lv;
+//                                    $au->child_type = $child_type;
+//                                    $au->save();
+//                                    $aids.=$lv."--";
+//                                    unset($au);
                                 }
                             }
                             $log->addLog($aids);
