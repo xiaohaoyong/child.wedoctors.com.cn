@@ -90,7 +90,7 @@ class ArticleSend extends \yii\db\ActiveRecord
 //                                'ftitle' => $doctor->name . '提醒您及时查看',
 //                                'id' => '/article/guidance/index?t=0'
 //                            ]);
-                           // var_dump($list);exit;
+                            var_dump($list);exit;
                             foreach ($list as $lk => $lv) {
                                 $au = ArticleUser::findOne(['touserid' => $v->userid, 'artid' => $lv]);
                                 if (!$au) {
@@ -108,7 +108,7 @@ class ArticleSend extends \yii\db\ActiveRecord
                             }
                           //  $log->addLog($aids);
                         }
-                        //$log->saveLog();
+                        $log->saveLog();
                     }
                 }
             }
