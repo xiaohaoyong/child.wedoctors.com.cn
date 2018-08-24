@@ -60,12 +60,10 @@ $updateJs = '
         if(this.checked==true){
             if(confirm("注：\n1，勾选后将由平台每日晚8时对符合条件的用户进行宣教\n2，自动宣教将会携带可选内容")){
                jQuery.get("article-send/ispush?id=1",{},function(e){
-                    alert(1);
                });
             }
         }else{
             jQuery.get("article-send/ispush?id=0",{},function(e){
-                alert(0);
             });
         }
     });';
