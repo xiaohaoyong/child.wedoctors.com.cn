@@ -15,6 +15,7 @@ use common\helpers\HuanxinUserHelper;
 use common\components\Code;
 use common\components\HttpRequest;
 use common\components\wx\WxBizDataCrypt;
+use common\models\ArticleSend;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Notice;
@@ -37,9 +38,9 @@ class UserController extends Controller
     public function actionLogin($code)
     {
         //已登录
-        if ($this->userid && $this->seaver_token) {
+        if ($this->userLogin && $this->seaver_token) {
             $session_key = $this->seaver_token;
-            $login = UserLogin::findOne(['userid' => $this->userid]);
+            $login = UserLogin::findOne(['id'=>$this->userLogin->id]);
             $xopenid = $login->xopenid;
             $unionid = $login->unionid;
             $useridKey = md5($this->userid . "6623cXvY");
@@ -117,10 +118,10 @@ class UserController extends Controller
 
     public function actionWxUserInfo()
     {
-        if ($this->userid) {
+        if ($this->userLogin) {
             $type = 0;
-            $useridx = md5($this->userid . "6623cXvY");
-            $userLogin = UserLogin::findOne(['userid' => $this->userid]);
+            $useridx = md5($this->userLogin->userid . "6623cXvY");
+            $userLogin = UserLogin::findOne(['id'=>$this->userLogin->id]);
             $userLogin->logintime = time();
             $userLogin->save();
         } else {
@@ -190,26 +191,32 @@ class UserController extends Controller
                         }
                     }
 
-                    Notice::setList($userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
+                    //Notice::setList($userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
                     Notice::setList($userid, 3, ['title' => '儿童中医药健康管理内容及平台服务', 'ftitle' => '点击查看服务内容', 'id' => '/article/view/index?id=200',]);
 
                     $userLogin = UserLogin::findOne(['userid' => $userid, 'phone' => $wephone]);
                     $userLogin = $userLogin ? $userLogin : new UserLogin();
 
-                    $childInfo = ChildInfo::find()->andFilterWhere(['userid' => $userid])->andFilterWhere(['>', 'source', 38])->one();
+                    $childInfo = ChildInfo::find()->andFilterWhere(['userid' => $userid])->andFilterWhere(['>', 'source', 38])->orderBy('birthday desc')->one();
 
-                    $doctor = UserDoctor::findOne(['hospitalid' => $childInfo->source]);
-                    $default = $doctor ? $doctor->userid : 47156;
-
-                    $doctorid = $default;
+                    if($childInfo) {
+                        $doctor = UserDoctor::findOne(['hospitalid' => $childInfo->source]);
+                        $default = $doctor ? $doctor->userid : 47156;
+                        $doctorid = $default;
+                    }else{
+                        $doctorid=47156;
+                        $default=47156;
+                    }
 //扫码签约
-                    $weOpenid = WeOpenid::findOne(['unionid' => $unionid, 'level' => 0]);
+                    $weOpenid = WeOpenid::findOne(['unionid' => $unionid]);
                     if ($weOpenid) {
                         $doctorid = $weOpenid->doctorid ? $weOpenid->doctorid : $default;
                         $userLogin->openid = $weOpenid->openid;
                     }
                     $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
+
                     if (!$doctorParent || $doctorParent->level != 1) {
+                        $isdoctorP=1;
                         $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
                         $doctorParent->doctorid = $doctorid;
                         $doctorParent->parentid = $userid;
@@ -240,6 +247,16 @@ class UserController extends Controller
                     $userLogin->phone = $wephone;
                     $userLogin->save();
                     $useridx = $userLogin ? md5($userLogin->userid . "6623cXvY") : 0;
+
+                    if($childInfo && $isdoctorP==1) {
+                        //发送最近宣教文章
+                        $articleSend = new ArticleSend();
+                        //$articleSend->artid=$av;
+                        $articleSend->childs[] = $childInfo;
+                        $articleSend->type = $childInfo->getType(1);
+                        $articleSend->doctorid = $doctorid;
+                        $articleSend->send('shouquan', false);
+                    }
                 }
             }
 

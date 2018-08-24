@@ -60,7 +60,8 @@ class NoticeController extends Controller
             if($DiffDate[0]) {
                 $toolTag_tag[0] = $DiffDate[0] . 'Y';
             }else{
-                $toolTag_tag[2] = ceil($DiffDate[2]/7)."W";
+                $d=ceil($DiffDate[2]/7);
+                $toolTag_tag[2] = ($d==0?1:$d)."W";
             }
             if ($DiffDate[1] && $DiffDate[0]<3) {
                 $toolTag_tag[1] = $DiffDate[1] . 'M';

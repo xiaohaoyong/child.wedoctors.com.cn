@@ -37,6 +37,20 @@ class Article extends \yii\db\ActiveRecord
         7=>'30~36月',
         8=>'3~6岁',
     ];*/
+    public static$childMonth=[
+        1=>1,
+        2=>3,
+        3=>6,
+        4=>8,
+        5=>12,
+        6=>18,
+        7=>24,
+        8=>30,
+        9=>36,
+        10=>48,
+        11=>60,
+        12=>72,
+    ];
     public static $childText=[
         0=>'全部',
         1=>'满月',

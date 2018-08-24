@@ -137,22 +137,56 @@ class ChildInfo extends \yii\db\ActiveRecord
         return $model->all();
     }
     public static function getChildTypeDay($childType){
-        $childText=[
-            1=>1,
-            2=>3,
-            3=>6,
-            4=>8,
-            5=>12,
-            6=>18,
-            7=>24,
-            8=>30,
-            9=>36,
-            10=>48,
-            11=>60,
-            12=>72,
-        ];
-        return $childText[$childType]?strtotime(date('Y-m-d',strtotime('-'.$childText[$childType]." month -1 day"))):0;
+        return Article::$childMonth[$childType]?strtotime(date('Y-m-d',strtotime('-'.Article::$childMonth[$childType]." month -1 day"))):0;
     }
+
+    /**
+     * @param int $type 区分判断儿童月龄方式
+     * @return int|string
+     */
+    public function getType($type=0)
+    {
+
+        $end = time();
+        $start = new \DateTime("@$this->birthday");
+        $end   = new \DateTime("@$end");
+        $diff  = $start->diff($end);
+        $month=$diff->format('%y') * 12 + $diff->format('%m');
+
+
+        if($type==1) {
+            $childMonth = [
+                1 => ['a' => 1, 'b' => 2],
+                2 => ['a' => 3, 'b' => 4],
+                3 => ['a' => 5, 'b' => 7],
+                4 => ['a' => 7, 'b' => 9],
+                5 => ['a' => 11, 'b' => 13],
+                6 => ['a' => 17, 'b' => 19],
+                7 => ['a' => 23, 'b' => 25],
+                8 => ['a' => 29, 'b' => 32],
+                9 => ['a' => 35, 'b' => 42],
+                10 => ['a' => 46, 'b' => 54],
+                11 => ['a' => 58, 'b' => 66],
+                12 => ['a' => 70, 'b' => 72],
+            ];
+            foreach($childMonth as $k=>$v){
+                if($v['a']<=$month and $v['b']>$month){
+                    return $k;
+                }
+            }
+        }else{
+            $childMonth=Article::$childMonth;
+            foreach($childMonth as $k=>$v){
+                if($v<=$month){
+                    return $k;
+                }
+            }
+        }
+
+
+        return 0;
+    }
+
 
     public static function getChildType($childType)
     {

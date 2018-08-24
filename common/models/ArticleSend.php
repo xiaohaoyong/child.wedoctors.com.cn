@@ -17,6 +17,7 @@ class ArticleSend extends \yii\db\ActiveRecord
     public $artid;
     public $type;
     public $doctorid;
+    public $childs;
 
     /**
      * @inheritdoc
@@ -49,7 +50,11 @@ class ArticleSend extends \yii\db\ActiveRecord
             $list = $article;
         }
         if($list && $child_type && $this->doctorid) {
-            $child = ArticleUser::noSendChild($child_type, $this->doctorid,$type);
+            if(!$this->childs) {
+                $child = ArticleUser::noSendChild($child_type, $this->doctorid, $type);
+            }else{
+                $child=$this->childs;
+            }
             if ($child) {
                 $typename = Article::$childText[$child_type];
                 $doctor = UserDoctor::findOne($this->doctorid);
@@ -61,7 +66,7 @@ class ArticleSend extends \yii\db\ActiveRecord
                     if (!$articleUser) {
                         //微信模板消息
                         $data = ['first' => array('value' => "您好！医生给您发来了一份{$typename}儿童中医药健康指导。\n"), 'keyword1' => ARRAY('value' => date('Y年m月d H:i')), 'keyword2' => ARRAY('value' => $doctor->hospital->name), 'keyword3' => ARRAY('value' => $doctor->name), 'keyword4' => ARRAY('value' => $v->name), 'keyword5' => ARRAY('value' => "{$typename}儿童中医药健康指导"), 'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
-                        $touser = UserLogin::findOne(['userid' => $v->userid])->openid;
+                        $touser = UserLogin::find()->where(['userid' => $v->userid])->andWhere(['!=','openid',''])->one();
                         $url = \Yii::$app->params['site_url'] . "#/mission-read";
                         $miniprogram = [
                             "appid" => \Yii::$app->params['wxXAppId'],
@@ -70,10 +75,12 @@ class ArticleSend extends \yii\db\ActiveRecord
                         $log=new \common\components\Log('ArticleSend'.$source);
                         $log->addLog($this->doctorid);
                         $log->addLog($child_type);
-                        $log->addLog($touser."=".$v->userid);
+                        $log->addLog($v->userid);
                         $aids='';
                         if(!$test and $touser) {
-                            WechatSendTmp::send($data, $touser, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                            $log->addLog($touser->openid);
+
+                            WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
                             //小程序首页推送
                             Notice::setList($v->userid, 4, [
                                 'title' => "{$typename}儿童中医药健康指导。",

@@ -22,10 +22,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'birthday') ?>
-
-    <?= $form->field($model, 'createtime') ?>
-
+    <?= $form->field($model, 'birthdayDate')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
     <?php // echo $form->field($model, 'gender') ?>
 
     <?php  echo $form->field($model, 'source') ?>
