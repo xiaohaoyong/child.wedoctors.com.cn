@@ -78,17 +78,16 @@ class ArticleSend extends \yii\db\ActiveRecord
                         $log->addLog($v->userid);
                         $aids='';
 
-                        var_dump($touser);exit;
                         if(!$test and $touser) {
                             $log->addLog($touser->openid);
 
-                            WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                            //WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
                             //小程序首页推送
-                            Notice::setList($v->userid, 4, [
-                                'title' => "{$typename}儿童中医药健康指导。",
-                                'ftitle' => $doctor->name . '提醒您及时查看',
-                                'id' => '/article/guidance/index?t=0'
-                            ]);
+//                            Notice::setList($v->userid, 4, [
+//                                'title' => "{$typename}儿童中医药健康指导。",
+//                                'ftitle' => $doctor->name . '提醒您及时查看',
+//                                'id' => '/article/guidance/index?t=0'
+//                            ]);
                             foreach ($list as $lk => $lv) {
                                 $au = ArticleUser::findOne(['touserid' => $v->userid, 'artid' => $lv]);
                                 if (!$au) {
