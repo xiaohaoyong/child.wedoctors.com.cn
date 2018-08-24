@@ -72,12 +72,13 @@ class ArticleSend extends \yii\db\ActiveRecord
                             "appid" => \Yii::$app->params['wxXAppId'],
                             "pagepath" => "pages/article/guidance/index?t=0",
                         ];
-                        var_dump($touser);exit;
                         $log=new \common\components\Log('ArticleSend'.$source);
                         $log->addLog($this->doctorid);
                         $log->addLog($child_type);
                         $log->addLog($v->userid);
                         $aids='';
+
+                        var_dump($touser);exit;
                         if(!$test and $touser) {
                             $log->addLog($touser->openid);
 
