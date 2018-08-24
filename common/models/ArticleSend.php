@@ -72,6 +72,7 @@ class ArticleSend extends \yii\db\ActiveRecord
                             "appid" => \Yii::$app->params['wxXAppId'],
                             "pagepath" => "pages/article/guidance/index?t=0",
                         ];
+                        var_dump(123123);
                         $log=new \common\components\Log('ArticleSend'.$source);
                         $log->addLog($this->doctorid);
                         $log->addLog($child_type);
@@ -79,7 +80,7 @@ class ArticleSend extends \yii\db\ActiveRecord
                         $aids='';
 
                         if(!$test and $touser) {
-                            var_dump(123);
+                            var_dump(123);exit;
                             $log->addLog($touser->openid);
 
                             //WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
