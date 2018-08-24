@@ -72,40 +72,37 @@ class ArticleSend extends \yii\db\ActiveRecord
                             "appid" => \Yii::$app->params['wxXAppId'],
                             "pagepath" => "pages/article/guidance/index?t=0",
                         ];
-                        var_dump(123123);
                         $log=new \common\components\Log('ArticleSend'.$source);
                         $log->addLog($this->doctorid);
                         $log->addLog($child_type);
                         $log->addLog($v->userid);
                         $aids='';
-
                         if(!$test and $touser) {
-                            var_dump(123);
                             $log->addLog($touser->openid);
 
-                            //WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                            WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
                             //小程序首页推送
-//                            Notice::setList($v->userid, 4, [
-//                                'title' => "{$typename}儿童中医药健康指导。",
-//                                'ftitle' => $doctor->name . '提醒您及时查看',
-//                                'id' => '/article/guidance/index?t=0'
-//                            ]);
+                            Notice::setList($v->userid, 4, [
+                                'title' => "{$typename}儿童中医药健康指导。",
+                                'ftitle' => $doctor->name . '提醒您及时查看',
+                                'id' => '/article/guidance/index?t=0'
+                            ]);
                             foreach ($list as $lk => $lv) {
                                 $au = ArticleUser::findOne(['touserid' => $v->userid, 'artid' => $lv]);
                                 if (!$au) {
-//                                    $au = new ArticleUser();
-//                                    $au->childid = $v->id;
-//                                    $au->touserid = $v->userid;
-//                                    $au->createtime = time();
-//                                    $au->userid = $this->doctorid;
-//                                    $au->artid = $lv;
-//                                    $au->child_type = $child_type;
-//                                    $au->save();
-//                                    $aids.=$lv."--";
-//                                    unset($au);
+                                    $au = new ArticleUser();
+                                    $au->childid = $v->id;
+                                    $au->touserid = $v->userid;
+                                    $au->createtime = time();
+                                    $au->userid = $this->doctorid;
+                                    $au->artid = $lv;
+                                    $au->child_type = $child_type;
+                                    $au->save();
+                                    $aids.=$lv."--";
+                                    unset($au);
                                 }
                             }
-                          //  $log->addLog($aids);
+                            $log->addLog($aids);
                         }
                         $log->saveLog();
                     }
