@@ -53,6 +53,7 @@
                         'url' => '#',
                         'items' => [
                             ['label' => '外链推送', 'icon' => 'list', 'url' => ['/chain'],],
+                            ['label' => '开通自动推送列表', 'icon' => 'list', 'url' => ['/push'],],
 
                         ],
                     ],
