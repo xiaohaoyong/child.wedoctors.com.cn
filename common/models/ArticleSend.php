@@ -63,7 +63,6 @@ class ArticleSend extends \yii\db\ActiveRecord
                     $lmount = date('Y-m-01');
                     $articleUser = ArticleUser::find()->where(['childid' => $v->id, 'child_type' => $child_type])
                         ->andFilterWhere(['>', 'createtime', strtotime($lmount)])->one();
-                    var_dump($articleUser);exit;
                     if (!$articleUser) {
                         //微信模板消息
                         $data = ['first' => array('value' => "您好！医生给您发来了一份{$typename}儿童中医药健康指导。\n"), 'keyword1' => ARRAY('value' => date('Y年m月d H:i')), 'keyword2' => ARRAY('value' => $doctor->hospital->name), 'keyword3' => ARRAY('value' => $doctor->name), 'keyword4' => ARRAY('value' => $v->name), 'keyword5' => ARRAY('value' => "{$typename}儿童中医药健康指导"), 'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
@@ -73,6 +72,7 @@ class ArticleSend extends \yii\db\ActiveRecord
                             "appid" => \Yii::$app->params['wxXAppId'],
                             "pagepath" => "pages/article/guidance/index?t=0",
                         ];
+                        var_dump($touser);exit;
                         $log=new \common\components\Log('ArticleSend'.$source);
                         $log->addLog($this->doctorid);
                         $log->addLog($child_type);
