@@ -79,6 +79,7 @@ class ArticleSend extends \yii\db\ActiveRecord
                         $aids='';
 
                         if(!$test and $touser) {
+                            var_dump(123);
                             $log->addLog($touser->openid);
 
                             //WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
