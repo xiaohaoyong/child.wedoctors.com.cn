@@ -55,6 +55,7 @@ class ArticleSend extends \yii\db\ActiveRecord
             }else{
                 $child=$this->childs;
             }
+            var_dump($child);exit;
             if ($child) {
                 $typename = Article::$childText[$child_type];
                 $doctor = UserDoctor::findOne($this->doctorid);
