@@ -26,6 +26,7 @@ class Log
     public function saveLog()
     {
         $file = __LOG__ . $this->name."-".date('Y-m-d') .".log";
+        var_dump($file);exit;
         file_put_contents($file, $this->lineLog . "\n", FILE_APPEND);
     }
 
