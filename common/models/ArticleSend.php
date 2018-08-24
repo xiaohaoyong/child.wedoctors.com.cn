@@ -80,7 +80,7 @@ class ArticleSend extends \yii\db\ActiveRecord
                         $aids='';
 
                         if(!$test and $touser) {
-                            var_dump(123);exit;
+                            var_dump(123);
                             $log->addLog($touser->openid);
 
                             //WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
@@ -90,6 +90,7 @@ class ArticleSend extends \yii\db\ActiveRecord
 //                                'ftitle' => $doctor->name . '提醒您及时查看',
 //                                'id' => '/article/guidance/index?t=0'
 //                            ]);
+                            var_dump($list);exit;
                             foreach ($list as $lk => $lv) {
                                 $au = ArticleUser::findOne(['touserid' => $v->userid, 'artid' => $lv]);
                                 if (!$au) {
