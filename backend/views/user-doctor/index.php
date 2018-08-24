@@ -22,6 +22,8 @@ databackend\assets\DatabasesAsset::register($this);
             <table id="example2" class="table table-bordered table-hover"  style="font-size: 12px;">
                 <thead>
                 <tr>
+                    <th>id</th>
+
                     <th>社区卫生服务中心</th>
                     <th>电话</th>
 
@@ -40,6 +42,8 @@ databackend\assets\DatabasesAsset::register($this);
                 foreach($doctor as $k=>$v){
                     ?>
                     <tr>
+                        <td><?=$v->hospitalid?>,<?=$v->userid?></td>
+
                         <td><?=$v->name?></td>
                         <td><?=$v->phone?></td>
 
