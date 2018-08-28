@@ -119,21 +119,24 @@ class UserController extends Controller
 
     public function actionWxUserInfo()
     {
+        $log=new Log("weOpenidlevel");
         if ($this->userLogin) {
             $type = 0;
             $useridx = md5($this->userLogin->userid . "6623cXvY");
             $userLogin = UserLogin::findOne(['id'=>$this->userLogin->id]);
             $userLogin->logintime = time();
             $userLogin->save();
+            $log->addLog($this->userLogin->userid."已登录");
         } else {
-
-
             $appid = \Yii::$app->params['wxXAppId'];
             $cache = \Yii::$app->rdmp;
             $session = $cache->get($this->seaver_token);
             $session = explode('@@', $session);
             $openid = $session[0];
             $unionid = $session[2];
+
+            $log->addLog("openid:".$openid);
+            $log->addLog("unionid:".$unionid);
 
             $login = UserLogin::find();
             if ($openid != '') {
@@ -150,7 +153,9 @@ class UserController extends Controller
                 $useridx = md5($userLogin->userid . "6623cXvY");
                 $userLogin->logintime = time();
                 $userLogin->save();
+                $log->addLog("已登录过");
             } else {
+                $log->addLog("未登录过");
 
                 //获取用户手机号
                 $phoneEncryptedData = \Yii::$app->request->post('phoneEncryptedData');
@@ -158,6 +163,7 @@ class UserController extends Controller
                 $pc = new WxBizDataCrypt($appid, $session[1]);
                 $code = $pc->decryptData($phoneEncryptedData, $phoneIv, $phoneJson);
                 $phone = json_decode($phoneJson, true);
+                $log->addLog("phone:".$phone['phoneNumber']);
 
                 if ($code == 0) {
                     $wephone = $phone['phoneNumber'];
@@ -170,7 +176,11 @@ class UserController extends Controller
                         $userLogin->logintime = time();
                         $userLogin->save();
                         $userid=$userLogin->userid;
+                        $log->addLog("已录入登录手机号");
+
                     } else {
+                        $log->addLog("未录入登录手机号");
+
                         $type = 3;
                         $user = User::findOne(['phone' => $wephone]);
                         if (!$user) {
@@ -191,6 +201,8 @@ class UserController extends Controller
                             $userid = $user->id;
                         }
                     }
+                    $log->addLog("userid:".$userid);
+
 
 
                     //Notice::setList($userid, 6, ['title' => '身高预测', 'ftitle' => '健康工具', 'id' => '/tool/height/index',]);
@@ -202,6 +214,7 @@ class UserController extends Controller
                     $childInfo = ChildInfo::find()->andFilterWhere(['userid' => $userid])->andFilterWhere(['>', 'source', 38])->orderBy('birthday desc')->one();
 
                     if($childInfo) {
+                        $log->addLog("childid:".$childInfo->id);
                         $doctor = UserDoctor::findOne(['hospitalid' => $childInfo->source]);
                         $default = $doctor ? $doctor->userid : 47156;
                         $doctorid = $default;
@@ -210,35 +223,39 @@ class UserController extends Controller
                         $default=47156;
                     }
 //扫码签约
+                    $log->addLog("doctorid:".$doctorid);
+
                     $weOpenid = WeOpenid::findOne(['unionid' => $unionid]);
                     if ($weOpenid) {
                         $doctorid = $weOpenid->doctorid ? $weOpenid->doctorid : $default;
                         $userLogin->openid = $weOpenid->openid;
+                        $log->addLog("weOpenid:".$weOpenid->id);
                     }
+
                     $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
 
                     if (!$doctorParent || $doctorParent->level != 1) {
+                        $log->addLog("未签约");
                         $isdoctorP=1;
                         $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
                         $doctorParent->doctorid = $doctorid;
                         $doctorParent->parentid = $userid;
                         $doctorParent->level = 1;
                         $doctorParent->createtime = time();
-                        if ($doctorParent->save() && $weOpenid) {
+                        if ($doctorParent->save()) {
+                            $log->addLog("签约:".implode(',',$doctorParent->firstErrors));
                             $userDoctor = UserDoctor::findOne(['userid' => $doctorid]);
                             if ($userDoctor) {
                                 $hospital = $userDoctor->hospitalid;
                             }
                             ChildInfo::updateAll(['doctorid' => $hospital], 'userid=' . $userid);
-                            $log=new Log("weOpenidlevel");
                             $log->addLog('doctorid:'.$hospital);
 
                             if ($weOpenid) {
                                 $weOpenid->level = 1;
                                 $weOpenid->save();
-                                $log->addLog(implode(',',$weOpenid->firstErrors));
+                                $log->addLog("扫码状态:".implode(',',$weOpenid->firstErrors));
                             }
-                            $log->saveLog();
 
                             //签约成功 删除签约提醒
                         }
@@ -254,6 +271,8 @@ class UserController extends Controller
                     $userLogin->phone = $wephone;
                     $userLogin->save();
                     $useridx = $userLogin ? md5($userLogin->userid . "6623cXvY") : 0;
+                    $log->addLog("更新登录:".implode(',',$userLogin->firstErrors));
+
 
                     if($childInfo && $isdoctorP==1) {
                         //发送最近宣教文章
@@ -268,6 +287,7 @@ class UserController extends Controller
             }
 
         }
+        $log->saveLog();
         return ['useridx' => $useridx, 'type' => $type];
     }
 
