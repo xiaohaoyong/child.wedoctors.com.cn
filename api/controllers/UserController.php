@@ -163,7 +163,12 @@ class UserController extends Controller
                 $pc = new WxBizDataCrypt($appid, $session[1]);
                 $code = $pc->decryptData($phoneEncryptedData, $phoneIv, $phoneJson);
                 $phone = json_decode($phoneJson, true);
-                $log->addLog("phone:".$phone['phoneNumber']);
+                if($phone['phoneNumber']){
+                    $log->addLog("phone:" . $phoneJson);
+
+                }else {
+                    $log->addLog("phone:" . $phone['phoneNumber']);
+                }
 
                 if ($code == 0) {
                     $wephone = $phone['phoneNumber'];
