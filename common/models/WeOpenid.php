@@ -15,6 +15,7 @@ use Yii;
  * @property int $doctorid 医生ID
  * @property string $unionid
  * @property string $xopenid
+ * @property string $level
  */
 class WeOpenid extends \yii\db\ActiveRecord
 {
@@ -32,7 +33,7 @@ class WeOpenid extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['createtime', 'doctorid'], 'integer'],
+            [['createtime', 'doctorid','level'], 'integer'],
             [['openid'], 'string', 'max' => 50],
             [['unionid'], 'string', 'max' => 50],
             [['xopenid'], 'string', 'max' => 50],
