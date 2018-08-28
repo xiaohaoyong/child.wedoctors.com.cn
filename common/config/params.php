@@ -39,7 +39,7 @@ return [
     'hx_url' => 'https://a1.easemob.com/1176170313115487/childhealth/',
     'hx_id' =>'YXA6KTGS4LkmEeeJI3lkRutH2g',
     'hx_secret' =>'YXA6tqys6qGSuxN4BjVzaLn84QqGszM',
-    'ask_app_secret' =>'a6e48e37ece4d96614ed3d95f1ba6bfb',
+    'ask_app_secret' =>'96daceb99579d306e0be6cd04986fdd3',
     'ask_app_id'=>'wx972d4f8601c5b227',
 ];
 
