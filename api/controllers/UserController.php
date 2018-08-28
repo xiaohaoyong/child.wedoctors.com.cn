@@ -253,7 +253,7 @@ class UserController extends Controller
                             //签约成功 删除签约提醒
                         }
                     }
-                    if($doctorParent->level==1){
+                    if($doctorParent && $doctorParent->level==1){
                         $weOpenid->level = 1;
                         $weOpenid->save();
                         $log->addLog("扫码状态:".implode(',',$weOpenid->firstErrors));
