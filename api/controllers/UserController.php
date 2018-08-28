@@ -230,14 +230,16 @@ class UserController extends Controller
                                 $hospital = $userDoctor->hospitalid;
                             }
                             ChildInfo::updateAll(['doctorid' => $hospital], 'userid=' . $userid);
+                            $log=new Log("weOpenidlevel");
+                            $log->addLog('doctorid:'.$hospital);
 
                             if ($weOpenid) {
                                 $weOpenid->level = 1;
                                 $weOpenid->save();
-                                $log=new Log("weOpenidlevel");
                                 $log->addLog(implode(',',$weOpenid->firstErrors));
-                                $log->saveLog();
                             }
+                            $log->saveLog();
+
                             //签约成功 删除签约提醒
                         }
 
