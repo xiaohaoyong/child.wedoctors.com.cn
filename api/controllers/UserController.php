@@ -250,16 +250,13 @@ class UserController extends Controller
                             }
                             ChildInfo::updateAll(['doctorid' => $hospital], 'userid=' . $userid);
                             $log->addLog('doctorid:'.$hospital);
-
-                            if ($weOpenid) {
-                                $weOpenid->level = 1;
-                                $weOpenid->save();
-                                $log->addLog("扫码状态:".implode(',',$weOpenid->firstErrors));
-                            }
-
                             //签约成功 删除签约提醒
                         }
-
+                    }
+                    if($doctorParent->level==1){
+                        $weOpenid->level = 1;
+                        $weOpenid->save();
+                        $log->addLog("扫码状态:".implode(',',$weOpenid->firstErrors));
                     }
 
                     //更新登陆状态
