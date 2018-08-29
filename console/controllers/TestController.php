@@ -15,6 +15,10 @@ use yii\base\Controller;
 class TestController extends Controller
 {
     public function actionChildType(){
+        $mouth = ChildInfo::getChildType(5);
+        var_dump($mouth);exit;
+
+
         $childInfo = ChildInfo::find()->andFilterWhere(['userid' => 83624])->one();
         var_dump($childInfo->getType());
 

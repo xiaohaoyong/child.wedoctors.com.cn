@@ -118,8 +118,8 @@ class ChildInfoController extends Controller
                 foreach ($article as $ak => $av) {
                     $date.="，".date('Y-m-d',$av->createtime);
                     $child_type.="，".Article::$childText[$av->child_type];
-                    //$articleInfo=ArticleInfo::findOne(['id'=>$av->artid]);
-                    //$title.=$articleInfo?"，".$articleInfo->title:"";
+                    $articleInfo=ArticleInfo::findOne(['id'=>$av->artid]);
+                    $title.=$articleInfo?"，".$articleInfo->title:"";
                 }
                 $articleInfo=ArticleInfo::find()->andFilterWhere(['in','id',$articleid])->select('title')->column();
                 $title=implode(',',$articleInfo);
