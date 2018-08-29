@@ -18,7 +18,6 @@ class TestController extends Controller
 {
     public function actionChildType(){
 
-        var_dump(date('Y-m-02',strtotime("2018-08 -6 month")));exit;
 
         $doctorParent= DoctorParent::find()->select('parentid')->where(['doctorid'=>80198])->andFilterWhere(['level'=>1])->column();
 
@@ -33,7 +32,7 @@ class TestController extends Controller
         $users=array_diff($doctorParent,$articleUser);
         if($doctorParent) {
             $mouth = ChildInfo::getChildType(5);
-            var_dump($mouth);exit;
+            //var_dump($mouth);exit;
             $childCount = ChildInfo::find()->select('userid')->where(['>=', 'birthday', $mouth['firstday']])->andFilterWhere(['<=', 'birthday', $mouth['lastday']])->andFilterWhere(['in', 'userid', array_values($users)])->column();
         }
         var_dump(implode(',',$childCount));exit;
