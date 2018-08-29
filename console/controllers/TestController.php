@@ -9,18 +9,34 @@
 namespace console\controllers;
 
 
+use common\models\ArticleUser;
 use common\models\ChildInfo;
+use common\models\DoctorParent;
 use yii\base\Controller;
 
 class TestController extends Controller
 {
     public function actionChildType(){
-        $mouth = ChildInfo::getChildType(5);
-        var_dump($mouth);exit;
 
+        var_dump(date('Y-m-02',strtotime("2018-08 -6 month")));exit;
 
-        $childInfo = ChildInfo::find()->andFilterWhere(['userid' => 83624])->one();
-        var_dump($childInfo->getType());
+        $doctorParent= DoctorParent::find()->select('parentid')->where(['doctorid'=>80198])->andFilterWhere(['level'=>1])->column();
+
+        $lmount=date('Y-m-01');
+        //该类型 本月已发送的儿童
+        $articleUser=ArticleUser::find()->select('touserid')
+            ->where(['child_type'=>5])
+            //->andFilterWhere(['>','createtime',strtotime($lmount)])
+            ->groupBy('childid')
+            ->column();
+
+        $users=array_diff($doctorParent,$articleUser);
+        if($doctorParent) {
+            $mouth = ChildInfo::getChildType(5);
+            var_dump($mouth);exit;
+            $childCount = ChildInfo::find()->select('userid')->where(['>=', 'birthday', $mouth['firstday']])->andFilterWhere(['<=', 'birthday', $mouth['lastday']])->andFilterWhere(['in', 'userid', array_values($users)])->column();
+        }
+        var_dump(implode(',',$childCount));exit;
 
     }
     public function actionEmail(){

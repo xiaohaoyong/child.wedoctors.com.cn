@@ -247,7 +247,7 @@ class ChildInfo extends \yii\db\ActiveRecord
     {
         $timestamp=time();
         $firstday=strtotime(date('Y-m-02',strtotime("-$n month")));
-        $day=date('Y-m-d',$firstday);
+        $day=date('Y-m',$firstday);
         $lastday=strtotime("$day +$l month");
         return ['firstday'=>$firstday,'lastday'=>$lastday];
     }
