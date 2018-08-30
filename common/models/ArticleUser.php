@@ -99,7 +99,7 @@ class ArticleUser extends \yii\db\ActiveRecord
             ->column();
 
         $users=array_diff($doctorParent,$articleUser);
-        if($doctorParent) {
+        if($doctorParent && $users) {
             if($type=='day'){
                 $mouth = ChildInfo::getChildTypeDay($k);
                 $childCount = ChildInfo::find()->where([ 'birthday'=>$mouth])->andFilterWhere(['in', 'userid', array_values($users)])->all();
@@ -109,7 +109,7 @@ class ArticleUser extends \yii\db\ActiveRecord
                 $childCount = ChildInfo::find()->where(['>=', 'birthday', $mouth['firstday']])->andFilterWhere(['<=', 'birthday', $mouth['lastday']])->andFilterWhere(['in', 'userid', array_values($users)])->all();
             }
         }
-        return $childCount;
+        return $childCount?$childCount:[];
     }
 
 
