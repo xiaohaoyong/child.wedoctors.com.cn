@@ -237,7 +237,7 @@ class SiteController extends Controller
             return $this->returnJson('11001', ' 密码限制8~18字符');
         }
         //根据手机号查询
-        $UserData = User::findByPhone($phone);
+        $UserData = User::find()->where(['phone'=>$phone])->andWhere(['type'=>0])->one();
         if (empty($UserData)) {
             return $type == 0 ? $this->returnJson('11001', '此手机号未注册，可在管理后台添加医生账号') : $this->returnJson('11001', '此手机号未注册，可点击去注册');
         }
