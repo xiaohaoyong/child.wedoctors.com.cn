@@ -95,7 +95,7 @@ databackend\assets\IndexAsset::register($this);
                     </div>
                     <!-- ./col -->
                     <div class="col-xs-6 text-center">
-                        本月未宣教儿童数：<?=$data['articleNoMonth']>0?$data['articleNoMonth']:0?>
+                        今日未宣教儿童数：<?=$data['articleNoMonth']>0?$data['articleNoMonth']:0?>
                     </div>
                     <!-- ./col -->
                 </div>

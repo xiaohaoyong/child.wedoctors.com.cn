@@ -4,6 +4,8 @@ namespace databackend\controllers;
 use common\models\ArticleUser;
 use common\models\ChildInfo;
 use common\models\UserDoctor;
+use databackend\models\article\Article;
+use databackend\models\user\DoctorParent;
 use Yii;
 use common\models\LoginForm;
 use yii\helpers\ArrayHelper;
@@ -104,12 +106,36 @@ class SiteController extends BaseController
             ->andFilterWhere(['>','createtime',$today])
             ->andFilterWhere(['in','article_user.userid' ,$doctorids])
             ->count('distinct childid');
-        $data['articleNumMonth']=ArticleUser::find()
-            ->andFilterWhere(['>','createtime',$month])
-            ->andFilterWhere(['in','article_user.userid' ,$doctorids])
-            ->count('distinct childid');
 
-        $data['articleNoMonth']=$data['todayNumTotal']-$data['articleNumMonth'];
+
+
+        $doctorParent= DoctorParent::find()->select('parentid')
+            ->andFilterWhere(['in','doctorid' ,$doctorids])
+            ->andFilterWhere(['level'=>1])->column();
+
+        //该类型 本月已发送的儿童
+        $articleUser=ArticleUser::find()->select('touserid')
+            ->andFilterWhere(['in','userid' ,$doctorids])
+            //->andFilterWhere(['>','createtime',strtotime($lmount)])
+            ->groupBy('childid')
+            ->column();
+
+        $users=array_diff($doctorParent,$articleUser);
+
+        foreach(Article::$childText as $k=>$v){
+            if($k) {
+                $mouth[] = ChildInfo::getChildTypeDay($k);
+            }
+        }
+        $childCount = ChildInfo::find()->andFilterWhere(['in','birthday',$mouth])->andFilterWhere(['in', 'userid', array_values($users)])->count();
+        $data['articleNoMonth']=$childCount;
+
+
+
+
+
+
+
 
         for($i=9;$i>-1;$i--)
         {
