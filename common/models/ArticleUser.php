@@ -94,6 +94,7 @@ class ArticleUser extends \yii\db\ActiveRecord
         //该类型 本月已发送的儿童
         $articleUser=ArticleUser::find()->select('touserid')
             ->where(['child_type'=>$k])
+            ->where(['userid'=>$doctorid])
             //->andFilterWhere(['>','createtime',strtotime($lmount)])
             ->groupBy('childid')
             ->column();

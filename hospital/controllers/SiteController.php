@@ -1,8 +1,10 @@
 <?php
 namespace hospital\controllers;
 
+use common\models\Article;
 use common\models\ArticleUser;
 use common\models\ChildInfo;
+use common\models\DoctorParent;
 use common\models\UserDoctor;
 use Yii;
 use common\models\LoginForm;
@@ -102,12 +104,26 @@ class SiteController extends BaseController
             ->andFilterWhere(['>','createtime',$today])
             ->andFilterWhere(['article_user.userid'=>$doctorid])
             ->count('distinct childid');
-        $data['articleNumMonth']=ArticleUser::find()
-            ->andFilterWhere(['>','createtime',$month])
-            ->andFilterWhere(['userid'=>$doctorid])
-            ->count('distinct childid');
 
-        $data['articleNoMonth']=$data['todayNumTotal']-$data['articleNumMonth'];
+
+        $doctorParent= DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid])->andFilterWhere(['level'=>1])->column();
+
+        //该类型 本月已发送的儿童
+        $articleUser=ArticleUser::find()->select('touserid')
+            ->where(['userid'=>$doctorid])
+            //->andFilterWhere(['>','createtime',strtotime($lmount)])
+            ->groupBy('childid')
+            ->column();
+
+        $users=array_diff($doctorParent,$articleUser);
+
+        foreach(Article::$childText as $k=>$v){
+            if($k) {
+                $mouth[] = ChildInfo::getChildTypeDay($k);
+            }
+        }
+        $childCount = ChildInfo::find()->andFilterWhere(['in','birthday',$mouth])->andFilterWhere(['in', 'userid', array_values($users)])->count();
+        $data['articleNoMonth']=$childCount;
 
         for($i=9;$i>-1;$i--)
         {

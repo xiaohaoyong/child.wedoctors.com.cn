@@ -44,6 +44,8 @@ return [
             'weixin/web/assets',
             'api/runtime',
             'api/web/assets',
+            'ask/runtime',
+            'ask/web/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -57,6 +59,7 @@ return [
             'frontend/config/main-local.php',
             'weixin/config/main-local.php',
             'api/config/main-local.php',
+            'ask/config/main-local.php',
 
         ],
     ],
@@ -75,6 +78,8 @@ return [
             'weixin/web/assets',
             'api/runtime',
             'api/web/assets',
+            'ask/runtime',
+            'ask/web/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -87,6 +92,8 @@ return [
 
             'weixin/config/main-local.php',
             'api/config/main-local.php',
+            'ask/config/main-local.php',
+
         ],
     ],
 ];
