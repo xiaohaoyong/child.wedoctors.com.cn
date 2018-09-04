@@ -42,6 +42,34 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionPush(){
+        $doctorParent = DoctorParent::find()->where(['doctorid'=>0])->all();
+        foreach($doctorParent as $k=>$v){
+
+            $child=ChildInfo::findOne(['userid'=>$v->parentid]);
+            if($child && $child->source)
+            {
+                $child->doctorid=$child->source;
+                $child->save();
+                $doctorid=UserDoctor::findOne(['hospitalid'=>$child->source])->userid;
+                $v->doctorid=$doctorid;
+                $v->save();
+            }
+
+        }
+        exit;
+
+
+        $data = [
+            'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
+            'keyword1' => ARRAY('value' => "宝宝基本信息"),
+            'keyword2' => ARRAY('value' => "测试"),
+            'remark' => ARRAY('value' => "\n 点击授权并完善宝宝信息，如果已添加宝宝请忽略此条提醒", 'color' => '#221d95'),
+        ];
+        //var_dump($doctor->name);
+        $rs = WechatSendTmp::send($data,"o5ODa0wc1u3Ihu5WvCVqoACeQ-HA", 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+exit;
+    }
     public function actionDoctorChild(){
         $doctorids=[];
         $weopenid=WeOpenid::findAll(['level'=>0]);
