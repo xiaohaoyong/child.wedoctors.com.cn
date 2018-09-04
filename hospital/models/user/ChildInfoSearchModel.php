@@ -96,14 +96,14 @@ class ChildInfoSearchModel extends ChildInfo
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
             $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
-            $query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
+            $query->andFilterWhere(['`child_info`.`source`' => $hospitalid]);
         }elseif($this->level==2){
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
             $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
             $query->andWhere(['`child_info`.`source`'=>0]);
         }elseif($this->level==3){
-            $parentids=\common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`'=>$doctorid->userid])->column();
+            $parentids=\common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`'=>$doctorid->userid])->andFilterWhere(['level'=>1])->column();
             $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
             $query->andFilterWhere(['not in', '`child_info`.userid',$parentids]);
             $query->andWhere(['`child_info`.`source`'=>$hospitalid]);
