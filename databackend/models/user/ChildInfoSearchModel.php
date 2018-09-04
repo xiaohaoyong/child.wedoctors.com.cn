@@ -118,7 +118,7 @@ class ChildInfoSearchModel extends ChildInfo
             $query->andWhere(['child_info.source'=>0]);
         }elseif($this->level==3){
 
-            $parentids=\hospital\models\user\DoctorParent::find()->select('parentid')->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids])->column();
+            $parentids=\common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids])->andFilterWhere(['level'=>1])->column();
             $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
             $query->andFilterWhere(['not in', '`child_info`.userid',$parentids]);
             $query->andFilterWhere(['in', '`child_info`.source',$hospitalids]);
