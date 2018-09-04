@@ -21,6 +21,9 @@ class ChildInfoSearchModel extends ChildInfo
     public $admin;
     public $child_type;
 
+    public $birthdayS;
+    public $birthdayE;
+
     /**
      * @inheritdoc
      */
@@ -28,8 +31,8 @@ class ChildInfoSearchModel extends ChildInfo
     {
         return [
             [['id', 'userid', 'birthday', 'createtime', 'level','admin'], 'integer'],
-            [['docpartimeS','docpartimeE', 'username'], 'string'],
-            [['userphone','admin','child_type'], 'integer'],
+            [['docpartimeS','docpartimeE','birthdayS','birthdayE', 'username'], 'string'],
+            [['userphone'], 'integer'],
 
             [['name'], 'safe'],
         ];
@@ -41,11 +44,11 @@ class ChildInfoSearchModel extends ChildInfo
             'level' => '签约状态',
             'docpartimeS' => '签约时间',
             'docpartimeE' => '~',
+            'birthdayS' => '出生日期',
+            'birthdayE' => '~',
             'username' => '父母联系人姓名',
             'admin'=>'管理机构',
-            'userphone' => '父母联系人手机号',
-            'child_type' => '儿童月龄'
-
+            'userphone' => '父母联系人手机号'
         ];
     }
 
@@ -130,7 +133,12 @@ class ChildInfoSearchModel extends ChildInfo
             $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
             $query->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
         }
-
+        if($this->birthdayE!=='' and $this->birthdayS!==null){
+            $state = strtotime($this->birthdayS . " 00:00:00");
+            $end = strtotime($this->birthdayE . " 23:59:59");
+            $query->andFilterWhere(['>', '`birthday`', $state]);
+            $query->andFilterWhere(['<', '`birthday`', $end]);
+        }
 
 //        'username' => '联系人姓名',
 //            'userphone' => '联系人电话'

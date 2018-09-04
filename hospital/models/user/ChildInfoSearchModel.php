@@ -19,14 +19,14 @@ class ChildInfoSearchModel extends ChildInfo
     public $docpartimeS;
     public $docpartimeE;
 
-    public $birthdayS;
-    public $birthdayE;
+
 
 
     public $username;
     public $userphone;
 
-
+    public $birthdayS;
+    public $birthdayE;
 
     /**
      * @inheritdoc
