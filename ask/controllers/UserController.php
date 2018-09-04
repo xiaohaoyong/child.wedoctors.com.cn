@@ -47,7 +47,7 @@ class UserController extends Controller
             $useridKey = md5($this->userid . "6623cXvY");
         } else {
             //获取用户微信登陆信息
-            $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
+            $path = "/sns/jscode2session?appid=" . \Yii::$app->params['ask_app_id'] . "&secret=" . \Yii::$app->params['ask_app_secret'] . "&js_code=" . $code . "&grant_type=authorization_code";
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
             $userJson = $curl->get();
             $user = json_decode($userJson, true);

@@ -122,12 +122,16 @@ class SiteController extends BaseController
 
         $users=array_diff($doctorParent,$articleUser);
 
-        foreach(Article::$childText as $k=>$v){
-            if($k) {
-                $mouth[] = ChildInfo::getChildTypeDay($k);
+        if($users) {
+            foreach (Article::$childText as $k => $v) {
+                if ($k) {
+                    $mouth[] = ChildInfo::getChildTypeDay($k);
+                }
             }
+            $childCount = ChildInfo::find()->andFilterWhere(['in', 'birthday', $mouth])->andFilterWhere(['in', 'userid', array_values($users)])->count();
+        }else{
+            $childCount=0;
         }
-        $childCount = ChildInfo::find()->andFilterWhere(['in','birthday',$mouth])->andFilterWhere(['in', 'userid', array_values($users)])->count();
         $data['articleNoMonth']=$childCount;
 
 
