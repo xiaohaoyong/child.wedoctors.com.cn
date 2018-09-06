@@ -12,6 +12,7 @@ namespace hospital\controllers;
 use common\models\Article;
 use common\models\ArticleInfo;
 use common\models\ArticleUser;
+use common\models\ChildInfo;
 use hospital\models\User;
 use hospital\models\user\ChildInfoSearchModel;
 use hospital\models\user\DoctorParent;
@@ -161,6 +162,56 @@ class DownController extends BaseController
         $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
         $objWriter->save('php://output');
     }
+    public function actionArticle(){
+        ini_set('memory_limit', '2048M');
+        ini_set("max_execution_time", "0");
+        ini_set('zlib.output_compression', 'Off');
+        set_time_limit(0);
+
+        $params=\Yii::$app->request->queryParams;
+        $searchModel = new ChildInfoSearchModel();
+        $dataProvider = $searchModel->search($params);
+        $hospitalid=\Yii::$app->user->identity->hospital;
+        $filename='article-' .$hospitalid. date("Ymd") . '.zip';
+
+        $zipname = dirname(__ROOT__)."/static/childEducation/".$filename;
+
+
+        $zip = new \ZipArchive();
+        $res = $zip->open($zipname, \ZipArchive::OVERWRITE | \ZipArchive::CREATE);
+
+        if ($res === TRUE) {
+            foreach ($dataProvider->query->all() as $k => $e) {
+                $n=ceil($e->id%100);
+                $file=dirname(__ROOT__)."/static/childEducation/".$n."/".$e->id.".xlsx";
+                if(file_exists($file)) {
+                    $child=ChildInfo::findOne($e->id);
+                    $zip->addFile($file, $child->name . ".xlsx");
+                }
+            }
+            $zip->close();
+            //Begin writing headers
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Connection: keep-alive");
+
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: public");
+            header("Content-Description: File Transfer");
+
+            //Use the switch-generated Content-Type
+            header("Content-Type: application/zip");
+
+            //Force the download
+            $header="Content-Disposition: attachment; filename=中医儿童健康管理宣教记录.zip;";
+            header($header );
+            header("Content-Transfer-Encoding: binary");
+            header("Content-Length: ".filesize($zipname));
+            ob_end_clean();
+            @readfile($zipname);
+        }
+    }
+
     public function actionDownload($childid=0)
     {
 

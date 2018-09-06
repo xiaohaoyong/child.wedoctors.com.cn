@@ -41,8 +41,8 @@ class ChildController extends Controller
         $sex=\Yii::$app->request->post('sex');
         $id=\Yii::$app->request->post('id');
 
-        $child=ChildInfo::findOne($id);
-        $child=$child?$child:new ChildInfo();
+        $child=\api\models\ChildInfo::findOne($id);
+        $child=$child?$child:new \api\models\ChildInfo();
         $child->userid=$this->userid;
         $child->name=$name;
         $child->gender=$sex=='男'?1:2;

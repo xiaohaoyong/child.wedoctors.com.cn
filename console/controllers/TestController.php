@@ -16,6 +16,17 @@ use yii\base\Controller;
 
 class TestController extends Controller
 {
+    public function actionCreateZip(){
+        $zipname='./article-' . date("Ymd") . '.zip';
+
+        //$zipname = dirname(__ROOT__)."/static/childEducation/".$filename;
+
+        $zip = new \ZipArchive();
+        $res = $zip->open($zipname, \ZipArchive::OVERWRITE | \ZipArchive::CREATE);
+        $zip->addFile("data/110567.csv","110567.csv");
+        $zip->close();
+
+    }
     public function actionChildType(){
 
 

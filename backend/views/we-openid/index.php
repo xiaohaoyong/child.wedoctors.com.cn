@@ -38,8 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'createtime:datetime',
                                 'doctorid',
                                 'level',
-                                // 'unionid',
-                                // 'xopenid',
+                                 'unionid',
+                                 'xopenid',
 
                                 [
                                     'class' => 'common\components\grid\ActionColumn',

@@ -29,7 +29,7 @@ use yii\widgets\ActiveForm;
     ]])?>
     <?= $form->field($model, 'doctorid') ?>
 
-    <?= $form->field($model, 'level') ?>
+    <?= $form->field($model, 'level')->dropDownList([0=>'未签约',1=>'已签约'],['prompt'=>'请选择']) ?>
 
     <?php  echo $form->field($model, 'unionid') ?>
 
