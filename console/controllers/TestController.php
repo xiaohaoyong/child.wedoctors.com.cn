@@ -9,13 +9,53 @@
 namespace console\controllers;
 
 
+use common\helpers\WechatSendTmp;
 use common\models\ArticleUser;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
+use common\models\UserDoctor;
+use common\models\UserLogin;
 use yii\base\Controller;
 
 class TestController extends Controller
 {
+    public function actionData(){
+        $n=0;
+
+        $doctorids=[];
+        $openids=[];
+        $doctorParent=\common\models\DoctorParent::find()->where(['level'=>1])->all();
+        foreach ($doctorParent as $k => $v) {
+            $openid=UserLogin::findOne(['userid'=>$v->parentid])->openid;
+            $childInfo=ChildInfo::findOne(['userid'=>$v->parentid]);
+            if(!$childInfo && $openid && !$openids[$openid] && $v->doctorid) {
+
+                $doctor = $doctorids[$v->doctorid];
+                $openids[$openid]=1;
+
+                if (!$doctor) {
+                    $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
+                    $doctorids[$v->doctorid] = $doctor;
+                }
+
+                $data = [
+                    'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
+                    'keyword1' => ARRAY('value' => "宝宝基本信息"),
+                    'keyword2' => ARRAY('value' => $doctor->name),
+                    'remark' => ARRAY('value' => "\n 点击授权并完善宝宝信息，如果已添加宝宝请忽略此条提醒", 'color' => '#221d95'),
+                ];
+                //var_dump($doctor->name);
+                $rs = WechatSendTmp::send($data,$openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                echo $openid."==";
+                echo $rs['errcode'].$rs['errmsg'];
+                echo "\n";
+
+                usleep(300000);
+            }
+        }
+
+        var_dump($n);
+    }
     public function actionCreateZip(){
         $zipname='./article-' . date("Ymd") . '.zip';
 
