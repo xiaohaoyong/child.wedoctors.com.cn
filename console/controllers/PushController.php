@@ -7,6 +7,7 @@
  */
 
 namespace console\controllers;
+
 use common\components\Log;
 use common\helpers\WechatSendTmp;
 use common\models\Article;
@@ -25,24 +26,25 @@ class PushController extends Controller
      * 人群：当天扫码，未授权，未添加儿童
      * 时间：每晚8点
      */
-    public function actionRegisterUnfinished(){
-        $doctorids=[];
-        $openids=[];
-        $time=strtotime(date('Y-m-d 20:00:00',strtotime('-1 day')));
-        $redis=\Yii::$app->rdmp;
+    public function actionRegisterUnfinished()
+    {
+        $doctorids = [];
+        $openids = [];
+        $time = strtotime(date('Y-m-d 20:00:00', strtotime('-1 day')));
+        $redis = \Yii::$app->rdmp;
 
-        $weopenid=WeOpenid::find()->andFilterWhere(['>','createtime',$time])->andWhere(['level'=>0])->all();
+        $weopenid = WeOpenid::find()->andFilterWhere(['>', 'createtime', $time])->andWhere(['level' => 0])->all();
         foreach ($weopenid as $k => $v) {
-            if(!$openids[$v->openid]) {
+            if (!$openids[$v->openid]) {
                 $doctor = $doctorids[$v->doctorid];
                 if (!$doctor) {
                     $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
                     $doctorids[$v->doctorid] = $doctor;
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'),"total1");
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'),"total1ok");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total1");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total1ok");
                 }
 
-                $redis->ZINCRBY("RegisterUnfinished".$doctor->hospitalid.date('Ymd'),1,"total1");
+                $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total1");
 
                 $data = [
                     'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
@@ -53,13 +55,13 @@ class PushController extends Controller
                 //var_dump($doctor->name);
 
                 $rs = WechatSendTmp::send($data, $v->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
-                $log=new Log('RegisterUnfinished');
+                $log = new Log('RegisterUnfinished');
                 $log->addLog($v->openid);
-                $log->addLog($rs['errcode'].$rs['errmsg']);
+                $log->addLog($rs['errcode'] . $rs['errmsg']);
                 $log->saveLog();
                 $openids[$v->openid] = 1;
 
-                if($rs['errmsg']=='ok') {
+                if ($rs['errmsg'] == 'ok') {
                     $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total1ok");
                 }
 
@@ -68,14 +70,14 @@ class PushController extends Controller
         }
 
 
-        $list=\common\models\DoctorParent::find()
+        $list = \common\models\DoctorParent::find()
             ->leftJoin('child_info', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-            ->andWhere(['>','doctor_parent.createtime',$time])
-            ->andWhere(['child_info.userid'=>null])
+            ->andWhere(['>', 'doctor_parent.createtime', $time])
+            ->andWhere(['child_info.userid' => null])
             ->all();
-        foreach($list as $k=>$v) {
+        foreach ($list as $k => $v) {
 
-            $userLogin=UserLogin::find()->andWhere(['userid'=>$v->parentid])->andWhere(['!=','openid',''])->one();
+            $userLogin = UserLogin::find()->andWhere(['userid' => $v->parentid])->andWhere(['!=', 'openid', ''])->one();
 
             if (!$openids[$userLogin->openid]) {
 
@@ -83,8 +85,8 @@ class PushController extends Controller
                 if (!$doctor) {
                     $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
                     $doctorids[$v->doctorid] = $doctor;
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'),"total2");
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'),"total2ok");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2ok");
 
                 }
 
@@ -113,31 +115,32 @@ class PushController extends Controller
         }
     }
 
-    public function actionArticleSend(){
-        $articleids=[];
-        $child_types=Article::$childText;
-        foreach($child_types as $k=>$v){
-            $article=\common\models\Article::find()
+    public function actionArticleSend()
+    {
+        $articleids = [];
+        $child_types = Article::$childText;
+        foreach ($child_types as $k => $v) {
+            $article = \common\models\Article::find()
                 ->select('article_info.title')->indexBy('id')
                 ->leftJoin('article_info', '`article_info`.`id` = `article`.`id`')
-                ->where(['article.child_type'=>$v,'article.type'=>0])->column();
-            $articleids[$k][]=$article;
+                ->where(['article.child_type' => $v, 'article.type' => 0])->column();
+            $articleids[$k][] = $article;
         }
 
-        $redis=\Yii::$app->rdmp;
-        $hospital=$redis->hgetall('article_send_ispush');
-        foreach($hospital as $k=>$v){
-            if($k%2==0){
-                $key=$v;
-            }else {
+        $redis = \Yii::$app->rdmp;
+        $hospital = $redis->hgetall('article_send_ispush');
+        foreach ($hospital as $k => $v) {
+            if ($k % 2 == 0) {
+                $key = $v;
+            } else {
                 $doctorid = UserDoctor::findOne(['hospitalid' => $key])->userid;
-                if($v==1){
-                    foreach($articleids as $ak=>$av) {
+                if ($v == 1) {
+                    foreach ($articleids as $ak => $av) {
                         $articleSend = new ArticleSend();
                         //$articleSend->artid=$av;
                         $articleSend->type = $ak;
                         $articleSend->doctorid = $doctorid;
-                        $articleSend->send('automatic',false,'day');
+                        $articleSend->send('automatic', false, 'day');
                     }
                 }
             }
