@@ -57,11 +57,11 @@ class PushController extends Controller
                 $rs = WechatSendTmp::send($data, $v->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                 $log = new Log('RegisterUnfinished');
                 $log->addLog($v->openid);
-                $log->addLog($rs['errcode'] . $rs['errmsg']);
+                $log->addLog($rs?"ok":"no");
                 $log->saveLog();
                 $openids[$v->openid] = 1;
 
-                if ($rs['errmsg'] == 'ok') {
+                if ($rs) {
                     $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total1ok");
                 }
 
@@ -103,11 +103,11 @@ class PushController extends Controller
                 $rs = WechatSendTmp::send($data, $userLogin->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                 $log = new Log('RegisterUnfinished');
                 $log->addLog($userLogin->openid);
-                $log->addLog($rs['errcode'] . $rs['errmsg']);
+                $log->addLog($rs?"ok":"no");
                 $log->saveLog();
                 $openids[$userLogin->openid] = 1;
 
-                if ($rs['errmsg'] == 'ok') {
+                if ($rs) {
                     $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total2ok");
                 }
                 usleep(300000);
