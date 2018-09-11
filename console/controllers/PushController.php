@@ -42,6 +42,9 @@ class PushController extends Controller
                     $doctorids[$v->doctorid] = $doctor;
                     $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total1");
                     $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total1ok");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2ok");
+
                 }
 
                 $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total1");
@@ -85,9 +88,6 @@ class PushController extends Controller
                 if (!$doctor) {
                     $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
                     $doctorids[$v->doctorid] = $doctor;
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2");
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2ok");
-
                 }
 
                 $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total2");
@@ -99,7 +99,6 @@ class PushController extends Controller
                     'remark' => ARRAY('value' => "\n 点击授权并完善宝宝信息，如果已添加宝宝请忽略此条提醒", 'color' => '#221d95'),
                 ];
                 //var_dump($doctor->name);
-
                 $rs = WechatSendTmp::send($data, $userLogin->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                 $log = new Log('RegisterUnfinished');
                 $log->addLog($userLogin->openid);
