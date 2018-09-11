@@ -45,11 +45,11 @@ class TestController extends Controller
                     'remark' => ARRAY('value' => "\n 点击授权并完善宝宝信息，如果已添加宝宝请忽略此条提醒", 'color' => '#221d95'),
                 ];
                 //var_dump($doctor->name);
-                $rs = WechatSendTmp::send($data,$openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                $rs = WechatSendTmp::send($data,"o5ODa0wc1u3Ihu5WvCVqoACeQ-HA", 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                 echo $openid."==";
                 echo $rs['errcode'].$rs['errmsg'];
                 echo "\n";
-
+exit;
                 usleep(300000);
             }
         }
