@@ -30,7 +30,7 @@ class PushController extends Controller
     {
         $doctorids = [];
         $openids = [];
-        $date=date('Ymd');
+        $date="20180911";
         $stime = strtotime(date('Y-m-d 20:00:00', strtotime('-1 day')));
         $etime = strtotime(date('Y-m-d 20:00:00'));
 
