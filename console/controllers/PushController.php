@@ -57,7 +57,7 @@ class PushController extends Controller
                 ];
                 //var_dump($doctor->name);
 
-                $rs = WechatSendTmp::send($data, $v->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                //$rs = WechatSendTmp::send($data, $v->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                 $log = new Log('RegisterUnfinished');
                 $log->addLog($v->openid);
                 $log->addLog($rs?"ok":"no");
@@ -99,7 +99,7 @@ class PushController extends Controller
                     'remark' => ARRAY('value' => "\n 点击授权并完善宝宝信息，如果已添加宝宝请忽略此条提醒", 'color' => '#221d95'),
                 ];
                 //var_dump($doctor->name);
-                $rs = WechatSendTmp::send($data, $userLogin->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                //$rs = WechatSendTmp::send($data, $userLogin->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                 $log = new Log('RegisterUnfinished');
                 $log->addLog($userLogin->openid);
                 $log->addLog($rs?"ok":"no");
