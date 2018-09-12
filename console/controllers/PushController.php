@@ -30,6 +30,7 @@ class PushController extends Controller
     {
         $doctorids = [];
         $openids = [];
+        $date=date('Ymd');
         $stime = strtotime(date('Y-m-d 20:00:00', strtotime('-1 day')));
         $etime = strtotime(date('Y-m-d 20:00:00'));
 
@@ -42,14 +43,14 @@ class PushController extends Controller
                 if (!$doctor) {
                     $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
                     $doctorids[$v->doctorid] = $doctor;
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total1");
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total1ok");
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2");
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2ok");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . $date, "total1");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . $date, "total1ok");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . $date, "total2");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . $date, "total2ok");
 
                 }
 
-                $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total1");
+                $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . $date, 1, "total1");
 
                 $data = [
                     'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
@@ -67,7 +68,7 @@ class PushController extends Controller
                 $openids[$v->openid] = 1;
 
                 if ($rs) {
-                    $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total1ok");
+                    $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . $date, 1, "total1ok");
                 }
 
                 usleep(300000);
@@ -93,7 +94,7 @@ class PushController extends Controller
                     $doctorids[$v->doctorid] = $doctor;
                 }
 
-                $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total2");
+                $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . $date, 1, "total2");
 
                 $data = [
                     'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
@@ -110,7 +111,7 @@ class PushController extends Controller
                 $openids[$userLogin->openid] = 1;
 
                 if ($rs) {
-                    $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total2ok");
+                    $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . $date, 1, "total2ok");
                 }
                 usleep(300000);
             }
