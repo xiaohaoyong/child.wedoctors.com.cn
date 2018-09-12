@@ -14,7 +14,11 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['id'=>'child','class' => 'form-inline'],
     ]); ?>
-       <?= $form->field($model, 'datetime')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+       <?= $form->field($model, 'sdatetime')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
+    <?= $form->field($model, 'edatetime')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true
     ]])?>

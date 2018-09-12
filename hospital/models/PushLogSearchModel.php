@@ -18,7 +18,9 @@ use yii\data\ActiveDataProvider;
  */
 class PushLogSearchModel extends Model
 {
-    public $datetime;
+    public $sdatetime;
+    public $edatetime;
+
     public $noChild;
 
     public $data=[
@@ -32,14 +34,16 @@ class PushLogSearchModel extends Model
     public function rules()
     {
         return [
-            [['datetime'], 'string'],
+            [['sdatetime','edatetime'], 'string'],
         ];
     }
 
     public function attributeLabels()
     {
         return [
-            'datetime' => '日期',
+            'sdatetime' => '日期',
+            'edatetime' => '~',
+
         ];
     }
 
@@ -53,18 +57,25 @@ class PushLogSearchModel extends Model
     public function search($params)
     {
         $this->load($params);
-        if(!$this->datetime){
-            $this->datetime=date('Y-m-d');
-        }
-        $date=date('Ymd',strtotime($this->datetime));
-
         $hospitalid=Yii::$app->user->identity->hospital;
         $doctorid=UserDoctor::findOne(['hospitalid'=>$hospitalid])->userid;
 
-        $stime=strtotime($this->datetime." 00:00:00");
-        $etime=strtotime($this->datetime." 23:59:59");
+        if(!$this->sdatetime){
+            $this->sdatetime=date('Y-m-d');
+        }
+        if(!$this->edatetime){
+            $this->edatetime=date('Y-m-d');
+        }
+        $sdate=date('Ymd',strtotime($this->sdatetime));
+        $edate=date('Ymd',strtotime($this->edatetime));
+
+
+
+        $stime=strtotime($this->sdatetime." 00:00:00");
+        $etime=strtotime($this->edatetime." 23:59:59");
 
         $this->data[1]=WeOpenid::find()->where(['level'=>0])->andWhere(['doctorid'=>$doctorid])->andWhere(['>','createtime',$stime])->andWhere(['<','createtime',$etime])->count();
+
 
         $this->noChild=\common\models\DoctorParent::find()
             ->leftJoin('child_info', '`doctor_parent`.`parentid` = `child_info`.`userid`')
@@ -76,10 +87,18 @@ class PushLogSearchModel extends Model
         $this->data[4]=count($this->noChild);
 
         $redis=Yii::$app->rdmp;
-        $this->data[3]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$date,"total1ok");
-        $this->data[6]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$date,"total2ok");
-        $this->data[2]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$date,"total1");
-        $this->data[5]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$date,"total2");
+
+
+        for($i=$sdate;$i<=$edate;$i=date('Ymd',strtotime($i." +1 day"))){
+
+            $this->data[3]+=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$i,"total1ok");
+            $this->data[6]+=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$i,"total2ok");
+            $this->data[2]+=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$i,"total1");
+            $this->data[5]+=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$i,"total2");
+
+        }
+
+
 
         return $this;
     }
