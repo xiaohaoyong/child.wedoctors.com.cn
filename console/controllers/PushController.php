@@ -30,10 +30,12 @@ class PushController extends Controller
     {
         $doctorids = [];
         $openids = [];
-        $time = strtotime(date('Y-m-d 20:00:00', strtotime('-1 day')));
+        $stime = strtotime(date('Y-m-d 20:00:00', strtotime('-1 day')));
+        $etime = strtotime(date('Y-m-d 20:00:00'));
+
         $redis = \Yii::$app->rdmp;
 
-        $weopenid = WeOpenid::find()->andFilterWhere(['>', 'createtime', $time])->andWhere(['level' => 0])->all();
+        $weopenid = WeOpenid::find()->andFilterWhere(['>', 'createtime', $stime])->andFilterWhere(['<', 'createtime', $etime])->andWhere(['level' => 0])->all();
         foreach ($weopenid as $k => $v) {
             if (!$openids[$v->openid]) {
                 $doctor = $doctorids[$v->doctorid];
@@ -75,7 +77,8 @@ class PushController extends Controller
 
         $list = \common\models\DoctorParent::find()
             ->leftJoin('child_info', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-            ->andWhere(['>', 'doctor_parent.createtime', $time])
+            ->andFilterWhere(['>', 'doctor_parent.createtime', $stime])
+            ->andFilterWhere(['<', 'doctor_parent.createtime', $etime])
             ->andWhere(['child_info.userid' => null])
             ->all();
         foreach ($list as $k => $v) {
