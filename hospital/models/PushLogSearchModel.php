@@ -56,6 +56,7 @@ class PushLogSearchModel extends Model
         if(!$this->datetime){
             $this->datetime=date('Y-m-d');
         }
+        $date=date('Ymd',strtotime($this->datetime));
 
         $hospitalid=Yii::$app->user->identity->hospital;
         $doctorid=UserDoctor::findOne(['hospitalid'=>$hospitalid])->userid;
@@ -75,10 +76,10 @@ class PushLogSearchModel extends Model
         $this->data[4]=count($this->noChild);
 
         $redis=Yii::$app->rdmp;
-        $this->data[3]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.date('Ymd'),"total1ok");
-        $this->data[6]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.date('Ymd'),"total2ok");
-        $this->data[2]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.date('Ymd'),"total1");
-        $this->data[5]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.date('Ymd'),"total2");
+        $this->data[3]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$date,"total1ok");
+        $this->data[6]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$date,"total2ok");
+        $this->data[2]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$date,"total1");
+        $this->data[5]=$redis->ZSCORE("RegisterUnfinished".$hospitalid.$date,"total2");
 
         return $this;
     }

@@ -30,27 +30,24 @@ class PushController extends Controller
     {
         $doctorids = [];
         $openids = [];
-        $date="20180911";
-        $stime = strtotime(date('Y-m-d 20:00:00', strtotime('-1 day')));
-        $etime = strtotime(date('Y-m-d 20:00:00'));
-
+        $time = strtotime(date('Y-m-d 20:00:00', strtotime('-1 day')));
         $redis = \Yii::$app->rdmp;
 
-        $weopenid = WeOpenid::find()->andFilterWhere(['>', 'createtime', $stime])->andFilterWhere(['<', 'createtime', $etime])->andWhere(['level' => 0])->all();
+        $weopenid = WeOpenid::find()->andFilterWhere(['>', 'createtime', $time])->andWhere(['level' => 0])->all();
         foreach ($weopenid as $k => $v) {
             if (!$openids[$v->openid]) {
                 $doctor = $doctorids[$v->doctorid];
                 if (!$doctor) {
                     $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
                     $doctorids[$v->doctorid] = $doctor;
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . $date, "total1");
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . $date, "total1ok");
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . $date, "total2");
-                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . $date, "total2ok");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total1");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total1ok");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2");
+                    $redis->ZREM("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), "total2ok");
 
                 }
 
-                $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . $date, 1, "total1");
+                $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total1");
 
                 $data = [
                     'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
@@ -60,7 +57,7 @@ class PushController extends Controller
                 ];
                 //var_dump($doctor->name);
 
-                //$rs = WechatSendTmp::send($data, $v->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                $rs = WechatSendTmp::send($data, $v->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                 $log = new Log('RegisterUnfinished');
                 $log->addLog($v->openid);
                 $log->addLog($rs?"ok":"no");
@@ -68,7 +65,7 @@ class PushController extends Controller
                 $openids[$v->openid] = 1;
 
                 if ($rs) {
-                    $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . $date, 1, "total1ok");
+                    $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total1ok");
                 }
 
                 usleep(300000);
@@ -78,8 +75,7 @@ class PushController extends Controller
 
         $list = \common\models\DoctorParent::find()
             ->leftJoin('child_info', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-            ->andFilterWhere(['>', 'doctor_parent.createtime', $stime])
-            ->andFilterWhere(['<', 'doctor_parent.createtime', $etime])
+            ->andWhere(['>', 'doctor_parent.createtime', $time])
             ->andWhere(['child_info.userid' => null])
             ->all();
         foreach ($list as $k => $v) {
@@ -94,7 +90,7 @@ class PushController extends Controller
                     $doctorids[$v->doctorid] = $doctor;
                 }
 
-                $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . $date, 1, "total2");
+                $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total2");
 
                 $data = [
                     'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
@@ -103,7 +99,7 @@ class PushController extends Controller
                     'remark' => ARRAY('value' => "\n 点击授权并完善宝宝信息，如果已添加宝宝请忽略此条提醒", 'color' => '#221d95'),
                 ];
                 //var_dump($doctor->name);
-                //$rs = WechatSendTmp::send($data, $userLogin->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                $rs = WechatSendTmp::send($data, $userLogin->openid, 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                 $log = new Log('RegisterUnfinished');
                 $log->addLog($userLogin->openid);
                 $log->addLog($rs?"ok":"no");
@@ -111,7 +107,7 @@ class PushController extends Controller
                 $openids[$userLogin->openid] = 1;
 
                 if ($rs) {
-                    $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . $date, 1, "total2ok");
+                    $redis->ZINCRBY("RegisterUnfinished" . $doctor->hospitalid . date('Ymd'), 1, "total2ok");
                 }
                 usleep(300000);
             }
