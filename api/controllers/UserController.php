@@ -38,23 +38,39 @@ class UserController extends Controller
 
     public function actionLogin($code)
     {
+        $log=new Log("login");
+
         //已登录
         if ($this->userLogin && $this->seaver_token) {
+            $log->addLog("已登录");
+            $log->addLog("userlogin:".$this->userLogin);
+            $log->addLog("seaver_token:".$this->seaver_token);
+
+
             $session_key = $this->seaver_token;
             $login = UserLogin::findOne(['id'=>$this->userLogin->id]);
             $xopenid = $login->xopenid;
             $unionid = $login->unionid;
             $useridKey = md5($this->userid . "6623cXvY");
+
+            $log->addLog("xopenid:".$login->xopenid);
+            $log->addLog("unionid:".$login->unionid);
         } else {
+            $log->addLog("未登录");
+
             //获取用户微信登陆信息
             $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
             $userJson = $curl->get();
+            $log->addLog("wxrequist:".$userJson);
             $user = json_decode($userJson, true);
             if ($user['errcode'] == 40029) {
+                $log->addLog("false");
+                $log->saveLog();
                 return new Code(30001, $user['errmsg']);
             }
             $value = $user['openid'] . '@@' . $user['session_key'] . '@@' . $user['unionid'];
+            $log->addLog("value:".$value);
 
             //生成session key
             $cache = \Yii::$app->rdmp;
@@ -68,6 +84,7 @@ class UserController extends Controller
                 //$userLogin=UserLogin::find()->andFilterWhere(['or',['xopenid'=>$user['openid'],'unionid'=>$user['unionid']]])->one();
                 $weOpenid = WeOpenid::findOne(['unionid' => $user['unionid']]);
                 if ($weOpenid) {
+                    $log->addLog("openid:".$weOpenid->openid);
                     $weOpenid->xopenid = $user['openid'];
                     $weOpenid->save();
                 }
@@ -85,12 +102,15 @@ class UserController extends Controller
 
                 $userid = $userLogin ? $userLogin->userid : 0;
                 if ($userLogin && !$userLogin->xopenid) {
+                    $log->addLog("userlogin:".$userLogin->id);
                     if ($weOpenid->openid) {
                         $userLogin->openid = $weOpenid->openid;
                     }
                     $userLogin->xopenid = $user['openid'];
                     $userLogin->unionid = $user['unionid'];
                     $userLogin->save();
+                    $log->addLog("登录:".json_encode($userLogin->firstErrors));
+
                 }
 
 
@@ -103,7 +123,8 @@ class UserController extends Controller
         }
 
         $huanxin = md5($xopenid . '7Z9WL3s2');
-        HuanxinUserHelper::getUserInfo($huanxin);
+        //HuanxinUserHelper::getUserInfo($huanxin);
+        $log->addLog("环信:".$huanxin);
 
         //对第一次登陆用户发送欢迎消息
         $cache = \Yii::$app->rdmp;
@@ -112,6 +133,8 @@ class UserController extends Controller
             //HuanxinHelper::setTxtMessage('wangzhentest',$huanxin,'欢迎使用中医儿童健康管理工具');
         }
         $cache->hset('firstLogin', $xopenid, time());
+
+        $log->saveLog();
 
         return ['sessionKey' => $session_key, 'userKey' => $useridKey, 'userName' => $huanxin];
 
@@ -137,6 +160,7 @@ class UserController extends Controller
 
             $log->addLog("openid:".$openid);
             $log->addLog("unionid:".$unionid);
+            $log->addLog("session_key:".$session[1]);
 
             $login = UserLogin::find();
             if ($openid != '') {
@@ -164,10 +188,10 @@ class UserController extends Controller
                 $code = $pc->decryptData($phoneEncryptedData, $phoneIv, $phoneJson);
                 $phone = json_decode($phoneJson, true);
                 if($phone['phoneNumber']){
-                    $log->addLog("phone:" . $phoneJson);
+                    $log->addLog("phone:" . $phone['phoneNumber']);
 
                 }else {
-                    $log->addLog("phone:" . $phone['phoneNumber']);
+                    $log->addLog("phone:" . $phoneJson);
                 }
 
                 if ($code == 0) {
