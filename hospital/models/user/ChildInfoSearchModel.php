@@ -107,10 +107,11 @@ class ChildInfoSearchModel extends ChildInfo
             $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
             $query->andFilterWhere(['not in', '`child_info`.userid',$parentids]);
             $query->andWhere(['`child_info`.`source`'=>$hospitalid]);
-
+            $query->andFilterWhere(['`child_info`.`admin`' => $hospitalid]);
         }else{
             $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
             $query->andFilterWhere(['`child_info`.`source`' => $hospitalid]);
+            $query->andFilterWhere(['`child_info`.`admin`' => $hospitalid]);
         }
 
 
