@@ -45,20 +45,33 @@ hospital\assets\DatabasesAsset::register($this);
                             <td><?php
                                 $today=strtotime(date('Y-m-d 00:00:00'));
                                 //今日已签约
-                                echo  \common\models\ChildInfo::find()
+                                $todayTotal=\common\models\ChildInfo::find()
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                     ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                     ->andFilterWhere(['`doctor_parent`.level'=>1])
-                                    ->andFilterWhere([">",'`doctor_parent`.createtime',$today])->count();
+                                    ->andFilterWhere([">",'`doctor_parent`.createtime',$today]);
+                                if(Yii::$app->user->identity->county==1114)
+                                {
+                                    echo $todayTotal->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+                                        ->count();
+                                }else{
+                                    echo $todayTotal->count();
+                                }
                                 ?>
                             </td>
                             <td><?php
                                 //已签约总数
-                                echo  $q=\common\models\ChildInfo::find()
+                                $ytotal=\common\models\ChildInfo::find()
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                     ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                     ->andFilterWhere(['`child_info`.`doctorid`' =>$v->hospitalid])
-                                        ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
+                                    ->andFilterWhere(['`doctor_parent`.level'=>1]);
+                                if(Yii::$app->user->identity->county==1114)
+                                {
+                                    echo $q=$ytotal->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])->count();
+                                }else{
+                                    echo $q=$ytotal->count();
+                                }
                                 ?>
                             </td>
                             <td><?php

@@ -67,22 +67,34 @@ class SiteController extends BaseController
 
 
         //今日签约数
-        $data['todayNum']=ChildInfo::find()
+        $todayTotal=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['in','`doctor_parent`.`doctorid`' ,$doctorids])
-            ->andFilterWhere([">",'`doctor_parent`.createtime',$today])
-            ->count();
+            ->andFilterWhere([">",'`doctor_parent`.createtime',$today]);
+        if(Yii::$app->user->identity->county==1114)
+        {
+             $data['todayNum']=$todayTotal->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+                ->count();
+        }else{
+             $data['todayNum']=$todayTotal->count();
+        }
+
 
         //签约儿童总数
-        $data['todayNumTotal']=ChildInfo::find()
+        $todayNumTotal=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['in','`doctor_parent`.`doctorid`' ,$doctorids])
-            ->andFilterWhere(['in','child_info.doctorid',$hospitalids])
+            ->andFilterWhere(['in','child_info.doctorid',$hospitalids]);
 
-            ->count();
-
+        if(Yii::$app->user->identity->county==1114)
+        {
+            $data['todayNumTotal']=$todayNumTotal->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+                ->count();
+        }else{
+            $data['todayNumTotal']=$todayNumTotal->count();
+        }
 
         //管辖儿童数
         $data['childNum']=ChildInfo::find()

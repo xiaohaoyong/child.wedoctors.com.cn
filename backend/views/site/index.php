@@ -187,6 +187,7 @@ databackend\assets\IndexAsset::register($this);
                                         ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                         ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                         ->andFilterWhere(['`doctor_parent`.level'=>1])
+                                        ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
                                         ->andFilterWhere([">",'`doctor_parent`.createtime',$today])->count();
                                     ?>
                                 </td>
@@ -196,7 +197,7 @@ databackend\assets\IndexAsset::register($this);
                                         ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                         ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                         ->andFilterWhere(['`child_info`.`doctorid`' =>$v->hospitalid])
-
+                                        ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
                                         ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
                                     ?>
                                 </td>

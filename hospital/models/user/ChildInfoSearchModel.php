@@ -88,6 +88,10 @@ class ChildInfoSearchModel extends ChildInfo
             // $query->where('0=1');
             return $dataProvider;
         }
+        if(Yii::$app->user->identity->county==1114)
+        {
+            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+        }
 
         $hospitalid=$this->admin?$this->admin:\Yii::$app->user->identity->hospital;
         $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
