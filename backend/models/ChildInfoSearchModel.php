@@ -84,6 +84,8 @@ class ChildInfoSearchModel extends ChildInfo
         ]);
         $this->load($params);
 
+        $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

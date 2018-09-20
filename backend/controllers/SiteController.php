@@ -78,11 +78,13 @@ class SiteController extends Controller
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere([">",'`doctor_parent`.createtime',$today])
+            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
             ->count();
         //签约儿童总数
         $data['todayNumTotal']=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
             ->count();
 
         //管辖儿童数
