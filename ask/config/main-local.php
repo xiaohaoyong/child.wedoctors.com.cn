@@ -22,4 +22,7 @@ if (!YII_ENV_TEST) {
     ];
 }
 
+
+$redis= require(__DIR__ . '/redis.php');
+$config['components']=$config['components']+$redis;
 return $config;
