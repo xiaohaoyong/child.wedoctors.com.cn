@@ -63,7 +63,6 @@ class ExaController extends Controller
             unset($list['field37']);
             unset($list['field38']);
             unset($list['field39']);
-            unset($list['field41']);
             unset($list['field42']);
             unset($list['field43']);
             unset($list['field45']);
