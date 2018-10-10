@@ -21,6 +21,7 @@ class ChildInfoSearchModel extends ChildInfo
 
 
 
+    public $child_type;
 
     public $username;
     public $userphone;
@@ -34,7 +35,7 @@ class ChildInfoSearchModel extends ChildInfo
     public function rules()
     {
         return [
-            [['id', 'userid', 'birthday', 'createtime', 'level','admin'], 'integer'],
+            [['id', 'userid', 'birthday', 'createtime', 'level','admin','child_type'], 'integer'],
             [['docpartimeS','docpartimeE','birthdayS','birthdayE', 'username'], 'string'],
             [['userphone'], 'integer'],
 
@@ -52,6 +53,7 @@ class ChildInfoSearchModel extends ChildInfo
             'birthdayE' => '~',
             'username' => '父母联系人姓名',
             'admin'=>'管理机构',
+            'child_type' => '儿童年龄段',
             'userphone' => '父母联系人手机号'
         ];
     }
@@ -87,6 +89,11 @@ class ChildInfoSearchModel extends ChildInfo
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
+        }
+        if($this->child_type){
+            $mouth = ChildInfo::getChildType($this->child_type);
+            $query->andFilterWhere(['>=', 'child_info.birthday', $mouth['firstday']]);
+            $query->andFilterWhere(['<=', 'child_info.birthday', $mouth['lastday']]);
         }
         if(Yii::$app->user->identity->county==1114)
         {

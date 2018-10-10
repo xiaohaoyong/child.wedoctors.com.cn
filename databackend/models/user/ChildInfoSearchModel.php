@@ -30,7 +30,7 @@ class ChildInfoSearchModel extends ChildInfo
     public function rules()
     {
         return [
-            [['id', 'userid', 'birthday', 'createtime', 'level','admin'], 'integer'],
+            [['id', 'userid', 'birthday', 'createtime', 'level','admin','child_type'], 'integer'],
             [['docpartimeS','docpartimeE','birthdayS','birthdayE', 'username'], 'string'],
             [['userphone'], 'integer'],
 
@@ -45,6 +45,8 @@ class ChildInfoSearchModel extends ChildInfo
             'docpartimeS' => '签约时间',
             'docpartimeE' => '~',
             'birthdayS' => '出生日期',
+            'child_type' => '儿童年龄段',
+
             'birthdayE' => '~',
             'username' => '父母联系人姓名',
             'admin'=>'管理机构',
