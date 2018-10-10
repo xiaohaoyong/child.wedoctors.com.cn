@@ -77,12 +77,13 @@ class DownController extends BaseController
             ->setCellValue('I'.$key1, '联系人姓名')
             ->setCellValue('J'.$key1, '联系人电话')
             ->setCellValue('K'.$key1, '签约社区')
-            ->setCellValue('L'.$key1, '签约时间')
-            ->setCellValue('M'.$key1, '签约状态')
-            ->setCellValue('N'.$key1, '是否宣教')
-            ->setCellValue('O'.$key1, '宣教月龄')
-            ->setCellValue('P'.$key1, '宣教内容')
-            ->setCellValue('Q'.$key1, '宣教时间');
+            ->setCellValue('L'.$key1, '居委会')
+            ->setCellValue('M'.$key1, '签约时间')
+            ->setCellValue('N'.$key1, '签约状态')
+            ->setCellValue('O'.$key1, '是否宣教')
+            ->setCellValue('P'.$key1, '宣教月龄')
+            ->setCellValue('Q'.$key1, '宣教内容')
+            ->setCellValue('R'.$key1, '宣教时间');
 //写入内容
         foreach($dataProvider->query->limit(500)->all() as $k=>$e) {
             $v=$e->toArray();
@@ -145,12 +146,13 @@ class DownController extends BaseController
                 ->setCellValue('I' . $key1, $userParent->field11 ?  $userParent->field11 : "无")
                 ->setCellValue('J' . $key1, $userParent->field12 ? " ".$userParent->field12 : "无")
                 ->setCellValue('K' . $key1, $sign->level==1 ? \common\models\UserDoctor::findOne(['userid'=>$sign->doctorid])->name : "--")
-                ->setCellValue('L' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
-                ->setCellValue('M' . $key1, $return)
-                ->setCellValue('N' . $key1, $is_article)
-                ->setCellValue('O' . $key1, $child_type)
-                ->setCellValue('P' . $key1, $title)
-                ->setCellValue('Q' . $key1, $date);
+                ->setCellValue('L' . $key1, $v['field50'])
+                ->setCellValue('M' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
+                ->setCellValue('N' . $key1, $return)
+                ->setCellValue('O' . $key1, $is_article)
+                ->setCellValue('P' . $key1, $child_type)
+                ->setCellValue('Q' . $key1, $title)
+                ->setCellValue('R' . $key1, $date);
         }
         // $objPHPExcel->setActiveSheetIndex(0);
 

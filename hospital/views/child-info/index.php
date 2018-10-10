@@ -110,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     }
                                 ],
-
+                                'field50',
                                 [
                                     'attribute' => '签约时间',
                                     'value' => function ($e) {
