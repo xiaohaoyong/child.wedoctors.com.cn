@@ -39,11 +39,10 @@ class UserController extends Controller
     public function actionLogin($code)
     {
         $log=new Log("login");
-
         //已登录
         if ($this->userLogin && $this->seaver_token) {
             $log->addLog("已登录");
-            $log->addLog("userlogin:".$this->userLogin);
+            $log->addLog("userlogin:".$this->userLogin->userid);
             $log->addLog("seaver_token:".$this->seaver_token);
 
 
