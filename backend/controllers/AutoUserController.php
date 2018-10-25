@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * AutoUserController implements the CRUD actions for AutoUser model.
  */
-class AutoUserController extends Controller
+class AutoUserController extends BaseController
 {
     /**
      * @inheritdoc

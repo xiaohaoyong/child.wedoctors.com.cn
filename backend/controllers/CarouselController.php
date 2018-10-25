@@ -14,7 +14,7 @@ use yii\web\UploadedFile;
 /**
  * CarouselController implements the CRUD actions for Carousel model.
  */
-class CarouselController extends Controller
+class CarouselController extends BaseController
 {
 
 

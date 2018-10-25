@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * ChainController implements the CRUD actions for Chain model.
  */
-class PushController extends Controller
+class PushController extends BaseController
 {
 
     /**
