@@ -9,27 +9,39 @@ use backend\models\rbac\Rbac;
 
 class BaseController extends \yii\web\Controller {
 
-    public function afterAction($action, $result)
+    private $notCheckAccess = ['/rbac/access-error', 'site/index'];
+
+    private $ignore = [
+        'site/login', 'site/logout','site/captcha'
+    ];
+
+    public function beforeAction($action)
     {
-        $actionName = $action->id;
-        $controller = $action->controller->id;
-        if($actionName != 'index')
+        parent::beforeAction($action);
+
+        $path = \Yii::$app->request->pathInfo;
+
+        if (in_array($path, $this->ignore))
         {
-            $menu_id = AuthMenu::find()->where(['name' => $controller.'/'.$actionName])->scalar();
-            if(!empty($menu_id))
-            {
-                $operate = Operate::findOne($menu_id);
-                if(!empty($operate))
-                {
-                    $model = new AdminOperate();
-                    $model->operate_id = (int) $operate->primaryKey;
-                    $model->operate_time = time();
-                    $model->admin_id = (int) \Yii::$app->user->identity->getId();
-                    $model->save();
-                }
-            }
+            return true;
         }
 
-        return parent::afterAction($action, $result);
+        if(\Yii::$app->user->isGuest)
+        {
+            return $this->redirect(\Yii::$app->user->loginUrl)->send();
+        }
+
+        $moduleId = \Yii::$app->controller->module->id === \Yii::$app->id ? '' : \Yii::$app->controller->module->id . '/';
+        $controllerId = \Yii::$app->controller->id . '/';
+        $actionId = \Yii::$app->controller->action->id;
+
+        $permissionName = $moduleId . $controllerId . $actionId;
+        $notCheckAccess = join('|', $this->notCheckAccess);
+
+        // 如果是登录或退出动作
+        if (stripos('/site/login|/site/logout', $permissionName) !== false) {
+            return true;
+        }
+        return true;
     }
 }
