@@ -198,6 +198,7 @@ databackend\assets\IndexAsset::register($this);
                                         ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                         ->andFilterWhere(['`child_info`.`doctorid`' =>$v->hospitalid])
                                         ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+                                        ->andFilterWhere(['<','child_info.birthday',strtotime('-6 month')])
                                         ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
                                     ?>
                                 </td>

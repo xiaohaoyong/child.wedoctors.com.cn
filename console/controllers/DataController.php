@@ -1048,6 +1048,7 @@ exit;
                 echo $hospitalid . "=" . $i . "===";
                 $row = explode(",", trim($line));
 
+                if($row[3]<'2018-01-01 00:00:00'){ echo "end\n";break;}
                 $row[3] = substr($row[3], 0, strlen($row[3]) - 11);
                 $ex = Examination::find()->andFilterWhere(['field1' => $row[0]])
                     ->andFilterWhere(['field2' => $row[1]])
@@ -1231,7 +1232,10 @@ exit;
                     $v->isupdate=0;
                     $v->save();
                 }
-
+                if(in_array($login->openid,$logins)){
+                    $v->isupdate=0;
+                    $v->save();
+                }
             }
         }
         echo $i;

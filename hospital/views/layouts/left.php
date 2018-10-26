@@ -30,6 +30,12 @@
                             ['label' => '平台召回用户统计', 'url' => ['/push-log']],
                         ]
                     ],
+                    ['label' => '预约系统管理','icon' => 'file-text-o','url' => "#",
+                        'items' => [
+                            ['label' => '预约系统设置', 'url' => ['user-doctor-appoint/view']],
+                            ['label' => '预约列表', 'url' => ['appoint/index']],
+                        ]
+                    ],
 
                 ],
             ]

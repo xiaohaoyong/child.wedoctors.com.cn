@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
                         <?= GridView::widget([
-                            'options'=>['class' => 'col-sm-12','style'=>"font-size: 12px;"],
+                            'options' => ['class' => 'col-sm-12', 'style' => "font-size: 12px;"],
                             'dataProvider' => $dataProvider,
                             'columns' => [
 
@@ -53,12 +53,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute' => '年龄',
                                     'value' => function ($e) {
                                         $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $e->birthday));
-                                        if($DiffDate[0]) {
-                                            $age=$DiffDate[0]."岁";
-                                        }elseif($DiffDate[1]){
-                                            $age=$DiffDate[1]."月";
-                                        }else{
-                                            $age=$DiffDate[2]."天";
+                                        if ($DiffDate[0]) {
+                                            $age = $DiffDate[0] . "岁";
+                                        } elseif ($DiffDate[1]) {
+                                            $age = $DiffDate[1] . "月";
+                                        } else {
+                                            $age = $DiffDate[2] . "天";
                                         }
                                         return $age;
                                     }
@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '父母',
                                     'value' => function ($e) {
-                                        return $e->parent->mother || $e->parent->father?$e->parent->mother."/".$e->parent->father:"无";
+                                        return $e->parent->mother || $e->parent->father ? $e->parent->mother . "/" . $e->parent->father : "无";
                                     }
                                 ],
                                 [
@@ -95,15 +95,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                 [
                                     'attribute' => '签约社区',
-                                    'format'=>'raw',
+                                    'format' => 'raw',
                                     'value' => function ($e) {
-                                        $sign = \common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
+                                        $sign = \common\models\DoctorParent::findOne(['parentid' => $e->userid, 'level' => 1]);
 
-                                        $file3="--";
-                                        if($sign->level==1){
-                                            $doctorParent=\common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
-                                            $doctor=\common\models\UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
-                                            $file3=$doctor?$doctor->name:"==";
+                                        $file3 = "--";
+                                        if ($sign->level == 1) {
+                                            $doctorParent = \common\models\DoctorParent::findOne(['parentid' => $e->userid, 'level' => 1]);
+                                            $doctor = \common\models\UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
+                                            $file3 = $doctor ? $doctor->name : "==";
                                         }
 
                                         return $file3;
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '签约时间',
                                     'value' => function ($e) {
-                                        $sign = \common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
+                                        $sign = \common\models\DoctorParent::findOne(['parentid' => $e->userid, 'level' => 1]);
 
                                         return $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无";
                                     }
@@ -123,16 +123,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute' => '签约状态',
                                     'value' => function ($e) {
 
-                                        $sign = \common\models\DoctorParent::findOne(['parentid'=>$e->userid,'level'=>1]);
+                                        $sign = \common\models\DoctorParent::findOne(['parentid' => $e->userid, 'level' => 1]);
 
-                                        if($sign->level!=1)
-                                        {
-                                            $return="未签约";
-                                        }else{
-                                            if($e->source<=38){
-                                                $return="已签约未关联";
+                                        if ($sign->level != 1) {
+                                            $return = "未签约";
+                                        } else {
+                                            if ($e->source <= 38) {
+                                                $return = "已签约未关联";
 
-                                            }else {
+                                            } else {
                                                 $return = "已签约";
                                             }
                                         }
