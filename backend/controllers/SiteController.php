@@ -7,6 +7,7 @@ use common\models\ArticleUser;
 use common\models\DoctorParent;
 use common\models\UserDoctor;
 use common\models\UserParent;
+use common\models\WeOpenid;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -135,6 +136,10 @@ class SiteController extends BaseController
             ->andFilterWhere(['`doctor_parent`.`level`'=>1])
             ->orderBy('`doctor_parent`.`createtime` desc')->limit(9)->all();
 
+        $qrcodeNum=WeOpenid::find()
+            ->andFilterWhere(['>','createtime',$today])
+            ->count();
+
 
         $doctor=UserDoctor::find()->all();
 
@@ -142,7 +147,8 @@ class SiteController extends BaseController
             'data'=>$data,
             'line_data'=>$line_data,
             'now'=>$now,
-            'doctor'=>$doctor
+            'doctor'=>$doctor,
+            'qrcodeNum'=>$qrcodeNum,
 
         ]);
     }
