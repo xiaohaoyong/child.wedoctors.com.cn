@@ -62,6 +62,10 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'phone')->textInput() ?>
                 <?= $form->field($userInfo, 'phone')->textInput() ?>
+                <?= $form->field($userInfo, 'appoint')->radioList([0=>'否',1=>'是'], ['prompt' => '请选择']) ?>
+
+                <?= $form->field($userInfo, 'longitude')->textInput() ?>
+                <?= $form->field($userInfo, 'latitude')->textInput() ?>
 
 
                 <?= $form->field($userInfo, 'subject_b')->dropDownList(\common\models\Subject::$subject_b,
