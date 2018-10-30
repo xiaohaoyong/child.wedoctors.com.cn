@@ -335,4 +335,17 @@ class UserController extends Controller
         }
     }
 
+    public function actionCode($phone){
+        if(!preg_match("/^1[34578]\d{9}$/", $phone)){
+            return new Code(20010,'手机号码验证失败');
+        }
+    }
+    public function actionGetCode($phone,$code){
+        if(!preg_match("/^1[34578]\d{9}$/", $phone)){
+            return new Code(20010,'手机号码验证失败');
+        }
+        if($code!=123456){
+            return new Code(20010,'手机验证码错误');
+        }
+    }
 }
