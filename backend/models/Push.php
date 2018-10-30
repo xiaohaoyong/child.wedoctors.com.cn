@@ -51,6 +51,7 @@ class Push extends Model
         }
         if($this->age)
         {
+            $hospitalid=UserDoctor::findOne(['userid'=>$this->hospital])->hospitalid;
             $childs=[];
             foreach($this->age as $k=>$v)
             {
@@ -59,6 +60,7 @@ class Push extends Model
                     ->select('userid')
                     ->andFilterWhere(['>', 'birthday', $mouth['firstday']])
                     ->andFilterWhere(['<', 'birthday', $mouth['lastday']])
+                    ->andFilterWhere(['doctorid'=>$hospitalid])
                     ->column();
                 $childs=array_merge($childs,$ages);
             }
@@ -69,7 +71,7 @@ class Push extends Model
         {
             $userids=UserLogin::find()->select('userid')->where(['!=', 'openid',''])->column();
         }elseif($hospitals && $childs){
-            $userids=array_intersect($hospitals,$childs);
+            $userids=array_intersect($childs,$hospitals);
         }elseif($hospitals)
         {
             $userids=$hospitals;

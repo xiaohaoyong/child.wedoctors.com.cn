@@ -48,17 +48,17 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
 
     public function getAuthkey()
     {
-        return true;
+        return $this->auth_key;
     }
 
     public function validateAuthKey($authKey)
     {
-        return true;
+        return $this->auth_key === $authKey;
     }
 
     public function validatePassword($password)
     {          //②
-        return true;
+        return $this->password === md5(md5("data.wedoctors").$password);
     }
 
     /**
