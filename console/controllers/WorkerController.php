@@ -23,21 +23,7 @@ class WorkerController extends BeanstalkController
     }
 
     public $lineLog;
-    /**
-     *
-     * 日志
-     * @param $value
-     */
-    public function addLog($value)
-    {
-        $this->lineLog .= "==" . $value;
-    }
 
-    public function saveLog()
-    {
-        $file = "/home/wwwlogs/child.wedoctors.com.cn/worker/push" . date('Y-m-d') . ".log";
-        file_put_contents($file, $this->lineLog . "\n", FILE_APPEND);
-    }
 
     /**
      * 采集数据
@@ -51,8 +37,8 @@ class WorkerController extends BeanstalkController
         $sentData = $job->getData();
         $artid=$sentData->artid;
         $userids=$sentData->userids;
-        $this->addLog($artid);
-        $this->addLog(implode("||",$userids));
+        $log=new \common\components\Log("pushWorker");
+        $log->addLog(implode("||",$userids));
 
         $article=\common\models\Article::findOne($artid);
         if($article)
@@ -88,22 +74,24 @@ class WorkerController extends BeanstalkController
                 "appid"=>\Yii::$app->params['wxXAppId'],
                 "pagepath"=>"/pages/article/view/index?id=".$artid,
             ];
+            $log->saveLog();
 
 
             foreach($userids as $k=>$v) {
                 $userLogin=UserLogin::findOne(['userid'=>$v]);
                 if($userLogin->openid) {
-                    //$rs=WechatSendTmp::send($data, $userLogin->openid,$temp,'',$miniprogram);
-                    $this->addLog($userLogin->openid);
+                    $rs=WechatSendTmp::send($data, $userLogin->openid,$temp,'',$miniprogram);
+                    $log->addLog($userLogin->openid);
+                    $log->addLog($rs);
 
                 }
                 if($article->art_type!=2)
                 {
                     $key=$article->catid==6?3:5;
-                    //Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$artid,]);
+                    Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$artid,]);
                 }
             }
-            $this->saveLog();
+            $log->saveLog();
         }
         return self::DELETE;
     }
