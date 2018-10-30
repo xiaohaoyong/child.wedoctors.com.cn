@@ -42,9 +42,9 @@ class Controller extends \yii\web\Controller
         $controllerID = \Yii::$app->controller->id;
         $actionID = \Yii::$app->controller->action->id;
 
-        if(true)//$this->seaver_token && $session[0])
+        if($this->seaver_token && $session[0])
         {
-            $userLogin=UserLogin::findOne(['userid'=>94298]);
+            $userLogin=UserLogin::findOne(['xopenid'=>$session[0]]);
             if(!$userLogin && !in_array($controllerID."/".$actionID,$this->result)){
                 $cache=\Yii::$app->rdmp;
                 $cache->lpush("user_login_error",$session[0]);
