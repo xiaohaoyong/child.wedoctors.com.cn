@@ -99,16 +99,21 @@ class AppointController extends Controller
                 //var_dump($doctor->name);
                 $userLogin=$this->userLogin;
                 if($userLogin->openid) {
+                    $doctor=UserDoctor::findOne(['userid'=>$model->doctorid]);
+                    if($doctor){
+                        $hospital=Hospital::findOne($doctor->hospitalid);
+                    }
+                    $child=ChildInfo::findOne($model->childid);
+
                     $data = [
-                        'keyword1' => ARRAY('value' => "宝宝基本信息"),
-                        'keyword2' => ARRAY('value' => "测试"),
-                        'keyword3' => ARRAY('value' => "测试"),
-                        'keyword4' => ARRAY('value' => "测试"),
-                        'keyword5' => ARRAY('value' => "测试"),
-                        'keyword6' => ARRAY('value' => "测试"),
-                        'keyword7' => ARRAY('value' => "测试"),
-                        'keyword8' => ARRAY('value' => "测试"),
-                        'keyword9' => ARRAY('value' => "测试"),
+                        'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                        'keyword2' => ARRAY('value' => $hospital->name),
+                        'keyword3' => ARRAY('value' => date('Y-m-d',$model->appoint_date)." ".Appoint::$timeText[$model->appoint_time]),
+                        'keyword4' => ARRAY('value' => $child?$child->name:''),
+                        'keyword5' => ARRAY('value' => $model->phone),
+                        'keyword6' => ARRAY('value' => "预约成功"),
+                        'keyword7' => ARRAY('value' => $model->createtime),
+                        'keyword8' => ARRAY('value' => Appoint::$typeInfoText[$model->type]),
                     ];
                     $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'Ejdm_Ih_W0Dyi6XrEV8Afrsg6HILZh0w8zg2uF0aIS0', '/pages/appoint/view?id='.$model->id,$post['formid']);
                 }
@@ -154,11 +159,29 @@ class AppointController extends Controller
         }
         return $list;
     }
-    public function actionDelete($id){
+    public function actionDelete($id,$formid){
 
-        $appoint=Appoint::findOne(['id'=>$id,'userid'=>$this->userid]);
-        if(!$appoint->delete()){
+        $model=Appoint::findOne(['id'=>$id,'userid'=>$this->userid]);
+        if(!$model->delete()){
             return new Code(20010,'取消失败！');
+        }else{
+            $userLogin=$this->userLogin;
+            if($userLogin->openid) {
+                $doctor=UserDoctor::findOne(['userid'=>$model->doctorid]);
+                if($doctor){
+                    $hospital=Hospital::findOne($doctor->hospitalid);
+                }
+                $child=ChildInfo::findOne($model->childid);
+
+                $data = [
+                    'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                    'keyword2' => ARRAY('value' => date('Y-m-d',$model->appoint_date)." ".Appoint::$timeText[$model->appoint_time]),
+                    'keyword3' => ARRAY('value' => date('Y年m月d日 H:i:00')),
+                    'keyword4' => ARRAY('value' => "已取消"),
+
+                ];
+                $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'sG19zJw7LhBT-SrZYNJbuH1TTYtQFKfVEviXKf1ERFI',$formid);
+            }
         }
     }
 

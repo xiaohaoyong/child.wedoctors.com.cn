@@ -38,6 +38,11 @@ class Appoint extends \yii\db\ActiveRecord
         2=>'疫苗预约',
         3=>'微量元素',
     ];
+    public static $typeInfoText=[
+        1=>'身高、体重、头围、面色等检查项目',
+        2=>'身乙肝疫苗、卡介苗、百日破疫苗',
+        3=>'微量元素检查，锌、铁、钙',
+    ];
     /**
      * {@inheritdoc}
      */
