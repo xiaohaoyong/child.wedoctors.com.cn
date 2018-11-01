@@ -130,6 +130,9 @@ class ChildInfoInput
                 'field28'       => $value[34],
                 'field12'       => $value[13],
                 'field11'       => $value[12],
+                'field44'       => $value[44],
+                'field45'       => $value[45],
+
             ];
             $userParentData=array_filter($userParentData,function($e){
                 if($e!='' || $e!=null) return true;

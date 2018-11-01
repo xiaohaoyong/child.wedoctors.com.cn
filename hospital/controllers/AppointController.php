@@ -29,6 +29,14 @@ class AppointController extends Controller
         ];
     }
 
+    public function actionDone($id){
+
+        $model=$this->findModel($id);
+        $model->state=2;
+        $model->save();
+
+        return $this->redirect(['index']);
+    }
     /**
      * Lists all Appoint models.
      * @return mixed

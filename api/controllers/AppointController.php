@@ -8,6 +8,8 @@
 
 namespace api\controllers;
 
+use common\components\Code;
+use common\helpers\WechatSendTmp;
 use common\models\Appoint;
 use common\models\Article;
 use common\models\ArticleLike;
@@ -17,8 +19,12 @@ use common\models\Carousel;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Doctors;
+use common\models\Hospital;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
+use databackend\models\User;
+use dosamigos\qrcode\lib\Enum;
+use dosamigos\qrcode\QrCode;
 use yii\data\Pagination;
 
 class AppointController extends Controller
@@ -71,6 +77,95 @@ class AppointController extends Controller
 
         //doctor
         $appoint=UserDoctorAppoint::findOne(['doctorid'=>$id]);
-        return ['childs'=>$childs,'appoint'=>$appoint];
+
+        $phone=$this->userLogin->phone;
+        $phone=$phone?$phone:$this->user->phone;
+        return ['childs'=>$childs,'appoint'=>$appoint,'phone'=>$phone];
     }
+
+    public function actionSave(){
+        $post=\Yii::$app->request->post();
+
+        $appoint=Appoint::findOne(['childid'=>$post['childid'],'type'=>$post['type'],'state'=>1]);
+        if($appoint){
+            return new Code(20020,'您有未完成的预约');
+        }else {
+            $model = new Appoint();
+            $post['appoint_date'] = strtotime($post['appoint_date']);
+            $post['state'] = 1;
+            $post['userid'] = $this->userid;
+            $model->load(["Appoint" => $post]);
+            if ($model->save()) {
+                //var_dump($doctor->name);
+                $userLogin=$this->userLogin;
+                if($userLogin->openid) {
+                    $data = [
+                        'keyword1' => ARRAY('value' => "宝宝基本信息"),
+                        'keyword2' => ARRAY('value' => "测试"),
+                        'keyword3' => ARRAY('value' => "测试"),
+                        'keyword4' => ARRAY('value' => "测试"),
+                        'keyword5' => ARRAY('value' => "测试"),
+                        'keyword6' => ARRAY('value' => "测试"),
+                        'keyword7' => ARRAY('value' => "测试"),
+                        'keyword8' => ARRAY('value' => "测试"),
+                        'keyword9' => ARRAY('value' => "测试"),
+                    ];
+                    $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'Ejdm_Ih_W0Dyi6XrEV8Afrsg6HILZh0w8zg2uF0aIS0', '/pages/appoint/view?id='.$model->id,$post['formid']);
+                }
+
+                return ['id' => $model->id];
+            } else {
+                return new Code(20010, implode(':', $model->firstErrors));
+            }
+        }
+    }
+
+    public function actionView($id){
+        $appoint=Appoint::findOne(['id'=>$id]);
+
+        $row=$appoint->toArray();
+        $doctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
+        if($doctor){
+            $hospital=Hospital::findOne($doctor->hospitalid);
+        }
+        $row['hospital']=$hospital->name;
+        $row['type']=Appoint::$typeText[$appoint->type];
+        $row['time']=date('Y.m.d')."  ".Appoint::$timeText[$appoint->appoint_time];
+        $row['child_name']=ChildInfo::findOne($appoint->childid)->name;
+
+        return $row;
+    }
+
+    public function actionMy($state=1){
+        $appoints=Appoint::findAll(['userid'=>$this->userid,'state'=>$state]);
+
+        foreach($appoints as $k=>$v){
+            $row=$v->toArray();
+            $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+            if($doctor){
+                $hospital=Hospital::findOne($doctor->hospitalid);
+            }
+            $row['hospital']=$hospital->name;
+            $row['type']=Appoint::$typeText[$v->type];
+            $row['time']=date('Y.m.d')."  ".Appoint::$timeText[$v->appoint_time];
+            $row['stateText']=Appoint::$stateText[$v->state];
+            $row['child_name']=ChildInfo::findOne($v->childid)->name;
+            $list[]=$row;
+        }
+        return $list;
+    }
+    public function actionDelete($id){
+
+        $appoint=Appoint::findOne(['id'=>$id,'userid'=>$this->userid]);
+        if(!$appoint->delete()){
+            return new Code(20010,'取消失败！');
+        }
+    }
+
+
+    public function actionQrCode($id){
+        QrCode::png('appoint:'.$id,false,Enum::QR_ECLEVEL_H,10);exit;
+    }
+
+
 }

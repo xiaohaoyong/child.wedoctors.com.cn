@@ -17,6 +17,8 @@ use Yii;
  * @property int $state 1,散居
  * @property string $address 详细地址
  * @property int $source 导入来源医院ID
+ * @property int $field44 户籍所在省
+ * @property int $field45 户籍所在市
  * @property string $field34 父亲文化程度
  * @property string $field33 父亲职业
  * @property string $field30 母亲文化程度
@@ -73,6 +75,8 @@ class UserParent extends \yii\db\ActiveRecord {
             'field28' => '母亲出生日期',
             'field12' => '联系人电话',
             'field11' => '联系人姓名',
+            'field44' => '户籍所在省',
+            'field45' => '户籍所在市',
             'field1' => '户口',
             'province' => '省', 'county' => '县', 'city' => '市',
         ];

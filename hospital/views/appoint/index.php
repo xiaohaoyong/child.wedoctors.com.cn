@@ -37,11 +37,50 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return \common\models\ChildInfo::findOne(['id'=>$e->childid])->name;
                                     }
                                 ],
-                                'createtime:datetime',
-                                'appoint_time:datetime',
-                                'appoint_date',
+                                [
+
+                                    'attribute' => '儿童性别',
+                                    'value' => function ($e) {
+                                        $child= \common\models\ChildInfo::findOne(['id'=>$e->childid]);
+                                        return \common\models\ChildInfo::$genderText[$child->gender];
+                                    }
+                                ],
+                                [
+
+                                    'attribute' => '母亲姓名',
+                                    'value' => function ($e) {
+                                        return \common\models\UserParent::findOne(['userid'=>$e->userid])->mother;
+                                    }
+                                ],
+                                [
+
+                                    'attribute' => '户籍地',
+                                    'value' => function ($e) {
+                                        return \common\models\UserParent::findOne(['userid'=>$e->userid])->field44;
+                                    }
+                                ],
+                                [
+
+                                    'attribute' => 'appoint_date',
+                                    'value' => function ($e) {
+                                        return date('Y-m-d',$e->appoint_date);
+                                    }
+                                ],
+                                [
+
+                                    'attribute' => 'appoint_time',
+                                    'value' => function ($e) {
+                                        return \common\models\Appoint::$timeText[$e->appoint_time];
+                                    }
+                                ],
                                 'phone',
-                                'state',
+                                [
+
+                                    'attribute' => 'state',
+                                    'value' => function ($e) {
+                                        return \common\models\Appoint::$stateText[$e->state];
+                                    }
+                                ],
                                 [
                                     'class' => 'common\components\grid\ActionColumn',
                                     'template' => '
@@ -56,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ',
                                     'buttons' => [
                                         'true' => function ($url, $model, $key) {
-                                            return Html::a('<span class="fa fa-database"></span> 完成', \yii\helpers\Url::to(['article-user/index']),['data-confirm'=>"是否确定已完成"]);
+                                            return Html::a('<span class="fa fa-database"></span> 完成', \yii\helpers\Url::to(['appoint/done','id'=>$model->id]),['data-confirm'=>"是否确定已完成"]);
                                         },
                                     ],
                                 ],
