@@ -180,12 +180,10 @@ class AppointController extends Controller
                     'keyword4' => ARRAY('value' => "已取消"),
 
                 ];
-                $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'sG19zJw7LhBT-SrZYNJbuH1TTYtQFKfVEviXKf1ERFI',$formid);
+                $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'sG19zJw7LhBT-SrZYNJbuH1TTYtQFKfVEviXKf1ERFI','',$formid);
             }
         }
     }
-
-
     public function actionQrCode($id){
         QrCode::png('appoint:'.$id,false,Enum::QR_ECLEVEL_H,10);exit;
     }
