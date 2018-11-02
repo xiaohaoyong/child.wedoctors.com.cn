@@ -11,6 +11,7 @@ use Yii;
  * @property int $weeks
  * @property int $cycle
  * @property int $delay
+ * @property int $type
  * @property int $type1_num
  * @property int $type2_num
  * @property int $type3_num
@@ -22,6 +23,7 @@ class UserDoctorAppoint extends \yii\db\ActiveRecord
 {
     public $week;
     public static $cycleText=[1=>'1周',2=>'2周',3=>'1个月'];
+    public static $typeText=[1=>'体检预约',2=>'疫苗预约',3=>'微量元素'];
     /**
      * {@inheritdoc}
      */
@@ -37,7 +39,7 @@ class UserDoctorAppoint extends \yii\db\ActiveRecord
     {
         return [
             [['doctorid','week'], 'required'],
-            [['doctorid', 'cycle', 'delay', 'type1_num', 'type2_num', 'type3_num', 'type4_num', 'type5_num', 'type6_num'], 'integer'],
+            [['doctorid', 'cycle', 'delay', 'type1_num', 'type2_num', 'type3_num', 'type4_num', 'type5_num', 'type6_num','type'], 'integer'],
             [['doctorid'], 'unique'],
         ];
     }
@@ -53,6 +55,7 @@ class UserDoctorAppoint extends \yii\db\ActiveRecord
             'week'=>'允许预约日期',
             'cycle' => '周期长度',
             'delay' => '延迟日期',
+            'type' => '类型',
             'type1_num' => '08：00-09：00预约人数',
             'type2_num' => '09：00-10：00预约人数',
             'type3_num' => '10：00-11：00预约人数',

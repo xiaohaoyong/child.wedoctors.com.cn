@@ -14,8 +14,7 @@ use yii\widgets\ActiveForm;
             <!-- /.box-header -->
             <div class="box-body">
                 <?php $form = ActiveForm::begin(); ?>
-
-
+                <?= $form->field($model,'type')->hiddenInput()->label(false);?>
                 <?= $form->field($model, 'doctorid')->hiddenInput()->label(false); ?>
 
                 <table id="w0" class="table table-striped table-bordered detail-view">

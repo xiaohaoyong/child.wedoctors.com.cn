@@ -95,12 +95,14 @@ class UserDoctorAppointController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate()
+    public function actionUpdate($type)
     {
         $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
-        $model= UserDoctorAppoint::findOne(['doctorid'=>$doctorid]);
+        $model= UserDoctorAppoint::findOne(['doctorid'=>$doctorid,'type'=>$type]);
         $model = $model?$model:new UserDoctorAppoint();
         $model->doctorid=$doctorid;
+        $model->type=$type;
+
         if($model->weeks){
             $model->week=str_split((string)$model->weeks);
         }

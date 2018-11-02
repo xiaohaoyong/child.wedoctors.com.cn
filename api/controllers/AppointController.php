@@ -72,16 +72,19 @@ class AppointController extends Controller
         return ['doctors'=>$docs,'doc'=>$doc];
     }
 
-    public function actionForm($id){
+    public function actionForm($id,$type){
         $childs=ChildInfo::findAll(['userid'=>$this->userid]);
 
 
         //doctor
-        $appoint=UserDoctorAppoint::findOne(['doctorid'=>$id]);
-
-        $phone=$this->userLogin->phone;
-        $phone=$phone?$phone:$this->user->phone;
-        return ['childs'=>$childs,'appoint'=>$appoint,'phone'=>$phone];
+        $appoint=UserDoctorAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
+        if($appoint) {
+            $phone = $this->userLogin->phone;
+            $phone = $phone ? $phone : $this->user->phone;
+            return ['childs' => $childs, 'appoint' => $appoint, 'phone' => $phone];
+        }else{
+            return new Code(20010,'社区医院暂未开通服务！');
+        }
     }
 
     public function actionSave(){
