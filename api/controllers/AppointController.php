@@ -58,6 +58,7 @@ class AppointController extends Controller
             }else{
                 $weeks="";
             }
+            $rs['name']=Hospital::findOne($v->hospitalid)->name;
             $rs['appoint_time']=$weeks;
             $docs[]=$rs;
             if($doctorid==$v->userid){
@@ -94,6 +95,7 @@ class AppointController extends Controller
             $post['appoint_date'] = strtotime($post['appoint_date']);
             $post['state'] = 1;
             $post['userid'] = $this->userid;
+            $post['loginid']=$this->userLogin->id;
             $model->load(["Appoint" => $post]);
             if ($model->save()) {
                 //var_dump($doctor->name);

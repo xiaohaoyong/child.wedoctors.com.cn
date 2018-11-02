@@ -2,6 +2,8 @@
 
 namespace hospital\controllers;
 
+use common\helpers\WechatSendTmp;
+use common\models\UserLogin;
 use Yii;
 use common\models\Appoint;
 use hospital\models\AppointSearchModels;
@@ -33,7 +35,19 @@ class AppointController extends Controller
 
         $model=$this->findModel($id);
         $model->state=2;
-        $model->save();
+        if($model->save()){
+
+            $login=UserLogin::findOne(['id'=>$model->loginid]);
+            $data = [
+                'first'=>['value'=>'服务已完成'],
+                'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                'keyword2' => ARRAY('value' => date('Y年m月d日 H:i:00')),
+                'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
+
+            ];
+            $rs = WechatSendTmp::send($data,$login->openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA','',['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
+
+        }
 
         return $this->redirect(['index']);
     }

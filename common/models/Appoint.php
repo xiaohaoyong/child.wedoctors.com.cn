@@ -57,7 +57,7 @@ class Appoint extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone','state'], 'integer'],
+            [['loginid','userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone','state'], 'integer'],
         ];
     }
 
@@ -76,7 +76,8 @@ class Appoint extends \yii\db\ActiveRecord
             'type' => '预约项目',
             'childid' => '儿童',
             'phone' => '手机号',
-            'state'=>'预约状态'
+            'state'=>'预约状态',
+            'loginid'=>'登录信息',
         ];
     }
 
