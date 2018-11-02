@@ -75,7 +75,12 @@ class UserDoctorController extends BaseController
         if(Yii::$app->request->isPost){
             $model->load(Yii::$app->request->post());
             if($model->save()) {
+
                 $userInfo->load(Yii::$app->request->post());
+                if($userInfo->appoints){
+                    $userInfo->appoint=implode('',$userInfo->appoints);
+                    $userInfo->appoints=$userInfo->appoint;
+                }
 
                 $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($userInfo, 'avatar'));
                 if ($imagesFile) {
@@ -116,6 +121,7 @@ class UserDoctorController extends BaseController
         $model = User::findOne($id);
         $userInfo=\common\models\UserDoctor::findOne(['userid'=>$id]);
         $userInfo=$userInfo?$userInfo:new \common\models\UserDoctor;
+
         $userLogin=$model->login;
         $model->loadDefaultValues();
         $userInfo->loadDefaultValues();
@@ -123,7 +129,13 @@ class UserDoctorController extends BaseController
         if(Yii::$app->request->isPost){
             $model->load(Yii::$app->request->post());
             $userid=$model->save();
+
             $userInfo->load(Yii::$app->request->post());
+
+            if($userInfo->appoints){
+                $userInfo->appoint=implode('',$userInfo->appoints);
+                $userInfo->appoints=$userInfo->appoint;
+            }
 
             $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($userInfo,'avatar'));
             if($imagesFile) {
@@ -142,8 +154,14 @@ class UserDoctorController extends BaseController
                 \Yii::$app->getSession()->setFlash('success');
                 return $this->redirect(['update', 'id' => $model->id]);
 
+            }else{
+                var_dump($userInfo->firstErrors);exit;
             }
             return $this->redirect(['update', 'id' => $model->id]);
+        }else{
+            if($userInfo->appoint){
+                $userInfo->appoints=str_split((string)$userInfo->appoint);
+            }
         }
 
         return $this->render('update', [

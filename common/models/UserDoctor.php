@@ -40,6 +40,8 @@ class UserDoctor extends \yii\db\ActiveRecord
     public static $sexText = [1 => '男', 2 => '女',];
     public static $titleText = [0 => '未设置', 1 => '主任医师', 2 => '副主任医师', 3 => '主治医师', 4 => '住院医师', 16 => '助理医师', 5 => '护士', 6 => '护师', 7 => '主管护师', 8 => '副主任护师', 9 => '主任护师', 10 => '药士', 11 => '药师', 12 => '主管药师', 13 => '副主任药师', 14 => '主任药师', 15 => '其他', 17 => '检验士', 18 => '主管检验师', 19 => '副主任检验师', 20 => '主任检验师'];
 
+    public $appoints;
+
     /**
      * @inheritdoc
      */
@@ -53,7 +55,7 @@ class UserDoctor extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [[['userid'], 'required'], [['longitude', 'latitude'], 'number'], [['userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype','appoint'], 'integer'], [['name'], 'string', 'max' => 15], [['intro', 'avatar', 'skilful'], 'string', 'max' => 150], [['idnum'], 'string', 'max' => 18], [['authimg'], 'string', 'max' => 200],];
+        return [[['userid'], 'required'], [['longitude', 'latitude'], 'number'], [['appoints','userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype', 'appoint'], 'integer'], [['name'], 'string', 'max' => 15], [['intro', 'avatar', 'skilful'], 'string', 'max' => 150], [['idnum'], 'string', 'max' => 18], [['authimg'], 'string', 'max' => 200],];
     }
 
     /**
@@ -61,7 +63,7 @@ class UserDoctor extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return ['longitude'=>'经度','latitude'=>'纬度','appoint'=>'是否开通预约','userid' => '用户ID', 'name' => '姓名', 'sex' => '性别', 'age' => '年龄', 'birthday' => '生日', 'phone' => '医院电话', 'hospitalid' => '所以在医院', 'subject_b' => '一级科室', 'subject_s' => '二级科室', 'title' => '职称', 'intro' => '简介', 'avatar' => '头像', 'skilful' => '擅长', 'idnum' => '身份证号码', 'province' => '省', 'county' => '县', 'city' => '市', 'atitle' => '行政职称', 'otype' => '职业类型', 'authimg' => '证件照',];
+        return ['longitude' => '经度', 'latitude' => '纬度', 'appoints' => '预约项目', 'appoint' => '是否开通预约', 'userid' => '用户ID', 'name' => '姓名', 'sex' => '性别', 'age' => '年龄', 'birthday' => '生日', 'phone' => '医院电话', 'hospitalid' => '所以在医院', 'subject_b' => '一级科室', 'subject_s' => '二级科室', 'title' => '职称', 'intro' => '简介', 'avatar' => '头像', 'skilful' => '擅长', 'idnum' => '身份证号码', 'province' => '省', 'county' => '县', 'city' => '市', 'atitle' => '行政职称', 'otype' => '职业类型', 'authimg' => '证件照',];
     }
 
     /**
@@ -149,7 +151,7 @@ class UserDoctor extends \yii\db\ActiveRecord
         $time_next = $time_next % 2592000;
         //天份
         $day = intval($time_next / 86400);
-        return $year.'岁'.$month.'个月'.$day.'天';
+        return $year . '岁' . $month . '个月' . $day . '天';
     }
 
     //获取儿童宣讲列表最近两条 刘方露
@@ -197,7 +199,7 @@ class UserDoctor extends \yii\db\ActiveRecord
                 foreach ($model as $value) {
                     $data['time'] = date('y/m/d', $value['createtime']);
                     $data['content'] = $value['content'];
-                    $data['title'] = UserDoctor::GetOneById($value['userid'])['name'].'医生记录';
+                    $data['title'] = UserDoctor::GetOneById($value['userid'])['name'] . '医生记录';
                     $data['artid'] = $value['id'];
                     $array[] = $data;
                 }
@@ -214,22 +216,22 @@ class UserDoctor extends \yii\db\ActiveRecord
      */
     public static function GetChildListByAge($num, $age, $doctorid)
     {
-        $child_type=$num;
+        $child_type = $num;
 
         //获取年龄范围
-        $mouth= ChildInfo::getChildType($child_type);
+        $mouth = ChildInfo::getChildType($child_type);
 
         //已签约的用户
-        $doctorParent= DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid])->column();
+        $doctorParent = DoctorParent::find()->select('parentid')->where(['doctorid' => $doctorid])->column();
 
 
-        $child=ChildInfo::find()->where(['>','birthday',$mouth['firstday']])
-            ->andFilterWhere(['<','birthday',$mouth['lastday']])
-            ->andFilterWhere(['in','userid',array_values($doctorParent)])
+        $child = ChildInfo::find()->where(['>', 'birthday', $mouth['firstday']])
+            ->andFilterWhere(['<', 'birthday', $mouth['lastday']])
+            ->andFilterWhere(['in', 'userid', array_values($doctorParent)])
             ->all();
 
 
-        if($child) {
+        if ($child) {
 
             foreach ($child as $k => $v) {
                 //儿童名字
@@ -237,7 +239,7 @@ class UserDoctor extends \yii\db\ActiveRecord
                 //儿童年龄
                 $data['age'] = UserDoctor::GetTimeDiff($v->birthday);
                 //儿童手机
-                $data['phone'] = \weixin\models\User::findOne(['phone'=>$v->userid])->phone;
+                $data['phone'] = \weixin\models\User::findOne(['phone' => $v->userid])->phone;
                 //儿童id
                 $data['childid'] = $v->id;
                 $array[] = $data;
@@ -255,10 +257,12 @@ class UserDoctor extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UserParent::className(), ['userid' => 'parentid'])->viaTable('doctor_parent', ['doctorid' => 'userid']);
     }
+
     public function getParents()
     {
-        return $this->hasMany(DoctorParent::className(),['doctorid'=>'userid']);
+        return $this->hasMany(DoctorParent::className(), ['doctorid' => 'userid']);
     }
+
     public function getChild()
     {
         return $this->hasMany(ChildInfo::className(), ['userid' => 'parentid'])->viaTable('doctor_parent', ['doctorid' => 'userid']);
@@ -269,19 +273,17 @@ class UserDoctor extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
 
-        if($insert || !$this->qrcode)
-        {
-            $data=['action_name'=>"QR_LIMIT_SCENE",'action_info'=>['scene'=>['scene_id'=>$this->userid]]];
-            $wechat = new MpWechat( [
+        if ($insert || !$this->qrcode) {
+            $data = ['action_name' => "QR_LIMIT_SCENE", 'action_info' => ['scene' => ['scene_id' => $this->userid]]];
+            $wechat = new MpWechat([
                 'token' => \Yii::$app->params['WeToken'],
                 'appId' => \Yii::$app->params['AppID'],
                 'appSecret' => \Yii::$app->params['AppSecret'],
                 'encodingAesKey' => \Yii::$app->params['encodingAesKey']
             ]);
             $return = $wechat->createQrCode($data);
-            if(is_array($return))
-            {
-                $this->qrcode=$return['url'];
+            if (is_array($return)) {
+                $this->qrcode = $return['url'];
                 $this->save();
 
             }
