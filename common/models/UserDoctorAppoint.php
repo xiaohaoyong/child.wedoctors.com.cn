@@ -40,7 +40,6 @@ class UserDoctorAppoint extends \yii\db\ActiveRecord
         return [
             [['doctorid','week'], 'required'],
             [['doctorid', 'cycle', 'delay', 'type1_num', 'type2_num', 'type3_num', 'type4_num', 'type5_num', 'type6_num','type'], 'integer'],
-            [['doctorid'], 'unique'],
         ];
     }
 
