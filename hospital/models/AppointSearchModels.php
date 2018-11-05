@@ -56,12 +56,9 @@ class AppointSearchModels extends Appoint
      */
     public function search($params)
     {
-        if(!$this->appoint_dates){
-            $this->appoint_dates=date('Y-m-d');
-        }
 
 
-        $this->appoint_date=strtotime($this->appoint_dates);
+
         $query = Appoint::find();
 
         // add conditions that should always apply here
@@ -71,6 +68,11 @@ class AppointSearchModels extends Appoint
         ]);
 
         $this->load($params);
+
+        if(!$this->appoint_dates){
+            $this->appoint_dates=date('Y-m-d');
+        }
+        $this->appoint_date=strtotime($this->appoint_dates);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -94,7 +96,7 @@ class AppointSearchModels extends Appoint
         $query->andFilterWhere([
             'id' => $this->id,
             'userid' => $this->userid,
-            'doctorid' => $doctorid,
+            'doctorid' => $doctorid->userid,
             'createtime' => $this->createtime,
             'appoint_time' => $this->appoint_time,
             'appoint_date' => $this->appoint_date,
