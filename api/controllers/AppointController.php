@@ -73,22 +73,17 @@ class AppointController extends Controller
     }
 
     public function actionDoctor($id){
-        $uda=UserDoctorAppoint::findOne(['doctorid'=>$id]);
+        $uda=UserDoctor::findOne(['userid'=>$id]);
         $row=$uda->toArray();
-        if($uda->type){
-            $types=str_split((string)$uda->type);
+        if($uda->appoint){
+            $types=str_split((string)$uda->appoint);
         }
         $row['type1']=in_array(1,$types)?1:0;
         $row['type2']=in_array(2,$types)?1:0;
         $row['type3']=in_array(3,$types)?1:0;
+        $hospital=Hospital::findOne($uda->hospitalid);
 
-        $doctor=UserDoctor::findOne(['userid'=>$uda->doctorid]);
-        $rs=$doctor->toArray();
-        if($doctor){
-            $hospital=Hospital::findOne($doctor->hospitalid);
-        }
-        $rs['hospital']=$hospital->name;
-        $row['doctor']=$rs;
+        $row['hospital']=$hospital->name;
         return $row;
     }
 

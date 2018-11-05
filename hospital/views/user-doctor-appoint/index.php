@@ -25,20 +25,33 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <thead>
                                 <tr>
                                     <th>名称</th>
+                                    <th>状态</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
                                     <td>体检预约</td>
+                                    <td>
+                                        <?=in_array(1,$types)?"已设置":"未设置"?>，
+                                        <?=in_array(1,$userDoctorAppoint)?"已开通":"未开通"?>
+                                    </td>
                                     <td><?=Html::a('修改',['user-doctor-appoint/update','type'=>1])?></td>
                                 </tr>
                                 <tr>
                                     <td>疫苗预约</td>
+                                    <td>
+                                        <?=in_array(2,$types)?"已设置":"未设置"?>，
+                                        <?=in_array(2,$userDoctorAppoint)?"已开通":"未开通"?>
+                                    </td>
                                     <td><?=Html::a('修改',['user-doctor-appoint/update','type'=>2])?></td>
                                 </tr>
                                 <tr>
                                     <td>微量元素</td>
+                                    <td>
+                                        <?=in_array(3,$types)?"已设置":"未设置"?>，
+                                        <?=in_array(3,$userDoctorAppoint)?"已开通":"未开通"?>
+                                    </td>
                                     <td><?=Html::a('修改',['user-doctor-appoint/update','type'=>3])?></td>
                                 </tr>
                                 </tbody>

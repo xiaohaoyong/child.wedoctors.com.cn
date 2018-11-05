@@ -2,6 +2,7 @@
 
 namespace hospital\controllers;
 
+use common\models\UserDoctor;
 use Yii;
 use common\models\UserDoctorAppoint;
 use hospital\models\UserDoctorAppointSearchModels;
@@ -35,12 +36,18 @@ class UserDoctorAppointController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserDoctorAppointSearchModels();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
 
+        $uda=UserDoctor::findOne(['userid'=>$doctor->userid]);
+        if($uda->appoint){
+            $types=str_split((string)$uda->appoint);
+        }
+        $userDoctorAppoint=UserDoctorAppoint::find()->select('type')
+            ->andFilterWhere(['doctorid'=>$doctor->userid])
+            ->column();
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'types' => $types,
+            'userDoctorAppoint' => $userDoctorAppoint,
         ]);
     }
 
