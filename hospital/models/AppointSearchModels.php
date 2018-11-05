@@ -14,6 +14,8 @@ use common\models\Appoint;
 class AppointSearchModels extends Appoint
 {
     public $child_name;
+    public $appoint_dates = '';
+
     /**
      * @inheritdoc
      */
@@ -21,10 +23,9 @@ class AppointSearchModels extends Appoint
     {
         return [
             [['id', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
-            [['child_name'],'string']
+            [['child_name', 'appoint_dates'], 'string']
         ];
     }
-
     /**
      * @inheritdoc
      */
@@ -33,15 +34,19 @@ class AppointSearchModels extends Appoint
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
+
     /**
      * {@inheritdoc}
      */
     public function attributeLabels()
     {
         $return = parent::attributeLabels();
-        $return ['child_name']='儿童姓名';
+        $return ['child_name'] = '儿童姓名';
+        $return ['appoint_dates'] = '预约日期';
+
         return $return;
     }
+
     /**
      * Creates data provider instance with search query applied
      *
@@ -51,6 +56,12 @@ class AppointSearchModels extends Appoint
      */
     public function search($params)
     {
+        if(!$this->appoint_dates){
+            $this->appoint_dates=date('Y-m-d');
+        }
+
+
+        $this->appoint_date=strtotime($this->appoint_dates);
         $query = Appoint::find();
 
         // add conditions that should always apply here
@@ -66,14 +77,14 @@ class AppointSearchModels extends Appoint
             // $query->where('0=1');
             return $dataProvider;
         }
-        $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+        $doctorid = \common\models\UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital]);
 
-        $hospitalid=Yii::$app->user->identity->hospital;
-        if($this->child_name){
-            $childids=ChildInfo::find()->select('id')->andWhere(['source'=>$hospitalid])->andWhere(['name'=>$this->child_name])->column();
-            if($childids) {
+        $hospitalid = Yii::$app->user->identity->hospital;
+        if ($this->child_name) {
+            $childids = ChildInfo::find()->select('id')->andWhere(['source' => $hospitalid])->andWhere(['name' => $this->child_name])->column();
+            if ($childids) {
                 $query->andFilterWhere(['in', 'childid', $childids]);
-            }else{
+            } else {
                 $query->andFilterWhere(['in', 'childid', [0]]);
             }
         }
@@ -90,7 +101,7 @@ class AppointSearchModels extends Appoint
             'type' => $this->type,
             'phone' => $this->phone,
         ]);
-        $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+        $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
 
         return $dataProvider;
     }
