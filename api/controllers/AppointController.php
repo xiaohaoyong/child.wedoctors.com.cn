@@ -47,7 +47,7 @@ class AppointController extends Controller
 
         foreach($doctors as $k=>$v){
             $rs=$v->toArray();
-            $uda=UserDoctorAppoint::findOne([['doctorid'=>$v->userid]]);
+            $uda=UserDoctorAppoint::findOne(['doctorid'=>$v->userid]);
             if($uda->weeks){
                 $weeks=str_split((string)$uda->weeks);
                 $w=[];
@@ -70,6 +70,18 @@ class AppointController extends Controller
 
 
         return ['doctors'=>$docs,'doc'=>$doc];
+    }
+
+    public function actionDoctor($id){
+        $uda=UserDoctorAppoint::findOne(['doctorid'=>$id]);
+        $row=$uda->toArray();
+        if($uda->type){
+            $types=str_split((string)$uda->type);
+        }
+        $row['type1']=in_array(1,$types)?1:0;
+        $row['type2']=in_array(2,$types)?1:0;
+        $row['type3']=in_array(3,$types)?1:0;
+        return $row;
     }
 
     public function actionForm($id,$type){
