@@ -38,9 +38,9 @@ class UserDoctorAppointController extends Controller
     {
         $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
 
-        $uda=UserDoctor::findOne(['userid'=>$doctor->userid]);
-        if($uda->appoint){
-            $types=str_split((string)$uda->appoint);
+        $types=[];
+        if($doctor->appoint){
+            $types=str_split((string)$doctor->appoint);
         }
         $userDoctorAppoint=UserDoctorAppoint::find()->select('type')
             ->andFilterWhere(['doctorid'=>$doctor->userid])
