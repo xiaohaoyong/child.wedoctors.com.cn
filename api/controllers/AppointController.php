@@ -160,7 +160,7 @@ class AppointController extends Controller
         }
         $row['hospital']=$hospital->name;
         $row['type']=Appoint::$typeText[$appoint->type];
-        $row['time']=date('Y.m.d')."  ".Appoint::$timeText[$appoint->appoint_time];
+        $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
         $row['child_name']=ChildInfo::findOne($appoint->childid)->name;
 
         return $row;
@@ -177,7 +177,7 @@ class AppointController extends Controller
             }
             $row['hospital']=$hospital->name;
             $row['type']=Appoint::$typeText[$v->type];
-            $row['time']=date('Y.m.d')."  ".Appoint::$timeText[$v->appoint_time];
+            $row['time']=date('Y.m.d',$v->appoint_date)."  ".Appoint::$timeText[$v->appoint_time];
             $row['stateText']=Appoint::$stateText[$v->state];
             $row['child_name']=ChildInfo::findOne($v->childid)->name;
             $list[]=$row;
