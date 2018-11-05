@@ -81,6 +81,14 @@ class AppointController extends Controller
         $row['type1']=in_array(1,$types)?1:0;
         $row['type2']=in_array(2,$types)?1:0;
         $row['type3']=in_array(3,$types)?1:0;
+
+        $doctor=UserDoctor::findOne(['userid'=>$uda->doctorid]);
+        $rs=$doctor->toArray();
+        if($doctor){
+            $hospital=Hospital::findOne($doctor->hospitalid);
+        }
+        $rs['hospital']=$hospital->name;
+        $row['doctor']=$rs;
         return $row;
     }
 
