@@ -341,7 +341,6 @@ class UserController extends Controller
             return new Code(20010,'手机号码格式错误！');
         }
         $sendData=SendHelper::sendSms($phone);
-        var_dump($sendData);exit;
     }
     public function actionGetCode($phone,$code){
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
