@@ -82,6 +82,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+
+                                    'attribute' => 'type',
+                                    'value' => function ($e) {
+                                        return \common\models\Appoint::$typeText[$e->type];
+                                    }
+                                ],
+                                [
                                     'class' => 'common\components\grid\ActionColumn',
                                     'template' => '
                             <div class="btn-group dropup">
