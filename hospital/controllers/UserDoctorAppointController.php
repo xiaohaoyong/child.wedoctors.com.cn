@@ -45,9 +45,21 @@ class UserDoctorAppointController extends Controller
         $userDoctorAppoint=UserDoctorAppoint::find()->select('type')
             ->andFilterWhere(['doctorid'=>$doctor->userid])
             ->column();
+
+        if(Yii::$app->request->post()){
+            $doctor->load(Yii::$app->request->post());
+            if($doctor->save()){
+                \Yii::$app->getSession()->setFlash('success','编辑成功');
+            }else{
+                \Yii::$app->getSession()->setFlash('error','编辑失败');
+            }
+        }
+
+
         return $this->render('index', [
             'types' => $types,
             'userDoctorAppoint' => $userDoctorAppoint,
+            'model'=>$doctor
         ]);
     }
 

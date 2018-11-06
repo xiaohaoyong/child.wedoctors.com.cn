@@ -37,7 +37,6 @@ class AppointController extends Controller
         $doctors=$query->orderBy('appoint desc')->all();
 
         $docs=[];
-        $weekday=[1=>"一",2=>"二",3=>"三",4=>"四",5=>"五",6=>"六",7=>"日"];
 
         $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
         if($doctorParent)
@@ -48,18 +47,7 @@ class AppointController extends Controller
         foreach($doctors as $k=>$v){
             $rs=$v->toArray();
             $uda=UserDoctorAppoint::findOne(['doctorid'=>$v->userid]);
-            if($uda->weeks){
-                $weeks=str_split((string)$uda->weeks);
-                $w=[];
-                foreach($weeks as $wk=>$wv){
-                    $w[]=$weekday[$wv];
-                }
-                $weeks="门诊时间 每周".implode('，',$w);
-            }else{
-                $weeks="";
-            }
             $rs['name']=Hospital::findOne($v->hospitalid)->name;
-            $rs['appoint_time']=$weeks;
             $docs[]=$rs;
             if($doctorid==$v->userid){
                 $doc=$rs;

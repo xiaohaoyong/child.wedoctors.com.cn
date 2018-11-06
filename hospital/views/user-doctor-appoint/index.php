@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-                <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap">
                     <div class="row">
                         <div id="w1" class="col-sm-12">
                             <table class="table table-striped table-bordered">
@@ -56,6 +56,28 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <!-- /.box-header -->
+                                <div class="box-body">
+
+                                    <?php
+                                    $form = \yii\widgets\ActiveForm::begin(); ?>
+
+                                    <?= $form->field($model, 'appoint_intro')->textarea(['rows'=>3]) ?>
+
+
+                                    <div class="form-group">
+                                        <?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
+                                            'btn btn-primary']) ?>
+                                    </div>
+
+                                    <?php \yii\widgets\ActiveForm::end(); ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -33,6 +33,7 @@ use common\models\ArticleInfo;
  * @property integer $atitle
  * @property string $otype
  * @property string $authimg
+ * @property string $appoint_intro
  */
 class UserDoctor extends \yii\db\ActiveRecord
 {
@@ -55,7 +56,7 @@ class UserDoctor extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [[['userid'], 'required'], [['longitude', 'latitude'], 'number'], [['appoints','userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype', 'appoint'], 'integer'], [['name'], 'string', 'max' => 15], [['intro', 'avatar', 'skilful'], 'string', 'max' => 150], [['idnum'], 'string', 'max' => 18], [['authimg'], 'string', 'max' => 200],];
+        return [[['userid'], 'required'], [['longitude', 'latitude'], 'number'], [['appoints','userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype', 'appoint'], 'integer'], [['name'], 'string', 'max' => 15], [['intro', 'avatar', 'skilful'], 'string', 'max' => 150], [['idnum'], 'string', 'max' => 18], [['authimg'], 'string', 'max' => 200],[['appoint_intro'], 'string', 'max' => 100]];
     }
 
     /**
@@ -63,7 +64,7 @@ class UserDoctor extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return ['longitude' => '经度', 'latitude' => '纬度', 'appoints' => '预约项目', 'appoint' => '是否开通预约', 'userid' => '用户ID', 'name' => '姓名', 'sex' => '性别', 'age' => '年龄', 'birthday' => '生日', 'phone' => '医院电话', 'hospitalid' => '所以在医院', 'subject_b' => '一级科室', 'subject_s' => '二级科室', 'title' => '职称', 'intro' => '简介', 'avatar' => '头像', 'skilful' => '擅长', 'idnum' => '身份证号码', 'province' => '省', 'county' => '县', 'city' => '市', 'atitle' => '行政职称', 'otype' => '职业类型', 'authimg' => '证件照',];
+        return ['appoint_intro'=>'预约介绍（时间、周期、项目）','longitude' => '经度', 'latitude' => '纬度', 'appoints' => '预约项目', 'appoint' => '是否开通预约', 'userid' => '用户ID', 'name' => '姓名', 'sex' => '性别', 'age' => '年龄', 'birthday' => '生日', 'phone' => '医院电话', 'hospitalid' => '所以在医院', 'subject_b' => '一级科室', 'subject_s' => '二级科室', 'title' => '职称', 'intro' => '简介', 'avatar' => '头像', 'skilful' => '擅长', 'idnum' => '身份证号码', 'province' => '省', 'county' => '县', 'city' => '市', 'atitle' => '行政职称', 'otype' => '职业类型', 'authimg' => '证件照',];
     }
 
     /**
