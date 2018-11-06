@@ -80,6 +80,8 @@ class UserDoctorController extends BaseController
                 if($userInfo->appoints){
                     $userInfo->appoint=implode('',$userInfo->appoints);
                     $userInfo->appoints=$userInfo->appoint;
+                }else{
+                    $userInfo->appoint=0;
                 }
 
                 $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($userInfo, 'avatar'));
@@ -135,6 +137,8 @@ class UserDoctorController extends BaseController
             if($userInfo->appoints){
                 $userInfo->appoint=implode('',$userInfo->appoints);
                 $userInfo->appoints=$userInfo->appoint;
+            }else{
+                $userInfo->appoint=0;
             }
 
             $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($userInfo,'avatar'));

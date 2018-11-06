@@ -16,6 +16,7 @@ use common\helpers\HuanxinUserHelper;
 use common\components\Code;
 use common\components\HttpRequest;
 use common\components\wx\WxBizDataCrypt;
+use common\helpers\SendHelper;
 use common\models\ArticleSend;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
@@ -337,14 +338,19 @@ class UserController extends Controller
 
     public function actionCode($phone){
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
-            return new Code(20010,'手机号码验证失败');
+            return new Code(20010,'手机号码格式错误！');
         }
+        $sendData=SendHelper::sendSms($phone);
+        var_dump($sendData);exit;
     }
     public function actionGetCode($phone,$code){
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
             return new Code(20010,'手机号码验证失败');
         }
-        if($code!=123456){
+
+        $isVerify = SendHelper::verifymessage($phone, $code);
+        $isVerify = json_decode($isVerify, TRUE);
+        if ($isVerify['code'] != 200) {
             return new Code(20010,'手机验证码错误');
         }
     }
