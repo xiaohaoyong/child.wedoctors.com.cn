@@ -24,6 +24,7 @@ use yii\widgets\ActiveForm;
     <?php  echo $form->field($model, 'appoint_time')->dropDownList(\common\models\Appoint::$timeText,['prompt'=>'请选择']) ?>
 
     <?php  echo $form->field($model, 'state')->dropDownList(\common\models\Appoint::$stateText,['prompt'=>'请选择']) ?>
+    <?php  echo $form->field($model, 'type')->dropDownList(\common\models\Appoint::$typeText,['prompt'=>'请选择']) ?>
 
     <?php  echo $form->field($model, 'child_name') ?>
 
