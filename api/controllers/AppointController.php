@@ -84,7 +84,7 @@ class AppointController extends Controller
         if($appoint) {
 
             $phone = $this->userLogin->phone;
-            $phone = $phone ? $phone : $this->user->phone;
+            $phone = $phone ? $phone : $this->user->parent?$this->user->parent->mother_phone:0;
             $row=$appoint->toArray();
 
             $appoints=Appoint::find()->select("count(*)")->indexBy('appoint_time')->where(['doctorid'=>$id,'type'=>$type])->groupBy('appoint_time')->column();

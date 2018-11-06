@@ -340,7 +340,7 @@ class UserController extends Controller
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
             return new Code(20010,'手机号码格式错误！');
         }
-        $sendData=SendHelper::sendSms($phone);
+        $sendData=SendHelper::sendSms($phone,'SMS_63950780');
     }
     public function actionGetCode($phone,$code){
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
