@@ -54,7 +54,7 @@
                         'items' => [
                             ['label' => '外链推送', 'icon' => 'list', 'url' => ['/chain'],],
                             ['label' => '开通自动推送列表', 'icon' => 'list', 'url' => ['/push'],],
-
+                            ['label' => '预约开通情况', 'icon' => 'list', 'url' => ['/user-doctor-appoint'],],
                         ],
                     ],
                     [

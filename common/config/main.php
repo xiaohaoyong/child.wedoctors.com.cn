@@ -7,6 +7,11 @@ $config= [
         'cache' => [
             'class' => 'yii\redis\Cache',
         ],
+        'aliyun' => [
+            'class' => 'saviorlv\aliyun\Sms',
+            'accessKeyId' => 'LTAId7nYmFlmKGcI',
+            'accessKeySecret' => 'VmjZN9kalP4kqhaoIP20AUJDZnNMI9'
+        ],
         'redis'=>[
             'class' => 'yii\redis\Connection',
             'hostname' => '139.129.246.51',

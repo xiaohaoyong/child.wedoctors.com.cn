@@ -17,6 +17,7 @@ use common\components\Code;
 use common\components\HttpRequest;
 use common\components\wx\WxBizDataCrypt;
 use common\helpers\SendHelper;
+use common\helpers\SmsSend;
 use common\models\ArticleSend;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
@@ -340,14 +341,14 @@ class UserController extends Controller
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
             return new Code(20010,'手机号码格式错误！');
         }
-        $sendData=SendHelper::sendSms($phone,'SMS_63950780');
+        $sendData=SmsSend::sendSms($phone,'SMS_150575871');
     }
     public function actionGetCode($phone,$code){
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
             return new Code(20010,'手机号码验证失败');
         }
 
-        $isVerify = SendHelper::verifymessage($phone, $code);
+        $isVerify = SmsSend::verifymessage($phone, $code);
         $isVerify = json_decode($isVerify, TRUE);
         if ($isVerify['code'] != 200) {
             return new Code(20010,'手机验证码错误');
