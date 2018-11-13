@@ -10,7 +10,9 @@ namespace api\controllers;
 
 use api\controllers\Controller;
 
+use app\components\UploadForm;
 use common\components\HttpRequest;
+use yii\web\UploadedFile;
 
 class SiteController extends \yii\web\Controller
 {
@@ -48,6 +50,16 @@ XML;
         }else{
             return false;
         }
+    }
+
+    public function actionSaveImage(){
+        $imagesFile = UploadedFile::getInstancesByName('file');
+        if($imagesFile) {
+            $upload= new \common\components\UploadForm()    ;
+            $upload->imageFiles = $imagesFile;
+            $image = $upload->upload();
+        }
+        return $image;
     }
 
 }

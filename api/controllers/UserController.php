@@ -19,6 +19,7 @@ use common\components\wx\WxBizDataCrypt;
 use common\helpers\SendHelper;
 use common\helpers\SmsSend;
 use common\models\ArticleSend;
+use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Notice;
@@ -28,6 +29,7 @@ use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\WeOpenid;
 use common\models\WxInfo;
+use yii\web\UploadedFile;
 
 class UserController extends Controller
 {
@@ -38,6 +40,11 @@ class UserController extends Controller
         return HuanxinHelper::setTxtMessage('wangzhentest', '72e2caa55d4934c1a74255550af7b76e', $value);
     }
 
+    /**
+     * 登录
+     * @param $code
+     * @return array
+     */
     public function actionLogin($code)
     {
         $log=new Log("login");
@@ -141,6 +148,10 @@ class UserController extends Controller
 
     }
 
+    /**
+     * 授权
+     * @return array
+     */
     public function actionWxUserInfo()
     {
         $log=new Log("weOpenidlevel");
@@ -150,6 +161,8 @@ class UserController extends Controller
             $userLogin = UserLogin::findOne(['id'=>$this->userLogin->id]);
             $userLogin->logintime = time();
             $userLogin->save();
+            $doctorParent = DoctorParent::findOne(['parentid' => $userLogin->userid]);
+
             $log->addLog($this->userLogin->userid."已登录");
         } else {
             $appid = \Yii::$app->params['wxXAppId'];
@@ -178,6 +191,7 @@ class UserController extends Controller
                 $useridx = md5($userLogin->userid . "6623cXvY");
                 $userLogin->logintime = time();
                 $userLogin->save();
+                $doctorParent = DoctorParent::findOne(['parentid' => $userLogin->userid]);
                 $log->addLog("已登录过");
             } else {
                 $log->addLog("未登录过");
@@ -318,7 +332,13 @@ class UserController extends Controller
 
         }
         $log->saveLog();
-        return ['useridx' => $useridx, 'type' => $type];
+
+        if($doctorParent) {
+            $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
+        }
+        $autograph=Autograph::findOne(['loginid'=>$this->userLogin->id,'userid'=>$this->userid]);
+
+        return ['useridx' => $useridx, 'type' => $type,'doctor'=>$doctor,'is_autograph'=>$autograph?0:1];
     }
 
     public function actionWxInfo()
@@ -337,12 +357,24 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * 发送验证码
+     * @param $phone
+     * @return Code
+     */
     public function actionCode($phone){
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
             return new Code(20010,'手机号码格式错误！');
         }
         $sendData=SmsSend::sendSms($phone,'SMS_150575871');
     }
+
+    /**
+     * 验证验证码
+     * @param $phone
+     * @param $code
+     * @return Code
+     */
     public function actionGetCode($phone,$code){
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
             return new Code(20010,'手机号码验证失败');
@@ -353,5 +385,29 @@ class UserController extends Controller
         if ($isVerify['code'] != 200) {
             return new Code(20010,'手机验证码错误');
         }
+    }
+
+    /**
+     * 保存签名图片
+     * @return Code
+     */
+    public function actionSaveImage(){
+        $imagesFile = UploadedFile::getInstancesByName('file');
+        if($imagesFile) {
+            $upload= new \common\components\UploadForm();
+            $upload->imageFiles = $imagesFile;
+            $image = $upload->upload();
+            $data['img']=$image[0];
+            $data['loginid']=$this->userLogin->id;
+            $data['userid']=$this->userid;
+            $autograph=Autograph::findOne(['loginid'=>$this->userLogin->id,'userid'=>$this->userid]);
+            $autograph=$autograph?$autograph:new Autograph();
+            $autograph->load(['Autograph'=>$data]);
+            $autograph->save();
+            if($autograph->firstErrors){
+                return new Code(20010,$autograph->firstErrors);
+            }
+        }
+        return $image[0];
     }
 }
