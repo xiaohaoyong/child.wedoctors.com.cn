@@ -36,7 +36,8 @@
     "mdmsoft/yii2-admin": "~2.0",
     "udokmeci/yii2-beanstalk": "dev-master",
     "jianyan74/yii2-websocket": "^1.1",
-    "saviorlv/yii2-dysms": "dev-master"
+    "saviorlv/yii2-dysms": "dev-master",
+    "tecnickcom/tcpdf": "^6.2"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
