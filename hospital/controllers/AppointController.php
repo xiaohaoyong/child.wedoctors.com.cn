@@ -94,7 +94,7 @@ class AppointController extends Controller
                 if(!$login->openid) {
                     $data['doctor'] = $doctor->name;
                     $data['phone'] = $doctor->phone;
-                    $data['type'] = Appoint::$typeText[$model->type];
+                    $data['type'] = Appoint::$typeText1[$model->type];
                     $data['date_time'] = $model->date." ".explode('-',Appoint::$timeText[$model->appoint_time])[0];
                     //$data['time'] = Appoint::$timeText[$model->appoint_time];
                     SmsSend::appoint($data, $model->phone);
