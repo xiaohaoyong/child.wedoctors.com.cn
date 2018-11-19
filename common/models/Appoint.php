@@ -17,6 +17,7 @@ use Yii;
  * @property int $childid
  * @property int $phone
  * @property int $state
+ * @property int $remark
  */
 class Appoint extends \yii\db\ActiveRecord
 {
@@ -32,6 +33,8 @@ class Appoint extends \yii\db\ActiveRecord
         1 => '进行中',
         2 => '已完成',
         3 => '已取消',
+        4 => '已过期',
+        5 => '待确认',
     ];
     public static $typeText = [
         1 => '体检预约',
@@ -44,6 +47,7 @@ class Appoint extends \yii\db\ActiveRecord
         3 => '微量元素检查，锌、铁、钙',
     ];
 
+    public $date;
     /**
      * {@inheritdoc}
      */
@@ -58,9 +62,11 @@ class Appoint extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [
-                ['loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'
-            ],
+            [['appoint_time','appoint_date','type'], 'required'],
+            [['loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
+            [['remark'], 'string', 'max' => 100],
+            [['date'], 'string'],
+
         ];
     }
 
@@ -76,11 +82,13 @@ class Appoint extends \yii\db\ActiveRecord
             'createtime' => '创建时间',
             'appoint_time' => '预约时间',
             'appoint_date' => '预约日期',
+            'date' => '预约日期',
             'type' => '预约项目',
             'childid' => '儿童',
             'phone' => '手机号',
             'state' => '预约状态',
             'loginid' => '登录信息',
+            'remark'=>'备注'
         ];
     }
 

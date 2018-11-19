@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
                         <i class="icon-settings"></i> 记录 <i class="fa fa-angle-up"></i></a>
                     <ul class="dropdown-menu pull-right" role="menu">
-                        <li>{articleuser} </li><li>{childhealthrecord}</li><li>{download}</li>
+                        <li>{articleuser} </li><li>{childhealthrecord}</li><li>{download}</li><li>{appointPush}</li>
                     </ul>
                 </div>',
                                     'buttons' => [
@@ -157,6 +157,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         },
                                         'download' => function ($url, $model, $key) {
                                             return Html::a('<span class="fa fa-database"></span> 下载宣教记录', \yii\helpers\Url::to(['article-user/download', 'childid' => $model->id]));
+                                        },
+                                        'appointPush' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-database"></span> 发送预约通知', \yii\helpers\Url::to(['appoint/push', 'childid' => $model->id]));
                                         }
                                     ],
                                 ],

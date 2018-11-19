@@ -221,7 +221,7 @@ class ChildInfoInput
     public function upPhone($phone)
     {
         $login = UserLogin::find()
-            ->andFilterWhere(['phone' => $phone])
+                ->andFilterWhere(['phone' => $phone])
             ->one();
         if (!$login) {
             $login = new UserLogin();

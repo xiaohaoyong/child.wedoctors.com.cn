@@ -2,8 +2,12 @@
 
 namespace hospital\controllers;
 
+use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
+use common\models\ChildInfo;
+use common\models\UserDoctor;
 use common\models\UserLogin;
+use hospital\models\user\Hospital;
 use Yii;
 use common\models\Appoint;
 use hospital\models\AppointSearchModels;
@@ -31,26 +35,81 @@ class AppointController extends Controller
         ];
     }
 
-    public function actionDone($id){
+    public function actionDone($id)
+    {
 
-        $model=$this->findModel($id);
-        $model->state=2;
-        if($model->save()){
+        $model = $this->findModel($id);
+        $model->state = 2;
+        if ($model->save()) {
 
-            $login=UserLogin::findOne(['id'=>$model->loginid]);
+            $login = UserLogin::findOne(['id' => $model->loginid]);
             $data = [
-                'first'=>['value'=>'服务已完成'],
+                'first' => ['value' => '服务已完成'],
                 'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
                 'keyword2' => ARRAY('value' => date('Y年m月d日 H:i:00')),
                 'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
 
             ];
-            $rs = WechatSendTmp::send($data,$login->openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA','',['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
+            $rs = WechatSendTmp::send($data, $login->openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
 
         }
 
         return $this->redirect(['index']);
     }
+
+    public function actionPush($childid)
+    {
+        $model = new \common\models\Appoint();
+        if ($post = Yii::$app->request->post()) {
+            $model->load($post);
+            $doctor=UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospital]);
+            $model->appoint_date=strtotime($model->date);
+            $model->doctorid=$doctor->userid;
+            $model->state = 5;
+            if ($model->save()) {
+                if ($model->loginid) {
+                    $login = UserLogin::findOne(['id' => $model->loginid]);
+                    if ($login->openid) {
+
+                        if($model->type==1){
+                            $data = [
+                                'first' => ['value' => "家长您好，该带宝宝来社区服务中心体检啦\n\n"."预约时间：".$model->date." ".Appoint::$timeText[$model->appoint_time]],
+                                'keyword1' => ARRAY('value' => $doctor->name),
+                                'keyword2' => ARRAY('value' => $doctor->phone),
+                                'keyword3' => ARRAY('value' => $model->remark),
+                                'remark' => ARRAY('value' => "\n需要点击此消息并确定领取凭证，到社区服务中心出示此凭证即可享受服务，为了宝宝的健康，请安排好您的时间哦"),
+                            ];
+                        }elseif($model->type==2){
+                            $data = [
+                                'first' => ['value' => "家长您好，该带宝宝来社区服务中心接种啦\n\n"."预约时间：".$model->date." ".Appoint::$timeText[$model->appoint_time]],
+                                'keyword1' => ARRAY('value' => $doctor->name),
+                                'keyword2' => ARRAY('value' => $doctor->phone),
+                                'keyword3' => ARRAY('value' => $model->remark),
+                                'remark' => ARRAY('value' => "\n需要点击此消息并确定领取凭证，到社区服务中心出示此凭证即可享受服务，为了宝宝的健康，请安排好您的时间哦"),
+                            ];
+                        }
+                        $rs = WechatSendTmp::send($data, $login->openid, '3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=1',]);
+                    }
+                }
+                if(!$login->openid) {
+                    $data['doctor'] = $doctor->name;
+                    $data['phone'] = $doctor->phone;
+                    $data['type'] = Appoint::$typeText[$model->type];
+                    $data['date_time'] = $model->date." ".explode('-',Appoint::$timeText[$model->appoint_time])[0];
+                    //$data['time'] = Appoint::$timeText[$model->appoint_time];
+                    SmsSend::appoint($data, $model->phone);
+                }
+                return $this->redirect(['index']);
+            }
+        }
+
+
+        return $this->render('push', [
+            'childid' => $childid,
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Lists all Appoint models.
      * @return mixed

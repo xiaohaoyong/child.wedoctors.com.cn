@@ -161,8 +161,11 @@ class AppointController extends Controller
     }
 
     public function actionMy($state=1){
-        $appoints=Appoint::findAll(['userid'=>$this->userid,'state'=>$state]);
-
+        if($state==1) {
+            $appoints = Appoint::find()->andFilterWhere(['in','state',[1,5]])->andWhere(['userid' => $this->userid])->all();
+        }else{
+            $appoints = Appoint::findAll(['userid' => $this->userid, 'state' => $state]);
+        }
         foreach($appoints as $k=>$v){
             $row=$v->toArray();
             $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
@@ -203,6 +206,58 @@ class AppointController extends Controller
             }
         }
     }
+
+    public function actionState($id,$formid,$type){
+        $model=Appoint::findOne(['id'=>$id,'userid'=>$this->userid]);
+        if(!$model){
+            return new Code(20010,'取消失败！');
+        }else{
+
+            if($type==1){
+                $model->state=3;
+            }elseif($type==2){
+                $model->state=1;
+            }
+            $userLogin = $this->userLogin;
+            if ($userLogin->openid) {
+                $doctor = UserDoctor::findOne(['userid' => $model->doctorid]);
+                if ($doctor) {
+                    $hospital = Hospital::findOne($doctor->hospitalid);
+                }
+                $child = ChildInfo::findOne($model->childid);
+            }
+            if($model->save() && $userLogin->openid) {
+
+                if($type==1) {
+                    $data = [
+                        'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                        'keyword2' => ARRAY('value' => date('Y-m-d', $model->appoint_date) . " " . Appoint::$timeText[$model->appoint_time]),
+                        'keyword3' => ARRAY('value' => date('Y年m月d日 H:i:00')),
+                        'keyword4' => ARRAY('value' => "已取消"),
+                    ];
+                    $rs = WechatSendTmp::sendX($data, $userLogin->xopenid, 'sG19zJw7LhBT-SrZYNJbuH1TTYtQFKfVEviXKf1ERFI', '', $formid);
+
+                }elseif($type==2){
+                    $data = [
+                        'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                        'keyword2' => ARRAY('value' => $hospital->name),
+                        'keyword3' => ARRAY('value' => date('Y-m-d',$model->appoint_date)." ".Appoint::$timeText[$model->appoint_time]),
+                        'keyword4' => ARRAY('value' => $child?$child->name:''),
+                        'keyword5' => ARRAY('value' => $model->phone),
+                        'keyword6' => ARRAY('value' => "预约成功"),
+                        'keyword7' => ARRAY('value' => $model->createtime),
+                        'keyword8' => ARRAY('value' => Appoint::$typeInfoText[$model->type]),
+                    ];
+                    $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'Ejdm_Ih_W0Dyi6XrEV8Afrsg6HILZh0w8zg2uF0aIS0', '/pages/appoint/view?id='.$model->id,$formid);
+                }else{
+                    return [];
+                }
+            }else{
+                return new Code(20010,$model->firstErrors);
+            }
+        }
+    }
+
     public function actionQrCode($id){
         QrCode::png('appoint:'.$id,false,Enum::QR_ECLEVEL_H,10);exit;
     }

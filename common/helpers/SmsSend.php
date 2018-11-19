@@ -36,6 +36,21 @@ class SmsSend
         }
         return $response['code']==200?true:false;
     }
+    public static function appoint($data,$mobile){
+        $response = \Yii::$app->aliyun->sendSms(
+            "儿宝宝", // 短信签名
+            "SMS_151177324", // 短信模板编号
+            $mobile, // 短信接收者
+            Array(  // 短信模板中字段的值
+                "doctor"=>$data['doctor'],
+                "date_time"=>$data['date_time'],
+                "type"=>$data['type'],
+                "phone"=>$data['phone'],
+            )
+        );
+        $response=json_decode($response,true);
+        return $response['code']==200?true:false;
+    }
     /**
      * 短信验证
      * 接收$phone 手机号, $verify验证码

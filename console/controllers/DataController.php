@@ -1039,14 +1039,14 @@ exit;
             echo $hospitalid . "\n";
             $f = fopen($fv, 'r');
             $i = 0;
-            while (($line = fgets($f)) !== false) {
+            while (($line = fgetcsv($f)) !== false) {
                 if ($i == 0) {
                     $i++;
                     continue;
                 }
                 $i++;
                 echo $hospitalid . "=" . $i . "===";
-                $row = explode(",", trim($line));
+                $row = $line;
 
                 if($row[3]<'2018-01-01 00:00:00'){ echo "end\n";break;}
                 $row[3] = substr($row[3], 0, strlen($row[3]) - 11);
@@ -1173,10 +1173,10 @@ exit;
                 }
 
 
-                $childData = array_filter($childData, function ($e) {
-                    if ($e != '' || $e != null) return true;
-                    return false;
-                });
+//                $childData = array_filter($childData, function ($e) {
+//                    if ($e != '' || $e != null) return true;
+//                    return false;
+//                });
                 foreach ($childData as $k => $v) {
                     $ex->$k = $v;
                 }
