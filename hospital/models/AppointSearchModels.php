@@ -69,10 +69,9 @@ class AppointSearchModels extends Appoint
 
         $this->load($params);
 
-        if(!$this->appoint_dates){
-            $this->appoint_dates=date('Y-m-d');
+        if($this->appoint_dates){
+            $this->appoint_date=strtotime($this->appoint_dates);
         }
-        $this->appoint_date=strtotime($this->appoint_dates);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
