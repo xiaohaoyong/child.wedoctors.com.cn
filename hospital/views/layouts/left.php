@@ -32,7 +32,6 @@
                     ],
                     ['label' => '预约系统管理','icon' => 'file-text-o','url' => "#",
                         'items' => [
-                            ['label' => '发送预约通知', 'url' => ['appoint/push']],
                             ['label' => '预约系统设置', 'url' => ['user-doctor-appoint/index']],
                             ['label' => '预约列表', 'url' => ['appoint/index']],
                         ]
