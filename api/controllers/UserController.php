@@ -72,10 +72,20 @@ class UserController extends Controller
             $userJson = $curl->get();
             $log->addLog("wxrequist:".$userJson);
             $user = json_decode($userJson, true);
-            if ($user['errcode'] == 40029) {
-                $log->addLog("false");
-                $log->saveLog();
-                return new Code(30001, $user['errmsg']);
+            if ($user['errcode']) {
+                //获取用户微信登陆信息
+                $log->addLog("false1");
+                $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
+                $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
+                $userJson = $curl->get();
+                $log->addLog("wxrequist:".$userJson);
+                $user = json_decode($userJson, true);
+
+                if ($user['errcode']) {
+                    $log->addLog("false2");
+                    $log->saveLog();
+                    return new Code(30001, $user['errmsg']);
+                }
             }
             $value = $user['openid'] . '@@' . $user['session_key'] . '@@' . $user['unionid'];
             $log->addLog("value:".$value);
