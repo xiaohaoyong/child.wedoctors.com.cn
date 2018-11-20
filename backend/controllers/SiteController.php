@@ -136,10 +136,23 @@ class SiteController extends BaseController
             ->andFilterWhere(['`doctor_parent`.`level`'=>1])
             ->orderBy('`doctor_parent`.`createtime` desc')->limit(9)->all();
 
-        $qrcodeNum=WeOpenid::find()
+        $user['qrcodeNum']=WeOpenid::find()
             ->andFilterWhere(['>','createtime',$today])
             ->count();
+        $user['TqrcodeNum']=WeOpenid::find()->count();
 
+        $user['dpNum']=DoctorParent::find()
+            ->andFilterWhere(['>','createtime',$today])
+            ->count();
+        $user['TdpNum']=DoctorParent::find()->count();
+
+        $user['qrcodeNoneNum']=WeOpenid::find()
+            ->andWhere(['=','xopenid',''])
+            ->andFilterWhere(['>','createtime',$today])
+            ->count();
+        $user['TqrcodeNoneNum']=WeOpenid::find()
+            ->andWhere(['=','xopenid',''])
+            ->count();
 
         $doctor=UserDoctor::find()->all();
 
@@ -148,7 +161,7 @@ class SiteController extends BaseController
             'line_data'=>$line_data,
             'now'=>$now,
             'doctor'=>$doctor,
-            'qrcodeNum'=>$qrcodeNum,
+            'user'=>$user,
 
         ]);
     }

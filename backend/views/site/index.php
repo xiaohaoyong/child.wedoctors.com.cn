@@ -31,7 +31,7 @@ databackend\assets\IndexAsset::register($this);
     <div class="small-box bg-yellow">
         <div class="inner">
             <h3><?=$data['todayNum']?></h3>
-            <p>今日签约</p>
+            <p>今日签约儿童</p>
         </div>
         <div class="icon">
             <i class="fa fa-user-plus"></i>
@@ -81,8 +81,9 @@ databackend\assets\IndexAsset::register($this);
             <span class="info-box-icon bg-aqua"><i class="fa  fa-qrcode"></i></span>
 
             <div class="info-box-content">
-                <span class="info-box-text"style="font-size: 16px;text-align: center;">今日扫码人数</span>
-                <span class="info-box-number" style="font-size: 30px;text-align: center;"><?=$qrcodeNum?></span>
+                <span class="info-box-text">今日扫码人数:<?=$user['qrcodeNum']?></span>
+                <span class="info-box-text">今日签约用户数:<?=$user['dpNum']?></span>
+                <span class="info-box-text">扫码未进入小程序:<?=$user['qrcodeNoneNum']?></span>
             </div>
             <!-- /.info-box-content -->
         </div>
@@ -94,8 +95,9 @@ databackend\assets\IndexAsset::register($this);
             <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
 
             <div class="info-box-content">
-                <span class="info-box-text">Likes</span>
-                <span class="info-box-number">41,410</span>
+                <span class="info-box-text">扫码总人数:<?=$user['TqrcodeNum']?></span>
+                <span class="info-box-text">签约总用户数:<?=$user['TdpNum']?></span>
+                <span class="info-box-text">扫码未进入小程序:<?=$user['TqrcodeNoneNum']?></span>
             </div>
             <!-- /.info-box-content -->
         </div>
