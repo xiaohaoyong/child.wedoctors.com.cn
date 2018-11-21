@@ -207,7 +207,7 @@ class AppointController extends Controller
         }
     }
 
-    public function actionState($id,$formid,$type){
+    public function actionState($id,$formid,$type,$cancel_type){
         $model=Appoint::findOne(['id'=>$id,'userid'=>$this->userid]);
         if(!$model){
             return new Code(20010,'取消失败！');
@@ -215,6 +215,7 @@ class AppointController extends Controller
 
             if($type==1){
                 $model->state=3;
+                $model->cancel_type=$cancel_type;
             }elseif($type==2){
                 $model->state=1;
             }
@@ -226,7 +227,7 @@ class AppointController extends Controller
                 }
                 $child = ChildInfo::findOne($model->childid);
             }
-            if($model->save() && $userLogin->openid) {
+            if($model->save() && $userLogin->xopenid) {
 
                 if($type==1) {
                     $data = [
@@ -253,7 +254,7 @@ class AppointController extends Controller
                     return [];
                 }
             }else{
-                return new Code(20010,$model->firstErrors);
+                return new Code(20011,implode(',',$model->firstErrors));
             }
         }
     }

@@ -18,6 +18,7 @@ use Yii;
  * @property int $phone
  * @property int $state
  * @property int $remark
+ * @property int cancel_type
  */
 class Appoint extends \yii\db\ActiveRecord
 {
@@ -50,6 +51,12 @@ class Appoint extends \yii\db\ActiveRecord
         2 => '身乙肝疫苗、卡介苗、百日破疫苗',
         3 => '微量元素检查，锌、铁、钙',
     ];
+    public static $cancel_typeText=[
+        1 => '天气原因',
+        2 => '时间原因',
+        3 => '身体不适',
+        4 => '其他',
+    ];
 
     public $date;
     /**
@@ -67,7 +74,7 @@ class Appoint extends \yii\db\ActiveRecord
     {
         return [
             [['appoint_time','appoint_date','type'], 'required'],
-            [['loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
+            [['cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
             [['remark'], 'string', 'max' => 100],
             [['date'], 'string'],
 
@@ -92,7 +99,8 @@ class Appoint extends \yii\db\ActiveRecord
             'phone' => '手机号',
             'state' => '预约状态',
             'loginid' => '登录信息',
-            'remark'=>'备注'
+            'remark'=>'备注',
+            'cancel_type'=>'取消原因'
         ];
     }
 
