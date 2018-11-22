@@ -30,7 +30,7 @@ class BabyController extends Controller
     }
     public function actionTag(){
 
-        $tags=BabyToolTag::find()->orderBy('week asc')->all();
+        $tags=BabyToolTag::find()->orderBy('week asc,id asc')->all();
         return $tags;
     }
     public function actionListNew($period){
