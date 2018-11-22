@@ -67,6 +67,7 @@ class AppointController extends Controller
             $model->appoint_date=strtotime($model->date);
             $model->doctorid=$doctor->userid;
             $model->state = 5;
+            $model->push_state=1;
             $log=new \common\components\Log('Appoint_Doctor_Push');
             if ($model->save()) {
                 if ($model->loginid) {
@@ -95,6 +96,10 @@ class AppointController extends Controller
 
                         $rs = WechatSendTmp::send($data, $login->openid, '3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=1',]);
                         $log->addLog($rs);
+                        if($rs){
+                            $model->push_state=2;
+                            $model->save();
+                        }
                     }
                 }
                 if(!$login->openid) {
@@ -107,6 +112,10 @@ class AppointController extends Controller
                     //$data['time'] = Appoint::$timeText[$model->appoint_time];
                     $rs=SmsSend::appoint($data, $model->phone);
                     $log->addLog($rs?'true':'false');
+                    if($rs){
+                        $model->push_state=3;
+                        $model->save();
+                    }
                 }
                 $log->saveLog();
                 return $this->redirect(['index']);
