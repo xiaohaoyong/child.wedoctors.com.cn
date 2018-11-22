@@ -6,38 +6,67 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Article */
 
-$this->title = '详情';
+$this->title = $model->info->title;
 $this->params['breadcrumbs'][] = ['label' => 'Articles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
-\common\helpers\HeaderActionHelper::$action=[
-0=>['name'=>'列表','url'=>['index']],
-1=>['name'=>'添加','url'=>['create']]
-];
 ?>
+<style>
+    video{width: 600px;}
+    image{width: 600px;}
+</style>
 <div class="article-view">
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+    <div class="col-xs-12">
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        [
+                            'attribute' => '标题',
+                            'value' => function($e)
+                            {
+                                return $e->info->title;
+                            }
+                        ],
+                        [
+                            'attribute' => 'subject_pid',
+                            'value' => function($e)
+                            {
+                                return \common\models\ArticleCategory::findOne([$e->subject_pid])->name;
+                            }
+                        ],
+                        [
+                            'attribute' => 'subject',
+                            'value' => function($e)
+                            {
+                                return \common\models\ArticleCategory::findOne([$e->subject])->name;
+                            }
+                        ],
+                        [
+                            'attribute' => '内容',
+                            'format'=>'raw',
+                            'value' => function($e)
+                            {
+                                return $e->info->content;
+                            }
+                        ],
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'catid',
-            'level',
-            'createtime:datetime',
-            'child_type',
-            'num',
-            'type',
-        ],
-    ]) ?>
-
+                        [
+                            'attribute' => 'createtime',
+                            'format' => ['date', 'php:Y-m-d']
+                        ],
+                    ],
+                ]) ?>
+                <div class="form-group" style="padding-top: 20px;">
+                    <?= Html::a('通过', ['verify?t=1&id='.$model->id],
+                        ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a('不通过', ['verify?t=2&id='.$model->id],
+                        ['class' => 'btn btn-danger']) ?>
+                    <?= Html::a('编辑', ['update', 'id' => $model->id],
+                        ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -16,7 +16,7 @@ class ArticleSearchModel extends Article
     public function rules()
     {
         return [
-            [['id', 'catid', 'level', 'createtime', 'child_type', 'num', 'type'], 'integer'],
+            [['id', 'catid', 'level', 'createtime', 'child_type', 'num', 'type','subject_pid','subject'], 'integer'],
         ];
     }
 
@@ -61,6 +61,8 @@ class ArticleSearchModel extends Article
             'level' => $this->level,
             'createtime' => $this->createtime,
             'child_type' => $this->child_type,
+            'subject_pid'=>$this->subject_pid,
+            'subject'=>$this->subject,
             'num' => $this->num,
             'type' => $this->type,
         ]);

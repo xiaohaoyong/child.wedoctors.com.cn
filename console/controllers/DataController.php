@@ -1229,14 +1229,10 @@ exit;
                     //小程序首页通知
                     Notice::setList($login->userid, 1, ['title' => "宝宝近期的体检结果已更新", 'ftitle' => "点击可查看本体检报告的详细内容信息", 'id' => "/user/examination/index?id=" . $child->id,], "id=" . $child->id);
                     $i++;
-                    $v->isupdate=0;
-                    $v->save();
-                }
-                if(in_array($login->openid,$logins)){
-                    $v->isupdate=0;
-                    $v->save();
                 }
             }
+            $v->isupdate=0;
+            $v->save();
         }
         echo $i;
         echo "true\n";

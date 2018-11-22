@@ -58,6 +58,52 @@ class ArticleController extends BaseController
         ]);
     }
 
+    public function actionExamine(){
+
+        $searchModel = new \backend\models\ArticleSearchModel();
+        $queryParams=Yii::$app->request->queryParams;
+        $queryParams['ArticleSearchModel']['level']=-1;
+        $dataProvider = $searchModel->search($queryParams);
+
+        return $this->render('examine', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionRelease(){
+
+        $searchModel = new \backend\models\ArticleSearchModel();
+        $queryParams=Yii::$app->request->queryParams;
+        $queryParams['ArticleSearchModel']['level']=0;
+        $dataProvider = $searchModel->search($queryParams);
+
+        return $this->render('release', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionPublish($id){
+        $model=$this->findModel($id);
+        if($model){
+            $model->level=1;
+            $model->save();
+        }
+
+        return $this->redirect(['release']);
+    }
+
+
+    public function actionVerify($id,$t)
+    {
+        $model=$this->findModel($id);
+        if($model){
+            $model->level=$t==1?0:-2;
+            $model->save();
+        }
+
+        return $this->redirect(['examine']);
+    }
+
     /**
      * Displays a single Article model.
      * @param integer $id
@@ -120,6 +166,7 @@ class ArticleController extends BaseController
         $article = $model->info;
         if ($model->load(Yii::$app->request->post()) && $article->load(Yii::$app->request->post())) {
 
+            $model->level=-1;
             if($model->save())
             {
 

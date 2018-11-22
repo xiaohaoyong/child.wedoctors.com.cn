@@ -120,6 +120,7 @@ class ArticleController extends BaseController
             $model->subject_pid=0;
             $model->type=2;
             $model->child_type=0;
+            $model->level=1;
             if($model->save())
             {
                 $article->id=$model->id;
