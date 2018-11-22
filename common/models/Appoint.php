@@ -19,7 +19,10 @@ use Yii;
  * @property int $state
  * @property int $remark
  * @property int $cancel_type
+ * @property int $push_state
+ * @property int $mode
  */
+
 class Appoint extends \yii\db\ActiveRecord
 {
     public static $timeText = [
@@ -57,6 +60,17 @@ class Appoint extends \yii\db\ActiveRecord
         3 => '身体不适',
         4 => '其他',
     ];
+    public  static $push_stateText=[
+        1=>'发送中',
+        2=>'微信模板发送成功',
+        3=>'短信发送成功',
+        4=>'微信模板发送失败',
+        5=>'短信发送失败',
+    ];
+    public static $modeText=[
+        0=>'用户预约',
+        1=>'医生预约',
+    ];
 
     public $date;
     /**
@@ -74,7 +88,7 @@ class Appoint extends \yii\db\ActiveRecord
     {
         return [
             [['appoint_time','appoint_date','type'], 'required'],
-            [['cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
+            [['push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
             [['remark'], 'string', 'max' => 100],
             [['date'], 'string'],
 
@@ -100,7 +114,9 @@ class Appoint extends \yii\db\ActiveRecord
             'state' => '预约状态',
             'loginid' => '登录信息',
             'remark'=>'备注',
-            'cancel_type'=>'取消原因'
+            'cancel_type'=>'取消原因',
+            'push_state'=>'推送状态',
+            'mode'=>'来源',
         ];
     }
 

@@ -96,6 +96,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+
+                                    'attribute' => 'push_state',
+                                    'value' => function ($e) {
+                                        return \common\models\Appoint::$push_stateText[$e->push_state];
+                                    }
+                                ],
+                                [
+
+                                    'attribute' => 'mode',
+                                    'value' => function ($e) {
+                                        return \common\models\Appoint::$modeText[$e->mode];
+                                    }
+                                ],
+                                [
                                     'class' => 'common\components\grid\ActionColumn',
                                     'template' => '
                             <div class="btn-group dropup">

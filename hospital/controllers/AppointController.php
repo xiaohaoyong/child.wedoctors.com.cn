@@ -68,6 +68,7 @@ class AppointController extends Controller
             $model->doctorid=$doctor->userid;
             $model->state = 5;
             $model->push_state=1;
+            $model->mode=1;
             $log=new \common\components\Log('Appoint_Doctor_Push');
             if ($model->save()) {
                 if ($model->loginid) {
@@ -98,8 +99,10 @@ class AppointController extends Controller
                         $log->addLog($rs);
                         if($rs){
                             $model->push_state=2;
-                            $model->save();
+                        }else{
+                            $model->push_state=4;
                         }
+                        $model->save();
                     }
                 }
                 if(!$login->openid) {
@@ -114,8 +117,10 @@ class AppointController extends Controller
                     $log->addLog($rs?'true':'false');
                     if($rs){
                         $model->push_state=3;
-                        $model->save();
+                    }else{
+                        $model->push_state=5;
                     }
+                    $model->save();
                 }
                 $log->saveLog();
                 return $this->redirect(['index']);
