@@ -89,6 +89,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+
+                                    'attribute' => 'cancel_type',
+                                    'value' => function ($e) {
+                                        return \common\models\Appoint::$cancel_typeText[$e->cancel_type];
+                                    }
+                                ],
+                                [
                                     'class' => 'common\components\grid\ActionColumn',
                                     'template' => '
                             <div class="btn-group dropup">
