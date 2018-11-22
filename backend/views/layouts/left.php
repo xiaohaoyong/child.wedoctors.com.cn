@@ -57,6 +57,7 @@
                             ['label' => '预约开通情况', 'icon' => 'list', 'url' => ['/user-doctor-appoint'],],
                             ['label' => '待审宣教指导', 'icon' => 'list', 'url' => ['/article/examine'],],
                             ['label' => '待发布宣教指导', 'icon' => 'list', 'url' => ['/article/release'],],
+                            ['label' => '发送预约通知', 'icon' => 'list', 'url' => ['/appoint/index'],],
 
                         ],
                     ],
