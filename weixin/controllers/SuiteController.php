@@ -138,6 +138,13 @@ class SuiteController extends Controller
                 ['type' => 'view', 'name' => '我的', 'sub_button' =>[
                     [
                         'type'=>'miniprogram',
+                        'name'=>'我的预约',
+                        'url'=>Yii::$app->params['index_url'],
+                        'appid'=>\Yii::$app->params['wxXAppId'],
+                        'pagepath'=>'pages/appoint/my'
+                    ],
+                    [
+                        'type'=>'miniprogram',
                         'name'=>'我是家长',
                         'url'=>Yii::$app->params['index_url'],
                         'appid'=>\Yii::$app->params['wxXAppId'],
