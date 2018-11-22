@@ -5,6 +5,7 @@ namespace hospital\controllers;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\ChildInfo;
+use common\models\Log;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use hospital\models\user\Hospital;
@@ -66,10 +67,12 @@ class AppointController extends Controller
             $model->appoint_date=strtotime($model->date);
             $model->doctorid=$doctor->userid;
             $model->state = 5;
+            $log=new \common\components\Log('Appoint_Doctor_Push');
             if ($model->save()) {
                 if ($model->loginid) {
                     $login = UserLogin::findOne(['id' => $model->loginid]);
                     if ($login->openid) {
+                        $log->addLog("微信");
 
                         if($model->type==1){
                             $data = [
@@ -88,17 +91,25 @@ class AppointController extends Controller
                                 'remark' => ARRAY('value' => "\n需要点击此消息并确定领取凭证，到社区服务中心出示此凭证即可享受服务，为了宝宝的健康，请安排好您的时间哦"),
                             ];
                         }
+                        $log->addLog($login->openid);
+
                         $rs = WechatSendTmp::send($data, $login->openid, '3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=1',]);
+                        $log->addLog($rs);
                     }
                 }
                 if(!$login->openid) {
+                    $log->addLog("短信");
+
                     $data['doctor'] = $doctor->name;
                     $data['phone'] = $doctor->phone;
                     $data['type'] = Appoint::$typeText1[$model->type];
                     $data['date_time'] = $model->date." ".explode('-',Appoint::$timeText[$model->appoint_time])[0];
                     //$data['time'] = Appoint::$timeText[$model->appoint_time];
-                    SmsSend::appoint($data, $model->phone);
+                    $rs=SmsSend::appoint($data, $model->phone);
+                    $log->addLog($rs);
+
                 }
+                $log->saveLog();
                 return $this->redirect(['index']);
             }
         }

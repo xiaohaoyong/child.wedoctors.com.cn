@@ -18,7 +18,7 @@ use Yii;
  * @property int $phone
  * @property int $state
  * @property int $remark
- * @property int cancel_type
+ * @property int $cancel_type
  */
 class Appoint extends \yii\db\ActiveRecord
 {
