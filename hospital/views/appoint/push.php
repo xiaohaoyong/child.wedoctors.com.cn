@@ -19,7 +19,7 @@ $this->title ='发送预约通知';
                 <?php $form = ActiveForm::begin();
                 $child=\common\models\ChildInfo::findOne($childid);
                 $userParent=\common\models\UserParent::findOne(['userid'=>$child->userid]);
-                $userLogin=\common\models\UserLogin::find()->where(['userid'=>$userParent])->andWhere(['>','phone',0])->orderBy('openid desc')->one();
+                $userLogin=\common\models\UserLogin::find()->where(['userid'=>$userParent->userid])->andWhere(['>','phone',0])->orderBy('openid desc')->one();
                 $user=\common\models\User::findOne($userParent->userid);
                 $phone=$userLogin->phone?$userLogin->phone:$userParent->mother_phone;
                 $model->phone=$phone;
