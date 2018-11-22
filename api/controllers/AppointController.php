@@ -207,7 +207,7 @@ class AppointController extends Controller
         }
     }
 
-    public function actionState($id,$formid,$type,$cancel_type){
+    public function actionState($id,$formid,$type,$cancel_type=0){
         $model=Appoint::findOne(['id'=>$id,'userid'=>$this->userid]);
         if(!$model){
             return new Code(20010,'取消失败！');
