@@ -39,7 +39,7 @@ class SmsSend
     public static function appoint($data,$mobile){
         $response = \Yii::$app->aliyun->sendSms(
             "儿宝宝", // 短信签名
-            "SMS_151575077", // 短信模板编号
+            "SMS_151177324", // 短信模板编号
             $mobile, // 短信接收者
             Array(  // 短信模板中字段的值
                 "doctor"=>$data['doctor'],

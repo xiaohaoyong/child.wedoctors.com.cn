@@ -106,8 +106,7 @@ class AppointController extends Controller
                     $data['date_time'] = $model->date." ".explode('-',Appoint::$timeText[$model->appoint_time])[0];
                     //$data['time'] = Appoint::$timeText[$model->appoint_time];
                     $rs=SmsSend::appoint($data, $model->phone);
-                    $log->addLog($rs);
-
+                    $log->addLog($rs?'true':'false');
                 }
                 $log->saveLog();
                 return $this->redirect(['index']);
