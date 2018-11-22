@@ -140,7 +140,7 @@ class ArticleController extends BaseController
                 }
 
                 if($article->save()) {
-                    \Yii::$app->getSession()->setFlash('success');
+                    \Yii::$app->getSession()->setFlash('success','成功');
 
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -181,8 +181,7 @@ class ArticleController extends BaseController
                     $article->img = ArticleInfo::findOne($model->id)->img;
                 }
                 if($article->save()) {
-                    \Yii::$app->getSession()->setFlash('success');
-
+                    \Yii::$app->getSession()->setFlash('success','成功');
                     return $this->redirect(['update', 'id' => $model->id]);
                 }
             }

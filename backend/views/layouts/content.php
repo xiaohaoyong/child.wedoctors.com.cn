@@ -57,7 +57,9 @@ use dmstr\widgets\Alert;
         <?php }?>
     <section class="content">
         <div class="row">
+            <div class="col-xs-12">
             <?= Alert::widget() ?>
+            </div>
             <?= $content ?>
         </div>
     </section>
