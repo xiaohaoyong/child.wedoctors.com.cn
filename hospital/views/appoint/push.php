@@ -25,7 +25,7 @@ $this->title ='发送预约通知';
                 $model->phone=$phone;
                 $model->childid=$childid;
                 $model->loginid=$userLogin?$userLogin->id:0;
-                $model->userid=$userLogin->userid;
+                $model->userid=$userParent->userid;
                 ?>
                 <table id="w0" class="table table-striped table-bordered detail-view">
                     <tbody>
