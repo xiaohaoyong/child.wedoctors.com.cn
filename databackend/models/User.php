@@ -58,7 +58,6 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
 
     public function validatePassword($password)
     {          //②
-        return true;
         return $this->password === md5(md5("data.wedoctors").$password);
     }
 
