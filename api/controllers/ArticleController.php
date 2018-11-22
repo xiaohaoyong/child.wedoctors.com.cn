@@ -8,7 +8,7 @@
 
 namespace api\controllers;
 
-use common\models\Article;
+use api\models\Article;
 use common\models\ArticleLike;
 use common\models\ArticleLog;
 use common\models\ArticleUser;
