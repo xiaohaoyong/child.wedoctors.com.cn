@@ -5,6 +5,7 @@ namespace weixin\controllers;
 use common\components\HttpRequest;
 use common\helpers\WechatSendTmp;
 use common\models\ChildInfo;
+use common\models\Qrcodeid;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\WeOpenid;
@@ -43,10 +44,15 @@ class SuiteController extends Controller
                 //分享是的二维码
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
                     $openid = $xml['FromUserName'];
-                    $doctor_id = str_replace('qrscene_', '', $xml['EventKey']);
-                    $doctor_id=$doctor_id?$doctor_id:0;
-                    $weOpenid=WeOpenid::action($xml);
+                    $scene = str_replace('qrscene_', '', $xml['EventKey']);
+                    if($scene){
+                        $qrcodeid=Qrcodeid::findOne(['qrcodeid'=>$scene,'type'=>0]);
+                        $doctor_id=$qrcodeid->mappingid;
+                    }else{
+                        $doctor_id=0;
+                    }
 
+                    $weOpenid=WeOpenid::action($xml);
                     if($doctor_id)
                     {
                         //扫描社区医院二维码操作
