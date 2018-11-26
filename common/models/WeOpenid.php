@@ -94,8 +94,14 @@ class WeOpenid extends \yii\db\ActiveRecord
         if($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN')
         {
             $openid = $xml['FromUserName'];
-            $doctor_id = str_replace('qrscene_', '', $xml['EventKey']);
-            $doctor_id=$doctor_id?$doctor_id:0;
+
+            $scene = str_replace('qrscene_', '', $xml['EventKey']);
+            if($scene){
+                $qrcodeid=Qrcodeid::findOne(['qrcodeid'=>$scene,'type'=>0]);
+                $doctor_id=$qrcodeid->mappingid;
+            }else{
+                $doctor_id=0;
+            }
 
             $weOpenid=WeOpenid::findOne(['openid'=>$openid]);
             $weOpenid = $weOpenid ? $weOpenid : new WeOpenid();
