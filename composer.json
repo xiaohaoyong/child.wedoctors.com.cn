@@ -1,4 +1,11 @@
 {
+
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
+  },
   "name": "yiisoft/yii2-app-advanced",
   "description": "Yii 2 Advanced Project Template",
   "keywords": [

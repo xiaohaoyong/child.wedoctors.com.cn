@@ -26,12 +26,14 @@
                         'url' => '#',
                         'items' => [
                             ['label' => '医院管理', 'icon' => 'hospital-o', 'url' => ['/hospital'],],
-                            ['label' => '儿童列表', 'icon' => 'child', 'url' => ['/child-info'],],
+                            ['label' => '社区医院列表', 'icon' => 'building-o', 'url' => ['/user-doctor'],],
+                            ['label' => '医生列表', 'icon' => 'building-o', 'url' => ['/doctors'],],
+
                             ['label' => '家庭数据', 'icon' => 'child', 'url' => ['/user-parent'],],
+                            ['label' => '儿童列表', 'icon' => 'child', 'url' => ['/child-info'],],
                             ['label' => '儿童数据', 'icon' => 'child', 'url' => ['/child'],],
                             ['label' => '儿童体检数据', 'icon' => 'heartbeat', 'url' => ['/examination'],],
 
-                            ['label' => '医生列表', 'icon' => 'building-o', 'url' => ['/user-doctor'],],
                             ['label' => '宣教指导文章管理', 'icon' => 'list', 'url' => ['/article'],],
                             ['label' => '宣教指导分类管理', 'icon' => 'list', 'url' => ['/article-category'],],
 

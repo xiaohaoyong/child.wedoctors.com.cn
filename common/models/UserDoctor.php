@@ -275,7 +275,14 @@ class UserDoctor extends \yii\db\ActiveRecord
     {
 
         if ($insert || !$this->qrcode) {
-            $data = ['action_name' => "QR_LIMIT_SCENE", 'action_info' => ['scene' => ['scene_id' => $this->userid]]];
+            $qrcodeid=Qrcodeid::findOne(['mappingid'=>$this->userid]);
+            if(!$qrcodeid){
+                $qrcodeid=new Qrcodeid();
+                $qrcodeid->mappingid=$this->userid;
+                $qrcodeid->save();
+            }
+
+            $data = ['action_name' => "QR_LIMIT_SCENE", 'action_info' => ['scene' => ['scene_id' => $qrcodeid->qrcodeid]]];
             $wechat = new MpWechat([
                 'token' => \Yii::$app->params['WeToken'],
                 'appId' => \Yii::$app->params['AppID'],

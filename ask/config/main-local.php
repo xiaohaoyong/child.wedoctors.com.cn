@@ -4,7 +4,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'dxRy9UaUrE2d8HSFAEPQwdyJT5m_RKqU',
+            'cookieValidationKey' => 'Cr8-AYQvsKacEW9PSwWZv8e4tjsLZ64s',
         ],
     ],
 ];
@@ -22,7 +22,4 @@ if (!YII_ENV_TEST) {
     ];
 }
 
-
-$redis= require(__DIR__ . '/redis.php');
-$config['components']=$config['components']+$redis;
 return $config;
