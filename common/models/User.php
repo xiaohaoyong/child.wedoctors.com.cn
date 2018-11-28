@@ -16,7 +16,7 @@ use Yii;
 class User extends \yii\db\ActiveRecord {
 
     public static $levelText=[-1=>'后台删除',0=>'正常'];
-    public static $typeText=[0=>'医生',1=>'用户'];
+    public static $typeText=[0=>'社区',1=>'用户',3=>'医生'];
 
     /**
      * @inheritdoc

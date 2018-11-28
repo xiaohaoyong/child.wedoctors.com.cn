@@ -15,5 +15,9 @@ use yii\base\Controller;
 class AppointController extends Controller
 {
     public function actionOverdue(){
+
+        $day=strtotime(date('Y-m-d'));
+        Appoint::updateAll(['state' => 4], 'appoint_date <'.$day);
+
     }
 }
