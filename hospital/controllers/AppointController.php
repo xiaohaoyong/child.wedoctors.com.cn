@@ -105,7 +105,7 @@ class AppointController extends Controller
                         $model->save();
                     }
                 }
-                if(!$login->openid) {
+                if(!$login->openid || $rs==false) {
                     $log->addLog("短信");
 
                     $data['doctor'] = $doctor->name;
