@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <!-- /.box-header -->
-            <div class="box-body">
+                <div class="box-body">
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [

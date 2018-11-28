@@ -67,25 +67,16 @@ class DoctorsController extends Controller
         $model = new Doctors();
 
         if ($model->load(Yii::$app->request->post())) {
-            $user = new User();
-            $user->phone = $model->phone;
-            $user->type = 3;
-            if ($user->save()) {
-                $model->userid = $user->id;
-                $model->save();
+            if($model->save()){
                 return $this->redirect(['view', 'id' => $model->userid]);
-            } else {
-                if ($model->firstErrors) {
-                    \Yii::$app->getSession()->setFlash('error', implode(',', $model->firstErrors));
-                }
-                if ($user->firstErrors) {
-                    \Yii::$app->getSession()->setFlash('error', implode(',', $user->firstErrors));
-                }
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
             }
         }
+        if ($model->firstErrors) {
+            \Yii::$app->getSession()->setFlash('error', implode(',', $model->firstErrors));
+        }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
