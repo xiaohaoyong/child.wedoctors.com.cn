@@ -160,6 +160,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         },
                                         'appointPush' => function ($url, $model, $key) {
                                             return Html::a('<span class="fa fa-database"></span> 发送预约通知', \yii\helpers\Url::to(['appoint/push', 'childid' => $model->id]));
+                                        },
+                                        'exaView' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-database"></span> 体检详情', \yii\helpers\Url::to(['examinationModels/index', 'ExaminationModels[childid]' => $model->id]));
                                         }
                                     ],
                                 ],
