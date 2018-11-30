@@ -22,7 +22,7 @@ return [
             'csrfParam' => '_csrf-hospital',
         ],
         'user' => [
-            'identityClass' => 'hospital\models\User',
+            'identityClass' => 'hospital\models\UserLogin',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-hospital', 'httpOnly' => true],
         ],

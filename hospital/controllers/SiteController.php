@@ -1,6 +1,8 @@
 <?php
 namespace hospital\controllers;
 
+use common\components\Code;
+use common\helpers\SmsSend;
 use common\models\Article;
 use common\models\ArticleUser;
 use common\models\ChildInfo;
@@ -9,6 +11,7 @@ use common\models\UserDoctor;
 use Yii;
 use common\models\LoginForm;
 use yii\filters\AccessControl;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -40,7 +43,7 @@ class SiteController extends BaseController
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['logout','index','login', 'error', 'captcha'],
+                        'actions' => ['logout','index','login', 'error', 'captcha','code'],
                         'allow' => true,
                     ],
                 ],
@@ -55,7 +58,7 @@ class SiteController extends BaseController
     public function actionIndex()
     {
 
-        $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital])->userid;
+        $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospitalid])->userid;
 
         //今日签约数
         $today=strtotime(date('Y-m-d 00:00:00'));
@@ -83,7 +86,7 @@ class SiteController extends BaseController
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-            ->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospital]);
+            ->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospitalid]);
 
         if(Yii::$app->user->identity->county==1114)
         {
@@ -100,8 +103,8 @@ class SiteController extends BaseController
         //管辖儿童数
         $data['childNum']=ChildInfo::find()
             ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-            ->andFilterWhere(['`child_info`.`source`' => \Yii::$app->user->identity->hospital])
-            ->andFilterWhere(['`child_info`.admin'=>\Yii::$app->user->identity->hospital])
+            ->andFilterWhere(['`child_info`.`source`' => \Yii::$app->user->identity->hospitalid])
+            ->andFilterWhere(['`child_info`.admin'=>\Yii::$app->user->identity->hospitalid])
             ->count();
 
         //签约率
@@ -208,5 +211,20 @@ class SiteController extends BaseController
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+    /**
+     * 发送验证码
+     * @param $phone
+     * @return Code
+     */
+    public function actionCode($phone){
+        \Yii::$app->response->format=Response::FORMAT_JSON;
+
+        if(!preg_match("/^1[34578]\d{9}$/", $phone)){
+            return ['code'=>20010,'msg'=>'手机号码格式错误'];
+        }
+        $sendData=SmsSend::sendSms($phone,'SMS_150575871');
+        return ['code'=>10000,'msg'=>'成功'];
+
     }
 }

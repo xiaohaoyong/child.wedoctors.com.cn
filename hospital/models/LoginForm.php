@@ -1,23 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wangzhen
- * Date: 2018/5/29
- * Time: 下午4:13
- */
 
 namespace hospital\models;
 
-
-use common\models\DataUser;
+use common\models\LawInfo;
+use hospital\models\Doctors;
+use Yii;
 use yii\base\Model;
 
+/**
+ * Login form
+ */
 class LoginForm extends Model
 {
-    public $username;
+    public $phone;
     public $password;
     public $rememberMe = true;
-    public $verifyCode;
 
     private $_user;
 
@@ -29,37 +26,26 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['phone', 'password'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
-            ['username', 'validateUsername'],
-            [['verifyCode'], 'required'],
-            ['verifyCode', 'captcha', 'message'=>'验证码错误'],
+            ['phone', 'validatePhone'],
+
         ];
     }
 
-    public function validateUsername($attribute, $params)
-    {
-        $dataUser=DataUser::findOne(['username'=>$this->username]);
-        if($dataUser && $dataUser->type!=3)
-        {
-            $this->addError($attribute, '监管账号请访data.child登陆');
-        }
-    }
     /**
      * @inheritdoc
      */
     public function attributeLabels()
     {
         return [
-            'username' => '用户名',
-            'password' => '密码',
-            'rememberMe' => '记住我',
-            'verifyCode'=>'',
+            'rememberMe' => '十天内免登陆',
         ];
     }
+
     /**
      * Validates the password.
      * This method serves as the inline validation for password.
@@ -70,10 +56,47 @@ class LoginForm extends Model
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+
+            $cache = \Yii::$app->cache;
+            $code = $cache->get($this->phone);
+            if ($this->password != $code) {
+                $this->addError($attribute, '手机验证码错误！');
             }
+        }
+    }
+
+    /**
+     * Validates the password.
+     * This method serves as the inline validation for password.
+     *
+     * @param string $attribute the attribute currently being validated
+     * @param array $params the additional name-value pairs given in the rule
+     */
+    public function validatePhone($attribute, $params)
+    {
+        if (is_numeric($this->phone)) {
+            $user = \common\models\UserLogin::findOne(['phone' => $this->phone]);
+            if ($user) {
+                $doctors = \common\models\Doctors::findOne(['userid' => $user->userid]);
+                $d = [];
+                if ($doctors) {
+                    $t = (string)decbin($doctors->type);
+                    $c = strlen($t);
+                    for ($i = 0; $i < $c; $i++) {
+                        if ((string)$t[$i] == 1) {
+                            $d[] = pow(10, $i);
+                        }
+                    }
+                }
+                if (!in_array('1', $d)) {
+                    $this->addError($attribute, '该账户无权限！');
+                }
+            } else {
+                $this->addError($attribute, '手机号未注册！');
+
+            }
+        }else{
+            $this->addError($attribute, '请填写正确手机号码！');
         }
     }
 
@@ -85,11 +108,10 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-
-            return \Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
-        } else {
-            return false;
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
+
+        return false;
     }
 
     /**
@@ -100,7 +122,7 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = \databackend\models\User::findByUsername($this->username);
+            $this->_user = UserLogin::findByPhone($this->phone);
         }
 
         return $this->_user;

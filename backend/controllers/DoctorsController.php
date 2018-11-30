@@ -66,6 +66,9 @@ class DoctorsController extends Controller
     {
         $model = new Doctors();
 
+        $model->province=11;
+        $model->city=11;
+        //var_dump(Yii::$app->request->post());exit;
         if ($model->load(Yii::$app->request->post())) {
             if($model->save()){
                 return $this->redirect(['view', 'id' => $model->userid]);
@@ -88,6 +91,19 @@ class DoctorsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        if($model->type){
+            $t=(string)decbin($model->type);
+            $c=strlen($t);
+            for($i=0;$i<$c;$i++){
+                if((string)$t[$i]==1) {
+                    $d[] = pow(10, $i);
+                }
+            }
+            $model->type=$d;
+        }
+        if($user=User::findOne($model->userid)){
+            $model->phone=$user->phone;
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->userid]);

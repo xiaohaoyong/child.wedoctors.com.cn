@@ -18,6 +18,8 @@ use Yii;
  */
 class UserLogin extends \yii\db\ActiveRecord {
 
+    public static $typeText=[0=>'普通',1=>'社区管理后台登录'];
+
     /**
      * @inheritdoc
      */
