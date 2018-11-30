@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
                         <i class="icon-settings"></i> 记录 <i class="fa fa-angle-up"></i></a>
                     <ul class="dropdown-menu pull-right" role="menu">
-                        <li>{articleuser} </li><li>{childhealthrecord}</li><li>{download}</li><li>{appointPush}</li>
+                        <li>{articleuser} </li><li>{childhealthrecord}</li><li>{download}</li><li>{appointPush}</li><li>{exaView}</li>
                     </ul>
                 </div>',
                                     'buttons' => [
