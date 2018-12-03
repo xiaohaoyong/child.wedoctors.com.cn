@@ -44,7 +44,7 @@ class UserLogin extends \common\models\UserLogin implements \yii\web\IdentityInt
     }
     public static function findByPhone($phone)
     {
-        $userLogin=self::findOne(['phone'=>$phone]);
+        $userLogin=self::findOne(['phone'=>$phone,'type'=>1]);
         return $userLogin;
     }
 }

@@ -75,7 +75,7 @@ class LoginForm extends Model
     public function validatePhone($attribute, $params)
     {
         if (is_numeric($this->phone)) {
-            $userLogin = \common\models\UserLogin::findOne(['phone' => $this->phone,'type'=>1]);
+            $userLogin = \common\models\UserLogin::find()->andWhere(['phone' => $this->phone])->andWhere(['type'=>1])->one();
             $doctors=\common\models\Doctors::findOne(['userid'=>$userLogin->userid]);
             if ($userLogin && ($doctors->type|1)!=$doctors->type) {
                 $this->addError($attribute, '该账户无权限！');

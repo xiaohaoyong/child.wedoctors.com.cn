@@ -53,6 +53,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return implode(',',$return);
                                     }
                                 ],
+                                [
+                                    'attribute' => '手机号',
+                                    'value' => function ($e) {
+                                        $user=\common\models\User::findOne($e->userid);
+                                        return $user->phone;
+                                    }
+                                ],
                                 // 'hospitalid',
                                 // 'subject_b',
                                 // 'subject_s',
