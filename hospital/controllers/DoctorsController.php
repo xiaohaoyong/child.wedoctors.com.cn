@@ -37,7 +37,9 @@ class DoctorsController extends Controller
     public function actionIndex()
     {
         $searchModel = new DoctorsSearchModels();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $params=Yii::$app->request->queryParams;
+        $params['DoctorsSearchModels']['hospitalid']=Yii::$app->user->identity->hospitalid;
+        $dataProvider = $searchModel->search($params);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
