@@ -39,7 +39,7 @@ $fieldOptions2 = [
                 ->field($model, 'password', $fieldOptions2)
                 ->label(false)
                 ->passwordInput(['placeholder' => $model->getAttributeLabel('验证码')]) ?>
-            <?= Html::a(Yii::t('app', '获取验证码'),"#", ['class' => 'btn bg-yellow ', 'name' => 'signup-button', 'id' => 'second']) ?>
+            <?= Html::buttonInput(Yii::t('app', '获取验证码'), ['class' => 'btn bg-yellow ', 'name' => 'signup-button', 'id' => 'second']) ?>
             <div class="clear"></div>
             <div class="row">
                 <div class="col-xs-8">

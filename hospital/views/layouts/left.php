@@ -36,6 +36,12 @@
                             ['label' => '预约列表', 'url' => ['appoint/index']],
                         ]
                     ],
+                    ['label' => '医生管理','icon' => 'file-text-o','url' => "#",
+                        'items' => [
+                            ['label' => '医生管理', 'url' => ['doctors/index']],
+                            ['label' => '添加医生', 'url' => ['doctors/create']],
+                        ]
+                    ],
 
                 ],
             ]

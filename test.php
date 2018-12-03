@@ -15,6 +15,8 @@
 
 
 
+var_dump(1|1);exit;
+
 
 $t=(string)110010;
 $c=strlen($t);

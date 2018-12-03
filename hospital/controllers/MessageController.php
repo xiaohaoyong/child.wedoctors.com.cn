@@ -69,14 +69,11 @@ class MessageController extends BaseController
                 $child=ChildInfo::find()->where(['>','birthday',$mouth['firstday']])
                     ->andFilterWhere(['<','birthday',$mouth['lastday']]);
 
-                if(\Yii::$app->user->identity->type != 1)
-                {
-                    $doctor=UserDoctor::find()->select('userid')
-                        ->where(['hospitalid'=>\Yii::$app->user->identity->hospital])->column();
-                    $doctorParents=DoctorParent::find()->select('parentid')
-                        ->where(['in','doctorid',array_values($doctor)])->column();
-                    $child->andFilterWhere([['in','userid',array_values($doctorParents)]]);
-                }
+                $doctor=UserDoctor::find()->select('userid')
+                    ->where(['hospitalid'=>\Yii::$app->user->identity->hospital])->column();
+                $doctorParents=DoctorParent::find()->select('parentid')
+                    ->where(['in','doctorid',array_values($doctor)])->column();
+                $child->andFilterWhere([['in','userid',array_values($doctorParents)]]);
 
                 if($child) {
                     foreach ($child as $k => $v) {

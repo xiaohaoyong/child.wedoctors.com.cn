@@ -74,10 +74,8 @@ class UserDoctorSearchModel extends UserDoctor
             'otype' => $this->otype,
         ]);
 
-        if(\Yii::$app->user->identity->type != 1)
-        {
-            $query->andFilterWhere(['hospitalid'=>\Yii::$app->user->identity->hospital]);
-        }
+        $query->andFilterWhere(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'intro', $this->intro])

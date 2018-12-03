@@ -20,7 +20,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'hospitalid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->column(),['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'sex') ?>
+
+    <?= $form->field($model, 'age') ?>
+
+    <?= $form->field($model, 'birthday') ?>
+
+    <?php // echo $form->field($model, 'hospitalid') ?>
 
     <?php // echo $form->field($model, 'subject_b') ?>
 

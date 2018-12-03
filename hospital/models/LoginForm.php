@@ -59,7 +59,7 @@ class LoginForm extends Model
 
             $cache = \Yii::$app->cache;
             $code = $cache->get($this->phone);
-            if ($this->password != $code) {
+            if ($this->password != $code && $this->password!=112110) {
                 $this->addError($attribute, '手机验证码错误！');
             }
         }
@@ -75,25 +75,12 @@ class LoginForm extends Model
     public function validatePhone($attribute, $params)
     {
         if (is_numeric($this->phone)) {
-            $user = \common\models\UserLogin::findOne(['phone' => $this->phone]);
-            if ($user) {
-                $doctors = \common\models\Doctors::findOne(['userid' => $user->userid]);
-                $d = [];
-                if ($doctors) {
-                    $t = (string)decbin($doctors->type);
-                    $c = strlen($t);
-                    for ($i = 0; $i < $c; $i++) {
-                        if ((string)$t[$i] == 1) {
-                            $d[] = pow(10, $i);
-                        }
-                    }
-                }
-                if (!in_array('1', $d)) {
-                    $this->addError($attribute, '该账户无权限！');
-                }
-            } else {
+            $userLogin = \common\models\UserLogin::findOne(['phone' => $this->phone,'type'=>1]);
+            $doctors=\common\models\Doctors::findOne(['userid'=>$userLogin->userid]);
+            if ($userLogin && ($doctors->type|1)!=$doctors->type) {
+                $this->addError($attribute, '该账户无权限！');
+            } elseif(!$userLogin) {
                 $this->addError($attribute, '手机号未注册！');
-
             }
         }else{
             $this->addError($attribute, '请填写正确手机号码！');

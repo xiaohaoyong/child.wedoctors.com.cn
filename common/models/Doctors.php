@@ -99,15 +99,9 @@ class Doctors extends \yii\db\ActiveRecord
     {
         if($insert) {
             $user = new User();
-            $userLogin=new UserLogin();
         }else{
             $user = User::findOne($this->userid);
-            $userLogin= UserLogin::findOne(['userid'=>$this->userid]);
-
         }
-        $userLogin->phone=$this->phone;
-        $userLogin->type=1;
-        $userLogin->save();
         $user->phone = $this->phone;
         $user->type = 3;
         if ($user->save()) {

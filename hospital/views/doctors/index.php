@@ -7,22 +7,13 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\DoctorsSearchModels */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '管理列表';
+$this->title = '医生列表';
 $this->params['breadcrumbs'][] = $this->title;
-\common\helpers\HeaderActionHelper::$action = [
-    0 => ['name' => '添加', 'url' => ['create']]
-];
+
 ?>
 <div class="doctors-index">
     <div class="col-xs-12">
         <div class="box">
-            <div class="box-header with-border">
-                <h3 class="box-title">检索：</h3>
-                <div>
-                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-                </div>
-                <!-- /.box-tools -->
-            </div>
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
@@ -32,13 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
 
                             'columns' => [
-
-                                'userid',
                                 'name',
                                 [
-                                    'attribute' => 'hospitalid',
+                                    'attribute' => '手机号',
                                     'value' => function ($e) {
-                                        return \common\models\Hospital::findOne(['id'=>$e->hospitalid])->name;
+                                        $user=\common\models\User::findOne($e->userid);
+                                        return $user->phone;
                                     }
                                 ],
                                 [
@@ -53,6 +43,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return implode(',',$return);
                                     }
                                 ],
+//            'sex',
+//            'age',
+//            'birthday',
                                 // 'hospitalid',
                                 // 'subject_b',
                                 // 'subject_s',
@@ -78,7 +71,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
                                 <ul class="dropdown-menu pull-right" role="menu">
                                     <li>{update}</li>
-                                    <li>{delete}</li>
                                 </ul>
                             </div>
                             ',

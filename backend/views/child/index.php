@@ -9,8 +9,8 @@ use yii\grid\GridView;
 
 $this->title = '管理列表';
 $this->params['breadcrumbs'][] = $this->title;
-\common\helpers\HeaderActionHelper::$action=[
-0=>['name'=>'添加','url'=>['create']]
+\common\helpers\HeaderActionHelper::$action = [
+    0 => ['name' => '添加', 'url' => ['create']]
 ];
 ?>
 <div class="child-info-index">
@@ -19,29 +19,29 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-header with-border">
                 <h3 class="box-title">检索：</h3>
                 <div>
-                                                <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-                                    </div>
+                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
                 <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
-                                                                            <?= GridView::widget([
-                            'options'=>['class' => 'col-sm-12'],
+                        <?= GridView::widget([
+                            'options' => ['class' => 'col-sm-12'],
                             'dataProvider' => $dataProvider,
-                            
-     'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
 
-                                        'id',
-            'userid',
-            'name',
-            'birthday:datetime',
-            'createtime:datetime',
-             'gender',
-             'source',
-             'admin',
+                            'columns' => [
+                                ['class' => 'yii\grid\SerialColumn'],
+
+                                'id',
+                                'userid',
+                                'name',
+                                'birthday:datetime',
+                                'createtime:datetime',
+                                'gender',
+                                'source',
+                                'admin',
 //             'field54',
 //             'field53',
 //             'field52',
@@ -52,37 +52,37 @@ $this->params['breadcrumbs'][] = $this->title;
 //             'field47',
 //             'field46',
 //             'field45',
-            // 'field44',
-            // 'field43',
-            // 'field42',
-            // 'field41',
-            // 'field40',
-            // 'field39',
-            // 'field38',
-            // 'field37',
-            // 'field27',
-            // 'field26',
-            // 'field25',
-            // 'field24',
-            // 'field23',
-            // 'field22',
-            // 'field21',
-            // 'field20',
-            // 'field19',
-            // 'field18',
-            // 'field17',
-            // 'field16',
-            // 'field15',
-            // 'field14',
-            // 'field13',
-             'field7',
-            // 'field6',
-            // 'field0',
-            // 'doctorid',
+                                // 'field44',
+                                // 'field43',
+                                // 'field42',
+                                // 'field41',
+                                // 'field40',
+                                // 'field39',
+                                // 'field38',
+                                // 'field37',
+                                // 'field27',
+                                // 'field26',
+                                // 'field25',
+                                // 'field24',
+                                // 'field23',
+                                // 'field22',
+                                // 'field21',
+                                // 'field20',
+                                // 'field19',
+                                // 'field18',
+                                // 'field17',
+                                // 'field16',
+                                // 'field15',
+                                // 'field14',
+                                // 'field13',
+                                'field7',
+                                // 'field6',
+                                // 'field0',
+                                // 'doctorid',
 
-                            [
-                            'class' => 'common\components\grid\ActionColumn',
-                            'template'=>'
+                                [
+                                    'class' => 'common\components\grid\ActionColumn',
+                                    'template' => '
                             <div class="btn-group dropup">
                                 <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown"
                                    aria-expanded="false">
@@ -95,10 +95,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </ul>
                             </div>
                             ',
+                                ],
                             ],
-                            ],
-                            ]); ?>
-                                                                    </div>
+                        ]); ?>
+                    </div>
                 </div>
             </div>
         </div>
