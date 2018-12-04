@@ -35,13 +35,6 @@ use yii\helpers\Html;
                         <li role="separator" class="divider"></li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <div class="pull-left">
-                                <?= Html::a(
-                                    '修改密码',
-                                    ['/data-user/update'],
-                                    [ 'class' => 'btn btn-default btn-flat']
-                                ) ?>
-                            </div>
                             <div class="pull-right">
                                 <?= Html::a(
                                     '退出',
