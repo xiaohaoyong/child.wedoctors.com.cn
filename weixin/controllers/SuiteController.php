@@ -159,7 +159,7 @@ class SuiteController extends Controller
                     [
                         'type'=>'view',
                         'name'=>'我是医生',
-                        'url'=>Yii::$app->params['index_url'],
+                        'url'=>'http://hospital.child.wedoctors.com.cn',
                     ]
                 ]],
 
