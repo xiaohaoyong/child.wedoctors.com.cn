@@ -107,6 +107,7 @@ class SiteController extends BaseController
             ->andFilterWhere(['`child_info`.admin'=>\Yii::$app->user->identity->hospitalid])
             ->count();
 
+        //var_dump(\Yii::$app->user->identity->hospitalid);exit;
         //签约率
         if($data['childNum']) {
             $data['baifen'] = round(($data['todayNumTotal'] / $data['childNum']) * 100,1);
