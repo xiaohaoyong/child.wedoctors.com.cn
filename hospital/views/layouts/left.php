@@ -1,6 +1,12 @@
 <aside class="main-sidebar">
 
     <section class="sidebar">
+        <?php
+            if(Yii::$app->user->identity->county==1105){
+                $a=['label' => '签名记录','icon' => 'pencil-square-o','url' => \yii\helpers\Url::to(['autograph/index']),];
+            }
+        ?>
+
         <?= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
@@ -8,6 +14,7 @@
                     ['label' => '管理目录', 'options' => ['class' => 'header']],
                     ['label' => '仪表盘','icon' => 'dashboard','url' => \yii\helpers\Url::to(['site/index']),],
                     ['label' => '管辖儿童','icon' => 'archive','url' => \yii\helpers\Url::to(['child-info/index']),],
+                    $a,
                     ['label' => '社区管理','icon' => 'hospital-o','url' => \yii\helpers\Url::to(['user-doctor/index']),],
                     ['label' => '中医指导库','icon' => 'file-text-o','url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[type]=1']),
                         'items' => [
