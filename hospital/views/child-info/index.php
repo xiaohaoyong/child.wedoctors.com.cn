@@ -139,13 +139,26 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+                                    'attribute' => '签约协议',
+                                    'value' => function ($e) {
+                                        $autograph=\common\models\Autograph::findOne(['userid'=>$e->userid]);
+                                        if ($autograph) {
+                                            $return = "已签";
+                                        } else {
+                                            $return = "未签";
+                                        }
+                                        return $return;
+                                    }
+                                ],
+                                [
                                     'class' => 'common\components\grid\ActionColumn',
                                     'template' => '
                 <div class="btn-group dropup">
                     <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
                         <i class="icon-settings"></i> 记录 <i class="fa fa-angle-up"></i></a>
                     <ul class="dropdown-menu pull-right" role="menu">
-                        <li>{articleuser} </li><li>{childhealthrecord}</li><li>{download}</li><li>{appointPush}</li><li>{exaView}</li>
+                        <li>{articleuser} </li><li>{childhealthrecord}</li><li>{download}</li><li>{appointPush}</li><li>{exaView}</li>                                    <li>{down}</li> <li>{downx}</li>
+
                     </ul>
                 </div>',
                                     'buttons' => [
@@ -163,7 +176,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         },
                                         'exaView' => function ($url, $model, $key) {
                                             return Html::a('<span class="fa fa-database"></span> 体检详情', \yii\helpers\Url::to(['examination/index', 'ExaminationModels[childid]' => $model->id]));
-                                        }
+                                        },
+                                        'down' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-database"></span> 仅签字协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid]),['target='=>'_blank']);
+                                        },
+                                        'downx' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-database"></span> 完整协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'type'=>1]),['target='=>'_blank']);
+                                        },
                                     ],
                                 ],
                             ],
