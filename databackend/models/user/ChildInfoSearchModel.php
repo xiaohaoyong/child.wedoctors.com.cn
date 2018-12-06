@@ -115,7 +115,7 @@ class ChildInfoSearchModel extends ChildInfo
             $query->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
             $query->andFilterWhere(['in', '`child_info`.doctorid',$hospitalids]);
-
+            $query->andFilterWhere(['in', '`child_info`.admin',$hospitalids]);
         }elseif($this->level==2){
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
             $query->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids]);
