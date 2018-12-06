@@ -43,6 +43,6 @@ use dmstr\widgets\Alert;
     <div class="pull-right hidden-xs">
         <b>Version</b> 2.0
     </div>
-    <strong>Copyright &copy; 2017-2018 技术支持：</strong> 微医北京健康科技有限公司。
+    <strong>Copyright &copy; 2017-2018 技术支持：</strong> 微医（北京）健康科技有限公司。
 </footer>
 
