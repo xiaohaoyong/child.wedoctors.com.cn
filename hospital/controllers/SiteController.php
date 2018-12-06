@@ -71,6 +71,7 @@ class SiteController extends BaseController
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+            ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid])
             ->andFilterWhere([">",'`doctor_parent`.createtime',$today]);
         if(Yii::$app->user->identity->county==1114)
         {
@@ -86,7 +87,7 @@ class SiteController extends BaseController
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-            ->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospitalid]);
+            ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid]);
 
         if(Yii::$app->user->identity->county==1114)
         {
@@ -172,6 +173,7 @@ class SiteController extends BaseController
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`'=>1])
             ->andFilterWhere(['doctor_parent.doctorid'=>$doctorid])
+            ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid])
             ->orderBy('`doctor_parent`.`createtime` desc')->limit(9)->all();
 
 

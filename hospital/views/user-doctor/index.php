@@ -49,7 +49,8 @@ hospital\assets\DatabasesAsset::register($this);
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                     ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                     ->andFilterWhere(['`doctor_parent`.level'=>1])
-                                    ->andFilterWhere([">",'`doctor_parent`.createtime',$today]);
+                                    ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
+                                        ->andFilterWhere([">",'`doctor_parent`.createtime',$today]);
                                 if(Yii::$app->user->identity->county==1114)
                                 {
                                     echo $todayTotal->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
@@ -65,7 +66,8 @@ hospital\assets\DatabasesAsset::register($this);
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                     ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                     ->andFilterWhere(['`child_info`.`doctorid`' =>$v->hospitalid])
-                                    ->andFilterWhere(['`doctor_parent`.level'=>1]);
+                                    ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
+                                        ->andFilterWhere(['`doctor_parent`.level'=>1]);
                                 if(Yii::$app->user->identity->county==1114)
                                 {
                                     echo $q=$ytotal->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])->count();
