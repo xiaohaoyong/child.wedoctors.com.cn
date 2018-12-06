@@ -41,10 +41,9 @@ class Autograph extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'createtime' => 'Createtime',
-            'img' => 'Img',
-            'loginid' => 'Loginid',
-            'userid' => 'userid',
+            'createtime' => '签约时间',
+            'img' => '签名',
+            'userid' => '用户',
         ];
     }
     public function beforeSave($insert)
