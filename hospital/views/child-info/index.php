@@ -143,9 +143,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'value' => function ($e) {
                                         $autograph=\common\models\Autograph::findOne(['userid'=>$e->userid]);
                                         if ($autograph) {
-                                            $return = "已签";
+                                            $return = "已签字";
                                         } else {
-                                            $return = "未签";
+                                            $return = "未签字";
                                         }
                                         return $return;
                                     }
