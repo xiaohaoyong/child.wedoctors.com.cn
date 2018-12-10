@@ -14,7 +14,7 @@ hospital\assets\IndexAsset::register($this);
                     <span class="info-box-number" style="height: 25px; line-height: 25px"><?=$data['todayNumTotal']?>/<?=$data['childNum']?>&nbsp;&nbsp;&nbsp;<?=$data['baifen']?>% </span>
                     <span class="progress-description" style="height: 30px; line-height: 30px">已完成签约/管理儿童总数</span>
                     <div class="progress"></div>
-                    <span class="info-box-number" style="height: 25px; line-height: 25px"><?=$data['AutoNum']?>/<?=$data['childNum']?>&nbsp;&nbsp;&nbsp;<?=$data['abaifen']?>% </span>
+                    <span class="info-box-number" style="height: 25px; line-height: 25px"><?=$data['AutoNum']?>/<?=$data['achildNum']?>&nbsp;&nbsp;&nbsp;<?=$data['abaifen']?>% </span>
                     <span class="progress-description" style="height: 30px; line-height: 30px">签字数/管理儿童总数</span>
                 </div>
             <?php }else{?>

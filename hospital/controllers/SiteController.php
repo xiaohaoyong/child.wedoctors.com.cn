@@ -96,6 +96,12 @@ class SiteController extends BaseController
             ->andFilterWhere(['`child_info`.admin'=>\Yii::$app->user->identity->hospitalid])
             ->count();
 
+        //管辖儿童数
+        $data['achildNum']=ChildInfo::find()
+            ->andFilterWhere(['`child_info`.`source`' => \Yii::$app->user->identity->hospitalid])
+            ->andFilterWhere(['`child_info`.admin'=>\Yii::$app->user->identity->hospitalid])
+            ->count();
+
         //var_dump(\Yii::$app->user->identity->hospitalid);exit;
         //签约率
         if($data['childNum']) {
@@ -114,7 +120,7 @@ class SiteController extends BaseController
         $data['AutoNum']=$auto->count();
         //签约率
         if($data['AutoNum']) {
-            $data['abaifen'] = round(($data['AutoNum'] / $data['childNum']) * 100,1);
+            $data['abaifen'] = round(($data['AutoNum'] / $data['achildNum']) * 100,1);
         }else{
             $data['abaifen'] = 0;
         }
