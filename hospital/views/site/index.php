@@ -9,7 +9,15 @@ hospital\assets\IndexAsset::register($this);
 
     <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box bg-green">
-
+            <?php if(Yii::$app->user->identity->county==1105){?>
+                <div class="info-box-content" style="margin-left:0px;height: 128px;">
+                    <span class="info-box-number" style="height: 25px; line-height: 25px"><?=$data['todayNumTotal']?>/<?=$data['childNum']?>&nbsp;&nbsp;&nbsp;<?=$data['baifen']?>% </span>
+                    <span class="progress-description" style="height: 30px; line-height: 30px">已完成签约/管理儿童总数</span>
+                    <div class="progress"></div>
+                    <span class="info-box-number" style="height: 25px; line-height: 25px"><?=$data['AutoNum']?>/<?=$data['childNum']?>&nbsp;&nbsp;&nbsp;<?=$data['abaifen']?>% </span>
+                    <span class="progress-description" style="height: 30px; line-height: 30px">签字数/管理儿童总数</span>
+                </div>
+            <?php }else{?>
             <div class="info-box-content" style="margin-left:0px;height: 128px; padding-top: 10px">
                 <span class="info-box-text" style="height: 30px; line-height: 30px">管理儿童总数：<?=$data['childNum']?></span>
                 <span class="info-box-number" style="height: 30px; line-height: 30px"><?=$data['todayNumTotal']?>/<?=$data['childNum']?>&nbsp;&nbsp;&nbsp;<?=$data['baifen']?>% </span>
@@ -21,6 +29,10 @@ hospital\assets\IndexAsset::register($this);
                     已完成签约/管理儿童总数
                   </span>
             </div>
+            <?php }?>
+
+
+
             <!-- /.info-box-content -->
         </div>
         <!-- /.info-box -->

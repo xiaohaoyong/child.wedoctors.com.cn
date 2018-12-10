@@ -5,6 +5,7 @@ use common\components\Code;
 use common\helpers\SmsSend;
 use common\models\Article;
 use common\models\ArticleUser;
+use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\UserDoctor;
@@ -85,7 +86,6 @@ class SiteController extends BaseController
             ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid])
             ->count();
 
-
         //var_dump($data['todayNumTotal']->createCommand()->getRawSql());exit;
 
 
@@ -102,6 +102,21 @@ class SiteController extends BaseController
             $data['baifen'] = round(($data['todayNumTotal'] / $data['childNum']) * 100,1);
         }else{
             $data['baifen'] = 0;
+        }
+
+        $userDoctor=UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospitalid]);
+        $doctorParent=DoctorParent::find()->select('parentid')->andFilterWhere(['doctorid'=>$userDoctor->userid])->column();
+        if(!$doctorParent){
+            $doctorParent=[0];
+        }
+        $auto=Autograph::find()->andWhere(['in','userid',$doctorParent]);
+        //签字数
+        $data['AutoNum']=$auto->count();
+        //签约率
+        if($data['AutoNum']) {
+            $data['abaifen'] = round(($data['AutoNum'] / $data['childNum']) * 100,1);
+        }else{
+            $data['abaifen'] = 0;
         }
 
         //宣教总次数
