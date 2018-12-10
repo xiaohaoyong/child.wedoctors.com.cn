@@ -67,36 +67,24 @@ class SiteController extends BaseController
 
 
         //今日签约数
-        $todayNum=ChildInfo::find()
+        $data['todayNum']=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
             ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid])
-            ->andFilterWhere([">",'`doctor_parent`.createtime',$today]);
-        if(Yii::$app->user->identity->county==1114)
-        {
-            $data['todayNum']=$todayNum
-                ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-                ->count();
-        }else{
-            $data['todayNum']=$todayNum->count();
-        }
+            ->andFilterWhere([">",'`doctor_parent`.createtime',$today])
+            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+            ->count();
 
         //签约儿童总数
-        $todayNumTotal=ChildInfo::find()
+        $data['todayNumTotal']=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-            ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid]);
+            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
+            ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid])
+            ->count();
 
-        if(Yii::$app->user->identity->county==1114)
-        {
-            $data['todayNumTotal']=$todayNumTotal
-                ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-                ->count();
-        }else{
-            $data['todayNumTotal']=$todayNumTotal->count();
-        }
 
         //var_dump($data['todayNumTotal']->createCommand()->getRawSql());exit;
 
