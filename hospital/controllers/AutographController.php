@@ -3,6 +3,8 @@
 namespace hospital\controllers;
 
 use common\models\ChildInfo;
+use common\models\DoctorParent;
+use common\models\UserDoctor;
 use common\models\UserParent;
 use Yii;
 use common\models\Autograph;
@@ -69,10 +71,14 @@ class AutographController extends Controller
             $userParent = UserParent::findOne(['userid' => $userid]);
         }
 
+        $doctorParent=DoctorParent::findOne(['parentid'=>$userid]);
+        $userDoctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
+
 
         return $this->renderPartial('down',[
             'userParent'=>$userParent,
             'userid'=>$userid,
+            'userDoctor'=>$userDoctor,
         ]);
     }
 

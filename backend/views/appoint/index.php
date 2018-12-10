@@ -37,7 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return \common\models\ChildInfo::findOne(['id'=>$e->childid])->name;
                                     }
                                 ],
+                                [
 
+                                    'attribute' => '儿童生日',
+                                    'value' => function ($e) {
+                                        $child= \common\models\ChildInfo::findOne(['id'=>$e->childid]);
+                                        return date('Y-m-d',$child->birthday);
+                                    }
+                                ],
                                 [
 
                                     'attribute' => '母亲姓名',
