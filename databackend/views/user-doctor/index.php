@@ -38,17 +38,18 @@ databackend\assets\DatabasesAsset::register($this);
                     <tbody>
                     <?php
                     foreach($doctor as $k=>$v){
-                    ?>
-                    <tr>
-                        <td><?= $v->name ?></td>
-                        <td><?= $total = \common\models\ChildInfo::find()->andFilterWhere(['source' => $v->hospitalid])->andFilterWhere(['admin' => $v->hospitalid])->andFilterWhere(['>', 'birthday', strtotime('-3 year')])->count() ?></td>
-                        <td><?php
+                        ?>
+                        <tr>
+                            <td><?=$v->name?></td>
+                            <td><?=$total=\common\models\ChildInfo::find()->andFilterWhere(['source'=>$v->hospitalid])->andFilterWhere(['admin'=>$v->hospitalid])->andFilterWhere(['>','birthday',strtotime('-3 year')])->count()?></td>
+                            <td><?php
                                 $today=strtotime(date('Y-m-d 00:00:00'));
                                 //今日已签约
                                 $todayTotal=\common\models\ChildInfo::find()
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                     ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                     ->andFilterWhere(['`doctor_parent`.level'=>1])
+                                    ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
                                     ->andFilterWhere([">",'`doctor_parent`.createtime',$today]);
                                 if(Yii::$app->user->identity->county==1114)
                                 {
@@ -65,6 +66,7 @@ databackend\assets\DatabasesAsset::register($this);
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                     ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                     ->andFilterWhere(['`child_info`.`doctorid`' =>$v->hospitalid])
+                                    ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
                                     ->andFilterWhere(['`doctor_parent`.level'=>1]);
                                 if(Yii::$app->user->identity->county==1114)
                                 {
