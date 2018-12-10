@@ -89,10 +89,7 @@ class ChildInfoSearchModel extends ChildInfo
             $query->andFilterWhere(['>=', 'child_info.birthday', $mouth['firstday']]);
             $query->andFilterWhere(['<=', 'child_info.birthday', $mouth['lastday']]);
         }
-        if(Yii::$app->user->identity->county==1114)
-        {
-            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
-        }
+
 
 
         if(!$this->admin) {
@@ -112,9 +109,10 @@ class ChildInfoSearchModel extends ChildInfo
         }
         if($this->level==1){
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+
             $query->andFilterWhere(['in','`doctor_parent`.`doctorid`',$doctorids]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
-            $query->andFilterWhere(['in', '`child_info`.doctorid',$hospitalids]);
             $query->andFilterWhere(['in', '`child_info`.admin',$hospitalids]);
         }elseif($this->level==2){
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');

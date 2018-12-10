@@ -176,79 +176,65 @@ databackend\assets\IndexAsset::register($this);
                     </thead>
                     <tbody>
                     <?php
-                        foreach($doctor as $k=>$v){
-                    ?>
-                    <tr>
-                        <td><?=$v->name?></td>
-                        <td><?=$total=\common\models\ChildInfo::find()->where(['source'=>$v->hospitalid])->andFilterWhere(['admin'=>$v->hospitalid])->andFilterWhere(['>','birthday',strtotime('-3 year')])->count()?></td>
-                        <td><?php
-                            $today=strtotime(date('Y-m-d 00:00:00'));
-                            //今日已签约
-                            $todayTotal=\common\models\ChildInfo::find()
-                                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                                ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
-                                ->andFilterWhere(['`doctor_parent`.level'=>1])
-                                ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
-                                    ->andFilterWhere([">",'`doctor_parent`.createtime',$today]);
-                            if(Yii::$app->user->identity->county==1114)
-                            {
-                                echo $todayTotal->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-                                    ->count();
-                            }else{
-                                echo $todayTotal->count();
-                            }
-                            ?>
-                        </td>
-                        <td><?php
-                            //已签约总数
-                            $ytotal=\common\models\ChildInfo::find()
-                                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                                ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
-                                ->andFilterWhere(['`child_info`.`doctorid`' =>$v->hospitalid])
-                                ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
-                                    ->andFilterWhere(['`doctor_parent`.level'=>1]);
-                            if(Yii::$app->user->identity->county==1114)
-                            {
-                                echo $q=$ytotal->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])->count();
-                            }else{
-                                echo $q=$ytotal->count();
-                            }
-                            ?>
-                        </td>
-                        <td><?php
-                            $today=strtotime(date('Y-m-d 00:00:00'));
-                            //今日宣教
-                            echo  \common\models\ArticleUser::find()
-                                ->andFilterWhere(['userid'=>$v->userid])
-                                ->andFilterWhere([">",'createtime',$today])->count();
-                            ?></td>
-                        <td><?php
-                            //已宣教
-                            echo  \common\models\ArticleUser::find()
-                                ->andFilterWhere(['userid'=>$v->userid])->count();
-                            ?></td>
-                        <td>
-                            <?php
-                            if($total) {$baifen= round(($q/$total) * 100,1);}else{$baifen= 0;}
+                    foreach($doctor as $k=>$v){
+                        ?>
+                        <tr>
+                            <td><?=$v->name?></td>
+                            <td><?=$total=\common\models\ChildInfo::find()->andFilterWhere(['source'=>$v->hospitalid])->andFilterWhere(['admin'=>$v->hospitalid])->andFilterWhere(['>','birthday',strtotime('-3 year')])->count()?></td>
+                            <td><?php
+                                $today=strtotime(date('Y-m-d 00:00:00'));
+                                //今日已签约
+                                echo  \common\models\ChildInfo::find()
+                                    ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                                    ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
+                                    ->andFilterWhere(['`doctor_parent`.level'=>1])
+                                    ->andFilterWhere([">",'`doctor_parent`.createtime',$today])->count();
+                                ?>
+                            </td>
+                            <td><?php
+                                //已签约总数
+                                echo  $q=\common\models\ChildInfo::find()
+                                    ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                                    ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
+                                    ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+                                    ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
+                                    ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
+                                ?>
+                            </td>
+                            <td><?php
+                                $today=strtotime(date('Y-m-d 00:00:00'));
+                                //今日宣教
+                                echo  \common\models\ArticleUser::find()
+                                    ->andFilterWhere(['userid'=>$v->userid])
+                                    ->andFilterWhere([">",'createtime',$today])->count();
+                                ?></td>
+                            <td><?php
+                                //已宣教
+                                echo  \common\models\ArticleUser::find()
+                                    ->andFilterWhere(['userid'=>$v->userid])->count();
+                                ?></td>
+                            <td>
+                                <?php
+                                if($total) {$baifen= round(($q/$total) * 100,1);}else{$baifen= 0;}
 
-                            if($baifen>44){
+                                if($baifen>44){
 
-                                $color='bg-green';
-                                $color1='progress-bar-success';
-                            }elseif($baifen>34){
-                                $color='bg-yellow';
-                                $color1='progress-bar-yellow';
-                            }else{
-                                $color='bg-red';
-                                $color1='progress-bar-danger';
-                            }
+                                    $color='bg-green';
+                                    $color1='progress-bar-success';
+                                }elseif($baifen>34){
+                                    $color='bg-yellow';
+                                    $color1='progress-bar-yellow';
+                                }else{
+                                    $color='bg-red';
+                                    $color1='progress-bar-danger';
+                                }
 
-                            ?>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar <?=$color1?>" style="width: <?=$baifen?>%"></div>
-                            </div>
-                        </td>
-                        <td><span class="badge <?=$color?>"><?=$baifen?>%</span></td>
+                                ?>
+                                <div class="progress progress-xs">
+                                    <div class="progress-bar <?=$color1?>" style="width: <?=$baifen?>%"></div>
+                                </div>
+                            </td>
+                            <td><span class="badge <?=$color?>"><?=$baifen?>%</span></td>
                     </tr>
                     <?php }?>
                     </tbody>
