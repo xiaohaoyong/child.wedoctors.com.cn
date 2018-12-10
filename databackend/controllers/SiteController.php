@@ -75,11 +75,11 @@ class SiteController extends BaseController
             ->andFilterWhere([">",'`doctor_parent`.createtime',$today])->count();
 
         //签约儿童总数
-        $todayNumTotal=ChildInfo::find()
+        $data['todayNumTotal']=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['in','`doctor_parent`.`doctorid`' ,$doctorids])
-            ->andFilterWhere(['in','child_info.doctorid',$hospitalids])
+            ->andFilterWhere(['in','child_info.admin',$hospitalids])
             ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
             ->count();
 
