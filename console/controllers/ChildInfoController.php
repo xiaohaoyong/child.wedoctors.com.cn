@@ -76,7 +76,7 @@ class ChildInfoController extends Controller
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-            ->andFilterWhere(['`child_info`.`doctorid`' =>$userDoctor->hospitalid])
+            ->andFilterWhere(['`child_info`.`admin`' =>$userDoctor->hospitalid])
             ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
             ->orderBy("`doctor_parent`.`createtime` desc")
             ->asArray()->all();
