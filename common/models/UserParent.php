@@ -91,6 +91,26 @@ class UserParent extends \yii\db\ActiveRecord {
         return $this->hasMany(User::className(),['id'=>'userid']);
     }
 
+    public function getPhone(){
+        $userLogin=UserLogin::find()->andWhere(['userid'=>$this->userid])->andWhere(['!=','phone',0])->one();
+        if($userLogin && $userLogin->phone){
+            return $userLogin->phone;
+        }else{
+            $user=User::findOne($this->userid);
+            if($user && $user->phone){
+                return $user->phone;
+            }else{
+                if($this->mother_phone){
+                    return $this->mother_phone;
+                }elseif($this->father_phone){
+                    return $this->father_phone;
+                }
+            }
+        }
+        return 0;
+    }
+
+
     public function beforeDelete()
     {
         if($this->source=2)

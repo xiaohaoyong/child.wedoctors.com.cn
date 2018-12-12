@@ -73,7 +73,6 @@ class UserLogin extends \yii\db\ActiveRecord
             return $doctor->county;
         }
     }
-
     /**
      * 根据openid当前人数据
      * @param int $openid

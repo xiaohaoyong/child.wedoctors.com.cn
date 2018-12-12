@@ -51,6 +51,21 @@ class SmsSend
         $response=json_decode($response,true);
         return $response['code']==200?true:false;
     }
+
+    public static function notice($data,$mobile,$tmp){
+        $response = \Yii::$app->aliyun->sendSms(
+            "儿宝宝", // 短信签名
+            $tmp, // 短信模板编号
+            $mobile, // 短信接收者
+            Array(  // 短信模板中字段的值
+                "doctor"=>$data['doctor'],
+                "phone"=>"010 ".$data['phone'],
+            )
+        );
+        $response=json_decode($response,true);
+        return $response['code']==200?true:false;
+    }
+
     /**
      * 短信验证
      * 接收$phone 手机号, $verify验证码
