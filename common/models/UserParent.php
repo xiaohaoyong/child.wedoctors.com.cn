@@ -110,6 +110,21 @@ class UserParent extends \yii\db\ActiveRecord {
         return 0;
     }
 
+    public function getPhones(){
+        $userLogin=UserLogin::find()->andWhere(['userid'=>$this->userid])->andWhere(['!=','phone',0])->one();
+        if($userLogin && $userLogin->phone)
+        {
+            $phones[]=$userLogin->phone;
+        }
+        $user=User::findOne($this->userid);
+        if($user && $user->phone) {
+            $phones[]=$user->phone;
+        }
+        $phones[]=$this->mother_phone;
+        $phones[]=$this->father_phone;
+        return array_unique($phones);
+    }
+
 
     public function beforeDelete()
     {
