@@ -30,7 +30,11 @@ class NoticeController extends BaseController
             $notice->userid = $doctor->userid;
             $notice->touserid = $userid;
             $args['doctor'] = $doctor->name;
-            $args['phone'] = $doctor->phone;
+            if(strlen($doctor->phone)==8){
+                $args['phone'] = '010 '.$doctor->phone;
+            }else{
+                $args['phone'] = $doctor->phone;
+            }
             if ($notice->send(1, $args)) {
                 \Yii::$app->getSession()->setFlash('success', '发送成功');
             } else {
