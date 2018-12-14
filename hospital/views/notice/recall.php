@@ -82,13 +82,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tr>
                     </thead>
                     <tbody>
-                    <?php
-                    foreach($notices as $k=>$v){
-                        ?>
+                    <?php foreach($notices as $k=>$v){?>
                         <tr>
                             <td><?=$v->content?></td>
                             <td><?=date('Y-m-d H:i:s',$v->createtime)?></td>
-                            <td><?=\common\models\UserNotice::$stateText[$v->state]?></td>
+                            <td>
+                                <?php $state=\common\models\UserNotice::$stateText[$v->state]?>
+                                <span class="label <?=$v->state==1?'label-success':'label-danger'?>"><?=$state?></span>
+                            </td>
                         </tr>
                     <?php }?>
                     </tbody>

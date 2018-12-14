@@ -56,7 +56,7 @@ class NoticeController extends BaseController
         $userParent=UserParent::findOne(['userid'=>$userid]);
         $child=ChildInfo::findOne($childid);
         $userNotice=new UserNotice();
-        $notices=UserNotice::findAll(['touserid'=>$userid]);
+        $notices=UserNotice::find()->where(['touserid'=>$userid])->orderBy('id desc')->all();
         return $this->render('recall', [
             'userParent'=>$userParent,
             'child'=>$child,
