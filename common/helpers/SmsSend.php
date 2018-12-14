@@ -59,7 +59,7 @@ class SmsSend
             $mobile, // 短信接收者
             Array(  // 短信模板中字段的值
                 "doctor"=>$data['doctor'],
-                "phone"=>"010 ".$data['phone'],
+                "phone"=>$data['phone'],
             )
         );
         $response=json_decode($response,true);

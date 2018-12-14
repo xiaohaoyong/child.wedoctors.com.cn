@@ -67,4 +67,34 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">召回记录：</h3>
+            </div>
+            <div class="box-body no-padding">
+                <table id="example2" class="table table-bordered table-hover"  style="font-size: 12px;">
+                    <thead>
+                    <tr>
+                        <th>发送内容</th>
+                        <th>发送时间</th>
+                        <th>发送状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    foreach($notices as $k=>$v){
+                        ?>
+                        <tr>
+                            <td><?=$v->content?></td>
+                            <td><?=date('Y-m-d H:i:s',$v->createtime)?></td>
+                            <td><?=\common\models\UserNotice::$stateText[$v->state]?></td>
+                        </tr>
+                    <?php }?>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
 </div>

@@ -23,33 +23,45 @@ class NoticeController extends BaseController
             $session->set('referrer_url', \Yii::$app->request->getReferrer());
         }
 
+
         if(\Yii::$app->request->post()) {
+            $error="失败";
             $doctor = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospitalid]);
-            $notice = new UserNotice();
-            $notice->load(\Yii::$app->request->post());
-            $notice->userid = $doctor->userid;
-            $notice->touserid = $userid;
-            $args['doctor'] = $doctor->name;
-            if(strlen($doctor->phone)==8){
-                $args['phone'] = '010 '.$doctor->phone;
+            $sdate=strtotime(date('Y-m-01'));
+
+            $count=UserNotice::find()->andWhere(['userid'=>$doctor->userid])->andWhere([">",'createtime',$sdate])->andWhere(['type'=>1])->count();
+            if($count<1001) {
+                $notice = new UserNotice();
+                $notice->load(\Yii::$app->request->post());
+                $notice->userid = $doctor->userid;
+                $notice->touserid = $userid;
+                $args['doctor'] = $doctor->name;
+                if (strlen($doctor->phone) == 8) {
+                    $args['phone'] = '010 ' . $doctor->phone;
+                } else {
+                    $args['phone'] = $doctor->phone;
+                }
+                if ($notice->send(1, $args)) {
+                    \Yii::$app->getSession()->setFlash('success', '发送成功');
+                    $session->remove('referrer_url');
+                    return $this->redirect($referrer_url);
+                }
             }else{
-                $args['phone'] = $doctor->phone;
+                $error="本月短信条数已到达上限(1000)";
             }
-            if ($notice->send(1, $args)) {
-                \Yii::$app->getSession()->setFlash('success', '发送成功');
-            } else {
-                \Yii::$app->getSession()->setFlash('error', '失败');
-            }
-            $session->remove('referrer_url');
-            return $this->redirect($referrer_url);
+            \Yii::$app->getSession()->setFlash('error',$error);
         }
+
+
         $userParent=UserParent::findOne(['userid'=>$userid]);
         $child=ChildInfo::findOne($childid);
         $userNotice=new UserNotice();
+        $notices=UserNotice::findAll(['touserid'=>$userid]);
         return $this->render('recall', [
             'userParent'=>$userParent,
             'child'=>$child,
             'notice'=>$userNotice,
+            'notices'=>$notices,
         ]);
     }
 }
