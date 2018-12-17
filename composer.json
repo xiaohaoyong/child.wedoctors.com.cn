@@ -45,7 +45,8 @@
     "jianyan74/yii2-websocket": "^1.1",
     "saviorlv/yii2-dysms": "dev-master",
     "tecnickcom/tcpdf": "^6.2",
-    "kartik-v/yii2-widget-fileinput": "@dev"
+    "kartik-v/yii2-widget-fileinput": "@dev",
+    "linslin/yii2-curl": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

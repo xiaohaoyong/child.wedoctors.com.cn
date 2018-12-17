@@ -17,6 +17,8 @@ use common\models\ChildInfo;
 use common\models\Examination;
 use common\models\Notice;
 use common\models\ArticleComment;
+use common\models\UserDoctor;
+use common\models\UserDoctorAppoint;
 use common\models\UserParent;
 use common\models\WxInfo;
 use yii\data\Pagination;
@@ -31,24 +33,45 @@ class NoticeController extends Controller
             Notice::setList(0, 3, ['title' => '儿童中医药健康管理内容及平台服务', 'ftitle' => '点击查看服务内容', 'id' => '/article/view/index?id=200',]);
             //  Notice::setList($this->userid, 4, ['title' => '您好！医生给您发来了一份0-3岁儿童中医健康指导。', 'ftitle' => '0-3岁儿童中医健康知识', 'id' => '/article/guidance/index?t=0']);
         } else {
-            $childs = ChildInfo::find()->select('id')->andFilterWhere(['userid' => 928])->column();
+            $childs = ChildInfo::find()->select('id')->andFilterWhere(['userid' => $this->userid])->column();
+
             if ($childs) {
                 $ex = Examination::find()->select('field52,childid')->andFilterWhere(['in', 'childid', $childs])->all();
-                foreach ($ex as $k => $v) {
-                    $row[$v->childid] = $v->field52;
-                }
-                $exRow = array_filter($row, function ($arr) {
-                    return $arr != '';
-                });
-                arsort($exRow);
-                if (array_values($exRow)[0] >= date('Y-m-d')) {
+                if($ex) {
+                    foreach ($ex as $k => $v) {
+                        $row[$v->childid] = $v->field52;
+                    }
+                    $exRow = array_filter($row, function ($arr) {
+                        return $arr != '';
+                    });
+                    arsort($exRow);
+                    if (array_values($exRow)[0] >= date('Y-m-d')) {
 
-                    $exT['date'] = array_values($exRow)[0];
-                    $exT['id'] = array_keys($exRow)[0];
+                        $exT['date'] = array_values($exRow)[0];
+                        $exT['id'] = array_keys($exRow)[0];
+                    }
                 }
             }
             if ($exT) {
-                Notice::setList($this->userid, 1, ['title' => '近期宝宝体检通知', 'ftitle' => $exT['date'] . ' (建议结合体检社区医院的门诊时间）', 'id' => '/user/examination/index?id=' . $exT['id'],], "id=" . $exT['id']);
+                $ex_data=[
+                    'title' => '近期宝宝体检通知',
+                    'ftitle' => $exT['date'] . ' (建议结合体检社区医院的门诊时间）',
+                    'id' => '/user/examination/index?id=' . $exT['id'],
+                    'temp'=>1
+                ];
+                $child=ChildInfo::findOne($exT['id']);
+                if($child && $child->source) {
+                    $doctor = UserDoctor::findOne(['hospitalid' => $child->source]);
+                    if($doctor && $doctor->userid){
+                        $appoint=UserDoctorAppoint::findOne(['doctorid'=>$doctor->userid,'type'=>1]);
+                        if($appoint) {
+                            $ex_data['id2'] = '/appoint/form?id=' . $doctor->userid . "&type=1";
+                            $ex_data['temp']=3;
+                        }
+                    }
+                }
+
+                Notice::setList($this->userid, 1,$ex_data , "id=" . $exT['id']);
             }
         }
 

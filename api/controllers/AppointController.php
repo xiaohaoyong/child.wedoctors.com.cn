@@ -25,6 +25,7 @@ use common\models\UserDoctorAppoint;
 use databackend\models\User;
 use dosamigos\qrcode\lib\Enum;
 use dosamigos\qrcode\QrCode;
+use linslin\yii2\curl\Curl;
 use yii\data\Pagination;
 
 class AppointController extends Controller
@@ -87,6 +88,36 @@ class AppointController extends Controller
             $phone = $phone ? $phone : $this->user->phone;
             $row=$appoint->toArray();
 
+            $holiday=[
+                '2018-12-30',
+                '2018-12-31',
+                '2019-1-1',
+                '2019-2-4',
+                '2019-2-5',
+                '2019-2-6',
+                '2019-2-7',
+                '2019-2-8',
+                '2019-2-9',
+                '2019-2-10',
+                '2019-4-5',
+                '2019-4-6',
+                '2019-4-7',
+                '2019-5-1',
+                '2019-6-7',
+                '2019-6-8',
+                '2019-6-9',
+                '2019-9-13',
+                '2019-9-14',
+                '2019-9-15',
+                '2019-10-1',
+                '2019-10-2',
+                '2019-10-3',
+                '2019-10-4',
+                '2019-10-5',
+                '2019-10-6',
+                '2019-10-7',
+            ];
+
             $appoints=Appoint::find()->select("count(*)")->indexBy('appoint_time')->where(['doctorid'=>$id,'type'=>$type])->groupBy('appoint_time')->column();
             $row['type1_num']=$row['type1_num']-$appoints[1]>=0?$row['type1_num']-$appoints[1]:0;
             $row['type2_num']=$row['type2_num']-$appoints[2]>=0?$row['type2_num']-$appoints[2]:0;
@@ -95,7 +126,7 @@ class AppointController extends Controller
             $row['type5_num']=$row['type5_num']-$appoints[5]>=0?$row['type5_num']-$appoints[5]:0;
             $row['type6_num']=$row['type6_num']-$appoints[6]>=0?$row['type6_num']-$appoints[6]:0;
 
-            return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone];
+            return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone,'holiday'=>$holiday];
         }else{
             return new Code(20010,'社区医院暂未开通服务！');
         }
@@ -107,7 +138,9 @@ class AppointController extends Controller
         $appoint=Appoint::findOne(['childid'=>$post['childid'],'type'=>$post['type'],'state'=>1]);
         if($appoint){
             return new Code(20020,'您有未完成的预约');
-        }else {
+        }elseif(!$post['childid']){
+            return new Code(20020,'请选择宝宝');
+        } else{
             $model = new Appoint();
             $post['appoint_date'] = strtotime($post['appoint_date']);
             $post['state'] = 1;
@@ -157,6 +190,8 @@ class AppointController extends Controller
         $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
         $row['child_name']=ChildInfo::findOne($appoint->childid)->name;
 
+        $index=Appoint::find()->andWhere(['appoint_date'=>$appoint->appoint_date])->andWhere(['>','id',$id])->count();
+        $row['index']=$index+1;
         return $row;
     }
 
