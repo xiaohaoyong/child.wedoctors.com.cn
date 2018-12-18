@@ -188,10 +188,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                         ];
 
+                        if($q) {
+                            $rs=array_pop($columns);
+                            array_push($columns,$q);
+                            array_push($columns,$rs);
 
-                        if($p) {
-                            $count = count($columns);
-                            $columns=array_splice($columns,$count-1,0,$p);
                         }
                         ?>
                         <?= GridView::widget([
