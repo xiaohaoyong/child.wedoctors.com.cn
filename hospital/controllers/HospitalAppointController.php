@@ -36,12 +36,30 @@ class HospitalAppointController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new HospitalAppointSearchModels();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+
+        $types=[];
+        if($doctor->appoint){
+            $types=str_split((string)$doctor->appoint);
+        }
+        $userDoctorAppoint=HospitalAppoint::find()->select('type')
+            ->andFilterWhere(['doctorid'=>$doctor->userid])
+            ->column();
+
+        if(Yii::$app->request->post()){
+            $doctor->load(Yii::$app->request->post());
+            if($doctor->save()){
+                \Yii::$app->getSession()->setFlash('success','编辑成功');
+            }else{
+                \Yii::$app->getSession()->setFlash('error','编辑失败');
+            }
+        }
+
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'types' => $types,
+            'userDoctorAppoint' => $userDoctorAppoint,
+            'model'=>$doctor
         ]);
     }
 
@@ -69,6 +87,9 @@ class HospitalAppointController extends Controller
         $model=$model?$model:new HospitalAppoint();
         $model->doctorid=$doctor->userid;
         $model->type=$type;
+        if(!isset($model->delay)){
+            $model->delay=0;
+        }
 
         $post=Yii::$app->request->post();
         if ($model->load($post) && $model->save()) {
@@ -86,7 +107,8 @@ class HospitalAppointController extends Controller
             Yii::$app->db->createCommand()->batchInsert(HospitalAppointWeek::tableName(), ['week','time_type','num','haid'],
                 $nums
             )->execute();
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success','成功');
+            return $this->redirect(['create', 'type' => $type]);
         } else {
             $hospitalAppointWeek=HospitalAppointWeek::findAll(['haid'=>$model->id]);
             $nums=[];

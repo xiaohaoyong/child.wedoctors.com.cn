@@ -32,6 +32,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['cycle','delay'], 'required'],
             [['doctorid', 'cycle', 'delay'], 'integer'],
         ];
     }
