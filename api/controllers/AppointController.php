@@ -190,7 +190,7 @@ class AppointController extends Controller
         $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
         $row['child_name']=ChildInfo::findOne($appoint->childid)->name;
 
-        $index=Appoint::find()->andWhere(['appoint_date'=>$appoint->appoint_date])->andWhere(['<','id',$id])->andWhere(['doctorid'=>$appoint->doctorid])->count();
+        $index=Appoint::find()->andWhere(['appoint_date'=>$appoint->appoint_date])->andWhere(['<','id',$id])->andWhere(['doctorid'=>$appoint->doctorid])->andWhere(['appoint_time'=>$appoint->appoint_time])->count();
         $row['index']=$index+1;
         return $row;
     }
