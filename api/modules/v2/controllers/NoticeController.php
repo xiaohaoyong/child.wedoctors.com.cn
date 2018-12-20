@@ -1,0 +1,15 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: wangzhen
+ * Date: 2018/1/17
+ * Time: 下午11:23
+ */
+
+namespace api\modules\v2controllers;
+
+
+class NoticeController extends \api\modules\v1\controllers\NoticeController
+{
+
+}

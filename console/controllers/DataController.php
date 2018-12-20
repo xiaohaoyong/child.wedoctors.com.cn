@@ -26,9 +26,12 @@ use common\models\DataUser;
 use common\models\DoctorParent;
 use common\models\Examination;
 use common\models\Hospital;
+use common\models\HospitalAppoint;
+use common\models\HospitalAppointWeek;
 use common\models\Notice;
 use common\models\User;
 use common\models\UserDoctor;
+use common\models\UserDoctorAppoint;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\Vaccine;
@@ -42,6 +45,38 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+    public function actionAppoint(){
+        $userAppoint=UserDoctorAppoint::find()->all();
+        foreach($userAppoint as $k=>$v){
+            $a=$v->toArray();
+            print_r($a);
+            $weeks=str_split((string)$v->weeks);
+            $hospitalAppoint=HospitalAppoint::findOne(['doctorid'=>$v->doctorid,'type'=>$v->type]);
+            $hospitalAppoint= $hospitalAppoint?$hospitalAppoint:new HospitalAppoint();
+            $hospitalAppoint->doctorid  =$v->doctorid;
+            $hospitalAppoint->cycle     =$v->cycle;
+            $hospitalAppoint->delay     =$v->delay;
+            $hospitalAppoint->type      =$v->type;
+            $hospitalAppoint->week      =$weeks;
+            $hospitalAppoint->save();
+            $id=$hospitalAppoint->id;
+            $row=[];
+            foreach($weeks as $wk=>$wv){
+                for($i=1;$i<=6;$i++){
+                    $rs = [];
+                    $rs[] = $wv;
+                    $rs[] =$i;
+                    $name='type'.$i."_num";
+                    $rs[] =$a[$name];
+                    $rs[]=$id;
+                    $row[]=$rs;
+                }
+            }
+            \Yii::$app->db->createCommand()->batchInsert(HospitalAppointWeek::tableName(), ['week','time_type','num','haid'],
+                $row
+            )->execute();
+        }
+    }
     public function actionPush(){
         $doctorParent = DoctorParent::find()->where(['doctorid'=>0])->all();
         foreach($doctorParent as $k=>$v){

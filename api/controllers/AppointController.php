@@ -124,14 +124,29 @@ class AppointController extends Controller
             return new Code(20010,'社区医院暂未开通服务！');
         }
     }
-    public function actionDayNum($doctorid,$week,$type){
+    public function actionDayNum($doctorid,$week,$type,$day){
         $rs=[];
         $appoint=HospitalAppoint::findOne(['doctorid'=>$doctorid,'type'=>$type]);
         if($appoint){
             $weeks=HospitalAppointWeek::find()->andWhere(['week'=>$week])->andWhere(['haid'=>$appoint->id])->orderBy('time_type asc')->all();
             if($weeks){
+                $appoints=Appoint::find()
+                    ->select('count(*)')
+                    ->andWhere(['type'=>$type])
+                    ->andWhere(['doctorid'=>$doctorid])
+                    ->andWhere(['appoint_date'=>strtotime($day)])
+                    ->andWhere(['!=','state',3])
+                    ->andWhere(['mode'=>0])
+                    ->indexBy('appoint_time')
+                    ->groupBy('appoint_time')
+                    ->column();
                 foreach($weeks as $k=>$v){
-                    $rs[$v->time_type]=$v->num;
+                    if($appoints) {
+                        $num = $v->num - $appoints[$v->time_type];
+                        $rs[$v->time_type] = $num > 0 ? $num : 0;
+                    }else{
+                        $rs[$v->time_type] =$v->num ;
+                    }
                 }
                 return $rs;
             }

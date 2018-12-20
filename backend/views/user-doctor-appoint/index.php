@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => 'doctorid',
                                     'value' => function ($e) {
-                                        return \common\models\UserDoctor::findOne(['userid'=>$e->doctorid])->name;
+                                        return \common\models\UserDoctor::findOne(['userid' => $e->doctorid])->name;
                                     }
                                 ],
                                 [
@@ -41,12 +41,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return \common\models\UserDoctorAppoint::$typeText[$e->type];
                                     }
                                 ],
+                                'weeks',
+                                'type1_num','type2_num','type3_num','type4_num','type5_num','type6_num',
+                                [
+                                    'attribute' => 'type1_num',
+                                    'value' => function ($e) {
+                                        return \common\models\UserDoctorAppoint::$typeText[$e->type];
+                                    }
+                                ],
                                 [
 
                                     'attribute' => '是否开通',
                                     'value' => function ($e) {
-                                        $doctor=\common\models\UserDoctor::findOne(['userid'=>$e->doctorid]);
-                                        return strpos((string)$doctor->appoint,(string)$e->type)!==false || $doctor->appoint==$e->type?'是':'否';
+                                        $doctor = \common\models\UserDoctor::findOne(['userid' => $e->doctorid]);
+                                        return strpos((string)$doctor->appoint, (string)$e->type) !== false || $doctor->appoint == $e->type ? '是' : '否';
                                     }
                                 ],
                                 [
@@ -63,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ',
                                     'buttons' => [
                                         'true' => function ($url, $model, $key) {
-                                            return Html::a('<span class="fa fa-database"></span> 去开通', \yii\helpers\Url::to(['user-doctor/update','id'=>$model->doctorid]));
+                                            return Html::a('<span class="fa fa-database"></span> 去开通', \yii\helpers\Url::to(['user-doctor/update', 'id' => $model->doctorid]));
                                         },
                                     ],
                                 ],
