@@ -118,7 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
-                                    'attribute' => '序号',
+                                    'attribute' => '排号顺序',
                                     'value' => function ($e) {
 
                                         $index = \common\models\Appoint::find()
