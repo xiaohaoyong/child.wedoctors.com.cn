@@ -20,6 +20,8 @@ use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Doctors;
 use common\models\Hospital;
+use common\models\HospitalAppoint;
+use common\models\HospitalAppointWeek;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
 use databackend\models\User;
@@ -81,7 +83,7 @@ class AppointController extends Controller
 
 
         //doctor
-        $appoint=UserDoctorAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
+        $appoint=HospitalAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
         if($appoint) {
 
             $phone = $this->userLogin->phone;
@@ -117,19 +119,24 @@ class AppointController extends Controller
                 '2019-10-6',
                 '2019-10-7',
             ];
-
-            $appoints=Appoint::find()->select("count(*)")->indexBy('appoint_time')->where(['doctorid'=>$id,'type'=>$type])->groupBy('appoint_time')->column();
-            $row['type1_num']=$row['type1_num']-$appoints[1]>=0?$row['type1_num']-$appoints[1]:0;
-            $row['type2_num']=$row['type2_num']-$appoints[2]>=0?$row['type2_num']-$appoints[2]:0;
-            $row['type3_num']=$row['type3_num']-$appoints[3]>=0?$row['type3_num']-$appoints[3]:0;
-            $row['type4_num']=$row['type4_num']-$appoints[4]>=0?$row['type4_num']-$appoints[4]:0;
-            $row['type5_num']=$row['type5_num']-$appoints[5]>=0?$row['type5_num']-$appoints[5]:0;
-            $row['type6_num']=$row['type6_num']-$appoints[6]>=0?$row['type6_num']-$appoints[6]:0;
-
             return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone,'holiday'=>$holiday];
         }else{
             return new Code(20010,'社区医院暂未开通服务！');
         }
+    }
+    public function actionDayNum($doctorid,$week,$type){
+        $rs=[];
+        $appoint=HospitalAppoint::findOne(['doctorid'=>$doctorid,'type'=>$type]);
+        if($appoint){
+            $weeks=HospitalAppointWeek::find()->andWhere(['week'=>$week])->andWhere(['haid'=>$appoint->id])->orderBy('time_type asc')->all();
+            if($weeks){
+                foreach($weeks as $k=>$v){
+                    $rs[$v->time_type]=$v->num;
+                }
+                return $rs;
+            }
+        }
+        return new Code(20020,'未设置');
     }
 
     public function actionSave(){

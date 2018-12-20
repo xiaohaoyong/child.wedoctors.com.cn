@@ -30,6 +30,13 @@ use yii\widgets\ActiveForm;
                             天
                         </td>
                     </tr>
+                    <tr><th>门诊时间</th><td><?= $form->field($model, 'week')->checkboxList([
+                                '1' => '周一  ',
+                                '2' => '周二  ',
+                                '3' => '周三  ',
+                                '4' => '周四  ',
+                                '5' => '周五  '
+                            ],['class'=>'flat-red'])->label(false) ?></td></tr>
                     </tbody>
                 </table>
                 <table id="w0" class="table table-striped table-bordered detail-view">

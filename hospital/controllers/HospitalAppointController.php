@@ -55,7 +55,6 @@ class HospitalAppointController extends Controller
             }
         }
 
-
         return $this->render('index', [
             'types' => $types,
             'userDoctorAppoint' => $userDoctorAppoint,
@@ -89,6 +88,9 @@ class HospitalAppointController extends Controller
         $model->type=$type;
         if(!isset($model->delay)){
             $model->delay=0;
+        }
+        if($model->weeks){
+            $model->week=str_split((string)$model->weeks);
         }
 
         $post=Yii::$app->request->post();
