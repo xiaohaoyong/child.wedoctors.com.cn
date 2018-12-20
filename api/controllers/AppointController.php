@@ -222,7 +222,13 @@ class AppointController extends Controller
         $row['child_name']=ChildInfo::findOne($appoint->childid)->name;
         $row['duan']=$appoint->appoint_time;
 
-        $index=Appoint::find()->andWhere(['appoint_date'=>$appoint->appoint_date])->andWhere(['<','id',$id])->andWhere(['doctorid'=>$appoint->doctorid])->andWhere(['appoint_time'=>$appoint->appoint_time])->count();
+        $index=Appoint::find()
+            ->andWhere(['appoint_date'=>$appoint->appoint_date])
+            ->andWhere(['<','id',$id])
+            ->andWhere(['doctorid'=>$appoint->doctorid])
+            ->andWhere(['appoint_time'=>$appoint->appoint_time])
+            ->andWhere(['type' => $appoint->type])
+            ->count();
         $row['index']=$index+1;
         return $row;
     }

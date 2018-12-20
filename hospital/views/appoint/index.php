@@ -34,14 +34,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => '儿童姓名',
                                     'value' => function ($e) {
-                                        return \common\models\ChildInfo::findOne(['id'=>$e->childid])->name;
+                                        return \common\models\ChildInfo::findOne(['id' => $e->childid])->name;
                                     }
                                 ],
                                 [
 
                                     'attribute' => '儿童性别',
                                     'value' => function ($e) {
-                                        $child= \common\models\ChildInfo::findOne(['id'=>$e->childid]);
+                                        $child = \common\models\ChildInfo::findOne(['id' => $e->childid]);
                                         return \common\models\ChildInfo::$genderText[$child->gender];
                                     }
                                 ],
@@ -49,29 +49,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => '儿童生日',
                                     'value' => function ($e) {
-                                        $child= \common\models\ChildInfo::findOne(['id'=>$e->childid]);
-                                        return date('Y-m-d',$child->birthday);
+                                        $child = \common\models\ChildInfo::findOne(['id' => $e->childid]);
+                                        return date('Y-m-d', $child->birthday);
                                     }
                                 ],
                                 [
 
                                     'attribute' => '母亲姓名',
                                     'value' => function ($e) {
-                                        return \common\models\UserParent::findOne(['userid'=>$e->userid])->mother;
+                                        return \common\models\UserParent::findOne(['userid' => $e->userid])->mother;
                                     }
                                 ],
                                 [
 
                                     'attribute' => '户籍地',
                                     'value' => function ($e) {
-                                        return \common\models\UserParent::findOne(['userid'=>$e->userid])->field44;
+                                        return \common\models\UserParent::findOne(['userid' => $e->userid])->field44;
                                     }
                                 ],
                                 [
 
                                     'attribute' => 'appoint_date',
                                     'value' => function ($e) {
-                                        return date('Y-m-d',$e->appoint_date);
+                                        return date('Y-m-d', $e->appoint_date);
                                     }
                                 ],
                                 [
@@ -118,6 +118,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+                                    'attribute' => '排号顺序',
+                                    'value' => function ($e) {
+
+                                        $index = \common\models\Appoint::find()
+                                            ->andWhere(['appoint_date' => $e->appoint_date])
+                                            ->andWhere(['<', 'id', $e->id])
+                                            ->andWhere(['doctorid' => $e->doctorid])
+                                            ->andWhere(['appoint_time' => $e->appoint_time])
+                                            ->andWhere(['type' => $e->type])
+                                            ->count();
+                                        return $e->appoint_time . "-" . ($index + 1);
+                                    }
+                                ],
+                                [
                                     'class' => 'common\components\grid\ActionColumn',
                                     'template' => '
                             <div class="btn-group dropup">
@@ -131,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ',
                                     'buttons' => [
                                         'true' => function ($url, $model, $key) {
-                                            return Html::a('<span class="fa fa-database"></span> 完成', \yii\helpers\Url::to(['appoint/done','id'=>$model->id]),['data-confirm'=>"是否确定已完成"]);
+                                            return Html::a('<span class="fa fa-database"></span> 完成', \yii\helpers\Url::to(['appoint/done', 'id' => $model->id]), ['data-confirm' => "是否确定已完成"]);
                                         },
                                     ],
                                 ],
