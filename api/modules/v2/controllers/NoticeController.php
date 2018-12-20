@@ -6,7 +6,7 @@
  * Time: 下午11:23
  */
 
-namespace api\modules\v2controllers;
+namespace api\modules\v2\controllers;
 
 
 class NoticeController extends \api\modules\v1\controllers\NoticeController

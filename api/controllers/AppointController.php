@@ -83,7 +83,7 @@ class AppointController extends Controller
 
 
         //doctor
-        $appoint=HospitalAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
+        $appoint=UserDoctorAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
         if($appoint) {
 
             $phone = $this->userLogin->phone;
@@ -119,6 +119,15 @@ class AppointController extends Controller
                 '2019-10-6',
                 '2019-10-7',
             ];
+
+            $appoints=Appoint::find()->select("count(*)")->indexBy('appoint_time')->where(['doctorid'=>$id,'type'=>$type])->groupBy('appoint_time')->column();
+            $row['type1_num']=$row['type1_num']-$appoints[1]>=0?$row['type1_num']-$appoints[1]:0;
+            $row['type2_num']=$row['type2_num']-$appoints[2]>=0?$row['type2_num']-$appoints[2]:0;
+            $row['type3_num']=$row['type3_num']-$appoints[3]>=0?$row['type3_num']-$appoints[3]:0;
+            $row['type4_num']=$row['type4_num']-$appoints[4]>=0?$row['type4_num']-$appoints[4]:0;
+            $row['type5_num']=$row['type5_num']-$appoints[5]>=0?$row['type5_num']-$appoints[5]:0;
+            $row['type6_num']=$row['type6_num']-$appoints[6]>=0?$row['type6_num']-$appoints[6]:0;
+
             return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone,'holiday'=>$holiday];
         }else{
             return new Code(20010,'社区医院暂未开通服务！');
