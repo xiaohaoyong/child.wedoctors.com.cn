@@ -48,6 +48,7 @@ hospital\assets\DatabasesAsset::register($this);
                                 echo  \common\models\ChildInfo::find()
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                     ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
+                                    ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
                                     ->andFilterWhere(['`doctor_parent`.level'=>1])
                                     ->andFilterWhere([">",'`doctor_parent`.createtime',$today])->count();
                                 ?>
