@@ -45,12 +45,14 @@ hospital\assets\DatabasesAsset::register($this);
                             <td><?php
                                 $today=strtotime(date('Y-m-d 00:00:00'));
                                 //今日已签约
-                                echo  \common\models\ChildInfo::find()
+                                echo \common\models\ChildInfo::find()
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                                    ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
+                                    ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+                                    ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+                                    ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
+                                    ->andFilterWhere([">",'`doctor_parent`.createtime',$today])
                                     ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-                                    ->andFilterWhere(['`doctor_parent`.level'=>1])
-                                    ->andFilterWhere([">",'`doctor_parent`.createtime',$today])->count();
+                                    ->count()
                                 ?>
                             </td>
                             <td><?php
