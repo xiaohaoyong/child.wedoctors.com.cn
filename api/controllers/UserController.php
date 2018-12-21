@@ -423,6 +423,9 @@ class UserController extends Controller
             $data['img']=$image[0];
             $data['loginid']=$this->userLogin->id;
             $data['userid']=$this->userid;
+            $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
+            $data['doctorid']=$doctorParent->doctorid;
+
             $autograph=Autograph::findOne(['loginid'=>$this->userLogin->id,'userid'=>$this->userid]);
             $autograph=$autograph?$autograph:new Autograph();
             $autograph->load(['Autograph'=>$data]);
