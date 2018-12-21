@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\UserDoctorAppointSearchModels */
+/* @var $searchModel backend\models\HospitalAppointSearchModels */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '管理列表';
@@ -13,10 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
     0 => ['name' => '添加', 'url' => ['create']]
 ];
 ?>
-<div class="user-doctor-appoint-index">
+<div class="hospital-appoint-index">
     <div class="col-xs-12">
         <div class="box">
-
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
@@ -26,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
 
                             'columns' => [
-                                ['class' => 'yii\grid\SerialColumn'],
                                 [
 
                                     'attribute' => 'doctorid',
