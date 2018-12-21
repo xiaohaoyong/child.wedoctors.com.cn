@@ -2,6 +2,7 @@
 namespace databackend\controllers;
 
 use common\models\ArticleUser;
+use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\UserDoctor;
 use databackend\models\article\Article;
@@ -74,6 +75,14 @@ class SiteController extends BaseController
             ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
             ->andFilterWhere([">",'`doctor_parent`.createtime',$today])->count();
 
+
+        //今日签字数
+        $data['todayInkNum']=Autograph::find()
+            ->andFilterWhere(['in','`doctorid`' ,$doctorids])
+            ->andFilterWhere([">",'createtime',$today])
+            ->count();
+
+
         //签约儿童总数
         $data['todayNumTotal']=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
@@ -90,12 +99,31 @@ class SiteController extends BaseController
             ->andFilterWhere(['in','child_info.admin',$hospitalids])
             ->count();
 
+        //管辖儿童数（0-6）
+        $data['achildNum']=ChildInfo::find()
+            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+            ->andFilterWhere(['in','child_info.source',$hospitalids])
+            ->andFilterWhere(['in','child_info.admin',$hospitalids])
+            ->count();
+
         //签约率
         if($data['childNum']) {
             $data['baifen'] = round(($data['todayNumTotal'] / $data['childNum']) * 100,1);
         }else{
             $data['baifen'] = 0;
         }
+
+        $auto=Autograph::find()->andFilterWhere(['in','`doctorid`' ,$doctorids])
+        ;
+        //签字数
+        $data['AutoNum']=$auto->count();
+        //签约率
+        if($data['AutoNum']) {
+            $data['abaifen'] = round(($data['AutoNum'] / $data['achildNum']) * 100,1);
+        }else{
+            $data['abaifen'] = 0;
+        }
+
 
         //宣教总次数
         $data['articleNum']=ArticleUser::find()

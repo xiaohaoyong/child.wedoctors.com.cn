@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'child_type')->dropDownList(\common\models\Article::$childText, ['prompt' => '请选择']) ?>
 
-    <?= $form->field($model, 'level')->dropdownList([1 => '已签约', 2 => '已签约未关联', 3 => '未签约'], ['prompt' => '请选择']) ?>
+    <?= $form->field($model, 'level')->dropdownList([1=>'已签约',2=>'已签约未关联',3=>'未签约',4=>'服务过已签约'],['prompt'=>'请选择']) ?>
     <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true

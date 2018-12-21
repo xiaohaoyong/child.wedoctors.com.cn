@@ -99,12 +99,20 @@ class ChildInfoSearchModel extends ChildInfo
         $hospitalid=$this->admin?$this->admin:\Yii::$app->user->identity->hospital;
         $doctorid=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
 
+        if(Yii::$app->user->identity->county == 1105){
+            $year=6;
+        }else{
+            $year=3;
+        }
+
+
+
         if($this->level==1){
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
             $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
             $query->andFilterWhere(['child_info.admin'=>$hospitalid]);
-            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-$year year")]);
             $query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
         }elseif($this->level==2){
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
@@ -113,11 +121,19 @@ class ChildInfoSearchModel extends ChildInfo
             $query->andWhere(['`child_info`.`source`'=>0]);
         }elseif($this->level==3){
             $parentids=\common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`'=>$doctorid->userid])->andFilterWhere(['level'=>1])->column();
-            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-$year year")]);
             $query->andFilterWhere(['not in', '`child_info`.userid',$parentids]);
             $query->andFilterWhere(['`child_info`.`admin`' => $hospitalid]);
+        }elseif($this->level==4){
+            $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+            $query->andWhere(['<', '`child_info`.birthday', strtotime("-$year year")]);
+            $query->orWhere(['child_info.admin'=>0]);
+
+            $query->andWhere(['`child_info`.`source`'=>$hospitalid]);
+            $query->andWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
+            $query->andWhere(['`doctor_parent`.`level`' => 1]);
         }else{
-            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-$year year")]);
             $query->andFilterWhere(['`child_info`.`admin`' => $hospitalid]);
         }
 

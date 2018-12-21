@@ -1233,7 +1233,7 @@ exit;
         $logins = [];
         $i=0;
         ini_set('memory_limit', '1024M');
-        $ex = Examination::find()->andFilterWhere(['isupdate' => 1])->andFilterWhere(['>', 'childid', '0'])->groupBy('childid')->all();
+        $ex = Examination::find()->andFilterWhere(['isupdate' => 1])->andFilterWhere(['>', 'field4', '2018-11-13'])->groupBy('childid')->all();
 
 
         foreach ($ex as $k => $v) {

@@ -61,11 +61,7 @@ class SiteController extends BaseController
 
         $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospitalid])->userid;
 
-        //今日签约数
         $today=strtotime(date('Y-m-d 00:00:00'));
-        $month=strtotime(date('Y-m-01 00:00:00'));
-
-
 
         //今日签约数
         $data['todayNum']=ChildInfo::find()
@@ -77,6 +73,12 @@ class SiteController extends BaseController
             ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
             ->count();
 
+        //今日签字数
+        $data['todayInkNum']=Autograph::find()
+            ->andFilterWhere(['doctorid'=>$doctorid])
+            ->andFilterWhere([">",'createtime',$today])
+            ->count();
+
         //签约儿童总数
         $data['todayNumTotal']=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
@@ -86,19 +88,18 @@ class SiteController extends BaseController
             ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid])
             ->count();
 
-        //var_dump($data['todayNumTotal']->createCommand()->getRawSql());exit;
 
-
-        //管辖儿童数
+        //管辖儿童数（0-3）
         $data['childNum']=ChildInfo::find()
             ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
             ->andFilterWhere(['`child_info`.`source`' => \Yii::$app->user->identity->hospitalid])
             ->andFilterWhere(['`child_info`.admin'=>\Yii::$app->user->identity->hospitalid])
             ->count();
 
-        //管辖儿童数
+        //管辖儿童数（0-6）
         $data['achildNum']=ChildInfo::find()
             ->andFilterWhere(['`child_info`.`source`' => \Yii::$app->user->identity->hospitalid])
+            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
             ->andFilterWhere(['`child_info`.admin'=>\Yii::$app->user->identity->hospitalid])
             ->count();
 
