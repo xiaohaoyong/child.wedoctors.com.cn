@@ -56,7 +56,7 @@
                         'items' => [
                             ['label' => '外链推送', 'icon' => 'list', 'url' => ['/chain'],],
                             ['label' => '开通自动推送列表', 'icon' => 'list', 'url' => ['/push'],],
-                            ['label' => '预约开通情况', 'icon' => 'list', 'url' => ['/user-doctor-appoint'],],
+                            ['label' => '预约开通情况', 'icon' => 'list', 'url' => ['/hospital-appoint'],],
                             ['label' => '待审宣教指导', 'icon' => 'list', 'url' => ['/article/examine'],],
                             ['label' => '待发布宣教指导', 'icon' => 'list', 'url' => ['/article/release'],],
                             ['label' => '发送预约通知', 'icon' => 'list', 'url' => ['/appoint/index'],],
