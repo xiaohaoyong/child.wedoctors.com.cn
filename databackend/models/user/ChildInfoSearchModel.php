@@ -40,18 +40,19 @@ class ChildInfoSearchModel extends ChildInfo
 
     public function attributeLabels()
     {
-        return [
-            'level' => '签约状态',
-            'docpartimeS' => '签约时间',
-            'docpartimeE' => '~',
-            'birthdayS' => '出生日期',
-            'child_type' => '儿童年龄段',
+        $attr = parent::attributeLabels();
 
-            'birthdayE' => '~',
-            'username' => '父母联系人姓名',
-            'admin'=>'管理机构',
-            'userphone' => '父母联系人手机号'
-        ];
+
+        $attr['level'] = '签约状态';
+        $attr['docpartimeS'] = '签约时间';
+        $attr['docpartimeE'] = '~';
+        $attr['birthdayS'] = '出生日期';
+        $attr['birthdayE'] = '~';
+        $attr['username'] = '父母联系人姓名';
+        $attr['admin'] = '管理机构';
+        $attr['child_type'] = '儿童年龄段';
+        $attr['userphone'] = '父母联系人手机号';
+        return $attr;
     }
 
     /**
