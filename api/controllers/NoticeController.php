@@ -15,6 +15,7 @@ use common\models\BabyToolLike;
 use common\models\BabyToolTag;
 use common\models\ChildInfo;
 use common\models\Examination;
+use common\models\HospitalAppoint;
 use common\models\Notice;
 use common\models\ArticleComment;
 use common\models\UserDoctor;
@@ -63,7 +64,7 @@ class NoticeController extends Controller
                 if($child && $child->source) {
                     $doctor = UserDoctor::findOne(['hospitalid' => $child->source]);
                     if($doctor && $doctor->userid){
-                        $appoint=UserDoctorAppoint::findOne(['doctorid'=>$doctor->userid,'type'=>1]);
+                        $appoint=HospitalAppoint::findOne(['doctorid'=>$doctor->userid,'type'=>1]);
                         if($appoint) {
                             $ex_data['id2'] = '/appoint/form?id=' . $doctor->userid . "&type=1";
                             $ex_data['temp']=3;

@@ -11,6 +11,7 @@ namespace api\controllers;
 use api\controllers\Controller;
 
 use common\models\Examination;
+use common\models\HospitalAppoint;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
 
@@ -41,7 +42,7 @@ class ExaController extends Controller
         }
         $doctor = UserDoctor::findOne(['hospitalid' => $ex[0]->source]);
         if($doctor && $doctor->userid){
-            $appoint=UserDoctorAppoint::findOne(['doctorid'=>$doctor->userid,'type'=>1]);
+            $appoint=HospitalAppoint::findOne(['doctorid'=>$doctor->userid,'type'=>1]);
             if($appoint) {
                 $doctorid=$doctor->userid;
             }
