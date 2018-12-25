@@ -42,8 +42,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //'contraindications:ntext',
             //'diseaseHarm:ntext',
             // 'dealFlow:ntext',
-            // 'intervalName',
-            // 'source',
+             'intervalName',
+             'source',
 
                             [
                             'class' => 'common\components\grid\ActionColumn',

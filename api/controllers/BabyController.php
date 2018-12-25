@@ -59,7 +59,7 @@ class BabyController extends Controller
     }
     public function actionVlist(){
 
-        $list=Vaccine::find()->all();
+        $list=Vaccine::find()->orderBy('source desc')->all();
         return $list;
     }
     public function actionVview($id){
