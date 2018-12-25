@@ -25,7 +25,11 @@ class ExaController extends Controller
             $row['tizhong']=$v->field70;
             $row['shenchang']=$v->field40;
             $row['touwei']=$v->field80;
-            $row['bmi']=$v->field20;
+            if($v->field20>100){
+                $row['bmi']=substr_replace($v->field20,'.',2,0);
+            }else{
+                $row['bmi']=$v->field20;
+            }
             $row['feipang']=$v->field53;
             $row['fayu']=$v->field35;
             $row['yingyang']=$v->field15;
@@ -116,6 +120,11 @@ class ExaController extends Controller
                 $row['name']=$field[$k];
                 $row['value']=$v;
                 $data[$k]=$row;
+            }
+            if($data['field20']>100){
+                $data['field20']=substr_replace($data['field20'],'.',2,0);
+            }else{
+                $data['field20']=$data['field20'];
             }
         }
         return $data;

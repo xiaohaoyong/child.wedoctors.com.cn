@@ -1091,8 +1091,7 @@ exit;
                     ->andFilterWhere(['field4' => $row[3]])
                     ->andFilterWhere(['source' => $hospitalid])
                     ->andFilterWhere(['field19' => $row[18]])->one();
-                // if($ex){ echo "jump\n";continue;}
-                $isupdate = $ex ? 0 : 1;
+                 if($ex){ echo "jump\n";continue;}
                 $ex = $ex ? $ex : new Examination();
 
                 $child = ChildInfo::find()->andFilterWhere(['name' => trim($row[0])])
@@ -1196,7 +1195,6 @@ exit;
                     'field91' => $row[90],
                     'field92' => $row[91],
                     'source' => $hospitalid,
-                    'isupdate' => $isupdate,
                 ];
 
                 if (!$child) {

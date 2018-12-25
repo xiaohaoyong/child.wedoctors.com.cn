@@ -46,6 +46,8 @@
                                     ['label' => '指南内容', 'icon' => 'hospital-o', 'url' => ['/baby-tool'],],
 
                                 ],],
+                            ['label' => '疫苗数据', 'icon' => 'comments', 'url' => ['/vaccine'],],
+
 
                         ],
                     ],

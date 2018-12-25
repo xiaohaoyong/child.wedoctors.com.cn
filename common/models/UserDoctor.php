@@ -34,6 +34,7 @@ use common\models\ArticleInfo;
  * @property string $otype
  * @property string $authimg
  * @property string $appoint_intro
+ * @property string $clinic_hours
  */
 class UserDoctor extends \yii\db\ActiveRecord
 {
@@ -64,6 +65,8 @@ class UserDoctor extends \yii\db\ActiveRecord
             [['intro', 'avatar', 'skilful','appoint_intro'], 'string', 'max' => 150],
             [['idnum'], 'string', 'max' => 18],
             [['authimg'], 'string', 'max' => 200],
+            [['clinic_hours'], 'string', 'max' => 100],
+
         ];
     }
 
