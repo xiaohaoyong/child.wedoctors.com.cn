@@ -10,7 +10,10 @@ namespace api\controllers;
 
 
 use common\components\Code;
+use common\models\Autograph;
+use common\models\DoctorParent;
 use common\models\User;
+use common\models\UserDoctor;
 use common\models\UserInfo;
 use common\models\UserLogin;
 use yii\base\ActionEvent;
@@ -55,6 +58,22 @@ class Controller extends \yii\web\Controller
             $this->user=$userLogin->user;
             $this->appToken=$session;
             $this->userLogin=$userLogin;
+
+            //判断是否签名
+            if($this->userid){
+                $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
+                if($doctorParent) {
+                    $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
+                    if($doctor->county==1105){
+                        $auto=Autograph::findOne(['userid'=>$this->userid]);
+                        if(!$auto){
+                            \Yii::$app->response->data = ['code' => 30002,'msg' => '已签约未签字'];
+                            return false;
+                        }
+                    }
+                }
+            }
+
         }elseif(!in_array($controllerID."/".$actionID,$this->result)){
             \Yii::$app->response->data = ['code' => 30001,'msg' => '数字签证错误'];
             return false;
