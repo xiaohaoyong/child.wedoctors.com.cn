@@ -59,21 +59,21 @@ class Controller extends \yii\web\Controller
             $this->user=$userLogin->user;
             $this->appToken=$session;
             $this->userLogin=$userLogin;
-
-            //判断是否签名
-            if($this->userid && !in_array($controllerID."/".$actionID,$this->autoResult)){
-                $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
-                if($doctorParent) {
-                    $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-                    if($doctor->county==1105){
-                        $auto=Autograph::findOne(['userid'=>$this->userid]);
-                        if(!$auto){
-                            \Yii::$app->response->data = ['code' => 30002,'msg' => '已签约未签字'];
-                            return false;
-                        }
-                    }
-                }
-            }
+//
+//            //判断是否签名
+//            if($this->userid && !in_array($controllerID."/".$actionID,$this->autoResult)){
+//                $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
+//                if($doctorParent) {
+//                    $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
+//                    if($doctor->county==1105){
+//                        $auto=Autograph::findOne(['userid'=>$this->userid]);
+//                        if(!$auto){
+//                            \Yii::$app->response->data = ['code' => 30002,'msg' => '已签约未签字'];
+//                            return false;
+//                        }
+//                    }
+//                }
+//            }
 
         }elseif(!in_array($controllerID."/".$actionID,$this->result)){
             \Yii::$app->response->data = ['code' => 30001,'msg' => '数字签证错误'];
