@@ -23,6 +23,7 @@ use yii\web\Response;
 class Controller extends \yii\web\Controller
 {
     private $result = ['user/login','user/wx-user-info','article/view','baby/collection-list','text/text'];
+    private $autoResult=['user/save-image'];
     protected $userid = 0;
     protected $user;
     protected $seaver_token;
@@ -60,7 +61,7 @@ class Controller extends \yii\web\Controller
             $this->userLogin=$userLogin;
 
             //判断是否签名
-            if($this->userid){
+            if($this->userid && !in_array($controllerID."/".$actionID,$this->autoResult)){
                 $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
                 if($doctorParent) {
                     $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
