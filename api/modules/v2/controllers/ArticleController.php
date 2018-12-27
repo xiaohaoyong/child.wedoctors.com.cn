@@ -20,7 +20,7 @@ class ArticleController extends \api\modules\v1\controllers\ArticleController
         $row['id']=0;
         $row['name']='推荐';
         $data['cat'][]=$row;
-        $cat=ArticleCategory::find()->andWhere(['pid'=>0])->all();
+        $cat=ArticleCategory::find()->andWhere(['pid'=>0])->orderBy('sort desc')->all();
         foreach($cat as $k=>$v){
             $row=$v->toArray();
             $rs=ArticleCategory::find()->andWhere(['pid'=>$v->id])->all();
