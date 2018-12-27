@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\Push;
 use common\components\UploadForm;
 use common\models\ArticleInfo;
+use common\models\ArticleType;
 use Yii;
 use backend\models\Article;
 use backend\models\ArticleSearchModel;
@@ -164,6 +165,7 @@ class ArticleController extends BaseController
     {
         $model = $this->findModel($id);
         $article = $model->info;
+        $model->article_type=ArticleType::find()->select('type')->where(['aid'=>$id])->column();
         if ($model->load(Yii::$app->request->post()) && $article->load(Yii::$app->request->post())) {
 
             $model->level=-1;

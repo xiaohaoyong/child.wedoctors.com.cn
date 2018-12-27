@@ -48,7 +48,8 @@
     "kartik-v/yii2-widget-fileinput": "@dev",
     "linslin/yii2-curl": "*",
     "kartik-v/yii2-krajee-base": "dev-master",
-    "kartik-v/bootstrap-fileinput": "@dev"
+    "kartik-v/bootstrap-fileinput": "@dev",
+    "kartik-v/yii2-widget-select2": "@dev"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

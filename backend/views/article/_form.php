@@ -28,7 +28,14 @@ use yii\widgets\ActiveForm;
                 ]) ?>
                 <?= $form->field($model,'subject')->dropDownList(\common\models\ArticleCategory::find()->select('name')->indexBy('id')->where(['pid'=>$model->subject_pid])->column(), ['prompt'=>'请选择'])?>
 
-
+                <?= $form->field($model, 'article_type')->widget(\kartik\select2\Select2::classname(), [
+    'data' => \common\models\ArticleType::$typeText,
+    'language' => 'de',
+    'options' => ['placeholder' => '请选择','multiple'=>'multiple'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+])?>
                 <?= $form->field($model,'child_type')->radioList(\common\models\Article::$childText)?>
                 <?= $form->field($article, 'img')->fileInput() ?>
                 <?php
