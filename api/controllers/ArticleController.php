@@ -9,6 +9,7 @@
 namespace api\controllers;
 
 use api\models\Article;
+use common\models\ArticleCategory;
 use common\models\ArticleLike;
 use common\models\ArticleLog;
 use common\models\ArticleUser;
@@ -63,6 +64,9 @@ class ArticleController extends Controller
 
         return $data;
     }
+
+
+
 
     public function actionView($id){
         $article=Article::findOne($id);
