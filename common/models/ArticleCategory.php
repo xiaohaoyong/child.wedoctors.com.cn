@@ -13,6 +13,7 @@ use Yii;
  * @property string $pids
  * @property int $createtime
  * @property int $level
+ * @property int $sort
  */
 class ArticleCategory extends \yii\db\ActiveRecord
 {
@@ -30,7 +31,7 @@ class ArticleCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pid', 'createtime', 'level'], 'integer'],
+            [['pid', 'createtime', 'level','sort'], 'integer'],
             [['name', 'pids'], 'string', 'max' => 20],
             ['pid', 'default', 'value' => 0]
 
@@ -49,6 +50,7 @@ class ArticleCategory extends \yii\db\ActiveRecord
             'pids' => '父类集',
             'createtime' => '创建时间',
             'level' => '数据状态',
+            'sort' => '排序',
         ];
     }
     public function beforeSave($insert)

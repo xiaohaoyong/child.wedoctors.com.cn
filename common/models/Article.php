@@ -17,6 +17,7 @@ use Yii;
  * @property integer $art_type
  * @property string $num
  * @property integer $type
+ * @property integer $sort
  */
 class Article extends \yii\db\ActiveRecord
 {
@@ -97,7 +98,7 @@ class Article extends \yii\db\ActiveRecord
     {
         return [
             [['subject_pid', 'subject'], 'required'],
-            [['catid', 'level', 'createtime', 'child_type', 'num', 'type', 'art_type', 'subject', 'subject_pid'], 'integer'],
+            [['sort','catid', 'level', 'createtime', 'child_type', 'num', 'type', 'art_type', 'subject', 'subject_pid'], 'integer'],
         ];
     }
 
@@ -117,7 +118,7 @@ class Article extends \yii\db\ActiveRecord
             'art_type' => '内容类型',
             'subject' => '频道',
             'subject_pid' => '主频道',
-
+            'sort' => '排序',
             'img' => '封面'
         ];
     }
