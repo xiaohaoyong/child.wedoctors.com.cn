@@ -50,6 +50,8 @@ class ArticleController extends \api\modules\v1\controllers\ArticleController
         {
             $articles->andFilterWhere(['!=','catid',6]);
             $articles->andFilterWhere(['!=','type',2]);
+            $articles->andFilterWhere(['!=','subject_pid',20]);
+
         }
 
         $pages = new Pagination(['totalCount' => $articles->count(), 'pageSize' => 10]);
