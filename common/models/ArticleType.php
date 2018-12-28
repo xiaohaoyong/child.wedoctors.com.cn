@@ -14,7 +14,13 @@ use Yii;
 class ArticleType extends \yii\db\ActiveRecord
 {
     public static $typeText = [
-        0 => '全部',
+        0 => '全部儿童',
+        58 => '全部产妇',
+        59 => '孕前',
+        60 => '孕早期',
+        61 => '孕中期',
+        62 => '孕后期',
+        57 => '产后',
         20 => '孕4周',
         21 => '孕5周',
         22 => '孕6周',
@@ -52,7 +58,6 @@ class ArticleType extends \yii\db\ActiveRecord
         54 => '孕38周',
         55 => '孕39周',
         56 => '孕40周',
-        57 => '产后',
         1  => '满月',
         13 => '2月龄',
         2  => '3月龄',
