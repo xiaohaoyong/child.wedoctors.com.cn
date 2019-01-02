@@ -227,7 +227,7 @@ class ChildController extends Controller
         if($controllerID."/".$actionID == 'child/five' || $controllerID."/".$actionID == 'child/confirm'){
             $auto=Autograph::findOne(['userid'=>$this->userLogin->userid]);
             if(!$auto){
-                return ['code' => 30002,'msg' => '已签约未签字'];
+                //return ['code' => 30002,'msg' => '已签约未签字'];
             }
         }
         return $return;
