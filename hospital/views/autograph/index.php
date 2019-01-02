@@ -37,17 +37,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => 'userid',
                                     'value' => function ($e) {
-                                        $return='';
-                                        $userParent=\common\models\UserParent::findOne(['userid'=>$e->userid]);
-                                        if($userParent){
-                                            $return.="母亲:".$userParent->mother."|";
-                                            $return.="父亲:".$userParent->father."|";
-                                            $child=\common\models\ChildInfo::find()->select('name')->where(['userid'=>$e->userid])->column();
-                                            $return.="孩子:".implode(',',$child);
+                                        $return = '';
+                                        $userParent = \common\models\UserParent::findOne(['userid' => $e->userid]);
+                                        if ($userParent) {
+                                            $return .= "母亲:" . $userParent->mother . "|";
+                                            $return .= "父亲:" . $userParent->father . "|";
+                                            $child = \common\models\ChildInfo::find()->select('name')->where(['userid' => $e->userid])->column();
+                                            $return .= "孩子:" . implode(',', $child);
                                         }
                                         return $return;
                                     }
                                 ],
+                                "userid",
+                                "loginid",
 
                                 [
                                     'class' => 'common\components\grid\ActionColumn',
@@ -62,10 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             ', 'buttons' => [
                                     'down' => function ($url, $model, $key) {
-                                        return Html::a('<span class="fa fa-database"></span> 仅签字协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid]),['target='=>'_blank']);
+                                        return Html::a('<span class="fa fa-database"></span> 仅签字协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid]), ['target=' => '_blank']);
                                     },
                                     'downx' => function ($url, $model, $key) {
-                                        return Html::a('<span class="fa fa-database"></span> 完整协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'type'=>1]),['target='=>'_blank']);
+                                        return Html::a('<span class="fa fa-database"></span> 完整协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid, 'type' => 1]), ['target=' => '_blank']);
                                     },
                                 ],
                                 ],

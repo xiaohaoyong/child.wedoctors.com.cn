@@ -11,6 +11,7 @@ namespace api\controllers;
 
 use common\components\Code;
 use common\models\Autograph;
+use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\User;
 use common\models\UserDoctor;
@@ -23,7 +24,7 @@ use yii\web\Response;
 class Controller extends \yii\web\Controller
 {
     private $result = ['user/login','user/wx-user-info','article/view','baby/collection-list','text/text'];
-    private $autoResult=['user/save-image'];
+    private $autoResult=['user/save-image','user/login'];
     protected $userid = 0;
     protected $user;
     protected $seaver_token;
@@ -64,8 +65,9 @@ class Controller extends \yii\web\Controller
             if($this->userid && !in_array($controllerID."/".$actionID,$this->autoResult)){
                 $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
                 if($doctorParent) {
+                    $child=ChildInfo::findOne(['userid'=>$this->userid]);
                     $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-                    if($doctor->county==1105){
+                    if($doctor->county==1105 && $child){
                         $auto=Autograph::findOne(['userid'=>$this->userid]);
                         if(!$auto){
                             \Yii::$app->response->data = ['code' => 30002,'msg' => '已签约未签字'];

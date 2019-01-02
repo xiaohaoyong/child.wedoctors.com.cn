@@ -403,6 +403,8 @@ class UserController extends Controller
      * @return Code
      */
     public function actionSaveImage(){
+        $autograph=Autograph::findOne(['loginid'=>$this->userLogin->id,'userid'=>$this->userid]);
+
         $imagesFile = UploadedFile::getInstancesByName('file');
         $img=$imagesFile[0]->tempName;
 
@@ -427,7 +429,6 @@ class UserController extends Controller
             $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
             $data['doctorid']=$doctorParent->doctorid;
 
-            $autograph=Autograph::findOne(['loginid'=>$this->userLogin->id,'userid'=>$this->userid]);
             $autograph=$autograph?$autograph:new Autograph();
             $autograph->load(['Autograph'=>$data]);
             $autograph->save();
