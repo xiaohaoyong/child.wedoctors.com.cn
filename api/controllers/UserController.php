@@ -344,12 +344,7 @@ class UserController extends Controller
         }
         $log->saveLog();
 
-        if($doctorParent) {
-            $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-        }
-        $autograph=Autograph::findOne(['loginid'=>$this->userLogin->id,'userid'=>$this->userid]);
-
-        return ['useridx' => $useridx, 'type' => $type,'doctor'=>$doctor,'is_autograph'=>$autograph?0:1];
+        return ['useridx' => $useridx, 'type' => $type,'doctor'=>$doctor,'is_autograph'=>0];
     }
 
     public function actionWxInfo()
