@@ -44,6 +44,8 @@
                                 'items'=>[
                                     ['label' => '指南类别', 'icon' => 'hospital-o', 'url' => ['/baby-tool-tag'],],
                                     ['label' => '指南内容', 'icon' => 'hospital-o', 'url' => ['/baby-tool'],],
+                                    ['label' => '指南内容', 'icon' => 'hospital-o', 'url' => ['/baby-guide'],],
+
 
                                 ],],
                             ['label' => '疫苗数据', 'icon' => 'comments', 'url' => ['/vaccine'],],

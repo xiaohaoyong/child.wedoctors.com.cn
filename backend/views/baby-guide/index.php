@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\BabyToolSearch */
+/* @var $searchModel backend\models\BabyGuideSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '管理列表';
@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
     0 => ['name' => '添加', 'url' => ['create']]
 ];
 ?>
-<div class="baby-tool-index">
+<div class="baby-guide-index">
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header with-border">
@@ -33,9 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             'columns' => [
                                 'id',
-                                'period',
-                                'tag',
-                                'createtime:datetime',
+                                'sort',
+                                [
+                                    'attribute' => 'period',
+                                    'value' => function ($e) {
+                                        return \common\models\BabyToolTag::findOne($e->period)->name;
+                                    }
+                                ],
+                                'title',
+                                // 'tag',
 
                                 [
                                     'class' => 'common\components\grid\ActionColumn',
