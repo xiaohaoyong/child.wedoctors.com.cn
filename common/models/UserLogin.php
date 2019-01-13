@@ -29,6 +29,15 @@ class UserLogin extends \yii\db\ActiveRecord
         return '{{%user_login}}';
     }
 
+    public static function getOpenid($userid){
+
+        $login=self::find()->where(['userid'=>$userid])->andWhere(["!=",'openid',''])->one();
+        if($login){
+            return $login->openid;
+        }
+        return '';
+    }
+
     /**
      * @inheritdoc
      */
