@@ -36,6 +36,8 @@ class InterviewController extends Controller
         $preg=Pregnancy::find()->where(['familyid'=>$this->userid])->andWhere(['>','source',0])->orderBy('field11 desc')->one();
         $inter_week=Interview::$weekText;
         $getWeek=Interview::getWeek($preg->weeks);
+        $pregRow=$preg->toArray();
+        $pregRow['field74']=Pregnancy::$bmi[$preg->field74];
 
         foreach($inter_week as $k=>$v){
             if($k<=$getWeek) {
@@ -58,7 +60,7 @@ class InterviewController extends Controller
                 $data[] = $row;
             }
         }
-        return ['preg'=>$preg,'inter'=>array_reverse($data)];
+        return ['preg'=>$pregRow,'inter'=>array_reverse($data)];
     }
 
     public function actionRemind(){
