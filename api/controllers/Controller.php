@@ -73,7 +73,7 @@ class Controller extends \yii\web\Controller
                             //判断是否添加了宝宝或者孕产妇
                             $child=ChildInfo::findOne(['userid'=>$this->userid]);
                             $preg=Pregnancy::findOne(['familyid'=>$this->userid]);
-                            if(!$child && !$preg) {
+                            if($child || $preg) {
                                 \Yii::$app->response->data = ['code' => 30002, 'msg' => '已签约未签字'];
                                 return false;
                             }
