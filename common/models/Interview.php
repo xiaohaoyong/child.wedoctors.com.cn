@@ -60,7 +60,7 @@ class Interview extends \yii\db\ActiveRecord
             return 3;
         }elseif($week>=29 && $week<=35){
             return 4;
-        }elseif($week>=38 && $week<=40) {
+        }elseif($week>=38) {
             return 5;
         }
         return 0;
