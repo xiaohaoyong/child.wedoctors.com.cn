@@ -42,6 +42,13 @@ class Interview extends \yii\db\ActiveRecord
         4=>'孕28-36周',
         5=>'孕37-40周',
     ];
+    public static $weekidText=[
+        1=>12,
+        2=>16,
+        3=>21,
+        4=>28,
+        5=>37,
+    ];
 
 
     public static function getWeek($week){

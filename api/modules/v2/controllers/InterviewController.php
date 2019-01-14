@@ -56,6 +56,9 @@ class InterviewController extends Controller
                     $row['is_null'] = 1;
                 }
                 $row['weekid'] = $k;
+
+                $byt=BabyToolTag::findOne(['tag'=>Interview::$weekidText[$k]."YW"]);
+                $row['toolid']=$byt?$byt->id:0;
                 $row['week'] = Interview::$weekText[$k];
                 $data[] = $row;
             }
