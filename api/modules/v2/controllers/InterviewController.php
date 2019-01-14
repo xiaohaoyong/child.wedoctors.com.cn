@@ -14,6 +14,7 @@ use common\components\Code;
 use common\models\BabyGuide;
 use common\models\BabyToolTag;
 use common\models\Interview;
+use common\models\Notice;
 use common\models\Pregnancy;
 
 class InterviewController extends Controller
@@ -31,6 +32,7 @@ class InterviewController extends Controller
         $interview = new Interview();
         $interview->load(['Interview' => $data]);
         $interview->save();
+        Notice::delKey($this->userid,8);
 
         if ($interview->firstErrors) {
             return new Code(20010, implode(',', $interview->firstErrors));
