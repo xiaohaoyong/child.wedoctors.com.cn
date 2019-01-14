@@ -13,6 +13,7 @@ use common\components\Code;
 use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
+use common\models\Pregnancy;
 use common\models\User;
 use common\models\UserDoctor;
 use common\models\UserInfo;
@@ -65,13 +66,17 @@ class Controller extends \yii\web\Controller
             if($this->userid && !in_array($controllerID."/".$actionID,$this->autoResult)){
                 $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
                 if($doctorParent) {
-                    $child=ChildInfo::findOne(['userid'=>$this->userid]);
                     $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-                    if($doctor->county==1105 && $child){
-                        $auto=Autograph::findOne(['userid'=>$this->userid]);
-                        if(!$auto){
-                            \Yii::$app->response->data = ['code' => 30002,'msg' => '已签约未签字'];
-                            return false;
+                    if($doctor->county==1105) {
+                        $auto = Autograph::findOne(['userid' => $this->userid]);
+                        if (!$auto) {
+                            //判断是否添加了宝宝或者孕产妇
+                            $child=ChildInfo::findOne(['userid'=>$this->userid]);
+                            $preg=Pregnancy::findOne(['familyid'=>$this->userid]);
+                            if(!$child && !$preg) {
+                                \Yii::$app->response->data = ['code' => 30002, 'msg' => '已签约未签字'];
+                                return false;
+                            }
                         }
                     }
                 }
