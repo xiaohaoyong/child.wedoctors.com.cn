@@ -29,10 +29,10 @@ class InterviewController extends Controller
         $log=new Log('InterviewPush');
         $week=[
             1=>[78,],
-            2=>[106,134],
-            3=>[141,162],
-            4=>[190,246],
-            5=>[235,274],
+            2=>[113,127],
+            3=>[148,162],
+            4=>[197,239],
+            5=>[260,274],
         ];
         foreach($week as $k=>$v) {
             foreach ($v as $vv) {

@@ -36,18 +36,18 @@ class Interview extends \yii\db\ActiveRecord
     ];
 
     public static $weekText=[
-        1=>'孕12周',
-        2=>'孕16-20周',
-        3=>'孕21-24周',
-        4=>'孕28-36周',
-        5=>'孕37-40周',
+        1=>'第一次孕期追访',
+        2=>'第二次孕期追访',
+        3=>'第三次孕期追访',
+        4=>'第四次孕期追访',
+        5=>'第五次孕期追访',
     ];
     public static $weekidText=[
         1=>12,
-        2=>16,
-        3=>21,
-        4=>28,
-        5=>37,
+        2=>17,
+        3=>22,
+        4=>29,
+        5=>38,
     ];
 
 
@@ -111,7 +111,7 @@ class Interview extends \yii\db\ActiveRecord
             'childbirth_date' => '分娩日期',
             'createtime' => '数据创建时间',
             'userid'=>'用户ID',
-            'week'=>'用户ID',
+            'week'=>'追访类型',
             'pt_value'=>'体检内容'
         ];
     }

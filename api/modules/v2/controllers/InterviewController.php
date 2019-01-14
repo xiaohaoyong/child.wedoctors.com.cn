@@ -23,6 +23,7 @@ class InterviewController extends Controller
         $data['userid']=$this->userLogin->userid;
         if($data['pt_date']){$data['pt_date']=strtotime($data['pt_date']);}
         if($data['childbirth_date']){$data['childbirth_date']=strtotime($data['childbirth_date']);}
+        $data['week']=array_search($data['week'],Interview::$weekText);
         $interview=new Interview();
         $interview->load(['Interview'=>$data]);
         $interview->save();
