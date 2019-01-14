@@ -23,6 +23,7 @@ class Notice
         5=>'育儿课堂',
         6=>'健康工具',
         7=>'今日知识',
+        8=>'孕产期管理',
 
     ];
     public static $pages=[
@@ -33,7 +34,7 @@ class Notice
         5=>'/article/index/index',
         6=>'/tool/index/index',
         7=>'/tool/baby/index',
-
+        8=>'/interview/list',
     ];
 
     public static function getList($userid){

@@ -14,6 +14,7 @@ use common\components\Log;
 use common\helpers\WechatSendTmp;
 use common\models\DoctorParent;
 use common\models\Interview;
+use common\models\Notice;
 use common\models\Pregnancy;
 use common\models\User;
 use common\models\UserDoctor;
@@ -56,7 +57,7 @@ class InterviewController extends Controller
                                         'first' => ['value' => $doctor->name . '提醒您'],
                                         'keyword1' => ARRAY('value' => $pv->field1),
                                         'keyword2' => ARRAY('value' => date('Y年m月d日')),
-                                        'keyword3' => ARRAY('value' => "孕产妇" . Interview::$weekText[$k] . "追访模板"),
+                                        'keyword3' => ARRAY('value' => "孕产妇" . Interview::$weekText[$k] . "模板"),
                                         'remark' => ARRAY('value' => "请您尽快完善追访调查，以便医生团队更好的管理"),
 
                                     ];
@@ -65,6 +66,10 @@ class InterviewController extends Controller
                                 }
                             }
                         }
+
+                        Notice::setList($pv->familyid, 8,['title' => "医生发来一个追访模板", 'ftitle' => "请认真填写，以便医生更好的管理", 'id' => '/interview/index?id=' . $k]);
+
+
                     }else{
                         $log->addLog(implode(',',$pt_value));
                     }
