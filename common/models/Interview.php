@@ -56,7 +56,7 @@ class Interview extends \yii\db\ActiveRecord
             return 1;
         }elseif($week>=17 && $week<=19){
             return 2;
-        }elseif($week>=20 && $week<=23){
+        }elseif($week>=22 && $week<=23){
             return 3;
         }elseif($week>=29 && $week<=35){
             return 4;
