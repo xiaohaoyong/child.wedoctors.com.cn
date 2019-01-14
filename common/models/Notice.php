@@ -78,6 +78,12 @@ class Notice
             $redis->hset('noticeRow'.$userid,$key,json_encode($data));
         }
     }
+
+    public static function delKey($userid,$key){
+        $redis=\Yii::$app->rdmp;
+        $index=$redis->ZRANK('noticeList'.$userid,$key);
+        $redis->ZREMRANGEBYRANK('noticeList'.$userid,$index,$index);
+    }
     public static function del($userid){
         $redis=\Yii::$app->rdmp;
         $redis->del('noticeList'.$userid);

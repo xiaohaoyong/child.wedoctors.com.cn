@@ -11,6 +11,7 @@ namespace api\controllers;
 
 use common\components\Code;
 use common\models\Interview;
+use common\models\Notice;
 use common\models\Pregnancy;
 
 class InterviewController extends Controller
@@ -29,6 +30,8 @@ class InterviewController extends Controller
 
         if($interview->firstErrors){
             return new Code(20010,implode(',',$interview->firstErrors));
+        }else{
+            Notice::delKey($this->userid,8);
         }
     }
 

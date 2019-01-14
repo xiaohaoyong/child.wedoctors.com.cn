@@ -27,6 +27,7 @@ class InterviewController extends Controller
      * 发送追访
      */
     public function actionPush(){
+
         $log=new Log('InterviewPush');
         $week=[
             1=>[78,],
