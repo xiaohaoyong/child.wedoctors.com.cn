@@ -112,7 +112,7 @@ class Interview extends \yii\db\ActiveRecord
             'createtime' => '数据创建时间',
             'userid'=>'用户ID',
             'week'=>'追访类型',
-            'pt_value'=>'体检内容'
+            'pt_value'=>'不正常原因'
         ];
     }
 }

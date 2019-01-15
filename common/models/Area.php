@@ -12,7 +12,7 @@ namespace common\models;
 class Area {
 
     public static $province=[
-        11 => '北京市',
+        11 => '北京',
         12 => '天津市',
         13 => '河北省',
         14 => '山西省',
@@ -46,6 +46,7 @@ class Area {
         71 => '台湾省',
         81 => '香港',
         82 => '澳门',
+        1=>'国外',
     ];
     public static $city=[
             11 =>

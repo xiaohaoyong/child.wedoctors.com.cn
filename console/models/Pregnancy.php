@@ -9,6 +9,7 @@ namespace console\models;
  * Time: 下午3:23
  */
 use common\components\Log;
+use common\models\Area;
 use common\models\ChildInfo;
 use common\models\User;
 use common\models\UserLogin;
@@ -22,6 +23,7 @@ class Pregnancy
      */
     public function inputData($value,$hospital)
     {
+        var_dump($value);
         $preg=\common\models\Pregnancy::findOne(['field0'=>$value['field0']]);
         $preg=$preg?$preg:new \common\models\Pregnancy();
         $parent=UserParent::find()
@@ -32,17 +34,21 @@ class Pregnancy
             ->orWhere(['mother_phone'=>$value['field38']])
             ->one();
         $value['familyid']=$parent?$parent->userid:0;
-        $value['field2']=strtotime($value['field2']);
-        $value['field11']=strtotime($value['field11']);
-        $value['field15']=strtotime($value['field15']);
-        $value['field16']=strtotime($value['field16']);
+        $value['field2']=$value['field2']?strtotime(substr($value['field2'],0,10)):0;
+        $value['field5']=$value['field5']?strtotime(substr($value['field5'],0,10)):0;
+        $field7=array_search($value['field7'],Area::$province);
+        $value['field7']=$field7?$field7:0;
+        $value['field11']=$value['field11']?strtotime(substr($value['field11'],0,10)):0;
+        $value['field15']=$value['field15']?strtotime(substr($value['field15'],0,10)):0;
+        $value['field16']=$value['field16']?strtotime(substr($value['field16'],0,10)):0;
         $value['field49']=$value['field49']=='是'?1:0;
-        $value['field61']=strtotime($value['field61']);
+        $value['field61']=$value['field61']?strtotime(substr($value['field61'],0,10)):0;
         $value['field70']=floor($value['field70']);
         $field74=array_search($value['field74'],\common\models\Pregnancy::$bmi);
         $value['field74']=$field74?$field74:0;
         $value['source']=$hospital;
         $preg->load(['Pregnancy'=>$value]);
+
         if(!$preg->save()){
             var_dump($preg->firstErrors);
             var_dump($value);exit;
