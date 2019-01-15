@@ -47,6 +47,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+                                    'attribute' => '联系电话',
+                                    'value' => function ($e) {
+                                        $login=\common\models\UserLogin::getPhone($e->userid);
+                                        return $login;
+                                    }
+                                ],
+                                [
                                     'attribute' => '末次月经',
                                     'value' => function ($e) {
                                         $preg=\common\models\Pregnancy::findOne(['familyid'=>$e->userid]);

@@ -38,6 +38,14 @@ class UserLogin extends \yii\db\ActiveRecord
         return '';
     }
 
+    public static function getPhone($userid){
+
+        $login=self::find()->where(['userid'=>$userid])->andWhere(["!=",'phone',''])->one();
+        if($login){
+            return $login->phone;
+        }
+        return '';
+    }
     /**
      * @inheritdoc
      */
