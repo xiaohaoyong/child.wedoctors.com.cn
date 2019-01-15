@@ -78,7 +78,7 @@ class AutographSearch extends Autograph
         }
         $query->andWhere(['in', 'userid', $doctorParent]);
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
-        echo $query->createCommand()->getRawSql();
+        //echo $query->createCommand()->getRawSql();
         return $dataProvider;
     }
 }
