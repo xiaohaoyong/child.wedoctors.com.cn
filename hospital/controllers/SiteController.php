@@ -8,6 +8,7 @@ use common\models\ArticleUser;
 use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
+use common\models\Pregnancy;
 use common\models\UserDoctor;
 use Yii;
 use common\models\LoginForm;
@@ -186,6 +187,22 @@ class SiteController extends BaseController
             ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid])
             ->orderBy('`doctor_parent`.`createtime` desc')->limit(9)->all();
 
+
+
+        $data['pregCount']=Pregnancy::find()->andWhere(['source'=>Yii::$app->user->identity->hospitalid])
+            ->andWhere(['field49'=>0])->count();
+
+        $data['pregLCount']=Pregnancy::find()->andWhere(['source'=>Yii::$app->user->identity->hospitalid])
+            ->andWhere(['field49'=>0])
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
+
+        $data['todayPregLCount']=Pregnancy::find()->andWhere(['source'=>Yii::$app->user->identity->hospitalid])
+            ->andWhere(['field49'=>0])
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+            ->andWhere(['doctor_parent.createtime'=>strtotime(date('Ymd'))])
+            ->count();
 
         return $this->render('index',[
             'data'=>$data,

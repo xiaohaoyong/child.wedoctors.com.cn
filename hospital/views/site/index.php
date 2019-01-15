@@ -153,6 +153,58 @@ hospital\assets\IndexAsset::register($this);
         <?php } ?>
 
     </div>
+    <?php if (Yii::$app->user->identity->county == 1105) { ?>
+
+    <div class="row">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="fa fa-arrow-circle-right"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">管理孕产妇数：<?=$data['pregCount']?></span>
+                    <span class="info-box-number"><?= $data['pregLCount']?>/<?=$data['pregCount']?>  <?=$data['pregCount']?round(($data['pregLCount'] / $data['pregCount']) * 100,1):0?>%</span>
+                    <span class="info-box-number">已完成签约/管理总数</span>
+
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-user-plus"></i></span>
+
+                <div class="info-box-content">
+
+                    <span class="info-box-text">今日签约孕产妇:<?=$user['TqrcodeNum']?></span>
+                    <span class="info-box-number"><?=$data['todayPregLCount']?></span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-bar-chart"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">已完成签约</span>
+                    <span class="info-box-number"><?= $data['pregLCount']?></span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <?php }?>
+
     <div class="row">
         <section class="col-lg-5 connectedSortable ui-sortable">
             <!-- solid sales graph -->
