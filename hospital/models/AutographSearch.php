@@ -50,6 +50,7 @@ class AutographSearch extends Autograph
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        $t = $params['t'];
 
         $this->load($params);
 
@@ -58,13 +59,26 @@ class AutographSearch extends Autograph
             // $query->where('0=1');
             return $dataProvider;
         }
-        $userDoctor=UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospitalid]);
-        $doctorParent=DoctorParent::find()->select('parentid')->andFilterWhere(['doctorid'=>$userDoctor->userid])->column();
-        if(!$doctorParent){
-            $doctorParent=[0];
+
+
+        $userDoctor = UserDoctor::findOne(['hospitalid' => Yii::$app->user->identity->hospitalid]);
+        $dp = DoctorParent::find()->select('parentid')
+            ->andFilterWhere(['doctorid' => $userDoctor->userid]);
+
+
+        if ($t) {
+            $dp->leftJoin('pregnancy', '`pregnancy`.`familyid` = `doctor_parent`.`parentid`');
+            $dp->andWhere(['>', 'familyid', 0]);
+            $dp->andWhere(['field49'=>0]);
         }
-        $query->andWhere(['in','userid',$doctorParent]);
-        $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+
+        $doctorParent = $dp->column();
+        if (!$doctorParent) {
+            $doctorParent = [0];
+        }
+        $query->andWhere(['in', 'userid', $doctorParent]);
+        $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+        echo $query->createCommand()->getRawSql();
         return $dataProvider;
     }
 }

@@ -4,10 +4,12 @@
         <?php
         if (Yii::$app->user->identity->county == 1105) {
             $a = ['label' => '儿童家医签约记录', 'icon' => 'pencil-square-o', 'url' => \yii\helpers\Url::to(['autograph/index']),];
-            $a = ['label' => '孕产期管理', 'icon' => 'heart', 'url' => '#',
+            $b = ['label' => '孕产期管理', 'icon' => 'heart', 'url' => '#',
                 'items' => [
                     ['label' => '追访记录', 'url' => ['interview/index']],
-                    ['label' => '孕产期家医签约记录', 'url' => ['autograph/index']],
+                    ['label' => '孕产期家医签约记录', 'url' => ['autograph/index','t'=>1]],
+                    ['label' => '孕产妇数据', 'url' => ['pregnancy']],
+
                 ]
             ];
 
@@ -22,6 +24,7 @@
                     ['label' => '仪表盘', 'icon' => 'dashboard', 'url' => \yii\helpers\Url::to(['site/index']),],
                     ['label' => '管辖儿童', 'icon' => 'archive', 'url' => \yii\helpers\Url::to(['child-info/index']),],
                     $a,
+                    $b,
                     ['label' => '社区管理', 'icon' => 'hospital-o', 'url' => \yii\helpers\Url::to(['user-doctor/index']),],
                     ['label' => '中医指导库', 'icon' => 'file-text-o', 'url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[type]=1']),
                         'items' => [
