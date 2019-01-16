@@ -53,17 +53,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return $e->field2 ? date('Y-m-d', $e->field16) : '';
                                     }
                                 ],
-                                'field13',
-                                'field17',
                                 [
                                     'attribute' => 'field15',
                                     'value' => function ($e) {
                                         return $e->field2 ? date('Y-m-d', $e->field15) : '';
                                     }
                                 ],
+
+                                'field13',
+                                'field17',
+
                                 'field36',
                                 'field37',
                                 'field38',
+
                                 [
                                     'attribute' => 'field49',
                                     'value' => function ($e) {
