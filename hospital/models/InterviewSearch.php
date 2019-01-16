@@ -63,25 +63,9 @@ class InterviewSearch extends Interview
             return $dataProvider;
         }
 
-        if($this->name){
-            $parg=Pregnancy::findOne(['field1'=>$this->name]);
+        $query->andWhere(['prenatal_test'=>1]);
+        $query->groupBy('userid');
 
-        }
-
-
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'prenatal_test' => $this->prenatal_test,
-            'pt_date' => $this->pt_date,
-            'prenatal' => $this->prenatal,
-            'childbirth_date' => $this->childbirth_date,
-            'createtime' => $this->createtime,
-            'userid' => $this->userid,
-            'pt_value' => $this->pt_value,
-            'week' => $this->week,
-        ]);
         if ($this->name) {
 
             $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');

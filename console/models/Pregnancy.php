@@ -23,7 +23,6 @@ class Pregnancy
      */
     public function inputData($value,$hospital)
     {
-        var_dump($value);
         $preg=\common\models\Pregnancy::findOne(['field0'=>$value['field0']]);
         $preg=$preg?$preg:new \common\models\Pregnancy();
         $parent=UserParent::find()
@@ -42,10 +41,28 @@ class Pregnancy
         $value['field15']=$value['field15']?strtotime(substr($value['field15'],0,10)):0;
         $value['field16']=$value['field16']?strtotime(substr($value['field16'],0,10)):0;
         $value['field49']=$value['field49']=='是'?1:0;
+        $value['field89']=$value['field89']=='是'?1:0;
+
         $value['field61']=$value['field61']?strtotime(substr($value['field61'],0,10)):0;
         $value['field70']=floor($value['field70']);
+
+
+        $field8=array_search($value['field8'],Area::$province);
+        $value['field8']=$field8?$field8:0;
+
+        $field9=array_search($value['field9'],Area::$province);
+        $value['field9']=$field9?$field9:0;
+
+
+        $field39=array_search($value['field39'],Area::$province);
+        $value['field39']=$field39?$field39:0;
+
         $field74=array_search($value['field74'],\common\models\Pregnancy::$bmi);
         $value['field74']=$field74?$field74:0;
+
+        $field81=array_search($value['field81'],\common\models\Pregnancy::$field81);
+        $value['field81']=$field81?$field81:0;
+
         $value['source']=$hospital;
         $preg->load(['Pregnancy'=>$value]);
 

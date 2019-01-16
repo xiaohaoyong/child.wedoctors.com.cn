@@ -143,6 +143,11 @@ class SuiteController extends Controller
                 ['type' => 'miniprogram', 'name' => '育儿课堂', 'url' => 'pages/article/index/index','appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/article/index/index',],
                 ['type' => 'view', 'name' => '我的', 'sub_button' =>[
                     [
+                        'type'=>'view',
+                        'name'=>'小课堂',
+                        'url'=>'https://m.qlchat.com/wechat/page/live/2000001457808355',
+                    ],
+                    [
                         'type'=>'miniprogram',
                         'name'=>'我的预约',
                         'url'=>Yii::$app->params['index_url'],

@@ -39,7 +39,7 @@ class InterviewController extends Controller
         foreach($week as $k=>$v) {
             foreach ($v as $vv) {
                 $field16 = strtotime(date('Y-m-d')) - ($vv * 3600 * 24);
-                $preg = Pregnancy::find()->where(['field16' => $field16])->andWhere(['familyid'=>138986])->andWhere(['>', 'familyid', 0])->all();
+                $preg = Pregnancy::find()->where(['field16' => $field16])->andWhere(['>', 'familyid', 0])->all();
                 foreach ($preg as $pk => $pv) {
                     $log->addLog($k);
                     $log->addLog($vv);

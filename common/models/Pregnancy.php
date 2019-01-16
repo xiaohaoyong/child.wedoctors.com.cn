@@ -97,6 +97,7 @@ use Yii;
  * @property string $field86 地段初筛筛查结果详细（2018版）
  * @property int $field87 地段初筛筛查结果
  * @property int $field88 档案来源
+ * @property int $field89 围产保健登记卡生成状态
  * @property int $source
  * @property int $isupdate
  * @property int $createtime 创建日期
@@ -122,6 +123,13 @@ class Pregnancy extends \yii\db\ActiveRecord
         3=>'正常',
         4=>'瘦',
     ];
+    public static $field81=[
+        0=>'无',
+        1=>'低风险',
+        2=>'高风险',
+        3=>'较高风险',
+        4=>'一般风险',
+    ];
     public static $field49=[
         0=>'否',
         1=>'是',
@@ -137,9 +145,9 @@ class Pregnancy extends \yii\db\ActiveRecord
         5=>'建册日期',
         6=>'联系电话',
         7=>'户口所在地-省',
-        //8=>'居住地-省',
-        //9=>'居住地-市',
-        //10=>'居住地-详细',
+        8=>'居住地-省',
+        9=>'居住地-市',
+        10=>'居住地-详细',
         11=>'末次月经',
 //        12=>'初诊日期',
         13=>'初检孕周',
@@ -168,7 +176,7 @@ class Pregnancy extends \yii\db\ActiveRecord
         36=>'丈夫姓名',
         37=>'丈夫证件号',
         38=>'丈夫联系电话',
-//        39=>'丈夫户口地址-省',
+        39=>'丈夫户口地址-省',
 //        40=>'丈夫居住地-省',
 //        41=>'丈夫居住地-市',
 //        42=>'丈夫居住地-详细',
@@ -207,9 +215,9 @@ class Pregnancy extends \yii\db\ActiveRecord
 //        76=>'分娩机构',
 //        77=>'舒张压',
 //        78=>'发放国家母子健康手册',
-//        79=>'高危因素（2018新版）',
+        79=>'高危因素（2018新版）',
 //        80=>'使用国家母子健康手册',
-//        81=>'高危级别（2018新版）',
+        81=>'高危级别（2018新版）',
 //        82=>'产检机构',
 //        83=>'产检日期',
 //        84=>'产时产后并发症（蓝球）',
@@ -217,6 +225,7 @@ class Pregnancy extends \yii\db\ActiveRecord
 //        86=>'地段初筛筛查结果详细（2018版）',
 //        87=>'地段初筛筛查结果',
 //        88=>'档案来源',
+        89=>'围产保健登记卡生成状态',
     ];
 
     /**

@@ -91,14 +91,13 @@ class PregnancyController extends Controller
                 }
             }
             if($rs['field0']) {
-                $pregnancy = new \console\models\Pregnancy();
-                $pregnancy->inputData($rs, $hospitalid);
+                if($rs['field5']>='2018-03-01') {
+                    $pregnancy = new \console\models\Pregnancy();
+                    $pregnancy->inputData($rs, $hospitalid);
+                }else{
+                    break;
+                }
             }
-
-
-//            $ChildInfoInput=new ChildInfoInput();
-//            $ChildInfoInput->hospitalid=$hospitalid;
-//            $ChildInfoInput->inputData($rs);
         }
         return [];
     }
