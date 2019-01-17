@@ -145,4 +145,8 @@ class PushController extends Controller
             }
         }
     }
+
+    public function actionGravidaSend(){
+
+    }
 }

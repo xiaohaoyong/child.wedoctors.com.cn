@@ -41,13 +41,28 @@ class GravidaController extends Controller
             }
             $preg = Pregnancy::find()->where(['field4' => $data['idx']])->andWhere(['familyid' => 0])->one();
 
-
+            if(!$preg){
+                $preg=new Pregnancy();
+                $preg->field4=$data['idx'];
+                $preg->field1=$data['name'];
+                $preg->field11=strtotime($data['date']);
+                $preg->field16=strtotime($data['date']);
+            }
+            $preg->familyid=$this->userid;
+            $preg->save();
             Notice::setList($this->userid, 3, ['title' => "温馨提醒及建档攻略", 'ftitle' => "医生团队提醒您请及时查看", 'id' => '/article/view/index?id=512',]);
 
 
 
         }else{
             $preg=Pregnancy::findOne($id);
+            if($preg){
+                $preg->field4=$data['idx'];
+                $preg->field1=$data['name'];
+                $preg->field11=strtotime($data['date']);
+                $preg->field16=strtotime($data['date']);
+                $preg->save();
+            }
             $userParent = UserParent::findOne([['userid'=>$preg->familyid]]);
             if($userParent){
                 $userParent->userid = $this->userid;
@@ -56,16 +71,8 @@ class GravidaController extends Controller
                 $userParent->save();
             }
         }
-        if(!$preg){
-            $preg=new Pregnancy();
-            $preg->field4=$data['idx'];
-            $preg->field1=$data['name'];
-            $preg->field11=strtotime($data['date']);
-            $preg->field16=strtotime($data['date']);
 
-        }
-        $preg->familyid=$this->userid;
-        $preg->save();
+
         if($preg->firstErrors){
             return new Code(20010,implode(',',$preg->firstErrors));
         }
