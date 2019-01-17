@@ -41,12 +41,13 @@ class InterviewController extends Controller
 
     public function actionList()
     {
-        $preg = Pregnancy::find()->where(['familyid' => $this->userid])->andWhere(['>', 'source', 0])->orderBy('field11 desc')->one();
+        $preg = Pregnancy::find()->where(['familyid' => $this->userid])->orderBy('field11 desc')->one();
         $inter_week = Interview::$weekText;
         $getWeek = Interview::getWeek($preg->weeks);
         if ($preg) {
             $pregRow = $preg ? $preg->toArray() : [];
             $pregRow['field74'] = Pregnancy::$bmi[$preg->field74];
+            $pregRow['week']="孕".$preg->weeks."周";
         }
 
         foreach ($inter_week as $k => $v) {
