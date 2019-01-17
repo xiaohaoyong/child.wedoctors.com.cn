@@ -54,13 +54,13 @@ class Interview extends \yii\db\ActiveRecord
     public static function getWeek($week){
         if($week<13){
             return 1;
-        }elseif($week>=17 && $week<=19){
+        }elseif($week<=19){
             return 2;
-        }elseif($week>=22 && $week<=23){
+        }elseif($week<=23){
             return 3;
-        }elseif($week>=29 && $week<=35){
+        }elseif($week<=35){
             return 4;
-        }elseif($week>=38) {
+        }elseif($week<=40) {
             return 5;
         }
         return 0;

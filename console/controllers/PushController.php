@@ -11,8 +11,11 @@ namespace console\controllers;
 use common\components\Log;
 use common\helpers\WechatSendTmp;
 use common\models\Article;
+use common\models\ArticleInfo;
 use common\models\ArticleSend;
+use common\models\ArticleType;
 use common\models\ChildInfo;
+use common\models\Pregnancy;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\WeOpenid;
@@ -147,6 +150,38 @@ class PushController extends Controller
     }
 
     public function actionGravidaSend(){
+        foreach(ArticleType::$week as $k=>$v){
+            $field16 = strtotime(date('Y-m-d')) - ($v * 3600 * 24*7);
+            $preg=Pregnancy::find()->select('familyid')->andWhere(['field16'=>$field16])->andWhere(['!=','familyid',0])->column();
 
+            $articles=Article::find()->leftJoin(ArticleType::tableName(),ArticleType::tableName().'.aid='.Article::tableName().'.id')
+                ->where([ArticleType::tableName().'.type'=>$k])->andWhere([Article::tableName().".type"=>1])
+                ->all();
+            if($articles) {
+                foreach ($articles as $ak => $av) {
+                    $data = [
+                        'first' => array('value' => $av->info->title . "\n",),
+                        'keyword1' => ARRAY('value' => date('Y年m月d H:i'),),
+                        'keyword2' => ARRAY('value' => '儿宝宝'),
+                        'keyword3' => ARRAY('value' => '儿宝宝'),
+                        'keyword4' => ARRAY('value' => '准妈妈'),
+                        'keyword5' => ARRAY('value' => $av->info->title),
+
+                        'remark' => ARRAY('value' => "\n 请点击查看", 'color' => '#221d95'),
+                    ];
+                    $miniprogram=[
+                        "appid"=>\Yii::$app->params['wxXAppId'],
+                        "pagepath"=>"/pages/article/view/index?id=".$av->id,
+                    ];
+                    $temp = \Yii::$app->params['zhidao'];
+                    foreach($preg as $pk=>$pv) {
+                        $openid=UserLogin::getOpenid($pv);
+                        if($openid){
+                            var_dump($openid);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
