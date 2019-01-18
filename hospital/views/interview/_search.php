@@ -36,13 +36,6 @@ use yii\widgets\ActiveForm;
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true
     ]]) ?>
-
-
-    <?= $form->field($model, 'prenatal_test')->dropDownList(\common\models\Interview::$prenatal_Text,['prompt'=>'请选择']) ?>
-    <?= $form->field($model, 'prenatal')->dropDownList(\common\models\Interview::$prenatalText,['prompt'=>'请选择']) ?>
-
-    <?php // echo $form->field($model, 'childbirth_hospital') ?>
-
     <?= $form->field($model, 'childbirth_dates')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true
@@ -51,6 +44,13 @@ use yii\widgets\ActiveForm;
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true
     ]]) ?>
+
+    <?= $form->field($model, 'prenatal_test')->dropDownList(\common\models\Interview::$prenatal_Text,['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'prenatal')->dropDownList(\common\models\Interview::$prenatalText,['prompt'=>'请选择']) ?>
+
+    <?php // echo $form->field($model, 'childbirth_hospital') ?>
+
+
 
     <?php // echo $form->field($model, 'childbirth_date') ?>
 

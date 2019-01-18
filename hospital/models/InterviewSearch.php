@@ -38,6 +38,8 @@ class InterviewSearch extends Interview
         $attr['field15e']="~~";
         $attr['field5s']="建册日期";
         $attr['field5e']="~~";
+        $attr['childbirth_dates']="分娩日期";
+        $attr['childbirth_datee']="~~";
         return $attr;
     }
     /**
