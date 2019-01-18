@@ -2,7 +2,8 @@
 
     <section class="sidebar">
         <?php
-        if (Yii::$app->user->identity->county == 1105) {
+
+        if (Yii::$app->user->identity->county == 1105 || Yii::$app->user->identity->hospitalid==110586) {
             $a = ['label' => '儿童家医签约记录', 'icon' => 'pencil-square-o', 'url' => \yii\helpers\Url::to(['autograph/index']),];
             $b = ['label' => '孕产期管理', 'icon' => 'heart', 'url' => '#',
                 'items' => [

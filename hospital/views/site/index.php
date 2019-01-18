@@ -9,7 +9,7 @@ hospital\assets\IndexAsset::register($this);
 <div class="col-xs-12">
 
     <div class="row">
-        <?php if (Yii::$app->user->identity->county == 1105) { ?>
+        <?php if (Yii::$app->user->identity->county == 1105 || Yii::$app->user->identity->hospitalid==110586) {?>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-green">
 
@@ -153,7 +153,7 @@ hospital\assets\IndexAsset::register($this);
         <?php } ?>
 
     </div>
-    <?php if (Yii::$app->user->identity->county == 1105) { ?>
+    <?php if (Yii::$app->user->identity->county == 1105 || Yii::$app->user->identity->hospitalid==110586) {?>
 
     <div class="row">
         <div class="col-md-4 col-sm-12 col-xs-12">
