@@ -153,9 +153,8 @@ class PushController extends Controller
         foreach(ArticleType::$week as $k=>$v){
             $field16 = strtotime(date('Y-m-d')) - ($v * 3600 * 24*7);
             $preg=Pregnancy::find()->select('familyid')->andWhere(['field16'=>$field16])->andWhere(['!=','familyid',0])->column();
-
             $articles=Article::find()->leftJoin(ArticleType::tableName(),ArticleType::tableName().'.aid='.Article::tableName().'.id')
-                ->where([ArticleType::tableName().'.type'=>$k])->andWhere([Article::tableName().".type"=>1])
+                ->where([ArticleType::tableName().'.type'=>$k])->andWhere([Article::tableName().".type"=>0])
                 ->all();
             if($articles) {
                 foreach ($articles as $ak => $av) {
@@ -177,7 +176,7 @@ class PushController extends Controller
                     foreach($preg as $pk=>$pv) {
                         $openid=UserLogin::getOpenid($pv);
                         if($openid){
-                            var_dump($openid);
+                            $rs=WechatSendTmp::send($data, $openid,$temp,'',$miniprogram);exit;
                         }
                     }
                 }

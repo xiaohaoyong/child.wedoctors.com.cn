@@ -57,6 +57,9 @@ class GravidaController extends Controller
         }else{
             $preg=Pregnancy::findOne($id);
             if($preg){
+                if($preg->source!=0){
+                    return new Code(20010,'您的孕期数据来源与社区，如有疑问请联系客服');
+                }
                 $preg->field4=$data['idx'];
                 $preg->field1=$data['name'];
                 $preg->field11=strtotime($data['date']);
@@ -65,6 +68,9 @@ class GravidaController extends Controller
             }
             $userParent = UserParent::findOne([['userid'=>$preg->familyid]]);
             if($userParent){
+                if($userParent->source!=0){
+                    return new Code(20010,'您的孕期数据来源与社区，如有疑问请联系客服');
+                }
                 $userParent->userid = $this->userid;
                 $userParent->mother_id = $data['idx'];
                 $userParent->mother = $data['name'];

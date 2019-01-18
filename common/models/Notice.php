@@ -82,7 +82,9 @@ class Notice
     public static function delKey($userid,$key){
         $redis=\Yii::$app->rdmp;
         $index=$redis->ZRANK('noticeList'.$userid,$key);
-        $redis->ZREMRANGEBYRANK('noticeList'.$userid,$index,$index);
+        if(isset($index)) {
+            $redis->ZREMRANGEBYRANK('noticeList' . $userid, $index, $index);
+        }
     }
     public static function del($userid){
         $redis=\Yii::$app->rdmp;

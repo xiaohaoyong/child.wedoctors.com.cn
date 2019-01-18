@@ -47,6 +47,8 @@ class Pregnancy
         $value['field70']=floor($value['field70']);
 
 
+        $value['field62']=$value['field62']?$value['field62']:0;
+
         $field8=array_search($value['field8'],Area::$province);
         $value['field8']=$field8?$field8:0;
 

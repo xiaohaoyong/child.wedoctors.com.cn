@@ -80,7 +80,8 @@ class Article extends \yii\db\ActiveRecord
     public static $typeText = [
         0 => "宣教",
         1 => "指导",
-        2 => '官方通知'
+        2 => '官方通知',
+        3 =>'提示',
     ];
     public static $artTypeText = [
         0 => "文章",
