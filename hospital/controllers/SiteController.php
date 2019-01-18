@@ -121,7 +121,7 @@ class SiteController extends BaseController
         //签字数
         $data['AutoNum']=$auto->count();
         //签约率
-        if($data['AutoNum']) {
+        if($data['AutoNum'] && $data['achildNum']) {
             $data['abaifen'] = round(($data['AutoNum'] / $data['achildNum']) * 100,1);
         }else{
             $data['abaifen'] = 0;
