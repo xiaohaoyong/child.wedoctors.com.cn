@@ -61,7 +61,7 @@ class UserDoctor extends \yii\db\ActiveRecord
             [['userid'], 'required'],
             [['longitude', 'latitude'], 'number'],
             [['appoints','userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype', 'appoint'], 'integer'],
-            [['name'], 'string', 'max' => 15],
+            [['name'], 'string', 'max' => 25],
             [['intro', 'avatar', 'skilful','appoint_intro'], 'string', 'max' => 150],
             [['idnum'], 'string', 'max' => 18],
             [['authimg'], 'string', 'max' => 200],
