@@ -18,6 +18,8 @@ class InterviewSearch extends Interview
     public $field5e;//建册
     public $field15s;//核实
     public $field15e;//核实
+    public $childbirth_dates;//核实
+    public $childbirth_datee;//核实
     public $name;
     /**
      * @inheritdoc
@@ -26,7 +28,7 @@ class InterviewSearch extends Interview
     {
         return [
             [['id', 'prenatal_test', 'pt_date', 'prenatal', 'childbirth_date', 'createtime', 'userid', 'pt_value', 'week'], 'integer'],
-            [['field15s','field15e','field5s','field5e','pt_hospital', 'childbirth_hospital','name'], 'safe'],
+            [['childbirth_dates','childbirth_datee','field15s','field15e','field5s','field5e','pt_hospital', 'childbirth_hospital','name'], 'safe'],
         ];
     }
     public function attributeLabels(){
@@ -88,6 +90,13 @@ class InterviewSearch extends Interview
             $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
             $query->andWhere(['<=',Pregnancy::tableName().'.field15',$this->field15e]);
         }
+        if($this->childbirth_dates){
+            $query->andWhere(['>=',Interview::tableName().'.childbirth_date',$this->field15s]);
+        }
+        if($this->childbirth_datee){
+            $query->andWhere(['<=',Interview::tableName().'.childbirth_date',$this->field15e]);
+        }
+
 
         $query->andWhere(['prenatal_test'=>1]);
         $query->groupBy('userid');

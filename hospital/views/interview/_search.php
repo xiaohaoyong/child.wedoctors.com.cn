@@ -43,6 +43,15 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'childbirth_hospital') ?>
 
+    <?= $form->field($model, 'childbirth_dates')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'childbirth_datee')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+
     <?php // echo $form->field($model, 'childbirth_date') ?>
 
     <?php // echo $form->field($model, 'createtime') ?>
