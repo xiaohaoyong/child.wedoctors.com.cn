@@ -15,6 +15,7 @@ use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Examination;
+use common\models\Pregnancy;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
@@ -225,14 +226,20 @@ class ChildController extends Controller
         $controllerID = \Yii::$app->controller->id;
         $actionID = \Yii::$app->controller->action->id;
         if($controllerID."/".$actionID == 'child/five' || $controllerID."/".$actionID == 'child/confirm'){
-            $doctorParent=DoctorParent::findOne(['parentid'=>$this->userLogin->userid]);
+
+            $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
             if($doctorParent) {
-                $child=ChildInfo::findOne(['userid'=>$this->userLogin->userid]);
                 $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-                if($doctor->county==1105 && $child){
-                    $auto=Autograph::findOne(['userid'=>$this->userLogin->userid]);
-                    if(!$auto){
-                        return ['code' => 30002,'msg' => '已签约未签字'];
+                if($doctor->county==1105 || $doctorParent->doctorid==143296) {
+                    $auto = Autograph::findOne(['userid' => $this->userid]);
+                    if (!$auto) {
+                        //判断是否添加了宝宝或者孕产妇
+                        $child=ChildInfo::findOne(['userid'=>$this->userid]);
+                        $preg=Pregnancy::findOne(['familyid'=>$this->userid]);
+                        if($child || $preg) {
+                            return ['code' => 30002,'msg' => '已签约未签字'];
+
+                        }
                     }
                 }
             }
