@@ -20,12 +20,12 @@
 </style>
 <body>
 <div style="padding: 50px;">
-    <h1>北京市朝阳区社区卫生服务机构</h1>
+    <h1>北京市<?=\common\models\Area::$all[Yii::$app->user->identity->county]?>社区卫生服务机构</h1>
     <h1 style="padding-bottom: 50px;">家庭医生签约服务协议书</h1>
     <div class="content1" style="line-height: 50px;">
         <div style="font-weight: bolder;">尊敬的居民朋友：</div>
         <div class="content2" style="text-indent: 2em;">
-            您好！感谢您选择朝阳区社区卫生服务中心家医团队签约，为了更好地提供连续性健康管理服务，请您仔细填写以下基本信息，您的个人信息我们将妥善保管：
+            您好！感谢您选择<?=\common\models\Area::$all[Yii::$app->user->identity->county]?>社区卫生服务中心家医团队签约，为了更好地提供连续性健康管理服务，请您仔细填写以下基本信息，您的个人信息我们将妥善保管：
         </div>
     </div>
     <div style="line-height: 70px;text-indent: 2em;">
