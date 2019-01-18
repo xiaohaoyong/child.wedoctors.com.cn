@@ -13,6 +13,11 @@ use common\models\Interview;
  */
 class InterviewSearch extends Interview
 {
+
+    public $field5s;//建册
+    public $field5e;//建册
+    public $field15s;//核实
+    public $field15e;//核实
     public $name;
     /**
      * @inheritdoc
@@ -21,12 +26,16 @@ class InterviewSearch extends Interview
     {
         return [
             [['id', 'prenatal_test', 'pt_date', 'prenatal', 'childbirth_date', 'createtime', 'userid', 'pt_value', 'week'], 'integer'],
-            [['pt_hospital', 'childbirth_hospital','name'], 'safe'],
+            [['field15s','field15e','field5s','field5e','pt_hospital', 'childbirth_hospital','name'], 'safe'],
         ];
     }
     public function attributeLabels(){
         $attr=parent::attributeLabels();
         $attr['name']="孕妇姓名";
+        $attr['field15s']="核实后预产期";
+        $attr['field15e']="~~";
+        $attr['field5s']="建册日期";
+        $attr['field5e']="~~";
         return $attr;
     }
     /**
@@ -61,6 +70,23 @@ class InterviewSearch extends Interview
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
+        }
+
+        if($this->field5s){
+            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
+            $query->andWhere(['>=',Pregnancy::tableName().'.field5',$this->field5s]);
+        }
+        if($this->field5e){
+            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
+            $query->andWhere(['<=',Pregnancy::tableName().'.field5',$this->field5e]);
+        }
+        if($this->field15s){
+            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
+            $query->andWhere(['>=',Pregnancy::tableName().'.field15',$this->field15s]);
+        }
+        if($this->field15s){
+            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
+            $query->andWhere(['<=',Pregnancy::tableName().'.field15',$this->field15e]);
         }
 
         $query->andWhere(['prenatal_test'=>1]);

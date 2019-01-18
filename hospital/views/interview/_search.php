@@ -19,6 +19,25 @@ use yii\widgets\ActiveForm;
 
 
     <?= $form->field($model, 'name') ?>
+
+    <?= $form->field($model, 'field5s')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'field5e')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'field15s')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'field15e')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+
+
     <?= $form->field($model, 'prenatal_test')->dropDownList(\common\models\Interview::$prenatal_Text,['prompt'=>'请选择']) ?>
     <?= $form->field($model, 'prenatal')->dropDownList(\common\models\Interview::$prenatalText,['prompt'=>'请选择']) ?>
 
