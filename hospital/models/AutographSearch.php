@@ -62,14 +62,17 @@ class AutographSearch extends Autograph
 
 
         $userDoctor = UserDoctor::findOne(['hospitalid' => Yii::$app->user->identity->hospitalid]);
-        $dp = DoctorParent::find()->select('parentid')
-            ->andFilterWhere(['doctorid' => $userDoctor->userid]);
+        $dp = \common\models\DoctorParent::find()->select('doctor_parent.parentid')
+            ->andFilterWhere(['doctor_parent.doctorid' => $userDoctor->userid]);
 
 
         if ($t) {
             $dp->leftJoin('pregnancy', '`pregnancy`.`familyid` = `doctor_parent`.`parentid`');
-            $dp->andWhere(['>', 'familyid', 0]);
-            $dp->andWhere(['field49'=>0]);
+            $dp->andWhere(['>', 'pregnancy.familyid', 0]);
+            $dp->andWhere(['pregnancy.field49'=>0]);
+        }else{
+            $dp->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`');
+            $dp->andWhere(['>', 'child_info.doctorid', 0]);
         }
 
         $doctorParent = $dp->column();
