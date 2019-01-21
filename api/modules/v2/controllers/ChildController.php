@@ -27,7 +27,7 @@ class ChildController extends \api\modules\v1\controllers\ChildController
                 $data[] = $row;
             }
 
-            $pregnancy = Pregnancy::find()->where(['familyid' => $this->userid])->orderBy('field11 desc')->one();
+            $pregnancy = Pregnancy::find()->where(['familyid' => $this->userid])->orderBy('field16 desc')->one();
             if($pregnancy && $pregnancy->field49==0){
                 $inter=Interview::findOne(['userid'=>$this->userid]);
                 if(!$inter || !in_array($inter->pt_value,[1,2,3,8])){
