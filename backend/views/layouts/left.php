@@ -50,6 +50,7 @@
                                 ],],
                             ['label' => '疫苗数据', 'icon' => 'comments', 'url' => ['/vaccine'],],
 
+                            ['label' => '签字记录', 'icon' => 'comments', 'url' => ['/vaccine'],],
 
                         ],
                     ],
