@@ -62,21 +62,24 @@ class AutographSearch extends Autograph
 
 
         $userDoctor = UserDoctor::findOne(['hospitalid' => Yii::$app->user->identity->hospitalid]);
-        $dp = DoctorParent::find()->select('parentid')
-            ->andFilterWhere(['doctorid' => $userDoctor->userid]);
-
-
-        if ($t) {
-            $dp->leftJoin('pregnancy', '`pregnancy`.`familyid` = `doctor_parent`.`parentid`');
-            $dp->andWhere(['>', 'familyid', 0]);
-            $dp->andWhere(['field49'=>0]);
-        }
-
+        $dp = \common\models\DoctorParent::find()->select('doctor_parent.parentid')
+            ->andFilterWhere(['doctor_parent.doctorid' => $userDoctor->userid]);
+        $dp->leftJoin('pregnancy', '`pregnancy`.`familyid` = `doctor_parent`.`parentid`');
+        $dp->andWhere(['>', 'familyid', 0]);
+        $dp->andWhere(['field49'=>0]);
         $doctorParent = $dp->column();
         if (!$doctorParent) {
             $doctorParent = [0];
         }
-        $query->andWhere(['in', 'userid', $doctorParent]);
+        if ($t) {
+            $query->andWhere(['in', 'userid', $doctorParent]);
+
+        }else{
+            $query->andWhere(['not in', 'userid', $doctorParent]);
+
+        }
+
+
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
         //echo $query->createCommand()->getRawSql();
         return $dataProvider;
