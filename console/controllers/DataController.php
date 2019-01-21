@@ -78,32 +78,45 @@ class DataController extends Controller
         }
     }
     public function actionPush(){
-        $doctorParent = DoctorParent::find()->where(['doctorid'=>0])->all();
-        foreach($doctorParent as $k=>$v){
+//        $doctorParent = DoctorParent::find()->where(['doctorid'=>0])->all();
+//        foreach($doctorParent as $k=>$v){
+//
+//            $child=ChildInfo::findOne(['userid'=>$v->parentid]);
+//            if($child && $child->source)
+//            {
+//                $child->doctorid=$child->source;
+//                $child->save();
+//                $doctorid=UserDoctor::findOne(['hospitalid'=>$child->source])->userid;
+//                $v->doctorid=$doctorid;
+//                $v->save();
+//            }
+//
+//        }
+        //exit;
 
-            $child=ChildInfo::findOne(['userid'=>$v->parentid]);
-            if($child && $child->source)
-            {
-                $child->doctorid=$child->source;
-                $child->save();
-                $doctorid=UserDoctor::findOne(['hospitalid'=>$child->source])->userid;
-                $v->doctorid=$doctorid;
-                $v->save();
+        $childs=ChildInfo::find()->select(UserLogin::tableName().".openid")->where(['<',ChildInfo::tableName().'.field42','37'])
+            ->andWhere(['>',ChildInfo::tableName().'.field42','24'])
+            ->andWhere(['>',ChildInfo::tableName().'.birthday',1514736000])
+            ->leftJoin(UserLogin::tableName(),UserLogin::tableName().".userid=".ChildInfo::tableName().".userid")
+            ->andWhere(['!=',UserLogin::tableName().".openid",''])
+            ->groupBy(UserLogin::tableName().".openid")
+            ->column();
+        $openids=[];
+        foreach($childs as $k=>$v){
+            if(!in_array($v,$openids)) {
+                $data = [
+                    'first' => array('value' => "早产儿免费讲座通知\n",),
+                    'keyword1' => ARRAY('value' => "早产宝宝该如何护理和喂养-李瑛主任"),
+                    'keyword2' => ARRAY('value' => "2019-01-26 14:00"),
+                    'remark' => ARRAY('value' => "地点：美中宜和妇儿医院（朝阳区安慧北里逸园5号楼）名额有限，速速报名"),
+                ];
+                //var_dump($doctor->name);
+                $rs = WechatSendTmp::send($data, $v, 'u1B7beQlAmsvM_1HkW9nVtzv4Yr2CJ_dOx9WzFYCAmI', 'https://jinshuju.net/f/hfZOIr');
+                $openids[]=$v;
+                echo $v . "" . $rs . "\n";
             }
-
         }
-        exit;
-
-
-        $data = [
-            'first' => array('value' => "您好，为确保享受儿童中医药健康指导服务,请完善宝宝信息\n",),
-            'keyword1' => ARRAY('value' => "宝宝基本信息"),
-            'keyword2' => ARRAY('value' => "测试"),
-            'remark' => ARRAY('value' => "\n 点击授权并完善宝宝信息，如果已添加宝宝请忽略此条提醒", 'color' => '#221d95'),
-        ];
-        //var_dump($doctor->name);
-        $rs = WechatSendTmp::send($data,"o5ODa0wc1u3Ihu5WvCVqoACeQ-HA", 'wiVMfEAlt4wYwfpjcawOTDwgUN8SRPIH1Fc8wVWfGEI', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
-exit;
+       exit;
     }
     public function actionDoctorChild(){
         $doctorids=[];

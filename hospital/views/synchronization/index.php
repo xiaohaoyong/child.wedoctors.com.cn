@@ -23,11 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             <table id="w0" class="table table-striped table-bordered detail-view">
                                 <thead>
                                 <tr>
-                                    <th>身份证号码</th>
+                                    <th>母亲身份证号码</th>
                                     <td>查询母亲姓名</td>
                                 </tr>
                                 <tr>
-                                    <th><?=Html::textarea('idx','',['rows'=>30,'cols'=>50,'placeholder'=>
+                                    <th><?=Html::textarea('idx',$idx,['rows'=>30,'cols'=>50,'placeholder'=>
                                             "110101190000000045
 110101190000000045
 110101190000000045
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 110101190000000045
 110101190000000045
 "])?></th>
-                                    <td></td>
+                                    <td><?=Html::textarea('names',$names,['rows'=>30,'cols'=>50])?></td>
                                 </tr>
                                 </tbody>
                             </table>
