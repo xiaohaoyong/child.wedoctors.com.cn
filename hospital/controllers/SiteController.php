@@ -113,7 +113,11 @@ class SiteController extends BaseController
         }
 
         $userDoctor=UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospitalid]);
-        $doctorParent=DoctorParent::find()->select('parentid')->andFilterWhere(['doctorid'=>$userDoctor->userid])->column();
+        $doctorParent=DoctorParent::find()->select('doctor_parent.parentid')
+            ->andFilterWhere(['doctor_parent.doctorid'=>$userDoctor->userid])
+            ->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`')
+            ->andWhere(['>', 'child_info.doctorid', 0])
+            ->column();
         if(!$doctorParent){
             $doctorParent=[0];
         }
@@ -192,8 +196,9 @@ class SiteController extends BaseController
         $data['pregCount']=Pregnancy::find()->andWhere(['source'=>Yii::$app->user->identity->hospitalid])
             ->andWhere(['field49'=>0])->count();
 
-        $data['pregLCount']=Pregnancy::find()->andWhere(['source'=>Yii::$app->user->identity->hospitalid])
-            ->andWhere(['field49'=>0])
+        $data['pregLCount']=Pregnancy::find()->andWhere(['pregnancy.source'=>Yii::$app->user->identity->hospitalid])
+            ->andWhere(['pregnancy.field49'=>0])
+            ->andWhere(['>', 'pregnancy.familyid', 0])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
 
