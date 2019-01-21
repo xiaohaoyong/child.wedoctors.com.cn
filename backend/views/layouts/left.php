@@ -37,9 +37,14 @@
                             ['label' => '宣教指导文章管理', 'icon' => 'list', 'url' => ['/article'],],
                             ['label' => '宣教指导分类管理', 'icon' => 'list', 'url' => ['/article-category'],],
 
-                            ['label' => '轮播图', 'icon' => 'list', 'url' => ['/carousel'],],
-                            ['label' => '数据后台账号', 'icon' => 'list', 'url' => ['/data-user'],],
-                            ['label' => '聊天消息', 'icon' => 'comments', 'url' => ['/chat-record-content'],],
+
+                            ['label' => '孕产管理', 'icon' => 'comments','url' => '#',
+                                'items'=>[
+                                    ['label' => '孕产数据', 'icon' => 'hospital-o', 'url' => ['/pregnancy'],],
+                                    ['label' => '追访记录', 'icon' => 'hospital-o', 'url' => ['/pregnancy'],],
+
+                                ],],
+
                             ['label' => '育儿指南', 'icon' => 'comments','url' => '#',
                                 'items'=>[
                                     ['label' => '指南类别', 'icon' => 'hospital-o', 'url' => ['/baby-tool-tag'],],
@@ -65,6 +70,9 @@
                             ['label' => '待审宣教指导', 'icon' => 'list', 'url' => ['/article/examine'],],
                             ['label' => '待发布宣教指导', 'icon' => 'list', 'url' => ['/article/release'],],
                             ['label' => '发送预约通知', 'icon' => 'list', 'url' => ['/appoint/index'],],
+                            ['label' => '轮播图', 'icon' => 'list', 'url' => ['/carousel'],],
+                            ['label' => '数据后台账号', 'icon' => 'list', 'url' => ['/data-user'],],
+                            ['label' => '聊天消息', 'icon' => 'comments', 'url' => ['/chat-record-content'],],
 
                         ],
                     ],
