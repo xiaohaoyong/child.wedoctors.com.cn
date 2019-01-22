@@ -30,6 +30,7 @@ use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointWeek;
 use common\models\Notice;
+use common\models\Pregnancy;
 use common\models\User;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
@@ -79,6 +80,11 @@ class DataController extends Controller
         }
     }
     public function actionPush(){
+
+
+        $doctorParent=DoctorParent::find()->select('parentid')->where(['doctorid'=>4135])->column();
+        $preg=Pregnancy::find()->select('field1')->where(['in','familyid',$doctorParent])->andWhere(['source'=>0])->column();
+        var_dump($preg);exit;
 //        $doctorParent = DoctorParent::find()->where(['doctorid'=>0])->all();
 //        foreach($doctorParent as $k=>$v){
 //
