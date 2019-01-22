@@ -97,7 +97,9 @@ class DataController extends Controller
 
         $childs=ChildInfo::find()->select(UserLogin::tableName().".openid")->where(['<',ChildInfo::tableName().'.field42','37'])
             ->andWhere(['>',ChildInfo::tableName().'.field42','24'])
-            ->andWhere(['>',ChildInfo::tableName().'.birthday',1514736000])
+            ->andWhere(['>',ChildInfo::tableName().'.birthday',1485878400])
+            ->andWhere(['<',ChildInfo::tableName().'.birthday',1514736000])
+
             ->leftJoin(UserLogin::tableName(),UserLogin::tableName().".userid=".ChildInfo::tableName().".userid")
             ->andWhere(['!=',UserLogin::tableName().".openid",''])
             ->groupBy(UserLogin::tableName().".openid")
@@ -106,7 +108,7 @@ class DataController extends Controller
         foreach($childs as $k=>$v){
             if(!in_array($v,$openids)) {
                 $data = [
-                    'first' => array('value' => "早产儿免费讲座通知\n",),
+                    'first' => array('value' => "家长您好，近期有个免费讲座邀请您参加\n",),
                     'keyword1' => ARRAY('value' => "早产宝宝该如何护理和喂养-李瑛主任"),
                     'keyword2' => ARRAY('value' => "2019-01-26 14:00"),
                     'remark' => ARRAY('value' => "地点：美中宜和妇儿医院（朝阳区安慧北里逸园5号楼）名额有限，速速报名"),
@@ -1097,7 +1099,7 @@ exit;
                 echo $hospitalid . "=" . $i . "===";
                 $row = $line;
 
-                //if($row[3]<'2018-01-01 00:00:00'){ echo "end\n";break;}
+                if($row[3]<'2018-01-01 00:00:00'){ echo "end\n";break;}
                 $row[3] = substr($row[3], 0, strlen($row[3]) - 11);
                 $ex = Examination::find()->andFilterWhere(['field1' => $row[0]])
                     ->andFilterWhere(['field2' => $row[1]])

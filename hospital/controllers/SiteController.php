@@ -196,13 +196,13 @@ class SiteController extends BaseController
         $data['pregCount']=Pregnancy::find()->andWhere(['source'=>Yii::$app->user->identity->hospitalid])
             ->andWhere(['field49'=>0])->count();
 
-        $data['pregLCount']=Pregnancy::find()->andWhere(['pregnancy.source'=>Yii::$app->user->identity->hospitalid])
+        $data['pregLCount']=Pregnancy::find()
             ->andWhere(['pregnancy.field49'=>0])
             ->andWhere(['>', 'pregnancy.familyid', 0])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
 
-        $data['todayPregLCount']=Pregnancy::find()->andWhere(['source'=>Yii::$app->user->identity->hospitalid])
+        $data['todayPregLCount']=Pregnancy::find()
             ->andWhere(['field49'=>0])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])

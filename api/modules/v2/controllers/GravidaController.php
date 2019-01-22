@@ -11,8 +11,10 @@ namespace api\modules\v2\controllers;
 
 use api\controllers\Controller;
 use common\components\Code;
+use common\models\DoctorParent;
 use common\models\Notice;
 use common\models\Pregnancy;
+use common\models\UserDoctor;
 use common\models\UserParent;
 
 class GravidaController extends Controller
@@ -47,6 +49,10 @@ class GravidaController extends Controller
                 $preg->field1=$data['name'];
                 $preg->field11=strtotime($data['date']);
                 $preg->field16=strtotime($data['date']);
+            }
+            $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
+            if($doctorParent && $doctorParent->doctorid){
+                $preg->doctorid=UserDoctor::findOne(['userid'=>$doctorParent->doctorid])->hospitalid;
             }
             $preg->familyid=$this->userid;
             $preg->save();

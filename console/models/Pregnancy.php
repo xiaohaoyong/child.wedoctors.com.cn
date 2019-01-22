@@ -66,6 +66,7 @@ class Pregnancy
         $value['field81']=$field81?$field81:0;
 
         $value['source']=$hospital;
+        $value['doctorid']=$hospital;
         $preg->load(['Pregnancy'=>$value]);
 
         if(!$preg->save()){
