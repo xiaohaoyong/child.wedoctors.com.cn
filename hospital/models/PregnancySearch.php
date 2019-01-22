@@ -69,14 +69,13 @@ class PregnancySearch extends Pregnancy
 
         // grid filtering conditions
         $query->andWhere(['field49'=>0]);
-        $query->andWhere(['source'=>$hospitalid]);
+        $query->andWhere(['pregnancy.doctorid'=>$hospitalid]);
         if($this->field11){
 
             $query->andWhere(['or',['field11'=>strtotime($this->field11)],['field16'=>strtotime($this->field11)]]);//操作符格式的嵌套
 
         }
         if($this->level){
-
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`');
             $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
         }
