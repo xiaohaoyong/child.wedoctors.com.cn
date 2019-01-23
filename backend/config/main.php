@@ -65,6 +65,4 @@ $config= [
     ],
     'params' => $params,
 ];
-$db= require(__DIR__ . '/db.php');
-$config['components']=$config['components']+$db;
 return $config;
