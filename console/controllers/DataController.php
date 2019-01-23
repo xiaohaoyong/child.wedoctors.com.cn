@@ -231,6 +231,8 @@ class DataController extends Controller
                 $rs = WechatSendTmp::send($data, $v, 'u1B7beQlAmsvM_1HkW9nVtzv4Yr2CJ_dOx9WzFYCAmI', 'https://jinshuju.net/f/hfZOIr');
                 $openids[]=$v;
                 echo $v . "" . $rs . "\n";
+            }else{
+                echo "jump\n";
             }
         }
        exit;
