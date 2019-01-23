@@ -110,7 +110,7 @@ class DataController extends Controller
             ->andWhere(['!=',UserLogin::tableName().".openid",''])
             ->groupBy(UserLogin::tableName().".openid")
             ->column();
-        var_dump($childs);exit;
+        //var_dump($childs);exit;
         $openids=[];
         foreach($childs as $k=>$v){
             if(!in_array($v,$openids)) {
