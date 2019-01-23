@@ -104,7 +104,7 @@ class DataController extends Controller
 
 
         $childs=ChildInfo::find()->select(UserLogin::tableName().".openid")
-            ->andWhere([ChildInfo::tableName().'.field42'=>27])
+            ->andWhere([ChildInfo::tableName().'.field42'=>37])
             ->andWhere(['>',ChildInfo::tableName().'.birthday',1485878400])
             ->leftJoin(UserLogin::tableName(),UserLogin::tableName().".userid=".ChildInfo::tableName().".userid")
             ->andWhere(['!=',UserLogin::tableName().".openid",''])
