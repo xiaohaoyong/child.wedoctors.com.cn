@@ -101,6 +101,8 @@ class DataController extends Controller
 //        }
         //exit;
 
+
+
         $childs=ChildInfo::find()->select(UserLogin::tableName().".openid")
             ->andWhere([ChildInfo::tableName().'.field42'=>27])
             ->andWhere(['>',ChildInfo::tableName().'.birthday',1485878400])
