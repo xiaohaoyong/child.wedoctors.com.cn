@@ -82,9 +82,9 @@ class DataController extends Controller
     public function actionPush(){
 
 
-        $doctorParent=DoctorParent::find()->select('parentid')->where(['doctorid'=>4135])->column();
-        $preg=Pregnancy::find()->select('field1')->where(['in','familyid',$doctorParent])->andWhere(['source'=>0])->column();
-        var_dump($preg);exit;
+//        $doctorParent=DoctorParent::find()->select('parentid')->where(['doctorid'=>4135])->column();
+//        $preg=Pregnancy::find()->select('field1')->where(['in','familyid',$doctorParent])->andWhere(['source'=>0])->column();
+//        var_dump($preg);exit;
 //        $doctorParent = DoctorParent::find()->where(['doctorid'=>0])->all();
 //        foreach($doctorParent as $k=>$v){
 //
@@ -101,15 +101,14 @@ class DataController extends Controller
 //        }
         //exit;
 
-        $childs=ChildInfo::find()->select(UserLogin::tableName().".openid")->where(['<',ChildInfo::tableName().'.field42','37'])
-            ->andWhere(['>',ChildInfo::tableName().'.field42','24'])
+        $childs=ChildInfo::find()->select(UserLogin::tableName().".openid")
+            ->andWhere([ChildInfo::tableName().'.field42'=>27])
             ->andWhere(['>',ChildInfo::tableName().'.birthday',1485878400])
-            ->andWhere(['<',ChildInfo::tableName().'.birthday',1514736000])
-
             ->leftJoin(UserLogin::tableName(),UserLogin::tableName().".userid=".ChildInfo::tableName().".userid")
             ->andWhere(['!=',UserLogin::tableName().".openid",''])
             ->groupBy(UserLogin::tableName().".openid")
             ->column();
+        var_dump($childs);exit;
         $openids=[];
         foreach($childs as $k=>$v){
             if(!in_array($v,$openids)) {
