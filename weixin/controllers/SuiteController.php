@@ -50,6 +50,7 @@ class SuiteController extends Controller
             if (!empty($postStr)) {
                 $xml = $this->mpWechat->parseRequestXml($postStr, $_GET['msg_signature'], $_GET['timestamp'], $nonce = $_GET['nonce'], $_GET['encrypt_type']);
 
+                $log->addLog($_GET['timestamp']);
                 $log->addLog(implode(',',$xml));
                 $log->saveLog();
                 //分享是的二维码
