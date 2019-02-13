@@ -48,6 +48,9 @@ class SuiteController extends Controller
             $log->saveLog();
             //file_put_contents('/home/wwwlogs/applogs/child.wedoctors.com.cn/wxpost.log',$postStr,FILE_APPEND);
             if (!empty($postStr)) {
+                $log->addLog("=====12");
+                $log->saveLog();
+
                 $xml = $this->mpWechat->parseRequestXml($postStr, $_GET['msg_signature'], $_GET['timestamp'], $nonce = $_GET['nonce'], $_GET['encrypt_type']);
                 $log->addLog("=====32");
 
