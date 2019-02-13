@@ -35,12 +35,17 @@ class SuiteController extends Controller
         $log->saveLog();
         $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
         if (isset($_GET['echostr'])) {
+            $log->addLog($_GET['echostr']);
+            $log->saveLog();
             if ($this->mpWechat->checkSignature()) {
                 echo $_GET["echostr"];
                 exit;
             }
         } else {
+
             $postStr = file_get_contents("php://input");
+            $log->addLog($postStr);
+            $log->saveLog();
             //file_put_contents('/home/wwwlogs/applogs/child.wedoctors.com.cn/wxpost.log',$postStr,FILE_APPEND);
             if (!empty($postStr)) {
                 $xml = $this->mpWechat->parseRequestXml($postStr, $_GET['msg_signature'], $_GET['timestamp'], $nonce = $_GET['nonce'], $_GET['encrypt_type']);
