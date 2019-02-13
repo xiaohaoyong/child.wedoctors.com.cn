@@ -31,6 +31,8 @@ class SuiteController extends Controller
     public function actionIndex()
     {
         $log=new Log('suite_index');
+        $log->addLog("======");
+        $log->saveLog();
         $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
         if (isset($_GET['echostr'])) {
             if ($this->mpWechat->checkSignature()) {

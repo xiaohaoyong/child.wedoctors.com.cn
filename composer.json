@@ -48,7 +48,8 @@
     "linslin/yii2-curl": "*",
     "kartik-v/yii2-krajee-base": "dev-master",
     "kartik-v/bootstrap-fileinput": "@dev",
-    "kartik-v/yii2-widget-select2": "@dev"
+    "kartik-v/yii2-widget-select2": "@dev",
+    "aliyuncs/oss-sdk-php": "^2.3"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

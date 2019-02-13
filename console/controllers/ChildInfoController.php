@@ -28,13 +28,13 @@ class ChildInfoController extends Controller
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
         set_time_limit(0);
-        $doctor=UserDoctor::find()->all();
-        foreach($doctor as $v)
-        {
-            $this->setDownExcel($v->userid);
-            echo "\n";
-        }
-
+//        $doctor=UserDoctor::find()->all();
+//        foreach($doctor as $v)
+//        {
+//            $this->setDownExcel($v->userid);
+//            echo "\n";
+//        }
+        $this->setDownExcel(18491);
     }
     public function setDownExcel($doctorid){
 

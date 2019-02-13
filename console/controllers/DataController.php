@@ -80,7 +80,49 @@ class DataController extends Controller
         }
     }
     public function actionPush(){
+        $phones=[
+18201599388,
+15810423758,
+13488789894,
+13581573919,
+17701133177,
+18810873734,
+17812003996,
+13970138080,
+15711103486,
+18612550502,
+18610327998,
+13935898710,
+18911836010,
+18612003631,
+15010344309,
+15321797996,
+18801150325,
+13240287336,
+13381026325,
+18611619771,
+18910709931,
+17610798331,
+18911820229,
+13810366926,
+15811078604,
+        ];
 
+        foreach($phones as $k=>$v) {
+            $response = \Yii::$app->aliyun->sendSms(
+                "儿宝宝", // 短信签名
+                "SMS_157275701", // 短信模板编号
+                $v, // 短信接收者
+                Array(  // 短信模板中字段的值
+                    "title" => "早产宝宝该如何护理和喂养",
+                    "datetime" => "2019年1月26日 14:00",
+                    "hospital" => "美中宜和妇儿医院",
+                    "address"=>"北京市朝阳区安慧北里逸园5号楼",
+                )
+            );
+            $response = json_decode($response, true);
+            var_dump($response);
+        }exit;
 
 //        $doctorParent=DoctorParent::find()->select('parentid')->where(['doctorid'=>4135])->column();
 //        $preg=Pregnancy::find()->select('field1')->where(['in','familyid',$doctorParent])->andWhere(['source'=>0])->column();
@@ -778,6 +820,9 @@ class DataController extends Controller
 
     public function actionEbb()
     {
+
+        echo date('Y-m-d\TH:i:s\Z', time()+(3600*24));exit;
+
         $childs = ChildInfo::find()->andFilterWhere(['doctorid' => 110555])->all();
         foreach ($childs as $k => $v) {
             $doctorParent = DoctorParent::findOne(['parentid' => $v->userid, 'level' => 1]);
