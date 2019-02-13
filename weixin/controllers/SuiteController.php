@@ -142,6 +142,9 @@ class SuiteController extends Controller
 
                     return self::forwardToCustomService($xml['FromUserName'], $xml['ToUserName']);
                 }
+            }else{
+                $log->addLog("end");
+                $log->saveLog();
             }
         }
     }
