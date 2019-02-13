@@ -3,6 +3,7 @@
 namespace weixin\controllers;
 
 use common\components\HttpRequest;
+use common\components\Log;
 use common\helpers\WechatSendTmp;
 use common\models\ChildInfo;
 use common\models\Qrcodeid;
@@ -29,6 +30,7 @@ class SuiteController extends Controller
 
     public function actionIndex()
     {
+        $log=new Log('suite_index');
         $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
         if (isset($_GET['echostr'])) {
             if ($this->mpWechat->checkSignature()) {
@@ -41,6 +43,8 @@ class SuiteController extends Controller
             if (!empty($postStr)) {
                 $xml = $this->mpWechat->parseRequestXml($postStr, $_GET['msg_signature'], $_GET['timestamp'], $nonce = $_GET['nonce'], $_GET['encrypt_type']);
 
+                $log->addLog(implode(',',$xml));
+                $log->saveLog();
                 //分享是的二维码
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
                     $openid = $xml['FromUserName'];
