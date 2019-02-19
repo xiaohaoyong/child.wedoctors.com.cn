@@ -66,7 +66,7 @@
   "config": {
     "process-timeout": 1800,
     "github-oauth": {
-      "github.com": "569cab8db73f1f0c157c2394398a51bc0488bdc5"
+      "github.com": "5f0de935a2f25cf258dad41e8c2cfedb363e99c4"
     },
     "fxp-asset": {
       "installer-paths": {
