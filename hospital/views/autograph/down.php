@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>北京市朝阳区家庭医生签约服务协议书</title>
+    <title></title>
 </head>
 <style>
     body {
