@@ -60,6 +60,8 @@ class InterviewSearch extends Interview
      */
     public function search($params)
     {
+        $hospitalid = \Yii::$app->user->identity->hospital;
+        $doctorid = \common\models\UserDoctor::findOne(['hospitalid' => $hospitalid]);
         $query = Interview::find();
 
         // add conditions that should always apply here
@@ -75,21 +77,18 @@ class InterviewSearch extends Interview
             // $query->where('0=1');
             return $dataProvider;
         }
+        $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
 
         if($this->field5s){
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
             $query->andWhere(['>=',Pregnancy::tableName().'.field5',$this->field5s]);
         }
         if($this->field5e){
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
             $query->andWhere(['<=',Pregnancy::tableName().'.field5',$this->field5e]);
         }
         if($this->field15s){
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
             $query->andWhere(['>=',Pregnancy::tableName().'.field15',$this->field15s]);
         }
         if($this->field15s){
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
             $query->andWhere(['<=',Pregnancy::tableName().'.field15',$this->field15e]);
         }
         if($this->childbirth_dates){
@@ -99,13 +98,12 @@ class InterviewSearch extends Interview
             $query->andWhere(['<=',Interview::tableName().'.childbirth_date',$this->field15e]);
         }
 
-
-        $query->andWhere(['prenatal_test'=>1]);
-        $query->groupBy('userid');
+        $query->andWhere(['pregnancy.doctorid'=>$hospitalid]);
+        $query->andWhere([Interview::tableName().'.prenatal_test'=>1]);
+        $query->groupBy(Interview::tableName().'.userid');
 
         if ($this->name) {
 
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
             $query->andWhere(['pregnancy.field1'=>$this->name]);
         }
 
