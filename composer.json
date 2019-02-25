@@ -34,7 +34,6 @@
     "bower-asset/jquery": "1.12.1-patch1",
     "gmars/yii2-sms": "dev-master",
     "kucha/ueditor": "*",
-    "moonlandsoft/yii2-phpexcel": "*",
     "2amigos/qrcode-library": "1.0.3",
     "kartik-v/yii2-widget-datepicker": "@dev",
     "yiisoft/yii2-redis": "^2.0",
