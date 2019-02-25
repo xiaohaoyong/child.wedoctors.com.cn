@@ -57,7 +57,6 @@ class PregnancyController extends Controller
             }
         }
 
-        $cellName = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         $obj = $objRead->load($file);  //建立excel对象
         $currSheet = $obj->getSheet(0);   //获取指定的sheet表
