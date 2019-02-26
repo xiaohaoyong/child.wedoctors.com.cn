@@ -152,9 +152,6 @@ class ChildInfoController extends Controller
         }
         // $objPHPExcel->setActiveSheetIndex(0);
 
-
-        $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
-        $objWriter->save(dirname(__ROOT__)."/static/".$userDoctor->hospitalid.".xlsx");
         echo "true";
         return ;
     }
