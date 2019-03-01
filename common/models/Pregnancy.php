@@ -115,7 +115,7 @@ class Pregnancy extends \yii\db\ActiveRecord
 
     public function getWeeks(){
 
-        return ceil((time()-($this->field16?$this->field16:$this->field11))/60/60/24/7);
+        return ceil((time()-($this->field16?$this->field16:$this->field11))/60/60/24/7-1);
     }
 
     public static $bmi=[

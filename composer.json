@@ -60,7 +60,7 @@
     "gmars/yii2-sms": "dev-master",
     "bower-asset/jquery": "1.12.1-patch1",
     "kucha/ueditor": "*",
-    "2amigos/qrcode-library": "1.0.3",
+    "2amigos/qrcode-library": "1.0.3"
   },
   "config": {
     "process-timeout": 1800,
