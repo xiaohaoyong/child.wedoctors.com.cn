@@ -125,7 +125,7 @@ class RedisConnection extends Connection
         $redisCommand = strtoupper(Inflector::camel2words($name, false));
 
         if($name=='ZRANK') {
-            var_dump(123123123123);exit;
+            var_dump(in_array($redisCommand, $this->redisKeyCommands));exit;
         }
         if (in_array($redisCommand, $this->redisKeyCommands)) {
             return $this->executeCommand($redisCommand, $params);
