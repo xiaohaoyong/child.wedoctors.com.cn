@@ -126,6 +126,7 @@ class RedisConnection extends Connection
     public function __call($name, $params)
     {
         $redisCommand = strtoupper(Inflector::camel2words($name, false));
+        var_dump(in_array($redisCommand, $this->redisKeyCommands));exit;
         if (in_array($redisCommand, $this->redisKeyCommands)) {
             return $this->executeCommand($redisCommand, $params);
         } else {
