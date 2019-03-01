@@ -23,7 +23,7 @@ class Pregnancy
      */
     public function inputData($value,$hospital)
     {
-        $preg=\common\models\Pregnancy::findOne(['field0'=>$value['field0']]);
+        $preg=\common\models\Pregnancy::findOne(['field4'=>$value['field4']]);
         $preg=$preg?$preg:new \common\models\Pregnancy();
         $parent=UserParent::find()
             ->where(['mother_id'=>$value['field4']])
