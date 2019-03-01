@@ -79,17 +79,19 @@ class ChildExcController extends Controller
      */
     public function actionExport()
     {
+
         $value = self::pop();
-        var_dump($value);
+        if ($value) {
+            self::srun($value);
+        }
         return ;
 
         ini_set('default_socket_timeout', -1);  //不超时
         echo "开启监听任务\n";
         while (1) {
             $value = self::pop();
-            var_dump($value);
             if ($value) {
-                var_dump($value);exit;
+                self::srun($value);
             }
         }
         exit;
