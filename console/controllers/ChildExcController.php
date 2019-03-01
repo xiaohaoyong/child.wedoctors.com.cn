@@ -84,7 +84,7 @@ class ChildExcController extends Controller
         while (1) {
             $value = self::pop();
             if ($value) {
-                self::srun($value);
+                var_dump($value);exit;
             }
         }
         exit;
