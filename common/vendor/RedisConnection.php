@@ -123,6 +123,10 @@ class RedisConnection extends Connection
     public function __call($name, $params)
     {
         $redisCommand = strtoupper(Inflector::camel2words($name, false));
+
+        if($name=='ZRANK') {
+            var_dump(123123123123);exit;
+        }
         if (in_array($redisCommand, $this->redisKeyCommands)) {
             return $this->executeCommand($redisCommand, $params);
         } else {
