@@ -47,6 +47,14 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
+
+    public function actionTests(){
+
+        $redis=\Yii::$app->rdmp;
+        $index=$redis->ZRANK('noticeList147072',8);
+
+
+    }
     public function actionAppoint(){
         $userAppoint=UserDoctorAppoint::find()->all();
         foreach($userAppoint as $k=>$v){
