@@ -131,7 +131,7 @@ class RedisConnection extends Connection
     }
     public function executeCommand($name, $params = [])
     {
-        $redisCommand = strtoupper(Inflector::camel2words($name, false));
+        $redisCommand = $name;
         if(is_array($params) && $this->prefix && in_array($redisCommand,$this->redisKeyCommands)){
             $params[0]=$this->prefix.$params[0];
         }
