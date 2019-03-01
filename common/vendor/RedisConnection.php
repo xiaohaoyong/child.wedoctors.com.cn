@@ -10,6 +10,7 @@ use yii\redis\Connection;
  * Date: 2016/10/14
  * Time: 11:25
  */
+
 class RedisConnection extends Connection
 {
     public $prefix="";

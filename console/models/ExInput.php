@@ -32,7 +32,7 @@ class ExInput
             ->andFilterWhere(['field4' => $row['field4']])
             ->andFilterWhere(['source' => $hospitalid])
             ->andFilterWhere(['field19' => $row['field19']])->one();
-        if($ex){ echo "jump\n";return 'jump';}
+        //if($ex){ echo "jump\n";return 'jump';}
         $ex = $ex ? $ex : new Examination();
 
         $child = ChildInfo::find()->andFilterWhere(['name' => trim($row['field1'])])
