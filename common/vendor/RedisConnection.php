@@ -138,7 +138,7 @@ class RedisConnection extends Connection
         if(is_array($params) && $this->prefix && in_array($redisCommand,$this->redisKeyCommands)){
             $params[0]=$this->prefix.$params[0];
         }
-        if($name=='ZRANK') {
+        if($redisCommand=='ZRANK') {
             var_dump($params);
             exit;
         }
