@@ -76,79 +76,82 @@ class ChildDown
             $e=$v;
             $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid'],'level'=>1]);
             $parent= UserParent::findOne(['userid'=>$v['userid']]);
-            $parentValue=$parent->toArray();
+            if($parent) {
+                $parentValue = $parent->toArray();
 
-            $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
-            if($DiffDate[0]) {
-                $age=$DiffDate[0]."岁";
-            }elseif($DiffDate[1]){
-                $age=$DiffDate[1]."月";
-            }else{
-                $age=$DiffDate[2]."天";
-            }
-            if($sign->level!=1)
-            {
-                $return="未签约";
-            }else{
-                if($e['source']<=38){
-                    $return="已签约未关联";
-
-                }else {
-                    $return = "已签约";
+                $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
+                if ($DiffDate[0]) {
+                    $age = $DiffDate[0] . "岁";
+                } elseif ($DiffDate[1]) {
+                    $age = $DiffDate[1] . "月";
+                } else {
+                    $age = $DiffDate[2] . "天";
                 }
-            }
+                if ($sign->level != 1) {
+                    $return = "未签约";
+                } else {
+                    if ($e['source'] <= 38) {
+                        $return = "已签约未关联";
 
-            $article=ArticleUser::findAll(['touserid'=>$v['userid']]);
-
-            $date='';
-            $child_type='';
-            $title='';
-
-            if($article) {
-                foreach ($article as $ak => $av) {
-                    $date.="，".date('Y-m-d',$av->createtime);
-                    $child_type.="，".Article::$childText[$av->child_type];
-                    $articleInfo=ArticleInfo::findOne(['id'=>$av->artid]);
-                    $title.=$articleInfo?"，".$articleInfo->title:"";
-                }
-                $is_article="是";
-            }else{
-                $is_article="否";
-            }
-
-
-            $key1 = $k + 2;
-            $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $key1, $v['name'])
-                ->setCellValue('B' . $key1, " ".\common\models\User::findOne($v['userid'])->phone)
-                ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
-                ->setCellValue('D' . $key1, $age)
-                ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
-                ->setCellValue('F' . $key1, $parentValue['mother'] || $parentValue['father']?$parentValue['mother']."/".$parentValue['father']:"无")
-                ->setCellValue('G' . $key1, $parentValue['mother_phone'] ? " ".$parentValue['mother_phone'] : "无")
-                ->setCellValue('H' . $key1, $parentValue['father_phone'] ?  " ".$parentValue['father_phone'] : "无")
-                ->setCellValue('I' . $key1, $parentValue['field11'] ? $parentValue['field11'] : "无")
-                ->setCellValue('J' . $key1, $parentValue['field12'] ? " ".$parentValue['field12'] : "无")
-                ->setCellValue('K' . $key1, $sign->level==1 ? \common\models\UserDoctor::findOne(['userid'=>$sign->doctorid])->name : "--")
-                ->setCellValue('L' . $key1, $v['field50'])
-                ->setCellValue('M' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
-                ->setCellValue('N' . $key1, $return)
-                ->setCellValue('O' . $key1, $is_article)
-                ->setCellValue('P' . $key1, $child_type)
-                ->setCellValue('Q' . $key1, $title)
-                ->setCellValue('R' . $key1, $date);
-
-            if($this->_server){
-                $line=round(($k+1)/$totle,4)*100;
-                if(ceil($line)%5==0){
-                    $dataUserTask = DataUserTask::findOne(['datauserid' => $this->dataUser->id, 'state' => 0]);
-                    if($dataUserTask){
-                        $this->_server_fd=$dataUserTask->fd;
+                    } else {
+                        $return = "已签约";
                     }
                 }
-                $this->_server->send(json_encode(['type' => 'Schedule','id'=>$dataUserTask->id,'fd'=>$this->_server_fd,'line'=>$line]));
-            }
 
+                $article = ArticleUser::findAll(['touserid' => $v['userid']]);
+
+                $date = '';
+                $child_type = '';
+                $title = '';
+
+                if ($article) {
+                    foreach ($article as $ak => $av) {
+                        $date .= "，" . date('Y-m-d', $av->createtime);
+                        $child_type .= "，" . Article::$childText[$av->child_type];
+                        $articleInfo = ArticleInfo::findOne(['id' => $av->artid]);
+                        $title .= $articleInfo ? "，" . $articleInfo->title : "";
+                    }
+                    $is_article = "是";
+                } else {
+                    $is_article = "否";
+                }
+
+
+                $key1 = $k + 2;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $key1, $v['name'])
+                    ->setCellValue('B' . $key1, " " . \common\models\User::findOne($v['userid'])->phone)
+                    ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
+                    ->setCellValue('D' . $key1, $age)
+                    ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
+                    ->setCellValue('F' . $key1, $parentValue['mother'] || $parentValue['father'] ? $parentValue['mother'] . "/" . $parentValue['father'] : "无")
+                    ->setCellValue('G' . $key1, $parentValue['mother_phone'] ? " " . $parentValue['mother_phone'] : "无")
+                    ->setCellValue('H' . $key1, $parentValue['father_phone'] ? " " . $parentValue['father_phone'] : "无")
+                    ->setCellValue('I' . $key1, $parentValue['field11'] ? $parentValue['field11'] : "无")
+                    ->setCellValue('J' . $key1, $parentValue['field12'] ? " " . $parentValue['field12'] : "无")
+                    ->setCellValue('K' . $key1, $sign->level == 1 ? \common\models\UserDoctor::findOne(['userid' => $sign->doctorid])->name : "--")
+                    ->setCellValue('L' . $key1, $v['field50'])
+                    ->setCellValue('M' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
+                    ->setCellValue('N' . $key1, $return)
+                    ->setCellValue('O' . $key1, $is_article)
+                    ->setCellValue('P' . $key1, $child_type)
+                    ->setCellValue('Q' . $key1, $title)
+                    ->setCellValue('R' . $key1, $date);
+
+                if ($this->_server) {
+                    $line = round(($k + 1) / $totle, 4) * 100;
+                    if (ceil($line) % 5 == 0) {
+                        $dataUserTask = DataUserTask::findOne(['datauserid' => $this->dataUser->id, 'state' => 0]);
+                        if ($dataUserTask) {
+                            $this->_server_fd = $dataUserTask->fd;
+                        }
+                    }
+                    $this->_server->send(json_encode(['type' => 'Schedule', 'id' => $dataUserTask->id, 'fd' => $this->_server_fd, 'line' => $line]));
+                }
+            }else{
+                echo $v['userid'];
+                echo "\n";
+            }
         }
         // $objPHPExcel->setActiveSheetIndex(0);
 
