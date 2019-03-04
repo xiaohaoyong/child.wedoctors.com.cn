@@ -14,6 +14,7 @@ use common\models\DoctorParent;
 use common\models\UserDoctor;
 use common\models\UserParent;
 use OSS\OssClient;
+use yii\web\Response;
 
 class SynchronizationController extends BaseController
 {
@@ -77,9 +78,11 @@ class SynchronizationController extends BaseController
     }
 
     public function actionDataCallback(){
+        \Yii::$app->response->format=Response::FORMAT_JSON;
+
         $log=new Log('datacallback');
         $log->addLog(json_encode($_POST));
         $log->saveLog();
-        echo 1;exit;
+        return ['code'=>10000,'msg'=>'成功'];
     }
 }
