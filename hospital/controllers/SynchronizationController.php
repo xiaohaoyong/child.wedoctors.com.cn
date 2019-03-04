@@ -85,7 +85,7 @@ class SynchronizationController extends BaseController
         $log=new Log('datacallback');
         $log->addLog(json_encode($_POST));
         $log->saveLog();
-        sleep(10);
+
         return ['code'=>10000,'msg'=>'成功'];
     }
 }
