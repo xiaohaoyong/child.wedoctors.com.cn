@@ -13,6 +13,7 @@
     <input type="text" name="policy" value="<?=$row['policy']?>">
     <input type="text" name="Signature" value="<?=$row['signature']?>">
     <input type="text" name="key" value="<?=$row['key']?>">
+    <input type="text" name="callback" value="<?=$row['callback']?>">
     <input name="file" type="file" id="file">
     <input name="submit" value="Upload" type="submit">
 </form>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * 数据同步
  * User: wangzhen
  * Date: 2019/1/18
  * Time: 下午3:01
@@ -9,6 +9,7 @@
 namespace hospital\controllers;
 
 
+use common\components\Log;
 use common\models\DoctorParent;
 use common\models\UserDoctor;
 use common\models\UserParent;
@@ -66,7 +67,18 @@ class SynchronizationController extends BaseController
         ]));
         $signature = base64_encode(hash_hmac('sha1', $row['policy'], 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', true));//生成认证签名
         $row['signature']=$signature;
+        $callback=[
+            'callbackUrl'=>'http://hospital.child.wedoctors.com.cn/synchronization/data-callback',
+            'callbackBody'=>\Yii::$app->user->identity->hospitalid.'name='.date('Ymd'),
+        ];
+        $row['callback']=base64_encode(json_encode($callback));
 
         return $this->render('data',['row'=>$row]);
+    }
+
+    public function actionDataCallback(){
+        $log=new Log('datacallback');
+        $log->addLog(json_encode($_POST));
+        $log->saveLog();
     }
 }
