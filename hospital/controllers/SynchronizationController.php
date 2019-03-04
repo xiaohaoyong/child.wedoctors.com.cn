@@ -68,7 +68,7 @@ class SynchronizationController extends BaseController
         $signature = base64_encode(hash_hmac('sha1', $row['policy'], 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', true));//生成认证签名
         $row['signature']=$signature;
         $callback=[
-            'callbackUrl'=>urlencode('http://hospital.child.wedoctors.com.cn/synchronization/data-callback'),
+            'callbackUrl'=>'http://hospital.child.wedoctors.com.cn/synchronization/data-callback',
             'callbackBody'=>\Yii::$app->user->identity->hospitalid.'name='.date('Ymd'),
         ];
         $row['callback']=base64_encode(json_encode($callback));
