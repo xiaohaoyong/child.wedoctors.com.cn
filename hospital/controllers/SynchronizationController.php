@@ -80,5 +80,6 @@ class SynchronizationController extends BaseController
         $log=new Log('datacallback');
         $log->addLog(json_encode($_POST));
         $log->saveLog();
+        echo 1;exit;
     }
 }
