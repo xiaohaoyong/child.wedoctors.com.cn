@@ -15,13 +15,13 @@ class BaseController extends \yii\web\Controller {
 
     public function beforeAction($action)
     {
-        parent::beforeAction($action);
 
         $path = \Yii::$app->request->pathInfo;
 
         if(in_array($path, $this->nocsrf)){
             $action->controller->enableCsrfValidation = false;
         }
+        parent::beforeAction($action);
 
         if (in_array($path, $this->ignore))
         {
