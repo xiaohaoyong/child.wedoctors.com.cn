@@ -59,11 +59,15 @@ class SynchronizationController extends BaseController
 
         $row['accesskeyid']='LTAIteFpOZnX3aoE';
         $row['key']=110546;
+        $row['success_action_redirect']='http://hospital.child.wedoctors.com.cn/synchronization/';
+        $row['success_action_status']=201;
         $row['policy']=base64_encode(json_encode([
             "expiration"=>date('Y-m-d\TH:i:s\Z', time()+(3600*24)),
             "conditions"=>[
                 ['bucket'=>"wedoctorschild"],
                 ['success_action_redirect'=>'http://hospital.child.wedoctors.com.cn/synchronization/'],
+                ['success_action_status'=>201],
+
                 ["content-length-range", 0, 104857600]
             ],
         ]));
