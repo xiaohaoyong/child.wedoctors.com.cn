@@ -65,9 +65,6 @@ class SynchronizationController extends BaseController
             "expiration"=>date('Y-m-d\TH:i:s\Z', time()+(3600*24)),
             "conditions"=>[
                 ['bucket'=>"wedoctorschild"],
-                ['success_action_redirect'=>'http://hospital.child.wedoctors.com.cn/synchronization/'],
-                ['success_action_status'=>201],
-
                 ["content-length-range", 0, 104857600]
             ],
         ]));
