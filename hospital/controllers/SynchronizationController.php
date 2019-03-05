@@ -55,7 +55,6 @@ class SynchronizationController extends BaseController
 
     public function actionData(){
 
-        $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-beijing.aliyuncs.com');
 
         $row['accesskeyid']='LTAIteFpOZnX3aoE';
         $row['key']=date('Ymd')."-".\Yii::$app->user->identity->hospitalid;
