@@ -19,6 +19,9 @@ return [
         'worker'=>[
             'class' => 'console\controllers\WorkerController',
         ],
+        'dataupdate'=>[
+            'class' => 'console\controllers\DataUpdateController',
+        ],
         'websocket' => [
             'class' => 'jianyan\websocket\console\WebSocketController',
             'server' => 'console\models\DloadServer',
