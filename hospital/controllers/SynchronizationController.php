@@ -58,7 +58,7 @@ class SynchronizationController extends BaseController
         $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-beijing.aliyuncs.com');
 
         $row['accesskeyid']='LTAIteFpOZnX3aoE';
-        $row['key']=110546;
+        $row['key']=date('Ymd')."-".\Yii::$app->user->identity->hospitalid;
         $row['success_action_redirect']='http://hospital.child.wedoctors.com.cn/synchronization/';
         $row['success_action_status']=201;
         $row['policy']=base64_encode(json_encode([
@@ -72,7 +72,7 @@ class SynchronizationController extends BaseController
         $row['signature']=$signature;
         $callback=[
             'callbackUrl'=>'http://hospital.child.wedoctors.com.cn/synchronization/data-callback',
-            'callbackBody'=>\Yii::$app->user->identity->hospitalid.'name='.date('Ymd'),
+            'callbackBody'=>'date='.date('Ymd').'&id='.\Yii::$app->user->identity->hospitalid,
         ];
         $row['callback']=base64_encode(json_encode($callback));
 
@@ -86,6 +86,10 @@ class SynchronizationController extends BaseController
         $log->addLog(json_encode($_POST));
         $log->saveLog();
 
+
+
+        $return = \Yii::$app->beanstalk
+            ->putInTube('dataupdate', ['hospitalid'=>$_POST['id'],'date'=>$_POST['date']]);
         return ['code'=>10000,'msg'=>'成功'];
     }
 }
