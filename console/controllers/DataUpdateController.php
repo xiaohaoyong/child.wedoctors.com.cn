@@ -41,7 +41,7 @@ class DataUpdateController extends BeanstalkController
 // object 表示您在下载文件时需要指定的文件名称，如abc/efg/123.jpg。
         $object = $date."-".$hospitalid;
 // 指定文件下载路径。
-        $localfile = "/tmp";
+        $localfile = "/tmp/".$hospitalid.".xlsx";
         $options = array(
             OssClient::OSS_FILE_DOWNLOAD => $localfile
         );
