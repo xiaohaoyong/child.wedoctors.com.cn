@@ -52,6 +52,8 @@ class DataUpdateController extends BeanstalkController
             $ossClient->getObject($bucket, $object, $options);
         } catch(OssException $e) {
             printf(__FUNCTION__ . ": FAILED\n");
+            printf($e->getErrorCode() . "\n");
+
             printf($e->getMessage() . "\n");
             return;
         }
