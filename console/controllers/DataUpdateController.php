@@ -39,7 +39,7 @@ class DataUpdateController extends BeanstalkController
 
         $bucket= "wedoctorschild";
 // object 表示您在下载文件时需要指定的文件名称，如abc/efg/123.jpg。
-        $object = $date."-".$hospitalid.".xlsx";
+        $object = $date."-".$hospitalid;
 // 指定文件下载路径。
         $localfile = "/tmp";
         $options = array(
