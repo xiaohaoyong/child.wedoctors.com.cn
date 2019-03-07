@@ -49,7 +49,26 @@ class UserParent extends \yii\db\ActiveRecord {
             [['userid','province','county','city'], 'integer'],
         ];
     }
-
+    public static $field=[
+        'mother' => '母亲姓名',
+        'mother_phone' => '母亲联系电话',
+        'mother_id' => '母亲身份证号',
+        'father' => '父亲姓名',
+        'father_phone' => '父亲联系电话',
+        'father_birthday' => '父亲生日',
+        'state' => '居住状态',
+        'address' => '户籍所在省（北京市）',
+        'field34' => '父亲文化程度',
+        'field33' => '父亲职业',
+        'field30' => '母亲文化程度',
+        'field29' => '母亲职业',
+        'field28' => '母亲出生日期',
+        'field12' => '联系人电话',
+        'field11' => '联系人姓名',
+        'field44' => '户籍所在省（北京市）',
+        'field45' => '户籍地址区',
+        'field1' => '户口',
+    ];
     //通过id获取信息 刘方露
     public static function GetInfoById($userid)
     {

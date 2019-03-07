@@ -63,6 +63,48 @@ class ChildInfo extends \yii\db\ActiveRecord
         return '{{%child_info}}';
     }
 
+    public static $field=[
+        'name' => '儿童姓名',
+        'birthday' => '出生日期',
+        'gender' => '性别',
+        'field54' => '新建地点',
+        'field53' => '其他遗传代谢病',
+        'field52' => '新生儿疾病筛查耳',
+        'field51' => '新生儿疾病筛查甲',
+        'field50' => '所在居委会',
+        'field49' => '新生儿听力筛查',
+        'field48' => '新生儿窒息',
+        'field47' => '分娩方式',
+        'field46' => '先天畸形',
+        'field45' => '胎数',
+        'field44' => '产伤',
+        'field43' => '颅内出血',
+        'field42' => '出生孕周',
+        'field41' => '母孕期情况',
+        'field40' => '助产机构名称',
+        'field39' => '出院日期',
+        'field38' => '母亲第几产',
+        'field37' => '母亲第几胎',
+        'field27' => '儿童身份证号',
+        'field26' => '儿童疾病记录',
+        'field25' => '新生儿访视状态',
+        'field24' => '管理机构',
+        'field23' => '建册机构',
+        'field22' => '过敏史',
+        'field21' => '高危儿童状态',
+        'field20' => '残疾儿状态',
+        'field19' => '先天性髋脱位状态',
+        'field18' => '先天性心脏病状态',
+        'field17' => '肥胖状态',
+        'field16' => '营养不良状态',
+        'field15' => '佝偻病状态',
+        'field14' => '贫血状态',
+        'field13' => '体弱儿状态',
+        'field7' => '条形码',
+        'field6' => '出生医学证明号',
+        'field0' => '建册时间',
+    ];
+
     /**
      * @inheritdoc
      */

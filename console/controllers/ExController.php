@@ -14,6 +14,7 @@ use common\models\Examination;
 use common\models\WeOpenid;
 use console\models\ChildInfoInput;
 use console\models\ExInput;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use yii\base\Controller;
 
@@ -36,17 +37,29 @@ class ExController extends Controller
         }
 
     }
+    public function actioneWorkInput($file){
+        ini_set('memory_limit','500M');
+        error_reporting(E_ALL & ~E_NOTICE);
+        ini_set("max_execution_time", "0");
+        set_time_limit(0);
 
+        preg_match("#\d+#", $file, $m);
+        $hospitalid = substr($m[0], 0, 6);
+        echo $file."==";
+        $this->getExcel($file,$hospitalid);
+
+    }
     public function getExcel($file,$hospitalid){
         //$file = iconv("utf-8", "gb2312", $file);   //转码
         if (empty($file) OR !file_exists($file)) {
             die('file not exists!');
         }
         $objRead = new Xlsx();   //建立reader对象
+        $objRead->setReadDataOnly(true);
         $obj = $objRead->load($file);  //建立excel对象
         $currSheet = $obj->getSheet(0);   //获取指定的sheet表
         $columnH = $currSheet->getHighestColumn();   //取得最大的列号
-        $highestColumnNum = \PHPExcel_Cell::columnIndexFromString($columnH);
+        $highestColumnNum = Coordinate::columnIndexFromString($columnH);
         $rowCnt = $currSheet->getHighestRow();   //获取总行数
 
         $field_index=[];
