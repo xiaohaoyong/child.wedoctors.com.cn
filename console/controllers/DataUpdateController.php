@@ -38,13 +38,14 @@ class DataUpdateController extends BeanstalkController
         $sentData = $job->getData();
         $hospitalid=$sentData->hospitalid;
         $date=$sentData->date;
-        var_dump($sentData);exit;
 
         $log=new \common\components\Log('datacallback');
         $log->addLog('异步任务');
         $log->addLog(json_encode([$hospitalid,$date]));
 
         $bucket= "wedoctorschild";
+        var_dump('wedoctorschild');exit;
+
 // object 表示您在下载文件时需要指定的文件名称，如abc/efg/123.jpg。
         $object = $date."-".$hospitalid;
 // 指定文件下载路径。
