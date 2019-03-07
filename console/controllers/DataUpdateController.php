@@ -58,6 +58,8 @@ class DataUpdateController extends BeanstalkController
 
             $ossClient->getObject($bucket, $object, $options);
             $log->addLog("下载成功");
+            $log->saveLog();
+
         } catch(OssException $e) {
             $log->addLog("下载失败");
             $log->saveLog();
