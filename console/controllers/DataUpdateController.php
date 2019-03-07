@@ -73,6 +73,10 @@ class DataUpdateController extends BeanstalkController
 
             return self::DELETE;
         }
+        ini_set('memory_limit','2048M');
+        error_reporting(E_ALL & ~E_NOTICE);
+        ini_set("max_execution_time", "0");
+        set_time_limit(0);
 
         $objRead = new Xlsx();   //建立reader对象
         $objRead->setReadDataOnly(true);
@@ -82,7 +86,6 @@ class DataUpdateController extends BeanstalkController
         $highestColumnNum = Coordinate::columnIndexFromString($columnH);
         $rowCnt = $currSheet->getHighestRow();   //获取总行数
         $log->addLog("文件解析成功");
-        var_dump('文件解析成功');exit;
 
         $field_index=[];
         for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
