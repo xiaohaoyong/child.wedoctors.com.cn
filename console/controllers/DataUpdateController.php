@@ -73,7 +73,6 @@ class DataUpdateController extends BeanstalkController
 
             return self::DELETE;
         }
-        var_dump('wedoctorschild');exit;
 
         $objRead = new Xlsx();   //建立reader对象
         $objRead->setReadDataOnly(true);
@@ -83,6 +82,7 @@ class DataUpdateController extends BeanstalkController
         $highestColumnNum = Coordinate::columnIndexFromString($columnH);
         $rowCnt = $currSheet->getHighestRow();   //获取总行数
         $log->addLog("文件解析成功");
+        var_dump('文件解析成功');exit;
 
         $field_index=[];
         for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
