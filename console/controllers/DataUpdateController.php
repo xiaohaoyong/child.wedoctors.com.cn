@@ -38,6 +38,7 @@ class DataUpdateController extends BeanstalkController
         $sentData = $job->getData();
         $hospitalid=$sentData->hospitalid;
         $date=$sentData->date;
+        var_dump($sentData);exit;
 
         $log=new \common\components\Log('datacallback');
         $log->addLog('异步任务');
