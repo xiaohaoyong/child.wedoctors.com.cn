@@ -44,7 +44,6 @@ class DataUpdateController extends BeanstalkController
         $log->addLog(json_encode([$hospitalid,$date]));
 
         $bucket= "wedoctorschild";
-        var_dump('wedoctorschild');exit;
 
 // object 表示您在下载文件时需要指定的文件名称，如abc/efg/123.jpg。
         $object = $date."-".$hospitalid;
@@ -68,11 +67,14 @@ class DataUpdateController extends BeanstalkController
 
 
         if (empty($localfile) OR !file_exists($localfile)) {
-            $log->saveLog();
 
             $log->addLog($localfile."文件不存在");
+            $log->saveLog();
+
             return self::DELETE;
         }
+        var_dump('wedoctorschild');exit;
+
         $objRead = new Xlsx();   //建立reader对象
         $objRead->setReadDataOnly(true);
         $obj = $objRead->load($localfile);  //建立excel对象
