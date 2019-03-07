@@ -13,14 +13,19 @@ class Log
 {
     public $lineLog;
     public $name;
-    public function __construct($name)
+    public $is_echo;
+    public function __construct($name,$is_echo=false)
     {
         $this->name=$name;
+        $this->is_echo=$is_echo;
     }
 
     public function addLog($value)
     {
         $this->lineLog .= "|,|" . $value;
+        if($this->is_echo){
+            echo $this->lineLog."\n";
+        }
     }
 
     public function saveLog()
