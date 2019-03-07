@@ -14,6 +14,7 @@ use common\models\Examination;
 use common\models\WeOpenid;
 use console\models\ChildInfoInput;
 use console\models\ExInput;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use yii\base\Controller;
 
 class ExController extends Controller
@@ -41,15 +42,7 @@ class ExController extends Controller
         if (empty($file) OR !file_exists($file)) {
             die('file not exists!');
         }
-        $objRead = new \PHPExcel_Reader_Excel2007();   //建立reader对象
-        if (!$objRead->canRead($file)) {
-            $objRead = new \PHPExcel_Reader_Excel5();
-            if (!$objRead->canRead($file)) {
-                die('No Excel!');
-            }
-        }
-
-
+        $objRead = new Xlsx();   //建立reader对象
         $obj = $objRead->load($file);  //建立excel对象
         $currSheet = $obj->getSheet(0);   //获取指定的sheet表
         $columnH = $currSheet->getHighestColumn();   //取得最大的列号

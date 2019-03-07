@@ -19,6 +19,8 @@ use common\models\UserDoctor;
 use common\models\UserParent;
 use common\models\WeOpenid;
 use console\models\ChildInfoInput;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use yii\base\Controller;
 use yii\helpers\ArrayHelper;
 
@@ -186,7 +188,10 @@ class ChildInfoController extends Controller
         if (empty($file) OR !file_exists($file)) {
             die('file not exists!');
         }
-        $objRead = new \PHPExcel_Reader_Excel2007();   //建立reader对象
+
+
+
+        $objRead = new Xlsx();   //建立reader对象
         if (!$objRead->canRead($file)) {
             $objRead = new \PHPExcel_Reader_Excel5();
             if (!$objRead->canRead($file)) {
