@@ -102,8 +102,8 @@ class DataUpdateController extends BeanstalkController
                 }
             }
             if ($_row != 1) {
-                $pregnancy = new \console\models\ExInput();
-                $return = $pregnancy->inputData($rs, $hospitalid);
+//                $pregnancy = new \console\models\ExInput();
+//                $return = $pregnancy->inputData($rs, $hospitalid);
             }else{
                 $table=self::type($fields);
                 $log->addLog($table);
@@ -113,7 +113,7 @@ class DataUpdateController extends BeanstalkController
                         $field_index[$_column] = $k;
                     }
                 }
-                var_dump($field_index);exit;
+                var_dump($field_index);
 
             }
         }
