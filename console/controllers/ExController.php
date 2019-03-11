@@ -16,7 +16,9 @@ use console\models\ChildInfoInput;
 use console\models\ExInput;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Settings;
 use yii\base\Controller;
+use yii\redis\Cache;
 
 class ExController extends Controller
 {
