@@ -75,7 +75,7 @@ class DataUpdateController extends BeanstalkController
 
             return self::DELETE;
         }
-        ini_set('memory_limit','500M');
+        ini_set('memory_limit','1500M');
 
         $objRead = new Xlsx();   //建立reader对象
         $objRead->setReadDataOnly(true);
