@@ -144,7 +144,7 @@ class ChildInfoInput
             $childData=$value;
             $childData['userid']=$this->user->id;
             $childData['gender']=$value['gender'] == "男" ? 1 : 2;
-            $childData['birthday']=intval(strtotime($value[5]));
+            $childData['birthday']=intval(strtotime($value['birthday']));
             $childData['source']=$this->hospitalid;
             $childData['admin']=$this->hospitalid;
             $child->load(['ChildInfo'=>$childData]);
