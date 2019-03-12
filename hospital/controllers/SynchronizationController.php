@@ -9,6 +9,7 @@
 namespace hospital\controllers;
 
 
+use common\models\DataUpdateRecord;
 use common\components\Log;
 use common\models\DoctorParent;
 use common\models\UserDoctor;
@@ -75,7 +76,19 @@ class SynchronizationController extends BaseController
         ];
         $row['callback']=base64_encode(json_encode($callback));
 
-        return $this->render('data',['row'=>$row]);
+        $dur0=DataUpdateRecord::find()->where(['hospitalid'=>\Yii::$app->user->identity->hospitalid])->andWhere(['<','state',3])->all();
+        $dur1=DataUpdateRecord::findAll(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>1]);
+        $dur2=DataUpdateRecord::findAll(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>2]);
+        $dur3=DataUpdateRecord::findAll(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>3]);
+
+
+        return $this->render('data',[
+            'row'=>$row,
+            'dur0'=>$dur0,
+            'dur1'=>$dur1,
+            'dur2'=>$dur2,
+            'dur3'=>$dur3,
+        ]);
     }
 
     public function actionDataCallback(){
@@ -85,10 +98,13 @@ class SynchronizationController extends BaseController
         $log->addLog(json_encode($_POST));
         $log->saveLog();
 
+        $dur=new DataUpdateRecord();
+        $dur->hospitalid=$_POST['id'];
+        $dur->save();
 
 
         $return = \Yii::$app->beanstalk
-            ->putInTube('dataupdate', ['hospitalid'=>$_POST['id'],'date'=>$_POST['date']]);
+            ->putInTube('dataupdate', ['hospitalid'=>$_POST['id'],'date'=>$_POST['date'],'id'=>$dur->id]);
         return ['code'=>10000,'msg'=>'成功'];
     }
 }
