@@ -92,13 +92,13 @@ $this->title = "上传、同步数据";
                     <div class="col-md-9">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#done" data-toggle="tab">未完成</a></li>
+                                <li class="active"><a href="#ing" data-toggle="tab">进行中</a></li>
                                 <li><a href="#activity" data-toggle="tab">妇幼</a></li>
                                 <li><a href="#timeline" data-toggle="tab">体检</a></li>
                                 <li><a href="#settings" data-toggle="tab">孕期</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="active tab-pane" id="done">
+                                <div class="active tab-pane" id="ing">
                                     <table id="example2" class="table table-bordered table-hover"
                                            style="font-size: 12px;">
                                         <thead>
@@ -111,14 +111,39 @@ $this->title = "上传、同步数据";
                                         </thead>
                                         <tbody>
                                         <?php
-                                            foreach($dur0 as $k=>$v){
-                                        ?>
+                                        foreach($dur0 as $k=>$v){
+                                            ?>
+                                            <tr>
+                                                <td><?=date('Y-m-d H:i',$v->createtime)?></td>
+                                                <td><?=$v->num?></td>
+                                                <td><?=$v->new_num?></td>
+                                                <td><?=\common\models\DataUpdateRecord::$stateText[$v->state]?></td>
+                                            </tr>
+                                        <?php }?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="activity">
+                                    <table id="example2" class="table table-bordered table-hover"
+                                           style="font-size: 12px;">
+                                        <thead>
                                         <tr>
-                                            <td><?=date('Y-m-d H:i',$v->createtime)?></td>
-                                            <td><?=$v->num?></td>
-                                            <td><?=$v->new_num?></td>
-                                            <td><?=\common\models\DataUpdateRecord::$stateText[$v->state]?></td>
+                                            <th>数据上传日期</th>
+                                            <th>内容条数</th>
+                                            <th>新增数据条数</th>
+                                            <th>数据更新状态</th>
                                         </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        foreach($dur3 as $k=>$v){
+                                            ?>
+                                            <tr>
+                                                <td><?=date('Y-m-d H:i',$v->createtime)?></td>
+                                                <td><?=$v->num?></td>
+                                                <td><?=$v->new_num?></td>
+                                                <td><?=\common\models\DataUpdateRecord::$stateText[$v->state]?></td>
+                                            </tr>
                                         <?php }?>
                                         </tbody>
                                     </table>
@@ -176,31 +201,6 @@ $this->title = "上传、同步数据";
                                     </table>
                                 </div>
                                 <!-- /.tab-pane -->
-                                <div class="tab-pane" id="settings">
-                                    <table id="example2" class="table table-bordered table-hover"
-                                           style="font-size: 12px;">
-                                        <thead>
-                                        <tr>
-                                            <th>数据上传日期</th>
-                                            <th>内容条数</th>
-                                            <th>新增数据条数</th>
-                                            <th>数据更新状态</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
-                                        foreach($dur3 as $k=>$v){
-                                            ?>
-                                            <tr>
-                                                <td><?=date('Y-m-d H:i',$v->createtime)?></td>
-                                                <td><?=$v->num?></td>
-                                                <td><?=$v->new_num?></td>
-                                                <td><?=\common\models\DataUpdateRecord::$stateText[$v->state]?></td>
-                                            </tr>
-                                        <?php }?>
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                             <!-- /.tab-content -->
                         </div>

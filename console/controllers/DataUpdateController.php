@@ -9,6 +9,7 @@
 namespace console\controllers;
 
 use common\models\ChildInfo;
+use common\models\DataUpdateRecord;
 use common\models\Examination;
 use common\models\UserParent;
 use console\models\Pregnancy;
@@ -38,8 +39,13 @@ class DataUpdateController extends BeanstalkController
         $sentData = $job->getData();
         $hospitalid=$sentData->hospitalid;
         $date=$sentData->date;
+        $id= $sentData->id;
 
-        $log=new \common\components\Log('datacallback');
+        $dur=DataUpdateRecord::findOne($id);
+        $dur->state=1;
+        $dur->save();
+
+        $log=new \common\components\Log('datacallback',true);
         $log->addLog('异步任务');
         $log->addLog(json_encode([$hospitalid,$date]));
 
@@ -86,9 +92,14 @@ class DataUpdateController extends BeanstalkController
         $rowCnt = $currSheet->getHighestRow();   //获取总行数
         $log->addLog("文件解析成功");
 
+        $dur->state=2;
+        $dur->num=$rowCnt-1;
+        $dur->save();
+
         $field_index=[];
         for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
             $rs = [];
+            $log->addLog("line".$_row);
             for ($_column = 0; $_column < $highestColumnNum; $_column++) {
                 $a = "";
                 $b = $_column % 26;
@@ -99,8 +110,9 @@ class DataUpdateController extends BeanstalkController
                 $a = $a . chr($b + 65);
                 $cellId = $a . $_row;
                 $cellValue = $currSheet->getCell($cellId)->getValue();
+
                 if ($_row == 1) {
-                    $fields[]=$_column;
+                    $fields[$_column]=$cellValue;
                 } else {
                     if ($field_index[$_column] && $cellValue !== '') {
                         $rs[$field_index[$_column]] = $cellValue ? (string)$cellValue : 0;
@@ -108,45 +120,62 @@ class DataUpdateController extends BeanstalkController
                 }
             }
             if ($_row != 1) {
-//                $pregnancy = new \console\models\ExInput();
-//                $return = $pregnancy->inputData($rs, $hospitalid);
-            }else{
-                $table=self::type($fields);
-                $log->addLog($table);
-                foreach($fields as $k=>$v){
-                    $k = array_search($cellValue, $table::$field);
-                    if ($k !== false) {
-                        $field_index[$_column] = $k;
-                    }
-                }
-                var_dump($field_index);
+                $log->addLog($hospitalid);
 
+                $return = $table::inputData($rs, $hospitalid);
+                if($return==2){
+                    $dur->new_num=$dur->new_num+1;
+                    $dur->save();
+                }
+            }else{
+                $table=self::type($fields,$dur);
+                if($table) {
+                    $log->addLog($table);
+                    foreach ($fields as $k => $v) {
+                        $fk = array_search($v, $table::$field);
+                        if ($fk !== false) {
+                            if ($table != '\common\models\ChildInfo') {
+                                $field_index[$k] = 'field' . $fk;
+                            } else {
+                                $field_index[$k] = $fk;
+                            }
+                        }
+                    }
+                }else{
+                    $dur->state=4;
+                    $dur->save();
+                    return self::DELETE;
+                }
             }
         }
         $obj->disconnectWorksheets();
-
-
-
         $log->saveLog();
 
+        $dur->state=3;
+        $dur->save();
 
         return self::DELETE;
     }
-    public static function type($rs){
+    public static function type($rs,DataUpdateRecord $dur){
         $field_Examination=Examination::$field;
         if(!array_diff($field_Examination,$rs)){
+            $dur->type=1;
+            $dur->save();
             return "\common\models\Examination";
         }
         $field_Pregnancy=\common\models\Pregnancy::$field;
         if(!array_diff($field_Pregnancy,$rs)){
+            $dur->type=2;
+            $dur->save();
             return "\common\models\Pregnancy";
         }
         $field_ChildInfo=ChildInfo::$field;
-        $field_UserParent=UserParent::$field;
-        if(!array_diff($field_UserParent+$field_ChildInfo,$rs)){
+        if(!array_diff($field_ChildInfo,$rs)){
+            $dur->type=3;
+            $dur->save();
             return "\common\models\ChildInfo";
         }
 
-        return '';
+        return false;
     }
 }

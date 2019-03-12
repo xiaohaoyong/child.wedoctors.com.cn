@@ -22,6 +22,7 @@ class DataUpdateRecord extends \yii\db\ActiveRecord
         1=>'文件处理中',
         2=>'文件解析完成，正在同步数据',
         3=>'数据同步完成',
+        4=>'比配失败，未查询到对应表头'
     ];
     /**
      * {@inheritdoc}
