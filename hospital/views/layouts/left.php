@@ -45,6 +45,7 @@
                             ['label' => '发布通知', 'url' => ['article/tongzhi']],
                             ['label' => '平台召回用户统计', 'url' => ['/push-log']],
                             ['label' => '同步已签约数据', 'url' => ['/synchronization']],
+                            ['label' => '数据同步（测试版）', 'url' => ['/synchronization/data']],
 
                         ]
                     ],
