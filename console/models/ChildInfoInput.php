@@ -99,7 +99,7 @@ class ChildInfoInput
         $this->user = $this->user ? $this->user : new User();
 
         $this->actionData($value);
-        $this->saveLog();
+        $this->log->saveLog();
         return $return;
     }
 
@@ -117,7 +117,7 @@ class ChildInfoInput
             $user->type = 1;
             if (!$user->save()) {
                 $this->log->addLog(json_encode($user->firstErrors));
-                $this->saveLog();
+                $this->log->saveLog();
             }
             $this->user = $user;
         }
@@ -137,7 +137,7 @@ class ChildInfoInput
             $this->log->addLog("保存父母");
             if (!$userParent->save()) {
                 $this->log->addLog("父母信息保存失败" . json_encode($userParent->firstErrors));
-                $this->saveLog();
+                $this->log->saveLog();
             }
             //插入儿童数据
             $child = $this->childInfo;
@@ -151,7 +151,7 @@ class ChildInfoInput
             $this->log->addLog("保存儿童");
             if (!$child->save()) {
                 $this->log->addLog("儿童信息保存失败" . json_encode($child->firstErrors));
-                $this->saveLog();
+                $this->log->saveLog();
             }
         }
         $this->log->addLog("END");
