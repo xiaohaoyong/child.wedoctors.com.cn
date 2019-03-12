@@ -8,6 +8,7 @@ namespace console\models;
  * Date: 2018/6/13
  * Time: 下午3:23
  */
+use common\components\Log;
 use common\models\ChildInfo;
 use common\models\User;
 use common\models\UserLogin;
@@ -21,6 +22,7 @@ class ChildInfoInput
     public $phones = [];
     public $hospitalid;
     public $lineLog;
+    public $log;
 
     public function addLog($value)
     {
@@ -40,12 +42,15 @@ class ChildInfoInput
      */
     public function inputData($value,$hospitalid=0)
     {
-        $this->addLog('2inputData');
+
+        $this->log= new Log('childInfoUpdate');
+
+        $this->log->addLog('2inputData');
         if($hospitalid) {
             $this->hospitalid = $hospitalid;
         }
-        $this->addLog($this->hospitalid);
-        $this->addLog($value['name']);
+        $this->log->addLog($this->hospitalid);
+        $this->log->addLog($value['name']);
         $this->childInfo = new ChildInfo();
         $this->user = new User();
         $this->userParent = new UserParent();
@@ -54,7 +59,7 @@ class ChildInfoInput
         $this->childInfo = ChildInfo::findOne(['field7' => $value['field7']]);
 
         if ($this->childInfo) {
-            $this->addLog("条形码");
+            $this->log->addLog("条形码");
             $this->user = User::findOne($this->childInfo->userid);
             $this->userParent = UserParent::findOne(['userid' => $this->childInfo->userid]);
         } else {
@@ -65,21 +70,21 @@ class ChildInfoInput
                     if (!$this->threeSelect($value)) {
                         if(!$this->fatherAndMother($value)){
                             if(!$this->MotherId($value)) {
-                                $this->addLog($value['name'] . "无");
+                                $this->log->addLog($value['name'] . "无");
                             }else{
-                                $this->addLog("母亲身份证");
+                                $this->log->addLog("母亲身份证");
                             }
                         }else{
-                            $this->addLog("父母");
+                            $this->log->addLog("父母");
                         }
                     }else{
-                        $this->addLog("三项");
+                        $this->log->addLog("三项");
                     }
                 }else{
-                    $this->addLog("五项");
+                    $this->log->addLog("五项");
                 }
             }else{
-                $this->addLog("手机");
+                $this->log->addLog("手机");
             }
         }
 
@@ -111,7 +116,7 @@ class ChildInfoInput
             $user->source = 2;
             $user->type = 1;
             if (!$user->save()) {
-                $this->addLog(json_encode($user->firstErrors));
+                $this->log->addLog(json_encode($user->firstErrors));
                 $this->saveLog();
             }
             $this->user = $user;
@@ -129,9 +134,9 @@ class ChildInfoInput
             $userParentData['source']=$this->hospitalid;
             $userParentData['state']="散居" ? 1 : 2;
             $userParent->load(['UserParent'=>$userParentData]);
-            $this->addLog("保存父母");
+            $this->log->addLog("保存父母");
             if (!$userParent->save()) {
-                $this->addLog("父母信息保存失败" . json_encode($userParent->firstErrors));
+                $this->log->addLog("父母信息保存失败" . json_encode($userParent->firstErrors));
                 $this->saveLog();
             }
             //插入儿童数据
@@ -143,13 +148,13 @@ class ChildInfoInput
             $childData['source']=$this->hospitalid;
             $childData['admin']=$this->hospitalid;
             $child->load(['ChildInfo'=>$childData]);
-            $this->addLog("保存儿童");
+            $this->log->addLog("保存儿童");
             if (!$child->save()) {
-                $this->addLog("儿童信息保存失败" . json_encode($child->firstErrors));
+                $this->log->addLog("儿童信息保存失败" . json_encode($child->firstErrors));
                 $this->saveLog();
             }
         }
-        $this->addLog("END");
+        $this->log->addLog("END");
     }
 
 
@@ -168,11 +173,11 @@ class ChildInfoInput
             $login->password = md5(md5($phone . "2QH@6%3(87"));
             $login->phone = $phone;
             if (!$login->save()) {
-                $this->addLog("手机导入失败：" . json_encode($login->firstErrors));
+                $this->log->addLog("手机导入失败：" . json_encode($login->firstErrors));
             }
             return;
         }
-        $this->addLog($phone . "手机号码已存在");
+        $this->log->addLog($phone . "手机号码已存在");
     }
 
     /**
