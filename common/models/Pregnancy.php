@@ -98,6 +98,7 @@ use Yii;
  * @property int $field87 地段初筛筛查结果
  * @property int $field88 档案来源
  * @property int $field89 围产保健登记卡生成状态
+ * @property int $field90 户籍地
  * @property int $source
  * @property int $isupdate
  * @property int $createtime 创建日期
@@ -130,6 +131,12 @@ class Pregnancy extends \yii\db\ActiveRecord
         2=>'高风险',
         3=>'较高风险',
         4=>'一般风险',
+    ];
+    public static $field90=[
+        0=>'无',
+        1=>'孕妇为本市户籍',
+        2=>'孕妇为外地户籍，配偶为本市户籍（外嫁京）',
+        3=>'孕妇及其配偶均为外地户籍',
     ];
     public static $field49=[
         0=>'否',
@@ -227,6 +234,7 @@ class Pregnancy extends \yii\db\ActiveRecord
 //        87=>'地段初筛筛查结果',
 //        88=>'档案来源',
         89=>'围产保健登记卡生成状态',
+        90=>'户籍地',
     ];
 
     /**
@@ -235,7 +243,7 @@ class Pregnancy extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['doctorid','field2', 'field5', 'field11', 'field12', 'field15', 'field16', 'field31', 'field58', 'field60', 'field61', 'field63', 'field72', 'field83','familyid', 'field3', 'field7', 'field8', 'field9', 'field13', 'field14', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field28', 'field29', 'field30', 'field32', 'field35', 'field39', 'field40', 'field41', 'field43', 'field45', 'field46', 'field47', 'field48', 'field49', 'field50', 'field51', 'field52', 'field53', 'field54', 'field55', 'field56', 'field57', 'field62', 'field64', 'field65', 'field67', 'field68', 'field70', 'field74', 'field76', 'field77', 'field78', 'field80', 'field81', 'field84', 'field85', 'field87', 'field88', 'source', 'isupdate'], 'integer'],
+            [['field90','doctorid','field2', 'field5', 'field11', 'field12', 'field15', 'field16', 'field31', 'field58', 'field60', 'field61', 'field63', 'field72', 'field83','familyid', 'field3', 'field7', 'field8', 'field9', 'field13', 'field14', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field28', 'field29', 'field30', 'field32', 'field35', 'field39', 'field40', 'field41', 'field43', 'field45', 'field46', 'field47', 'field48', 'field49', 'field50', 'field51', 'field52', 'field53', 'field54', 'field55', 'field56', 'field57', 'field62', 'field64', 'field65', 'field67', 'field68', 'field70', 'field74', 'field76', 'field77', 'field78', 'field80', 'field81', 'field84', 'field85', 'field87', 'field88', 'source', 'isupdate'], 'integer'],
             [['field6', 'field38'], 'safe'],
             [['field71', 'field73'], 'number'],
             [['field0', 'field75'], 'string', 'max' => 20],
@@ -409,6 +417,10 @@ class Pregnancy extends \yii\db\ActiveRecord
 
         $field81=array_search($value['field81'],\common\models\Pregnancy::$field81);
         $value['field81']=$field81?$field81:0;
+
+
+        $field90=array_search($value['field90'],\common\models\Pregnancy::$field90);
+        $value['field90']=$field90?$field90:0;
 
         $value['source']=$hospital;
         $value['doctorid']=$hospital;

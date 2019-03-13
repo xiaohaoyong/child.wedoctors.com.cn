@@ -15,6 +15,8 @@ class InterviewSearch extends Interview
 {
 
     public $field5s;//建册
+    public $field90;//建册
+
     public $field5e;//建册
     public $field15s;//核实
     public $field15e;//核实
@@ -28,7 +30,7 @@ class InterviewSearch extends Interview
     {
         return [
             [['id', 'prenatal_test', 'pt_date', 'prenatal', 'childbirth_date', 'createtime', 'userid', 'pt_value', 'week'], 'integer'],
-            [['childbirth_dates','childbirth_datee','field15s','field15e','field5s','field5e','pt_hospital', 'childbirth_hospital','name'], 'safe'],
+            [['field90','childbirth_dates','childbirth_datee','field15s','field15e','field5s','field5e','pt_hospital', 'childbirth_hospital','name'], 'safe'],
         ];
     }
     public function attributeLabels(){
@@ -40,6 +42,7 @@ class InterviewSearch extends Interview
         $attr['field5e']="~~";
         $attr['childbirth_dates']="分娩日期";
         $attr['childbirth_datee']="~~";
+        $attr['field90']='户籍地';
         return $attr;
     }
     /**
@@ -97,6 +100,9 @@ class InterviewSearch extends Interview
         if($this->childbirth_datee){
             $query->andWhere(['<=',Interview::tableName().'.childbirth_date',$this->field15e]);
         }
+        if($this->field90){
+            $query->andWhere(['in',Pregnancy::tableName().'.field90',$this->field90]);
+        }
 
         $query->andWhere(['pregnancy.doctorid'=>$hospitalid]);
         $query->andWhere([Interview::tableName().'.prenatal_test'=>1]);
@@ -108,7 +114,6 @@ class InterviewSearch extends Interview
         }
 
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
-
         return $dataProvider;
     }
 }

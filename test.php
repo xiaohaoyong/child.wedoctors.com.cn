@@ -14,6 +14,8 @@
 ////var_dump($month);
 
 
+echo urlencode('http://web.child.wedoctors.com.cn/article/list?phone=15811078604&child_name=小张,小王,小李&child_birthday=20180101,20180202,20180303&parent_name=大张&sign=a828be3e4f571f257a91b19155a55fdc');
+exit;
 
 var_dump(1|1);exit;
 

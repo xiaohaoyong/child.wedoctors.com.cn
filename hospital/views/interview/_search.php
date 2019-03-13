@@ -61,6 +61,18 @@ use yii\widgets\ActiveForm;
     <?php  echo $form->field($model, 'pt_value')->dropDownList(\common\models\Interview::$prenatalValueText,['prompt'=>'请选择']) ?>
 
     <?php // echo $form->field($model, 'week') ?>
+    <?= $form->field($model, 'field90')->widget(\kartik\select2\Select2::classname(), [
+        'data' => \common\models\Pregnancy::$field90,
+        'language' => 'de',
+
+        'options' => ['placeholder' => '请选择','multiple'=>'multiple'],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'width'=>400,
+
+        ],
+    ])?>
+
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
