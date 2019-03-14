@@ -29,6 +29,8 @@ $this->title = "上传、同步数据";
                                             'dropZoneTitle' => '拖拽到这来上传',
                                             // 是否展示预览图
                                             'initialPreviewAsData' => false,
+                                            'allowedFileExtensions'=>['xlsx'],
+
                                             'maxFileSize'=>1000*100,
                                             // 异步上传的接口地址设置
                                             'uploadUrl' => 'http://wedoctorschild.oss-cn-beijing.aliyuncs.com',
