@@ -22,7 +22,10 @@ use yii\helpers\Html;
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="hidden-xs">我的</span>
+                        <?php
+                        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospitalid]);
+                        ?>
+                        <span class="hidden-xs"><?=$doctor->name?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li role="separator" class="divider"></li>
