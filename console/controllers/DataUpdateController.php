@@ -99,7 +99,6 @@ class DataUpdateController extends BeanstalkController
         $field_index=[];
         for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
             $rs = [];
-            $log->addLog("line".$_row);
             for ($_column = 0; $_column < $highestColumnNum; $_column++) {
                 $a = "";
                 $b = $_column % 26;
@@ -120,8 +119,6 @@ class DataUpdateController extends BeanstalkController
                 }
             }
             if ($_row != 1) {
-                $log->addLog($hospitalid);
-
                 $return = $table::inputData($rs, $hospitalid);
                 if($return==2){
                     $dur->new_num=$dur->new_num+1;
