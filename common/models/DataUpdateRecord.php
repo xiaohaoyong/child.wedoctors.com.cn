@@ -24,6 +24,12 @@ class DataUpdateRecord extends \yii\db\ActiveRecord
         3=>'数据同步完成',
         4=>'比配失败，未查询到对应表头'
     ];
+    public static $typeText=[
+        0=>'无',
+        1=>'体检',
+        2=>'孕期',
+        3=>'妇幼',
+    ];
     /**
      * {@inheritdoc}
      */
@@ -49,12 +55,12 @@ class DataUpdateRecord extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'createtime' => 'Createtime',
-            'state' => 'State',
-            'type' => 'Type',
-            'num' => 'Num',
-            'new_num' => 'New Num',
-            'hospitalid' => 'Hospitalid',
+            'createtime' => '上传时间',
+            'state' => '状态',
+            'type' => '类型',
+            'num' => '内容数',
+            'new_num' => '新增数',
+            'hospitalid' => '社区医院',
         ];
     }
     public function beforeSave($insert)

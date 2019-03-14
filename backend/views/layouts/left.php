@@ -37,6 +37,10 @@
                             ['label' => '宣教指导文章管理', 'icon' => 'list', 'url' => ['/article'],],
                             ['label' => '宣教指导分类管理', 'icon' => 'list', 'url' => ['/article-category'],],
 
+                            ['label' => '签约管理', 'icon' => 'list', 'url' => ['/doctor-parent'],],
+
+                            ['label' => '数据上传记录', 'icon' => 'list', 'url' => ['/data-update-record'],],
+
 
                             ['label' => '孕产管理', 'icon' => 'comments','url' => '#',
                                 'items'=>[
