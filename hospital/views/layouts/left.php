@@ -4,10 +4,10 @@
         <?php
 
         if (Yii::$app->user->identity->county == 1105 || in_array(Yii::$app->user->identity->hospitalid,[110586,110582,110583,110584])) {
-            if(in_array(Yii::$app->user->identity->hospitalid,[110586])) {
+            if(in_array(Yii::$app->user->identity->hospitalid,[110586])||Yii::$app->user->identity->county == 1105) {
                 $a = ['label' => '儿童家医签约记录', 'icon' => 'pencil-square-o', 'url' => \yii\helpers\Url::to(['autograph/index']),];
             }
-            if(in_array(Yii::$app->user->identity->hospitalid,[110586])) {
+            if(in_array(Yii::$app->user->identity->hospitalid,[110586])||Yii::$app->user->identity->county == 1105) {
                 $bb=                    ['label' => '孕产期家医签约记录', 'url' => ['autograph/index','t'=>1]];
             }
             $b = ['label' => '孕产期管理', 'icon' => 'heart', 'url' => '#',
