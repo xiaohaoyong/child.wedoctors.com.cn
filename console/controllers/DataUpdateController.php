@@ -155,19 +155,19 @@ class DataUpdateController extends BeanstalkController
     }
     public static function type($rs,DataUpdateRecord $dur){
         $field_Examination=Examination::$field;
-        if(!array_diff($field_Examination,$rs)){
+        if(!array_diff($field_Examination,$rs) || array_search('体检日期',$rs)){
             $dur->type=1;
             $dur->save();
             return "\common\models\Examination";
         }
         $field_Pregnancy=\common\models\Pregnancy::$field;
-        if(!array_diff($field_Pregnancy,$rs)){
+        if(!array_diff($field_Pregnancy,$rs) || array_search('产妇姓名',$rs)){
             $dur->type=2;
             $dur->save();
             return "\common\models\Pregnancy";
         }
         $field_ChildInfo=ChildInfo::$field;
-        if(!array_diff($field_ChildInfo,$rs)){
+        if(!array_diff($field_ChildInfo,$rs) || array_search('母亲姓名',$rs)){
             $dur->type=3;
             $dur->save();
             return "\common\models\ChildInfo";

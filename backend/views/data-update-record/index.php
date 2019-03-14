@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => 'hospitalid',
                                     'value' => function ($e) {
-                                        return \common\models\UserDoctor::findOne(['hospitalid' => $e->hospitalid])->name;
+                                        return \common\models\UserDoctor::findOne(['hospitalid' => $e->hospitalid])->name.$e->hospitalid;
                                     }
                                 ],
                                 'createtime:datetime',
