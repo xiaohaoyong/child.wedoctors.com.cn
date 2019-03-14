@@ -45,7 +45,6 @@ class ChildInfoInput
 
         $this->log= new Log('childInfoUpdate');
 
-        $this->log->addLog('2inputData');
         if($hospitalid) {
             $this->hospitalid = $hospitalid;
         }

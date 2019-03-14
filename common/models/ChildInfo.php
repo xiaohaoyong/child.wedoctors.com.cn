@@ -379,7 +379,6 @@ class ChildInfo extends \yii\db\ActiveRecord
 
     public static function inputData($row,$hospitalid){
         $ChildInfoInput=new ChildInfoInput();
-        echo '1inputData';
 
         return $ChildInfoInput->inputData($row,$hospitalid);
 
