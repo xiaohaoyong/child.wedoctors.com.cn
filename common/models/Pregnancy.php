@@ -223,7 +223,7 @@ class Pregnancy extends \yii\db\ActiveRecord
 //        76=>'分娩机构',
 //        77=>'舒张压',
 //        78=>'发放国家母子健康手册',
-        79=>'高危因素（2018新版）',
+        //79=>'高危因素（2018新版）',
 //        80=>'使用国家母子健康手册',
         81=>'高危级别（2018新版）',
 //        82=>'产检机构',
@@ -430,8 +430,6 @@ class Pregnancy extends \yii\db\ActiveRecord
             var_dump($preg->firstErrors);
             var_dump($value);exit;
         }
-        var_dump($preg->firstErrors);
-        var_dump($preg->id);
         return $return;
     }
 }
