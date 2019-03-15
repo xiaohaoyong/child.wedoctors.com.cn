@@ -206,8 +206,8 @@ class ChildController extends Controller
         $doctorParent = DoctorParent::findOne(['parentid'=>$this->userid]);
         if($doctorParent && $doctorParent->level==1)
         {
-            $hospatilid=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
-            $child->doctorid=$hospatilid;
+            $UserDoctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
+            $child->doctorid=$UserDoctor->hospitalid;
         }
         $child->save();
 
