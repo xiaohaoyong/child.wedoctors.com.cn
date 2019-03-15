@@ -80,6 +80,7 @@ class WorkerController extends BeanstalkController
             foreach($userids as $k=>$v) {
                 $userLogin=UserLogin::findAll(['userid'=>$v]);
                 if($userLogin) {
+                    var_dump($userLogin);exit;
                     foreach ($userLogin as $k => $v) {
                         if ($v->openid) {
                             $rs = WechatSendTmp::send($data, $v->openid, $temp, '', $miniprogram);
