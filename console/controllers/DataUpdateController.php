@@ -50,21 +50,35 @@ class DataUpdateController extends BeanstalkController
         $log->addLog(json_encode([$hospitalid,$date]));
 
         $bucket= "wedoctorschild";
-
-// object 表示您在下载文件时需要指定的文件名称，如abc/efg/123.jpg。
-        $object = $date."-".$hospitalid;
-// 指定文件下载路径。
-        $localfile = "/tmp/".$hospitalid.".xlsx";
-        $options = array(
-            OssClient::OSS_FILE_DOWNLOAD => $localfile
-        );
-
         try{
             $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-beijing.aliyuncs.com');
-
-            $ossClient->getObject($bucket, $object, $options);
-            $log->addLog("下载成功");
-            $log->saveLog();
+            $prefix = $hospitalid.'/';
+            $delimiter = '/';
+            $nextMarker = '';
+            $maxkeys = 100;
+            $options = array(
+                'delimiter' => $delimiter,
+                'prefix' => $prefix,
+                'max-keys' => $maxkeys,
+                'marker' => $nextMarker,
+            );
+            $listObjectInfo = $ossClient->listObjects($bucket, $options);
+            $objectList = $listObjectInfo->getObjectList(); // object list
+            if($objectList[0]) {
+                $object = $objectList[0]->getKey();
+                // 指定文件下载路径。
+                $localfile = "/tmp/" . $hospitalid . ".xlsx";
+                $options = array(
+                    OssClient::OSS_FILE_DOWNLOAD => $localfile
+                );
+                $ossClient->getObject($bucket, $object, $options);
+                $log->addLog("下载成功");
+                $log->saveLog();
+            }else {
+                $log->addLog("未找到文件");
+                $log->saveLog();
+                return self::DELETE;
+            }
 
         } catch(OssException $e) {
             $log->addLog("下载失败");
@@ -123,6 +137,9 @@ class DataUpdateController extends BeanstalkController
                 if($return==2){
                     $dur->new_num=$dur->new_num+1;
                     $dur->save();
+                    $ossClient->deleteObject($bucket, $object);
+                    $log->addLog("删除源文件");
+                    $log->saveLog();
                 }
             }else{
                 $table=self::type($fields,$dur);
@@ -138,6 +155,20 @@ class DataUpdateController extends BeanstalkController
                             }
                         }
                     }
+                    switch ($table){
+                        case '\common\models\ChildInfo':
+                            $to_object="ChildInfo";
+                            break;
+                        case '\common\models\Examination':
+                            $to_object="Examination";
+                            break;
+                        case '\common\models\Pregnancy':
+                            $to_object="Pregnancy";
+                            break;
+                    }
+                    $ossClient->copyObject($bucket, $object, $bucket, $hospitalid."list/".$to_object.date('Ymd')."xlsx");
+                    $log->addLog("另存文件");
+                    $log->saveLog();
                 }else{
                     $dur->state=4;
                     $dur->save();

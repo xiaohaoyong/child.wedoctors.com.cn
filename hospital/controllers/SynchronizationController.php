@@ -58,7 +58,7 @@ class SynchronizationController extends BaseController
 
 
         $row['accesskeyid']='LTAIteFpOZnX3aoE';
-        $row['key']=date('Ymd')."-".\Yii::$app->user->identity->hospitalid;
+        $row['key']=\Yii::$app->user->identity->hospitalid;
         $row['success_action_redirect']='http://hospital.child.wedoctors.com.cn/synchronization/';
         $row['success_action_status']=201;
         $row['policy']=base64_encode(json_encode([

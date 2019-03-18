@@ -20,7 +20,6 @@ $this->title = "上传、同步数据";
                                 <h3 class="box-title">上传文件（.xlsx)</h3>
                             </div>
                             <div class="box-body box-profile">
-
                                 <?= \common\assets\FileInput::widget(
                                     [
                                         'name' => 'file',
@@ -29,13 +28,14 @@ $this->title = "上传、同步数据";
                                             'dropZoneTitle' => '拖拽到这来上传',
                                             // 是否展示预览图
                                             'initialPreviewAsData' => false,
-                                            'allowedFileExtensions'=>['xlsx'],
+                                            'allowedFileExtensions' => ['xlsx'],
 
-                                            'maxFileSize'=>1000*100,
+                                            'maxFileSize' => 1000 * 100,
                                             // 异步上传的接口地址设置
                                             'uploadUrl' => 'http://wedoctorschild.oss-cn-beijing.aliyuncs.com',
                                             'enctype' => 'multipart/form-data',
                                             // 异步上传需要携带的其他参数，比如商品id等
+
                                             'uploadExtraData' => [
                                                 'OSSAccessKeyId' => $row['accesskeyid'],
                                                 'policy' => $row['policy'],
@@ -45,6 +45,7 @@ $this->title = "上传、同步数据";
                                                 'success_action_redirect' => $row['success_action_redirect'],
                                                 'success_action_status' => $row['success_action_status'],
                                             ],
+
                                             'uploadAsync' => true,
                                             // 最少上传的文件个数限制
                                             'minFileCount' => 1,
@@ -63,8 +64,13 @@ $this->title = "上传、同步数据";
                                         'pluginEvents' => [
                                             // 上传成功后的回调方法，需要的可查看data后再做具体操作，一般不需要设置
                                             "fileuploaded" => "function (event, data, id, index) {
-            console.log(data);
-        }",
+                                            console.log(data);
+                                            }",
+                                        "filepreajax" => "function (event, data, id, index,obj) {
+                                            var tmp = Date.parse( new Date() ).toString();
+                                            tmp = tmp.substr(0,10);
+                                            index.set('key',index.get('key')+'/'+tmp);
+                                            }",
                                         ],
                                     ]
                                 ) ?>
@@ -114,15 +120,15 @@ $this->title = "上传、同步数据";
                                         </thead>
                                         <tbody>
                                         <?php
-                                        foreach($dur0 as $k=>$v){
+                                        foreach ($dur0 as $k => $v) {
                                             ?>
                                             <tr>
-                                                <td><?=date('Y-m-d H:i',$v->createtime)?></td>
-                                                <td><?=$v->num?></td>
-                                                <td><?=$v->new_num?></td>
-                                                <td><?=\common\models\DataUpdateRecord::$stateText[$v->state]?></td>
+                                                <td><?= date('Y-m-d H:i', $v->createtime) ?></td>
+                                                <td><?= $v->num ?></td>
+                                                <td><?= $v->new_num ?></td>
+                                                <td><?= \common\models\DataUpdateRecord::$stateText[$v->state] ?></td>
                                             </tr>
-                                        <?php }?>
+                                        <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -139,15 +145,15 @@ $this->title = "上传、同步数据";
                                         </thead>
                                         <tbody>
                                         <?php
-                                        foreach($dur3 as $k=>$v){
+                                        foreach ($dur3 as $k => $v) {
                                             ?>
                                             <tr>
-                                                <td><?=date('Y-m-d H:i',$v->createtime)?></td>
-                                                <td><?=$v->num?></td>
-                                                <td><?=$v->new_num?></td>
-                                                <td><?=\common\models\DataUpdateRecord::$stateText[$v->state]?></td>
+                                                <td><?= date('Y-m-d H:i', $v->createtime) ?></td>
+                                                <td><?= $v->num ?></td>
+                                                <td><?= $v->new_num ?></td>
+                                                <td><?= \common\models\DataUpdateRecord::$stateText[$v->state] ?></td>
                                             </tr>
-                                        <?php }?>
+                                        <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -165,15 +171,15 @@ $this->title = "上传、同步数据";
                                         </thead>
                                         <tbody>
                                         <?php
-                                        foreach($dur1 as $k=>$v){
+                                        foreach ($dur1 as $k => $v) {
                                             ?>
                                             <tr>
-                                                <td><?=date('Y-m-d H:i',$v->createtime)?></td>
-                                                <td><?=$v->num?></td>
-                                                <td><?=$v->new_num?></td>
-                                                <td><?=\common\models\DataUpdateRecord::$stateText[$v->state]?></td>
+                                                <td><?= date('Y-m-d H:i', $v->createtime) ?></td>
+                                                <td><?= $v->num ?></td>
+                                                <td><?= $v->new_num ?></td>
+                                                <td><?= \common\models\DataUpdateRecord::$stateText[$v->state] ?></td>
                                             </tr>
-                                        <?php }?>
+                                        <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -191,15 +197,15 @@ $this->title = "上传、同步数据";
                                         </thead>
                                         <tbody>
                                         <?php
-                                        foreach($dur2 as $k=>$v){
+                                        foreach ($dur2 as $k => $v) {
                                             ?>
                                             <tr>
-                                                <td><?=date('Y-m-d H:i',$v->createtime)?></td>
-                                                <td><?=$v->num?></td>
-                                                <td><?=$v->new_num?></td>
-                                                <td><?=\common\models\DataUpdateRecord::$stateText[$v->state]?></td>
+                                                <td><?= date('Y-m-d H:i', $v->createtime) ?></td>
+                                                <td><?= $v->num ?></td>
+                                                <td><?= $v->new_num ?></td>
+                                                <td><?= \common\models\DataUpdateRecord::$stateText[$v->state] ?></td>
                                             </tr>
-                                        <?php }?>
+                                        <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>

@@ -2178,13 +2178,12 @@
         },
         _ajaxSubmit: function (fnBefore, fnSuccess, fnComplete, fnError, previewId, index,isPrependExtra) {
             var self = this, settings, vUrl;
-            if (!self._raise('filepreajax', [previewId, index])) {
+            if (!self._raise('filepreajax', [previewId, index,self.formdata])) {
                 return;
             }
             if(!isPrependExtra){
-                self._uploadExtra(previewId,inde)
+                self._uploadExtra(previewId,index)
             }
-            self._uploadExtra(previewId, index);
             self._initAjaxSettings();
             self._mergeAjaxCallback('beforeSend', fnBefore);
             self._mergeAjaxCallback('success', fnSuccess);
