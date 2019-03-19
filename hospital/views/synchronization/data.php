@@ -30,7 +30,7 @@ $this->title = "上传、同步数据";
                                             'initialPreviewAsData' => false,
                                             'allowedFileExtensions' => ['xlsx'],
 
-                                            'maxFileSize' => 1000 * 100,
+                                            'maxFileSize' => 1000 * 50,
                                             // 异步上传的接口地址设置
                                             'uploadUrl' => 'http://wedoctorschild.oss-cn-beijing.aliyuncs.com',
                                             'enctype' => 'multipart/form-data',
@@ -87,7 +87,7 @@ $this->title = "上传、同步数据";
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-                                <p class="text-muted">1，目前支持.xlsx文件上传</p>
+                                <p class="text-muted">1，目前支持.xlsx文件上传,最大支持5M文件</p>
                                 <hr>
                                 <p class="text-muted">2，上传文件后会根据字段自动判断妇幼/体检数据</p>
                                 <hr>
