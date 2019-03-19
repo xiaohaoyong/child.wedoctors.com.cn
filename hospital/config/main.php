@@ -49,6 +49,11 @@ return [
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
+        'assetManager' => [
+            'class' => 'yii\web\AssetManager',
+            'appendTimestamp' => true,
+            'forceCopy' => false,
+        ],
     ],'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
