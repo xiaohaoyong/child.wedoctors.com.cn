@@ -137,9 +137,6 @@ class DataUpdateController extends BeanstalkController
                 if($return==2){
                     $dur->new_num=$dur->new_num+1;
                     $dur->save();
-                    $ossClient->deleteObject($bucket, $object);
-                    $log->addLog("删除源文件");
-                    $log->saveLog();
                 }
             }else{
                 $table=self::type($fields,$dur);
@@ -181,7 +178,9 @@ class DataUpdateController extends BeanstalkController
 
         $dur->state=3;
         $dur->save();
-
+        $ossClient->deleteObject($bucket, $object);
+        $log->addLog("删除源文件");
+        $log->saveLog();
         return self::DELETE;
     }
     public static function type($rs,DataUpdateRecord $dur){
