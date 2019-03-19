@@ -49,11 +49,6 @@ return [
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
-        'assetManager' => [
-            'appendTimestamp' => true,//实测对性能有影响
-            'linkAssets' => true, // 刷新后就可以清除缓存
-            'forceCopy'=>true,
-        ],
     ],'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
