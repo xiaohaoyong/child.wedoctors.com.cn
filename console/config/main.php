@@ -38,6 +38,21 @@ return [
                 'log_level' => 0,
             ],
         ],
+        'askim' => [
+            'class' => 'jianyan\websocket\console\WebSocketController',
+            'server' => 'console\models\ImServer',
+            'host' => '0.0.0.0',// 监听地址
+            'port' => 9502,// 监听端口
+            'config' => [// 标准的swoole配置项都可以再此加入
+                'daemonize' => false,// 守护进程执行
+                'task_worker_num' => 4,//task进程的数量
+                'ssl_cert_file' => '',
+                'ssl_key_file' => '',
+                'pid_file' => __LOG__.'ImServer.pid',
+                'log_file' => __LOG__.'ImServer.log',
+                'log_level' => 0,
+            ],
+        ],
     ],
     'components' => [
         'log' => [
