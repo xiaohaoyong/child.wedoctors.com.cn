@@ -34,9 +34,9 @@ class ImServer extends WebSocketServer
     public function run()
     {
         if ($this->_type == 'ws') {
-            $this->_server = new swoole_websocket_server($this->_host, $this->_port, $this->_mode, $this->_socketType);
+            $this->_server = new \swoole_websocket_server($this->_host, $this->_port, $this->_mode, $this->_socketType);
         } else {
-            $this->_server = new swoole_websocket_server($this->_host, $this->_port, $this->_mode, $this->_socketType | SWOOLE_SSL);
+            $this->_server = new \swoole_websocket_server($this->_host, $this->_port, $this->_mode, $this->_socketType | SWOOLE_SSL);
         }
 
         $this->_server->set($this->_config);
