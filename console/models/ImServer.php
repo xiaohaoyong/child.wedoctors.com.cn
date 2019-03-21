@@ -46,6 +46,7 @@ class ImServer extends WebSocketServer
         $this->_server->on('task', [$this, 'onTask']);
         $this->_server->on('finish', [$this, 'onFinish']);
         $this->_server->on('close', [$this, 'onClose']);
+        var_dump(123);
         $this->_server->start();
     }
     public function onOpen($server, $frame)
