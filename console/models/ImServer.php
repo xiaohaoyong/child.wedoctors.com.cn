@@ -34,16 +34,9 @@ class ImServer extends WebSocketServer
     public function run()
     {
         if ($this->_type == 'ws') {
-            $this->_server = new \swoole_websocket_server($this->_host, $this->_port, $this->_mode, $this->_socketType);
+            $this->_server = new swoole_websocket_server($this->_host, $this->_port, $this->_mode, $this->_socketType);
         } else {
-            $this->_server = new \swoole_websocket_server($this->_host, $this->_port, $this->_mode, $this->_socketType | SWOOLE_SSL);
-            $key_dir = __ROOT__."console/config/";
-            $this->_server->set(array(
-                    'work_num'=>1,
-                    'ssl_cert_file'=>$key_dir.'1953082_im.child.wedoctors.com.cn.crt',
-                    'ssl_key_file' =>$key_dir.'1953082_im.child.wedoctors.com.cn.key'
-                )
-            );
+            $this->_server = new swoole_websocket_server($this->_host, $this->_port, $this->_mode, $this->_socketType | SWOOLE_SSL);
         }
 
         $this->_server->set($this->_config);
