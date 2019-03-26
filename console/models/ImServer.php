@@ -9,6 +9,7 @@
 namespace console\models;
 
 
+use common\components\Log;
 use common\models\DataUser;
 use common\models\DataUserTask;
 use console\controllers\ChildExcController;
@@ -46,7 +47,6 @@ class ImServer extends WebSocketServer
         $this->_server->on('task', [$this, 'onTask']);
         $this->_server->on('finish', [$this, 'onFinish']);
         $this->_server->on('close', [$this, 'onClose']);
-        var_dump(123);
         $this->_server->start();
     }
     public function onOpen($server, $frame)
@@ -56,6 +56,10 @@ class ImServer extends WebSocketServer
 
     public function onMessage($server, $frame)
     {
+        $log=new Log('ImSever');
+        $log->addLog(json_encode($server));
+        $log->addLog(json_encode($frame));
+        $log->saveLog();
         echo "data:$frame->data\n";
     }
 }

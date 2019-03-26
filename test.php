@@ -1,31 +1,32 @@
+复制代码
 <?php
-/**
- * Created by PhpStorm.
- * User: wangzhen
- * Date: 2018/11/2
- * Time: 下午4:15
- */
-//$end = time();
-////$day=strtotime('2018-10-22');
-////$start = new \DateTime("@$day");
-////$end   = new \DateTime("@$end");
-////$diff  = $start->diff($end);
-////$month=$diff->format('%y') * 12 + $diff->format('%m');
-////var_dump($month);
+//创建一个socket套接流
+$socket = socket_create(AF_INET,SOCK_STREAM,SOL_TCP);
+/****************设置socket连接选项，这两个步骤你可以省略*************/
+//接收套接流的最大超时时间1秒，后面是微秒单位超时时间，设置为零，表示不管它
+socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array("sec" => 1, "usec" => 0));
+//发送套接流的最大超时时间为6秒
+socket_set_option($socket, SOL_SOCKET, SO_SNDTIMEO, array("sec" => 6, "usec" => 0));
+/****************设置socket连接选项，这两个步骤你可以省略*************/
 
+//连接服务端的套接流，这一步就是使客户端与服务器端的套接流建立联系
+if(socket_connect($socket,'139.129.246.51',9502) == false){
+    echo 'connect fail massege:'.socket_strerror(socket_last_error());
+}else{
+    $message = 'l love you 我爱你 socket';
+    //转为GBK编码，处理乱码问题，这要看你的编码情况而定，每个人的编码都不同
+    $message = mb_convert_encoding($message,'GBK','UTF-8');
+    //向服务端写入字符串信息
 
-echo urlencode('http://web.child.wedoctors.com.cn/article/list?phone=15811078604&child_name=小张,小王,小李&child_birthday=20180101,20180202,20180303&parent_name=大张&sign=a828be3e4f571f257a91b19155a55fdc');
-exit;
+    if(socket_write($socket,$message,strlen($message)) == false){
+        echo 'fail to write'.socket_strerror(socket_last_error());
 
-var_dump(1|1);exit;
-
-
-$t=(string)110010;
-$c=strlen($t);
-for($i=0;$i<$c;$i++){
-    var_dump($t[$i]);
-    if((string)$t[$i]==1) {
-        $d[] = pow(10, $i);
+    }else{
+        echo 'client write success'.PHP_EOL;
+        //读取服务端返回来的套接流信息
+        while($callback = socket_read($socket,1024)){
+            echo 'server return message is:'.PHP_EOL.$callback;
+        }
     }
 }
-print_r($d);
+socket_close($socket);//工作完毕，关闭套接流
