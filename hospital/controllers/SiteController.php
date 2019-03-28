@@ -193,8 +193,7 @@ class SiteController extends BaseController
 
 
 
-        $data['pregCount']=Pregnancy::find()->andWhere(['source'=>Yii::$app->user->identity->hospitalid])
-            ->andWhere(['field49'=>0])->count();
+        $data['pregCount']=Pregnancy::find()->andWhere(['source'=>Yii::$app->user->identity->hospitalid])->count();
 
         $data['pregLCount']=Pregnancy::find()
             ->andWhere(['pregnancy.field49'=>0])
