@@ -36,9 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     'attribute' => '联系电话',
                     'value' => function ($e) {
-                        return \common\models\User::findOne($e->userid)->phone;
+                        $phone= \common\models\User::findOne($e->userid)->phone;
+                        return substr_replace($phone, '****', 3, 4);
+
                     }
                 ],
+
                 [
 
                     'attribute' => '性别',
@@ -69,13 +72,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => '母亲电话',
                     'value' => function ($e) {
-                        return $e->parent->mother_phone ? $e->parent->mother_phone : "无";
+                        return  $e->parent->mother_phone ?  substr_replace( $e->parent->mother_phone, '****', 3, 4) : "无";
+
                     }
                 ],
                 [
                     'attribute' => '父亲电话',
                     'value' => function ($e) {
-                        return $e->parent->father_phone ? $e->parent->father_phone : "无";
+                        return  $e->parent->father_phone ?  substr_replace( $e->parent->father_phone, '****', 3, 4) : "无";
+
                     }
                 ],
                 [
@@ -87,7 +92,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => '联系人电话',
                     'value' => function ($e) {
-                        return $e->parent->field12 ? $e->parent->field12 : "无";
+                        return  $e->parent->field12 ?  substr_replace( $e->parent->field12, '****', 3, 4) : "无";
+
                     }
                 ],
                 [

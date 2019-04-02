@@ -35,10 +35,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 'userid',
                                 'mother',
-                                'mother_phone',
-                                'mother_id',
+                                [
+
+                                    'attribute' => 'mother_phone',
+                                    'value' => function ($e) {
+                                        return substr_replace($e->mother_phone, '****', 3, 4);
+
+                                    }
+                                ],
+
+                                [
+
+                                    'attribute' => 'mother_id',
+                                    'value' => function ($e) {
+                                        return substr_replace($e->mother_id, '********', 6, 8);
+                                    }
+                                ],
                                 'father',
-                                'father_phone',
+                                [
+
+                                    'attribute' => 'father_phone',
+                                    'value' => function ($e) {
+                                        return substr_replace($e->father_phone, '****', 3, 4);
+                                    }
+                                ],
                                 'father_birthday',
                                 'state',
                                 'address',
