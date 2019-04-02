@@ -231,7 +231,7 @@ class ChildController extends Controller
             $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
             if($doctorParent) {
                 $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-                if($doctor->county==1105 || $doctorParent->doctorid==143296 || $doctorParent->doctorid==118080) {
+                if($doctor->county==1105 || in_array($doctorParent->doctorid,[143296,118080,126118,126122])) {
                     $auto = Autograph::findOne(['userid' => $this->userid]);
                     if (!$auto) {
                         //判断是否添加了宝宝或者孕产妇
