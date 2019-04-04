@@ -42,6 +42,9 @@ class AppointController extends \api\modules\v1\controllers\AppointController
                 '2019-4-6',
                 '2019-4-7',
                 '2019-5-1',
+                '2019-5-2',
+                '2019-5-3',
+                '2019-5-4',
                 '2019-6-7',
                 '2019-6-8',
                 '2019-6-9',
@@ -56,6 +59,7 @@ class AppointController extends \api\modules\v1\controllers\AppointController
                 '2019-10-6',
                 '2019-10-7',
             ];
+
             return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone,'holiday'=>$holiday];
         }else{
             return new Code(20010,'社区医院暂未开通服务！');
