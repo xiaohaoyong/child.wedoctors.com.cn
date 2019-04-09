@@ -25,6 +25,7 @@ use yii\web\Controller;
 class ArticleController extends Controller
 {
     public $userid=0;
+
     /**
      * 用户未查看文章列表
      * @param int $page
@@ -33,6 +34,14 @@ class ArticleController extends Controller
      */
     public function actionList($child_birthday='',$child_name='',$parent_name='',$phone='',$sign="",$type=0)
     {
+        if($sign!=md5($child_birthday.$child_name.$parent_name.$phone.'123456789'.date('Ymd')))
+        {
+            return $this->renderPartial('list',[
+                'data'=>[],
+                'level'=>0,
+                'userid'=>0,
+            ]);
+        }
         $data['list']=[];
         $data['pageTotal']=0;
         if($phone){

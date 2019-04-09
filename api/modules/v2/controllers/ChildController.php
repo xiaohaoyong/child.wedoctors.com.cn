@@ -9,9 +9,13 @@
 namespace api\modules\v2\controllers;
 
 
+use common\components\Code;
 use common\models\ChildInfo;
+use common\models\DoctorParent;
 use common\models\Interview;
 use common\models\Pregnancy;
+use common\models\UserDoctor;
+use common\models\UserParent;
 
 class ChildController extends \api\modules\v1\controllers\ChildController
 {
@@ -48,5 +52,73 @@ class ChildController extends \api\modules\v1\controllers\ChildController
         }
 
         return ['list'=>$data,'gravida'=>$gravida];
+    }
+    /**
+     * 五项添加/查询儿童
+     */
+    public function actionFive($childid=0){
+        $params=\Yii::$app->request->post();
+        if($childid){
+            $child=ChildInfo::findOne($childid);
+        }else{
+            if($params['mother_id']) {
+                $child = ChildInfo::find()
+                    ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                    ->andWhere(['user_parent.mother' => $params['mother']])
+                    ->andWhere(['user_parent.mother_id' => $params['mother_id']])
+                    ->andWhere(['child_info.name' => $params['name']])
+                    ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
+                    ->andWhere(['child_info.gender' => $params['sex']])
+                    ->one();
+            }else{
+                $child = ChildInfo::find()
+                    ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                    ->andWhere(['user_parent.mother' => $params['mother']])
+                    ->andWhere(['user_parent.father' => $params['father']])
+                    ->andWhere(['child_info.name' => $params['name']])
+                    ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
+                    ->andWhere(['child_info.gender' => $params['sex']])
+                    ->one();
+            }
+            if($child) {
+                if ($child->userid == $this->userid) {
+                    return new Code(21000, '请勿重复添加宝宝！');
+                }
+                $this->userLogin->userid = $child->userid;
+                $this->userLogin->save();
+                $this->doctor_parent($child->userid, $child->id);
+                return ['childid'=>$child->id,'userid'=>$child->userid];
+            }
+        }
+
+        if(!$child){
+            $child=new ChildInfo();
+        }
+
+        $parent=UserParent::findOne(['userid'=>$this->userid]);
+        $parent=$parent?$parent:new UserParent();
+        $params['userid']=$this->userid;
+        $parent->load(['UserParent'=>$params]);
+        $parent->save();
+
+        $child->userid      =$this->userid;
+        $child->name        =$params['name'];
+        $child->birthday    =strtotime($params['birthday']);
+        $child->gender      =$params['sex'];
+        $doctorParent = DoctorParent::findOne(['parentid'=>$this->userid]);
+        if($doctorParent && $doctorParent->level==1)
+        {
+            $UserDoctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
+            $child->doctorid=$UserDoctor->hospitalid;
+        }
+        $child->save();
+
+
+        if($child->firstErrors)
+        {
+            return new Code(20010,'失败');
+        }
+
+        return ['childid'=>$child->id,'userid'=>$child->userid];
     }
 }
