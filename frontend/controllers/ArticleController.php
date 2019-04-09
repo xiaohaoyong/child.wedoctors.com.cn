@@ -14,13 +14,106 @@ use common\models\ArticleComment;
 use common\models\ArticleLike;
 use common\models\ArticleLog;
 use common\models\ArticleUser;
+use common\models\ChildInfo;
+use common\models\User;
+use common\models\UserLogin;
+use common\models\UserParent;
 use common\models\WxInfo;
 use yii\data\Pagination;
 use yii\web\Controller;
 
 class ArticleController extends Controller
 {
+    public $userid=0;
+    /**
+     * 用户未查看文章列表
+     * @param int $page
+     * @param null $type
+     * @return string
+     */
+    public function actionList($child_birthday='',$child_name='',$parent_name='',$phone='',$sign="",$type=0)
+    {
+        $data['list']=[];
+        $data['pageTotal']=0;
+        if($phone){
+            if (preg_match("/^1[34578]{1}\d{9}$/", $phone)) {
+                $userLogin=UserLogin::findOne(['phone'=>$phone]);
+                if(!$userLogin) {
+                    $user = User::findOne(['phone' => $phone]);
 
+                    if (!$user) {
+                        $userParent = UserParent::find()
+                            ->Where(['mother_phone' => $phone])
+                            ->Where(['father_phone' => $phone])
+                            ->Where(['field12' => $phone])
+                            ->one();
+                        if($userParent){
+                            $this->userid=$userParent->userid;
+                        }
+                    }else{
+                        $this->userid=$user->id;
+                    }
+                }else{
+                    $this->userid=$userLogin->userid;
+                }
+            }
+        }
+
+        if(!$this->userid && !$child_birthday && !$child_name){
+            $level=1;
+        }elseif(!$this->userid && $child_birthday && $child_name){
+            $user=new User();
+            $user->phone=$phone?$phone:0;
+            $user->type=1;
+            if($user->save()) {
+                $userLogin = new UserLogin();
+                $userLogin->phone =$phone;
+                $userLogin->userid = $user->id;
+                $userLogin->type = 2;
+                $userLogin->save();
+                $this->userid=$user->id;
+
+                $child=new ChildInfo();
+                $child->userid=$this->userid;
+                $child->name=$child_name;
+                $child->birthday=strtotime($child_birthday);
+                $child->source=0;
+                $child->save();
+                if($parent_name){
+                    $parent=new UserParent();
+                    $parent->userid=$this->userid;
+                    $parent->mother=$parent_name;
+                    $parent->father=$parent_name;
+                    $parent->save();
+                }
+            }
+        }
+        if($this->userid) {
+            $article = ArticleUser::find()->where(['touserid' => $this->userid])->andFilterWhere(['level' => $type]);
+
+            $article->orderBy('createtime desc');
+            //总共多少页
+            $data['pageTotal'] = ceil($article->count() / 10);
+
+            $pages = new Pagination(['totalCount' => $article->count(), 'pageSize' => 10]);
+            $datas = $article->groupBy('artid')->offset($pages->offset)->limit($pages->limit)->all();
+
+            if (!empty($datas)) {
+                foreach ($datas as $key => $val) {
+                    $art = Article::findOne($val->artid);
+                    $row = $art->info->toArray();
+                    $row['createtime'] = date('Y/m/d', $val->createtime);
+                    $row['source'] = $row['source'] ? $row['source'] : "儿宝宝";
+                    $data['list'][] = $row;
+                }
+            }
+        }
+        return $this->renderPartial('list',[
+            'data'=>$data,
+            'level'=>$level,
+            'userid'=>$this->userid,
+        ]);
+    }
 
     public function actionView($id){
         $article=Article::findOne($id);
