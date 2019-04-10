@@ -1,5 +1,8 @@
-复制代码
 <?php
+echo md5("158110786043".date('Ymd')."123456789");
+echo "\n";
+exit;
+
 //创建一个socket套接流
 $socket = socket_create(AF_INET,SOCK_STREAM,SOL_TCP);
 /****************设置socket连接选项，这两个步骤你可以省略*************/

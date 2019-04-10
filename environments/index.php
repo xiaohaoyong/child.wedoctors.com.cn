@@ -44,6 +44,8 @@ return [
             'weixin/web/assets',
             'api/runtime',
             'api/web/assets',
+            'interfaces/runtime',
+            'interfaces/web/assets',
             'ask/runtime',
             'ask/web/assets',
         ],
@@ -55,10 +57,10 @@ return [
             'backend/config/main-local.php',
             'databackend/config/main-local.php',
             'hospital/config/main-local.php',
-
             'frontend/config/main-local.php',
             'weixin/config/main-local.php',
             'api/config/main-local.php',
+            'interfaces/config/main-local.php',
             'ask/config/main-local.php',
 
         ],
@@ -78,6 +80,8 @@ return [
             'weixin/web/assets',
             'api/runtime',
             'api/web/assets',
+            'interfaces/runtime',
+            'interfaces/web/assets',
             'ask/runtime',
             'ask/web/assets',
         ],
@@ -89,9 +93,9 @@ return [
             'frontend/config/main-local.php',
             'databackend/config/main-local.php',
             'hospital/config/main-local.php',
-
             'weixin/config/main-local.php',
             'api/config/main-local.php',
+            'interfaces/config/main-local.php',
             'ask/config/main-local.php',
 
         ],
