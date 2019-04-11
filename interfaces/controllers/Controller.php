@@ -25,19 +25,21 @@ use yii\web\Response;
 class Controller extends \yii\web\Controller
 {
     private $result=[];
-    public $key=123456789;
+    public $key="zE($6p6T4rdn";
 
     public function beforeAction($action)
     {
         \Yii::$app->response->format=Response::FORMAT_JSON;
         $params=\Yii::$app->request->post()+\Yii::$app->request->get();
         $sign=$params['sign'];
+
         if($sign) {
             unset($params['sign']);
             ksort($params);
             $str = implode('', $params);
-
             if (md5($str . date('Ymd') . $this->key) !== $sign) {
+                echo md5($str . date('Ymd') . $this->key);exit;
+
                 \Yii::$app->response->data = ['code' => 30001, 'msg' => '数字签证错误'];
                 return false;
             }

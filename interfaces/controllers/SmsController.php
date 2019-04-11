@@ -20,7 +20,6 @@ class SmsController extends Controller
     //发送短信模板
     public function actionPhoneDoctor($phone,$type){
         $params=\Yii::$app->request->post();
-
         if(self::$type[$type]) {
             $response = \Yii::$app->aliyun->sendSms(
                 "儿宝宝", // 短信签名
