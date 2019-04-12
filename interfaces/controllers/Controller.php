@@ -38,8 +38,6 @@ class Controller extends \yii\web\Controller
             ksort($params);
             $str = implode('', $params);
             if (md5($str . date('Ymd') . $this->key) !== $sign) {
-                echo md5($str . date('Ymd') . $this->key);exit;
-
                 \Yii::$app->response->data = ['code' => 30001, 'msg' => '数字签证错误'];
                 return false;
             }

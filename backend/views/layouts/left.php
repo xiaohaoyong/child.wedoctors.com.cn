@@ -77,7 +77,17 @@
                             ['label' => '轮播图', 'icon' => 'list', 'url' => ['/carousel'],],
                             ['label' => '数据后台账号', 'icon' => 'list', 'url' => ['/data-user'],],
                             ['label' => '聊天消息', 'icon' => 'comments', 'url' => ['/chat-record-content'],],
+                            [
+                                'label' => '通知中心',
+                                'icon' => 'user',
+                                'url' => '#',
+                                'items' => [
+                                    ['label' => '通知列表', 'icon' => 'user', 'url' => ['/hospital-mail'],],
+                                    ['label' => '通知查看情况', 'icon' => 'sign-in', 'url' => ['/hospital-mail-show'],],
 
+
+                                ],
+                            ],
                         ],
                     ],
                     [
