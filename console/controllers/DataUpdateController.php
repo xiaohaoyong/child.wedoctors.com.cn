@@ -154,6 +154,7 @@ class DataUpdateController extends BeanstalkController
                     }
                     switch ($table){
                         case '\common\models\ChildInfo':
+                            ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);
                             $to_object="ChildInfo";
                             break;
                         case '\common\models\Examination':

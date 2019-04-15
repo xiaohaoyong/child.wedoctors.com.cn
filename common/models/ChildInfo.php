@@ -379,7 +379,6 @@ class ChildInfo extends \yii\db\ActiveRecord
 
     public static function inputData($row,$hospitalid){
         $ChildInfoInput=new ChildInfoInput();
-        self::updateAll(['admin'=>0],'source ='.$hospitalid);
         return $ChildInfoInput->inputData($row,$hospitalid);
 
     }
