@@ -10,6 +10,7 @@ namespace ask\controllers;
 
 
 use common\components\Code;
+use common\models\Login;
 use common\models\User;
 use common\models\UserInfo;
 use common\models\UserLogin;
@@ -33,7 +34,6 @@ class Controller extends \yii\web\Controller
         \Yii::$app->response->format=Response::FORMAT_JSON;
 
         $this->seaver_token=\Yii::$app->request->headers->get('sessionkey');
-        $this->hxusername=\Yii::$app->request->headers->get('hxusername');
         $this->version=\Yii::$app->request->headers->get('version');
 
         $cache=\Yii::$app->rdmp;
@@ -44,7 +44,7 @@ class Controller extends \yii\web\Controller
 
         if($this->seaver_token && $session[0])
         {
-            $userLogin=UserLogin::findOne(['xopenid'=>$session[0]]);
+            $userLogin=UserLogin::findOne(['aopenid'=>$session[0]]);
             if(!$userLogin && !in_array($controllerID."/".$actionID,$this->result)){
                 $cache=\Yii::$app->rdmp;
                 $cache->lpush("user_login_error",$session[0]);

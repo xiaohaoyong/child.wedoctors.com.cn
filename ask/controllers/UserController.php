@@ -19,6 +19,7 @@ use common\components\wx\WxBizDataCrypt;
 use common\models\ArticleSend;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
+use common\models\Login;
 use common\models\Notice;
 use common\models\User;
 use common\models\UserDoctor;
@@ -29,6 +30,14 @@ use common\models\WxInfo;
 
 class UserController extends Controller
 {
+    public function actionTest(){
+        $userLogin=Login::find()
+            ->andWhere(['or',
+                ['and',['access_token'=>'123','type'=>4]],
+                ['and',['access_token'=>'123','type'=>3]]
+            ]);
+        echo $userLogin->createCommand()->getRawSql();
+    }
     public function actionLogin($code)
     {
 //获取用户微信登陆信息

@@ -15,6 +15,7 @@ use yii\widgets\ActiveForm;
             <div class="box-body">
                 <?php $form = ActiveForm::begin(); ?>
 
+                <?= $form->field($model, 'content')->textarea(['maxlength' => true]) ?>
 
                 <?= $form->field($model, 'touser')->widget(\kartik\select2\Select2::classname(), [
                     'data' =>[0=>'全部']+\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->column(),
@@ -24,7 +25,6 @@ use yii\widgets\ActiveForm;
                         'allowClear' => true
                     ],
                 ])?>
-                <?= $form->field($model, 'touser')->dropdownList([0=>'全部']+\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->column(),['prompt'=>'请选择']) ?>
 
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
