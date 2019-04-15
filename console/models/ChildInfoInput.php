@@ -36,6 +36,7 @@ class ChildInfoInput
         file_put_contents($file, $this->lineLog . "\n", FILE_APPEND);
     }
 
+
     /**
      * 主操作函数
      * @param $value
