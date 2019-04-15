@@ -121,7 +121,7 @@
     <div class="item <?=Yii::$app->request->get('type')==1?'on':''?>"><a href="/article/list?child_birthday=<?=Yii::$app->request->get('child_birthday')?>&child_name=<?=Yii::$app->request->get('child_name')?>&parent_name=<?=Yii::$app->request->get('parent_name')?>&phone=<?=Yii::$app->request->get('phone')?>&sign=<?=Yii::$app->request->get('sign')?>&type=1">已查看</a></div>
 </div>
 <div class="content">
-    <?php foreach ($data['list'] as $k=>$v){?>
+    <?php if($data['list']){foreach ($data['list'] as $k=>$v){?>
     <a href="/article/view?id=<?=$v['id']?>&userid=<?=$userid?>">
         <div class="item">
                 <div class="info">
@@ -133,7 +133,7 @@
                 </div>
         </div>
     </a>
-    <?php }?>
+    <?php }}?>
 
 </div>
 <?php if(!$data['list']){?>
