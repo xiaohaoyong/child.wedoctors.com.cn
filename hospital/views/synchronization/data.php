@@ -12,7 +12,7 @@ $this->title = "上传、同步数据";
         <div class="box">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
 
                         <!-- Profile Image -->
                         <div class="box box-primary">
@@ -98,7 +98,7 @@ $this->title = "上传、同步数据";
                         <!-- /.box -->
                     </div>
                     <!-- /.col -->
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#ing" data-toggle="tab">进行中</a></li>
