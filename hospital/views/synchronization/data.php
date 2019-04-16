@@ -30,7 +30,7 @@ $this->title = "上传、同步数据";
                                             'initialPreviewAsData' => false,
                                             'allowedFileExtensions' => ['xlsx'],
 
-                                            'maxFileSize' => 1000 * 50,
+                                            'maxFileSize' => 1000*5,
                                             // 异步上传的接口地址设置
                                             'uploadUrl' => 'http://wedoctorschild.oss-cn-beijing.aliyuncs.com',
                                             'enctype' => 'multipart/form-data',
