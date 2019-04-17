@@ -168,6 +168,7 @@ class DataUpdateController extends BeanstalkController
                     $log->addLog("另存文件");
                     $log->saveLog();
                 }else{
+                    $ossClient->deleteObject($bucket, $object);
                     $dur->state=4;
                     $dur->save();
                     return self::DELETE;
