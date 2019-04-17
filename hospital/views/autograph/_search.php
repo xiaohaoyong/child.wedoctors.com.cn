@@ -16,15 +16,10 @@ use yii\widgets\ActiveForm;
         'options' => ['class' => 'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'createtime') ?>
-
-    <?= $form->field($model, 'img') ?>
-
-    <?= $form->field($model, 'loginid') ?>
-
-    <?= $form->field($model, 'userid') ?>
+    <?= $form->field($model, 'father') ?>
+    <?= $form->field($model, 'mother') ?>
+    <?= $form->field($model, 'childname') ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>

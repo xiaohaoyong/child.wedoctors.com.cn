@@ -14,6 +14,9 @@ use common\models\Autograph;
  */
 class AutographSearch extends Autograph
 {
+    public $father;
+    public $mother;
+    public $childname;
     /**
      * @inheritdoc
      */
@@ -21,10 +24,27 @@ class AutographSearch extends Autograph
     {
         return [
             [['id', 'createtime', 'loginid', 'userid'], 'integer'],
+            [['father', 'mother', 'childname'], 'string'],
+
             [['img'], 'safe'],
         ];
     }
-
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'createtime' => '签约时间',
+            'img' => '签名',
+            'userid' => '用户',
+            'doctorid'=>'社区医院ID',
+            'father'=>'父亲姓名',
+            'mother'=>'母亲姓名',
+            'childname'=>'儿童姓名',
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -73,6 +93,23 @@ class AutographSearch extends Autograph
         }else{
             $dp->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`');
             $dp->andWhere(['>', 'child_info.doctorid', 0]);
+        }
+
+        if($this->father || $this->mother){
+            $dp->leftJoin('user_parent', '`user_parent`.`userid` = `doctor_parent`.`parentid`');
+            if($this->father) {
+                $dp->andWhere(['user_parent.father' => $this->father]);
+            }
+            if($this->mother) {
+                $dp->andWhere(['user_parent.mother' => $this->mother]);
+            }
+        }
+
+        if($this->childname){
+            if($t) {
+                $dp->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`');
+            }
+            $dp->andWhere(['child_info.name'=>$this->childname]);
         }
 
         $doctorParent = $dp->column();

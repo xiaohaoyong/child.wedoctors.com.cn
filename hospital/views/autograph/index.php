@@ -16,6 +16,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="autograph-index">
     <div class="col-xs-12">
         <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">检索：</h3>
+                <div>
+                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
+                <!-- /.box-tools -->
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
