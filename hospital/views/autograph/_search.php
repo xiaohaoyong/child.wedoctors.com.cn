@@ -14,12 +14,15 @@ use yii\widgets\ActiveForm;
         'action' => ['index'],
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
-    ]); ?>
+    ]);
+
+    ?>
 
 
     <?= $form->field($model, 'father') ?>
     <?= $form->field($model, 'mother') ?>
     <?= $form->field($model, 'childname') ?>
+    <?= $form->field($model, 't')->hiddenInput()->label(false) ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>

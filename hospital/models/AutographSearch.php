@@ -17,13 +17,14 @@ class AutographSearch extends Autograph
     public $father;
     public $mother;
     public $childname;
+    public $t;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'createtime', 'loginid', 'userid'], 'integer'],
+            [['t','id', 'createtime', 'loginid', 'userid'], 'integer'],
             [['father', 'mother', 'childname'], 'string'],
 
             [['img'], 'safe'],
@@ -70,7 +71,6 @@ class AutographSearch extends Autograph
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        $t = $params['t'];
 
         $this->load($params);
 
@@ -80,6 +80,7 @@ class AutographSearch extends Autograph
             return $dataProvider;
         }
 
+        $t = $this->t;
 
         $userDoctor = UserDoctor::findOne(['hospitalid' => Yii::$app->user->identity->hospitalid]);
         $dp = \common\models\DoctorParent::find()->select('doctor_parent.parentid')
@@ -116,9 +117,9 @@ class AutographSearch extends Autograph
         if (!$doctorParent) {
             $doctorParent = [0];
         }
+
         $query->andWhere(['in', 'userid', $doctorParent]);
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
-        //echo $query->createCommand()->getRawSql();
         return $dataProvider;
     }
 }

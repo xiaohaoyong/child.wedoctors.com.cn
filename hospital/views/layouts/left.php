@@ -8,7 +8,7 @@
             $b = ['label' => '孕产期管理', 'icon' => 'heart', 'url' => '#',
                 'items' => [
                     ['label' => '追访记录', 'url' => ['interview/index']],
-                    ['label' => '孕产期家医签约记录', 'url' => ['autograph/index','t'=>1]],
+                    ['label' => '孕产期家医签约记录', 'url' => ['autograph/index','AutographSearch[t]'=>1]],
                     ['label' => '孕产妇数据', 'url' => ['/pregnancy']],
                 ]
             ];
