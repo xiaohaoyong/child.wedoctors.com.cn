@@ -36,7 +36,9 @@ class HospitalMailController extends BaseController
      */
     public function actionIndex()
     {
-        $count = HospitalMail::find()->count();
+        $count = HospitalMail::find()
+            ->where(['in','touser',[0,\Yii::$app->user->identity->hospitalid]])
+            ->count();
         $page = new Pagination(['totalCount' => $count,'pageSize'=>'20']);
         $data = HospitalMail::find()
             ->where(['in','touser',[0,\Yii::$app->user->identity->hospitalid]])

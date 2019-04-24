@@ -14,6 +14,11 @@ use Yii;
  */
 class OrderDiscount extends \yii\db\ActiveRecord
 {
+    public $typeText=[
+        1=>'成长币兑换',
+        2=>'vip折扣',
+        3=>'限免',
+    ];
     /**
      * {@inheritdoc}
      */
@@ -44,5 +49,8 @@ class OrderDiscount extends \yii\db\ActiveRecord
             'type' => '优惠类型',
             'money' => '优惠价格',
         ];
+    }
+    public static function createDiscount($type)
+    {
     }
 }

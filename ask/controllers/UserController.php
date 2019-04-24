@@ -30,33 +30,50 @@ use common\models\WxInfo;
 
 class UserController extends Controller
 {
-    public function actionTest(){
-        $userLogin=Login::find()
-            ->andWhere(['or',
-                ['and',['access_token'=>'123','type'=>4]],
-                ['and',['access_token'=>'123','type'=>3]]
-            ]);
-        echo $userLogin->createCommand()->getRawSql();
-    }
     public function actionLogin($code)
     {
-//获取用户微信登陆信息
-        $path = "/sns/jscode2session?appid=" . \Yii::$app->params['ask_app_id'] . "&secret=" . \Yii::$app->params['ask_app_secret'] . "&js_code=" . $code . "&grant_type=authorization_code";
-        $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
-        $userJson = $curl->get();
-        $user = json_decode($userJson, true);
-        if ($user['errcode']) {
+        //已登录
+        if ($this->userLogin && $this->seaver_token) {
+            $session_key = $this->seaver_token;
+            $useridKey = md5($this->userid . "6623cXvY");
+        } else {
             //获取用户微信登陆信息
             $path = "/sns/jscode2session?appid=" . \Yii::$app->params['ask_app_id'] . "&secret=" . \Yii::$app->params['ask_app_secret'] . "&js_code=" . $code . "&grant_type=authorization_code";
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
             $userJson = $curl->get();
             $user = json_decode($userJson, true);
-
             if ($user['errcode']) {
-                return new Code(30001, $user['errmsg']);
+                //获取用户微信登陆信息
+                $path = "/sns/jscode2session?appid=" . \Yii::$app->params['ask_app_id'] . "&secret=" . \Yii::$app->params['ask_app_secret'] . "&js_code=" . $code . "&grant_type=authorization_code";
+                $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
+                $userJson = $curl->get();
+                $user = json_decode($userJson, true);
+                if ($user['errcode']) {
+                    return new Code(30001, $user['errmsg']);
+                }
             }
-        }
-        return $userJson;
+            $value = $user['openid'] . '@@' . $user['session_key'] . '@@' . $user['unionid'];
 
+            //生成session key
+            $cache = \Yii::$app->rdmp;
+            $session_key = md5($value . time());
+            $cache->set($session_key, $value);
+
+            //更新用户平台id
+            if ($user['unionid']) {
+
+                $login = UserLogin::find()->andWhere(['unionid' => $user['unionid']])->one();
+                $userid = $login ? $login->userid : 0;
+                if ($login && !$login->aopenid) {
+                    $login->aopenid = $user['openid'];
+                    $login->unionid = $user['unionid'];
+                    $login->save();
+                }
+            }
+
+            $useridKey = $userid ? md5($userid . "6623cXvY") : 0;
+        }
+
+        return ['sessionKey' => $session_key, 'userKey' => $useridKey];
     }
 }

@@ -30,7 +30,7 @@ class SuiteController extends Controller
 
     public function actionIndex()
     {
-        $log=new Log('suite_index');
+        $log = new Log('suite_index');
         $log->addLog("======");
         $log->saveLog();
         $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
@@ -55,44 +55,42 @@ class SuiteController extends Controller
                 $log->addLog("=====32");
 
                 $log->addLog($_GET['timestamp']);
-                $log->addLog(implode(',',$xml));
+                $log->addLog(implode(',', $xml));
                 $log->saveLog();
                 //分享是的二维码
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
                     $openid = $xml['FromUserName'];
                     $scene = str_replace('qrscene_', '', $xml['EventKey']);
-                    if($scene){
-                        $qrcodeid=Qrcodeid::findOne(['qrcodeid'=>$scene,'type'=>0]);
-                        $doctor_id=$qrcodeid->mappingid;
-                    }else{
-                        $doctor_id=0;
+                    if ($scene) {
+                        $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene, 'type' => 0]);
+                        $doctor_id = $qrcodeid->mappingid;
+                    } else {
+                        $doctor_id = 0;
                     }
 
-                    $weOpenid=WeOpenid::action($xml);
-                    if($doctor_id)
-                    {
+                    $weOpenid = WeOpenid::action($xml);
+                    if ($doctor_id) {
                         //扫描社区医院二维码操作
                         $userid = UserLogin::findOne(['openid' => $openid])->userid;
-                        if($userid)
-                        {
-                            $doctorParent=DoctorParent::findOne(['parentid' => $userid]);
+                        if ($userid) {
+                            $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
 
                             //已签约 并且签约的医院不是互联网社区医院则 发送提醒
-                            if ($doctorParent->level==1 && $doctorParent->doctorid!=47156) {
-                                $doctorName=UserDoctor::findOne(['userid'=>$doctorParent->doctorid])->name;
+                            if ($doctorParent->level == 1 && $doctorParent->doctorid != 47156) {
+                                $doctorName = UserDoctor::findOne(['userid' => $doctorParent->doctorid])->name;
 
-                                $child=ChildInfo::findOne(['userid'=>$userid]);
-                                $childName=$child->name;
+                                $child = ChildInfo::findOne(['userid' => $userid]);
+                                $childName = $child->name;
 
                                 $data = [
-                                    'first' => array('value' => "﻿您已经签约了".$doctorName."\n"),
-                                    'keyword1' => ARRAY('value' => $doctorName, ),
-                                    'keyword2' => ARRAY('value' => $childName?$childName:"未添加宝宝"),
-                                    'keyword3' => ARRAY('value' => date('Y年m月d日',$doctorParent->createtime)),
+                                    'first' => array('value' => "﻿您已经签约了" . $doctorName . "\n"),
+                                    'keyword1' => ARRAY('value' => $doctorName,),
+                                    'keyword2' => ARRAY('value' => $childName ? $childName : "未添加宝宝"),
+                                    'keyword3' => ARRAY('value' => date('Y年m月d日', $doctorParent->createtime)),
                                     'keyword4' => ARRAY('value' => "﻿儿童中医药健康指导"),
                                     'remark' => ARRAY('value' => "\n ﻿点击查看详情，如果想变更签约社区请联系工作人员核实信息，感谢！", 'color' => '#221d95'),
                                 ];
-                                WechatSendTmp::send($data, $openid, "H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY", "",['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
+                                WechatSendTmp::send($data, $openid, "H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY", "", ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                                 return '';
                             }
                             //$doctorParent = DoctorParent::findOne(['doctorid' => $doctor_id, "parentid" => $userid]);
@@ -102,7 +100,7 @@ class SuiteController extends Controller
                             $doctorParent->doctorid = $doctor_id;
                             $doctorParent->parentid = $userid;
                             $doctorParent->level = 1;
-                            $doctorParent->createtime=time();
+                            $doctorParent->createtime = time();
                             $doctorParent->save();
                             //已注册用户直接签约成功
 
@@ -110,7 +108,7 @@ class SuiteController extends Controller
                             //微信模板消息
                             $data = ['first' => array('value' => "您有一个新的签约儿童\n"), 'keyword1' => ARRAY('value' => date('Y-m-d H:i')), 'keyword2' => ARRAY('value' => $user->father), 'remark' => ARRAY('value' => "\n点击查看！", 'color' => '#221d95'),];
                             $touser = UserLogin::findOne(['userid' => $doctor_id])->openid;
-                            $url = Url::to(\Yii::$app->params['site_url'].'#/docters-user?p=1');
+                            $url = Url::to(\Yii::$app->params['site_url'] . '#/docters-user?p=1');
                             WechatSendTmp::send($data, $touser, \Yii::$app->params['tongzhi'], $url);
 
                         }
@@ -122,30 +120,28 @@ class SuiteController extends Controller
 
                         $data = [
                             'first' => array('value' => "恭喜您，已成功签约。\n"),
-                            'keyword1' => ARRAY('value' => $doctor->name, ),
+                            'keyword1' => ARRAY('value' => $doctor->name,),
                             'keyword2' => ARRAY('value' => $doctor->hospital->name),
                             'keyword3' => ARRAY('value' => date('Y年m月d日')),
                             'remark' => ARRAY('value' => "\n 点击此信息授权进入，如果宝宝信息自动显示，就可以免费享受个性化儿童中医药健康指导服务啦，如果不显示，请正常添加宝宝信息即可", 'color' => '#221d95'),
                         ];
-                        $url = \Yii::$app->params['site_url']."#/add-docter";
-                        WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url,['appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',]);
+                        $url = \Yii::$app->params['site_url'] . "#/add-docter";
+                        WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                         return '';
 
-                    }
-                    else {
-                        $url = \Yii::$app->params['htmlUrl']."#/sign?usertype=parent";
-                        $url_doctor = \Yii::$app->params['htmlUrl']."#/accountdocter?usertype=docter";
+                    } else {
+                        $url = \Yii::$app->params['htmlUrl'] . "#/sign?usertype=parent";
+                        $url_doctor = \Yii::$app->params['htmlUrl'] . "#/accountdocter?usertype=docter";
 
                         $text = "您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，请到管辖社区完成扫面签约哦！签约后即可享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
                         return self::sendText($openid, $xml['ToUserName'], $text);
                     }
-                }
-                else {
+                } else {
                     //return self::sendText($xml['FromUserName'], $xml['ToUserName'],'...');
 
                     return self::forwardToCustomService($xml['FromUserName'], $xml['ToUserName']);
                 }
-            }else{
+            } else {
                 $log->addLog("end");
                 $log->saveLog();
             }
@@ -156,34 +152,70 @@ class SuiteController extends Controller
     public function actionCreateMenu()
     {
         $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
-        $this->mpWechat->createMenu(
+        $return=$this->mpWechat->createMenu(
             [
-                ['type' => 'miniprogram', 'name' => '育儿服务', 'url' =>'pages/index/index','appid'=>\Yii::$app->params['wxXAppId'],'pagepath'=>'pages/index/index',],
+                ['type' => 'miniprogram', 'name' => '育儿服务', 'url' => 'pages/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',],
                 ['type' => 'view', 'name' => '小课堂', 'url' => 'https://m.qlchat.com/wechat/page/live/2000001457808355'],
-                ['type' => 'view', 'name' => '我的', 'sub_button' =>[
+
+//                ['type' => 'view', 'name' => '孕产服务',
+//                    'sub_button' => [
+//                        [
+//                            'type' => 'view',
+//                            'name' => '建档攻略',
+//                            'url' => 'http://www.xiaomaiyunbao.com/index.php/ien/index/index/tgid/201/',
+//                        ],
+//                        [
+//                            'type' => 'view',
+//                            'name' => '建档计算器',
+//                            'url' => 'https://www.xiaomaiyunbao.com/index.php/ien/calculator/index/tgid/201',
+//                        ],
+//                        [
+//                            'type' => 'view',
+//                            'name' => '建档大礼包',
+//                            'url' => 'http://www.xiaomaiyunbao.com/index.php/shop/shop/info/id/4/catid/28/tgid/201?from=singlemessage&isappinstalled=0',
+//                        ],
+//                        [
+//                            'type' => 'view',
+//                            'name' => '星级月嫂',
+//                            'url' => 'http://www.xiaomaiyunbao.com/index.php/shop/index/ysao_1/tgid/201',
+//                        ],
+//                        [
+//                            'type' => 'view',
+//                            'name' => '严选服务',
+//                            'url' => 'http://www.xiaomaiyunbao.com/index.php/shop/index/index/tgid/201',
+//                        ],
+//                    ]
+//                ],
+                ['type' => 'view', 'name' => '我的', 'sub_button' => [
+//                    [
+//                        'type' => 'view',
+//                        'name' => '订单中心',
+//                        'url' => 'http://www.xiaomaiyunbao.com/index.php/shop/user/index/tgid/201',
+//                    ],
                     [
-                        'type'=>'miniprogram',
-                        'name'=>'我的预约',
-                        'url'=>Yii::$app->params['index_url'],
-                        'appid'=>\Yii::$app->params['wxXAppId'],
-                        'pagepath'=>'pages/appoint/my'
+                        'type' => 'miniprogram',
+                        'name' => '我的预约',
+                        'url' => Yii::$app->params['index_url'],
+                        'appid' => \Yii::$app->params['wxXAppId'],
+                        'pagepath' => 'pages/appoint/my'
                     ],
                     [
-                        'type'=>'miniprogram',
-                        'name'=>'我是家长',
-                        'url'=>Yii::$app->params['index_url'],
-                        'appid'=>\Yii::$app->params['wxXAppId'],
-                        'pagepath'=>'pages/user/index/index'
+                        'type' => 'miniprogram',
+                        'name' => '我是家长',
+                        'url' => Yii::$app->params['index_url'],
+                        'appid' => \Yii::$app->params['wxXAppId'],
+                        'pagepath' => 'pages/user/index/index'
                     ],
                     [
-                        'type'=>'view',
-                        'name'=>'我是医生',
-                        'url'=>'http://hospital.child.wedoctors.com.cn',
+                        'type' => 'view',
+                        'name' => '我是医生',
+                        'url' => 'http://hospital.child.wedoctors.com.cn',
                     ]
                 ]],
 
             ]
         );
+        var_dump($return);
     }
 
     public static function sendText($openid, $tousername, $content)
@@ -217,7 +249,7 @@ XML;
     <MsgType><![CDATA[transfer_customer_service]]></MsgType>
 </xml>
 XML;
-        return sprintf($template,$fromusername,$tousername, time());
+        return sprintf($template, $fromusername, $tousername, time());
     }
 
 }
