@@ -17,6 +17,7 @@ use Yii;
  * @property int $pay_time
  * @property int $status
  * @property double $orig
+ * @property string $prepay_id
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -61,6 +62,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['orderid', 'createtime', 'type', 'pay_method', 'userid', 'pay_time','status'], 'integer'],
             [['total', 'orig'], 'number'],
+            [['prepay_id'],'string']
         ];
     }
 
@@ -80,6 +82,7 @@ class Order extends \yii\db\ActiveRecord
             'pay_time' => '支付时间',
             'status'=>'订单状态',
             'orig' => 'Orig',
+            'prepay_id'=>'预生成订单'
         ];
     }
     public function beforeSave($insert)
@@ -140,7 +143,7 @@ class Order extends \yii\db\ActiveRecord
                     $orderDiscount->money=$v['money'];
                 }
             }
-            return $order->orderid;
+            return $order;
         }else{
             var_dump($order->firstErrors);exit;
         }

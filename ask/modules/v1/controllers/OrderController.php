@@ -45,8 +45,8 @@ class OrderController extends Controller
                 $discount['type']=1;
                 $discount['money']=$goods['goods_price'];
             }
-            $orderid=Order::createOrder($this->userid,$type_name[$type],$goods,$discount);
-            if($orderid){
+            $order=Order::createOrder($this->userid,$type_name[$type],$goods,$discount);
+            if($order){
                 //使用限免名额
                 FreeQuota::unset_user_quota($this->userid);
             }
@@ -54,40 +54,48 @@ class OrderController extends Controller
         }
         return new Code(10010,'成功');
     }
-    public function actionView($type,$goodsid){
+    public function actionView($type='',$goodsid='',$orderid=""){
 
     }
-    public function actionPay($type,$goodsid){
+    public function actionPay($type='',$goodsid='',$orderid=""){
 
+        if(!$orderid) {
+            //创建订单
+            $goods = OrderGoods::createGoods($type, $goodsid);
+            $discount = [];
+            $order = Order::createOrder($this->userid, $type, $goods, $discount);
 
-        //创建订单
-        $goods=OrderGoods::createGoods($type,$goodsid);
-        $discount=[];
-        $orderid=Order::createOrder($this->userid,$type,$goods,$discount);
+            if($order) {
+                //创建微信支付统一下单
+                $pay = Factory::payment(\Yii::$app->params['wxpay']);
+                $result = $pay->order->unify([
+                    'body' => $goods['name'],
+                    'out_trade_no' => $order->orderid,
+                    'total_fee' => $goods['goods_price'] * 100,
+                    'notify_url' => 'https://ask.child.wedoctors.com.cn/notify/ask', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                    'trade_type' => 'JSAPI', // 请对应换成你的支付方式对应的值类型
+                    'openid' => $this->userLogin->aopenid,
+                ]);
+                $order->prepay_id=$result['prepay_id'];
+                $order->save();
+            }else{
+                return new Code(20010,'失败');
+            }
 
-        //创建微信支付统一下单
-        $time=time();
-        $pay=Factory::payment(\Yii::$app->params['wxpay']);
-        $result = $pay->order->unify([
-            'body' => $goods['name'],
-            'out_trade_no' => $orderid,
-            'total_fee' => $goods['goods_price']*100,
-            'notify_url' => 'https://ask.child.wedoctors.com.cn/notify/ask', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-            'trade_type' => 'JSAPI', // 请对应换成你的支付方式对应的值类型
-            'openid' => $this->userLogin->aopenid,
-        ]);
-        if($result['result_code']=='SUCCESS'){
-            $params['appId']=\Yii::$app->params['wxpay']['app_id'];
-            $params['timeStamp']=(string)$time;
-            $params['nonceStr']=uniqid();
-            $params['package']="prepay_id=".$result['prepay_id'];
-            $params['signType']='MD5';
-            key($params);
-           // $params['key']= \Yii::$app->params['wxpay']['key'];
-            $sign=Support\generate_sign($params, \Yii::$app->params['wxpay']['key']);
-
-            return ['timeStamp'=>$params['timeStamp'],'nonceStr'=>$params['nonceStr'],'package'=>$params['package'],'paySign'=>$sign,'orderid'=>$orderid];
+        }else{
+            $order = Order::findOne(['orderid'=>$orderid]);
         }
+        $time = time();
+        $params['appId']=\Yii::$app->params['wxpay']['app_id'];
+        $params['timeStamp']=(string)$time;
+        $params['nonceStr']=uniqid();
+        $params['package']="prepay_id=".$order->prepay_id;
+        $params['signType']='MD5';
+        key($params);
+        // $params['key']= \Yii::$app->params['wxpay']['key'];
+        $sign=Support\generate_sign($params, \Yii::$app->params['wxpay']['key']);
+
+        return ['timeStamp'=>$params['timeStamp'],'nonceStr'=>$params['nonceStr'],'package'=>$params['package'],'paySign'=>$sign,'orderid'=>$order->orderid];
     }
     public function actionList(){
 

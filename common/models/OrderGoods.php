@@ -81,4 +81,9 @@ class OrderGoods extends \yii\db\ActiveRecord
         }
         throw new InvalidConfigException('商品类型不存在');
     }
+
+    public static function getGoods($orderid){
+        $orderGoods=OrderGoods::findOne(['orderid'=>$orderid]);
+        return self::createGoods($orderGoods->type,$orderGoods->goodsid);
+    }
 }
