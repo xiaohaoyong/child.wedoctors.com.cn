@@ -9,6 +9,7 @@
 namespace ask\controllers;
 
 
+use common\components\Log;
 use common\models\Order;
 use EasyWeChat\Factory;
 
@@ -16,6 +17,9 @@ class NotifyController extends Controller
 {
     public function actionAsk()
     {
+        $log=new Log('notify');
+        $log->addLog(json_decode(\Yii::$app->request));
+        $log->saveLog();
 
         $pay = Factory::payment(\Yii::$app->params['wxpay']);
         $response = $pay->handlePaidNotify(function ($message, $fail) {

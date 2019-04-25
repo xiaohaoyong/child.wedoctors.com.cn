@@ -86,7 +86,7 @@ class Question extends \yii\db\ActiveRecord
                 $quesTag->save();
             }
 
-            $order = Order::findOne(['id' => $orderid]);
+            $order = Order::findOne(['orderid' => $orderid]);
             if ($order) {
                 $order->status = 2;
                 $order->save();
