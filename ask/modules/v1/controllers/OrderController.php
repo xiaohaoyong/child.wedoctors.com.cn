@@ -72,7 +72,7 @@ class OrderController extends Controller
             'body' => $goods['name'],
             'out_trade_no' => $orderid,
             'total_fee' => $goods['goods_price']*100,
-            'notify_url' => 'https://pay.weixin.qq.com/wxpay/pay.action', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+            'notify_url' => 'https://ask.child.wedoctors.com.cn/notify/ask', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
             'trade_type' => 'JSAPI', // 请对应换成你的支付方式对应的值类型
             'openid' => $this->userLogin->aopenid,
         ]);
