@@ -36,25 +36,31 @@ class Controller extends \yii\web\Controller
         $this->seaver_token=\Yii::$app->request->headers->get('sessionkey');
         $this->version=\Yii::$app->request->headers->get('version');
 
-        $cache=\Yii::$app->rdmp;
-        $session=$cache->get($this->seaver_token);
-        $session=explode('@@',$session);
+
         $controllerID = \Yii::$app->controller->id;
         $actionID = \Yii::$app->controller->action->id;
 
-        if($this->seaver_token && $session[0])
+        if($this->seaver_token)
         {
-            $userLogin=UserLogin::findOne(['aopenid'=>$session[0]]);
-            if(!$userLogin && !in_array($controllerID."/".$actionID,$this->result)){
-                $cache=\Yii::$app->rdmp;
-                $cache->lpush("user_login_error",$session[0]);
+            $cache=\Yii::$app->rdmp;
+            $session=$cache->get($this->seaver_token);
+            $session=explode('@@',$session);
+            if( $session[0]) {
+                $userLogin = UserLogin::findOne(['aopenid' => $session[0]]);
+                if (!$userLogin && !in_array($controllerID . "/" . $actionID, $this->result)) {
+                    $cache = \Yii::$app->rdmp;
+                    $cache->lpush("user_login_error", $session[0]);
+                    \Yii::$app->response->data = ['code' => 30001, 'msg' => '未授权访问'];
+                    return false;
+                }
+                $this->userid = $userLogin->userid;
+                $this->user = $userLogin->user;
+                $this->appToken = $session;
+                $this->userLogin = $userLogin;
+            }else{
                 \Yii::$app->response->data = ['code' => 30001, 'msg' => '未授权访问'];
                 return false;
             }
-            $this->userid=$userLogin->userid;
-            $this->user=$userLogin->user;
-            $this->appToken=$session;
-            $this->userLogin=$userLogin;
         }elseif(!in_array($controllerID."/".$actionID,$this->result)){
             \Yii::$app->response->data = ['code' => 30001,'msg' => '数字签证错误'];
             return false;
