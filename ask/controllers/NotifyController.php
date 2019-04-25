@@ -18,7 +18,7 @@ class NotifyController extends Controller
     public function actionAsk()
     {
         $log=new Log('notify');
-        $log->addLog(json_decode(\Yii::$app->request));
+        $log->addLog(json_encode(\Yii::$app->request));
         $log->saveLog();
 
         $pay = Factory::payment(\Yii::$app->params['wxpay']);
