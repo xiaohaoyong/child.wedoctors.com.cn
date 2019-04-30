@@ -6,6 +6,7 @@
  * Time: 上午11:44
  */
 \frontend\assets\AppAsset::register($this);
+$this->title="儿宝宝";
 ?>
 <div class="banner">
     <div class="main">

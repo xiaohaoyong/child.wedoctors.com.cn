@@ -30,9 +30,9 @@ AppAsset::register($this);
     <div class="main">
         <div class="logo"><img src="/img/index_logo.png" width="107" height="37"></div>
         <div class="navigation">
-            <div class="li">儿童健康管理SaaS云服务</div>
+            <div class="li on">儿童健康管理SaaS云服务</div>
             <div class="li">开放 合作 共享</div>
-            <div class="li on">关于儿宝宝</div>
+            <div class="li">关于儿宝宝</div>
         </div>
     </div>
 </div>
