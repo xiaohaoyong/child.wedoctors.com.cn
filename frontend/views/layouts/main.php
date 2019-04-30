@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use yii\helpers\Html;
@@ -25,58 +26,49 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => 'My Company',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-    ?>
-
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+<div class="header">
+    <div class="main">
+        <div class="logo"><img src="/img/index_logo.png" width="107" height="37"></div>
+        <div class="navigation">
+            <div class="li">儿童健康管理SaaS云服务</div>
+            <div class="li">开放 合作 共享</div>
+            <div class="li on">关于儿宝宝</div>
+        </div>
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+<?= Alert::widget() ?>
+<?= $content ?>
+<div class="footer">
+    <div class="main">
+        <div class="list">
+            <div class="list1">
+                <div class="item title">服务与方案</div>
+                <div class="item">基层医疗机构端</div>
+                <div class="item">卫生监督管理端</div>
+                <div class="item">服务开放平台</div>
+            </div>
+            <div class="list2">
+                <div class="item title">共享合作</div>
+                <div class="item">北京红十字基金</div>
+            </div>
+        </div>
+        <div class="qcode">
+            <div class="img">
+                <img src="/img/footer_qcode_wechat.png" width="146" height="146">
+                <div class="title">微信公众号</div>
+            </div>
+            <div class="img">
+                <img src="/img/footer_qcode_xiao.png" width="158" height="158">
+                <div class="title">微信小程序</div>
+            </div>
+        </div>
     </div>
-</footer>
-
+    <div class="ftCon">
+        <div class="text">北京（微医）健康科技有限公司  服务咨询及合作联系热线：18201599388</div>
+        <div class="text">CopyRight 2017 - 2019 wedoctors.com.cn 版权所有 京ICP备 16028326 号-1</div>
+    </div>
+</div>
 <?php $this->endBody() ?>
 </body>
 </html>

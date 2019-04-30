@@ -6,7 +6,6 @@ use Yii;
 
 /**
  * This is the model class for table "message".
- *
  * @property integer $id
  * @property integer $type
  * @property integer $userid
