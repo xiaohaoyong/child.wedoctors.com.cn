@@ -23,4 +23,9 @@ class IndexController extends Controller
 
         return $this->render('view');
     }
+    public function actionAbout(){
+
+
+        return $this->render('about');
+    }
 }

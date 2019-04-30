@@ -13,7 +13,8 @@
             <div class="info">开放、合作、共享是儿宝宝一直以来秉承的理念，希望
                 携手各方合作伙伴一起从智能化管理、服务、效率工具等
                 多维度功能赋能基层医疗卫生，提供专业、便捷、优质、持续的
-                医疗健康服务及效能工具。</div>
+                医疗健康服务及效能工具。
+            </div>
         </div>
 
     </div>
@@ -52,116 +53,136 @@
                 <div class="text">点击查看地图</div>
             </div>
         </div>
-        <div class="county">
-            <div class="item on">西城区</div>
-            <div class="item">昌平区</div>
-            <div class="item">海淀区</div>
-            <div class="item">朝阳区</div>
-            <div class="item">东城区</div>
-            <div class="item">石景山</div>
-            <div class="item">房山区</div>
-            <div class="item">门头沟</div>
-        </div>
+        <ul class="county nav nav-tabs">
+            <li class="item active"><a href="#list1" data-toggle="tab">西城区</a></li>
+            <li class="item"><a href="#list2" data-toggle="tab">昌平区</a></li>
+            <li class="item"><a href="#list3" data-toggle="tab">海淀区</a></li>
+            <li class="item"><a href="#list4" data-toggle="tab">朝阳区</a></li>
+            <li class="item"><a href="#list5" data-toggle="tab">东城区</a></li>
+            <li class="item"><a href="#list6" data-toggle="tab">石景山</a></li>
+            <li class="item"><a href="#list7" data-toggle="tab">房山区</a></li>
+            <li class="item"><a href="#list8" data-toggle="tab">门头沟</a></li>
+        </ul>
+        <?php
+        echo \yii\bootstrap\Tabs::widget();
+        ?>
         <div class="hospitals">
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
-            <div class="item">
-                <div class="logo">
-                    <img src="/img/view_hospital_logo.png" width="93" height="93">
-                </div>
-                <div class="title">牛街</div>
-                <div class="name">卫生服务器中心</div>
-            </div>
+            <div id="list1" class="tab-pane active">
+                <?php
+                $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1102])->all();
+                foreach ($hospitals as $k => $v) {
+                    ?>
+                    <div class="item">
+                        <div class="logo">
+                            <img src="/img/view_hospital_logo.png" width="93" height="93">
+                        </div>
+                        <div class="title"><?= $v->name ?></div>
+                        <div class="name">社区卫生服务中心</div>
+                    </div>
 
+                <?php } ?>
+            </div>
+            <div id="list2" class="tab-pane">
+                <?php
+                $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1114])->all();
+                foreach ($hospitals as $k => $v) {
+                    ?>
+                    <div class="item">
+                        <div class="logo">
+                            <img src="/img/view_hospital_logo.png" width="93" height="93">
+                        </div>
+                        <div class="title"><?= $v->name ?></div>
+                        <div class="name">社区卫生服务中心</div>
+                    </div>
+
+                <?php } ?>
+            </div>
+            <div id="list3" class="tab-pane">
+                <?php
+                $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1108])->all();
+                foreach ($hospitals as $k => $v) {
+                    ?>
+                    <div class="item">
+                        <div class="logo">
+                            <img src="/img/view_hospital_logo.png" width="93" height="93">
+                        </div>
+                        <div class="title"><?= $v->name ?></div>
+                        <div class="name">社区卫生服务中心</div>
+                    </div>
+
+                <?php } ?>
+            </div>
+            <div id="list4" class="tab-pane">
+                <?php
+                $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1105])->all();
+                foreach ($hospitals as $k => $v) {
+                    ?>
+                    <div class="item">
+                        <div class="logo">
+                            <img src="/img/view_hospital_logo.png" width="93" height="93">
+                        </div>
+                        <div class="title"><?= $v->name ?></div>
+                        <div class="name">社区卫生服务中心</div>
+                    </div>
+
+                <?php } ?>
+            </div>
+            <div id="list5" class="tab-pane">
+                <?php
+                $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1101])->all();
+                foreach ($hospitals as $k => $v) {
+                    ?>
+                    <div class="item">
+                        <div class="logo">
+                            <img src="/img/view_hospital_logo.png" width="93" height="93">
+                        </div>
+                        <div class="title"><?= $v->name ?></div>
+                        <div class="name">社区卫生服务中心</div>
+                    </div>
+
+                <?php } ?>            </div>
+            <div id="list6" class="tab-pane">
+                <?php
+                $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1107])->all();
+                foreach ($hospitals as $k => $v) {
+                    ?>
+                    <div class="item">
+                        <div class="logo">
+                            <img src="/img/view_hospital_logo.png" width="93" height="93">
+                        </div>
+                        <div class="title"><?= $v->name ?></div>
+                        <div class="name">社区卫生服务中心</div>
+                    </div>
+
+                <?php } ?>             </div>
+            <div id="list7" class="tab-pane">
+                <?php
+                $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1111])->all();
+                foreach ($hospitals as $k => $v) {
+                    ?>
+                    <div class="item">
+                        <div class="logo">
+                            <img src="/img/view_hospital_logo.png" width="93" height="93">
+                        </div>
+                        <div class="title"><?= $v->name ?></div>
+                        <div class="name">社区卫生服务中心</div>
+                    </div>
+
+                <?php } ?>             </div>
+            <div id="list8" class="tab-pane">
+                <?php
+                $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1109])->all();
+                foreach ($hospitals as $k => $v) {
+                    ?>
+                    <div class="item">
+                        <div class="logo">
+                            <img src="/img/view_hospital_logo.png" width="93" height="93">
+                        </div>
+                        <div class="title"><?= $v->name ?></div>
+                        <div class="name">社区卫生服务中心</div>
+                    </div>
+
+                <?php } ?>               </div>
         </div>
     </div>
 </div>

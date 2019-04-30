@@ -14,9 +14,9 @@ $this->title="儿宝宝";
             <div class="title">SaaS云服务 解决方案</div>
             <div class="info">面向服务管理，医疗机构，医生团队，提供主动的 儿童健康管理解决方案及服务应用</div>
             <div class="list">
-                <div class="li">服务管理端</div>
-                <div class="li">医疗机构端</div>
-                <div class="li">医生团队端</div>
+                <div class="li"><a href="#index1" >服务管理端</a></div>
+                <div class="li"><a href="#index2" >医疗机构端</a></div>
+                <div class="li"><a href="#index3" >医生团队端</a></div>
             </div>
         </div>
         <div class="image">
@@ -50,14 +50,14 @@ $this->title="儿宝宝";
     </div>
     <div class="bottom">
         <div class="left">
-            <div class="text" style="margin-bottom: 241px;">
+            <div class="text" style="margin-bottom: 241px;" id="index1">
                 <div class="title">服务管理端</div>
                 <div class="info">查看区域数据仪表盘,精细化数据 管理，考核指标管理</div>
             </div>
-            <div class="img" style="margin-bottom: 300px;">
+            <div class="img" style="margin-bottom: 300px;"  id="index2">
                 <img src="/img/index_conent_img2.png" width="325" height="414">
             </div>
-            <div class="text">
+            <div class="text"  id="index3">
                 <div class="title">医生团队端</div>
                 <div class="info">用户签约管理，宣教任务管理 咨询服务管理，预约服务管理</div>
             </div>

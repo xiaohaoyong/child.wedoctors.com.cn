@@ -1,15 +1,39 @@
+a:link {
+    text-decoration: none;
+}
+a:visited {
+
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
 .header{height:60px; background-color:#B0262D;width: 100%; }
 .header .main{width:1110px;margin: 0 auto; display: flex;justify-content: space-between;align-items: center;}
 .header .main .navigation{height:60px;color: #F8C1C1;font-size: 16px;display: flex; justify-content:space-between;align-items:center;width: 506px;}
-.header .main .navigation .on{color: #FFFC00;}
+.header .main .navigation a{color: #F8C1C1;}
+.header .main .navigation a:link {
+    text-decoration: none;
+}
+.header .main .navigation a:visited {
+
+    text-decoration: none;
+}
+.header .main .navigation a:hover {
+    text-decoration: underline;
+}
+.header .main .navigation .on a{color: #FFFC00;}
 .header .main .navigation .li{}
 
 .banner{height: 530px; background-color: #C42A32;}
 .banner .main{display: flex;justify-content: space-between; width: 1110px;margin: 0 auto;align-items:center;}
 .banner .main .text .title{margin-bottom:27px;font-size:48px;font-weight:400;color:rgba(255,255,255,1);}
 .banner .main .text .info {margin-bottom:55px;font-size:26px;font-weight:400;color:rgba(255,255,255,1);line-height:40px;width: 571px;}
-.banner .main .text .list {display: flex;width: 334px; justify-content: space-between;font-size:16px;font-weight:400;color:rgba(255,195,193,1);}
+.banner .main .text .list {display: flex;width: 334px; justify-content: space-between;font-size:16px;font-weight:400;}
+.banner .main .text .list a{color:rgba(255,195,193,1);}
 .banner .main .image{display: flex;flex-direction: column;justify-content: flex-end; height: 530px;}
+.banner .main .img{ margin-right: 170px; display: flex;flex-direction:column;align-items: center; justify-content: space-between;height: 186px;}
+.banner .main .img .txt{height: 39px;border-bottom: 2px solid #ffffff;font-size:24px;font-weight:400;color:rgba(255,255,255,1);}
 .content{width: 1110px;margin: 0 auto; margin-top: 30px;}
 .content .list{display: flex;justify-content: space-between;}
 .content .list .item{ width: 260px; height:325px;display: flex;flex-direction: column;align-items: center;border: 1px solid #EEEEEE;}
@@ -23,23 +47,40 @@
 .content .bottom .text .title{font-size:48px;font-weight:400;color:rgba(51,51,51,1);line-height:90px;}
 .content .bottom .text .info{width:341px;font-size:24px;font-weight:400;color:rgba(85,85,85,1);line-height:36px;}
 
-.content .bottom .navigation{display: flex;justify-content: space-between;}
+.content .bottom .navigation{ width:1110px;display: flex;justify-content: space-between;}
 .content .bottom .navigation .title .text{font-size:36px;font-weight:400;color:rgba(51,51,51,1);line-height:60px;}
 .content .bottom .navigation .title .en{font-size:18px;font-weight:400;color:rgba(153,153,153,1);line-height:30px}
 .content .bottom .navigation .map{display: flex;flex-direction: column;justify-content: center; align-items: center;}
 .content .bottom .navigation .map .text{font-size:14px;font-weight:400;color:rgba(153,153,153,1);line-height:30px;}
 .content .bottom .county{margin-top:32px;height:60px;background:rgba(238,238,238,1);display: flex;justify-content:left;align-items: flex-end;padding: 0 10px;}
-.content .bottom .county .item{color:#666666;width: 115px;height: 56px;text-align: center;line-height: 56px;}
-.content .bottom .county .on{width: 115px;height: 56px;background-color: #ffffff;text-align: center;line-height: 56px;color: #333333}
+.content .bottom .county .item{width: 115px;height: 56px;text-align: center;line-height: 56px;}
+.content .bottom .county .item a{color:#666666; padding: 0;line-height: unset;border: 0;border-radius:0;}
+.content .bottom .county .active a{border:none;width: 115px;height: 56px;background-color: #ffffff;text-align: center;line-height: 56px;color: #333333; padding: 0;}
+.content .bottom .nav-tabs {border: none;}
 
-.content .bottom .hospitals{display: flex;justify-content: space-between;flex-wrap:wrap; margin-top: 47px;align-items: flex-start;align-content: flex-start;}
+.content .bottom .hospitals{margin-top: 47px;}
+.content .bottom .hospitals .tab-pane{display: none;}
+.content .bottom .hospitals .active{display: flex;justify-content: space-between;flex-wrap:wrap;}
 .content .bottom .hospitals .item{width: 260px; height:315px;border:1px solid rgba(238,238,238,1); margin-bottom: 28px;display: flex;flex-direction: column;align-items: center;padding-top: 74px;}
-.content .bottom .hospitals .item .title{margin-top:15px;font-size:20px;font-weight:400;color:rgba(51,51,51,1);line-height:36px;}
+.content .bottom .hospitals .item .title{ text-align:center;margin-top:15px;font-size:20px;font-weight:400;color:rgba(51,51,51,1);line-height:36px;}
 .content .bottom .hospitals .item .name{margin-top: 5px;font-size:16px;font-weight:400;color:rgba(102,102,102,1);line-height:36px;}
-.content .bottom .hospitals:after{
-    content: '';
-    width: 545px;
-}
+.content .bottom .hospitals .tab-pane:after{content: '';width: 545px;}
+
+
+.content .hotlist{display: flex;justify-content: space-between}
+.content .hotlist .item{width: 350px;height: 290px;border:1px solid rgba(242,242,242,1);padding: 34px 26px;}
+.content .hotlist .item .datetime{font-weight:400;color:rgba(102,102,102,1);border-bottom: 2px solid rgba(85,85,85,1);width: 54px;}
+.content .hotlist .item .year{font-size:12px;color:rgba(102,102,102,1);}
+.content .hotlist .item .date{font-size: 16px}
+.content .hotlist .item .title{line-height: 53px;font-size:18px;color:rgba(51,51,51,1);}
+.content .hotlist .item .info{font-size:14px;color:rgba(153,153,153,1);line-height:30px;}
+
+.content .infolist {display: flex;justify-content: space-between;margin-top: 36px;}
+.content .infolist .item{height: 414px;position:relative}
+.content .infolist .item .txt{color:#ffffff;background:rgba(0,0,0,0.65); bottom:0px;position:absolute;bottom:0;height: 80px;display: flex;flex-direction: column;justify-content: center;padding-left: 20px}
+
+.content .map{margin-top: 49px;margin-bottom: 72px;}
+
 .footer{height: 452px;}
 .footer .main{width: 1110px;margin: 0 auto;display: flex;justify-content: space-between;}
 .footer .main .list{display: flex;justify-content: space-between; width: 310px; margin-top: 69px;}
