@@ -45,7 +45,7 @@ AppAsset::register($this);
 <div class="footer">
     <div class="main">
         <div class="list">
-            <div class="list1">
+            <div class="list1" style="cursor:pointer;"  data-toggle='modal' data-target='#create-modal'>
                 <div class="item title">服务与方案</div>
                 <div class="item">基层医疗机构端</div>
                 <div class="item">卫生监督管理端</div>
