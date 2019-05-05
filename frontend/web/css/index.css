@@ -50,8 +50,8 @@ a:hover {
 .content .bottom .navigation{ width:1110px;display: flex;justify-content: space-between;}
 .content .bottom .navigation .title .text{font-size:36px;font-weight:400;color:rgba(51,51,51,1);line-height:60px;}
 .content .bottom .navigation .title .en{font-size:18px;font-weight:400;color:rgba(153,153,153,1);line-height:30px}
-.content .bottom .navigation .map{display: flex;flex-direction: column;justify-content: center; align-items: center;}
-.content .bottom .navigation .map .text{font-size:14px;font-weight:400;color:rgba(153,153,153,1);line-height:30px;}
+.content .bottom .navigation .mapa{display: flex;flex-direction: column;justify-content: center; align-items: center;}
+.content .bottom .navigation .mapa .text{font-size:14px;font-weight:400;color:rgba(153,153,153,1);line-height:30px;}
 .content .bottom .county{margin-top:32px;height:60px;background:rgba(238,238,238,1);display: flex;justify-content:left;align-items: flex-end;padding: 0 10px;}
 .content .bottom .county .item{width: 115px;height: 56px;text-align: center;line-height: 56px;}
 .content .bottom .county .item a{color:#666666; padding: 0;line-height: unset;border: 0;border-radius:0;}
