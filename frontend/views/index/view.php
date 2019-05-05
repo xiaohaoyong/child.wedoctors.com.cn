@@ -5,6 +5,8 @@
  * Date: 2019/4/30
  * Time: 上午11:52
  */
+$this->title="开放-合作-共享 儿宝宝";
+
 ?>
 <div class="banner">
     <div class="main" style=" height:530px;background: url('/img/view_banner_img.png') no-repeat right;">

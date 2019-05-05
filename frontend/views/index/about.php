@@ -6,7 +6,7 @@
  * Time: 上午11:52
  */
 \frontend\assets\ScrollAsset::register($this);
-
+$this->title="关于我们-儿宝宝";
 ?>
     <div class="banner"
          style=" height:371px;background: url('/img/about_banner_img.png') no-repeat;background-position:right 85%;background-color: #C42A32; padding-bottom: 31px;">
