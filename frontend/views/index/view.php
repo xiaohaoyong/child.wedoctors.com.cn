@@ -50,7 +50,7 @@ $this->title="开放-合作-共享 儿宝宝";
                 <div class="text">合作</div>
                 <div class="en">Cooperation</div>
             </div>
-            <div class="map">
+            <div class="mapa">
                 <img src="/img/view_content_map.png" width="60" height="60">
                 <div class="text">点击查看地图</div>
             </div>
