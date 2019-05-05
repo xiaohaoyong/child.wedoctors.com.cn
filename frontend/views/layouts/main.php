@@ -10,6 +10,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use yii\bootstrap\Modal;
 
 AppAsset::register($this);
 ?>
@@ -26,18 +27,20 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
+<?= Alert::widget() ?>
 <div class="header">
     <div class="main">
         <div class="logo"><img src="/img/index_logo.png?t=234" width="107" height="37"></div>
         <div class="navigation">
-            <div class="li <?=\Yii::$app->controller->action->id=='index'?'on':''?>"><a href="/">儿童健康管理SaaS云服务</a></div>
-            <div class="li <?=\Yii::$app->controller->action->id=='view'?'on':''?>"><a href="/index/view">开放 合作 共享</a></div>
-            <div class="li <?=\Yii::$app->controller->action->id=='about'?'on':''?>"><a href="/index/about">关于儿宝宝</a></div>
+            <div class="li <?= \Yii::$app->controller->action->id == 'index' ? 'on' : '' ?>"><a
+                        href="/">儿童健康管理SaaS云服务</a></div>
+            <div class="li <?= \Yii::$app->controller->action->id == 'view' ? 'on' : '' ?>"><a href="/index/view">开放 合作
+                    共享</a></div>
+            <div class="li <?= \Yii::$app->controller->action->id == 'about' ? 'on' : '' ?>"><a href="/index/about">关于儿宝宝</a>
+            </div>
         </div>
     </div>
 </div>
-
-<?= Alert::widget() ?>
 <?= $content ?>
 <div class="footer">
     <div class="main">
@@ -65,10 +68,64 @@ AppAsset::register($this);
         </div>
     </div>
     <div class="ftCon">
-        <div class="text">北京（微医）健康科技有限公司  服务咨询及合作联系热线：18201599388</div>
+        <div class="text">北京（微医）健康科技有限公司 服务咨询及合作联系热线：18201599388</div>
         <div class="text">CopyRight 2017 - 2019 wedoctors.com.cn 版权所有 京ICP备 16028326 号-1</div>
     </div>
 </div>
+<?php
+Modal::begin([
+    'id' => 'create-modal',
+    'header' => '<h4 class="modal-title">联系方式</h4>',
+]);
+$Customer = new \common\models\Customer();
+$form = \yii\widgets\ActiveForm::begin([
+    'id' => 'form-id',
+    'enableAjaxValidation' => true,
+    'validationUrl' => ['customer/validate-form'],
+    'action' => ['customer/put'],
+]);
+echo $form->field($Customer, 'name')->textInput(['placeholder' => '联系人'])->label(false);
+echo $form->field($Customer, 'phone')->textInput(['placeholder' => '联系电话'])->label(false);
+echo $form->field($Customer, 'title')->textarea(['placeholder' => '机构/单位名称', 'rows' => '6'])->label(false);
+echo Html::submitButton('提交', ['class' => 'btn btn-red']);
+
+\yii\widgets\ActiveForm::end();
+Modal::end();
+?>
+
+<?php
+$updateJs = <<<JS
+    $(function(){ 
+$(document).on('beforeSubmit', 'form#form-id', function () { 
+    var form = $(this); 
+    //返回错误的表单信息 
+    if (form.find('.has-error').length) 
+    { 
+      return false; 
+    } 
+    //表单提交 
+    $.ajax({ 
+      url  : form.attr('action'), 
+      type  : 'post', 
+      data  : form.serialize(), 
+      success: function (response){ 
+        if(response.success){ 
+          alert('保存成功'); 
+          window.location.reload(); 
+        } 
+      }, 
+      error : function (){ 
+        alert('系统错误'); 
+        return false; 
+      } 
+    }); 
+    return false; 
+  }); 
+}); 
+JS;
+$this->registerJs($updateJs);
+?>
+
 <?php $this->endBody() ?>
 </body>
 </html>

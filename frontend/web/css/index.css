@@ -79,6 +79,23 @@ a:hover {
 .content .infolist .item{height: 414px;position:relative}
 .content .infolist .item .txt{color:#ffffff;background:rgba(0,0,0,0.65); bottom:0px;position:absolute;bottom:0;height: 80px;display: flex;flex-direction: column;justify-content: center;padding-left: 20px}
 
+
+.scroll-box{width: 100%}
+.scroll-wrap{margin:0 auto;position:relative;width:1110px;height:415px;overflow:hidden;}
+.scroll-list{position:absolute;}
+.scroll-list li{float:left;width:350px;display:inline;margin-right:30px;height:415px;position:relative;overflow: hidden;}
+.scroll-list li img{width: 350px;height: 415px;}
+.scroll-item{float:left;}
+
+.button{display: flex;width: 130px; justify-content: space-between; align-items: center;}
+
+.leftbutton,.rightbutton{display:block;width:55px;height:55px;}
+.leftbutton{background:url("/img/about_leftbutton.png") no-repeat;}
+.rightbutton{background:url("/img/about_rightbutton.png") no-repeat;}
+.printTxt{position: absolute;top: 433px;background: rgba(0,0,0,.6);color: #fff;line-height: 20px;padding:0 20px;left: 0;right: 0;}
+.printTxt h3{font-size: 18px;line-height: 20px;}
+.printTxt p{font-size:14px;line-height: 18px;}
+
 .content .map{margin-top: 49px;margin-bottom: 72px;}
 
 .footer{height: 452px;}
@@ -91,3 +108,5 @@ a:hover {
 .footer .main .qcode .img .title{margin-bottom: 20px;font-size:16px;font-weight:500;color:rgba(85,85,85,1);}
 
 .footer .ftCon{ text-align: center;font-size:14px;font-weight:500;color:rgba(153,153,153,1); margin-top: 81px;}
+.form-control{height: 50px;}
+.btn-red{background:rgba(246,92,82,1);color:#ffffff;width:80px;height:40px;}
