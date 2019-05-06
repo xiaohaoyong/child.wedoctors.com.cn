@@ -211,7 +211,7 @@ $updateJs = <<<JS
 var hospitals={$hospitalsJson};
 $("#map-modal").on('show.bs.modal', function (e) {
     var height=$(window).height();
-    $('#container').height(height*0.8);
+    $('#container').height(height*0.8); 
     var center = new qq.maps.LatLng(39.907366,116.397743);
     var map = new qq.maps.Map(document.getElementById('container'),{
         center: center,

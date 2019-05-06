@@ -30,22 +30,22 @@ $this->title="儿宝宝";
         <div class="item">
             <div class="img"><img src="/img/index_list_1.png" width="77" height="71"></div>
             <div class="title">线下线下高度协同</div>
-            <div class="info">信任感易建立 粘度高</div>
+            <div class="info">信任感易建立</br> 粘度高</div>
         </div>
         <div class="item">
             <div class="img"><img src="/img/index_list_2.png" width="75" height="70"></div>
-            <div class="title">线下线下高度协同</div>
-            <div class="info">信任感易建立 粘度高</div>
+            <div class="title">标准化运营管理体系</div>
+            <div class="info">智能化运营管理</br> 提高效率</div>
         </div>
         <div class="item">
             <div class="img"><img src="/img/index_list_3.png" width="76" height="70"></div>
-            <div class="title">线下线下高度协同</div>
-            <div class="info">信任感易建立 粘度高</div>
+            <div class="title">精细化儿童数据图谱</div>
+            <div class="info" >数据及服务数据线</br> 的模型应用</div>
         </div>
         <div class="item">
             <div class="img"><img src="/img/index_list_4.png" width="75" height="70 "></div>
-            <div class="title">线下线下高度协同</div>
-            <div class="info">信任感易建立 粘度高</div>
+            <div class="title">精准整合链接效果</div>
+            <div class="info">通过精准用户画像</br>进行线上线下有效连接</div>
         </div>
     </div>
     <div class="bottom">

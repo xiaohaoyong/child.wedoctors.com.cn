@@ -38,38 +38,32 @@ $this->title="关于我们-儿宝宝";
         <div class="hotlist">
             <div class="item">
                 <div class="datetime">
-                    <div class="year">2018</div>
-                    <div class="date">06 . 23</div>
+                    <div class="year">2017</div>
+                    <div class="date">12 . 05</div>
                 </div>
-                <div class="title">西城区白纸坊启动...</div>
+                <div class="title">儿童中医药健康管理创新应用及效果评价</div>
                 <div class="info">
-                    6月23日，西城区白纸坊社区卫生服务中心启动和县医疗
-                    健康精准扶贫工程签西城区德胜、新街口、陶然亭等10个
-                    社区卫生服务中...
+                    于12月5日在西城区社管中心会议室召开，参会主要有国家中医管理局领导，北京中医管理局领导，西城区社管中心领导、顾问专家，各社区卫生服务中心领导，北京市西城区预防医学会领导及项目组成员。项目组成员刘庆介绍项目具体情况以及汇报项目实施情况。
                 </div>
             </div>
             <div class="item">
                 <div class="datetime">
                     <div class="year">2018</div>
-                    <div class="date">06 . 23</div>
+                    <div class="date">10 . 10</div>
                 </div>
-                <div class="title">西城区白纸坊启动...</div>
+                <div class="title">儿童中医药健康管理海淀启动大会</div>
                 <div class="info">
-                    6月23日，西城区白纸坊社区卫生服务中心启动和县医疗
-                    健康精准扶贫工程签西城区德胜、新街口、陶然亭等10个
-                    社区卫生服务中...
+                    于10月10日在双榆树会议中心召开，参会主要有北京中医管理局领导，西城区社管中心领导、顾问专家，各社区卫生服务中心领导，项目组成员。
                 </div>
             </div>
             <div class="item">
                 <div class="datetime">
                     <div class="year">2018</div>
-                    <div class="date">06 . 23</div>
+                    <div class="date">10 . 24</div>
                 </div>
-                <div class="title">西城区白纸坊启动...</div>
+                <div class="title">昌平区儿童中医药健康管理工作研讨会</div>
                 <div class="info">
-                    6月23日，西城区白纸坊社区卫生服务中心启动和县医疗
-                    健康精准扶贫工程签西城区德胜、新街口、陶然亭等10个
-                    社区卫生服务中...
+                    于10月24日在金隅凤山会议中心召开，参会主要有昌平区卫生计生委中医管理科，社管中心相关工作主管领导，妇幼保健院相关工作负责人，各社区卫生服务中心主管主任和相关工作负责人。
                 </div>
             </div>
         </div>
