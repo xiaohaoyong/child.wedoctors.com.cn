@@ -41,7 +41,7 @@ $this->title="关于我们-儿宝宝";
                     <div class="year">2017</div>
                     <div class="date">12 . 05</div>
                 </div>
-                <div class="title">儿童中医药健康管理创新应用及效果评价</div>
+                <div class="title">儿童中医药健康管理西城启动大会</div>
                 <div class="info">
                     于12月5日在西城区社管中心会议室召开，参会主要有国家中医管理局领导，北京中医管理局领导，西城区社管中心领导、顾问专家，各社区卫生服务中心领导，北京市西城区预防医学会领导及项目组成员。项目组成员刘庆介绍项目具体情况以及汇报项目实施情况。
                 </div>
@@ -61,7 +61,7 @@ $this->title="关于我们-儿宝宝";
                     <div class="year">2018</div>
                     <div class="date">10 . 24</div>
                 </div>
-                <div class="title">昌平区儿童中医药健康管理工作研讨会</div>
+                <div class="title">儿童中医药健康管理昌平启动大会</div>
                 <div class="info">
                     于10月24日在金隅凤山会议中心召开，参会主要有昌平区卫生计生委中医管理科，社管中心相关工作主管领导，妇幼保健院相关工作负责人，各社区卫生服务中心主管主任和相关工作负责人。
                 </div>
@@ -84,47 +84,50 @@ $this->title="关于我们-儿宝宝";
                 <div class="scroll-list scroll-list1">
                     <ul class="scroll-item" style="padding-inline-start: 0;">
                         <li>
-                            <img src="http://static.i.wedoctors.com.cn/pc/mob_ab01.jpg" alt=""/>
+                            <img src="/img/about_content_info5.jpg" alt=""/>
                             <div class="clearfix printTxt">
-                                <h3>精准扶贫工程启动仪式</h3>
-                                <p>西城区德胜、新街口、陶然亭等10个社区卫生服务中心主任作为北京市社区帮扶的代表参加签约。</p>
+                                <h3>西城区工作通报会</h3>
+                                <p></p>
                             </div>
                         </li>
                         <li>
-                            <img src="http://static.i.wedoctors.com.cn/pc/mob_ab02.jpg" alt=""/>
+                            <img src="/img/about_content_info4.jpg" alt=""/>
                             <div class="clearfix printTxt">
-                                <h3>赴内蒙兴和县健康扶贫医疗队</h3>
-                                <p>北京医疗卫生部门与乌兰察布市县两级101名医疗技术人员组成扶贫专家工作队，深入兴和县9家卫生院。</p>
+                                <h3>回龙观社区培训现场</h3>
+                                <p></p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <img src="/img/about_content_info1.jpg" alt=""/>
+                            <div class="clearfix printTxt">
+                                <h3>北七家用户签约现场</h3>
+                                <p></p>
                             </div>
                         </li>
                         <li>
-                            <img src="http://static.i.wedoctors.com.cn/pc/mob_ab03.jpg" alt=""/>
+                            <img src="/img/about_content_info6.jpg" alt=""/>
                             <div class="clearfix printTxt">
-                                <h3>为贫困人群进行免费体检</h3>
-                                <p>北京的医疗专家会同乌兰察布市的专家开始走进兴和县的乡镇卫生院，为贫困人群进行免费体检。</p>
+                                <h3>展览路现场扫码</h3>
+                                <p></p>
                             </div>
                         </li>
                         <li>
-                            <img src="http://static.i.wedoctors.com.cn/pc/mob_ab04.jpg" alt=""/>
+                            <img src="/img/about_content_info2.jpg" alt=""/>
                             <div class="clearfix printTxt">
-                                <h3>对口支援精准扶贫工作站</h3>
-                                <p>北京医疗卫生部门深入兴和县9家卫生院，针对35133名因病致贫、因病返贫人员进行医疗健康扶贫。</p>
+                                <h3>东小口培训现场</h3>
+                                <p></p>
                             </div>
                         </li>
                         <li>
-                            <img src="http://static.i.wedoctors.com.cn/pc/mob_ab05.jpg" alt=""/>
+                            <img src="/img/about_content_info3.jpg" alt=""/>
                             <div class="clearfix printTxt">
-                                <h3>精准扶贫模式培训</h3>
-                                <p>乌兰察布市共派出医疗卫生专业技术及管理人员赴京进修学习和邀请北京医疗专家来开展培训1500多人次。</p>
+                                <h3>海淀区启动大会</h3>
+                                <p></p>
                             </div>
                         </li>
-                        <li>
-                            <img src="http://static.i.wedoctors.com.cn/pc/mob_ab06.jpg" alt=""/>
-                            <div class="clearfix printTxt">
-                                <h3>兴和县蒙中医医院社区帮扶</h3>
-                                <p>西城区拟安排10家社区卫生服务中心与兴和县 14个乡镇卫生院和3个社区卫生服务中心建立结对关系，进行点对点精准帮扶。</p>
-                            </div>
-                        </li>
+
+
                     </ul>
                 </div>
             </div>
