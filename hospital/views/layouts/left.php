@@ -3,7 +3,7 @@
     <section class="sidebar">
         <?php
 
-        if (Yii::$app->user->identity->county == 1105 || in_array(Yii::$app->user->identity->hospitalid,[110586,110582,110583,110584])) {
+        if (Yii::$app->user->identity->county == 1105 || in_array(Yii::$app->user->identity->hospitalid,[110586,110582,110583,110584,110589])) {
             $a = ['label' => '儿童家医签约记录', 'icon' => 'pencil-square-o', 'url' => \yii\helpers\Url::to(['autograph/index']),];
             $b = ['label' => '孕产期管理', 'icon' => 'heart', 'url' => '#',
                 'items' => [
@@ -12,7 +12,13 @@
                     ['label' => '孕产妇数据', 'url' => ['/pregnancy']],
                 ]
             ];
-
+        }elseif(in_array(Yii::$app->user->identity->hospitalid,[110578,110571,110581])){
+            $b = ['label' => '孕产期管理', 'icon' => 'heart', 'url' => '#',
+                'items' => [
+                    ['label' => '追访记录', 'url' => ['interview/index']],
+                    ['label' => '孕产妇数据', 'url' => ['/pregnancy']],
+                ]
+            ];
         }
         ?>
 
