@@ -9,7 +9,7 @@ hospital\assets\IndexAsset::register($this);
 <div class="col-xs-12">
 
     <div class="row">
-        <?php if (Yii::$app->user->identity->county == 1105 || in_array(Yii::$app->user->identity->hospitalid,[110586,110582,110583,110584])) {?>
+        <?php if (Yii::$app->user->identity->county == 1105 || in_array(Yii::$app->user->identity->hospitalid,[110586,110582,110583,110584,110589])) {?>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-green">
 

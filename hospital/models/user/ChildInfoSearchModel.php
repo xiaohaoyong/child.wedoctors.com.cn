@@ -100,7 +100,7 @@ class ChildInfoSearchModel extends ChildInfo
         $hospitalid = $this->admin ? $this->admin : \Yii::$app->user->identity->hospital;
         $doctorid = \common\models\UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital]);
 
-        if (Yii::$app->user->identity->county == 1105) {
+        if (Yii::$app->user->identity->county == 1105 || \Yii::$app->user->identity->hospital==110589) {
             $year = 6;
         } else {
             $year = 3;
