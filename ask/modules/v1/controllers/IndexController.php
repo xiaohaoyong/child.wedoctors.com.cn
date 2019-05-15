@@ -10,13 +10,18 @@ namespace ask\modules\v1\controllers;
 
 
 use ask\controllers\Controller;
+use common\models\AskChatRecord;
+use common\models\AskChatRoom;
 use common\models\FreeQuota;
+use common\models\Order;
 
 class IndexController extends Controller
 {
     public function actionIndex(){
         $quota=FreeQuota::Count();
         $quota_count=FreeQuota::get_quota_tmp();
+
+
         return ['free_quota'=>['quota'=>$quota,'quota_count'=>$quota_count]];
     }
 

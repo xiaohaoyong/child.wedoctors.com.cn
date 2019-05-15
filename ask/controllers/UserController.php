@@ -17,10 +17,13 @@ use common\components\Code;
 use common\components\HttpRequest;
 use common\components\wx\WxBizDataCrypt;
 use common\models\ArticleSend;
+use common\models\AskChatRecord;
+use common\models\AskChatRoom;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Login;
 use common\models\Notice;
+use common\models\Order;
 use common\models\User;
 use common\models\UserDoctor;
 use common\models\UserLogin;
@@ -69,11 +72,23 @@ class UserController extends Controller
                     $login->unionid = $user['unionid'];
                     $login->save();
                 }
+
+                $this->userid = $login->userid;
+                $this->user = $login->user;
+                $this->userLogin = $login;
             }
 
             $useridKey = $userid ? md5($userid . "6623cXvY") : 0;
         }
 
-        return ['sessionKey' => $session_key, 'userKey' => $useridKey];
+        $order=Order::find()->select('id')->andWhere(['in','status',[1,2,3]])->andWhere(['userid'=>$this->userid])->column();
+        $rooms=AskChatRoom::find()->select('id')->andWhere(['in','orderid',$order?$order:[]])->column();
+        foreach($rooms as $k=>$v){
+            $chats=AskChatRecord::find()->andWhere(['rid'=>$v])->andWhere(['is_read'=>0])->groupBy('createtime')->count();
+            $chatRooms[$v]=$chats;
+        }
+
+
+        return ['sessionKey' => $session_key, 'userKey' => $useridKey,'rooms'=>$chatRooms];
     }
 }

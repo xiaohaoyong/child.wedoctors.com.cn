@@ -18,6 +18,7 @@ use Yii;
  * @property int $status
  * @property double $orig
  * @property string $prepay_id
+ * @property int $scores
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -60,7 +61,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['orderid', 'createtime', 'type', 'pay_method', 'userid', 'pay_time','status'], 'integer'],
+            [['orderid', 'createtime', 'type', 'pay_method', 'userid', 'pay_time','status','scores'], 'integer'],
             [['total', 'orig'], 'number'],
             [['prepay_id'],'string']
         ];
@@ -82,7 +83,9 @@ class Order extends \yii\db\ActiveRecord
             'pay_time' => '支付时间',
             'status'=>'订单状态',
             'orig' => 'Orig',
-            'prepay_id'=>'预生成订单'
+            'prepay_id'=>'预生成订单',
+            'scores'=>'评分'
+
         ];
     }
     public function beforeSave($insert)
@@ -122,6 +125,9 @@ class Order extends \yii\db\ActiveRecord
 
 
         $total=$goods['goods_price']-$discount_money_count;
+        if($total==0){
+            $order->status=1;
+        }
         $order->total=$total>=0?$total:0; //计算订单金额
         $order->orig=$goods['goods_price'];
         if($order->save()){
@@ -141,6 +147,7 @@ class Order extends \yii\db\ActiveRecord
                 foreach($discount as $k=>$v){
                     $orderDiscount->type=$v['type'];
                     $orderDiscount->money=$v['money'];
+                    $orderDiscount->save();
                 }
             }
             return $order;

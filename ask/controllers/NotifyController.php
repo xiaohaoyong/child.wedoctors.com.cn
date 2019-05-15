@@ -10,6 +10,7 @@ namespace ask\controllers;
 
 
 use common\components\Log;
+use common\models\AskChatRoom;
 use common\models\Order;
 use EasyWeChat\Factory;
 
@@ -17,10 +18,6 @@ class NotifyController extends Controller
 {
     public function actionAsk()
     {
-        $log=new Log('notify');
-        $log->addLog(json_encode(\Yii::$app->request->post()));
-        $log->saveLog();
-
         $pay = Factory::payment(\Yii::$app->params['wxpay']);
         $response = $pay->handlePaidNotify(function ($message, $fail) {
             // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单

@@ -91,8 +91,24 @@ class Question extends \yii\db\ActiveRecord
                 $order->status = 2;
                 $order->save();
             }
+            AskChatRoom::createRoom($order->id,$order->userid);
+
             return $question->id;
         }
         return 0;
+    }
+    /**
+     *
+     */
+    public static function orderRow($orderid){
+        $ques=self::findOne(['orderid'=>$orderid]);
+        $tag=QuestionTag::find()->select('tagid')->where(['qid'=>$ques->id])->column();
+        if($tag) {
+            $tags = Tag::find()->select('name')->where(['in', 'id', $tag])->column();
+        }
+        $quesInfo=QuestionInfo::findOne(['qid'=>$ques->id]);
+        $quesImg=QuestionImg::find()->select('image')->where(['qid'=>$ques->id])->column();
+
+        return ['ques'=>$ques,'tag'=>implode('|',$tags),'content'=>$quesInfo->content,'images'=>$quesImg];
     }
 }

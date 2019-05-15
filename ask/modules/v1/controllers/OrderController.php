@@ -11,6 +11,7 @@ namespace ask\modules\v1\controllers;
 
 use ask\controllers\Controller;
 use common\components\Code;
+use common\models\AskChatRoom;
 use common\models\FreeQuota;
 use common\models\Order;
 use common\models\OrderGoods;
@@ -42,15 +43,16 @@ class OrderController extends Controller
             $goods=OrderGoods::createGoods($type_name[$type]);
             $discount=[];
             if($quota){
-                $discount['type']=1;
-                $discount['money']=$goods['goods_price'];
+                $row['type']=1;
+                $row['money']=$goods['goods_price'];
+                $discount[]=$row;
             }
             $order=Order::createOrder($this->userid,$type_name[$type],$goods,$discount);
             if($order){
                 //使用限免名额
                 FreeQuota::unset_user_quota($this->userid);
             }
-            return ;
+            return $order->orderid;
         }
         return new Code(10010,'成功');
     }
@@ -117,11 +119,43 @@ class OrderController extends Controller
                 $row['statusText']=Order::$msgText[$v->status];
                 $question=Question::findOne(['orderid'=>$v->id]);
                 $row['ques']=$question?$question:(object)[];
+                $room=AskChatRoom::findOne(['orderid'=>$v->id]);
+                $row['roomid']=$room->id;
                 $list[]=$row;
             }
         }
 
 
         return ['list'=>$list,'page'=>$page->pageCount];
+    }
+    //实时变更订单状态
+    public function actionNotify($orderid){
+        $order= Order::findOne(['orderid'=>$orderid]);
+
+        $pay = Factory::payment(\Yii::$app->params['wxpay']);
+        $message=$pay->order->queryByOutTradeNumber($order->orderid);
+        if ($message['return_code'] === 'SUCCESS') { // return_code 表示通信状态，不代表支付状态
+            // 用户是否支付成功
+                if ($message['result_code'] === 'SUCCESS' && $order->status==0) {
+                $order->pay_time = time(); // 更新支付时间为当前时间
+                $order->pay_method = 1;
+                $order->status = 1;
+                // 用户支付失败
+            } elseif ($message['result_code'] === 'FAIL') {
+                $order->status = 0;
+            }
+        }
+        $order->save();
+
+    }
+
+    public function actionScore($orderid,$scores){
+        $order=Order::find()->where(['orderid'=>$orderid])->andWhere(['userid'=>$this->userid])->one();
+        if($order){
+            $order->scores=$scores;
+            $order->save();
+        }else{
+            return new Code(20010,'订单不存在');
+        }
     }
 }
