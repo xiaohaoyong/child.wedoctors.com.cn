@@ -24,8 +24,6 @@ class ExaUpdateController extends BeanstalkController
         return ['exaupdate'];
     }
 
-
-
     /**
      * 采集数据
      * @param $job Job
