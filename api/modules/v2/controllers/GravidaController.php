@@ -34,6 +34,7 @@ class GravidaController extends Controller
                 $this->userid = $userParent->userid;
                 $this->userLogin->save();
             }
+
             if (!$userParent) {
                 $userParent = new UserParent();
                 $userParent->userid = $this->userid;
@@ -41,8 +42,7 @@ class GravidaController extends Controller
                 $userParent->mother = $data['name'];
                 $userParent->save();
             }
-            $preg = Pregnancy::find()->where(['field4' => $data['idx']])->one();
-
+            $preg = Pregnancy::find()->where(['field4' => $data['idx']])->andWhere(['field11'=>strtotime($data['date'])])->one();
             if(!$preg){
                 $preg=new Pregnancy();
                 $preg->field4=$data['idx'];

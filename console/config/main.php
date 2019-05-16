@@ -20,6 +20,9 @@ return [
         'worker'=>[
             'class' => 'console\controllers\WorkerController',
         ],
+        'exaupdate'=>[
+            'class' => 'console\controllers\ExaupdateController',
+        ],
         'dataupdate'=>[
             'class' => 'console\controllers\DataUpdateController',
         ],

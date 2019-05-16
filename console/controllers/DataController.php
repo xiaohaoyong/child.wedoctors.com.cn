@@ -50,9 +50,9 @@ class DataController extends Controller
 
     public function actionTests(){
 
-        $redis=\Yii::$app->rdmp;
-        $index=$redis->ZRANK('noticeList147072',8);
 
+        $return = \Yii::$app->beanstalk
+            ->putInTube('exaupdate', ['childid'=>149265]);
 
     }
     public function actionAppoint(){
