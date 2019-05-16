@@ -21,7 +21,7 @@ return [
             'class' => 'console\controllers\WorkerController',
         ],
         'exaupdate'=>[
-            'class' => 'console\controllers\ExaupdateController',
+            'class' => 'console\controllers\ExaUpdateController',
         ],
         'dataupdate'=>[
             'class' => 'console\controllers\DataUpdateController',
