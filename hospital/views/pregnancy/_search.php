@@ -26,6 +26,14 @@ use yii\widgets\ActiveForm;
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'level')->dropDownList([1=>'已签约'], ['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'contract1')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'contract2')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
 
     <?php  //echo $form->field($model, 'field49')->dropDownList(\common\models\Pregnancy::$field49) ?>
 
