@@ -66,7 +66,6 @@ class ChildInfoInput
 
         //条形码查询
         $this->childInfo = ChildInfo::find()->where(['field7' => $value['field7']])
-                ->andWhere(['father'=>$value['father']])
                 ->andWhere(['mother'=>$value['mother']])->one();
 
         if ($this->childInfo) {
@@ -198,8 +197,8 @@ class ChildInfoInput
      */
     public function getPhone($value)
     {
-        $father_phone = $value['mother_phone'];
-        $mother_phone = $value['father_phone'];
+        $father_phone = $value['father_phone'];
+        $mother_phone = $value['mother_phone'];
         $phone = $value['field12'];
 
         if (preg_match("/^1[34578]{1}\d{9}$/", $phone)) {
@@ -226,8 +225,8 @@ class ChildInfoInput
     public function phoneSelect($value)
     {
         //手机号查询
-        $father_phone = $value['mother_phone'];
-        $mother_phone = $value['father_phone'];
+        $father_phone = $value['father_phone'];
+        $mother_phone = $value['mother_phone'];
         $phone = $value['field12'];
         if (preg_match("/^1[34578]{1}\d{9}$/", $mother_phone)) {
             $user = User::findOne(['phone' => $mother_phone]);
