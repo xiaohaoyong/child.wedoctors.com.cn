@@ -27,6 +27,14 @@ use yii\widgets\ActiveForm;
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true
     ]])?>
+    <?= $form->field($model, 'birthdayS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
+    <?= $form->field($model, 'birthdayE')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
     <?= $form->field($model, 'username')?>
     <?= $form->field($model, 'userphone')?>
 

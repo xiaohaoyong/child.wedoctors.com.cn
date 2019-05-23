@@ -86,6 +86,8 @@ class Interview extends \yii\db\ActiveRecord
             $info[] = '已分娩';
             $info[] = "分娩医院:" . $this->childbirth_hospital;
             $info[] = "分娩时间:" . date('Y-m-d', $this->childbirth_date);
+            $info[] = "分娩方式:" . date('Y-m-d', $this->childbirth_type);
+            $info[] = "宝宝性别:" . date('Y-m-d', $this->sex);
         }
         return implode('<br>', $info);
     }

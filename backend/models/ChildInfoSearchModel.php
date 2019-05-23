@@ -23,6 +23,9 @@ class ChildInfoSearchModel extends ChildInfo
     public $username;
     public $userphone;
 
+    public $birthdayS;
+    public $birthdayE;
+
     public function behaviors()
     {
         return [
@@ -37,8 +40,8 @@ class ChildInfoSearchModel extends ChildInfo
     public function rules()
     {
         return [
-            [['id', 'userid', 'birthday', 'createtime', 'level','admin'], 'integer'],
-            [['docpartimeS','docpartimeE', 'username'], 'string'],
+            [['id', 'userid', 'birthday', 'createtime', 'level', 'admin'], 'integer'],
+            [['docpartimeS', 'docpartimeE', 'birthdayS', 'birthdayE', 'username'], 'string'],
             [['userphone'], 'integer'],
 
             [['name'], 'safe'],
@@ -52,7 +55,9 @@ class ChildInfoSearchModel extends ChildInfo
             'docpartimeS' => '签约时间',
             'docpartimeE' => '~',
             'username' => '姓名',
-            'admin'=>'管理机构',
+            'admin' => '管理机构',
+            'birthdayS' => '出生日期',
+            'birthdayE' => '~',
             'userphone' => '手机号'
         ];
     }
@@ -84,41 +89,46 @@ class ChildInfoSearchModel extends ChildInfo
         ]);
         $this->load($params);
 
-        $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+        //$query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
-        if($this->admin) {
+        if ($this->admin) {
             $query->andFilterWhere(['`child_info`.`doctorid`' => $this->admin]);
         }
 
-        if ($this->level || ($this->docpartimeS!=='' and $this->docpartimeS!==null)) {
+        if ($this->level || ($this->docpartimeS !== '' and $this->docpartimeS !== null)) {
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
         }
 
-        if($this->level==1)
-        {
+        if ($this->level == 1) {
             $query->andFilterWhere(['`doctor_parent`.`level`' => $this->level]);
         }
-        if($this->level==3){
-            $query->andWhere(['or',['<>','`doctor_parent`.`level`' ,1],['`doctor_parent`.`parentid`'=>null]]);
+        if ($this->level == 3) {
+            $query->andWhere(['or', ['<>', '`doctor_parent`.`level`', 1], ['`doctor_parent`.`parentid`' => null]]);
         }
 
 
-        if($this->level==2)
-        {
-            $query->andFilterWhere(['<=','`child_info`.`source`',38]);
+        if ($this->level == 2) {
+            $query->andFilterWhere(['<=', '`child_info`.`source`', 38]);
         }
 
-        if($this->docpartimeS!=='' and $this->docpartimeS!==null){
+        if ($this->docpartimeS !== '' and $this->docpartimeS !== null) {
             $state = strtotime($this->docpartimeS . " 00:00:00");
             $end = strtotime($this->docpartimeE . " 23:59:59");
             $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
             $query->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
         }
+        if($this->birthdayE!=='' and $this->birthdayS!==null){
+            $state = strtotime($this->birthdayS . " 00:00:00");
+            $end = strtotime($this->birthdayE . " 23:59:59");
+            $query->andFilterWhere(['>', 'child_info.`birthday`', $state]);
+            $query->andFilterWhere(['<', 'child_info.`birthday`', $end]);
+        }
+
 
 
 //        'username' => '联系人姓名',
@@ -127,17 +137,17 @@ class ChildInfoSearchModel extends ChildInfo
             $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
 
             if ($this->username) {
-                $query->andWhere(['or',['`user_parent`.`mother`' => $this->username],['`user_parent`.`father`' => $this->username],['`user_parent`.`field11`' => $this->username]]);
+                $query->andWhere(['or', ['`user_parent`.`mother`' => $this->username], ['`user_parent`.`father`' => $this->username], ['`user_parent`.`field11`' => $this->username]]);
             }
             if ($this->userphone) {
-                $query->andWhere(['or',['`user_parent`.`mother_phone`' => $this->userphone],['`user_parent`.`father_phone`' => $this->userphone],['`user_parent`.`field12`' => $this->userphone]]);
+                $query->andWhere(['or', ['`user_parent`.`mother_phone`' => $this->userphone], ['`user_parent`.`father_phone`' => $this->userphone], ['`user_parent`.`field12`' => $this->userphone]]);
 
             }
         }
-        if($this->level==1) {
+        if ($this->level == 1) {
             $query->orderBy('`doctor_parent`.createtime desc');
 
-        }else {
+        } else {
             $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
         }
 

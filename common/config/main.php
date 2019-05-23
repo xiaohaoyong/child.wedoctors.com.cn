@@ -7,18 +7,7 @@ $config= [
         'cache' => [
             'class' => 'yii\redis\Cache',
         ],
-        'aliyun' => [
-            'class' => 'saviorlv\aliyun\Sms',
-            'accessKeyId' => 'LTAId7nYmFlmKGcI',
-            'accessKeySecret' => 'VmjZN9kalP4kqhaoIP20AUJDZnNMI9'
-        ],
-        'redis'=>[
-            'class' => 'yii\redis\Connection',
-            'hostname' => '139.129.246.51',
-            'port' => 6379,
-            'password' => '06ef54b23a0af',
-            'database' => 1,
-        ],
+
         'formatter'=>[
             'dateFormat'=>'php:Y-m-d',
         ],
@@ -29,6 +18,7 @@ $config= [
             'connectTimeout' => 1,
             'sleep' => false, // or int for usleep after every job
         ],
+
     ],
     'modules' => [
         'redactor' => [
