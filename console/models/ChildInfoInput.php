@@ -237,25 +237,6 @@ class ChildInfoInput
                     ->one();
             }
         }
-        if(!$user && !$userParent && preg_match("/^1[34578]{1}\d{9}$/", $father_phone))
-        {
-            $user = User::findOne(['phone' => $father_phone]);
-            if(!$user){
-                $userParent = UserParent::find()
-                    ->andFilterWhere(['father_phone' => $father_phone])
-                    ->one();
-            }
-        }
-
-        if(!$user && !$userParent && preg_match("/^1[34578]{1}\d{9}$/", $phone))
-        {
-            $user = User::findOne(['phone' => $phone]);
-            if(!$user){
-                $userParent = UserParent::find()
-                    ->andFilterWhere(['field12' => $phone])
-                    ->one();
-            }
-        }
 
         if($user){
             $this->user = $user;
