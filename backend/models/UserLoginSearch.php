@@ -19,7 +19,7 @@ class UserLoginSearch extends UserLogin
     {
         return [
             [['userid', 'logintime', 'phone', 'id', 'createtime'], 'integer'],
-            [['password', 'openid', 'xopenid', 'unionid', 'hxusername'], 'safe'],
+            [['password', 'openid', 'xopenid', 'unionid', 'hxusername','dopenid'], 'safe'],
         ];
     }
 
@@ -48,7 +48,6 @@ class UserLoginSearch extends UserLogin
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -70,6 +69,7 @@ class UserLoginSearch extends UserLogin
             ->andFilterWhere(['like', 'openid', $this->openid])
             ->andFilterWhere(['like', 'xopenid', $this->xopenid])
             ->andFilterWhere(['like', 'unionid', $this->unionid])
+            ->andFilterWhere(['like', 'dopenid', $this->dopenid])
             ->andFilterWhere(['like', 'hxusername', $this->hxusername]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 

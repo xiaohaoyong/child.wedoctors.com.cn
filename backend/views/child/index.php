@@ -32,15 +32,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
 
                             'columns' => [
-                                ['class' => 'yii\grid\SerialColumn'],
-
                                 'id',
                                 'userid',
                                 'name',
                                 'birthday:datetime',
                                 'createtime:datetime',
-                                'gender',
                                 'source',
+                                [
+
+                                    'attribute' => 'source',
+                                    'value' => function ($e) {
+                                        if ($e->source) {
+                                            return \common\models\UserDoctor::findOne(['hospitalid' => $e->source])->name;
+                                        } else {
+                                            return "无";
+                                        }
+                                    }
+                                ],
                                 'admin',
 //             'field54',
 //             'field53',
