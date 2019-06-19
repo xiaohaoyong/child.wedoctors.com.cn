@@ -43,14 +43,26 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                 [
                                     'attribute' => 'userid',
+                                    'format'=>'html',
                                     'value' => function ($e) {
                                         $return = '';
                                         $userParent = \common\models\UserParent::findOne(['userid' => $e->userid]);
                                         if ($userParent) {
-                                            $return .= "母亲:" . $userParent->mother . "|";
-                                            $return .= "父亲:" . $userParent->father . "|";
+                                            $return .= "母亲:" . $userParent->mother . "<br>";
+                                            $return .= "父亲:" . $userParent->father . "<br>";
                                             $child = \common\models\ChildInfo::find()->select('name')->where(['userid' => $e->userid])->column();
                                             $return .= "孩子:" . implode(',', $child);
+                                        }
+                                        return $return;
+                                    }
+                                ],
+                                [
+                                    'attribute' => '地址',
+                                    'value' => function ($e) {
+                                        $return = '';
+                                        $userParent = \common\models\UserParent::findOne(['userid' => $e->userid]);
+                                        if ($userParent) {
+                                            $return=$userParent->address;
                                         }
                                         return $return;
                                     }
