@@ -70,6 +70,7 @@ class UserParent extends \yii\db\ActiveRecord {
         'field44' => '户籍所在省（北京市）',
         'field45' => '户籍地址区',
         'field1' => '户口',
+        'fieldu46'=>'现住址详细',
     ];
     //通过id获取信息 刘方露
     public static function GetInfoById($userid)
@@ -99,6 +100,7 @@ class UserParent extends \yii\db\ActiveRecord {
             'field44' => '户籍所在省',
             'field45' => '户籍所在市',
             'field1' => '户口',
+            'fieldu46'=>'现住址详细',
             'province' => '省', 'county' => '县', 'city' => '市',
         ];
     }
