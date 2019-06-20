@@ -45,7 +45,7 @@ use yii\widgets\ActiveForm;
 <?php
 $updateJs = <<<JS
     jQuery("#down").click(function () {
-        jQuery("#appoint").attr('action',"/down/child");    //通
+        jQuery("#appoint").attr('action',"down");    //通
             jQuery("#appoint").submit();    //提交ID为myform的表单
     });
 jQuery("#search").click(function () {
