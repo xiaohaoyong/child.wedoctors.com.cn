@@ -41,7 +41,6 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
-
 <?php
 $updateJs = <<<JS
 jQuery("#down").click(function () {
