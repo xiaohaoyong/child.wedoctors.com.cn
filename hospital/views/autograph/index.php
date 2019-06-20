@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         $return = '';
                                         $userParent = \common\models\UserParent::findOne(['userid' => $e->userid]);
                                         if ($userParent) {
-                                            $return=$userParent->address;
+                                            $return=$userParent->fieldu46;
                                         }
                                         return $return;
                                     }

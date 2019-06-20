@@ -8,6 +8,7 @@ use common\models\ChildInfo;
 use common\models\Log;
 use common\models\UserDoctor;
 use common\models\UserLogin;
+use docapi\models\AppointSearch;
 use hospital\models\user\Hospital;
 use Yii;
 use common\models\Appoint;
@@ -34,6 +35,85 @@ class AppointController extends Controller
                 ],
             ],
         ];
+    }
+    public function actionDown(){
+        ini_set('memory_limit', '2048M');
+        ini_set("max_execution_time", "0");
+        set_time_limit(0);
+
+
+        $params=\Yii::$app->request->queryParams;
+        $searchModel = new AppointSearch();
+        $dataProvider = $searchModel->search($params);
+
+
+        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel->getProperties();
+
+        //设置A3单元格为文本
+        $objPHPExcel->getActiveSheet()->getStyle('B')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $objPHPExcel->getActiveSheet()->getStyle('I')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $key1 = 1;
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A'.$key1, '儿童姓名')
+            ->setCellValue('B'.$key1, '儿童性别')
+            ->setCellValue('C'.$key1, '儿童生日')
+            ->setCellValue('D'.$key1, '母亲姓名')
+            ->setCellValue('E'.$key1, '户籍地')
+            ->setCellValue('F'.$key1, '预约日期')
+            ->setCellValue('G'.$key1, '预约时间')
+            ->setCellValue('H'.$key1, '手机号')
+            ->setCellValue('I'.$key1, '预约状态')
+            ->setCellValue('J'.$key1, '预约项目')
+            ->setCellValue('K'.$key1, '取消原因')
+            ->setCellValue('L'.$key1, '推送状态')
+            ->setCellValue('M'.$key1, '来源')
+            ->setCellValue('N'.$key1, '排号顺序');
+//写入内容
+        foreach($dataProvider->query->limit(500)->all() as $k=>$e) {
+            $v=$e->toArray();
+            $child=\common\models\ChildInfo::findOne(['id' => $v['childid']]);
+            $userParent=\common\models\UserParent::findOne(['userid' => $v['userid']]);
+
+            $index = \common\models\Appoint::find()
+                ->andWhere(['appoint_date' => $e->appoint_date])
+                ->andWhere(['<', 'id', $e->id])
+                ->andWhere(['doctorid' => $e->doctorid])
+                ->andWhere(['appoint_time' => $e->appoint_time])
+                ->andWhere(['type' => $e->type])
+                ->count();
+
+            $key1 = $k + 2;
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $key1, $child->name)
+                ->setCellValue('B' . $key1, \common\models\ChildInfo::$genderText[$child->gender])
+                ->setCellValue('C' . $key1, date('Y-m-d', $child->birthday))
+                ->setCellValue('D' . $key1, $userParent->mother)
+                ->setCellValue('E' . $key1, $userParent->field44)
+                ->setCellValue('F' . $key1, date('Y-m-d', $v['appoint_date']))
+                ->setCellValue('G' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
+                ->setCellValue('H' . $key1, \common\models\Appoint::$stateText[$e->state])
+                ->setCellValue('I' . $key1, \common\models\Appoint::$typeText[$e->type])
+                ->setCellValue('J' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
+                ->setCellValue('K' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
+                ->setCellValue('L' . $key1, \common\models\Appoint::$modeText[$e->mode])
+                ->setCellValue('M' . $key1, $e->appoint_time . "-" . ($index + 1));
+        }
+        // $objPHPExcel->setActiveSheetIndex(0);
+
+        ob_end_clean();
+        ob_start();
+
+        header('Content-Type : application/vnd.ms-excel');
+        header('Content-Disposition:attachment;filename="预约列表-'.date("Y年m月j日").'.xls"');
+        $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
+        $objWriter->save('php://output');
     }
 
     public function actionDone($id)
