@@ -36,13 +36,15 @@ class AppointController extends Controller
             ],
         ];
     }
-    public function actionDown(){
+
+    public function actionDown()
+    {
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
         set_time_limit(0);
 
 
-        $params=\Yii::$app->request->queryParams;
+        $params = \Yii::$app->request->queryParams;
         $searchModel = new AppointSearchModels();
         $dataProvider = $searchModel->search($params);
 
@@ -61,25 +63,25 @@ class AppointController extends Controller
             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
         $key1 = 1;
         $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A'.$key1, '儿童姓名')
-            ->setCellValue('B'.$key1, '儿童性别')
-            ->setCellValue('C'.$key1, '儿童生日')
-            ->setCellValue('D'.$key1, '母亲姓名')
-            ->setCellValue('E'.$key1, '户籍地')
-            ->setCellValue('F'.$key1, '预约日期')
-            ->setCellValue('G'.$key1, '预约时间')
-            ->setCellValue('H'.$key1, '手机号')
-            ->setCellValue('I'.$key1, '预约状态')
-            ->setCellValue('J'.$key1, '预约项目')
-            ->setCellValue('K'.$key1, '取消原因')
-            ->setCellValue('L'.$key1, '推送状态')
-            ->setCellValue('M'.$key1, '来源')
-            ->setCellValue('N'.$key1, '排号顺序');
+            ->setCellValue('A' . $key1, '儿童姓名')
+            ->setCellValue('B' . $key1, '儿童性别')
+            ->setCellValue('C' . $key1, '儿童生日')
+            ->setCellValue('D' . $key1, '母亲姓名')
+            ->setCellValue('E' . $key1, '户籍地')
+            ->setCellValue('F' . $key1, '预约日期')
+            ->setCellValue('G' . $key1, '预约时间')
+            ->setCellValue('H' . $key1, '手机号')
+            ->setCellValue('I' . $key1, '预约状态')
+            ->setCellValue('J' . $key1, '预约项目')
+            ->setCellValue('K' . $key1, '取消原因')
+            ->setCellValue('L' . $key1, '推送状态')
+            ->setCellValue('M' . $key1, '来源')
+            ->setCellValue('N' . $key1, '排号顺序');
 //写入内容
-        foreach($dataProvider->query->limit(500)->all() as $k=>$e) {
-            $v=$e->toArray();
-            $child=\common\models\ChildInfo::findOne(['id' => $v['childid']]);
-            $userParent=\common\models\UserParent::findOne(['userid' => $v['userid']]);
+        foreach ($dataProvider->query->limit(500)->all() as $k => $e) {
+            $v = $e->toArray();
+            $child = \common\models\ChildInfo::findOne(['id' => $v['childid']]);
+            $userParent = \common\models\UserParent::findOne(['userid' => $v['userid']]);
 
             $index = \common\models\Appoint::find()
                 ->andWhere(['appoint_date' => $e->appoint_date])
@@ -98,12 +100,14 @@ class AppointController extends Controller
                 ->setCellValue('E' . $key1, $userParent->field44)
                 ->setCellValue('F' . $key1, date('Y-m-d', $v['appoint_date']))
                 ->setCellValue('G' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
-                ->setCellValue('H' . $key1, \common\models\Appoint::$stateText[$e->state])
-                ->setCellValue('I' . $key1, \common\models\Appoint::$typeText[$e->type])
-                ->setCellValue('J' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
-                ->setCellValue('K' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
-                ->setCellValue('L' . $key1, \common\models\Appoint::$modeText[$e->mode])
-                ->setCellValue('M' . $key1, $e->appoint_time . "-" . ($index + 1));
+                ->setCellValue('H' . $key1,$e->phone)
+                ->setCellValue('I' . $key1, \common\models\Appoint::$stateText[$e->state])
+                ->setCellValue('J' . $key1, \common\models\Appoint::$typeText[$e->type])
+                ->setCellValue('K' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
+                ->setCellValue('L' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
+                ->setCellValue('M' . $key1, \common\models\Appoint::$modeText[$e->mode])
+                ->setCellValue('N' . $key1, $e->appoint_time . "-" . ($index + 1));
+
         }
         // $objPHPExcel->setActiveSheetIndex(0);
 
@@ -111,8 +115,8 @@ class AppointController extends Controller
         ob_start();
 
         header('Content-Type : application/vnd.ms-excel');
-        header('Content-Disposition:attachment;filename="预约列表-'.date("Y年m月j日").'.xls"');
-        $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
+        header('Content-Disposition:attachment;filename="预约列表-' . date("Y年m月j日") . '.xls"');
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
     }
 
@@ -143,30 +147,30 @@ class AppointController extends Controller
         $model = new \common\models\Appoint();
         if ($post = Yii::$app->request->post()) {
             $model->load($post);
-            $doctor=UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospital]);
-            $model->appoint_date=strtotime($model->date);
-            $model->doctorid=$doctor->userid;
+            $doctor = UserDoctor::findOne(['hospitalid' => Yii::$app->user->identity->hospital]);
+            $model->appoint_date = strtotime($model->date);
+            $model->doctorid = $doctor->userid;
             $model->state = 5;
-            $model->push_state=1;
-            $model->mode=1;
-            $log=new \common\components\Log('Appoint_Doctor_Push');
+            $model->push_state = 1;
+            $model->mode = 1;
+            $log = new \common\components\Log('Appoint_Doctor_Push');
             if ($model->save()) {
                 if ($model->loginid) {
                     $login = UserLogin::findOne(['id' => $model->loginid]);
                     if ($login->openid) {
                         $log->addLog("微信");
 
-                        if($model->type==1){
+                        if ($model->type == 1) {
                             $data = [
-                                'first' => ['value' => "家长您好，该带宝宝来社区服务中心体检啦\n\n"."预约时间：".$model->date." ".Appoint::$timeText[$model->appoint_time]],
+                                'first' => ['value' => "家长您好，该带宝宝来社区服务中心体检啦\n\n" . "预约时间：" . $model->date . " " . Appoint::$timeText[$model->appoint_time]],
                                 'keyword1' => ARRAY('value' => $doctor->name),
                                 'keyword2' => ARRAY('value' => $doctor->phone),
                                 'keyword3' => ARRAY('value' => $model->remark),
                                 'remark' => ARRAY('value' => "\n需要点击此消息并确定领取凭证，到社区服务中心出示此凭证即可享受服务，为了宝宝的健康，请安排好您的时间哦"),
                             ];
-                        }elseif($model->type==2){
+                        } elseif ($model->type == 2) {
                             $data = [
-                                'first' => ['value' => "家长您好，该带宝宝来社区服务中心接种啦\n\n"."预约时间：".$model->date." ".Appoint::$timeText[$model->appoint_time]],
+                                'first' => ['value' => "家长您好，该带宝宝来社区服务中心接种啦\n\n" . "预约时间：" . $model->date . " " . Appoint::$timeText[$model->appoint_time]],
                                 'keyword1' => ARRAY('value' => $doctor->name),
                                 'keyword2' => ARRAY('value' => $doctor->phone),
                                 'keyword3' => ARRAY('value' => $model->remark),
@@ -177,28 +181,28 @@ class AppointController extends Controller
 
                         $rs = WechatSendTmp::send($data, $login->openid, '3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=1',]);
                         $log->addLog($rs);
-                        if($rs){
-                            $model->push_state=2;
-                        }else{
-                            $model->push_state=4;
+                        if ($rs) {
+                            $model->push_state = 2;
+                        } else {
+                            $model->push_state = 4;
                         }
                         $model->save();
                     }
                 }
-                if(!$login->openid || $rs==false) {
+                if (!$login->openid || $rs == false) {
                     $log->addLog("短信");
 
                     $data['doctor'] = $doctor->name;
                     $data['phone'] = $doctor->phone;
                     $data['type'] = Appoint::$typeText1[$model->type];
-                    $data['date_time'] = $model->date." ".explode('-',Appoint::$timeText[$model->appoint_time])[0];
+                    $data['date_time'] = $model->date . " " . explode('-', Appoint::$timeText[$model->appoint_time])[0];
                     //$data['time'] = Appoint::$timeText[$model->appoint_time];
-                    $rs=SmsSend::appoint($data, $model->phone);
-                    $log->addLog($rs?'true':'false');
-                    if($rs){
-                        $model->push_state=3;
-                    }else{
-                        $model->push_state=5;
+                    $rs = SmsSend::appoint($data, $model->phone);
+                    $log->addLog($rs ? 'true' : 'false');
+                    if ($rs) {
+                        $model->push_state = 3;
+                    } else {
+                        $model->push_state = 5;
                     }
                     $model->save();
                 }
