@@ -237,7 +237,6 @@ class ChildInfoInput
                     ->one();
             }
         }
-
         if($user){
             $this->user = $user;
             $childInfo = ChildInfo::find()

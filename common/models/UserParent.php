@@ -26,6 +26,8 @@ use Yii;
  * @property string $field28 母亲出生日期
  * @property string $field12 联系人电话
  * @property string $field11 联系人姓名
+ * @property string $fieldu46 现住址详细
+
  * @property string $field1 户口
  * @property integer $province
  * @property string $county

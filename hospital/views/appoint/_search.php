@@ -49,8 +49,6 @@ jQuery("#down").click(function () {
         if(confirm("点击确定开始下载，请勿刷新或关闭窗口（目前最多下载500条数据），可按照时间筛选")){
             jQuery("#appoint").attr('action',"down");    //通
             jQuery("#appoint").submit();    //提交ID为myform的表单
-                        jQuery("#appoint").attr('action',"");    //通
-
         }
     });
 

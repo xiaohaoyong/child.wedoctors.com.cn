@@ -48,6 +48,8 @@ return [
             'interfaces/web/assets',
             'ask/runtime',
             'ask/web/assets',
+            'docapi/runtime',
+            'docapi/web/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -62,6 +64,7 @@ return [
             'api/config/main-local.php',
             'interfaces/config/main-local.php',
             'ask/config/main-local.php',
+            'docapi/config/main-local.php',
 
         ],
     ],
@@ -84,6 +87,8 @@ return [
             'interfaces/web/assets',
             'ask/runtime',
             'ask/web/assets',
+            'docapi/runtime',
+            'docapi/web/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -97,7 +102,7 @@ return [
             'api/config/main-local.php',
             'interfaces/config/main-local.php',
             'ask/config/main-local.php',
-
+            'docapi/config/main-local.php',
         ],
     ],
 ];

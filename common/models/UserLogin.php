@@ -11,6 +11,7 @@ use Yii;
  * @property string $password
  * @property string $openid
  * @property string $xopenid
+ * @property string $dopenid
  * @property string $hxusername
  * @property string $unionid
  * @property string $phone
@@ -60,6 +61,7 @@ class UserLogin extends \yii\db\ActiveRecord
             [['password'], 'string', 'max' => 32],
             [['openid'], 'string', 'max' => 30],
             [['xopenid'], 'string', 'max' => 30],
+            [['dopenid'], 'string', 'max' => 30],
 
             [['unionid'], 'string', 'max' => 30],
 
@@ -168,6 +170,7 @@ class UserLogin extends \yii\db\ActiveRecord
             'openid' => '微信openid',
             'phone' => '用户登录手机号',
             'createtime' => '创建时间',
+            'dopenid'=>'医生小程序openid'
         ];
     }
 

@@ -34,7 +34,7 @@ class ArticleController extends Controller
      */
     public function actionList($child_birthday='',$child_name='',$parent_name='',$phone='',$sign="",$type=0)
     {
-        if($sign!=md5($child_birthday.$child_name.$parent_name.$phone.'123456789'.date('Ymd')))
+        if($sign!=md5($child_birthday.$child_name.$parent_name.$phone.'kLj2cJWQP4ebA6fB'.date('Ymd')))
         {
             return $this->renderPartial('list',[
                 'data'=>[],

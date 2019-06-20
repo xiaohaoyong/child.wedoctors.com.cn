@@ -36,7 +36,7 @@ class AskController extends Controller
         $childid = $post['childid'];
         $orderid = $post['orderid'];
         $questionid = Question::Create($orderid, $this->userid, $childid, $content, $tag);
-
+        var_dump($questionid);exit;
         return $questionid;
     }
 
