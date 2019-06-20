@@ -43,7 +43,7 @@ class AppointController extends Controller
 
 
         $params=\Yii::$app->request->queryParams;
-        $searchModel = new AppointSearch();
+        $searchModel = new AppointSearchModels();
         $dataProvider = $searchModel->search($params);
 
 
