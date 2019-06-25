@@ -4,6 +4,7 @@ namespace hospital\controllers;
 
 use app\components\UploadForm;
 use backend\models\Push;
+use common\models\Age;
 use common\models\ArticleInfo;
 use common\models\Notice;
 use hospital\models\user\DoctorParent;
@@ -283,7 +284,6 @@ class ArticleController extends BaseController
         $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
         $model->hospital    =[$doctor->userid];
         $model->age         =$post['Push']['age'];
-
 
         $model->send();
 

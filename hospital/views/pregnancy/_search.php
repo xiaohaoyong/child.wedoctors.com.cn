@@ -34,7 +34,14 @@ use yii\widgets\ActiveForm;
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true
     ]]) ?>
-
+    <?= $form->field($model, 'field5a')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'field5b')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]]) ?>
     <?php  //echo $form->field($model, 'field49')->dropDownList(\common\models\Pregnancy::$field49) ?>
 
     <?php // echo $form->field($model, 'field4') ?>

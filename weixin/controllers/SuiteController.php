@@ -155,7 +155,7 @@ class SuiteController extends Controller
         $return=$this->mpWechat->createMenu(
             [
                 ['type' => 'miniprogram', 'name' => '育儿服务', 'url' => 'pages/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',],
-                ['type' => 'view', 'name' => '育儿课堂', 'url' => 'pages/article/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/article/index/index',],
+                ['type' => 'miniprogram', 'name' => '育儿课堂', 'url' => 'pages/article/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/article/index/index',],
 
 //                ['type' => 'view', 'name' => '孕产服务',
 //                    'sub_button' => [

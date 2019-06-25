@@ -19,8 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-header with-border">
                 <h3 class="box-title">检索：</h3>
                 <div>
-
-                    dsdsf
                     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
                 <!-- /.box-tools -->

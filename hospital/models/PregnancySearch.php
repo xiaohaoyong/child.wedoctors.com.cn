@@ -15,7 +15,8 @@ class PregnancySearch extends Pregnancy
     public $level;
     public $contract1;
     public $contract2;
-
+    public $field5a;
+    public $field5b;
     /**
      * @inheritdoc
      */
@@ -23,7 +24,7 @@ class PregnancySearch extends Pregnancy
     {
         return [
             [['level','id', 'familyid', 'field3', 'field5', 'field7', 'field8', 'field9', 'field12', 'field13', 'field14', 'field15', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field28', 'field29', 'field30', 'field31', 'field32', 'field35', 'field39', 'field40', 'field41', 'field43', 'field45', 'field46', 'field47', 'field48', 'field49', 'field50', 'field51', 'field52', 'field53', 'field54', 'field55', 'field56', 'field57', 'field58', 'field60', 'field61', 'field62', 'field63', 'field64', 'field65', 'field67', 'field68', 'field70', 'field72', 'field74', 'field76', 'field77', 'field78', 'field80', 'field81', 'field83', 'field84', 'field85', 'field87', 'field88', 'source', 'isupdate', 'createtime'], 'integer'],
-            [['contract1','contract2','field0', 'field1','field2','field11','field12', 'field4', 'field6', 'field10', 'field25', 'field26', 'field27', 'field33', 'field34', 'field36', 'field37', 'field38', 'field42', 'field44', 'field59', 'field66', 'field75', 'field79', 'field82', 'field86'], 'safe'],
+            [['field5a','field5b','contract1','contract2','field0', 'field1','field2','field11','field12', 'field4', 'field6', 'field10', 'field25', 'field26', 'field27', 'field33', 'field34', 'field36', 'field37', 'field38', 'field42', 'field44', 'field59', 'field66', 'field75', 'field79', 'field82', 'field86'], 'safe'],
             [['field71', 'field73'], 'number'],
         ];
     }
@@ -42,6 +43,8 @@ class PregnancySearch extends Pregnancy
         $attr['level']='是否签约';
         $attr['contract1']='签约日期';
         $attr['contract2']='~~';
+        $attr['field5a']='建档日期';
+        $attr['field5b']='~~';
         return $attr;
     }
 
@@ -91,6 +94,12 @@ class PregnancySearch extends Pregnancy
             $end = strtotime($this->contract2 . " 23:59:59");
             $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
             $query->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
+        }
+        if ($this->field5a !== '' and $this->field5b !== null) {
+            $state = strtotime($this->field5a);
+            $end = strtotime($this->field5b);
+            $query->andFilterWhere(['>=', 'pregnancy.field5', $state]);
+            $query->andFilterWhere(['<=', 'pregnancy.field5', $end]);
         }
 
         $query->andFilterWhere([

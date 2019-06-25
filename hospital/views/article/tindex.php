@@ -100,7 +100,27 @@ $form = \yii\widgets\ActiveForm::begin(['action' => '/article/push', 'enableAjax
 $model = new \backend\models\Push();
 echo $form->field($model, 'id')->hiddenInput()->label(false);
 //echo $form->field($model,'area')->checkboxList(array_merge([0=>'全部'],\common\models\Area::$county[11]));
-echo $form->field($model, 'age')->checkboxList(\common\models\Article::$childText);
+echo $form->field($model, 'age')->checkboxList([
+    0 => '全部',
+    1 => '满月',
+    2 => '3月龄',
+    3 => '6月龄',
+    4 => '8月龄',
+    5 => '12月龄',
+    6 => '18月龄',
+    7 => '24月龄',
+    8 => '30月龄',
+    9 => '3岁',
+    10 => '4岁',
+    11 => '5岁',
+    12 => '6岁',
+    13 => '孕早期',
+    14 => '孕中期一阶段',
+    15 => '孕中期二阶段',
+    16 => '孕晚期一阶段',
+    17 => '孕晚期二阶段',
+
+]);
 
 echo "<div class=\"form-group\">" . Html::submitButton('提交', ['class' => 'btn btn-primary']) . "</div>";
 \yii\widgets\ActiveForm::end();

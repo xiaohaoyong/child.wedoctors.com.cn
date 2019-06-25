@@ -149,10 +149,10 @@ class ChildInfoSearchModel extends ChildInfo
         }
 
         if ($this->birthdayE !== '' and $this->birthdayS !== null) {
-            $state = strtotime($this->birthdayS . " 00:00:00");
-            $end = strtotime($this->birthdayE . " 23:59:59");
-            $query->andFilterWhere(['>', '`birthday`', $state]);
-            $query->andFilterWhere(['<', '`birthday`', $end]);
+            $state = strtotime($this->birthdayS);
+            $end = strtotime($this->birthdayE);
+            $query->andFilterWhere(['>=', '`birthday`', $state]);
+            $query->andFilterWhere(['<=', '`birthday`', $end]);
         }
 
         if ($this->username || $this->userphone) {

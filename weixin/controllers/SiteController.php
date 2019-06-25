@@ -4,6 +4,8 @@ namespace weixin\controllers;
 
 use common\models\WeOpenid;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use weixin\models\User;
 use weixin\models\UserLogin;
@@ -20,12 +22,46 @@ class SiteController extends Controller
     public $enableCsrfValidation = false;
     public $userInfo;
     public $mpWechat;
-
-    public function actionError()
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
     {
-        return $this->render('error');
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout', 'index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
     /**
      * 首页
      * @author slx
