@@ -23,6 +23,7 @@ class InterviewSearch extends Interview
     public $childbirth_dates;//核实
     public $childbirth_datee;//核实
     public $name;
+
     /**
      * @inheritdoc
      */
@@ -30,21 +31,24 @@ class InterviewSearch extends Interview
     {
         return [
             [['id', 'prenatal_test', 'pt_date', 'prenatal', 'childbirth_date', 'createtime', 'userid', 'pt_value', 'week'], 'integer'],
-            [['field90','childbirth_dates','childbirth_datee','field15s','field15e','field5s','field5e','pt_hospital', 'childbirth_hospital','name'], 'safe'],
+            [['field90', 'childbirth_dates', 'childbirth_datee', 'field15s', 'field15e', 'field5s', 'field5e', 'pt_hospital', 'childbirth_hospital', 'name'], 'safe'],
         ];
     }
-    public function attributeLabels(){
-        $attr=parent::attributeLabels();
-        $attr['name']="孕妇姓名";
-        $attr['field15s']="核实后预产期";
-        $attr['field15e']="~~";
-        $attr['field5s']="建册日期";
-        $attr['field5e']="~~";
-        $attr['childbirth_dates']="分娩日期";
-        $attr['childbirth_datee']="~~";
-        $attr['field90']='户籍地';
+
+    public function attributeLabels()
+    {
+        $attr = parent::attributeLabels();
+        $attr['name'] = "孕妇姓名";
+        $attr['field15s'] = "核实后预产期";
+        $attr['field15e'] = "~~";
+        $attr['field5s'] = "建册日期";
+        $attr['field5e'] = "~~";
+        $attr['childbirth_dates'] = "分娩日期";
+        $attr['childbirth_datee'] = "~~";
+        $attr['field90'] = '户籍地';
         return $attr;
     }
+
     /**
      * @inheritdoc
      */
@@ -82,38 +86,39 @@ class InterviewSearch extends Interview
         }
         $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
 
-        if($this->field5s){
-            $query->andWhere(['>=',Pregnancy::tableName().'.field5',$this->field5s]);
+        if ($this->field5s) {
+            $query->andWhere(['>=', Pregnancy::tableName() . '.field5', strtotime($this->field5s)]);
         }
-        if($this->field5e){
-            $query->andWhere(['<=',Pregnancy::tableName().'.field5',$this->field5e]);
+        if ($this->field5e) {
+            $query->andWhere(['<=', Pregnancy::tableName() . '.field5', strtotime($this->field5e)]);
         }
-        if($this->field15s){
-            $query->andWhere(['>=',Pregnancy::tableName().'.field15',$this->field15s]);
+        if ($this->field15s) {
+            $query->andWhere(['>=', Pregnancy::tableName() . '.field15', strtotime($this->field15s)]);
         }
-        if($this->field15s){
-            $query->andWhere(['<=',Pregnancy::tableName().'.field15',$this->field15e]);
+        if ($this->field15s) {
+            $query->andWhere(['<=', Pregnancy::tableName() . '.field15', strtotime($this->field15e)]);
         }
-        if($this->childbirth_dates){
-            $query->andWhere(['>=',Interview::tableName().'.childbirth_date',$this->field15s]);
+        if ($this->childbirth_dates) {
+            $query->andWhere(['>=', Interview::tableName() . '.childbirth_date', strtotime($this->field15s)]);
         }
-        if($this->childbirth_datee){
-            $query->andWhere(['<=',Interview::tableName().'.childbirth_date',$this->field15e]);
+        if ($this->childbirth_datee) {
+            $query->andWhere(['<=', Interview::tableName() . '.childbirth_date', strtotime($this->field15e)]);
         }
-        if($this->field90){
-            $query->andWhere(['in',Pregnancy::tableName().'.field90',$this->field90]);
+        if ($this->field90) {
+            $query->andWhere(['in', Pregnancy::tableName() . '.field90', $this->field90]);
         }
 
-        $query->andWhere(['pregnancy.doctorid'=>$hospitalid]);
-        $query->andWhere([Interview::tableName().'.prenatal_test'=>1]);
-        $query->groupBy(Interview::tableName().'.userid');
+        $query->andWhere(['pregnancy.doctorid' => $hospitalid]);
+        $query->andWhere([Interview::tableName() . '.prenatal_test' => 1]);
+        $query->groupBy(Interview::tableName() . '.userid');
 
         if ($this->name) {
 
-            $query->andWhere(['pregnancy.field1'=>$this->name]);
+            $query->andWhere(['pregnancy.field1' => $this->name]);
         }
 
-        $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+        $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+        echo $query->createCommand()->getRawSql();
         return $dataProvider;
     }
 }
