@@ -122,6 +122,8 @@ class ChildInfo extends \yii\db\ActiveRecord
         'field44' => '户籍所在省（北京市）',
         'field45' => '户籍地址区',
         'field1' => '户口',
+        'fieldu46'=>'现住址地址',
+
     ];
 
     /**
