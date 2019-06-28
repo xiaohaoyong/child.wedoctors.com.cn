@@ -124,6 +124,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                             'field50',
                             [
+                                'attribute' => '现住址',
+                                'value' => function ($e) {
+                                    return $e->parent->fieldu46 ? $e->parent->fieldu46 : "无";
+                                }
+                            ],
+                            [
                                 'attribute' => '签约时间',
                                 'value' => function ($e) {
                                     $sign = \common\models\DoctorParent::findOne(['parentid' => $e->userid, 'level' => 1]);
