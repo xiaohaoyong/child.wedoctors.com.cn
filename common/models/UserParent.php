@@ -49,7 +49,7 @@ class UserParent extends \yii\db\ActiveRecord {
     {
         return [
             [['userid', 'mother_phone', 'father_phone', 'state', 'source', 'province', 'county', 'city'], 'integer'],
-            [['father_birthday','mother', 'father', 'address', 'field34', 'field33', 'field30', 'field29', 'field28', 'field12', 'field11', 'field1', 'fbirthday', 'field43', 'field44', 'field45'], 'safe'],
+            [['father_birthday','mother', 'father', 'address', 'field34', 'field33', 'field30', 'field29', 'field28', 'field12', 'field11', 'field1', 'fbirthday', 'field43', 'field44', 'field45','fieldu46'], 'safe'],
             [['mother_id'], 'string', 'max' => 18],
         ];
     }
@@ -72,7 +72,7 @@ class UserParent extends \yii\db\ActiveRecord {
         'field44' => '户籍所在省（北京市）',
         'field45' => '户籍地址区',
         'field1' => '户口',
-        'fieldu46'=>'现住址详细',
+        'fieldu46'=>'现住址地址',
     ];
     //通过id获取信息 刘方露
     public static function GetInfoById($userid)
@@ -102,7 +102,7 @@ class UserParent extends \yii\db\ActiveRecord {
             'field44' => '户籍所在省',
             'field45' => '户籍所在市',
             'field1' => '户口',
-            'fieldu46'=>'现住址详细',
+            'fieldu46'=>'现住址地址',
             'province' => '省', 'county' => '县', 'city' => '市',
         ];
     }
