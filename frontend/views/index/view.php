@@ -75,6 +75,8 @@ $this->title = "开放-合作-共享 儿宝宝";
             ?>
             <div class="hospitals">
                 <div id="list1" class="tab-pane active">
+
+
                     <?php
                     $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1102])->all();
                     foreach ($hospitals as $k => $v) {
