@@ -68,6 +68,7 @@ $this->title = "开放-合作-共享 儿宝宝";
                 <li class="item"><a href="#list6" data-toggle="tab">石景山</a></li>
                 <li class="item"><a href="#list7" data-toggle="tab">房山区</a></li>
                 <li class="item"><a href="#list8" data-toggle="tab">门头沟</a></li>
+                <li class="item"><a href="#list9" data-toggle="tab">丰台区</a></li>
             </ul>
             <?php
             echo \yii\bootstrap\Tabs::widget();
@@ -178,6 +179,20 @@ $this->title = "开放-合作-共享 儿宝宝";
                 <div id="list8" class="tab-pane">
                     <?php
                     $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1109])->all();
+                    foreach ($hospitals as $k => $v) {
+                        ?>
+                        <div class="item">
+                            <div class="logo">
+                                <img src="/img/view_hospital_logo.png" width="93" height="93">
+                            </div>
+                            <div class="title"><?= $v->name ?></div>
+                            <div class="name">社区卫生服务中心</div>
+                        </div>
+
+                    <?php } ?>               </div>
+                <div id="list9" class="tab-pane">
+                    <?php
+                    $hospitals = \common\models\UserDoctor::find()->select('name')->where(['county' => 1106])->all();
                     foreach ($hospitals as $k => $v) {
                         ?>
                         <div class="item">
