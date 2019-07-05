@@ -47,7 +47,7 @@ class ArticleCommentSearch extends ArticleComment
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=>['pageSize'=>200]
+            'pagination'=>['pageSize'=>300]
         ]);
 
         $this->load($params);

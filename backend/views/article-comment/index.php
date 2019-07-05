@@ -44,6 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+                                    'attribute' => '儿童性别',
+                                    'value' => function ($e) {
+                                        $child=\common\models\ChildInfo::findOne(['userid'=>$e->userid]);
+                                        return \common\models\ChildInfo::$genderText[$child->gender];
+                                    }
+                                ],
+                                [
                                     'attribute' => '儿童出生日期',
                                     'value' => function ($e) {
                                         $child=\common\models\ChildInfo::findOne(['userid'=>$e->userid]);
