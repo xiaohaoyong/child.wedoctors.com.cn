@@ -244,10 +244,10 @@ class Pregnancy extends \yii\db\ActiveRecord
     {
         return [
             [['field90','doctorid','field2', 'field5', 'field11', 'field12', 'field15', 'field16', 'field31', 'field58', 'field60', 'field61', 'field63', 'field72', 'field83','familyid', 'field3', 'field7', 'field8', 'field9', 'field13', 'field14', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field28', 'field29', 'field30', 'field32', 'field35', 'field39', 'field40', 'field41', 'field43', 'field45', 'field46', 'field47', 'field48', 'field49', 'field50', 'field51', 'field52', 'field53', 'field54', 'field55', 'field56', 'field57', 'field62', 'field64', 'field65', 'field67', 'field68', 'field70', 'field74', 'field76', 'field77', 'field78', 'field80', 'field81', 'field84', 'field85', 'field87', 'field88', 'source', 'isupdate'], 'integer'],
-            [['field6', 'field38'], 'safe'],
+            [['field6', 'field38','safe'], 'safe'],
             [['field71', 'field73'], 'number'],
             [['field0', 'field75'], 'string', 'max' => 20],
-            [['field4', 'field37'], 'string', 'max' => 18],
+            [['field4'], 'string', 'max' => 18],
             [['field10', 'field42','field1','field36'], 'string', 'max' => 40],
             [['field25', 'field27', 'field44', 'field82'], 'string', 'max' => 30],
             [['field26', 'field33'], 'string', 'max' => 5],
