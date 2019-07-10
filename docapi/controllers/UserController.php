@@ -35,7 +35,7 @@ class UserController extends Controller
         $login=UserLogin::findOne(['phone'=>$phone,'type'=>1]);
         if($login) {
             //获取用户微信登陆信息
-            echo $path = "/sns/jscode2session?appid=" . \Yii::$app->params['doctor_AppID'] . "&secret=" . \Yii::$app->params['doctor_AppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";exit;
+            $path = "/sns/jscode2session?appid=" . \Yii::$app->params['doctor_AppID'] . "&secret=" . \Yii::$app->params['doctor_AppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
             $userJson = $curl->get();
             $user = json_decode($userJson, true);
