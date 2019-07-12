@@ -27,5 +27,4 @@ class UserController extends \docapi\controllers\UserController
         $userLogin = UserLogin::findOne(['userid' => $this->userid]);
         return $userLogin;
     }
-
 }

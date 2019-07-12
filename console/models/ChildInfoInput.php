@@ -158,6 +158,7 @@ class ChildInfoInput
             $childData['birthday']=intval(strtotime($value['birthday']));
             $childData['source']=$this->hospitalid;
             $childData['admin']=$this->hospitalid;
+            var_dump($childData);exit;
             $child->load(['ChildInfo'=>$childData]);
             $this->log->addLog("保存儿童");
             if (!$child->save()) {
