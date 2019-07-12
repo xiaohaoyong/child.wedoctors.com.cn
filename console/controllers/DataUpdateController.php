@@ -193,9 +193,6 @@ class DataUpdateController extends BeanstalkController
             $dur->type=1;
             $dur->save();
             return "\common\models\Examination";
-        }else{
-            var_dump($field_Examination);
-            var_dump($rs);
         }
         $field_Pregnancy=\common\models\Pregnancy::$field;
         if(!array_diff($field_Pregnancy,$rs) || array_search('产妇姓名',$rs)){
