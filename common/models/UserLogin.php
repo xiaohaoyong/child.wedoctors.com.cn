@@ -170,7 +170,8 @@ class UserLogin extends \yii\db\ActiveRecord
             'openid' => '微信openid',
             'phone' => '用户登录手机号',
             'createtime' => '创建时间',
-            'dopenid'=>'医生小程序openid'
+            'dopenid'=>'医生小程序openid',
+
         ];
     }
 

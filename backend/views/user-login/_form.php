@@ -26,6 +26,8 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'openid')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'xopenid')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'unionid')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'aopenid')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'dopenid')->textInput(['maxlength' => true]) ?>
 
 
                 <div class="form-group">
