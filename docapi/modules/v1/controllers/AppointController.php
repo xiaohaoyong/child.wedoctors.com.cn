@@ -58,7 +58,6 @@ class AppointController extends \docapi\controllers\AppointController
 
     public function actionList()
     {
-        exit;
         $doctor = Doctors::findOne(['userid' => $this->userid]);
         $userDoctor = UserDoctor::findOne(['hospitalid' => $doctor->hospitalid]);
 
