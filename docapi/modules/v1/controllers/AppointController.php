@@ -65,6 +65,16 @@ class AppointController extends \docapi\controllers\AppointController
 
         $params = \Yii::$app->request->queryParams;
         $searchModel = new AppointSearch();
+        if($params['AppointSearch']['phone']){
+            $params['AppointSearch']['phone']='';
+        }
+        if($params['AppointSearch']['type']){
+            $params['AppointSearch']['type']='';
+        }
+        if($params['AppointSearch']['appoint_date']){
+            $params['AppointSearch']['appoint_date']='';
+        }
+
         $dataProvider = $searchModel->search($params);
         $query=$dataProvider->query;
         // grid filtering conditions
