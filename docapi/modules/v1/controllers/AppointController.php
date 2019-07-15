@@ -58,20 +58,19 @@ class AppointController extends \docapi\controllers\AppointController
 
     public function actionList()
     {
-
-
+        exit;
         $doctor = Doctors::findOne(['userid' => $this->userid]);
         $userDoctor = UserDoctor::findOne(['hospitalid' => $doctor->hospitalid]);
 
         $params = \Yii::$app->request->queryParams;
         $searchModel = new AppointSearch();
-        if($params['AppointSearch']['phone']){
+        if(!$params['AppointSearch']['phone']){
             $params['AppointSearch']['phone']='';
         }
-        if($params['AppointSearch']['type']){
+        if(!$params['AppointSearch']['type']){
             $params['AppointSearch']['type']='';
         }
-        if($params['AppointSearch']['appoint_date']){
+        if(!$params['AppointSearch']['appoint_date']){
             $params['AppointSearch']['appoint_date']='';
         }
 
