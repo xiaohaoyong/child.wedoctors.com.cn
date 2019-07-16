@@ -5,7 +5,7 @@
     <meta content="yes" name="apple-mobile-web-app-capable"/>
     <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
     <meta content="telephone=no" name="format-detection"/>
-    <title>宣教指导</title>
+    <title>儿童中医指导</title>
     <style>
         body {
             font-size: 36px;
