@@ -9,7 +9,9 @@
 namespace docapi\modules\v1\controllers;
 
 use backend\models\DoctorsSearchModels;
+use common\components\Code;
 use common\models\Doctors;
+use common\models\Hospital;
 use common\models\User;
 use docapi\controllers\Controller;
 use common\models\FreeQuota;
@@ -42,12 +44,28 @@ class DoctorController extends Controller
         }
         return $list;
     }
-    public function actionView($id){
+    public function actionView($id=0){
+        $pamery=\Yii::$app->request->post();
+        if(intval($id)) {
+            $model = Doctors::findOne($id);
+            $row = $model->toArray();
+            if ($user = User::findOne($model->userid)) {
+                $row['phone'] = $user->phone;
+            }
+        }else{
+            $user=User::find()->where(['phone'=>$pamery['Doctors']['phone']])->andWhere(['type'=>3])->one();
+            if(!$user){
+                $doctor = Doctors::findOne(['userid' => $this->userid]);
+                $hospital=Hospital::findOne($doctor->hospitalid);
 
-        $model = Doctors::findOne($id);
-        $row=$model->toArray();
-        if($user=User::findOne($model->userid)){
-            $row['phone']=$user->phone;
+                $model=new Doctors();
+                $model->province=11;
+                $model->city=11;
+                $model->county=$hospital->county;
+                $model->hospitalid=$doctor->hospitalid;
+            }else{
+                return new Code(20010,'手机号码已存在');
+            }
         }
 
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
