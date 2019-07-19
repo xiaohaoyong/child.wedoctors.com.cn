@@ -428,7 +428,7 @@ class Pregnancy extends \yii\db\ActiveRecord
 
         if(!$preg->save()){
             var_dump($preg->firstErrors);
-            var_dump($value);exit;
+            return false;
         }
         return $return;
     }
