@@ -84,7 +84,7 @@ class WorkerController extends BeanstalkController
                         if ($ulv->openid) {
                             $rs = WechatSendTmp::send($data, $ulv->openid, $temp, '', $miniprogram);
                             $log->addLog($ulv->openid);
-                            $log->addLog($rs);
+                            $log->addLog($rs?'true':'false');
                         }
                     }
                 }
@@ -93,12 +93,9 @@ class WorkerController extends BeanstalkController
                     $key=$article->catid==6?3:5;
                     Notice::setList($v, $key, ['title' => $article->info->title, 'ftitle' => date('Y年m月d H:i'), 'id' => "/article/view/index?id=".$artid,]);
                 }
-                $log->saveLog();
             }
+            $log->saveLog();
         }
         return self::DELETE;
     }
-
-    // ...
-
 }
