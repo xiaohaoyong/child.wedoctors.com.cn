@@ -23,7 +23,7 @@ $config= [
     'modules' => [
         'redactor' => [
             'class' => 'yii\redactor\RedactorModule',
-            'uploadDir' => dirname(dirname(__FILE__))."/../../static.fuli.wedoctors.com.cn/redactor/",
+            'uploadDir' => dirname(dirname(__FILE__))."/../../static.i.wedoctors.com.cn/redactor/",
             'uploadUrl' => 'http://static.i.wedoctors.com.cn/redactor',
             'imageAllowExtensions'=>['jpg','png','gif']
         ],
