@@ -67,7 +67,7 @@ class Controller extends \yii\web\Controller
                 $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
                 if($doctorParent) {
                     $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-                    if($doctor->county==1105 || in_array($doctorParent->doctorid,[143296,118080,126118,126122,160226,113896,113478,91722,175877,176156,184741,184793,190922,192821])) {
+                    if($doctor->county==1105 || in_array($doctorParent->doctorid,[143296,118080,126118,126122,160226,113896,113478,91722,175877,176156,184741,184793,190922,192821,194606])) {
                         $auto = Autograph::findOne(['userid' => $this->userid]);
                         if (!$auto) {
                             //判断是否添加了宝宝或者孕产妇
