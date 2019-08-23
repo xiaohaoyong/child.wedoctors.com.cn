@@ -29,7 +29,7 @@ $this->title="儿宝宝";
     <div class="list">
         <div class="item">
             <div class="img"><img src="/img/index_list_1.png" width="77" height="71"></div>
-            <div class="title">线下线下高度协同</div>
+            <div class="title">线下高度协同</div>
             <div class="info">信任感易建立</br> 粘度高</div>
         </div>
         <div class="item">
