@@ -25,6 +25,8 @@ databackend\assets\DatabasesAsset::register($this);
                     <th>id</th>
 
                     <th>社区卫生服务中心</th>
+                    <th>名称</th>
+
                     <th>电话</th>
 
                     <th>辖区内管理儿童数</th>
@@ -45,6 +47,8 @@ databackend\assets\DatabasesAsset::register($this);
                         <td><?=$v->hospitalid?>,<?=$v->userid?></td>
 
                         <td><?=$v->name?></td>
+                        <td><?=\common\models\Hospital::findOne($v->hospitalid)->name?></td>
+
                         <td><?=$v->phone?></td>
 
                         <td><?=$total=\common\models\ChildInfo::find()
