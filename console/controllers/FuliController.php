@@ -23,7 +23,7 @@ use yii\redis\Cache;
 
 class FuliController extends Controller
 {
-    public function subscribe(){
+    public function actionSubscribe(){
         $config = [
             'app_id' => 'wx1147c2e491dfdf1d',
             'secret' => '98001ba41e010dea2861f3e0d95cbb15',
