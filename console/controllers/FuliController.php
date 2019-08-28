@@ -49,7 +49,7 @@ class FuliController extends Controller
                 $pushLog=new PushLog();
                 $pushLog->openid=$v->openid;
                 $pushLog->type=1;
-                $pushLog->return=$return;
+                $pushLog->return=$rs['errcode'];
                 if(!$pushLog->save()){
                     var_dump($pushLog->firstErrors);
                     exit;
