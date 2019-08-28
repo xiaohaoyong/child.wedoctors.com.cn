@@ -2,6 +2,7 @@
 
 namespace weixin\controllers;
 
+use EasyWeChat\Factory;
 use common\components\HttpRequest;
 use common\components\Log;
 use common\helpers\WechatSendTmp;
@@ -60,6 +61,8 @@ class SuiteController extends Controller
                 //分享是的二维码
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
                     $openid = $xml['FromUserName'];
+
+
                     $scene = str_replace('qrscene_', '', $xml['EventKey']);
                     if ($scene) {
                         $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene, 'type' => 0]);
@@ -127,6 +130,7 @@ class SuiteController extends Controller
                         ];
                         $url = \Yii::$app->params['site_url'] . "#/add-docter";
                         WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                        $this->custom_send();
                         return '';
 
                     } else {
@@ -134,11 +138,12 @@ class SuiteController extends Controller
                         $url_doctor = \Yii::$app->params['htmlUrl'] . "#/accountdocter?usertype=docter";
 
                         $text = "您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，请到管辖社区完成扫面签约哦！签约后即可享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
+                        $this->custom_send();
                         return self::sendText($openid, $xml['ToUserName'], $text);
                     }
                 } else {
                     //return self::sendText($xml['FromUserName'], $xml['ToUserName'],'...');
-
+                    $this->custom_send();
                     return self::forwardToCustomService($xml['FromUserName'], $xml['ToUserName']);
                 }
             } else {
@@ -146,6 +151,22 @@ class SuiteController extends Controller
                 $log->saveLog();
             }
         }
+    }
+
+    //客服消息
+    public function custom_send(){
+        return;
+        $config = [
+            'app_id' => 'wx1147c2e491dfdf1d',
+            'secret' => '98001ba41e010dea2861f3e0d95cbb15',
+            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+            'response_type' => 'array',
+            //...
+        ];
+
+        $app = Factory::officialAccount($config);
+        $app->customer_service->message("儿宝宝为您准备了一些免费福利，请到<a href=\"http://www.qq.com\" data-miniprogram-appid=\"wx6c33bfd66eb0a4f0\" data-miniprogram-path=\"pages/index/index\">儿宝宝福利社</a>中领取")->to($openid)->send();
+
     }
 
     //创建菜单
@@ -156,6 +177,7 @@ class SuiteController extends Controller
             [
                 ['type' => 'miniprogram', 'name' => '育儿服务', 'url' => 'pages/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',],
                 ['type' => 'miniprogram', 'name' => '育儿课堂', 'url' => 'pages/article/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/article/index/index',],
+                //['type' => 'miniprogram', 'name' => '问医生', 'url' => 'pages/index/index', 'appid' => 'wxb7f2ce989de39293', 'pagepath' => 'pages/homePage/homePage',],
 
 //                ['type' => 'view', 'name' => '孕产服务',
 //                    'sub_button' => [
@@ -210,7 +232,14 @@ class SuiteController extends Controller
                         'type' => 'view',
                         'name' => '我是医生',
                         'url' => 'http://hospital.child.wedoctors.com.cn',
-                    ]
+                    ],
+                    [
+                        'type' => 'miniprogram',
+                        'name' => '我的福利',
+                        'url' => Yii::$app->params['index_url'],
+                        'appid' => 'wx6c33bfd66eb0a4f0',
+                        'pagepath' => 'pages/index/index'
+                    ],
                 ]],
 
             ]
