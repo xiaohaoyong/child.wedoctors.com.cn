@@ -34,7 +34,7 @@ class FuliController extends Controller
             'response_type' => 'array',
             //...
         ];
-        $weopenid = WeOpenid::find()->where(['>', 'createtime', strtotime('-5 hours')])
+        $weopenid = WeOpenid::find()->where(['>', 'createtime', strtotime('-48 hours')])
             ->andWhere(['<', 'createtime', strtotime('-2 hours')])
             ->andWhere(['!=', 'openid', ''])
             ->all();
