@@ -38,28 +38,29 @@ class FuliController extends Controller
             ->andWhere(['<', 'createtime', strtotime('-2 hours')])
             ->andWhere(['!=', 'openid', ''])
             ->all();
-//        foreach ($weopenid as $k => $v) {
-//            if ($this->level($v->openid) > 0) {
-//
-//                $return=1;
-//                $pushLog=new PushLog();
-//                $pushLog->openid=$v->openid;
-//                $pushLog->type=1;
-//                $pushLog->return=$return;
-//                if(!$pushLog->save()){
-//                    var_dump($pushLog->firstErrors);
-//                    exit;
-//                }
-//                echo $v->openid;
-//                echo "\n";
-//                //sleep(5);
-//            }
-//
-//        }
-        $app = Factory::officialAccount($config);
-        $rs = $app->customer_service
-            ->message('儿宝宝福利社上线啦，我们会定期给家长们搜罗些免费、实用、有趣的福利哦！' . "\n" . '<a href="http://child.wedoctors.com.cn" data-miniprogram-appid="wx6c33bfd66eb0a4f0" data-miniprogram-path="pages/index/index">快快来领取吧</a>')
-            ->to('o5ODa0451fMb_sJ1D1T4YhYXDOcg')->send();
+        foreach ($weopenid as $k => $v) {
+            if ($this->level($v->openid) > 0) {
+
+                $app = Factory::officialAccount($config);
+                $rs = $app->customer_service
+                    ->message('儿宝宝福利社上线啦，我们会定期给家长们搜罗些免费、实用、有趣的福利哦！' . "\n" . '<a href="http://child.wedoctors.com.cn" data-miniprogram-appid="wx6c33bfd66eb0a4f0" data-miniprogram-path="pages/index/index">快快来领取吧</a>')
+                    ->to($v->openid)->send();
+                $return=1;
+                $pushLog=new PushLog();
+                $pushLog->openid=$v->openid;
+                $pushLog->type=1;
+                $pushLog->return=$return;
+                if(!$pushLog->save()){
+                    var_dump($pushLog->firstErrors);
+                    exit;
+                }
+                echo $v->openid;
+                echo "\n";
+                sleep(5);
+            }
+
+        }
+
         var_dump($rs['errcode']);
     }
 
