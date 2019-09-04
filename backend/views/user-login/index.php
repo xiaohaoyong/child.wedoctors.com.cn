@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'unionid',
                                 // 'hxusername',
                                 'phone',
+                                'type',
                                 // 'createtime:datetime',
 
                                 [

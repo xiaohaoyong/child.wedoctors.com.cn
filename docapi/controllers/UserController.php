@@ -60,9 +60,10 @@ class UserController extends Controller
             UserLogin::updateAll(['dopenid'=>''],["dopenid"=>$user['openid']]);
             //更新用户平台id
             if ($user['unionid']) {
-                $login->dopenid = $user['openid'];
-                $login->save();
+                $login->unionid = $user['unionid'];
             }
+            $login->dopenid = $user['openid'];
+            $login->save();
 
             $useridKey = $login->userid ? md5($login->userid . "6623cXvY") : 0;
             return ['sessionKey' => $session_key, 'userKey' => $useridKey];
