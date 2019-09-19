@@ -116,6 +116,7 @@ class SiteController extends BaseController
         $doctorParent=DoctorParent::find()->select('doctor_parent.parentid')
             ->andFilterWhere(['doctor_parent.doctorid'=>$userDoctor->userid])
             ->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`')
+            ->andWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
             ->andWhere(['>', 'child_info.doctorid', 0])
             ->column();
         if(!$doctorParent){
