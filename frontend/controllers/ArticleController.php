@@ -170,8 +170,6 @@ class ArticleController extends Controller
         if ($article_user = ArticleUser::findOne(['touserid' => $userid, 'artid' => $id])) {
             $article_user->level = 2;
             $article_user->save();
-            var_dump($article_user->firstErrors);
-            exit;
         } elseif ($userid) {
             $article_user = new ArticleUser();
             $article_user->level = 2;
