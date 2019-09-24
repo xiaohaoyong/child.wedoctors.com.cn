@@ -118,7 +118,7 @@
 <body>
 <div class="header">
     <div class="item <?=Yii::$app->request->get('type')==0?'on':''?>"><a href="/article/list?child_birthday=<?=Yii::$app->request->get('child_birthday')?>&child_name=<?=Yii::$app->request->get('child_name')?>&parent_name=<?=Yii::$app->request->get('parent_name')?>&phone=<?=Yii::$app->request->get('phone')?>&sign=<?=Yii::$app->request->get('sign')?>&type=0">未查看</a></div>
-    <div class="item <?=Yii::$app->request->get('type')==1?'on':''?>"><a href="/article/list?child_birthday=<?=Yii::$app->request->get('child_birthday')?>&child_name=<?=Yii::$app->request->get('child_name')?>&parent_name=<?=Yii::$app->request->get('parent_name')?>&phone=<?=Yii::$app->request->get('phone')?>&sign=<?=Yii::$app->request->get('sign')?>&type=1">已查看</a></div>
+    <div class="item <?=Yii::$app->request->get('type')==2?'on':''?>"><a href="/article/list?child_birthday=<?=Yii::$app->request->get('child_birthday')?>&child_name=<?=Yii::$app->request->get('child_name')?>&parent_name=<?=Yii::$app->request->get('parent_name')?>&phone=<?=Yii::$app->request->get('phone')?>&sign=<?=Yii::$app->request->get('sign')?>&type=2">已查看</a></div>
 </div>
 <div class="content">
     <?php if($data['list']){foreach ($data['list'] as $k=>$v){?>
