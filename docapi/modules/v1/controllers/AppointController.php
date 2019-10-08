@@ -23,37 +23,41 @@ class AppointController extends \docapi\controllers\AppointController
     {
         $appoint = Appoint::findOne(['id' => $id]);
 
-        $row = $appoint->toArray();
-        $doctor = UserDoctor::findOne(['userid' => $appoint->doctorid]);
-        if ($doctor) {
-            $hospital = Hospital::findOne($doctor->hospitalid);
+        $row=[];
+        if ($appoint) {
+            $appoint->state = 2;
+            $appoint->save();
+            $row = $appoint->toArray();
+            $doctor = UserDoctor::findOne(['userid' => $appoint->doctorid]);
+            if ($doctor) {
+                $hospital = Hospital::findOne($doctor->hospitalid);
+            }
+            $row['hospital'] = $hospital->name;
+            $row['type'] = Appoint::$typeText[$appoint->type];
+            $row['time'] = date('Y.m.d', $appoint->appoint_date) . "  " . Appoint::$timeText[$appoint->appoint_time];
+            $row['child_name'] = ChildInfo::findOne($appoint->childid)->name;
+            $row['duan'] = $appoint->appoint_time;
+            $row['id'] = $appoint->id;
+            $row['phone'] = $appoint->phone;
+            $index = Appoint::find()
+                ->andWhere(['appoint_date' => $appoint->appoint_date])
+                ->andWhere(['<', 'id', $id])
+                ->andWhere(['doctorid' => $appoint->doctorid])
+                ->andWhere(['appoint_time' => $appoint->appoint_time])
+                ->andWhere(['type' => $appoint->type])
+                ->count();
+            $row['index'] = $index + 1;
         }
-        $row['hospital'] = $hospital->name;
-        $row['type'] = Appoint::$typeText[$appoint->type];
-        $row['time'] = date('Y.m.d', $appoint->appoint_date) . "  " . Appoint::$timeText[$appoint->appoint_time];
-        $row['child_name'] = ChildInfo::findOne($appoint->childid)->name;
-        $row['duan'] = $appoint->appoint_time;
-        $row['id']=$appoint->id;
-        $row['phone']=$appoint->phone;
-        $index = Appoint::find()
-            ->andWhere(['appoint_date' => $appoint->appoint_date])
-            ->andWhere(['<', 'id', $id])
-            ->andWhere(['doctorid' => $appoint->doctorid])
-            ->andWhere(['appoint_time' => $appoint->appoint_time])
-            ->andWhere(['type' => $appoint->type])
-            ->count();
-        $row['index'] = $index + 1;
-
-        $child=ChildInfo::findOne(['id'=>$appoint->childid]);
-        if($child) {
+        $child = ChildInfo::findOne(['id' => $appoint->childid]);
+        if ($child) {
             $userParent = UserParent::findOne(['userid' => $child->userid]);
-            $rs['sex']=$child->gender==1?'男':'女';
-            $rs['birthday']=date('Y年m月d日',$child->birthday);
-            $rs['mother']=$userParent->mother;
-            $rs['huji']=$userParent->field44;
+            $rs['sex'] = $child->gender == 1 ? '男' : '女';
+            $rs['birthday'] = date('Y年m月d日', $child->birthday);
+            $rs['mother'] = $userParent->mother;
+            $rs['huji'] = $userParent->field44;
         }
 
-        return ['appoint'=>$row,'child'=>$rs];
+        return ['appoint' => $row, 'child' => $rs];
     }
 
     public function actionList()
@@ -63,18 +67,18 @@ class AppointController extends \docapi\controllers\AppointController
 
         $params = \Yii::$app->request->queryParams;
         $searchModel = new AppointSearch();
-        if(!$params['AppointSearch']['phone']){
-            $params['AppointSearch']['phone']='';
+        if (!$params['AppointSearch']['phone']) {
+            $params['AppointSearch']['phone'] = '';
         }
-        if(!$params['AppointSearch']['type']){
-            $params['AppointSearch']['type']='';
+        if (!$params['AppointSearch']['type']) {
+            $params['AppointSearch']['type'] = '';
         }
-        if(!$params['AppointSearch']['appoint_date']){
-            $params['AppointSearch']['appoint_date']='';
+        if (!$params['AppointSearch']['appoint_date']) {
+            $params['AppointSearch']['appoint_date'] = '';
         }
 
         $dataProvider = $searchModel->search($params);
-        $query=$dataProvider->query;
+        $query = $dataProvider->query;
         // grid filtering conditions
         $dataProvider->query->andFilterWhere(['doctorid' => $userDoctor->userid]);
         $dataProvider->query->orderBy('appoint_date asc,appoint_time asc,id asc');
@@ -100,9 +104,9 @@ class AppointController extends \docapi\controllers\AppointController
             $list[] = $row;
         }
 
-        $count=$query->andFilterWhere(['appoint_date'=>strtotime(date('Y-m-d'))])->count();
+        $count = $query->andFilterWhere(['appoint_date' => strtotime(date('Y-m-d'))])->count();
 
-        return ['list'=>$list,'count'=>$count];
+        return ['list' => $list, 'count' => $count];
     }
 
 }
