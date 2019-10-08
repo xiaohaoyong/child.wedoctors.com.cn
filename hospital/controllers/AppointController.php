@@ -138,8 +138,7 @@ class AppointController extends Controller
             $rs = WechatSendTmp::send($data, $login->openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
 
         }
-
-        return $this->redirect(['index']);
+        return $this->goBack();
     }
 
     public function actionPush($childid)
