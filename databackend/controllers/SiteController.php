@@ -42,7 +42,7 @@ class SiteController extends BaseController
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['logout','index','login', 'error', 'captcha'],
+                        'actions' => ['logout','index','login', 'error', 'captcha','data'],
                         'allow' => true,
                     ],
                 ],
@@ -208,6 +208,94 @@ class SiteController extends BaseController
 
         ]);
     }
+
+
+
+    public function actionData(){
+        ini_set('memory_limit', '2048M');
+        ini_set("max_execution_time", "0");
+        set_time_limit(0);
+
+        $doctor=UserDoctor::find()->andFilterWhere(['county'=>\Yii::$app->user->identity->county])->andFilterWhere(['>','userid',37])->all();
+
+
+
+        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel->getProperties();
+
+        //设置A3单元格为文本
+        $objPHPExcel->getActiveSheet()->getStyle('B')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $objPHPExcel->getActiveSheet()->getStyle('I')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $key1 = 1;
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A'.$key1, '社区卫生服务中心')
+            ->setCellValue('B'.$key1, '辖区内管理儿童数')
+            ->setCellValue('C'.$key1, '今日签约')
+            ->setCellValue('D'.$key1, '签约总数')
+            ->setCellValue('E'.$key1, '今日宣教')
+            ->setCellValue('F'.$key1, '已宣教数')
+            ->setCellValue('G'.$key1, '数据');
+//写入内容
+        $today = strtotime(date('Y-m-d 00:00:00'));
+
+        foreach($doctor as $k=>$v) {
+
+            //今日已签约
+            $todayNum= \common\models\ChildInfo::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+                ->andFilterWhere(['`doctor_parent`.`doctorid`' => $v->userid])
+                ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
+                ->andFilterWhere([">",'`doctor_parent`.createtime',$today])
+                ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+                ->count();
+            //已签约总数
+            $q = \common\models\ChildInfo::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                ->andFilterWhere(['`doctor_parent`.doctorid' => $v->userid])
+                ->andFilterWhere(['>', 'child_info.birthday', strtotime('-3 year')])
+                ->andFilterWhere(['child_info.admin' => $v->hospitalid])
+                ->andFilterWhere(['`doctor_parent`.level' => 1])->count();
+            $today = strtotime(date('Y-m-d 00:00:00'));
+            //今日宣教
+            $anum= \common\models\ArticleUser::find()
+                ->andFilterWhere(['userid' => $v->userid])
+                ->andFilterWhere([">", 'createtime', $today])->count();
+            $bnum=\common\models\ArticleUser::find()
+                ->andFilterWhere(['userid' => $v->userid])->count();
+            $total=\common\models\ChildInfo::find()->andFilterWhere(['source' => $v->hospitalid])->andFilterWhere(['admin' => $v->hospitalid])->andFilterWhere(['>', 'birthday', strtotime('-3 year')])->count();
+            if ($total) {
+                $baifen = round(($q / $total) * 100, 1);
+            } else {
+                $baifen = 0;
+            }
+            $key1 = $k + 2;
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $key1, $v->name)
+                ->setCellValue('B' . $key1, $today)
+                ->setCellValue('C' . $key1, $todayNum)
+                ->setCellValue('D' . $key1, $q)
+                ->setCellValue('E' . $key1, $anum)
+                ->setCellValue('F' . $key1, $bnum)
+                ->setCellValue('G' . $key1, $baifen."%");
+        }
+        // $objPHPExcel->setActiveSheetIndex(0);
+
+        ob_end_clean();
+        ob_start();
+
+        header('Content-Type : application/vnd.ms-excel');
+        header('Content-Disposition:attachment;filename="'.date("Y年m月j日").'社区统计数据.xls"');
+        $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
+        $objWriter->save('php://output');
+    }
+
 
     /**
      * Login action.

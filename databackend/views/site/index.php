@@ -235,6 +235,8 @@ databackend\assets\IndexAsset::register($this);
                         <h3 class="box-title">社区服务中心签约管理数据</h3>
                         <div class="box-tools">
                             <a href="<?= \yii\helpers\Url::to(['user-doctor/index']) ?>">查看更多</a>
+                            <a href="<?= \yii\helpers\Url::to(['site/data']) ?>">下载当日数据</a>
+
                         </div>
                     </div>
                     <!-- /.box-header -->
