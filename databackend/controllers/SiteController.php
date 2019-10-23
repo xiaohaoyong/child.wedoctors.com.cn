@@ -278,7 +278,7 @@ class SiteController extends BaseController
             $key1 = $k + 2;
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $key1, $v->name)
-                ->setCellValue('B' . $key1, $today)
+                ->setCellValue('B' . $key1, $total)
                 ->setCellValue('C' . $key1, $todayNum)
                 ->setCellValue('D' . $key1, $q)
                 ->setCellValue('E' . $key1, $anum)
