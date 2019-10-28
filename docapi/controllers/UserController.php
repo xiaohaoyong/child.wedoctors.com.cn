@@ -65,6 +65,7 @@ class UserController extends Controller
             $login->dopenid = $user['openid'];
             $login->save();
 
+
             $useridKey = $login->userid ? md5($login->userid . "6623cXvY") : 0;
             return ['sessionKey' => $session_key, 'userKey' => $useridKey];
         }

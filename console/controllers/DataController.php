@@ -49,11 +49,40 @@ class DataController extends Controller
 {
 
     public function actionTests(){
-
-
-        $return = \Yii::$app->beanstalk
-            ->putInTube('exaupdate', ['childid'=>149265]);
-
+        $doctorParent=DoctorParent::find()->where(['doctorid'=>113890])->andWhere(['level'=>1])->all();
+        foreach ($doctorParent as $k=>$v){
+//            $child=ChildInfo::find()
+//                ->where(['userid'=>$v->parentid])
+//                ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+//                ->andWhere(['>', 'child_info.doctorid', 0])
+//                ->all();
+            $child=Pregnancy::find()->where(['familyid'=>$v->parentid])->andWhere(['field49'=>0])->all();
+            if($child){
+                $rs=[];
+                //$parent=UserParent::findOne(['userid'=>$v->parentid]);
+                foreach ($child as $ck=>$cv){
+                    $rs[]='11010538';
+                    $rs[]='11010538';
+                    $rs[]='XHMWN';
+                    $rs[]=$cv->field1;
+                    $rs[]=date("Y-m-d",$cv->field2);
+                    $rs[]=$cv->field6;
+                    $rs[]=$cv->field4;
+                    $rs[]="1";
+                    $rs[]="0";
+                    $rs[]="0";
+                    $rs[]=date("Y-m-d",$v->createtime);
+                    $rs[]="0";
+                    $rs[]="0538";
+                    $rs[]="北京市朝阳区小红门社区卫生服务中心";
+                    $rs[]="XHMWN";
+                    $rs[]="2019/9/19";
+                    echo implode(',',$rs);
+                    $rs=[];
+                    echo "\n";
+                }
+            }
+        }
     }
     public function actionAppoint(){
         $userAppoint=UserDoctorAppoint::find()->all();

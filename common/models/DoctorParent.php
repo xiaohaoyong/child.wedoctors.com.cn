@@ -30,7 +30,7 @@ class DoctorParent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['doctorid', 'parentid', 'level'], 'required'],
+            [['doctorid'], 'required'],
             [['doctorid', 'parentid', 'createtime', 'level'], 'integer'],
         ];
     }
@@ -42,8 +42,8 @@ class DoctorParent extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'doctorid' => 'Doctorid',
-            'parentid' => 'Parentid',
+            'doctorid' => '签约医院',
+            'parentid' => '家庭ID',
             'createtime' => '签约时间',
             'level' => '签约状态',
         ];

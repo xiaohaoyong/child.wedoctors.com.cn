@@ -50,7 +50,7 @@ class Controller extends \yii\web\Controller
                 if (!$userLogin && !in_array($controllerID . "/" . $actionID, $this->result)) {
                     $cache = \Yii::$app->rdmp;
                     $cache->lpush("user_login_error", $session[0]);
-                    \Yii::$app->response->data = ['code' => 30001, 'msg' => '未授权访问'];
+                    \Yii::$app->response->data = ['code' => 30001, 'msg' => '未授权访问1'];
                     return false;
                 }
                 $this->userid = $userLogin->userid;
@@ -58,7 +58,7 @@ class Controller extends \yii\web\Controller
                 $this->appToken = $session;
                 $this->userLogin = $userLogin;
             }else{
-                \Yii::$app->response->data = ['code' => 30001, 'msg' => '未授权访问'];
+                \Yii::$app->response->data = ['code' => 30001, 'msg' => '未授权访问2'];
                 return false;
             }
         }elseif(!in_array($controllerID."/".$actionID,$this->result)){

@@ -15,17 +15,13 @@ use yii\widgets\ActiveForm;
             <div class="box-body">
                 <?php $form = ActiveForm::begin(); ?>
 
-                    <?= $form->field($model, 'doctorid')->textInput() ?>
-
-    <?= $form->field($model, 'parentid')->textInput() ?>
-
-    <?= $form->field($model, 'createtime')->textInput() ?>
-
-    <?= $form->field($model, 'level')->textInput() ?>
+                <?=\common\models\UserParent::findOne($model->parentid)->mother?>
+                <hr>
+                <?= $form->field($model, 'doctorid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->column(),['prompt'=>'请选择']) ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
-                    'btn btn-primary']) ?>
+                    <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
+                        'btn btn-primary']) ?>
                 </div>
 
                 <?php ActiveForm::end(); ?>

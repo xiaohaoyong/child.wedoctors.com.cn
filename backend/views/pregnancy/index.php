@@ -127,12 +127,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                    aria-expanded="false">
                                     <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                     <li>{show} </li>
+                                     <li>{show} </li><li>{parent} </li><li>{docpar} </li>
                                 </ul>
                             </div>
                             ', 'buttons' => [
                                     'show' => function ($url, $model, $key) {
                                         return Html::a('<span class="fa fa-database"></span> 查看追访记录', \yii\helpers\Url::to(['interview/index', 'InterviewSearch[userid]' => $model->familyid]));
+                                    },
+                                    'parent' => function ($url, $model, $key) {
+                                        return Html::a('<span class="fa fa-database"></span> 查看家庭数据', \yii\helpers\Url::to(['user-parent/view', 'id' => $model->familyid]));
+                                    },
+                                    'docpar' => function ($url, $model, $key) {
+                                        if ($model->familyid) {
+                                            $doctorParent = \common\models\DoctorParent::findOne(['parentid' => $model->familyid]);
+                                        }
+                                        return Html::a('<span class="fa fa-database"></span> 签约关系', \yii\helpers\Url::to(['doctor-parent/update', 'id' => $doctorParent->id]));
                                     },
                                 ],
                                 ],
