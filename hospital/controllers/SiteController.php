@@ -204,11 +204,13 @@ class SiteController extends BaseController
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
 
         $data['todayPregLCount']=Pregnancy::find()
-            ->andWhere(['field49'=>0])
+            ->andWhere(['pregnancy.field49'=>0])
+            ->andWhere(['>', 'pregnancy.familyid', 0])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-            ->andWhere(['doctor_parent.createtime'=>strtotime(date('Ymd'))])
-            ->count();
+            ->andWhere(['>','doctor_parent.createtime',strtotime(date('Y-m-d'))])
+            ->andWhere(['<','doctor_parent.createtime',strtotime(date('Y-m-d 23:59:59'))])
+
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
 
         return $this->render('index',[
             'data'=>$data,

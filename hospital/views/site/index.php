@@ -177,7 +177,7 @@ hospital\assets\IndexAsset::register($this);
 
                 <div class="info-box-content">
 
-                    <span class="info-box-text">今日签约孕产妇:<?=$user['TqrcodeNum']?></span>
+                    <span class="info-box-text">今日签约孕产妇:</span>
                     <span class="info-box-number"><?=$data['todayPregLCount']?></span>
                 </div>
                 <!-- /.info-box-content -->
