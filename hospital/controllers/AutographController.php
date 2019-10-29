@@ -73,12 +73,14 @@ class AutographController extends Controller
 
         $doctorParent=DoctorParent::findOne(['parentid'=>$userid]);
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
+        $child=ChildInfo::find()->select('name')->where(['userid'=>$userid])->column();
 
 
         return $this->renderPartial('down',[
             'userParent'=>$userParent,
             'userid'=>$userid,
             'userDoctor'=>$userDoctor,
+            'child'=>$child,
         ]);
     }
 
