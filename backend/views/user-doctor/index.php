@@ -27,8 +27,6 @@ databackend\assets\DatabasesAsset::register($this);
                     <th>社区卫生服务中心</th>
                     <th>名称</th>
 
-                    <th>电话</th>
-
                     <th>辖区内管理儿童数</th>
                     <th>今日签约 </th>
                     <th>签约总数</th>
