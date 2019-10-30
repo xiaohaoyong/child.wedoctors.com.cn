@@ -36,8 +36,6 @@ databackend\assets\DatabasesAsset::register($this);
                     <th>已宣教数</th>
                     <th>管理服务率</th>
                     <th>数据</th>
-                    <th>创建时间</th>
-
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -49,18 +47,31 @@ databackend\assets\DatabasesAsset::register($this);
                         <td><?=$v->hospitalid?>,<?=$v->userid?></td>
 
                         <td><?=$v->name?></td>
-                        <td><?=\common\models\Hospital::findOne($v->hospitalid)->name?></td>
-
                         <td><?=$v->phone?></td>
 
-                        <td>
-                            <?php
-                            echo date('Y-m-d',\common\models\User::findOne($v->userid)->createtime);
+                        <td><?=$total=\common\models\ChildInfo::find()
+                                ->where(['source'=>$v->hospitalid])
+                                ->andFilterWhere(['admin'=>$v->hospitalid])
+                                ->andFilterWhere(['>','birthday',strtotime('-3 year')])->count()?></td>
+                        <td><?php
+                            $today=strtotime(date('Y-m-d 00:00:00'));
+                            //今日已签约
+                            echo  \common\models\ChildInfo::find()
+                                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                                ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
+                                ->andFilterWhere(['`doctor_parent`.level'=>1])
+                                ->andFilterWhere([">",'`doctor_parent`.createtime',$today])->count();
                             ?>
                         </td>
-                        <td>
-                        </td>
-                        <td>
+                        <td><?php
+                            //已签约总数
+                            echo  $q=\common\models\ChildInfo::find()
+                                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                                ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
+                                ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+                                ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
+                                ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
+                            ?>
                         </td>
                         <td><?php
                             $today=strtotime(date('Y-m-d 00:00:00'));
@@ -96,7 +107,6 @@ databackend\assets\DatabasesAsset::register($this);
                             </div>
                         </td>
                         <td><span class="badge <?=$color?>"><?=$baifen?>%</span></td>
-                        <td><span class="badge"><?=\common\models\Hospital::findOne($v->hospitalid)->createtime?></span></td>
                         <td>
                             <?=Html::a('<span class="fa fa-database"></span> 编辑', \yii\helpers\Url::to(['user-doctor/update',"id"=>$v->userid]));?>
                         </td>
