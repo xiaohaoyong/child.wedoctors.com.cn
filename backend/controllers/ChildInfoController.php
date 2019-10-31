@@ -26,7 +26,7 @@ class ChildInfoController extends BaseController
         $searchModel = new ChildInfoSearchModel();
         if(!$params)
         {
-            $params['DoctorParentSearchModel']['createtime']=strtotime(date('-30 day'));
+            $params['DoctorParentSearchModel']['createtime']=strtotime('-30 day');
         }
         $dataProvider = $searchModel->search($params);
 
