@@ -122,11 +122,11 @@ class SuiteController extends Controller
                         //微信模板消息
 
                         $data = [
-                            'first' => array('value' => "恭喜您，已成功签约。\n"),
+                            'first' => array('value' => "\n预签约已成功，点击完成正式签约"),
                             'keyword1' => ARRAY('value' => $doctor->name,),
                             'keyword2' => ARRAY('value' => $doctor->hospital->name),
                             'keyword3' => ARRAY('value' => date('Y年m月d日')),
-                            'remark' => ARRAY('value' => "\n 点击此信息授权进入，如果宝宝信息自动显示，就可以免费享受个性化儿童中医药健康指导服务啦，如果不显示，请正常添加宝宝信息即可", 'color' => '#221d95'),
+                            'remark' => ARRAY('value' => "请务必点击此信息授权进入，如果宝宝信息自动显示，就可以免费享受个性化儿童中医药健康指导服务啦，如果不显示，请正常添加宝宝信息即可", 'color' => '#221d95'),
                         ];
                         $url = \Yii::$app->params['site_url'] . "#/add-docter";
                         WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
