@@ -62,7 +62,7 @@ class DataController extends Controller
 //            Notice::setList($v, 4, ['title' => '金牌产后顾问1对1免费产后恢复测评与指导', 'ftitle' => '添加产后顾问微信kdxs4929进行测评指导', 'id' => '/article/view/index?id=734',]);
 //        }
 //        exit;
-        $we=WeOpenid::find()->select('openid')->where(['>','createtime',1573027200])->column();
+        $we=WeOpenid::find()->select('openid')->where(['>','createtime',1573030800])->column();
         foreach ($we as $k=>$v) {
             $config = [
                 'app_id' => 'wx1147c2e491dfdf1d',
