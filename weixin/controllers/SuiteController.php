@@ -138,8 +138,9 @@ class SuiteController extends Controller
                         $url_doctor = \Yii::$app->params['htmlUrl'] . "#/accountdocter?usertype=docter";
 
                         $text = "您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，请到管辖社区完成扫面签约哦！签约后即可享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
+                        $return= self::sendText($openid, $xml['ToUserName'], $text);
                         $this->custom_send($openid);
-                        return self::sendText($openid, $xml['ToUserName'], $text);
+                        return $return;
                     }
                 } else {
                     //return self::sendText($xml['FromUserName'], $xml['ToUserName'],'...');
@@ -155,7 +156,6 @@ class SuiteController extends Controller
 
     //客服消息
     public function custom_send($openid){
-        sleep(1);
         $config = [
             'app_id' => 'wx1147c2e491dfdf1d',
             'secret' => '98001ba41e010dea2861f3e0d95cbb15',
