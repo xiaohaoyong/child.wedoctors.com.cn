@@ -59,8 +59,8 @@ class SuiteController extends Controller
                 $log->addLog(implode(',', $xml));
                 $log->saveLog();
                 //分享是的二维码
+                $openid = $xml['FromUserName'];
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
-                    $openid = $xml['FromUserName'];
 
 
                     $scene = str_replace('qrscene_', '', $xml['EventKey']);
@@ -130,7 +130,7 @@ class SuiteController extends Controller
                         ];
                         $url = \Yii::$app->params['site_url'] . "#/add-docter";
                         WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
-                        $this->custom_send();
+                        $this->custom_send($openid);
                         return '';
 
                     } else {
@@ -138,12 +138,12 @@ class SuiteController extends Controller
                         $url_doctor = \Yii::$app->params['htmlUrl'] . "#/accountdocter?usertype=docter";
 
                         $text = "您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，请到管辖社区完成扫面签约哦！签约后即可享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
-                        $this->custom_send();
+                        $this->custom_send($openid);
                         return self::sendText($openid, $xml['ToUserName'], $text);
                     }
                 } else {
                     //return self::sendText($xml['FromUserName'], $xml['ToUserName'],'...');
-                    $this->custom_send();
+                    $this->custom_send($openid);
                     return self::forwardToCustomService($xml['FromUserName'], $xml['ToUserName']);
                 }
             } else {
@@ -154,8 +154,7 @@ class SuiteController extends Controller
     }
 
     //客服消息
-    public function custom_send(){
-        return;
+    public function custom_send($openid){
         $config = [
             'app_id' => 'wx1147c2e491dfdf1d',
             'secret' => '98001ba41e010dea2861f3e0d95cbb15',
@@ -165,7 +164,7 @@ class SuiteController extends Controller
         ];
 
         $app = Factory::officialAccount($config);
-        $app->customer_service->message("儿宝宝为您准备了一些免费福利，请到<a href=\"http://www.qq.com\" data-miniprogram-appid=\"wx6c33bfd66eb0a4f0\" data-miniprogram-path=\"pages/index/index\">儿宝宝福利社</a>中领取")->to($openid)->send();
+        $app->customer_service->message("儿宝宝为您准备了免费的产后恢复课程、亲子游泳体验，请到<a href=\"http://www.qq.com\" data-miniprogram-appid=\"wx6c33bfd66eb0a4f0\" data-miniprogram-path=\"pages/index/index\">儿宝宝福利社</a>中领取")->to($openid)->send();
 
     }
 
