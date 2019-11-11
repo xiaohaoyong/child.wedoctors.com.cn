@@ -155,6 +155,7 @@ class SuiteController extends Controller
 
     //客服消息
     public function custom_send($openid){
+        sleep(1);
         $config = [
             'app_id' => 'wx1147c2e491dfdf1d',
             'secret' => '98001ba41e010dea2861f3e0d95cbb15',
