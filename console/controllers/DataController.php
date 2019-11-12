@@ -55,6 +55,14 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $mpWechat = new MpWechat([
+            'token' => \Yii::$app->params['WeToken'],
+            'appId' => \Yii::$app->params['AppID'],
+            'appSecret' => \Yii::$app->params['AppSecret'],
+            'encodingAesKey' => \Yii::$app->params['encodingAesKey']
+        ]);
+        $access_token = $mpWechat->getAccessToken();
+        var_dump($access_token);exit;
 //        $parents=DoctorParent::find()->select('parentid')->limit(1000)->orderBy('createtime desc')->column();
 ////        Notice::setList('188604', 4, ['title' => '金牌产后顾问1对1免费产后恢复测评与指导', 'ftitle' => '添加产后顾问微信kdxs4929进行测评指导', 'id' => '/article/view/index?id=734',]);
 ////        exit;
