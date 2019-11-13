@@ -59,7 +59,7 @@ class WeOpenid extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if(!$this->unionid) {
-            $mpWechat = new MpWechat([
+            $mpWechat = new \common\vendor\MpWechat([
                 'token' => \Yii::$app->params['WeToken'],
                 'appId' => \Yii::$app->params['AppID'],
                 'appSecret' => \Yii::$app->params['AppSecret'],
@@ -76,7 +76,15 @@ class WeOpenid extends \yii\db\ActiveRecord
                 if ($userInfo['unionid']) {
                     $this->unionid = $userInfo['unionid'];
                 }else{
-                    $this->unionid=$userJson;
+                    $path = '/cgi-bin/user/info?access_token=' . $access_token . "&openid=" . $this->openid . "&lang=zh_CN";
+                    $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 2);
+                    $userJson = $curl->get();
+                    $userInfo = json_decode($userJson, true);
+                    if ($userInfo['unionid']) {
+                        $this->unionid = $userInfo['unionid'];
+                    }else{
+                        $this->unionid=$userJson;
+                    }
                 }
             }else{
                 $this->unionid=$access_token;
