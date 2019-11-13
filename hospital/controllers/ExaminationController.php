@@ -2,6 +2,9 @@
 
 namespace hospital\controllers;
 
+use common\models\UserDoctor;
+use hospital\models\user\ChildInfo;
+use hospital\models\user\ChildInfoSearchModel;
 use Yii;
 use common\models\Examination;
 use hospital\models\ExaminationModels;
@@ -27,6 +30,17 @@ class ExaminationController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionUndone(){
+
+        $searchModel = new ChildInfoSearchModel();
+        $dataProvider = $searchModel->searchUnDone(Yii::$app->request->queryParams);
+
+        return $this->render('undone', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**

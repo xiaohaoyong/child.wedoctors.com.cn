@@ -100,7 +100,7 @@ class ChildInfoSearchModel extends ChildInfo
         $hospitalid = $this->admin ? $this->admin : \Yii::$app->user->identity->hospital;
         $doctorid = \common\models\UserDoctor::findOne(['hospitalid' => $hospitalid]);
 
-        if ($doctorid->county == 1105 || $hospitalid==110589) {
+        if ($doctorid->county == 1105 || $hospitalid == 110589) {
             $year = 6;
         } else {
             $year = 3;
@@ -175,4 +175,74 @@ class ChildInfoSearchModel extends ChildInfo
         //var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
     }
+
+    public function searchUnDone($params)
+    {
+        $query = self::find();
+// add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $this->load($params);
+
+        $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospitalid])->userid;
+
+        $query->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')]);
+        $query->andFilterWhere(['child_info.admin' => \Yii::$app->user->identity->hospitalid]);
+
+        if ($this->level == 1) {
+            $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+            $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid]);
+            $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
+            $query->andFilterWhere(['child_info.admin' => \Yii::$app->user->identity->hospitalid]);
+            $query->andFilterWhere(['`child_info`.`doctorid`' => \Yii::$app->user->identity->hospitalid]);
+        }
+
+        $query->leftJoin('examination', '`examination`.`childid` = `child_info`.`id`');
+        if(!$this->child_type) {
+            $query->andFilterWhere(['or',
+                //['and', ['<', 'child_info.birthday', strtotime('-1 month')], ['not in', 'examination.field82', ['其他体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-1 month')], ['>','child_info.birthday', strtotime('-3 month')], ['not in', 'examination.field82', ['2-3个月体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-5 month')], ['>','child_info.birthday', strtotime('-6 month')], ['not in', 'examination.field82', ['5-6个月体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-8 month')], ['>','child_info.birthday', strtotime('-9 month')], ['not in', 'examination.field82', ['8-9个月体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-11 month')],['>', 'child_info.birthday', strtotime('-12 month')], ['not in', 'examination.field82', ['11-12个月体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-12 month')],['>', 'child_info.birthday', strtotime('-18 month')], ['not in', 'examination.field82', ['1岁半体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-18 month')],['>', 'child_info.birthday', strtotime('-24 month')], ['not in', 'examination.field82', ['2岁体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-24 month')],['>', 'child_info.birthday', strtotime('-30 month')], ['not in', 'examination.field82', ['2岁半体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-30 month')],['>', 'child_info.birthday', strtotime('-36 month')], ['not in', 'examination.field82', ['2岁11个月-3岁0个月体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-36 month')],['>', 'child_info.birthday', strtotime('-42 month')], ['not in', 'examination.field82', ['3岁体检']]],
+                ['and', ['<', 'child_info.birthday', strtotime('-42 month')],['>', 'child_info.birthday', strtotime('-48 month')], ['not in', 'examination.field82', ['4岁体检']]],
+            ]);
+        }else{
+            if($this->child_type==1){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-1 month')],['<', 'child_info.birthday', strtotime('-3 month')], ['not in', 'examination.field82', ['2-3个月体检']]]);
+            }elseif($this->child_type==2){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-5 month')],['<', 'child_info.birthday', strtotime('-6 month')], ['not in', 'examination.field82', ['5-6个月体检']]]);
+            }elseif($this->child_type==3){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-8 month')], ['<', 'child_info.birthday', strtotime('-9 month')], ['not in', 'examination.field82', ['8-9个月体检']]]);
+            }elseif($this->child_type==4){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-11 month')], ['<', 'child_info.birthday', strtotime('-12 month')], ['not in', 'examination.field82', ['11-12个月体检']]]);
+            }elseif($this->child_type==5){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-12 month')], ['<', 'child_info.birthday', strtotime('-18 month')], ['not in', 'examination.field82', ['1岁半体检']]]);
+            }elseif($this->child_type==6){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-18 month')], ['<', 'child_info.birthday', strtotime('-24 month')], ['not in', 'examination.field82', ['2岁体检']]]);
+            }elseif($this->child_type==7){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-24 month')], ['<', 'child_info.birthday', strtotime('-30 month')], ['not in', 'examination.field82', ['2岁半体检']]]);
+            }elseif($this->child_type==8){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-30 month')], ['<', 'child_info.birthday', strtotime('-36 month')], ['not in', 'examination.field82', ['2岁11个月-3岁0个月体检']]]);
+            }elseif($this->child_type==9){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-36 month')], ['<', 'child_info.birthday', strtotime('-42 month')], ['not in', 'examination.field82', ['3岁体检']]]);
+            }elseif($this->child_type==10){
+                $query->andFilterWhere(['and', ['>', 'child_info.birthday', strtotime('-42 month')], ['<', 'child_info.birthday', strtotime('-48 month')], ['not in', 'examination.field82', ['4岁体检']]]);
+            }
+        }
+        $query->groupBy('child_info.id');
+        $query->orderBy('child_info.birthday desc');
+        //echo $query->createCommand()->getRawSql();exit;
+        return $dataProvider;
+
+    }
+
+
 }
