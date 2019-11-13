@@ -55,12 +55,13 @@ class DataController extends Controller
 
     public function actionTesta()
     {
-        $mpWechat = new MpWechat([
+        $mpWechat = new \common\vendor\MpWechat([
             'token' => \Yii::$app->params['WeToken'],
             'appId' => \Yii::$app->params['AppID'],
             'appSecret' => \Yii::$app->params['AppSecret'],
             'encodingAesKey' => \Yii::$app->params['encodingAesKey']
         ]);
+        //$mpWechat->delCache('access_token');
         $access_token = $mpWechat->getAccessToken();
         var_dump($access_token);exit;
 //        $parents=DoctorParent::find()->select('parentid')->limit(1000)->orderBy('createtime desc')->column();
