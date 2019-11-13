@@ -76,6 +76,8 @@ class WeOpenid extends \yii\db\ActiveRecord
                 if ($userInfo['unionid']) {
                     $this->unionid = $userInfo['unionid'];
                 }else{
+                    $mpWechat->delCache('access_token');
+                    $access_token=$mpWechat->getAccessToken();
                     $path = '/cgi-bin/user/info?access_token=' . $access_token . "&openid=" . $this->openid . "&lang=zh_CN";
                     $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 2);
                     $userJson = $curl->get();
