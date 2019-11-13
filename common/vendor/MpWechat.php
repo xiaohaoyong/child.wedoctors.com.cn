@@ -33,4 +33,7 @@ class MpWechat extends \callmez\wechat\sdk\MpWechat
         ]);
         return isset($result['msgid']) ? $result['msgid'] : false;
     }
+    public function delCache($name){
+        return \Yii::$app->cache->delete($this->getCacheKey($name));
+    }
 }
