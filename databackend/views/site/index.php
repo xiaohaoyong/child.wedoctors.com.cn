@@ -9,7 +9,7 @@ databackend\assets\IndexAsset::register($this);
 <div class="col-xs-12">
 
     <div class="row">
-        <?php if (Yii::$app->user->identity->county == 1105) { ?>
+        <?php         if (in_array(Yii::$app->user->identity->county ,[1105,1106])) {?>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-green">
 

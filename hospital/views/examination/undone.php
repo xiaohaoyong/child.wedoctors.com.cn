@@ -45,9 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $columns=[
 
                             'name',
-
                             [
-
                                 'attribute' => '性别',
                                 'value' => function ($e) {
                                     return \common\models\ChildInfo::$genderText[$e->gender];

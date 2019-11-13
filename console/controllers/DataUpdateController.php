@@ -10,6 +10,7 @@ namespace console\controllers;
 
 use common\models\ChildInfo;
 use common\models\DataUpdateRecord;
+use common\models\Doctors;
 use common\models\Examination;
 use common\models\UserParent;
 use console\models\Pregnancy;
@@ -25,6 +26,7 @@ class DataUpdateController extends BeanstalkController
     {
         return ['dataupdate'];
     }
+
 
 
 

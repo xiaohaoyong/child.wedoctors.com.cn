@@ -66,8 +66,8 @@ class ExaminationSearch extends Examination
         ]);
 
         $query->andFilterWhere(['like', 'field1', $this->field1])
-            ->andFilterWhere(['like', 'field2', $this->field2])
-            ->andFilterWhere(['like', 'field3', $this->field3])
+            ->andFilterWhere(['field2'=>$this->field2])
+            ->andFilterWhere(['field3'=>$this->field3])
             ->andFilterWhere(['like', 'field4', $this->field4])
             ->andFilterWhere(['like', 'field5', $this->field5])
             ->andFilterWhere(['like', 'field6', $this->field6])
