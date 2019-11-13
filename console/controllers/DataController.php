@@ -61,7 +61,7 @@ class DataController extends Controller
             'appSecret' => \Yii::$app->params['AppSecret'],
             'encodingAesKey' => \Yii::$app->params['encodingAesKey']
         ]);
-        //$mpWechat->delCache('access_token');
+        $mpWechat->delCache('access_token');
         $access_token = $mpWechat->getAccessToken();
         var_dump($access_token);exit;
 //        $parents=DoctorParent::find()->select('parentid')->limit(1000)->orderBy('createtime desc')->column();
