@@ -28,6 +28,8 @@ class TestController extends Controller
 //        foreach ($we as $k=>$v) {
 //                   }
 
+
+
         $config = [
             'app_id' => 'wx1147c2e491dfdf1d',
             'secret' => '98001ba41e010dea2861f3e0d95cbb15',
@@ -37,6 +39,10 @@ class TestController extends Controller
         ];
 
         $app = Factory::officialAccount($config);
+
+        $user = $app->user->get('o5ODa09h1YVaoxutYCl4---NrwsM');
+        var_dump($user);exit;
+
         $app->customer_service->message("儿宝宝福利社上线啦，我们会定期给家长们搜罗些免费、实用、有趣的福利哦！<a href=\"http://www.qq.com\" data-miniprogram-appid=\"wx6c33bfd66eb0a4f0\" data-miniprogram-path=\"pages/index/index\">快快来领取吧</a>")->to('o5ODa09h1YVaoxutYCl4---NrwsM')->send();
         $app->customer_service->message('<image src="https://mmbiz.qpic.cn/mmbiz_jpg/vLIc50EG0zLcVawNoric18bzdMicmiaicqUwZfz1icf8QrbKtP8JGLbmFP7SM0HT6rIicfNFz5SI3UCu0jQRiaZEZEyiaA/0?wx_fmt=jpeg">')->to('o5ODa09h1YVaoxutYCl4---NrwsM')->send();
 
