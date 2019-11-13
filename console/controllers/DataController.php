@@ -55,6 +55,11 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+
+
+
+
+
         $mpWechat = new \common\vendor\MpWechat([
             'token' => \Yii::$app->params['WeToken'],
             'appId' => \Yii::$app->params['AppID'],
