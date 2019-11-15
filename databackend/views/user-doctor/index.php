@@ -19,6 +19,14 @@ databackend\assets\DatabasesAsset::register($this);
 <div class="user-doctor-index">
     <div class="col-xs-12">
         <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">检索：</h3>
+                <div>
+                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+                    <p style="color: #f1731e">注：签约时间搜索仅会影响签约总数。且搜索时管理服务率无参考价值</p>
+                </div>
+                <!-- /.box-tools -->
+            </div>
             <div class="box-body no-padding">
                 <table id="example2" class="table table-bordered table-hover"  style="font-size: 12px;">
                     <thead>
@@ -57,12 +65,20 @@ databackend\assets\DatabasesAsset::register($this);
                             </td>
                             <td><?php
                                 //已签约总数
-                                echo  $q=\common\models\ChildInfo::find()
+                                $childInfoQuery=\common\models\ChildInfo::find()
                                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                                     ->andFilterWhere(['`doctor_parent`.doctorid'=>$v->userid])
                                     ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
                                     ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
-                                    ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
+                                    ->andFilterWhere(['`doctor_parent`.level'=>1]);
+                                if($searchModel->docpartimeS!=='' and $searchModel->docpartimeS!==null){
+                                    $state = strtotime($searchModel->docpartimeS . " 00:00:00");
+                                    $end = strtotime($searchModel->docpartimeE . " 23:59:59");
+                                    $childInfoQuery->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
+                                    $childInfoQuery->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
+                                }
+                                $q=$childInfoQuery->count();
+                                echo $q;
                                 ?>
                             </td>
                             <td><?php

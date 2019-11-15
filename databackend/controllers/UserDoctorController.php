@@ -3,6 +3,7 @@
 namespace databackend\controllers;
 
 use app\components\UploadForm;
+use databackend\models\user\ChildInfoSearchModel;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
 use common\models\User;
@@ -54,10 +55,15 @@ class UserDoctorController extends BaseController
      */
     public function actionIndex()
     {
+        $params=Yii::$app->request->queryParams;
+
+        $searchModel = new ChildInfoSearchModel();
+        $searchModel->load($params);
         $doctor=UserDoctor::find()->andFilterWhere(['county'=>\Yii::$app->user->identity->county])->andFilterWhere(['>','userid',37])->all();
 
         return $this->render('index', [
             'doctor' => $doctor,
+            'searchModel'=>$searchModel
         ]);
     }
 
