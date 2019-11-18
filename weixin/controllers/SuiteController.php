@@ -11,6 +11,7 @@ use common\models\Qrcodeid;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\WeOpenid;
+use EasyWeChat\Kernel\Messages\Message;
 use weixin\models\DoctorParent;
 use weixin\models\User;
 use weixin\models\UserParent;
@@ -39,8 +40,10 @@ class SuiteController extends Controller
             $log = new Log('suite_test');
             $log->addLog(json_encode($message));
             $log->saveLog();
-
         });
+        $response = $app->server->serve();
+        $response->send();
+
         $log = new Log('suite_index');
         $log->addLog("======");
         $log->saveLog();
