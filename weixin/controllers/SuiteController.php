@@ -32,21 +32,14 @@ class SuiteController extends Controller
 
     public function actionIndex()
     {
-        $log = new Log('suite_test');
-        $log->addLog('===========');
-        $log->saveLog();
-        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-        $app->server->push(function ($message) {
-            $log = new Log('suite_test');
-            $log->addLog(json_encode($message));
-            $log->saveLog();
-        });
-        $response = $app->server->serve();
-        $response->send();
+//        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+//        $app->server->push(function ($message) {
+//
+//        });
+//        $response = $app->server->serve();
+//        $response->send();
 
         $log = new Log('suite_index');
-        $log->addLog("======");
-        $log->saveLog();
         $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
         if (isset($_GET['echostr'])) {
             $log->addLog($_GET['echostr']);
@@ -60,12 +53,7 @@ class SuiteController extends Controller
             $log->addLog($postStr);
             $log->saveLog();
             if (!empty($postStr)) {
-                $log->addLog("=====12");
-                $log->saveLog();
-
                 $xml = $this->mpWechat->parseRequestXml($postStr, $_GET['msg_signature'], $_GET['timestamp'], $nonce = $_GET['nonce'], $_GET['encrypt_type']);
-                $log->addLog("=====32");
-
                 $log->addLog($_GET['timestamp']);
                 $log->addLog(implode(',', $xml));
                 $log->saveLog();
