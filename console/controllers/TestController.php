@@ -17,6 +17,9 @@ use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\WeOpenid;
 use EasyWeChat\Factory;
+use EasyWeChat\Kernel\Messages\Image;
+use EasyWeChat\Kernel\Messages\News;
+use EasyWeChat\Kernel\Messages\NewsItem;
 use yii\base\Controller;
 
 class TestController extends Controller
@@ -39,14 +42,24 @@ class TestController extends Controller
         ];
 
         $app = Factory::officialAccount($config);
-
-        $user = $app->user->get('o5ODa09h1YVaoxutYCl4---NrwsM');
+        $user = $app->user->get('o5ODa0451fMb_sJ1D1T4YhYXDOcg');
         var_dump($user);exit;
 
-        $app->customer_service->message("儿宝宝福利社上线啦，我们会定期给家长们搜罗些免费、实用、有趣的福利哦！<a href=\"http://www.qq.com\" data-miniprogram-appid=\"wx6c33bfd66eb0a4f0\" data-miniprogram-path=\"pages/index/index\">快快来领取吧</a>")->to('o5ODa09h1YVaoxutYCl4---NrwsM')->send();
-        $app->customer_service->message('<image src="https://mmbiz.qpic.cn/mmbiz_jpg/vLIc50EG0zLcVawNoric18bzdMicmiaicqUwZfz1icf8QrbKtP8JGLbmFP7SM0HT6rIicfNFz5SI3UCu0jQRiaZEZEyiaA/0?wx_fmt=jpeg">')->to('o5ODa09h1YVaoxutYCl4---NrwsM')->send();
+        // $image = new Image('vYtdNYeqsU6tYOv4i0xtHBXx8b7pY5GzMBq0yt6NU74');
+        $items = [
+            new NewsItem([
+                'title'       => '儿宝宝',
+                'description' => '测试测试',
+                'url'         => 'http://child.wedoctors.com.cn/',
+                'image'       => 'https://mmbiz.qpic.cn/mmbiz_jpg/vLIc50EG0zLcVawNoric18bzdMicmiaicqUwZfz1icf8QrbKtP8JGLbmFP7SM0HT6rIicfNFz5SI3UCu0jQRiaZEZEyiaA/0?wx_fmt=jpeg',
+                // ...
+            ]),
+        ];
+        $news = new News($items);
 
 
+        //$app->customer_service->message("儿宝宝福利社上线啦，我们会定期给家长们搜罗些免费、实用、有趣的福利哦！<a href=\"http://www.qq.com\" data-miniprogram-appid=\"wx6c33bfd66eb0a4f0\" data-miniprogram-path=\"pages/index/index\">快快来领取吧</a>")->to('o5ODa0451fMb_sJ1D1T4YhYXDOcg')->send();
+        $app->customer_service->message($news)->to('o5ODa0451fMb_sJ1D1T4YhYXDOcg')->send();
     }
     public function actionData(){
         $n=0;
