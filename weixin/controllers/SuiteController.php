@@ -42,7 +42,7 @@ class SuiteController extends Controller
                     break;
                 case 'text':
                     $log = new Log('suite_test');
-                    $log->addLog(json_encode($message));
+                    $log->addLog("333333333");
                     $log->saveLog();
 
                     return '收到文字消息';
