@@ -31,6 +31,9 @@ class SuiteController extends Controller
 
     public function actionIndex()
     {
+        $log = new Log('suite_test');
+        $log->addLog('===========');
+        $log->saveLog();
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
