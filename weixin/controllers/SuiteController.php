@@ -36,21 +36,10 @@ class SuiteController extends Controller
         $log->saveLog();
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
         $app->server->push(function ($message) {
-            switch ($message['MsgType']) {
-                case 'event':
-                    return '收到事件消息';
-                    break;
-                case 'text':
-                    $log = new Log('suite_test');
-                    $log->addLog("333333333");
-                    $log->saveLog();
+            $log = new Log('suite_test');
+            $log->addLog(json_encode($message));
+            $log->saveLog();
 
-                    return '收到文字消息';
-                    break;
-                default:
-                    return '收到其它消息';
-                    break;
-            }
         });
         $log = new Log('suite_index');
         $log->addLog("======");
