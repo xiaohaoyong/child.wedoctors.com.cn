@@ -41,7 +41,9 @@ class TestController extends Controller
             //...
         ];
 
-        $app = Factory::officialAccount($config);
+        var_dump(\Yii::$app->params['easywechat']);exit;
+
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
         $user = $app->user->get('o5ODa0451fMb_sJ1D1T4YhYXDOcg');
         var_dump($user);exit;
 

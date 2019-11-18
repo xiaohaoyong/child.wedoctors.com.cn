@@ -31,6 +31,24 @@ class SuiteController extends Controller
 
     public function actionIndex()
     {
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $app->server->push(function ($message) {
+            switch ($message['MsgType']) {
+                case 'event':
+                    return '收到事件消息';
+                    break;
+                case 'text':
+                    $log = new Log('suite_test');
+                    $log->addLog(json_encode($message));
+                    $log->saveLog();
+
+                    return '收到文字消息';
+                    break;
+                default:
+                    return '收到其它消息';
+                    break;
+            }
+        });
         $log = new Log('suite_index');
         $log->addLog("======");
         $log->saveLog();
@@ -43,11 +61,9 @@ class SuiteController extends Controller
                 exit;
             }
         } else {
-
             $postStr = file_get_contents("php://input");
             $log->addLog($postStr);
             $log->saveLog();
-            //file_put_contents('/home/wwwlogs/applogs/child.wedoctors.com.cn/wxpost.log',$postStr,FILE_APPEND);
             if (!empty($postStr)) {
                 $log->addLog("=====12");
                 $log->saveLog();
@@ -157,15 +173,7 @@ class SuiteController extends Controller
     //客服消息
     public function custom_send($openid){
         return ;
-        $config = [
-            'app_id' => 'wx1147c2e491dfdf1d',
-            'secret' => '98001ba41e010dea2861f3e0d95cbb15',
-            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
-            'response_type' => 'array',
-            //...
-        ];
-
-        $app = Factory::officialAccount($config);
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
         $app->customer_service->message("儿宝宝为您准备了免费的产后恢复课程、亲子游泳体验，请到<a href=\"http://www.qq.com\" data-miniprogram-appid=\"wx6c33bfd66eb0a4f0\" data-miniprogram-path=\"pages/index/index\">儿宝宝福利社</a>中领取")->to($openid)->send();
 
     }
@@ -173,48 +181,10 @@ class SuiteController extends Controller
     //创建菜单
     public function actionCreateMenu()
     {
-        $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
-        $return=$this->mpWechat->createMenu(
-            [
+        $buttons=[
                 ['type' => 'miniprogram', 'name' => '育儿服务', 'url' => 'pages/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',],
                 ['type' => 'miniprogram', 'name' => '育儿课堂', 'url' => 'pages/article/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/article/index/index',],
-                //['type' => 'miniprogram', 'name' => '问医生', 'url' => 'pages/index/index', 'appid' => 'wxb7f2ce989de39293', 'pagepath' => 'pages/homePage/homePage',],
-
-//                ['type' => 'view', 'name' => '孕产服务',
-//                    'sub_button' => [
-//                        [
-//                            'type' => 'view',
-//                            'name' => '建档攻略',
-//                            'url' => 'http://www.xiaomaiyunbao.com/index.php/ien/index/index/tgid/201/',
-//                        ],
-//                        [
-//                            'type' => 'view',
-//                            'name' => '建档计算器',
-//                            'url' => 'https://www.xiaomaiyunbao.com/index.php/ien/calculator/index/tgid/201',
-//                        ],
-//                        [
-//                            'type' => 'view',
-//                            'name' => '建档大礼包',
-//                            'url' => 'http://www.xiaomaiyunbao.com/index.php/shop/shop/info/id/4/catid/28/tgid/201?from=singlemessage&isappinstalled=0',
-//                        ],
-//                        [
-//                            'type' => 'view',
-//                            'name' => '星级月嫂',
-//                            'url' => 'http://www.xiaomaiyunbao.com/index.php/shop/index/ysao_1/tgid/201',
-//                        ],
-//                        [
-//                            'type' => 'view',
-//                            'name' => '严选服务',
-//                            'url' => 'http://www.xiaomaiyunbao.com/index.php/shop/index/index/tgid/201',
-//                        ],
-//                    ]
-//                ],
                 ['type' => 'view', 'name' => '我的', 'sub_button' => [
-//                    [
-//                        'type' => 'view',
-//                        'name' => '订单中心',
-//                        'url' => 'http://www.xiaomaiyunbao.com/index.php/shop/user/index/tgid/201',
-//                    ],
                     [
                         'type' => 'miniprogram',
                         'name' => '我的预约',
@@ -243,9 +213,9 @@ class SuiteController extends Controller
                     ],
                 ]],
 
-            ]
-        );
-        var_dump($return);
+            ];
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $app->menu->create($buttons);
     }
 
     public static function sendText($openid, $tousername, $content)
