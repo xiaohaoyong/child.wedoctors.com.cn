@@ -342,6 +342,8 @@ class UserController extends Controller
             }
 
         }
+        $log->addLog('useridx'.$useridx);
+
         $log->saveLog();
 
         if($childInfo) {
