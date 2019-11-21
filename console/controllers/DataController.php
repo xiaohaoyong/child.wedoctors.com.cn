@@ -14,6 +14,7 @@ use callmez\wechat\sdk\components\BaseWechat;
 use callmez\wechat\sdk\MpWechat;
 use callmez\wechat\sdk\Wechat;
 use common\components\HttpRequest;
+use common\components\wx\WxBizDataCrypt;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Area;
@@ -56,7 +57,9 @@ class DataController extends Controller
     public function actionTesta()
     {
 
-
+        $pc = new WxBizDataCrypt($appid, $session[1]);
+        $code = $pc->decryptData($phoneEncryptedData, $phoneIv, $phoneJson);
+        $phone = json_decode($phoneJson, true);
 
 
 

@@ -216,6 +216,8 @@ class UserController extends Controller
                     $log->addLog("phone:" . $phone['phoneNumber']);
 
                 }else {
+
+                    $log->addLog("session:" . $session[1]);
                     $log->addLog("phone:" . $phoneJson);
                     $log->addLog("code:" . $code);
                     $log->addLog("phoneEncryptedData:" . $phoneEncryptedData);
