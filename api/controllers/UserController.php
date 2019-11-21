@@ -181,6 +181,7 @@ class UserController extends Controller
             $session = explode('@@', $session);
             $openid = $session[0];
             $unionid = $session[2];
+            $log->addLog('seaver_token:'.$this->seaver_token);
 
             $log->addLog("openid:".$openid);
             $log->addLog("unionid:".$unionid);
