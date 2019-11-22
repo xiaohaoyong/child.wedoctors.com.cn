@@ -286,7 +286,9 @@ class ArticleController extends BaseController
             $model->hospital = [$doctor->userid];
             $model->age = $post['Push']['age'];
 
-            $model->send();
+            if($doctor) {
+                $model->send();
+            }
 
         }
         \Yii::$app->getSession()->setFlash('success','发送成功');
