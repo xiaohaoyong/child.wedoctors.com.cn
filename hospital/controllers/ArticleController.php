@@ -278,15 +278,17 @@ class ArticleController extends BaseController
     }
     public function actionPush()
     {
-        $model=new Push();
-        $post=Yii::$app->request->post();
-        $model->id          =$post['Push']['id'];
-        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
-        $model->hospital    =[$doctor->userid];
-        $model->age         =$post['Push']['age'];
+        if(\Yii::$app->user->identity->hospital) {
+            $model = new Push();
+            $post = Yii::$app->request->post();
+            $model->id = $post['Push']['id'];
+            $doctor = \common\models\UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital]);
+            $model->hospital = [$doctor->userid];
+            $model->age = $post['Push']['age'];
 
-        $model->send();
+            $model->send();
 
+        }
         \Yii::$app->getSession()->setFlash('success','发送成功');
 
         return $this->redirect(Yii::$app->request->referrer);
