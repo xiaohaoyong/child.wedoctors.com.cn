@@ -81,7 +81,7 @@ class Push extends Model
 
         $userids = [];
         if (!$childs && !$hospitals && !$this->test) {
-            $userids = UserLogin::find()->select('userid')->where(['!=', 'openid', ''])->column();
+            //$userids = UserLogin::find()->select('userid')->where(['!=', 'openid', ''])->column();
         } elseif ($hospitals && $childs) {
             $userids = array_intersect($childs, $hospitals);
         } elseif ($hospitals) {
