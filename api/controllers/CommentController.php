@@ -11,6 +11,7 @@ namespace api\controllers;
 use api\controllers\Controller;
 
 use common\models\ArticleComment;
+use common\models\Points;
 use common\models\UserParent;
 use common\models\WxInfo;
 use yii\data\Pagination;
@@ -27,6 +28,10 @@ class CommentController extends Controller
         $comment->userid=$this->userid;
         $comment->artid=$artid;
         $comment->save();
+        if($comment){
+            $point=new Points();
+            $point->addPoint($this->userid,4);
+        }
         return $comment->id;
     }
     public function actionList($id){

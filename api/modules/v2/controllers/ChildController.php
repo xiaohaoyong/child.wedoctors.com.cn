@@ -13,6 +13,7 @@ use common\components\Code;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Interview;
+use common\models\Points;
 use common\models\Pregnancy;
 use common\models\UserDoctor;
 use common\models\UserParent;
@@ -118,6 +119,9 @@ class ChildController extends \api\modules\v1\controllers\ChildController
         {
             return new Code(20010,'失败');
         }
+
+        $point=new Points();
+        $point->addPoint($this->userid,2);
 
         return ['childid'=>$child->id,'userid'=>$child->userid];
     }

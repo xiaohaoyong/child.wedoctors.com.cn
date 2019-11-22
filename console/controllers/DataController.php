@@ -56,6 +56,24 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $day=7;
+        $a=$day>=7?$day%7:$day;
+        for($i=$a;$i>0;$i--){
+            $datetime=date('Ymd',strtotime("-$i day"));
+            $rs['day']=$datetime;
+            $rs['s']=1;
+            $row[]=$rs;
+        }
+
+        $d=7-$a;
+        for($j=0;$j<$d;$j++){
+            $datetime=date('Ymd',strtotime("+$j day"));
+            $rs['day']=$datetime;
+            $rs['s']=0;
+            $row[]=$rs;
+        }
+        var_dump($row);
+        exit;
 
         $pc = new WxBizDataCrypt($appid, $session[1]);
         $code = $pc->decryptData($phoneEncryptedData, $phoneIv, $phoneJson);

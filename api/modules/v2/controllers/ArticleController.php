@@ -11,6 +11,7 @@ namespace api\modules\v2\controllers;
 use api\models\Article;
 use common\models\ArticleCategory;
 use common\models\Carousel;
+use common\models\Points;
 use yii\data\Pagination;
 
 class ArticleController extends \api\modules\v1\controllers\ArticleController
@@ -67,5 +68,9 @@ class ArticleController extends \api\modules\v1\controllers\ArticleController
         $data['pageTotal']=ceil($articles->count()/10);
 
         return $data;
+    }
+    public function actionPoint(){
+        $point=new Points();
+        return $point->addPoint($this->userid,6);
     }
 }

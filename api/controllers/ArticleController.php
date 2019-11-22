@@ -14,6 +14,7 @@ use common\models\ArticleLike;
 use common\models\ArticleLog;
 use common\models\ArticleUser;
 use common\models\Carousel;
+use common\models\Points;
 use yii\data\Pagination;
 
 class ArticleController extends Controller
@@ -90,10 +91,14 @@ class ArticleController extends Controller
             $article_log->artid = $id;
             $article_log->save();
         }
+        $point=new Points();
         if ($article_user = ArticleUser::findOne(['touserid' => $this->userid, 'artid' => $id])) {
             $article_user->level = 2;
             $article_user->save();
+            $point->addPoint($this->userid,1);
         }
+        $point->addPoint($this->userid,3);
+
 
 
         return $row;
