@@ -21,7 +21,7 @@ class PointController extends Controller
 
 
         $pages = new Pagination(['totalCount' => $points->count(), 'pageSize' => 10]);
-        $list = $points->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
+        $list = $points->where(['userid'=>$this->userid])->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
 
         foreach($list as $k=>$v)
         {
