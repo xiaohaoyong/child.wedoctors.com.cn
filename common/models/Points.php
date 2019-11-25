@@ -21,7 +21,9 @@ class Points extends \yii\db\ActiveRecord
         3=>'阅读文章',
         4=>'评论文章',
         5=>'签到',
-        6=>'文章分享'
+        6=>'文章分享',
+        7=>'点赞',
+
     ];
     public static $sourcePointNum=[
         1=>5,
@@ -30,6 +32,7 @@ class Points extends \yii\db\ActiveRecord
         4=>2,
         5=>2,
         6=>3,
+        7=>2,
     ];
     /**
      * {@inheritdoc}

@@ -109,7 +109,10 @@ class ArticleController extends Controller
             $like=new ArticleLike();
             $like->userid=$this->userid;
             $like->artid=$artid;
-            $like->save();
+            if($like->save()){
+                $point=new Points();
+                $point->addPoint($this->userid,7);
+            }
         }
     }
 
