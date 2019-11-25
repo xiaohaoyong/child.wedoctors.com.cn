@@ -41,6 +41,7 @@
                     ],
                     ['label' => '工具', 'icon' => 'send', 'url' => "#",
                         'items' => [
+                            ['label' => '未体检用户查询', 'url' => ['examination/undone']],
                             ['label' => '通知列表', 'url' => ['article/tindex?ArticleSearchModel[type]=2']],
                             ['label' => '发布通知', 'url' => ['article/tongzhi']],
                             ['label' => '平台召回用户统计', 'url' => ['/push-log']],
