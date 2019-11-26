@@ -73,7 +73,7 @@ class ClockInController extends Controller
             ->column();
         $total=Points::find()
             ->where(['userid'=>$this->userid])
-            ->count();
+            ->sum('point');
 
 
 

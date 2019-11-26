@@ -68,6 +68,7 @@ class Points extends \yii\db\ActiveRecord
     }
 
     public function addPoint($userid,$source,$extra=0){
+        if(!$userid) return false;
         $point=self::$sourcePointNum[$source]+$extra;
         $start=strtotime(date('Y-m-d 00:00:00'));
         $total=self::find()->where(['userid'=>$userid])->andWhere(['>','createtime',$start])->andWhere(['>','point',0])->sum('point');

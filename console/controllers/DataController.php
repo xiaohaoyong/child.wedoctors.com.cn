@@ -56,6 +56,11 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $articleUser = ArticleUser::find()->where(['childid' => 193928])->one();
+        var_dump($articleUser);exit;
+        $child = ArticleUser::noSendChild(7, 4153, 'day');
+        var_dump($child);
+        exit;
         $day=7;
         $a=$day>=7?$day%7:$day;
         for($i=$a;$i>0;$i--){
