@@ -12,6 +12,7 @@ use Yii;
  * @property int $createtime 时间
  * @property int $point 分数
  * @property int $source 来源
+ * @property int $onlyid 唯一id
  */
 class Points extends \yii\db\ActiveRecord
 {
@@ -48,7 +49,7 @@ class Points extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'createtime', 'point', 'source'], 'integer'],
+            [['userid', 'createtime', 'point', 'source','onlyid'], 'integer'],
             [['point', 'source'], 'required'],
         ];
     }
@@ -67,10 +68,18 @@ class Points extends \yii\db\ActiveRecord
         ];
     }
 
-    public function addPoint($userid,$source,$extra=0){
+    public function addPoint($userid,$source,$onlyid=0,$extra=0){
         if(!$userid) return false;
         $point=self::$sourcePointNum[$source]+$extra;
         $start=strtotime(date('Y-m-d 00:00:00'));
+        if($onlyid) {
+            $pon = self::find()->where(['userid' => $userid])
+                ->andWhere(['>', 'createtime', $start])
+                ->andWhere(['onlyid' => $onlyid])
+                ->andWhere(['source'=>$source])
+                ->one();
+            if ($pon) return false;
+        }
         $total=self::find()->where(['userid'=>$userid])->andWhere(['>','createtime',$start])->andWhere(['>','point',0])->sum('point');
         if(($total+$point)>50){
             return 20001;

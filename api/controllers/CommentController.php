@@ -30,7 +30,7 @@ class CommentController extends Controller
         $comment->save();
         if($comment){
             $point=new Points();
-            $point->addPoint($this->userid,4);
+            $point->addPoint($this->userid,4,$artid);
         }
         return $comment->id;
     }

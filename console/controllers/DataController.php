@@ -56,6 +56,30 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $query=ChildInfo::find();
+        $parentids = \common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`' => 113890])->andFilterWhere(['level' => 1])->column();
+        $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-3 year -1 day")]);
+        $query->andFilterWhere(['not in', '`child_info`.userid', $parentids]);
+        $query->andFilterWhere(['`child_info`.`admin`' => 110580]);
+        $userids = $query->column();
+
+
+
+
+
+        $parent = UserParent::find()->select('mother_phone')->where(['in', 'userid', $userids])->column();
+        $parents = array_chunk($parent, 100);
+        foreach ($parents as $k => $v) {
+            $str = implode(',', $v);
+            $response = \Yii::$app->aliyun->sendSms(
+                "儿宝宝", // 短信签名
+                'SMS_176928692', // 短信模板编号
+                $str
+            );
+            $response = json_decode($response, true);
+            echo $str.$response."\n";
+        }
+
         $articleUser = ArticleUser::find()->where(['childid' => 193928])->one();
         var_dump($articleUser);exit;
         $child = ArticleUser::noSendChild(7, 4153, 'day');

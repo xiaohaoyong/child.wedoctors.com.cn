@@ -64,7 +64,7 @@ class ClockIn extends \yii\db\ActiveRecord
         if($clockIn){
             $day=$clockIn->day+1;
             $p=$clockIn->day%7+1;
-            $point->addPoint($userid,5,$p);
+            $point->addPoint($userid,5,0,$p);
 
         }else{
             $day=1;

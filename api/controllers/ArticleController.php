@@ -95,9 +95,9 @@ class ArticleController extends Controller
         if ($article_user = ArticleUser::findOne(['touserid' => $this->userid, 'artid' => $id])) {
             $article_user->level = 2;
             $article_user->save();
-            $point->addPoint($this->userid,1);
+            $point->addPoint($this->userid,1,$id);
         }
-        $point->addPoint($this->userid,3);
+        $point->addPoint($this->userid,3,$id);
 
 
 
@@ -111,7 +111,7 @@ class ArticleController extends Controller
             $like->artid=$artid;
             if($like->save()){
                 $point=new Points();
-                $point->addPoint($this->userid,7);
+                $point->addPoint($this->userid,7,$artid);
             }
         }
     }
