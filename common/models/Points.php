@@ -89,6 +89,8 @@ class Points extends \yii\db\ActiveRecord
         }
         $this->userid=$userid;
         $this->source=$source;
+        $this->onlyid=$onlyid;
+
         $this->point=self::$sourcePointNum[$source]+$extra;
         $this->save();
     }
