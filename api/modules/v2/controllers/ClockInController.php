@@ -81,4 +81,16 @@ class ClockInController extends Controller
         return ['row'=>$row,'point'=>implode(',',$point),'total'=>$total];
     }
 
+    public function actionUser(){
+
+        $clockIn=ClockIn::find()->where(['userid'=>$this->userid])
+            ->andWhere(['datetime'=>date('Ymd')])
+            ->one();
+        if($clockIn){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
 }
