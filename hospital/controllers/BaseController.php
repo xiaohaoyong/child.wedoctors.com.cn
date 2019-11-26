@@ -32,6 +32,10 @@ class BaseController extends \yii\web\Controller {
         {
             return $this->redirect(\Yii::$app->user->loginUrl)->send();
         }
+        if(!\Yii::$app->user->identity->hospital){
+            \Yii::$app->user->logout();
+            return $this->redirect(\Yii::$app->user->loginUrl)->send();
+        }
 
         $moduleId = \Yii::$app->controller->module->id === \Yii::$app->id ? '' : \Yii::$app->controller->module->id . '/';
         $controllerId = \Yii::$app->controller->id . '/';
