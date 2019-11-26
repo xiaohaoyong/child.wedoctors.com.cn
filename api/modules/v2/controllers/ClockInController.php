@@ -78,7 +78,7 @@ class ClockInController extends Controller
 
 
 
-        return ['row'=>$row,'point'=>implode(',',$point),'total'=>$total?$total:0];
+        return ['row'=>$row,'point'=>implode(',',$point),'total'=>$total?$total:0,'clockIn'=>$clockIn];
     }
 
     public function actionUser(){
