@@ -145,14 +145,15 @@ class UserController extends Controller
         //HuanxinUserHelper::getUserInfo($huanxin);
         $log->addLog("环信:".$huanxin);
 
-        //对第一次登陆用户发送欢迎消息
-        $cache = \Yii::$app->rdmp;
-        $firstLogin = $cache->hget('firstLogin', $xopenid);
-        if (!$firstLogin) {
-            //HuanxinHelper::setTxtMessage('wangzhentest',$huanxin,'欢迎使用中医儿童健康管理工具');
+        if($xopenid) {
+            //对第一次登陆用户发送欢迎消息
+            $cache = \Yii::$app->rdmp;
+            $firstLogin = $cache->hget('firstLogin', $xopenid);
+            if (!$firstLogin) {
+                //HuanxinHelper::setTxtMessage('wangzhentest',$huanxin,'欢迎使用中医儿童健康管理工具');
+            }
+            $cache->hset('firstLogin', $xopenid, time());
         }
-        $cache->hset('firstLogin', $xopenid, time());
-
         $log->saveLog();
 
         return ['sessionKey' => $session_key, 'userKey' => $useridKey, 'userName' => $huanxin];
