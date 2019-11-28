@@ -143,10 +143,12 @@ class ArticleController extends Controller
         if (!empty($datas)) {
             foreach ($datas as $key => $val) {
                 $art = Article::findOne($val->artid);
-                $row=$art->info->toArray();
-                $row['createtime']=date('Y/m/d',$val->createtime);
-                $row['source']=$row['source']?$row['source']:"儿宝宝";
-                $data['list'][]=$row;
+                if($art) {
+                    $row = $art->info->toArray();
+                    $row['createtime'] = date('Y/m/d', $val->createtime);
+                    $row['source'] = $row['source'] ? $row['source'] : "儿宝宝";
+                    $data['list'][] = $row;
+                }
             }
         }
         return $data;
