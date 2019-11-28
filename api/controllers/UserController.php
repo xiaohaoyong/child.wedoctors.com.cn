@@ -72,6 +72,7 @@ class UserController extends Controller
             $userJson = $curl->get();
             $log->addLog("wxrequist:".$userJson);
             $user = json_decode($userJson, true);
+            $log->addLog($user['errcode']);
             if ($user['errcode']) {
                 //获取用户微信登陆信息
                 $log->addLog("false1");
