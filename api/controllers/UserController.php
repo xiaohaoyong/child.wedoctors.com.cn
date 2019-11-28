@@ -70,6 +70,14 @@ class UserController extends Controller
             $app = Factory::miniProgram(\Yii::$app->params['easyX']);
             $user=$app->auth->session($code);
 
+            if(!$user['session_key']){
+                $log->addLog("用户获取失败");
+                $log->addLog(json_encode($user));
+                $log->saveLog();
+            }
+
+
+
             $value = $user['openid'] . '@@' . $user['session_key'] . '@@' . $user['unionid'];
             $log->addLog("value:".$value);
 
