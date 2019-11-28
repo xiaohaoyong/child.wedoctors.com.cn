@@ -29,6 +29,7 @@ use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\WeOpenid;
 use common\models\WxInfo;
+use EasyWeChat\Factory;
 use yii\web\UploadedFile;
 
 class UserController extends Controller
@@ -66,27 +67,9 @@ class UserController extends Controller
         } else {
             $log->addLog("未登录");
 
-            //获取用户微信登陆信息
-            $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
-            $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
-            $userJson = $curl->get();
-            $log->addLog("wxrequist:".$userJson);
-            $user = json_decode($userJson, true);
-            if ($user['errcode']) {
-                //获取用户微信登陆信息
-                $log->addLog("false1");
-                $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
-                $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
-                $userJson = $curl->get();
-                $log->addLog("wxrequist:".$userJson);
-                $user = json_decode($userJson, true);
+            $app = Factory::miniProgram(\Yii::$app->params['easyX']);
+            $user=$app->auth->session($code);
 
-                if ($user['errcode']) {
-                    $log->addLog("false2");
-                    $log->saveLog();
-                    return new Code(30001, $user['errmsg']);
-                }
-            }
             $value = $user['openid'] . '@@' . $user['session_key'] . '@@' . $user['unionid'];
             $log->addLog("value:".$value);
 
