@@ -34,11 +34,12 @@ $config= [
             'name' => 'advanced-api',
         ],
         'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                'error_file' => [  //error_file是自定义的，方便见名知道意思
+                    'logFile' => '@api/runtime/logs/error.'.date('Ymd').'.log',//日志存放目录
+                    'class' => 'yii\log\FileTarget', //指定使用4个方式其中之以的文件存储方式
+                    'levels' => ['error'],//存放级别，错误级别的
+                    'maxLogFiles' => 100,//最多存放的日志文件数
                 ],
             ],
         ],

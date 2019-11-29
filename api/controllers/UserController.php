@@ -90,7 +90,6 @@ class UserController extends Controller
             }
             $value = $user['openid'] . '@@' . $user['session_key'] . '@@' . $user['unionid'];
             $log->addLog("value:".$value);
-
             //生成session key
             $cache = \Yii::$app->rdmp;
             $session_key = md5($value . time());
