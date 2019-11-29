@@ -99,6 +99,7 @@ class DataUpdateController extends BeanstalkController
         }
         ini_set('memory_limit','1500M');
 
+        $log->addLog("开始解析文件");
         $objRead = new Xlsx();   //建立reader对象
         $objRead->setReadDataOnly(true);
         $obj = $objRead->load($localfile);  //建立excel对象
