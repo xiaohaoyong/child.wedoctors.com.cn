@@ -28,7 +28,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'new_num') ?>
 
-    <?php // echo $form->field($model, 'hospitalid') ?>
+    <?= $form->field($model, 'hospitalid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->column(),['prompt'=>'请选择']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
