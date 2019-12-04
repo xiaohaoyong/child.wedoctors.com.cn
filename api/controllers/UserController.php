@@ -82,7 +82,7 @@ class UserController extends Controller
                 $log->addLog("wxrequist:".$userJson);
                 $user = json_decode($userJson, true);
 
-                if ($user['errcode']) {
+                if ($user['errcode'] || !$user) {
                     $log->addLog("false2");
                     $log->saveLog();
                     return new Code(30001, $user['errmsg']);
