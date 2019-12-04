@@ -15,7 +15,7 @@ use yii\web\Response;
 class AppointController extends Controller
 {
     public $hs = [
-        '9RV7H6Dv' => '248033,234820',
+        '9RV7H6Dv' => [248033,248035],
         'a94PW3iX' => 2,
     ];
     public function sign($h, $d, $s){
