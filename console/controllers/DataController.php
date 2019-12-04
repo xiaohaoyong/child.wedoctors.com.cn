@@ -18,6 +18,7 @@ use common\components\wx\WxBizDataCrypt;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Area;
+use common\models\Article;
 use common\models\ArticleComment;
 use common\models\ArticleUser;
 use common\models\BabyGuide;
@@ -33,6 +34,7 @@ use common\models\Examination;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointWeek;
+use common\models\Interview;
 use common\models\Notice;
 use common\models\Pregnancy;
 use common\models\User;
@@ -44,6 +46,8 @@ use common\models\Vaccine;
 use common\models\WeOpenid;
 use EasyWeChat\Factory;
 use Faker\Provider\File;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use saviorlv\aliyun\Sms;
 use yii\base\Controller;
 use yii\helpers\Html;
@@ -56,6 +60,41 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        ini_set('memory_limit', '1024M');
+        $localfile="2.xlsx";
+        $objRead = new Xlsx();   //建立reader对象
+        $objRead->setReadDataOnly(true);
+        $obj = $objRead->load($localfile);  //建立excel对象
+        $currSheet = $obj->getSheet(0);   //获取指定的sheet表
+        $columnH = $currSheet->getHighestColumn();   //取得最大的列号
+        $highestColumnNum = Coordinate::columnIndexFromString($columnH);
+        $rowCnt = $currSheet->getHighestRow();   //获取总行数
+
+        var_dump($highestColumnNum);
+        var_dump($rowCnt);
+        exit;
+
+        $userids=Pregnancy::find()->select('familyid')->where(['doctorid'=>110580])->andWhere(['field49'=>0])->column();
+        $ins=Interview::find()->where(['in','userid',$userids])->andWhere(['prenatal_test'=>1])->count();
+        //echo $ins->createCommand()->getRawSql();exit;
+        var_dump($ins);
+
+
+        exit;
+        $list=Article::find()->where(['type'=>1])->all();
+        foreach($list as $k=>$v){
+            $rs=[];
+            $au=ArticleUser::find()->where(['artid'=>$v->id])->andWhere(['level'=>2])->andWhere(['userid'=>113890])->count();
+            $info=$v->info;
+            $rs[]=$info->title;
+            $rs[]=Article::$childText[$v->child_type];
+            $rs[]=$au;
+            echo implode(',',$rs);
+            echo "\n";
+        }
+
+        exit;
+
         $query=ChildInfo::find();
         $parentids = \common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`' => 113890])->andFilterWhere(['level' => 1])->column();
         $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-3 year -1 day")]);

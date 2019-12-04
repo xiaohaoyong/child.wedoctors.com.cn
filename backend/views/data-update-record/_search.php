@@ -16,16 +16,6 @@ use yii\widgets\ActiveForm;
         'options' => ['class' => 'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'createtime') ?>
-
-    <?= $form->field($model, 'state') ?>
-
-    <?= $form->field($model, 'type') ?>
-
-    <?= $form->field($model, 'num') ?>
-
     <?php // echo $form->field($model, 'new_num') ?>
 
     <?= $form->field($model, 'hospitalid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->column(),['prompt'=>'请选择']) ?>

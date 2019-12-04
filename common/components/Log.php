@@ -31,7 +31,10 @@ class Log
     public function saveLog()
     {
         $file = __LOG__ . $this->name."-".date('Y-m-d') .".log";
-        file_put_contents($file, date('YmdHis').$this->lineLog . "\n", FILE_APPEND);
+
+        $header= date('YmdHis')."|,|".\Yii::$app->request->userIP;
+
+        file_put_contents($file, $header.$this->lineLog . "\n", FILE_APPEND);
     }
 
 }

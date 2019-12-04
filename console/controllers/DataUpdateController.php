@@ -99,25 +99,12 @@ class DataUpdateController extends BeanstalkController
         }
         ini_set('memory_limit','1500M');
 
-        $log->addLog("开始解析文件");
         $objRead = new Xlsx();   //建立reader对象
-        $log->addLog("开始解析文件1");
-
         $objRead->setReadDataOnly(true);
-        $log->addLog("开始解析文件2");
-
         $obj = $objRead->load($localfile);  //建立excel对象
-        $log->addLog("开始解析文件3");
-
         $currSheet = $obj->getSheet(0);   //获取指定的sheet表
-        $log->addLog("开始解析文件4");
-
         $columnH = $currSheet->getHighestColumn();   //取得最大的列号
-        $log->addLog("开始解析文件5");
-
         $highestColumnNum = Coordinate::columnIndexFromString($columnH);
-        $log->addLog("开始解析文件6");
-
         $rowCnt = $currSheet->getHighestRow();   //获取总行数
         $log->addLog("文件解析成功");
 
