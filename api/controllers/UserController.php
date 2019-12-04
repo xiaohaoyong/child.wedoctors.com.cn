@@ -74,6 +74,8 @@ class UserController extends Controller
             $user = json_decode($userJson, true);
             //$log->addLog($user);
             if ($user['errcode'] || !$user) {
+                $log->addLog("error:".$curl->getMsg());
+
                 //获取用户微信登陆信息
                 $log->addLog("false1");
                 $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
