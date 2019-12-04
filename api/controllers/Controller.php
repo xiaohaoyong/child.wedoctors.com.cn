@@ -13,6 +13,7 @@ use common\components\Code;
 use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
+use common\models\Log;
 use common\models\Pregnancy;
 use common\models\User;
 use common\models\UserDoctor;
@@ -44,6 +45,11 @@ class Controller extends \yii\web\Controller
 
         $controllerID = \Yii::$app->controller->id;
         $actionID = \Yii::$app->controller->action->id;
+
+        $log = new \common\components\Log('controller');
+        $rs[] = $this->seaver_token;
+        $log->addLog(json_encode($rs));
+        $log->saveLog();
 
         if ($this->seaver_token) {
             $cache = \Yii::$app->rdmp;
