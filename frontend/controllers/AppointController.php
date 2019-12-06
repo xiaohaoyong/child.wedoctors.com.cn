@@ -16,7 +16,7 @@ class AppointController extends Controller
 {
     public $hs = [
         '9RV7H6Dv' => [248033,248035],
-        'a94PW3iX' => 2,
+        'a94PW3iX' => [206262],
     ];
     public function sign($h, $d, $s){
         if($s==md5($h.date('Ymd')."rh6FcKyWOUqF52hf")){
@@ -81,7 +81,7 @@ class AppointController extends Controller
             }
         }else{
             $code=20010;
-            $msg='sign错误:md5($h.date(\'Ymd\')."rh6FcKyWOUqF52hf")';
+            $msg='sign错误';
         }
         return ['code'=>$code?$code:10000,'msg'=>$msg?$msg:'成功','data'=>$arr];
     }
