@@ -30,9 +30,7 @@ databackend\assets\DatabasesAsset::register($this);
                     <th>辖区内管理儿童数</th>
                     <th>今日签约 </th>
                     <th>签约总数</th>
-                    <th>今日宣教</th>
                     <th>已宣教数</th>
-                    <th>管理服务率</th>
                     <th>数据</th>
                     <th>操作</th>
                 </tr>
@@ -72,38 +70,26 @@ databackend\assets\DatabasesAsset::register($this);
                             ?>
                         </td>
                         <td><?php
-                            $today=strtotime(date('Y-m-d 00:00:00'));
-                            //今日宣教
-                            echo  \common\models\ArticleUser::find()
-                                ->andFilterWhere(['userid'=>$v->userid])
-                                ->andFilterWhere([">",'createtime',$today])->count();
-                            ?></td>
-                        <td><?php
                             //已宣教
                             echo  \common\models\ArticleUser::find()
                                 ->andFilterWhere(['userid'=>$v->userid])->count();
                             ?></td>
-                        <td>
-                            <?php
-                            if($total) {$baifen= round(($q/$total) * 100,1);}else{$baifen= 0;}
+                        <?php
+                        if($total) {$baifen= round(($q/$total) * 100,1);}else{$baifen= 0;}
 
-                            if($baifen>44){
+                        if($baifen>44){
 
-                                $color='bg-green';
-                                $color1='progress-bar-success';
-                            }elseif($baifen>34){
-                                $color='bg-yellow';
-                                $color1='progress-bar-yellow';
-                            }else{
-                                $color='bg-red';
-                                $color1='progress-bar-danger';
-                            }
+                            $color='bg-green';
+                            $color1='progress-bar-success';
+                        }elseif($baifen>34){
+                            $color='bg-yellow';
+                            $color1='progress-bar-yellow';
+                        }else{
+                            $color='bg-red';
+                            $color1='progress-bar-danger';
+                        }
 
-                            ?>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar <?=$color1?>" style="width: <?=$baifen?>%"></div>
-                            </div>
-                        </td>
+                        ?>
                         <td><span class="badge <?=$color?>"><?=$baifen?>%</span></td>
                         <td>
                             <?=Html::a('<span class="fa fa-database"></span> 编辑', \yii\helpers\Url::to(['user-doctor/update',"id"=>$v->userid]));?>

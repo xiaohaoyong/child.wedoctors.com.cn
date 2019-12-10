@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\UserParentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '管理列表';
+$this->title = '家庭数据';
 $this->params['breadcrumbs'][] = $this->title;
 \common\helpers\HeaderActionHelper::$action = [
     0 => ['name' => '添加', 'url' => ['create']]
@@ -78,19 +78,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 [
                                     'class' => 'common\components\grid\ActionColumn',
-                                    'template' => '
-                            <div class="btn-group dropup">
+                                    'template' => '<div class="btn-group dropup">
                                 <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown"
                                    aria-expanded="false">
                                     <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
                                 <ul class="dropdown-menu pull-right" role="menu">
                                     <li>{update}</li>
                                     <li>{delete}</li>
-                                                                                                            <li>{view}</li>
+                                    <li>{view}</li>
+                                    <li>{children}</li>
 
                                 </ul>
-                            </div>
-                            ',
+                            </div>',
+                                    'buttons' => [
+                                        'children' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-database"></span> 查看关联儿童', \yii\helpers\Url::to(['child/index', 'ChildSearch[userid]' => $model->userid]));
+                                        },
+                                    ],
                                 ],
                             ],
                         ]); ?>

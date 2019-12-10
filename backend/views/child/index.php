@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\ChildSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '管理列表';
+$this->title = '儿童数据';
 $this->params['breadcrumbs'][] = $this->title;
 \common\helpers\HeaderActionHelper::$action = [
     0 => ['name' => '添加', 'url' => ['create']]
@@ -99,10 +99,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <li>{update}</li>
                                     <li>{delete}</li>
                                                                         <li>{view}</li>
+                                                                        <li>{tijian}</li>
 
                                 </ul>
                             </div>
                             ',
+                                    'buttons' => [
+                                        'tijian' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-database"></span> 查看关联体检', \yii\helpers\Url::to(['examination/index', 'ExaminationSearch[childid]' => $model->id]));
+                                        },
+                                    ],
                                 ],
                             ],
                         ]); ?>

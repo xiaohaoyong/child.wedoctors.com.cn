@@ -18,16 +18,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'userid') ?>
 
-    <?= $form->field($model, 'password') ?>
 
     <?= $form->field($model, 'openid') ?>
 
-    <?= $form->field($model, 'logintime') ?>
-
-    <?= $form->field($model, 'xopenid') ?>
-    <?= $form->field($model, 'dopenid') ?>
-
-    <?php // echo $form->field($model, 'unionid') ?>
+    <?php  echo $form->field($model, 'unionid') ?>
 
     <?php // echo $form->field($model, 'hxusername') ?>
 

@@ -20,12 +20,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'phone') ?>
 
-    <?= $form->field($model, 'level') ?>
-
-    <?= $form->field($model, 'type') ?>
-
-    <?= $form->field($model, 'createtime') ?>
-
     <?php // echo $form->field($model, 'source') ?>
 
     <div class="form-group">
