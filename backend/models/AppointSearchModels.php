@@ -79,7 +79,7 @@ class AppointSearchModels extends Appoint
             return $dataProvider;
         }
         if ($this->child_name) {
-            $childids = ChildInfo::find()->select('id')->andWhere(['source' => $hospitalid])->andWhere(['name' => $this->child_name])->column();
+            $childids = ChildInfo::find()->select('id')->andWhere(['name' => $this->child_name])->column();
             if ($childids) {
                 $query->andFilterWhere(['in', 'childid', $childids]);
             } else {
@@ -102,7 +102,7 @@ class AppointSearchModels extends Appoint
             'state'=>$this->state,
         ]);
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
-
+        //echo $query->createCommand()->getRawSql();exit;
         return $dataProvider;
     }
 }

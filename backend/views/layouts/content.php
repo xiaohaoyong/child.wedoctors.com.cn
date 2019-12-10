@@ -12,7 +12,7 @@ use dmstr\widgets\Alert;
 </style>
 
 <div class="content-wrapper">
-    <section class="content-header">
+    <!--<section class="content-header">
         <?php if (isset($this->blocks['content-header'])) { ?>
             <h1><?= $this->blocks['content-header'] ?></h1>
         <?php } else { ?>
@@ -30,11 +30,11 @@ use dmstr\widgets\Alert;
         <?php } ?>
 
 
-    </section>
+    </section>-->
         <?php
 
         if(is_array(\common\helpers\HeaderActionHelper::$action)){?>
-            <div class="page-toolbar">
+            <div class="page-toolbar" style="position: fixed; z-index: 9999; top:100px;right: 0;border: 1px solid #999999;">
                 <div class="btn-group pull-right">
                     <button type="button" class="btn btn-fit-height grey-salt dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
                         功能 <i class="fa fa-angle-down"></i>

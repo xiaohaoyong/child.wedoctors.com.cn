@@ -38,6 +38,8 @@
                             ['label' => '宣教指导分类管理', 'icon' => 'list', 'url' => ['/article-category'],],
 
                             ['label' => '签约管理', 'icon' => 'list', 'url' => ['/doctor-parent'],],
+                            ['label' => '积分记录', 'icon' => 'list', 'url' => ['/points'],],
+                            ['label' => '签到记录', 'icon' => 'list', 'url' => ['/clock-in'],],
 
                             ['label' => '数据上传记录', 'icon' => 'list', 'url' => ['/data-update-record'],],
 

@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'userid',
                                 'openid',
                                 'logintime:datetime',
-                                'xopenid',
                                 'unionid',
                                 // 'hxusername',
                                 'phone',

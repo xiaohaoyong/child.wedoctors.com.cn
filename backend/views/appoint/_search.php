@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
-    <?= $form->field($model, 'doctorid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->andFilterWhere(['>', 'userid', '37'])->column(), ['prompt' => '请选择']) ?>
+    <?= $form->field($model, 'doctorid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->andFilterWhere(['>', 'userid', '37'])->column(), ['prompt' => '请选择']) ?>
 
     <?= $form->field($model, 'appoint_dates')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
