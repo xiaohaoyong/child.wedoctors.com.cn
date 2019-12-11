@@ -339,7 +339,7 @@ class ChildInfoInput
                 ->one();
 
             if ($userParent) {
-                $this->childInfo = ChildInfo::findOne(['name' => $value['name']]);
+                $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid]);
                 $this->user = User::findOne($userParent->userid);
                 $this->userParent = $userParent;
                 return true;
@@ -359,7 +359,7 @@ class ChildInfoInput
                 ->one();
 
             if ($userParent) {
-                $this->childInfo = ChildInfo::findOne(['name' => $value['name']]);
+                $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid]);
                 $this->user = User::findOne($userParent->userid);
                 $this->userParent = $userParent;
                 return true;
