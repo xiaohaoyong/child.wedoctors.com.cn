@@ -32,7 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
 
                             'columns' => [
-
                                 'userid',
                                 'mother',
                                 [
@@ -62,7 +61,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'father_birthday',
                                 'state',
                                 'address',
-                                'source',
+                                [
+                                    'attribute' => 'source',
+                                    'format' => 'raw',
+                                    'value' => function ($e) {
+                                        $doctor = \common\models\UserDoctor::findOne(['hospitalid' => $e->source]);
+
+                                        return $doctor->name;
+
+                                    }
+                                ],
 //             'field34',
 //             'field33',
 //             'field30',
@@ -87,12 +95,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <li>{delete}</li>
                                     <li>{view}</li>
                                     <li>{children}</li>
+                                    <li>{login}</li>
 
                                 </ul>
                             </div>',
                                     'buttons' => [
                                         'children' => function ($url, $model, $key) {
                                             return Html::a('<span class="fa fa-database"></span> 查看关联儿童', \yii\helpers\Url::to(['child/index', 'ChildSearch[userid]' => $model->userid]));
+                                        },
+                                        'login' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-database"></span> 查看登录情况', \yii\helpers\Url::to(['user-login/index', 'UserLoginSearch[userid]' => $model->userid]));
                                         },
                                     ],
                                 ],

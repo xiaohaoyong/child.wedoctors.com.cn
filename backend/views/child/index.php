@@ -32,12 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
 
                             'columns' => [
-                                'id',
-                                'userid',
                                 'name',
                                 'birthday:datetime',
                                 'createtime:datetime',
-                                'source',
                                 [
 
                                     'attribute' => 'source',
@@ -49,8 +46,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                         }
                                     }
                                 ],
-                                'admin',
-//             'field54',
+                                [
+                                    'attribute' => 'admin',
+                                    'format' => 'raw',
+                                    'value' => function ($e) {
+                                        $doctor = \common\models\UserDoctor::findOne(['hospitalid' => $e->admin]);
+
+                                        return $doctor->name;
+
+                                    }
+                                ],//             'field54',
 //             'field53',
 //             'field52',
 //             'field51',
