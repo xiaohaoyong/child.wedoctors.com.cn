@@ -31,7 +31,7 @@ class Autograph extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['createtime', 'loginid','userid','doctorid'], 'integer'],
+            [['createtime', 'loginid','userid','doctorid','endtime'], 'integer'],
             [['img'], 'string', 'max' => 150],
         ];
     }
@@ -44,6 +44,7 @@ class Autograph extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'createtime' => '签约时间',
+            'endtime' => '有效截止日期',
             'img' => '签名',
             'userid' => '用户',
             'doctorid'=>'社区医院ID'
