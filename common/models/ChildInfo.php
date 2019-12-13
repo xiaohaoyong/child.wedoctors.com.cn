@@ -13,6 +13,7 @@ use Yii;
  * @property int $birthday
  * @property int $createtime
  * @property int $gender 1男2女
+ * @property int $idcard 儿童身份证
  * @property int $source 导入来源医院ID
  * @property int $doctorid 所属医院ID
  * @property string $field54 新建地点
@@ -133,7 +134,7 @@ class ChildInfo extends \yii\db\ActiveRecord
     {
         return [
             [['userid', 'birthday', 'createtime', 'gender', 'source', 'admin', 'doctorid'], 'integer'],
-            [['name', 'field54', 'field53', 'field52', 'field51', 'field50', 'field49', 'field48', 'field47', 'field46', 'field45', 'field44', 'field43', 'field42', 'field41', 'field40', 'field39', 'field38', 'field37', 'field27', 'field26', 'field25', 'field24', 'field23', 'field22', 'field21', 'field20', 'field19', 'field18', 'field17', 'field16', 'field15', 'field14', 'field13', 'field7', 'field6', 'field0'], 'string', 'max' => 100],
+            [['idcard','name', 'field54', 'field53', 'field52', 'field51', 'field50', 'field49', 'field48', 'field47', 'field46', 'field45', 'field44', 'field43', 'field42', 'field41', 'field40', 'field39', 'field38', 'field37', 'field27', 'field26', 'field25', 'field24', 'field23', 'field22', 'field21', 'field20', 'field19', 'field18', 'field17', 'field16', 'field15', 'field14', 'field13', 'field7', 'field6', 'field0'], 'string', 'max' => 100],
         ];
     }
 
@@ -188,6 +189,7 @@ class ChildInfo extends \yii\db\ActiveRecord
             'field7' => '条形码',
             'field6' => '出生医学证明号',
             'field0' => '建册时间',
+            'idcard'=>'儿童身份证',
         ];
     }
 
