@@ -21,6 +21,7 @@ use common\models\Area;
 use common\models\Article;
 use common\models\ArticleComment;
 use common\models\ArticleUser;
+use common\models\Autograph;
 use common\models\BabyGuide;
 use common\models\BabyTool;
 use common\models\BabyToolTag;
@@ -60,6 +61,17 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+
+        $autograph=Autograph::find()->all();
+        foreach ($autograph as $k=>$v){
+
+            $v->endtime=date('Ymd',strtotime('+1 year',$v->createtime));
+            $v->save();
+        }
+        exit;
+
+
+
         ini_set('memory_limit', '1024M');
         $localfile="2.xlsx";
         $objRead = new Xlsx();   //建立reader对象

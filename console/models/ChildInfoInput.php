@@ -152,12 +152,16 @@ class ChildInfoInput
             }
             //插入儿童数据
             $child = $this->childInfo;
+            if(!$value['field6']){
+                unset($value['field6']);
+            }
             $childData=$value;
             $childData['userid']=$this->user->id;
             $childData['gender']=$value['gender'] == "男" ? 1 : 2;
             $childData['birthday']=intval(strtotime($value['birthday']));
             $childData['source']=$this->hospitalid;
             $childData['admin']=$this->hospitalid;
+
             $child->load(['ChildInfo'=>$childData]);
             $this->log->addLog("保存儿童");
             if (!$child->save()) {
