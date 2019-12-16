@@ -154,6 +154,7 @@ class DataUpdateController extends BeanstalkController
                             }
                         }
                     }
+                    var_dump($field_index);
                     switch ($table){
                         case '\common\models\ChildInfo':
                             ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);

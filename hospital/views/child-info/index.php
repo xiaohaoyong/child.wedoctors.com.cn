@@ -84,7 +84,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $data[]=$e->parent->father.":".$e->parent->father_phone;
 
                                     return implode("<br>",$data);
-                                }
+                                },
+                                'contentOptions' => ['style'=>'word-break:keep-all'],
                             ],
                             [
                                 'attribute' => '签约社区',
