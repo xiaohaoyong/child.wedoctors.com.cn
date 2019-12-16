@@ -32,7 +32,7 @@ class Log
     {
         $file = __LOG__ . $this->name."-".date('Y-m-d') .".log";
 
-        $header= date('YmdHis')."|,|".\Yii::$app->request->userIP;
+        $header= date('YmdHis')."|,|";
 
         file_put_contents($file, $header.$this->lineLog . "\n", FILE_APPEND);
     }
