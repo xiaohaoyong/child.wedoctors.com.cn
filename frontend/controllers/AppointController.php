@@ -17,6 +17,8 @@ class AppointController extends Controller
     public $hs = [
         '9RV7H6Dv' => [248033,248035],
         'a94PW3iX' => [206262],
+        'KPW01H7g' => [110580],
+
     ];
     public function sign($h, $d, $s){
         if($s==md5($h.date('Ymd')."rh6FcKyWOUqF52hf")){
