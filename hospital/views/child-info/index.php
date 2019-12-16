@@ -47,13 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $columns=[
 
                             'name',
-                            [
 
-                                'attribute' => '联系电话',
-                                'value' => function ($e) {
-                                    return \common\models\User::findOne($e->userid)->phone;
-                                }
-                            ],
                             [
 
                                 'attribute' => '性别',
@@ -82,27 +76,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                             ],
                             [
-                                'attribute' => '母亲电话',
+
+                                'attribute' => '联系电话',
+                                'format'=>'html',
                                 'value' => function ($e) {
-                                    return $e->parent->mother_phone ? $e->parent->mother_phone : "无";
-                                }
-                            ],
-                            [
-                                'attribute' => '父亲电话',
-                                'value' => function ($e) {
-                                    return $e->parent->father_phone ? $e->parent->father_phone : "无";
-                                }
-                            ],
-                            [
-                                'attribute' => '联系人姓名',
-                                'value' => function ($e) {
-                                    return $e->parent->field11 ? $e->parent->field11 : "无";
-                                }
-                            ],
-                            [
-                                'attribute' => '联系人电话',
-                                'value' => function ($e) {
-                                    return $e->parent->field12 ? $e->parent->field12 : "无";
+                                    $data[]=$e->parent->mother.":".$e->parent->mother_phone;
+                                    $data[]=$e->parent->father.":".$e->parent->father_phone;
+
+                                    return implode("<br>",$data);
                                 }
                             ],
                             [
@@ -123,6 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                             ],
                             'field50',
+                            'fieldu47',
                             [
                                 'attribute' => '现住址',
                                 'value' => function ($e) {
