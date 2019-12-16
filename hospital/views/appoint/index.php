@@ -54,6 +54,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+                                    'attribute' => '儿童户籍',
+                                    'value' => function ($e) {
+                                        $child = \common\models\ChildInfo::findOne(['id' => $e->childid]);
+                                        return $child->fieldu47;
+                                    }
+                                ],
+                                [
 
                                     'attribute' => '母亲姓名',
                                     'value' => function ($e) {
