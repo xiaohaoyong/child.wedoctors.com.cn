@@ -162,7 +162,6 @@ class ChildInfoInput
             $childData['source']=$this->hospitalid;
             $childData['admin']=$this->hospitalid;
 
-            var_dump($child);
             $child->load(['ChildInfo'=>$childData]);
             $this->log->addLog("保存儿童");
             if (!$child->save()) {
@@ -345,6 +344,8 @@ class ChildInfoInput
 
             if ($userParent) {
                 $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid]);
+
+                $this->childInfo = $this->childInfo?$this->childInfo:new ChildInfo();
                 $this->user = User::findOne($userParent->userid);
                 $this->userParent = $userParent;
                 return true;
@@ -365,6 +366,8 @@ class ChildInfoInput
 
             if ($userParent) {
                 $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid]);
+                $this->childInfo = $this->childInfo?$this->childInfo:new ChildInfo();
+
                 $this->user = User::findOne($userParent->userid);
                 $this->userParent = $userParent;
                 return true;
