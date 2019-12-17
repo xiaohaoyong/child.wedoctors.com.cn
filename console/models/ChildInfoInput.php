@@ -162,6 +162,7 @@ class ChildInfoInput
             $childData['source']=$this->hospitalid;
             $childData['admin']=$this->hospitalid;
 
+            $this->log->addLog("保存父母1");
             $child->load(['ChildInfo'=>$childData]);
             $this->log->addLog("保存儿童");
             if (!$child->save()) {
