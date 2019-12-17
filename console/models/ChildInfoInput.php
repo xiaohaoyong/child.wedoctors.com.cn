@@ -27,6 +27,7 @@ class ChildInfoInput
     public function addLog($value)
     {
         $this->lineLog .= "==" . $value;
+        var_dump($this->lineLog."\n");
         echo $this->lineLog."\n";
     }
 
@@ -132,8 +133,6 @@ class ChildInfoInput
             }
             $this->user = $user;
         }
-        var_dump($value);
-
         if ($this->user->id) {
             //添加手机号至登录表
             foreach ($this->phones as $k => $v) {
