@@ -54,7 +54,7 @@ class ChildInfoInput
             $value['field12'] = $field12[0];
         }
 
-        $this->log= new Log('childInfoUpdate',true);
+        $this->log= new Log('childInfoUpdate');
 
         if($hospitalid) {
             $this->hospitalid = $hospitalid;
@@ -162,7 +162,6 @@ class ChildInfoInput
             $childData['source']=$this->hospitalid;
             $childData['admin']=$this->hospitalid;
 
-            var_dump($child);
             $child->load(['ChildInfo'=>$childData]);
             $this->log->addLog("保存儿童");
             if (!$child->save()) {
@@ -344,7 +343,7 @@ class ChildInfoInput
                 ->one();
 
             if ($userParent) {
-                $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid]);
+                $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid])->one();
 
                 $this->childInfo = $this->childInfo?$this->childInfo:new ChildInfo();
                 $this->user = User::findOne($userParent->userid);
@@ -366,7 +365,7 @@ class ChildInfoInput
                 ->one();
 
             if ($userParent) {
-                $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid]);
+                $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid])->one();
                 $this->childInfo = $this->childInfo?$this->childInfo:new ChildInfo();
 
                 $this->user = User::findOne($userParent->userid);
