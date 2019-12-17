@@ -343,7 +343,6 @@ class ChildInfoInput
                 ->one();
 
             if ($userParent) {
-                var_dump($userParent);exit;
                 $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid]);
                 $this->user = User::findOne($userParent->userid);
                 $this->userParent = $userParent;
