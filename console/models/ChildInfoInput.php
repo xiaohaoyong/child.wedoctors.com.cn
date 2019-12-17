@@ -132,6 +132,7 @@ class ChildInfoInput
             }
             $this->user = $user;
         }
+        var_dump($value);
 
         if ($this->user->id) {
             //添加手机号至登录表
@@ -162,7 +163,6 @@ class ChildInfoInput
             $childData['source']=$this->hospitalid;
             $childData['admin']=$this->hospitalid;
 
-            var_dump($childData);
             $child->load(['ChildInfo'=>$childData]);
             $this->log->addLog("保存儿童");
             if (!$child->save()) {
