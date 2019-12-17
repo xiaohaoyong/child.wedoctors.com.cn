@@ -35,6 +35,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'week')->textInput() ?>
 
+    <?= $form->field($model, 'sex')->textInput() ?>
+
+    <?= $form->field($model, 'childbirth_type')->textInput() ?>
+
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
                     'btn btn-primary']) ?>

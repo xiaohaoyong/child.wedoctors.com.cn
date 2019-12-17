@@ -162,7 +162,7 @@ class ChildInfoInput
             $childData['source']=$this->hospitalid;
             $childData['admin']=$this->hospitalid;
 
-            var_dump($childData);exit;
+            var_dump($childData);
             $child->load(['ChildInfo'=>$childData]);
             $this->log->addLog("保存儿童");
             if (!$child->save()) {

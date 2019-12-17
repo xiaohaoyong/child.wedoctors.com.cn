@@ -2,7 +2,6 @@
 
 namespace backend\models;
 
-use common\models\Pregnancy;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -13,35 +12,17 @@ use common\models\Interview;
  */
 class InterviewSearch extends Interview
 {
-
-    public $field5s;//建册
-    public $field5e;//建册
-    public $field15s;//核实
-    public $field15e;//核实
-    public $childbirth_dates;//核实
-    public $childbirth_datee;//核实
-    public $name;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'prenatal_test', 'pt_date', 'prenatal', 'childbirth_date', 'createtime', 'userid', 'pt_value', 'week'], 'integer'],
-            [['childbirth_dates','childbirth_datee','field15s','field15e','field5s','field5e','pt_hospital', 'childbirth_hospital','name'], 'safe'],
+            [['id', 'prenatal_test', 'pt_date', 'prenatal', 'childbirth_date', 'createtime', 'userid', 'pt_value', 'week', 'sex', 'childbirth_type'], 'integer'],
+            [['pt_hospital', 'childbirth_hospital'], 'safe'],
         ];
     }
-    public function attributeLabels(){
-        $attr=parent::attributeLabels();
-        $attr['name']="孕妇姓名";
-        $attr['field15s']="核实后预产期";
-        $attr['field15e']="~~";
-        $attr['field5s']="建册日期";
-        $attr['field5e']="~~";
-        $attr['childbirth_dates']="分娩日期";
-        $attr['childbirth_datee']="~~";
-        return $attr;
-    }
+
     /**
      * @inheritdoc
      */
@@ -76,39 +57,23 @@ class InterviewSearch extends Interview
             return $dataProvider;
         }
 
-        if($this->field5s){
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
-            $query->andWhere(['>=',Pregnancy::tableName().'.field5',$this->field5s]);
-        }
-        if($this->field5e){
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
-            $query->andWhere(['<=',Pregnancy::tableName().'.field5',$this->field5e]);
-        }
-        if($this->field15s){
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
-            $query->andWhere(['>=',Pregnancy::tableName().'.field15',$this->field15s]);
-        }
-        if($this->field15s){
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
-            $query->andWhere(['<=',Pregnancy::tableName().'.field15',$this->field15e]);
-        }
-        if($this->childbirth_dates){
-            $query->andWhere(['>=',Interview::tableName().'.childbirth_date',$this->field15s]);
-        }
-        if($this->childbirth_datee){
-            $query->andWhere(['<=',Interview::tableName().'.childbirth_date',$this->field15e]);
-        }
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'prenatal_test' => $this->prenatal_test,
+            'pt_date' => $this->pt_date,
+            'prenatal' => $this->prenatal,
+            'childbirth_date' => $this->childbirth_date,
+            'createtime' => $this->createtime,
+            'userid' => $this->userid,
+            'pt_value' => $this->pt_value,
+            'week' => $this->week,
+            'sex' => $this->sex,
+            'childbirth_type' => $this->childbirth_type,
+        ]);
 
-
-        $query->andWhere(['prenatal_test'=>1]);
-        $query->groupBy('userid');
-
-        if ($this->name) {
-
-            $query->leftJoin('pregnancy', '`interview`.`userid` = `pregnancy`.`familyid`');
-            $query->andWhere(['pregnancy.field1'=>$this->name]);
-        }
-
+        $query->andFilterWhere(['like', 'pt_hospital', $this->pt_hospital])
+            ->andFilterWhere(['like', 'childbirth_hospital', $this->childbirth_hospital]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;

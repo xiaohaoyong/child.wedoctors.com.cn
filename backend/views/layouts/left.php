@@ -47,7 +47,7 @@
                             ['label' => '孕产管理', 'icon' => 'comments','url' => '#',
                                 'items'=>[
                                     ['label' => '孕产数据', 'icon' => 'hospital-o', 'url' => ['/pregnancy'],],
-                                    ['label' => '追访记录', 'icon' => 'hospital-o', 'url' => ['/pregnancy'],],
+                                    ['label' => '追访记录', 'icon' => 'hospital-o', 'url' => ['/interview'],],
 
                                 ],],
 

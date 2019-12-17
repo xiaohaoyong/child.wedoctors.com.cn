@@ -46,6 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'userid',
             'pt_value',
             'week',
+            'sex',
+            'childbirth_type',
                 ],
                 ]) ?>
 

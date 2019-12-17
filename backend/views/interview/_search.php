@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model hospital\models\InterviewSearch */
+/* @var $model backend\models\InterviewSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -16,41 +16,17 @@ use yii\widgets\ActiveForm;
         'options' => ['class' => 'form-inline'],
     ]); ?>
 
+    <?= $form->field($model, 'id') ?>
 
+    <?= $form->field($model, 'prenatal_test') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'pt_hospital') ?>
 
-    <?= $form->field($model, 'field5s')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true
-    ]]) ?>
-    <?= $form->field($model, 'field5e')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true
-    ]]) ?>
-    <?= $form->field($model, 'field15s')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true
-    ]]) ?>
-    <?= $form->field($model, 'field15e')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true
-    ]]) ?>
-    <?= $form->field($model, 'childbirth_dates')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true
-    ]]) ?>
-    <?= $form->field($model, 'childbirth_datee')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true
-    ]]) ?>
+    <?= $form->field($model, 'pt_date') ?>
 
-    <?= $form->field($model, 'prenatal_test')->dropDownList(\common\models\Interview::$prenatal_Text,['prompt'=>'请选择']) ?>
-    <?= $form->field($model, 'prenatal')->dropDownList(\common\models\Interview::$prenatalText,['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'prenatal') ?>
 
     <?php // echo $form->field($model, 'childbirth_hospital') ?>
-
-
 
     <?php // echo $form->field($model, 'childbirth_date') ?>
 
@@ -58,9 +34,13 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'userid') ?>
 
-    <?php  echo $form->field($model, 'pt_value')->dropDownList(\common\models\Interview::$prenatalValueText,['prompt'=>'请选择']) ?>
+    <?php // echo $form->field($model, 'pt_value') ?>
 
     <?php // echo $form->field($model, 'week') ?>
+
+    <?php // echo $form->field($model, 'sex') ?>
+
+    <?php // echo $form->field($model, 'childbirth_type') ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
