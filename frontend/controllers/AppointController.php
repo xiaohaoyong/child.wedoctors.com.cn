@@ -21,6 +21,7 @@ class AppointController extends Controller
 
     ];
     public function sign($h, $d, $s){
+        //echo md5($h.date('Ymd')."rh6FcKyWOUqF52hf");exit;
         if($s==md5($h.date('Ymd')."rh6FcKyWOUqF52hf")){
             return true;
         }
@@ -76,7 +77,7 @@ class AppointController extends Controller
                         break;
                 }
 
-                $rs['dept_Name']=$v->type;
+                $rs['dept_Name']=$v->type==1?2:1;
                 $rs['yuyueDate']=Appoint::$timeText[$v->appoint_time];
                 $rs['quyuName']=$quyuName;
                 $arr[]=$rs;

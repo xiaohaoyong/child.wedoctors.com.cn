@@ -51,6 +51,8 @@ class NoticeController extends Controller
 
     public function actionEx()
     {
+        $m=[3,5,8,12,18,24,30,36,42,48];
+        $m2=[4,7,];
 
 
     }
