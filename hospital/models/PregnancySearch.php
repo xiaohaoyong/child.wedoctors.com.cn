@@ -89,7 +89,9 @@ class PregnancySearch extends Pregnancy
         }
 
         if ($this->contract1 !== '' and $this->contract2 !== null) {
-            $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`');
+            if(!$this->level) {
+                $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`');
+            }
             $state = strtotime($this->contract1 . " 00:00:00");
             $end = strtotime($this->contract2 . " 23:59:59");
             $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
