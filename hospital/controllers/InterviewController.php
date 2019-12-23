@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * InterviewController implements the CRUD actions for Interview model.
  */
-class InterviewController extends Controller
+class InterviewController extends BaseController
 {
     /**
      * @inheritdoc

@@ -16,7 +16,7 @@ use yii\filters\VerbFilter;
 /**
  * AutographController implements the CRUD actions for Autograph model.
  */
-class AutographController extends Controller
+class AutographController extends BaseController
 {
     /**
      * @inheritdoc

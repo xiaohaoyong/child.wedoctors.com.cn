@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * HospitalAppointController implements the CRUD actions for HospitalAppoint model.
  */
-class HospitalAppointController extends Controller
+class HospitalAppointController extends BaseController
 {
     /**
      * @inheritdoc

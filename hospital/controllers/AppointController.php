@@ -20,7 +20,7 @@ use yii\filters\VerbFilter;
 /**
  * AppointController implements the CRUD actions for Appoint model.
  */
-class AppointController extends Controller
+class AppointController extends BaseController
 {
     /**
      * @inheritdoc

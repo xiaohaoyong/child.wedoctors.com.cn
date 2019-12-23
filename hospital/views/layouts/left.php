@@ -41,6 +41,7 @@
                     ],
                     ['label' => '工具', 'icon' => 'send', 'url' => "#",
                         'items' => [
+                            ['label' => '提醒体检通知设置', 'url' => ['examination/automatic']],
                             ['label' => '未体检用户查询', 'url' => ['examination/undone']],
                             ['label' => '通知列表', 'url' => ['article/tindex?ArticleSearchModel[type]=2']],
                             ['label' => '发布通知', 'url' => ['article/tongzhi']],

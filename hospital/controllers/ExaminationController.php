@@ -2,6 +2,7 @@
 
 namespace hospital\controllers;
 
+use common\models\ExaNoticeSetup;
 use common\models\UserDoctor;
 use hospital\models\user\ChildInfo;
 use hospital\models\user\ChildInfoSearchModel;
@@ -15,7 +16,7 @@ use yii\filters\VerbFilter;
 /**
  * ExaminationController implements the CRUD actions for Examination model.
  */
-class ExaminationController extends Controller
+class ExaminationController extends BaseController
 {
     /**
      * @inheritdoc
@@ -30,6 +31,22 @@ class ExaminationController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionAutomatic(){
+        $exanoticesetup = ExaNoticeSetup::findOne(['hospitalid' => \Yii::$app->user->identity->hospital]);
+        $exanoticesetup = $exanoticesetup ? $exanoticesetup : new ExaNoticeSetup();
+        if(Yii::$app->request->post()) {
+            $exanoticesetup->load(Yii::$app->request->post());
+            $exanoticesetup->hospitalid=\Yii::$app->user->identity->hospital;
+            $exanoticesetup->save();
+            \Yii::$app->getSession()->setFlash('success','成功');
+        }
+
+
+        return $this->render('automatic',[
+            'model' => $exanoticesetup,
+        ]);
     }
 
     public function actionUndone(){

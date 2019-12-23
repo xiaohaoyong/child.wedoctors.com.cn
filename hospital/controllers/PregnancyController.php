@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * PregnancyController implements the CRUD actions for Pregnancy model.
  */
-class PregnancyController extends Controller
+class PregnancyController extends BaseController
 {
     /**
      * @inheritdoc
