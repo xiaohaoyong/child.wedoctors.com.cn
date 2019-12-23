@@ -90,10 +90,10 @@ class ExaminationController extends Controller
                                 "appid" => \Yii::$app->params['wxXAppId'],
                                 "pagepath" => "/pages/user/examination/index?id=" . $cv->id,
                             ];
-                            foreach($login as $lk=>$lv){
-                                WechatSendTmp::send($data, "o5ODa0451fMb_sJ1D1T4YhYXDOcg", 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
-                                exit;
-                            }
+//                            foreach($login as $lk=>$lv){
+//                                WechatSendTmp::send($data, "o5ODa0451fMb_sJ1D1T4YhYXDOcg", 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
+//                                exit;
+//                            }
                         }
                     }
                     $endMonth=ExaNoticeSetup::endList($i);
