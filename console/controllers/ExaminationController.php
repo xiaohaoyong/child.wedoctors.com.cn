@@ -113,7 +113,7 @@ class ExaminationController extends Controller
                             $data = [
                                 'first' => array('value' => "您好家长，您的宝宝如果还没有进行常规体检，请您在一周之内带孩子到保健科体检"),
                                 'keyword1' => ARRAY('value' => '社区健康体检',),
-                                'keyword2' => ARRAY('value' => '近期'),
+                                'keyword2' => ARRAY('value' => '一周内'),
                                 'remark' => ARRAY('value' => "体检时间查看预防保健科门诊日。如已体检，请忽略。注意：如有超期不再体检。（儿童体检时间表：出生后第42天、3月龄、6月龄、9月龄、12月龄、18月龄、2周岁、2岁6月龄、3周岁）", 'color' => '#221d95'),
                             ];
 
