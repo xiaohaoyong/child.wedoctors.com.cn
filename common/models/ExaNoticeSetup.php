@@ -22,6 +22,21 @@ use Yii;
  */
 class ExaNoticeSetup extends \yii\db\ActiveRecord
 {
+
+    public static function endList($i){
+        $month=[
+            1=>3,
+            2=>6,
+            3=>9,
+            4=>12,
+            5=>18,
+            6=>24,
+            7=>30,
+            8=>42,
+        ];
+        return $month[$i];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -39,6 +54,7 @@ class ExaNoticeSetup extends \yii\db\ActiveRecord
             [['hospitalid', 'level', 'end', 'month1', 'month2', 'month3', 'month4', 'month5', 'month6', 'month7', 'month8'], 'integer'],
         ];
     }
+
 
     /**
      * {@inheritdoc}
