@@ -65,6 +65,8 @@ class ExaminationController extends Controller
         foreach ($exaList as $k => $v) {
             for ($i = 1; $i <= 8; $i++) {
                 $field = "month" . $i;
+                $log->addLog($field);
+
                 $month = $v->$field;
                 if ($v->$field) {
                     $doctor = UserDoctor::findOne(['hospitalid' => $v->hospitalid]);
@@ -131,11 +133,13 @@ class ExaminationController extends Controller
 //                                WechatSendTmp::send($data, "o5ODa0451fMb_sJ1D1T4YhYXDOcg", 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
 //                                exit;
                             }
+
                         }
                     }
 
                 }
             }
+            $log->saveLog();
         }
     }
 
