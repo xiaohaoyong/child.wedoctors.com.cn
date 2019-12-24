@@ -60,7 +60,7 @@ class ExaminationController extends Controller
 
     public function actionNotice()
     {
-        $log=new Log('exa-notice');
+        $log=new Log('exa-notice',true);
         $exaList = ExaNoticeSetup::findAll(['level' => 1]);
         foreach ($exaList as $k => $v) {
             for ($i = 1; $i <= 8; $i++) {
