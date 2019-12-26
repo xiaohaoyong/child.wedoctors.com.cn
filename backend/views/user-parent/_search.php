@@ -28,6 +28,8 @@ use yii\widgets\ActiveForm;
 
     <?php  echo $form->field($model, 'father_phone') ?>
 
+    <?= $form->field($model, 'source')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->column(),['prompt'=>'请选择']) ?>
+
     <?php // echo $form->field($model, 'father_birthday') ?>
 
     <?php // echo $form->field($model, 'state') ?>
