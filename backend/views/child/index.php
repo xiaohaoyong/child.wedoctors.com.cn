@@ -105,6 +105,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <li>{delete}</li>
                                                                         <li>{view}</li>
                                                                         <li>{tijian}</li>
+                                                                                                                                                <li>{parent}</li>
+
 
                                 </ul>
                             </div>
@@ -112,6 +114,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'buttons' => [
                                         'tijian' => function ($url, $model, $key) {
                                             return Html::a('<span class="fa fa-database"></span> 查看关联体检', \yii\helpers\Url::to(['examination/index', 'ExaminationSearch[childid]' => $model->id]));
+                                        },
+                                        'parent' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-database"></span> 家庭数据', \yii\helpers\Url::to(['user-parent/index', 'UserParentSearch[userid]' => $model->userid]));
                                         },
                                     ],
                                 ],
