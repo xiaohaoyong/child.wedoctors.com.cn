@@ -61,6 +61,25 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $doctorparent=DoctorParent::find()->select('parentid')->where(['doctorid'=>240188])->column();
+
+        $user=UserParent::find()->where(['in not','id',$doctorparent])->andWhere(['source'=>110615])->all();
+
+
+        $login=UserLogin::find()->select('phone')->where(['in','userid',$doctorparent])->andWhere(['>','logintime',0])->column();
+
+        foreach($login as $k=>$v){
+            $userparent=UserParent::find()->where(['mother_phone'=>$v])->andWhere(['source'=>110615])->one();
+            if(!$userparent){
+                $userparent=UserParent::find()->where(['father_phone'=>$v])->andWhere(['source'=>110615])->one();
+                if(!$userparent){
+                    echo $v."\n";
+                }
+            }
+        }
+        exit;
+
+
 
         $autograph=Autograph::find()->all();
         foreach ($autograph as $k=>$v){

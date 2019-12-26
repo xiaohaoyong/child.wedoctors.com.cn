@@ -113,7 +113,7 @@ class ChildInfoSearchModel extends ChildInfo
             $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
             $query->andFilterWhere(['child_info.admin' => $hospitalid]);
             $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-$year year")]);
-            $query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
+            //$query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
         } elseif ($this->level == 2) {
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
             $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
