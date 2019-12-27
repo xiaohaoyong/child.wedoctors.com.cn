@@ -63,7 +63,11 @@ class DataController extends Controller
     {
         $doctorparent=DoctorParent::find()->select('parentid')->where(['doctorid'=>240188])->column();
 
-        $user=UserParent::find()->where(['in not','id',$doctorparent])->andWhere(['source'=>110615])->all();
+        $user=UserParent::find()->where(['not in','userid',$doctorparent])->andWhere(['source'=>110615])->all();
+        foreach ($user as $k=>$v){
+            $v->delete();
+        }
+        exit;
 
 
         $login=UserLogin::find()->select('phone')->where(['in','userid',$doctorparent])->andWhere(['>','logintime',0])->column();
