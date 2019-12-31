@@ -142,7 +142,7 @@ class ChildInfoController extends Controller
                 ->setCellValue('D' . $key1, $age)
                 ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
                 ->setCellValue('F' . $key1, $v['field6'])
-                ->setCellValue('G' . $key1, $v['field27'])
+                ->setCellValue('G' . $key1, " ".$v['field27'])
                 ->setCellValue('H' . $key1, $userParent->mother || $userParent->father?$userParent->mother."/".$userParent->father:"无")
                 ->setCellValue('I' . $key1, $userParent->mother_phone ? " ".$userParent->mother_phone : "无")
                 ->setCellValue('J' . $key1, $userParent->father_phone ?  " ".$userParent->father_phone  : "无")
