@@ -15,7 +15,8 @@ use yii\web\Response;
 class AppointController extends Controller
 {
     public $hs = [
-        '9RV7H6Dv' => [248033,248035],
+        '9RV7H6Dv' => [248035],
+        'tU459foO'=>[248033],
         'a94PW3iX' => [206262],
         'KPW01H7g' => [113890],
 
