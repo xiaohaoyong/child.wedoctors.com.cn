@@ -60,12 +60,12 @@ class ExaminationController extends Controller
 
     public function actionNotice()
     {
-        $log=new Log('exa-notice',true);
+        $log = new Log('exa-notice', true);
         $exaList = ExaNoticeSetup::findAll(['level' => 1]);
         foreach ($exaList as $k => $v) {
             for ($i = 1; $i <= 8; $i++) {
                 $field = "month" . $i;
-                $log->addLog($field);
+
 
                 $month = $v->$field;
                 if ($v->$field) {
@@ -76,14 +76,15 @@ class ExaminationController extends Controller
                         ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctor->userid])
                         ->andFilterWhere(['`doctor_parent`.`level`' => 1])
                         ->andFilterWhere(['child_info.admin' => $v->hospitalid])
-                        ->andFilterWhere(['`child_info`.birthday'=>strtotime($date)])
+                        ->andFilterWhere(['`child_info`.birthday' => strtotime($date)])
                         ->andFilterWhere(['`child_info`.`doctorid`' => $v->hospitalid])
                         ->all();
-                    $log->addLog('前');
-                    foreach($childs as $ck=>$cv){
-                        //Notice::setList($cv->userid, 1, ['title' => '宝宝近期有健康体检，请做好准备', 'ftitle' => $date, 'id' => '/user/examination/index?id=' . $v->childid,], "id=" . $v->childid);
-                        $login = UserLogin::find()->select('openid')->where(['userid'=>$cv->userid])->andWhere(["!=",'openid',''])->column();
-                        if($login) {
+                    foreach ($childs as $ck => $cv) {
+                        $log->addLog($field);
+                        $log->addLog('前');
+                        Notice::setList($cv->userid, 1, ['title' => '宝宝近期有健康体检，请做好准备', 'ftitle' => $date, 'id' => '/user/examination/index?id=' . $v->childid,], "id=" . $v->childid);
+                        $login = UserLogin::find()->select('openid')->where(['userid' => $cv->userid])->andWhere(["!=", 'openid', ''])->column();
+                        if ($login) {
                             $data = [
                                 'first' => array('value' => "您好家长，您的宝宝可以进行定期常规体检了"),
                                 'keyword1' => ARRAY('value' => '社区健康体检',),
@@ -95,27 +96,29 @@ class ExaminationController extends Controller
                                 "appid" => \Yii::$app->params['wxXAppId'],
                                 "pagepath" => "/pages/user/examination/index?id=" . $cv->id,
                             ];
-                            foreach($login as $lk=>$lv){
+                            foreach ($login as $lk => $lv) {
                                 $log->addLog($lv);
-                                //WechatSendTmp::send($data, "o5ODa0451fMb_sJ1D1T4YhYXDOcg", 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
+                                WechatSendTmp::send($data, $lv, 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
+                                $log->saveLog();
                             }
                         }
                     }
-                    $log->addLog('后');
-                    $endMonth=ExaNoticeSetup::endList($i);
+                    $endMonth = ExaNoticeSetup::endList($i);
                     $endDate = date('Y-m-d', strtotime("-$endMonth month +7 day"));
                     $endchilds = ChildInfo::find()
                         ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                         ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctor->userid])
                         ->andFilterWhere(['`doctor_parent`.`level`' => 1])
                         ->andFilterWhere(['child_info.admin' => $v->hospitalid])
-                        ->andFilterWhere(['`child_info`.birthday'=>strtotime($endDate)])
+                        ->andFilterWhere(['`child_info`.birthday' => strtotime($endDate)])
                         ->andFilterWhere(['`child_info`.`doctorid`' => $v->hospitalid])
                         ->all();
-                    foreach($endchilds as $ck=>$cv){
-                        //Notice::setList($cv->userid, 1, ['title' => '宝宝近期有健康体检，请做好准备', 'ftitle' => $date, 'id' => '/user/examination/index?id=' . $v->childid,], "id=" . $v->childid);
-                        $login = UserLogin::find()->select('openid')->where(['userid'=>$cv->userid])->andWhere(["!=",'openid',''])->column();
-                        if($login) {
+                    foreach ($endchilds as $ck => $cv) {
+                        $log->addLog($field);
+                        $log->addLog('前');
+                        Notice::setList($cv->userid, 1, ['title' => '宝宝近期有健康体检，请做好准备', 'ftitle' => $date, 'id' => '/user/examination/index?id=' . $v->childid,], "id=" . $v->childid);
+                        $login = UserLogin::find()->select('openid')->where(['userid' => $cv->userid])->andWhere(["!=", 'openid', ''])->column();
+                        if ($login) {
                             $data = [
                                 'first' => array('value' => "您好家长，您的宝宝如果还没有进行常规体检，请您在一周之内带孩子到保健科体检"),
                                 'keyword1' => ARRAY('value' => '社区健康体检',),
@@ -127,11 +130,12 @@ class ExaminationController extends Controller
                                 "appid" => \Yii::$app->params['wxXAppId'],
                                 "pagepath" => "/pages/user/examination/index?id=" . $cv->id,
                             ];
-                            foreach($login as $lk=>$lv){
+                            foreach ($login as $lk => $lv) {
                                 $log->addLog($lv);
-
-//                                WechatSendTmp::send($data, "o5ODa0451fMb_sJ1D1T4YhYXDOcg", 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
+                                WechatSendTmp::send($data, $lv, 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
 //                                exit;
+                                $log->saveLog();
+
                             }
 
                         }
@@ -139,7 +143,6 @@ class ExaminationController extends Controller
 
                 }
             }
-            $log->saveLog();
         }
     }
 
