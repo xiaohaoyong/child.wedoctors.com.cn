@@ -113,9 +113,8 @@ class HospitalAppointController extends BaseController
             Yii::$app->db->createCommand()->batchInsert(HospitalAppointWeek::tableName(), ['week','time_type','num','haid'],
                 $nums
             )->execute();
-
+            HospitalAppointVaccine::deleteAll('haid='.$model->id);
             if($post['vaccine']){
-                HospitalAppointVaccine::deleteAll('haid='.$model->id);
 
                 foreach($post['vaccine'] as $vk=>$vv){
                     foreach ($vv as $vvk=>$vvv) {
