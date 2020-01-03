@@ -21,6 +21,7 @@ use Yii;
  * @property int $cancel_type
  * @property int $push_state
  * @property int $mode
+ * @property int $vaccine
  */
 
 class Appoint extends \yii\db\ActiveRecord
@@ -88,7 +89,7 @@ class Appoint extends \yii\db\ActiveRecord
     {
         return [
             [['appoint_time','appoint_date','type'], 'required'],
-            [['push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
+            [['vaccine','push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
             [['remark'], 'string', 'max' => 100],
             [['date'], 'string'],
 
@@ -117,6 +118,7 @@ class Appoint extends \yii\db\ActiveRecord
             'cancel_type'=>'取消原因',
             'push_state'=>'推送状态',
             'mode'=>'来源',
+            'vaccine'=>'疫苗'
         ];
     }
 

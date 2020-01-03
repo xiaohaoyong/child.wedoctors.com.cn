@@ -11,7 +11,9 @@ use common\components\Code;
 use common\models\Appoint;
 use common\models\ChildInfo;
 use common\models\HospitalAppoint;
+use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointWeek;
+use common\models\Vaccine;
 
 class AppointController extends \api\modules\v1\controllers\AppointController
 {
@@ -57,11 +59,26 @@ class AppointController extends \api\modules\v1\controllers\AppointController
                 '2020-10-7',
                 '2020-10-8',
             ];
+            $vaccines=Vaccine::find()->all();
 
-            return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone,'holiday'=>$holiday];
+
+            return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone,'holiday'=>$holiday,'vaccines'=>$vaccines];
         }else{
             return new Code(20010,'社区医院暂未开通服务！');
         }
+    }
+
+    public function actionVaccines($id,$type,$vid){
+        $appoint=HospitalAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
+
+        $hospitalV=HospitalAppointVaccine::find()
+            ->select('week')
+            ->where(['haid'=>$appoint->id])
+            ->andWhere(['or',['vaccine'=>$vid],['vaccine' => 0]])->groupBy('week')->column();
+
+
+        return ['weeks' => $hospitalV];
+
     }
     public function actionDayNum($doctorid,$week,$type,$day){
         $rs=[];

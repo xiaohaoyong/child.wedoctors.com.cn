@@ -2,6 +2,7 @@
 
 namespace hospital\controllers;
 
+use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointWeek;
 use Yii;
 use common\models\HospitalAppoint;
@@ -94,7 +95,10 @@ class HospitalAppointController extends BaseController
         }
 
         $post=Yii::$app->request->post();
+        //var_dump($post);exit;
         if ($model->load($post) && $model->save()) {
+            HospitalAppointWeek::deleteAll('haid='.$model->id);
+
             $num=$post['num'];
             foreach($num as $k=>$v){
                 foreach($v as $vk=>$vv) {
@@ -109,6 +113,24 @@ class HospitalAppointController extends BaseController
             Yii::$app->db->createCommand()->batchInsert(HospitalAppointWeek::tableName(), ['week','time_type','num','haid'],
                 $nums
             )->execute();
+
+            if($post['vaccine']){
+                HospitalAppointVaccine::deleteAll('haid='.$model->id);
+
+                foreach($post['vaccine'] as $vk=>$vv){
+                    foreach ($vv as $vvk=>$vvv) {
+                        $hav = new HospitalAppointVaccine();
+                        $hav->vaccine = $vvv;
+                        $hav->haid = $model->id;
+                        $hav->week = $vk;
+                        $hav->save();
+                        var_dump($hav->firstErrors);
+                    }
+                }
+            }
+
+
+
             \Yii::$app->getSession()->setFlash('success','成功');
             return $this->redirect(['create', 'type' => $type]);
         } else {

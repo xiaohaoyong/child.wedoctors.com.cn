@@ -125,6 +125,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+
+                                    'attribute' => 'vaccine',
+                                    'value' => function ($e) {
+                                        return \common\models\Vaccine::findOne($e->vaccine)->name;
+                                    }
+                                ],
+                                [
                                     'attribute' => '排号顺序',
                                     'value' => function ($e) {
 

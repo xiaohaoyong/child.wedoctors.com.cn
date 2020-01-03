@@ -14,7 +14,9 @@ use yii\widgets\ActiveForm;
             <!-- /.box-header -->
             <div class="box-body">
 
-                <?php $form = ActiveForm::begin(); ?>
+                <?php
+                echo $model->id;
+                $form = ActiveForm::begin(); ?>
                 <table id="w0" class="table table-striped table-bordered detail-view">
                     <tbody>
                     <tr>
@@ -59,6 +61,73 @@ use yii\widgets\ActiveForm;
                         <td><?=Html::textInput('num[3]['.$k.']',$nums[3][$k]?$nums[3][$k]:0,['style'=>'text-align:center;'])?></td>
                         <td><?=Html::textInput('num[4]['.$k.']',$nums[4][$k]?$nums[4][$k]:0,['style'=>'text-align:center;'])?></td>
                         <td><?=Html::textInput('num[5]['.$k.']',$nums[5][$k]?$nums[5][$k]:0,['style'=>'text-align:center;'])?></td>
+                    </tr>
+                    <?php }?>
+                    <?php if($model->type==2){?>
+                    <tr>
+                        <td>选择疫苗</td>
+                        <?php
+                        $data=\common\models\Vaccine::find()->select('name')->indexBy('id')->column();
+                        ?>
+                        <td><?= \kartik\select2\Select2::widget([
+                                'name'=>'vaccine[1]',
+                                'data' => [0=>'全部']+$data,
+                                'language' => 'de',
+                                'options' => ['placeholder' => '请选择','multiple'=>'multiple'],
+                                'showToggleAll'=>false,
+                                'value'=>\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid'=>$model->id])->andWhere(['week'=>1])->column(),
+                                'pluginOptions' => [
+                                    'allowClear' => true
+                                ],
+                            ])?></td>
+                        <td><?= \kartik\select2\Select2::widget([
+                                'name'=>'vaccine[2]',
+                                'data' => [0=>'全部']+$data,
+                                'language' => 'de',
+                                'showToggleAll'=>false,
+                                'value'=>\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid'=>$model->id])->andWhere(['week'=>2])->column(),
+
+                                'options' => ['placeholder' => '请选择','multiple'=>'multiple'],
+                                'pluginOptions' => [
+                                    'allowClear' => true
+                                ],
+                            ])?></td>
+                        <td><?= \kartik\select2\Select2::widget([
+                                'name'=>'vaccine[3]',
+                                'data' => [0=>'全部']+$data,
+                                'language' => 'de',
+                                'showToggleAll'=>false,
+                                'value'=>\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid'=>$model->id])->andWhere(['week'=>3])->column(),
+
+                                'options' => ['placeholder' => '请选择','multiple'=>'multiple'],
+                                'pluginOptions' => [
+                                    'allowClear' => true
+                                ],
+                            ])?></td>
+                        <td><?= \kartik\select2\Select2::widget([
+                                'name'=>'vaccine[4]',
+                                'data' => [0=>'全部']+$data,
+                                'language' => 'de',
+                                'showToggleAll'=>false,
+                                'value'=>\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid'=>$model->id])->andWhere(['week'=>4])->column(),
+
+                                'options' => ['placeholder' => '请选择','multiple'=>'multiple'],
+                                'pluginOptions' => [
+                                    'allowClear' => true
+                                ],
+                            ])?></td>
+                        <td><?= \kartik\select2\Select2::widget([
+                                'name'=>'vaccine[5]',
+                                'data' => [0=>'全部']+$data,
+                                'language' => 'de',
+                                'showToggleAll'=>false,
+                                'value'=>\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid'=>$model->id])->andWhere(['week'=>5])->column(),
+
+                                'options' => ['placeholder' => '请选择','multiple'=>'multiple'],
+                                'pluginOptions' => [
+                                    'allowClear' => true
+                                ],
+                            ])?></td>
                     </tr>
                     <?php }?>
                     </tbody>
