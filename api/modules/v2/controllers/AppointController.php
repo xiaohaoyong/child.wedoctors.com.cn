@@ -59,7 +59,15 @@ class AppointController extends \api\modules\v1\controllers\AppointController
                 '2020-10-7',
                 '2020-10-8',
             ];
-            $vaccines=Vaccine::find()->all();
+            $appoint=HospitalAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
+            $hospitalV=HospitalAppointVaccine::find()
+                ->where(['haid'=>$appoint->id])->all();
+
+            if($hospitalV) {
+                $vaccines = Vaccine::find()->all();
+            }else{
+                $vaccines=[];
+            }
 
 
             return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone,'holiday'=>$holiday,'vaccines'=>$vaccines];
