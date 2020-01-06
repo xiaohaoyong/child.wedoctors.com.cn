@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\ChildInfo;
 use common\models\ArticleUser;
 use common\models\DoctorParent;
+use common\models\Pregnancy;
 use common\models\UserDoctor;
 use common\models\UserParent;
 use common\models\WeOpenid;
@@ -68,6 +69,10 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+        $data['pregCount']=Pregnancy::find()
+            ->andWhere(['field49'=>0])->count();
+
+        var_dump($data);exit;
         //今日签约数
         $today=strtotime(date('Y-m-d 00:00:00'));
         $month=strtotime(date('Y-m-01 00:00:00'));

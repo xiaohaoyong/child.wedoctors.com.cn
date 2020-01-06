@@ -12,6 +12,9 @@ use common\models\DoctorParent;
  */
 class DoctorParentSearch extends DoctorParent
 {
+    public $createtimeS;
+    public $createtimeE;
+
     /**
      * @inheritdoc
      */
@@ -19,6 +22,8 @@ class DoctorParentSearch extends DoctorParent
     {
         return [
             [['id', 'doctorid', 'parentid', 'createtime', 'level'], 'integer'],
+            [['createtimeS', 'createtimeE'], 'string'],
+
         ];
     }
 
@@ -30,7 +35,16 @@ class DoctorParentSearch extends DoctorParent
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
+    public function attributeLabels()
+    {
+        $attr = parent::attributeLabels();
 
+
+        $attr['createtimeS'] = '签约日期';
+        $attr['createtimeE'] = '~';
+
+        return $attr;
+    }
     /**
      * Creates data provider instance with search query applied
      *
@@ -55,15 +69,23 @@ class DoctorParentSearch extends DoctorParent
             // $query->where('0=1');
             return $dataProvider;
         }
-
-        // grid filtering conditions
+// grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'doctorid' => $this->doctorid,
             'parentid' => $this->parentid,
-            'createtime' => $this->createtime,
             'level' => $this->level,
         ]);
+        if ($this->createtimeS !== '' and $this->createtimeE !== null) {
+
+            $state = strtotime($this->createtimeS . " 00:00:00");
+            $end = strtotime($this->createtimeE . " 23:59:59");
+            $query->andFilterWhere(['>', '`doctor_parent`.`createtime`', $state]);
+            $query->andFilterWhere(['<', '`doctor_parent`.`createtime`', $end]);
+        }
+
+
+
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;

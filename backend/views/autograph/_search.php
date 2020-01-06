@@ -18,8 +18,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'createtime') ?>
-
+    <?= $form->field($model, 'createtimeS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
+    <?= $form->field($model, 'createtimeE')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
     <?= $form->field($model, 'img') ?>
 
     <?= $form->field($model, 'loginid') ?>

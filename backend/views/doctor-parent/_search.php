@@ -22,8 +22,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'parentid') ?>
 
-    <?= $form->field($model, 'createtime') ?>
-
+    <?= $form->field($model, 'createtimeS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
+    <?= $form->field($model, 'createtimeE')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true
+    ]])?>
     <?= $form->field($model, 'level') ?>
 
     <div class="form-group">

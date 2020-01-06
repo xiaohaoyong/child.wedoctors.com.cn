@@ -12,6 +12,8 @@ use common\models\Autograph;
  */
 class AutographSearch extends Autograph
 {
+    public $createtimeS;
+    public $createtimeE;
     /**
      * @inheritdoc
      */
@@ -20,6 +22,7 @@ class AutographSearch extends Autograph
         return [
             [['id', 'createtime', 'loginid', 'userid', 'doctorid'], 'integer'],
             [['img'], 'safe'],
+            [['createtimeS', 'createtimeE'], 'string'],
         ];
     }
 
@@ -30,6 +33,16 @@ class AutographSearch extends Autograph
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
+    }
+    public function attributeLabels()
+    {
+        $attr = parent::attributeLabels();
+
+
+        $attr['createtimeS'] = '签约日期';
+        $attr['createtimeE'] = '~';
+
+        return $attr;
     }
 
     /**
@@ -60,11 +73,18 @@ class AutographSearch extends Autograph
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'createtime' => $this->createtime,
             'loginid' => $this->loginid,
             'userid' => $this->userid,
             'doctorid' => $this->doctorid,
         ]);
+
+        if ($this->createtimeS !== '' and $this->createtimeE !== null) {
+
+            $state = strtotime($this->createtimeS . " 00:00:00");
+            $end = strtotime($this->createtimeE . " 23:59:59");
+            $query->andFilterWhere(['>', '`createtime`', $state]);
+            $query->andFilterWhere(['<', '`createtime`', $end]);
+        }
 
         $query->andFilterWhere(['like', 'img', $this->img]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
