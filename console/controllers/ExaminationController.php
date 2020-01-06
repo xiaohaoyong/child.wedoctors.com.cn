@@ -58,6 +58,41 @@ class ExaminationController extends Controller
         }
     }
 
+    public $month = [
+        1 => [
+            'year' => 0,
+            'month' => [2, 3],
+        ],
+        2 => [
+            'year' => 0,
+            'month' => [5, 6],
+        ],
+        3 => [
+            'year' => 0,
+            'month' => [8, 9],
+        ],
+        4 => [
+            'year' => 0,
+            'month' => [11, 12],
+        ],
+        5 => [
+            'year' => 1,
+            'month' => [5, 6],
+        ],
+        6 => [
+            'year' => 1,
+            'month' => [11, 12],
+        ],
+        7 => [
+            'year' => 2,
+            'month' => [5, 6],
+        ],
+        8 => [
+            'year' => 2,
+            'month' => [11, 12],
+        ],
+    ];
+
     public function actionNotice()
     {
         $log = new Log('exa-notice', true);
@@ -116,28 +151,37 @@ class ExaminationController extends Controller
                     foreach ($endchilds as $ck => $cv) {
                         $log->addLog($field);
                         $log->addLog('前');
-                        Notice::setList($cv->userid, 1, ['title' => '宝宝近期有健康体检，请做好准备', 'ftitle' => $date, 'id' => '/user/examination/index?id=' . $v->childid,], "id=" . $v->childid);
-                        $login = UserLogin::find()->select('openid')->where(['userid' => $cv->userid])->andWhere(["!=", 'openid', ''])->column();
-                        if ($login) {
-                            $data = [
-                                'first' => array('value' => "您好家长，您的宝宝如果还没有进行常规体检，请您在一周之内带孩子到保健科体检"),
-                                'keyword1' => ARRAY('value' => '社区健康体检',),
-                                'keyword2' => ARRAY('value' => '一周内'),
-                                'remark' => ARRAY('value' => "体检时间查看预防保健科门诊日。如已体检，请忽略。注意：如有超期不再体检。（儿童体检时间表：出生后第42天、3月龄、6月龄、9月龄、12月龄、18月龄、2周岁、2岁6月龄、3周岁）", 'color' => '#221d95'),
-                            ];
 
-                            $miniprogram = [
-                                "appid" => \Yii::$app->params['wxXAppId'],
-                                "pagepath" => "/pages/user/examination/index?id=" . $cv->id,
-                            ];
-                            foreach ($login as $lk => $lv) {
-                                $log->addLog($lv);
-                                WechatSendTmp::send($data, $lv, 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
+                        $exa = Examination::find()->where(['childid' => $cv->id])
+                            ->andWhere(['field2' => $this->month[$i]['year']])
+                            ->andWhere(['in', 'field3', $this->month[$i]['month']])
+                            ->one();
+                        if (!$exa) {
+
+
+                            Notice::setList($cv->userid, 1, ['title' => '宝宝近期有健康体检，请做好准备', 'ftitle' => $date, 'id' => '/user/examination/index?id=' . $v->childid,], "id=" . $v->childid);
+                            $login = UserLogin::find()->select('openid')->where(['userid' => $cv->userid])->andWhere(["!=", 'openid', ''])->column();
+                            if ($login) {
+                                $data = [
+                                    'first' => array('value' => "您好家长，您的宝宝如果还没有进行常规体检，请您在一周之内带孩子到保健科体检"),
+                                    'keyword1' => ARRAY('value' => '社区健康体检',),
+                                    'keyword2' => ARRAY('value' => '一周内'),
+                                    'remark' => ARRAY('value' => "体检时间查看预防保健科门诊日。如已体检，请忽略。注意：如有超期不再体检。（儿童体检时间表：出生后第42天、3月龄、6月龄、9月龄、12月龄、18月龄、2周岁、2岁6月龄、3周岁）", 'color' => '#221d95'),
+                                ];
+
+                                $miniprogram = [
+                                    "appid" => \Yii::$app->params['wxXAppId'],
+                                    "pagepath" => "/pages/user/examination/index?id=" . $cv->id,
+                                ];
+                                foreach ($login as $lk => $lv) {
+                                    $log->addLog($lv);
+                                    WechatSendTmp::send($data, $lv, 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
 //                                exit;
-                                $log->saveLog();
+                                    $log->saveLog();
+
+                                }
 
                             }
-
                         }
                     }
 
