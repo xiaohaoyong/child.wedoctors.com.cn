@@ -69,11 +69,7 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        $data['pregCount']=Pregnancy::find()
-            ->andWhere(['field49'=>0])->count();
-
-        var_dump($data);exit;
-        //今日签约数
+               //今日签约数
         $today=strtotime(date('Y-m-d 00:00:00'));
         $month=strtotime(date('Y-m-01 00:00:00'));
 
