@@ -111,7 +111,9 @@ class UserDoctorController extends BaseController
             ->setCellValue('C' . $key1, '今日签约')
             ->setCellValue('D' . $key1, '签约总数')
             ->setCellValue('E' . $key1, '今日宣教')
-            ->setCellValue('F' . $key1, '已宣教数');
+            ->setCellValue('F' . $key1, '已宣教数')
+            ->setCellValue('G' . $key1, '签约率');
+
 //写入内容
         foreach ($doctor as $k => $v) {
 
@@ -160,11 +162,12 @@ class UserDoctorController extends BaseController
             $key1 = $k + 2;
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $key1, $v->name)
-                ->setCellValue('B' . $key1, $todayNum)
-                ->setCellValue('C' . $key1, $q)
-                ->setCellValue('D' . $key1, $todayXnum)
-                ->setCellValue('E' . $key1, $Xnum)
-                ->setCellValue('F' . $key1, $baifen);
+                ->setCellValue('B' . $key1, $total)
+                ->setCellValue('C' . $key1, $todayNum)
+                ->setCellValue('D' . $key1, $q)
+                ->setCellValue('E' . $key1, $todayXnum)
+                ->setCellValue('F' . $key1, $Xnum)
+                ->setCellValue('G' . $key1, $baifen);
         }
         // $objPHPExcel->setActiveSheetIndex(0);
 
