@@ -142,7 +142,7 @@ class SuiteController extends Controller
                         return $return;
                     }
                 } else {
-                    //return self::sendText($xml['FromUserName'], $xml['ToUserName'],'...');
+                    return self::sendText($xml['FromUserName'], $xml['ToUserName'],'宝宝家长，您在社区医院遇到体检查看问题，疫苗预约、体检预约、健康指导等问题时，可以添加儿宝小助手客服帮您进行解答。客服微信号（erbbzs）工作日内可随时联系儿宝小助手，我们会第一时间回复您的问题。');
                     $this->custom_send($openid);
                     return self::forwardToCustomService($xml['FromUserName'], $xml['ToUserName']);
                 }
