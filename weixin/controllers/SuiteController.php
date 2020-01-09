@@ -187,7 +187,7 @@ class SuiteController extends Controller
                         'name' => '我是医生',
                         'url' => "http://hospital.child.wedoctors.com.cn",
                         'appid' => "wx6835027c46b29cab",
-                        'pagepath' => 'pages/user/index/index'
+                        'pagepath' => 'pages/user/index'
                     ],
                     [
                         'type' => 'miniprogram',
