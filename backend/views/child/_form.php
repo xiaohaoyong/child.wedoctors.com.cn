@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'gender')->textInput() ?>
                 <?php  echo $form->field($model, 'doctorid') ?>
-                <?php  echo $form->field($model, 'adminid') ?>
+                <?php  echo $form->field($model, 'admin') ?>
 
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
