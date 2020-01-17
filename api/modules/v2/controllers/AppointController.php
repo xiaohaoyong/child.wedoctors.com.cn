@@ -31,7 +31,6 @@ class AppointController extends \api\modules\v1\controllers\AppointController
 
             $holiday=[
                 '2020-1-1',
-                '2020-1-23',
                 '2020-1-24',
                 '2020-1-25',
                 '2020-1-26',
