@@ -46,12 +46,9 @@ class UploadForm extends Model
 
                 try{
                     $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
-
-                    $ossClient->putObject('childimage', $filen. '.' . $file->extension, $imgContent);
+                    $ossClient->putObject('childimage', 'upload/'.$filen. '.' . $file->extension, $imgContent);
                 } catch(OssException $e) {
-                    $log=new Log('uploadimg');
-                    $log->addLog($e->getMessage());
-                    $log->saveLog();
+                   print_r($e->getMessage());exit;
                 }
 
 
