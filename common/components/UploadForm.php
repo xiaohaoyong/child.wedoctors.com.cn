@@ -41,7 +41,7 @@ class UploadForm extends Model
                 $time=time();
                 $filen=substr(md5($time.$file->tempName),4,14);
                 $images[]=\Yii::$app->params['imageUrl'].$filen. '.' . $file->extension;
-                //$file->saveAs(__ROOT__."/../../".\Yii::$app->params['imageDir']."/upload/" .$filen. '.' . $file->extension);
+                $file->saveAs(__ROOT__."/../../".\Yii::$app->params['imageDir']."/upload/" .$filen. '.' . $file->extension);
 
                 try{
                     $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-beijing.aliyuncs.com');

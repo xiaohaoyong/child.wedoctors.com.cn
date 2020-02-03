@@ -56,12 +56,14 @@ class ExaminationModels extends Examination
             // $query->where('0=1');
             return $dataProvider;
         }
+        $hospitalid = \Yii::$app->user->identity->hospital;
+
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'childid' => $this->childid,
-            'source' => $this->source,
+            'source' => $hospitalid,
             'isupdate' => $this->isupdate,
         ]);
 

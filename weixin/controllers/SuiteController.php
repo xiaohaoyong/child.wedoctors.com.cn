@@ -90,7 +90,7 @@ class SuiteController extends Controller
                                     'keyword2' => ARRAY('value' => $childName ? $childName : "未添加宝宝"),
                                     'keyword3' => ARRAY('value' => date('Y年m月d日', $doctorParent->createtime)),
                                     'keyword4' => ARRAY('value' => "﻿儿童中医药健康指导"),
-                                    'remark' => ARRAY('value' => "\n ﻿点击查看详情，如果想变更签约社区请联系工作人员核实信息，感谢！", 'color' => '#221d95'),
+                                    'remark' => ARRAY('value' => "\n ﻿点击查看详情，如果想变更签约社区请联系小助手核实信息，感谢！小助手微信号（erbbzs）", 'color' => '#221d95'),
                                 ];
                                 WechatSendTmp::send($data, $openid, "H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY", "", ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                                 return '';

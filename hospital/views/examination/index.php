@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel hospital\models\ExaminationModels */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '体检列表';
+$this->title = '门诊日志';
 $this->params['breadcrumbs'][] = $this->title;
 \common\helpers\HeaderActionHelper::$action = [
     0 => ['name' => '添加', 'url' => ['create']]
@@ -25,116 +25,120 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
 
                             'columns' => [
-                                ['class' => 'yii\grid\SerialColumn'],
-                                'id',
-                                'childid',
-                                'field1',
                                 'field4',
-                                // 'field5',
-                                // 'field6',
-                                // 'field7',
-                                // 'field8',
-                                'field9',
-                                // 'field10',
-                                // 'field11',
-                                // 'field12',
-                                // 'field13',
-                                // 'field14',
-                                // 'field15',
-                                // 'field16',
-                                // 'field17',
-                                // 'field18',
+                                'field1',
+                                'field32',
                                 'field19',
-                                // 'field20',
-                                // 'field21',
-                                // 'field22',
-                                // 'field23',
-                                // 'field24',
-                                // 'field25',
-                                // 'field26',
-                                // 'field27',
-                                // 'field28',
-                                // 'field29',
-                                // 'field30',
-                                // 'field31',
-                                // 'field32',
-                                // 'field33',
-                                // 'field34',
-                                // 'field35',
-                                // 'field36',
-                                // 'field37',
-                                // 'field38',
-                                // 'field39',
-                                // 'field40',
-                                // 'field41',
-                                // 'field42',
-                                // 'field43',
-                                // 'field44',
-                                // 'field45',
-                                // 'field46',
-                                // 'field47',
-                                // 'field48',
-                                // 'field49',
-                                // 'field50',
-                                // 'field51',
-                                'field52',
-                                // 'field53',
-                                // 'field54',
-                                // 'field55',
-                                // 'field56',
-                                // 'field57',
-                                // 'field58',
-                                // 'field59',
-                                // 'field60',
-                                // 'field61',
-                                // 'field62',
-                                // 'field63',
-                                // 'field64',
-                                // 'field65',
-                                // 'field66',
-                                // 'field67',
-                                // 'field68',
-                                // 'field69',
-                                // 'field70',
-                                // 'field71',
-                                // 'field72',
-                                // 'field73',
-                                // 'field74',
-                                // 'field75',
-                                // 'field76',
-                                // 'field77',
-                                // 'field78',
-                                // 'field79',
-                                // 'field80',
-                                // 'field81',
-                                // 'field82',
-                                // 'field83',
-                                // 'field84',
-                                // 'field85',
-                                // 'field86',
-                                // 'field87',
-                                // 'field88',
-                                // 'field89',
-                                // 'field90',
-                                // 'field91',
-                                // 'field92',
-                                // 'source',
-                                // 'isupdate',
-
-
                                 [
-                                    'class' => 'common\components\grid\ActionColumn',
-                                    'template' => '
-                            <div class="btn-group dropup">
-                                <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li>{view}</li>
-                                </ul>
-                            </div>
-                            ',
+                                    'attribute' => '实足年龄',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field2."岁".$e->field3."月";
+                                    }
                                 ],
+                                [
+                                    'attribute' => '现住址',
+                                    'value' => function($e)
+                                    {
+                                        return $e->child->parent->fieldu46;
+                                    }
+                                ],
+                                [
+                                    'attribute' => '联系电话',
+                                    'value' => function($e)
+                                    {
+                                        if(!$e->child->parent->mother_phone){
+                                            $userlogin=\common\models\UserLogin::findOne(['userid'=>$e->child->parent->userid]);
+                                            if($userlogin){
+                                                $phone=$userlogin->phone;
+                                            }else{
+                                                $phone='';
+                                            }
+                                        }else{
+                                            $phone=$e->child->parent->mother_phone;
+                                        }
+                                        return $phone;
+                                    }
+                                ],
+                                [
+                                    'attribute' => '一般体检',
+                                    'value' => function($e)
+                                    {
+                                        return "✔️";
+                                    }
+                                ],
+                                [
+                                    'attribute' => '血清素',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field41?"✔️":"";
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'field71',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field71?"✔️":"";
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'ddst',
+                                    'value' => function($e)
+                                    {
+                                        return "";
+                                    }
+                                ],
+                                [
+                                    'attribute' => '口腔检查',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field48?"✔️":"";
+                                    }
+                                ],
+                                [
+                                    'attribute' => '视力检查',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field77|| $e->field78?"✔️":"";
+                                    }
+                                ],
+                                [
+                                    'attribute' => '听力损失新发',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field64?"✔️":"";
+                                    }
+                                ],
+                                [
+                                    'attribute' => '先心病新发',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field37?"✔️":"";
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'field42',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field42?"✔️":"";
+                                    }
+                                ],
+                                [
+                                    'attribute' => '中医指导',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field86=='是'?"✔️":"";
+                                    }
+                                ],
+                                [
+                                    'attribute' => '中医实指导',
+                                    'value' => function($e)
+                                    {
+                                        return $e->field86=='是'?"✔️":"";
+                                    }
+                                ],
+                                'field8',
+
                             ],
                         ]); ?>
                     </div>
