@@ -415,17 +415,7 @@ class UserController extends Controller
         $autograph=Autograph::findOne(['loginid'=>$this->userLogin->id,'userid'=>$this->userid]);
 
         $imagesFile = UploadedFile::getInstancesByName('file');
-        $img=$imagesFile[0]->tempName;
 
-        $rotang = 90; // Rotation angle
-        $source = imagecreatefrompng($img) or die('Error opening file '.$img);
-        imagealphablending($source, false);
-        imagesavealpha($source, true);
-
-        $rotation = imagerotate($source, $rotang, imageColorAllocateAlpha($source, 0, 0, 0, 127));
-        imagealphablending($rotation, false);
-        imagesavealpha($rotation, true);
-        imagepng($rotation,$img);
 
 
         if($imagesFile) {

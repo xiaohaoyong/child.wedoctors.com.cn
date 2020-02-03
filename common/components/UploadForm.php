@@ -41,12 +41,13 @@ class UploadForm extends Model
                 $time=time();
                 $filen=substr(md5($time.$file->tempName),4,14);
                 $images[]=\Yii::$app->params['imageUrl'].$filen. '.' . $file->extension;
+                $imgContent=file_get_contents($file->tempName);
                 $file->saveAs(__ROOT__."/../../".\Yii::$app->params['imageDir']."/upload/" .$filen. '.' . $file->extension);
 
                 try{
-                    $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com   ');
+                    $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
 
-                    //$ossClient->putObject('childimage', $filen. '.' . $file->extension, file_get_contents($file->tempName));
+                    $ossClient->putObject('childimage', $filen. '.' . $file->extension, $imgContent);
                 } catch(OssException $e) {
                     $log=new Log('uploadimg');
                     $log->addLog($e->getMessage());
