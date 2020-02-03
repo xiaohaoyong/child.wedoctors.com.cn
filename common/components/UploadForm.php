@@ -45,6 +45,7 @@ class UploadForm extends Model
                 $file->saveAs(__ROOT__."/../../".\Yii::$app->params['imageDir']."/upload/" .$filen. '.' . $file->extension);
 
                 try{
+
                     $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
                     $ossClient->putObject('childimage', 'upload/'.$filen. '.' . $file->extension, $imgContent);
                 } catch(OssException $e) {
