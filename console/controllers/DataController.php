@@ -90,8 +90,14 @@ class DataController extends Controller
         foreach($file as $a){
             $f='/home/wwwroot/static.i.wedoctors.com.cn/';
             $fn=str_replace($f,'',$a);
-            echo $fn;
-            echo "\n";
+            if(file_exists($a) && !is_dir($a)){
+                try{
+                    $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao-internal.aliyuncs.com');
+                    $ossClient->uploadFile('childimage', $fn, $a);
+                } catch(OssException $e) {
+                    print_r($e->getMessage());exit;
+                }
+            }
         }
 
 
