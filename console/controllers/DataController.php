@@ -64,7 +64,7 @@ class DataController extends Controller
     {
 
 
-        $file=__ROOT__."/../../".\Yii::$app->params['imageDir']."/upload/";
+        $file="/home/wwwroot/static.i.wedoctors.com.cn/upload/";
         //1、首先先读取文件夹
         $temp=scandir($file);
         //遍历文件夹
