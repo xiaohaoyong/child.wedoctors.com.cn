@@ -76,7 +76,7 @@ class DataController extends Controller
                 $files=array_merge($files,$filesa);
 
             }else{
-                $files[]=$v;
+                $files[]=$a;
             }
         }
         return $files;
@@ -86,17 +86,12 @@ class DataController extends Controller
     {
         $file=$this->dir_a('/home/wwwroot/static.i.wedoctors.com.cn');
 
-        print_r($file);exit;
 
         foreach($file as $a){
-            if(file_exists($a) && !is_dir($a)){
-                try{
-                    $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao-internal.aliyuncs.com');
-                    $ossClient->uploadFile('childimage', $v, $a);
-                } catch(OssException $e) {
-                    print_r($e->getMessage());exit;
-                }
-            }
+            $f='/home/wwwroot/static.i.wedoctors.com.cn/';
+            $fn=str_replace($f,'',$a);
+            echo $fn;
+            echo "\n";
         }
 
 
