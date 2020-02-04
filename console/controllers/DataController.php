@@ -66,14 +66,14 @@ class DataController extends Controller
         $temp=scandir($file);
         //遍历文件夹
         foreach($temp as $v){
+            $a=$file.'/'.$v;
+            echo $a;echo "\n";
             if($v === '.' || $v === '..' || $v === '.git' || $v==='.idea'|| $v==='upload'){
                 continue;
             }
-            $a=$file.'/'.$v;
             if(is_dir($a)){
-                echo $a."\n";
                 $filesa=$this->dir_a($a);
-                $files=$filesa+$files;
+                $files[$v]=$filesa;
             }else{
                 $files[]=$a;
             }
@@ -84,7 +84,8 @@ class DataController extends Controller
     public function actionTesta()
     {
         $file=$this->dir_a('/home/wwwroot/static.i.wedoctors.com.cn');
-       exit;
+
+        var_dump($file);exit;
 
 
 
