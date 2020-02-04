@@ -71,7 +71,6 @@ class DataController extends Controller
         foreach($temp as $v){
             $a=$file.'/'.$v;
             echo $a."\n";
-            exit;
         }
         exit;
         try{
