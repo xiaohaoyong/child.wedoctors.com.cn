@@ -76,7 +76,7 @@ class DataController extends Controller
                 $files=array_merge($files,$filesa);
 
             }else{
-                $files[]=$a;
+                $files[]=$v;
             }
         }
         return $files;
@@ -88,18 +88,21 @@ class DataController extends Controller
 
         print_r($file);exit;
 
-
-
-
-        if(file_exists($a) && !is_dir($a)){
-            try{
-
-                $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao-internal.aliyuncs.com');
-                $ossClient->uploadFile('childimage', $v, $a);
-            } catch(OssException $e) {
-                print_r($e->getMessage());exit;
+        foreach($file as $a){
+            if(file_exists($a) && !is_dir($a)){
+                try{
+                    $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao-internal.aliyuncs.com');
+                    $ossClient->uploadFile('childimage', $v, $a);
+                } catch(OssException $e) {
+                    print_r($e->getMessage());exit;
+                }
             }
         }
+
+
+
+
+
         exit;
         try{
 
