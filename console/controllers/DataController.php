@@ -72,7 +72,7 @@ class DataController extends Controller
         foreach($temp as $v){
             $a=$file.'/'.$v;
             echo $a;echo "\n";
-            if($v === '.' || $v === '..'){
+            if($v === '.' || $v === '..' || $v === '.git'){
                 continue;
             }
             if(file_exists($a)){
