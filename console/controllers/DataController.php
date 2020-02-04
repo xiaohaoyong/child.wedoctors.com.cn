@@ -84,8 +84,7 @@ class DataController extends Controller
     public function actionTesta()
     {
         $file=$this->dir_a('/home/wwwroot/static.i.wedoctors.com.cn');
-
-        var_dump($file);exit;
+        print_r($file);exit;
 
 
 
