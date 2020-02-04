@@ -75,8 +75,9 @@ class DataController extends Controller
             if(is_dir($a)){
                 $filesa=$this->dir_a($a);
                 $files=$filesa+$files;
+            }else{
+                $files[]=$a;
             }
-            $files[]=$a;
         }
         return $files;
     }
