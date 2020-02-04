@@ -69,6 +69,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'attribute' => 'createtime',
                                         'format' => ['date', 'php:Y-m-d']
                                     ],
+                                    [
+                                        'attribute' => '发布社区',
+                                        'value' => function ($e) {
+                                            return \common\models\Hospital::findOne(['id'=>$e->datauserid])->name;
+                                        }
+                                    ],
                                     // 'num',
                                     // 'type',
 
