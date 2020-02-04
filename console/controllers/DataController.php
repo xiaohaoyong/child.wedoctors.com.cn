@@ -60,9 +60,8 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
-    public function dir_a(){
+    public function dir_a($file){
         $files=[];
-        $file="/home/wwwroot/static.i.wedoctors.com.cn";
         //1、首先先读取文件夹
         $temp=scandir($file);
         //遍历文件夹
@@ -84,7 +83,7 @@ class DataController extends Controller
 
     public function actionTesta()
     {
-        $file=$this->dir_a();
+        $file=$this->dir_a('/home/wwwroot/static.i.wedoctors.com.cn');
 
         var_dump($file);exit;
 
