@@ -66,10 +66,10 @@ class DataController extends Controller
         $temp=scandir($file);
         //遍历文件夹
         foreach($temp as $v){
-            $a=$file.'/'.$v;
             if($v === '.' || $v === '..' || $v === '.git' || $v==='.idea'|| $v==='upload'){
                 continue;
             }
+            $a=$file.'/'.$v;
             if(is_dir($a)){
                 echo $a."\n";
                 $filesa=$this->dir_a($a);
