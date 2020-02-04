@@ -77,8 +77,9 @@ class DataController extends Controller
             if(file_exists($a)){
                 try{
 
-                    $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
+                    $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao-internal.aliyuncs.com');
                     $ossClient->uploadFile('childimage', 'upload/'.$v, $a);
+                    exit;
                 } catch(OssException $e) {
                     print_r($e->getMessage());exit;
                 }
