@@ -2,8 +2,8 @@
 
 namespace hospital\controllers;
 
-use app\components\UploadForm;
 use backend\models\Push;
+use common\components\UploadForm;
 use common\models\Age;
 use common\models\ArticleInfo;
 use common\models\Notice;
@@ -189,7 +189,7 @@ class ArticleController extends BaseController
                 $article->id=$model->id;
                 $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($article,'img'));
                 if($imagesFile) {
-                    $upload= new UploadForm();
+                    $upload= new UploadForm() ;
                     $upload->imageFiles = $imagesFile;
                     $image = $upload->upload();
                     $article->img = $image[0];
