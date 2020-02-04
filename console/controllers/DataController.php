@@ -64,13 +64,16 @@ class DataController extends Controller
     {
 
 
-        $file="/home/wwwroot/static.i.wedoctors.com.cn/upload/";
+        $file="/home/wwwroot/static.i.wedoctors.com.cn/upload";
         //1、首先先读取文件夹
         $temp=scandir($file);
         //遍历文件夹
         foreach($temp as $v){
             $a=$file.'/'.$v;
-            echo $a."\n";
+            if(file_exists($a)){
+                echo $a."\n";
+                exit;
+            }
         }
         exit;
         try{
