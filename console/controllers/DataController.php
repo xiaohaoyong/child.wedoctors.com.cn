@@ -75,7 +75,7 @@ class DataController extends Controller
             if($v === '.' || $v === '..' || $v === '.git' || $v==='.idea'){
                 continue;
             }
-            if(file_exists($a)){
+            if(file_exists($a) && !is_dir($a)){
                 try{
 
                     $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao-internal.aliyuncs.com');
