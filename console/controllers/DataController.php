@@ -67,11 +67,11 @@ class DataController extends Controller
         //遍历文件夹
         foreach($temp as $v){
             $a=$file.'/'.$v;
-            echo $a;echo "\n";
             if($v === '.' || $v === '..' || $v === '.git' || $v==='.idea'|| $v==='upload'){
                 continue;
             }
             if(is_dir($a)){
+                echo $a."\n";
                 $filesa=$this->dir_a($a);
                 $files=$filesa+$files;
             }else{
@@ -84,7 +84,7 @@ class DataController extends Controller
     public function actionTesta()
     {
         $file=$this->dir_a('/home/wwwroot/static.i.wedoctors.com.cn');
-        print_r($file);exit;
+       exit;
 
 
 
