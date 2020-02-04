@@ -47,6 +47,7 @@ use common\models\Vaccine;
 use common\models\WeOpenid;
 use EasyWeChat\Factory;
 use Faker\Provider\File;
+use OSS\OssClient;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use saviorlv\aliyun\Sms;
@@ -61,6 +62,44 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+
+
+        $file=__ROOT__."/../../".\Yii::$app->params['imageDir']."/upload/";
+        //1、首先先读取文件夹
+        $temp=scandir($file);
+        //遍历文件夹
+        foreach($temp as $v){
+            $a=$file.'/'.$v;
+            echo $a."\n";
+            exit;
+        }
+        exit;
+        try{
+
+            $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
+            $ossClient->putObject('childimage', 'upload/'.$filen. '.' . $file->extension, $imgContent);
+        } catch(OssException $e) {
+            print_r($e->getMessage());exit;
+        }
+
+
+        $data = [
+            'first' => array('value' => '疫情流行期间免疫规划疫苗推迟接种的建议',),
+            'keyword1' => ARRAY('value' => '2020年2月3日',),
+            'keyword2' => ARRAY('value' => '以下建议仅适用于当前新型冠状病毒感染的肺炎流行期间。'),
+            'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
+        ];
+
+        $temp='AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE';
+
+
+        $miniprogram=[
+            "appid"=>\Yii::$app->params['wxXAppId'],
+            "pagepath"=>"/pages/article/view/index?id=863",
+        ];
+        $rs = WechatSendTmp::send($data,'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $temp, '', $miniprogram);
+
+exit;
         $doctorparent=DoctorParent::find()->select('parentid')->where(['doctorid'=>240188])->column();
 
         $user=UserParent::find()->where(['not in','userid',$doctorparent])->andWhere(['source'=>110615])->all();
