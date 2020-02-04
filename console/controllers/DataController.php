@@ -73,7 +73,8 @@ class DataController extends Controller
             }
             if(is_dir($a)){
                 $filesa=$this->dir_a($a);
-                $files[$v]=$filesa;
+                $files=array_merge($files,$filesa);
+
             }else{
                 $files[]=$a;
             }
@@ -85,7 +86,7 @@ class DataController extends Controller
     {
         $file=$this->dir_a('/home/wwwroot/static.i.wedoctors.com.cn');
 
-        var_dump($file);exit;
+        print_r($file);exit;
 
 
 
