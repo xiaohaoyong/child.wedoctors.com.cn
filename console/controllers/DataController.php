@@ -70,6 +70,9 @@ class DataController extends Controller
         //遍历文件夹
         foreach($temp as $v){
             $a=$file.'/'.$v;
+            if($v === '.' || $v === '..'){
+                continue;
+            }
             if(file_exists($a)){
                 echo $a."\n";
                 exit;
