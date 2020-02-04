@@ -47,6 +47,7 @@ use common\models\Vaccine;
 use common\models\WeOpenid;
 use EasyWeChat\Factory;
 use Faker\Provider\File;
+use OSS\Core\OssException;
 use OSS\OssClient;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -74,8 +75,14 @@ class DataController extends Controller
                 continue;
             }
             if(file_exists($a)){
-                echo $a."\n";
-                exit;
+                try{
+
+                    $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
+                    $ossClient->uploadFile('childimage', 'upload/'.$v, $a);
+                    exit;
+                } catch(OssException $e) {
+                    print_r($e->getMessage());exit;
+                }
             }
         }
         exit;
