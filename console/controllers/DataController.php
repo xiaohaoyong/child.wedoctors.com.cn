@@ -60,11 +60,8 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
-
-    public function actionTesta()
-    {
-
-
+    public function dir_a(){
+        $files=[];
         $file="/home/wwwroot/static.i.wedoctors.com.cn";
         //1、首先先读取文件夹
         $temp=scandir($file);
@@ -72,17 +69,34 @@ class DataController extends Controller
         foreach($temp as $v){
             $a=$file.'/'.$v;
             echo $a;echo "\n";
-            if($v === '.' || $v === '..' || $v === '.git' || $v==='.idea'){
+            if($v === '.' || $v === '..' || $v === '.git' || $v==='.idea'|| $v==='upload'){
                 continue;
             }
-            if(file_exists($a) && !is_dir($a)){
-                try{
+            if(is_dir($a)){
+                $filesa=$this->dir_a($a);
+                $files=$filesa+$files;
+            }
+            $files[]=$a;
+        }
+        return $files;
+    }
 
-                    $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao-internal.aliyuncs.com');
-                    $ossClient->uploadFile('childimage', $v, $a);
-                } catch(OssException $e) {
-                    print_r($e->getMessage());exit;
-                }
+    public function actionTesta()
+    {
+        $file=$this->dir_a();
+
+        var_dump($file);exit;
+
+
+
+
+        if(file_exists($a) && !is_dir($a)){
+            try{
+
+                $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao-internal.aliyuncs.com');
+                $ossClient->uploadFile('childimage', $v, $a);
+            } catch(OssException $e) {
+                print_r($e->getMessage());exit;
             }
         }
         exit;
