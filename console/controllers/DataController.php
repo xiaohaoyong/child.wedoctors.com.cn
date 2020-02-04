@@ -71,6 +71,7 @@ class DataController extends Controller
         //遍历文件夹
         foreach($temp as $v){
             $a=$file.'/'.$v;
+            echo $a;echo "\n";
             if($v === '.' || $v === '..'){
                 continue;
             }
