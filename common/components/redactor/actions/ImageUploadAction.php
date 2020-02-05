@@ -26,8 +26,8 @@ class ImageUploadAction extends \yii\base\Action
         $image=$imagesFile[0];
         if (isset($_FILES)) {
             $time=time();
-            $filen=substr(md5($time.$_FILES['tmp_name']),4,14).$image->extension;
-            $images='http://static.i.wedoctors.com.cn/redactor/'.$filen. '.' . $image->extension;
+            $filen=substr(md5($time.$_FILES['tmp_name']),4,14).".".$image->extension;
+            $images='http://static.i.wedoctors.com.cn/redactor/'.$filen;
 
             try{
                 $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
