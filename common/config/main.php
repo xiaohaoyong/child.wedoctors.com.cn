@@ -22,10 +22,13 @@ $config= [
     ],
     'modules' => [
         'redactor' => [
-            'class' => 'yii\redactor\RedactorModule',
+            'class' => 'common\components\redactor\RedactorModule',
             'uploadDir' => dirname(dirname(__FILE__))."/../../static.i.wedoctors.com.cn/redactor/",
             'uploadUrl' => 'http://static.i.wedoctors.com.cn/redactor',
             'imageAllowExtensions'=>['jpg','png','gif']
+        ],
+        'redactor_reset' => [
+            'class' => 'common\components\redactor\RedactorModule',
         ],
     ],
 ];
