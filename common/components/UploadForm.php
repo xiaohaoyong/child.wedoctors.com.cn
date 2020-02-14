@@ -42,7 +42,7 @@ class UploadForm extends Model
                 $filen=substr(md5($time.$file->tempName),4,14);
                 $images[]=\Yii::$app->params['imageUrl'].$filen. '.' . $file->extension;
                 $imgContent=file_get_contents($file->tempName);
-                $file->saveAs(__ROOT__."/../../".\Yii::$app->params['imageDir']."/upload/" .$filen. '.' . $file->extension);
+                //$file->saveAs(__ROOT__."/../../".\Yii::$app->params['imageDir']."/upload/" .$filen. '.' . $file->extension);
 
                 try{
 
