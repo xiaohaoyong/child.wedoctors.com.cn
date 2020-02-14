@@ -113,7 +113,7 @@ class ChildSignController extends Controller
                     $return = "已签约";
                 }
             }
-            $autograph = \common\models\Autograph::findOne(['userid' => $e->userid]);
+            $autograph = \common\models\Autograph::findOne(['userid' => $v['userid']]);
             if ($autograph) {
                 $sign = "已签字";
             } else {
