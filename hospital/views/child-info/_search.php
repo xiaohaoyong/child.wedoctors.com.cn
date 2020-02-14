@@ -45,7 +45,8 @@ use yii\widgets\ActiveForm;
         <?= Html::button('下载', ['id'=>'down','class' => 'btn btn-primary']) ?>
         <?= Html::button('一键导出已签约宝宝宣教记录', ['id'=>'downArticle','class' => 'btn btn-primary']) ?>
 
-        <?= Html::a('一键导出已签约服务记录表',"http://static.wedoctors.com.cn/".\Yii::$app->user->identity->hospital.".xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
+        <?= Html::a('一键导出已签约服务记录表(0-3)',"http://static.wedoctors.com.cn/".\Yii::$app->user->identity->hospital.".xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
+        <?= Html::a('一键导出已签约服务记录表(0-6)',"http://static.wedoctors.com.cn/".\Yii::$app->user->identity->hospital."-0-6.xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
 
         <div class="help-block"></div>
     </div>
