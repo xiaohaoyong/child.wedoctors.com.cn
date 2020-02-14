@@ -115,9 +115,9 @@ class ChildSignController extends Controller
             }
             $autograph = \common\models\Autograph::findOne(['userid' => $v['userid']]);
             if ($autograph) {
-                $sign = "已签字";
+                $signa = "已签字";
             } else {
-                $sign = "未签字";
+                $signa = "未签字";
             }
 
             $article=ArticleUser::findAll(['touserid'=>$v['userid']]);
@@ -158,7 +158,7 @@ class ChildSignController extends Controller
                 ->setCellValue('M' . $key1, $sign->level==1 ? \common\models\UserDoctor::findOne(['userid'=>$sign->doctorid])->name : "--")
                 ->setCellValue('N' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
                 ->setCellValue('O' . $key1, $return)
-                ->setCellValue('P' . $key1, $sign)
+                ->setCellValue('P' . $key1, $signa)
                 ->setCellValue('Q' . $key1, $userParent->fieldu46)
                 ->setCellValue('R' . $key1, $is_article)
                 ->setCellValue('S' . $key1, $child_type)
