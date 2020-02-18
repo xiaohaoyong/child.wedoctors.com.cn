@@ -165,8 +165,14 @@ class NoticeController extends Controller
             $rs['name'] = Notice::$user[$k];
             $rs['date'] = $info['date'] ? $info['date'] : date('Y-m-d H:i', $v);
             $rs['info'] = $info;
-            $data[] = $rs;
+            if($k==3){
+                $first=$rs;
+            }else {
+                $data[] = $rs;
+            }
         }
+
+        array_unshift($data,$first);
 
 
         if (!$data) {
