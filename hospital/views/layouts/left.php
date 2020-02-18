@@ -13,6 +13,13 @@
             ];
         }elseif(in_array(Yii::$app->user->identity->hospitalid,[110578,110581])){
             $a = ['label' => '儿童家医签约记录', 'icon' => 'pencil-square-o', 'url' => \yii\helpers\Url::to(['autograph/index']),];
+        }elseif(in_array(Yii::$app->user->identity->hospitalid,[110543])){
+            $b = ['label' => '孕产期管理', 'icon' => 'heart', 'url' => '#',
+                'items' => [
+                    ['label' => '追访记录', 'url' => ['interview/index']],
+                    ['label' => '孕产妇数据', 'url' => ['/pregnancy']],
+                ]
+            ];
         }
         ?>
 
