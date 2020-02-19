@@ -172,8 +172,9 @@ class NoticeController extends Controller
             }
         }
 
-        array_unshift($data,$first);
-
+        if($first) {
+            array_unshift($data, $first);
+        }
 
         if (!$data) {
             Notice::setList($this->userid, 3, ['title' => '儿童中医药健康管理内容及平台服务', 'ftitle' => '点击查看服务内容', 'id' => '/article/view/index?id=200',]);
