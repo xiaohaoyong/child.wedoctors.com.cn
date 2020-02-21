@@ -20,7 +20,7 @@ class HaodfController extends Controller
 
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
         $oauth = $app->oauth;
-        if($oauth) {
+        if(\Yii::$app->request->get('code')) {
 // 获取 OAuth 授权结果用户信息
             $user = $oauth->user();
 
