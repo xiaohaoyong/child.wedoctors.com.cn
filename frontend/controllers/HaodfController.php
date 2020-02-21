@@ -28,6 +28,7 @@ class HaodfController extends Controller
             if($userInfo['original']['openid']){
                 $openid=$userInfo['original']['openid'];
                 $weopenid=WeOpenid::findOne(['openid'=>$openid]);
+                var_dump($weopenid);exit;
                 if($weopenid){
                     $timestamp = time();
                     $partnerKey="15f23dbae71f0f62";
