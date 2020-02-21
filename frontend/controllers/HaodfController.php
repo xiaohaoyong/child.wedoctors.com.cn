@@ -28,21 +28,19 @@ class HaodfController extends Controller
             if($userInfo['original']['openid']){
                 $openid=$userInfo['original']['openid'];
                 $weopenid=WeOpenid::findOne(['openid'=>$openid]);
-                var_dump($weopenid);exit;
                 if($weopenid){
                     $timestamp = time();
                     $partnerKey="15f23dbae71f0f62";
                     $secret="EfPqDznSfV";
                     $params['partnerUserId']=$weopenid->id;
                     $signature = $this->generateSignature($secret, $timestamp, $partnerKey, $params);
-                    $url= "https://m.haodf.com/openplatform/auth?partnerKey={$partnerKey}&timestamp={$timestamp}&signature={$signature}&partnerUserId={$params['partnerUserId']}";
+                    $jumpUrl='https://m.haodf.com/ndynamic/coronalactivity/activity?businesstype=ebb';
+                    $url= "https://m.haodf.com/openplatform/auth?partnerKey={$partnerKey}&timestamp={$timestamp}&signature={$signature}&partnerUserId={$params['partnerUserId']}jumpUrl={$jumpUrl}";
                     $this->redirect($url);
                 }
             }
-            exit;
         }
-        $jumpUrl='https://m.haodf.com/ndynamic/coronalactivity/activity?businesstype=ebb';
-        echo "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1147c2e491dfdf1d&redirect_uri=http://web.child.wedoctors.com.cn/haodf&response_type=code&scope=snsapi_base&state=STATE#wechat_redirec&jumpUrl={$jumpUrl}";
+        exit;
     }
     public function generateSignature($secret, $timestamp, $partnerKey, $params) {
         $paramArray = array();
