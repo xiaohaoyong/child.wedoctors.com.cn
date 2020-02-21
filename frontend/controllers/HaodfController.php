@@ -23,10 +23,10 @@ class HaodfController extends Controller
         if(\Yii::$app->request->get('code')) {
 // 获取 OAuth 授权结果用户信息
             $user = $oauth->user();
-
+            var_dump($user->openid);
         }
         var_dump($user);exit;
 
-        echo "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1147c2e491dfdf1d&redirect_uri=http://child.wedoctors.com.cn/haodf&response_type=code&scope=SCOPE&state=STATE#wechat_redirec";
+        echo "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1147c2e491dfdf1d&redirect_uri=http://web.child.wedoctors.com.cn/haodf&response_type=code&scope=snsapi_base&state=STATE#wechat_redirec";
     }
 }
