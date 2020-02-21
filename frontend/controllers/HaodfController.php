@@ -24,7 +24,7 @@ class HaodfController extends Controller
 // 获取 OAuth 授权结果用户信息
             $user = $oauth->user();
             $userInfo=$user->toArray();
-            var_dump($userInfo['openid']);
+            var_dump($userInfo);
         }
         var_dump($user);exit;
 
