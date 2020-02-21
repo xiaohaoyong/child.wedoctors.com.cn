@@ -33,7 +33,7 @@ class HaodfController extends Controller
                     $partnerKey="15f23dbae71f0f62";
                     $secret="EfPqDznSfV";
                     $params['partnerUserId']=$weopenid->id;
-                    $signature = generateSignature($secret, $timestamp, $partnerKey, $params);
+                    $signature = $this->generateSignature($secret, $timestamp, $partnerKey, $params);
                     $url= "https://m.haodf.com/openplatform/auth?partnerKey={$partnerKey}&timestamp={$timestamp}&signature={$signature}&partnerUserId={$params['partnerUserId']}";
                     $this->redirect($url);
                 }
