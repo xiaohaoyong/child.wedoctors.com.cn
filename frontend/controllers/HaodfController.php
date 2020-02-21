@@ -23,7 +23,8 @@ class HaodfController extends Controller
         if(\Yii::$app->request->get('code')) {
 // 获取 OAuth 授权结果用户信息
             $user = $oauth->user();
-            var_dump($user->openid);
+            $userInfo=$user->toArray();
+            var_dump($userInfo['openid']);
         }
         var_dump($user);exit;
 
