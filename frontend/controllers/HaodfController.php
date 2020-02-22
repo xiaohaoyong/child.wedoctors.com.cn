@@ -41,7 +41,7 @@ class HaodfController extends Controller
 
                     $signature = $this->generateSignature($secret, $timestamp, $partnerKey, $params);
                     $jumpUrl=urlencode('https://m.haodf.com/ndynamic/coronalactivity/activity?businesstype=ebb');
-                    $mobile=$this->phoneMd5($partnerKey,$secret,$userLoign->phone);
+                    $mobile=urlencode($this->phoneMd5($partnerKey,$secret,$userLoign->phone));
                     $url= "https://m.haodf.com/openplatform/authForHealthpal?partnerKey={$partnerKey}&timestamp={$timestamp}&signature={$signature}&partnerUserId={$params['partnerUserId']}&mobile={$mobile}&jumpUrl={$jumpUrl}";
                     return $this->redirect($url);
                 }
@@ -62,7 +62,7 @@ class HaodfController extends Controller
     }
     public function phoneMd5($partnerKey,$secret,$phone){
         $secretAccessKey=substr(md5($partnerKey.$secret),8,16);
-        $crypted = openssl_encrypt($phone, 'AES-128-ECB', $secretAccessKey, OPENSSL_RAW_DATA);
+        $crypted = openssl_encrypt($phone, 'AES-128-ECB', $secretAccessKey);
         return $crypted;
     }
 }
