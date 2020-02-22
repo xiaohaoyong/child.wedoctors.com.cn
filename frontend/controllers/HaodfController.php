@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 
+use common\models\UserLogin;
 use common\models\WeOpenid;
 use yii\web\Controller;
 use EasyWeChat\Factory;
@@ -33,6 +34,11 @@ class HaodfController extends Controller
                     $partnerKey="15f23dbae71f0f62";
                     $secret="EfPqDznSfV";
                     $params['partnerUserId']=$weopenid->id;
+                    $userLoign=UserLogin::findOne(['openid'=>$openid]);
+                    if($userLoign && $userLoign->phone){
+                        $params['mobile']=$userLoign->phone;
+                    }
+
                     $signature = $this->generateSignature($secret, $timestamp, $partnerKey, $params);
                     $jumpUrl=urlencode('https://m.haodf.com/ndynamic/coronalactivity/activity?businesstype=ebb');
                     $url= "https://m.haodf.com/openplatform/authForJump?partnerKey={$partnerKey}&timestamp={$timestamp}&signature={$signature}&partnerUserId={$params['partnerUserId']}&jumpUrl={$jumpUrl}";
