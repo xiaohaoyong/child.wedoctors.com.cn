@@ -169,7 +169,7 @@ class SuiteController extends Controller
     {
         $buttons=[
                 ['type' => 'miniprogram', 'name' => '育儿服务', 'url' => 'pages/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',],
-                ['type' => 'miniprogram', 'name' => '育儿课堂', 'url' => 'pages/article/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/article/index/index',],
+                ['type' => 'view', 'name' => '问医生', 'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1147c2e491dfdf1d&redirect_uri=http://web.child.wedoctors.com.cn/haodf&response_type=code&scope=snsapi_base&state=STATE#wechat_redirec'],
                 ['type' => 'view', 'name' => '我的', 'sub_button' => [
                     [
                         'type' => 'miniprogram',
