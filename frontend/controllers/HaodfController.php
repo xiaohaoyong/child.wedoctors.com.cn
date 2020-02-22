@@ -36,12 +36,12 @@ class HaodfController extends Controller
                     $params['partnerUserId']=$weopenid->id;
                     $userLoign=UserLogin::findOne(['openid'=>$openid]);
                     if($userLoign && $userLoign->phone){
-                        $params['mobile']=$userLoign->phone;
+                        //$params['mobile']=$userLoign->phone;
                     }
 
                     $signature = $this->generateSignature($secret, $timestamp, $partnerKey, $params);
                     $jumpUrl=urlencode('https://m.haodf.com/ndynamic/coronalactivity/activity?businesstype=ebb');
-                    $url= "https://m.haodf.com/openplatform/authForHealthpal?partnerKey={$partnerKey}&timestamp={$timestamp}&signature={$signature}&partnerUserId={$params['partnerUserId']}&mobile={$params['mobile']}&jumpUrl={$jumpUrl}";
+                    $url= "https://m.haodf.com/openplatform/authForHealthpal?partnerKey={$partnerKey}&timestamp={$timestamp}&signature={$signature}&partnerUserId={$params['partnerUserId']}&jumpUrl={$jumpUrl}";
                     return $this->redirect($url);
                 }
             }
