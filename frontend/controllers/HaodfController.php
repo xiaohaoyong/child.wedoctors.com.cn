@@ -41,7 +41,7 @@ class HaodfController extends Controller
 
                     $signature = $this->generateSignature($secret, $timestamp, $partnerKey, $params);
                     $jumpUrl=urlencode('https://m.haodf.com/ndynamic/coronalactivity/activity?businesstype=ebb');
-                    $url= "https://m.haodf.com/openplatform/authForJump?partnerKey={$partnerKey}&timestamp={$timestamp}&signature={$signature}&partnerUserId={$params['partnerUserId']}&mobile={$params['mobile']}&jumpUrl={$jumpUrl}";
+                    $url= "https://m.haodf.com/openplatform/authForHealthpal?partnerKey={$partnerKey}&timestamp={$timestamp}&signature={$signature}&partnerUserId={$params['partnerUserId']}&mobile={$params['mobile']}&jumpUrl={$jumpUrl}";
                     return $this->redirect($url);
                 }
             }
