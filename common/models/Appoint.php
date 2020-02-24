@@ -32,7 +32,7 @@ class Appoint extends \yii\db\ActiveRecord
         '3' => '10:00-11:00',
         '4' => '13:00-14:00',
         '5' => '14:00-15:00',
-        '6' => '15:00-16:00',
+        '6' => '15:00-15:30',
     ];
     public static $stateText = [
         1 => '进行中',
