@@ -66,7 +66,7 @@ class AppointSearch extends Appoint
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => ['pageSize' => 100],//此处为分页设置，其中5为每页显示5条
+            'pagination' => ['pageSize' => 100],
         ]);
 
         $this->load($params);
