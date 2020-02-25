@@ -82,6 +82,7 @@ class AppointController extends \docapi\controllers\AppointController
         // grid filtering conditions
         $dataProvider->query->andFilterWhere(['doctorid' => $userDoctor->userid]);
         $dataProvider->query->orderBy('appoint_date asc,appoint_time asc,id asc');
+        $dataProvider->query->limit(1000);
         //echo $dataProvider->query->createCommand()->getRawSql();
         foreach ($dataProvider->getModels() as $k => $v) {
             $rs = $v;

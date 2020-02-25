@@ -84,6 +84,23 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $doctorparent=DoctorParent::find()->select('parentid')->where(['doctorid'=>18469])->column();
+
+        $user=UserParent::find()->select('mother_phone')->where(['not in','userid',$doctorparent])->andWhere(['source'=>110557])->column();
+        $parents = array_chunk($user, 100);
+        foreach($parents as $k=>$v) {
+            $str = implode(',', $v);
+            $response = \Yii::$app->aliyun->sendSms(
+                "儿宝宝", // 短信签名
+                "SMS_184116578", // 短信模板编号
+                $str // 短信接收者
+            );
+            $response = json_decode($response, true);
+            var_dump($str);
+        }
+        exit;
+
+
         $file=$this->dir_a('/home/wwwroot/static.i.wedoctors.com.cn');
 
 
