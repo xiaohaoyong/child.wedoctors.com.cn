@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
                         <?php
-                        if (in_array(Yii::$app->user->identity->county ,[1105,1106]) || in_array(Yii::$app->user->identity->hospitalid,[110586,110582,110583,110584,110589,110571,110590,110591,110593,110592,110594,110595,110596,110597,110598,110599,110602,110601,110603,110604,110605,110606,110607,110608,110609,110610,110613,110614,110615,110616,110617,110618,110620])) {
+                        if (in_array(Yii::$app->user->identity->county, [1105, 1106]) || in_array(Yii::$app->user->identity->hospitalid, [110586, 110582, 110583, 110584, 110589, 110571, 110590, 110591, 110593, 110592, 110594, 110595, 110596, 110597, 110598, 110599, 110602, 110601, 110603, 110604, 110605, 110606, 110607, 110608, 110609, 110610, 110613, 110614, 110615, 110616, 110617, 110618, 110620])) {
                             $q = [
                                 'attribute' => '签约协议',
                                 'value' => function ($e) {
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                             ];
                         }
-                        $columns=[
+                        $columns = [
 
                             'name',
 
@@ -78,14 +78,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
 
                                 'attribute' => '联系电话',
-                                'format'=>'html',
+                                'format' => 'html',
                                 'value' => function ($e) {
-                                    $data[]=$e->parent->mother.":".$e->parent->mother_phone;
-                                    $data[]=$e->parent->father.":".$e->parent->father_phone;
+                                    $data[] = $e->parent->mother . ":" . $e->parent->mother_phone;
+                                    $data[] = $e->parent->father . ":" . $e->parent->father_phone;
 
-                                    return implode("<br>",$data);
+                                    return implode("<br>", $data);
                                 },
-                                'contentOptions' => ['style'=>'word-break:keep-all'],
+                                'contentOptions' => ['style' => 'word-break:keep-all'],
                             ],
                             [
                                 'attribute' => '签约社区',
@@ -109,7 +109,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => '现住址',
                                 'value' => function ($e) {
-                                    return $e->parent->fieldu46 ? $e->parent->fieldu46 : "无";
+                                    if ($e->parent->fieldu46) {
+                                        return $e->parent->fieldu46;
+                                    } elseif ($e->parent->fieldu47) {
+                                        return $e->parent->fieldu47;
+                                    } else {
+                                        return '无';
+                                    }
                                 }
                             ],
                             [
@@ -164,9 +170,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     },
                                     'notice' => function ($url, $model, $key) {
                                         $sign = \common\models\DoctorParent::findOne(['parentid' => $model->userid, 'level' => 1]);
-                                        if($sign){
-                                            return Html::a('<span class="fa fa-database"></span> 发送召回通知',"#");
-                                        }else {
+                                        if ($sign) {
+                                            return Html::a('<span class="fa fa-database"></span> 发送召回通知', "#");
+                                        } else {
                                             return Html::a('<span class="fa fa-database"></span> 发送召回通知', \yii\helpers\Url::to(['notice/recall', 'userid' => $model->userid, 'childid' => $model->id]));
                                         }
                                     },
@@ -177,17 +183,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                         ];
 
-                        if($q) {
-                            $rs=array_pop($columns);
-                            array_push($columns,$q);
-                            array_push($columns,$rs);
+                        if ($q) {
+                            $rs = array_pop($columns);
+                            array_push($columns, $q);
+                            array_push($columns, $rs);
 
                         }
                         ?>
                         <?= GridView::widget([
                             'options' => ['class' => 'col-sm-12', 'style' => "font-size: 12px;"],
                             'dataProvider' => $dataProvider,
-                            'columns' =>$columns,
+                            'columns' => $columns,
                         ]); ?>
                     </div>
                 </div>

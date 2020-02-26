@@ -26,7 +26,7 @@ use Yii;
  * @property string $field28 母亲出生日期
  * @property string $field12 联系人电话
  * @property string $field11 联系人姓名
- * @property string $fieldu46 现住址详细
+ * @property string $fieldu46 现住址地址
 
  * @property string $field1 户口
  * @property integer $province
@@ -49,7 +49,7 @@ class UserParent extends \yii\db\ActiveRecord {
     {
         return [
             [['userid', 'mother_phone', 'father_phone', 'state', 'source', 'province', 'county', 'city'], 'integer'],
-            [['father_birthday','mother', 'father', 'address', 'field34', 'field33', 'field30', 'field29', 'field28', 'field12', 'field11', 'field1', 'fbirthday', 'field43', 'field44', 'field45','fieldu46'], 'safe'],
+            [['father_birthday','mother', 'father', 'address', 'field34', 'field33', 'field30', 'field29', 'field28', 'field12', 'field11', 'field1', 'fbirthday', 'field43', 'field44', 'field45','fieldu46','fieldu47'], 'safe'],
             [['mother_id'], 'string', 'max' => 18],
         ];
     }
@@ -73,6 +73,7 @@ class UserParent extends \yii\db\ActiveRecord {
         'field45' => '户籍地址区',
         'field1' => '户口',
         'fieldu46'=>'现住址地址',
+        'fieldu47'=>'现住址详细',
     ];
     //通过id获取信息 刘方露
     public static function GetInfoById($userid)
@@ -103,6 +104,8 @@ class UserParent extends \yii\db\ActiveRecord {
             'field45' => '户籍所在市',
             'field1' => '户口',
             'fieldu46'=>'现住址地址',
+            'fieldu47'=>'现住址详细',
+
             'province' => '省', 'county' => '县', 'city' => '市',
         ];
     }

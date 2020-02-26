@@ -55,6 +55,7 @@ class UserLogin extends \yii\db\ActiveRecord
         return [
             [['userid'], 'required'],
             [['userid'], 'integer'],
+            [['type'], 'integer'],
 
             [['phone'], 'integer'],
             [['createtime'], 'integer'],

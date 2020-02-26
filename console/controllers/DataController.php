@@ -17,6 +17,7 @@ use common\components\HttpRequest;
 use common\components\wx\WxBizDataCrypt;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
+use common\models\Appoint;
 use common\models\Area;
 use common\models\Article;
 use common\models\ArticleComment;
@@ -84,6 +85,11 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $doctor=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
+        $appoint=Appoint::find()->where(['in','userid',$doctor])->column();
+
+
+
         $doctorparent=DoctorParent::find()->select('parentid')->where(['doctorid'=>18469])->column();
 
         $user=UserParent::find()->select('mother_phone')->where(['not in','userid',$doctorparent])->andWhere(['source'=>110557])->column();
