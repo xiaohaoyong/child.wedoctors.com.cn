@@ -17,11 +17,8 @@ use yii\widgets\ActiveForm;
 
                     <?= $form->field($model, 'userid')->textInput() ?>
 
-    <?= $form->field($model, 'province')->textInput() ?>
+    <?= $form->field($model, 'fieldp47')->textInput() ?>
 
-    <?= $form->field($model, 'county')->textInput() ?>
-
-    <?= $form->field($model, 'city')->textInput() ?>
 
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
