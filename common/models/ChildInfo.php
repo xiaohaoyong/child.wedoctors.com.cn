@@ -125,6 +125,7 @@ class ChildInfo extends \yii\db\ActiveRecord
         'field1' => '户口',
         'fieldu46'=>'现住址地址',
         'fieldu47'=>'儿童所在段区',
+        'fieldp47'=>'现住址详细',
 
     ];
 
