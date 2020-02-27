@@ -111,8 +111,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value' => function ($e) {
                                     if ($e->parent->fieldu46) {
                                         return $e->parent->fieldu46;
-                                    } elseif ($e->parent->fieldu47) {
-                                        return $e->parent->fieldu47;
+                                    } elseif ($e->parent->fieldp47) {
+                                        return $e->parent->fieldp47;
                                     } else {
                                         return '无';
                                     }
