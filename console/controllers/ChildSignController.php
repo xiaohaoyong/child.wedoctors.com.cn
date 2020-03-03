@@ -12,6 +12,7 @@ namespace console\controllers;
 use common\models\Article;
 use common\models\ArticleInfo;
 use common\models\ArticleUser;
+use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Hospital;
@@ -78,15 +79,32 @@ class ChildSignController extends Controller
             ->setCellValue('U'.$key1, '宣教时间');
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
-        $data=ChildInfo::find()
-            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-            ->andFilterWhere(['`child_info`.`admin`' =>$userDoctor->hospitalid])
-            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
-            ->orderBy("`doctor_parent`.`createtime` desc")
-            ->asArray()->all();
 //写入内容
+        $doctorParent=DoctorParent::find()->select('doctor_parent.parentid')
+            ->andFilterWhere(['doctor_parent.doctorid'=>$userDoctor->userid])
+            ->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`')
+            ->andWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+            ->andWhere(['>', 'child_info.doctorid', 0])
+            ->column();
+        if(!$doctorParent){
+            $doctorParent=[0];
+        }
+        $auto=Autograph::find()->select('userid')->andWhere(['in','userid',$doctorParent])->column();
+
+        if($auto) {
+            $data = ChildInfo::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+                ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+                ->andFilterWhere(['in', '`doctor_parent`.`parentid`' => $auto])
+                ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+                ->orderBy("`doctor_parent`.`createtime` desc")
+                ->asArray()->all();
+        }
+
+
+
+
 
         foreach($data as $k=>$v) {
             echo "==".$v['userid']."===";
