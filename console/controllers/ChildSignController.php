@@ -96,7 +96,7 @@ class ChildSignController extends Controller
                 ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                 ->andFilterWhere(['`doctor_parent`.`level`' => 1])
                 ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-                ->andFilterWhere(['in', '`doctor_parent`.`parentid`' => $auto])
+                ->andFilterWhere(['in', '`doctor_parent`.`parentid`' , $auto])
                 ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                 ->orderBy("`doctor_parent`.`createtime` desc")
                 ->asArray()->all();
