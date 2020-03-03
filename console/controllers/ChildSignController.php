@@ -100,96 +100,92 @@ class ChildSignController extends Controller
                 ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                 ->orderBy("`doctor_parent`.`createtime` desc")
                 ->asArray()->all();
-        }
 
 
+            foreach ($data as $k => $v) {
+                echo "==" . $v['userid'] . "===";
+                $e = $v;
+                $sign = \common\models\DoctorParent::findOne(['parentid' => $v['userid'], 'level' => 1]);
+                $userParent = UserParent::findOne(['userid' => $e['userid']]);
 
-
-
-        foreach($data as $k=>$v) {
-            echo "==".$v['userid']."===";
-            $e=$v;
-            $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid'],'level'=>1]);
-            $userParent = UserParent::findOne(['userid'=>$e['userid']]);
-
-            $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
-            if($DiffDate[0]) {
-                $age=$DiffDate[0]."岁";
-            }elseif($DiffDate[1]){
-                $age=$DiffDate[1]."月";
-            }else{
-                $age=$DiffDate[2]."天";
-            }
-            if($sign->level!=1)
-            {
-                $return="未签约";
-            }else{
-                if($userParent->source<=38){
-                    $return="已签约未关联";
-
-                }else {
-                    $return = "已签约";
+                $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
+                if ($DiffDate[0]) {
+                    $age = $DiffDate[0] . "岁";
+                } elseif ($DiffDate[1]) {
+                    $age = $DiffDate[1] . "月";
+                } else {
+                    $age = $DiffDate[2] . "天";
                 }
-            }
-            $autograph = \common\models\Autograph::findOne(['userid' => $v['userid']]);
-            if ($autograph) {
-                $signa = "已签字";
-            } else {
-                $signa = "未签字";
-            }
+                if ($sign->level != 1) {
+                    $return = "未签约";
+                } else {
+                    if ($userParent->source <= 38) {
+                        $return = "已签约未关联";
 
-            $article=ArticleUser::findAll(['touserid'=>$v['userid']]);
-
-            $articleid=ArrayHelper::getColumn($article,'artid');
-            $date='';
-            $child_type='';
-            $title='';
-
-            if($article) {
-                foreach ($article as $ak => $av) {
-                    $date.="，".date('Y-m-d',$av->createtime);
-                    $child_type.="，".Article::$childText[$av->child_type];
+                    } else {
+                        $return = "已签约";
+                    }
                 }
-                $articleInfo=ArticleInfo::find()->andFilterWhere(['in','id',$articleid])->select('title')->column();
-                $title=implode(',',$articleInfo);
+                $autograph = \common\models\Autograph::findOne(['userid' => $v['userid']]);
+                if ($autograph) {
+                    $signa = "已签字";
+                } else {
+                    $signa = "未签字";
+                }
 
-                $is_article="是";
-            }else{
-                $is_article="否";
+                $article = ArticleUser::findAll(['touserid' => $v['userid']]);
+
+                $articleid = ArrayHelper::getColumn($article, 'artid');
+                $date = '';
+                $child_type = '';
+                $title = '';
+
+                if ($article) {
+                    foreach ($article as $ak => $av) {
+                        $date .= "，" . date('Y-m-d', $av->createtime);
+                        $child_type .= "，" . Article::$childText[$av->child_type];
+                    }
+                    $articleInfo = ArticleInfo::find()->andFilterWhere(['in', 'id', $articleid])->select('title')->column();
+                    $title = implode(',', $articleInfo);
+
+                    $is_article = "是";
+                } else {
+                    $is_article = "否";
+                }
+                echo "\n";
+
+                $key1 = $k + 2;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $key1, $v['name'])
+                    ->setCellValue('B' . $key1, " " . \common\models\User::findOne($v['userid'])->phone)
+                    ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
+                    ->setCellValue('D' . $key1, $age)
+                    ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
+                    ->setCellValue('F' . $key1, $v['field6'])
+                    ->setCellValue('G' . $key1, " " . $v['field27'])
+                    ->setCellValue('H' . $key1, $userParent->mother || $userParent->father ? $userParent->mother . "/" . $userParent->father : "无")
+                    ->setCellValue('I' . $key1, $userParent->mother_phone ? " " . $userParent->mother_phone : "无")
+                    ->setCellValue('J' . $key1, $userParent->father_phone ? " " . $userParent->father_phone : "无")
+                    ->setCellValue('K' . $key1, $userParent->field11 ? $userParent->field11 : "无")
+                    ->setCellValue('L' . $key1, $userParent->field12 ? " " . $userParent->field12 : "无")
+                    ->setCellValue('M' . $key1, $sign->level == 1 ? \common\models\UserDoctor::findOne(['userid' => $sign->doctorid])->name : "--")
+                    ->setCellValue('N' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
+                    ->setCellValue('O' . $key1, $return)
+                    ->setCellValue('P' . $key1, $signa)
+                    ->setCellValue('Q' . $key1, $userParent->fieldu46)
+                    ->setCellValue('R' . $key1, $is_article)
+                    ->setCellValue('S' . $key1, $child_type)
+                    ->setCellValue('T' . $key1, $title)
+                    ->setCellValue('U' . $key1, $date);
+
             }
-            echo "\n";
+            // $objPHPExcel->setActiveSheetIndex(0);
 
-            $key1 = $k + 2;
-            $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $key1, $v['name'])
-                ->setCellValue('B' . $key1, " ".\common\models\User::findOne($v['userid'])->phone)
-                ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
-                ->setCellValue('D' . $key1, $age)
-                ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
-                ->setCellValue('F' . $key1, $v['field6'])
-                ->setCellValue('G' . $key1, " ".$v['field27'])
-                ->setCellValue('H' . $key1, $userParent->mother || $userParent->father?$userParent->mother."/".$userParent->father:"无")
-                ->setCellValue('I' . $key1, $userParent->mother_phone ? " ".$userParent->mother_phone : "无")
-                ->setCellValue('J' . $key1, $userParent->father_phone ?  " ".$userParent->father_phone  : "无")
-                ->setCellValue('K' . $key1, $userParent->field11 ?  $userParent->field11 : "无")
-                ->setCellValue('L' . $key1, $userParent->field12 ? " ".$userParent->field12 : "无")
-                ->setCellValue('M' . $key1, $sign->level==1 ? \common\models\UserDoctor::findOne(['userid'=>$sign->doctorid])->name : "--")
-                ->setCellValue('N' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
-                ->setCellValue('O' . $key1, $return)
-                ->setCellValue('P' . $key1, $signa)
-                ->setCellValue('Q' . $key1, $userParent->fieldu46)
-                ->setCellValue('R' . $key1, $is_article)
-                ->setCellValue('S' . $key1, $child_type)
-                ->setCellValue('T' . $key1, $title)
-                ->setCellValue('U' . $key1, $date);
 
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save(dirname(__ROOT__) . "/static/" . $userDoctor->hospitalid . "-0-6.xlsx");
+            echo "true";
         }
-        // $objPHPExcel->setActiveSheetIndex(0);
-
-
-        $objWriter= \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
-        $objWriter->save(dirname(__ROOT__)."/static/".$userDoctor->hospitalid."-0-6.xlsx");
-        echo "true";
         return [];
     }
 
