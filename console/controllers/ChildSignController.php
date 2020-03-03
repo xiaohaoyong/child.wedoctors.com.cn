@@ -93,7 +93,7 @@ class ChildSignController extends Controller
 
         if($auto) {
             $data = ChildInfo::find()
-                ->andFilterWhere(['in', '`ChildInfo`.`userid`' , array_unique($auto)])
+                ->andFilterWhere(['in', '`child_info`.`userid`' , array_unique($auto)])
                 ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                 ->asArray()->all();
 
