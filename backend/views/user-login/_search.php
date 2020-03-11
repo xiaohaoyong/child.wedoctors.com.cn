@@ -15,6 +15,7 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
+    <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'userid') ?>
 
