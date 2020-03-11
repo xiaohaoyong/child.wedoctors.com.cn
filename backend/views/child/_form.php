@@ -16,6 +16,7 @@ use yii\widgets\ActiveForm;
                 <?php $form = ActiveForm::begin(); ?>
 
                     <?= $form->field($model, 'userid')->textInput() ?>
+                <?= $form->field($model, 'name')->textInput() ?>
 
     <?= $form->field($model, 'birthday')->textInput() ?>
 

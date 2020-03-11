@@ -261,7 +261,4 @@ class ChildSignController extends Controller
         }
         return [];
     }
-
-
-
 }
