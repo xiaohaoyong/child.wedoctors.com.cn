@@ -85,6 +85,19 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+
+        $auto=Autograph::find()->all();
+        foreach($auto as $k=>$v){
+            $auto1=Autograph::find()->where(['userid'=>$v->userid])->andWhere(['!=','id',$v->id])->all();
+            if($auto1){
+                foreach ($auto1 as $ak=>$av){
+                    echo implode(',',$av->toArray());
+                    echo "\n";
+                    $av->delete();
+                }
+            }
+        }
+        exit;
         $doctor=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
         $appoint=Appoint::find()->where(['in','userid',$doctor])->column();
 

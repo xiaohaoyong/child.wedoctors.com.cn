@@ -438,11 +438,15 @@ class UserController extends Controller
             $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
             $data['doctorid']=$doctorParent->doctorid;
 
-            $autograph=$autograph?$autograph:new Autograph();
-            $autograph->load(['Autograph'=>$data]);
-            $autograph->save();
-            if($autograph->firstErrors){
-                return new Code(20010,$autograph->firstErrors);
+
+            $auto=Autograph::find()->where(['userid'=>$this->userid])->one();
+            if(!$auto) {
+                $autograph = $autograph ? $autograph : new Autograph();
+                $autograph->load(['Autograph' => $data]);
+                $autograph->save();
+                if ($autograph->firstErrors) {
+                    return new Code(20010, $autograph->firstErrors);
+                }
             }
         }
         return $image[0];
