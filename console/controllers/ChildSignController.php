@@ -78,18 +78,8 @@ class ChildSignController extends Controller
             ->setCellValue('T'.$key1, '宣教内容')
             ->setCellValue('U'.$key1, '宣教时间');
 
-        $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
-//写入内容
-        $doctorParent=DoctorParent::find()->select('doctor_parent.parentid')
-            ->andFilterWhere(['doctor_parent.doctorid'=>$userDoctor->userid])
-            ->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`')
-            ->andWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
-            ->andWhere(['>', 'child_info.doctorid', 0])
-            ->column();
-        if(!$doctorParent){
-            $doctorParent=[0];
-        }
-        $auto=Autograph::find()->select('userid')->andWhere(['in','userid',$doctorParent])->column();
+
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
 
         if($auto) {
             $data = ChildInfo::find()
