@@ -135,7 +135,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     if ($sign->level != 1) {
                                         $return = "未签约";
                                     } else {
-                                        if ($e->source <= 38) {
+                                        if ($e->source != Yii::$app->user->identity->hospitalid ) {
                                             $return = "已签约未关联";
 
                                         } else {

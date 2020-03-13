@@ -23,6 +23,8 @@ class ChildInfoSearchModel extends ChildInfo
     public $child_type;
 
     public $username;
+    public $childname;
+
     public $userphone;
 
     public $birthdayS;
@@ -35,7 +37,7 @@ class ChildInfoSearchModel extends ChildInfo
     {
         return [
             [['id', 'userid', 'birthday', 'createtime', 'level', 'admin', 'child_type'], 'integer'],
-            [['docpartimeS', 'docpartimeE', 'birthdayS', 'birthdayE', 'username'], 'string'],
+            [['docpartimeS', 'docpartimeE', 'birthdayS', 'birthdayE', 'username','childname'], 'string'],
             [['userphone'], 'integer'],
 
             [['name'], 'safe'],
@@ -53,6 +55,8 @@ class ChildInfoSearchModel extends ChildInfo
         $attr['birthdayS'] = '出生日期';
         $attr['birthdayE'] = '~';
         $attr['username'] = '父母联系人姓名';
+        $attr['childname'] = '宝宝姓名';
+
         $attr['admin'] = '管理机构';
         $attr['child_type'] = '儿童年龄段';
         $attr['userphone'] = '父母联系人手机号';
@@ -118,7 +122,7 @@ class ChildInfoSearchModel extends ChildInfo
             $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
             $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
             $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
-            $query->andWhere(['`child_info`.`source`' => 0]);
+            $query->andWhere(['!=','`child_info`.`source`' ,$hospitalid]);
         } elseif ($this->level == 3) {
             $parentids = \common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid])->andFilterWhere(['level' => 1])->column();
             $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-$year year")]);
@@ -164,6 +168,10 @@ class ChildInfoSearchModel extends ChildInfo
             if ($this->userphone) {
                 $query->andWhere(['or', ['`user_parent`.`mother_phone`' => $this->userphone], ['`user_parent`.`father_phone`' => $this->userphone], ['`user_parent`.`field12`' => $this->userphone]]);
             }
+        }
+
+        if($this->childname){
+            $query->andWhere(['child_info.name'=>$this->childname]);
         }
         if ($this->level == 1) {
             $query->orderBy('`doctor_parent`.createtime desc');

@@ -37,6 +37,8 @@ use yii\widgets\ActiveForm;
         'todayHighlight' => true
     ]])?>
     <?= $form->field($model, 'username')?>
+    <?= $form->field($model, 'childname')?>
+
     <?= $form->field($model, 'userphone')?>
 
     <div class="form-group">
