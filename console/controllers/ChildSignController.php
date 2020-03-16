@@ -31,13 +31,13 @@ class ChildSignController extends Controller
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
         set_time_limit(0);
-//        $doctor=UserDoctor::find()->all();
-//        foreach($doctor as $v)
-//        {
-//            $this->setDownExcel($v->userid);
-//            echo "\n";
-//        }
-        $this->setDownExcel(192821);
+        $doctor=UserDoctor::find()->all();
+        foreach($doctor as $v)
+        {
+            $this->setDownExcel($v->userid);
+            echo "\n";
+        }
+        //$this->setDownExcel(18491);
     }
     public function setDownExcel($doctorid){
 
@@ -78,7 +78,7 @@ class ChildSignController extends Controller
             ->setCellValue('T'.$key1, '宣教内容')
             ->setCellValue('U'.$key1, '宣教时间');
 
-
+        $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
         $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
 
         if($auto) {
@@ -143,7 +143,7 @@ class ChildSignController extends Controller
                 $key1 = $k + 2;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $key1, $v['name'])
-                    ->setCellValue('B' . $key1, " " .$v['userid'])
+                    ->setCellValue('B' . $key1, " " . \common\models\User::findOne($v['userid'])->phone)
                     ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                     ->setCellValue('D' . $key1, $age)
                     ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
