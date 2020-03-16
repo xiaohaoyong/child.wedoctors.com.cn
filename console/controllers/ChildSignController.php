@@ -143,7 +143,7 @@ class ChildSignController extends Controller
                 $key1 = $k + 2;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $key1, $v['name'])
-                    ->setCellValue('B' . $key1, " " . \common\models\User::findOne($v['userid'])->phone)
+                    ->setCellValue('B' . $key1, " " .$v['userid'])
                     ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                     ->setCellValue('D' . $key1, $age)
                     ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
