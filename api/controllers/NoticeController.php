@@ -172,7 +172,7 @@ class NoticeController extends Controller
             }
         }
 
-        if($first) {
+        if($first && $data) {
             array_unshift($data, $first);
         }
 

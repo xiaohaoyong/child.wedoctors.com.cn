@@ -191,15 +191,19 @@ class UserController extends Controller
             $log->addLog("session_key:".$session[1]);
 
             $login = UserLogin::find();
-            if ($openid != '') {
+            $login->andwhere(['type'=>0]);
+
+            if($openid!=='' and $unionid!=''){
+                $login->andWhere(['or',['xopenid' => $openid],['unionid' => $unionid]]);
+            }elseif ($openid != '') {
                 $login->orWhere(['and', ['xopenid' => $openid]]);
-            }
-            if ($unionid != '') {
+            }elseif ($unionid != '') {
                 $login->orWhere(['and', ['unionid' => $unionid]]);
             }
             if ($openid || $unionid) {
                 $userLogin = $login->one();
             }
+
             if ($userLogin) {
                 $type = 1;
                 $useridx = md5($userLogin->userid . "6623cXvY");

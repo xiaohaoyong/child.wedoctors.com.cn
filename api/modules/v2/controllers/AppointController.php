@@ -7,6 +7,7 @@
  */
 
 namespace api\modules\v2\controllers;
+
 use common\components\Code;
 use common\models\Appoint;
 use common\models\ChildInfo;
@@ -17,19 +18,20 @@ use common\models\Vaccine;
 
 class AppointController extends \api\modules\v1\controllers\AppointController
 {
-    public function actionForm($id,$type){
-        $childs=ChildInfo::findAll(['userid'=>$this->userid]);
+    public function actionForm($id, $type)
+    {
+        $childs = ChildInfo::findAll(['userid' => $this->userid]);
 
 
         //doctor
-        $appoint=HospitalAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
-        if($appoint) {
+        $appoint = HospitalAppoint::findOne(['doctorid' => $id, 'type' => $type]);
+        if ($appoint) {
 
             $phone = $this->userLogin->phone;
             $phone = $phone ? $phone : $this->user->phone;
-            $row=$appoint->toArray();
+            $row = $appoint->toArray();
 
-            $holiday=[
+            $holiday = [
                 '2020-1-1',
                 '2020-1-24',
                 '2020-1-25',
@@ -58,62 +60,74 @@ class AppointController extends \api\modules\v1\controllers\AppointController
                 '2020-10-7',
                 '2020-10-8',
             ];
-            $appoint=HospitalAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
-            $hospitalV=HospitalAppointVaccine::find()
-                ->where(['haid'=>$appoint->id])->all();
+            $appoint = HospitalAppoint::findOne(['doctorid' => $id, 'type' => $type]);
+            $hospitalV = HospitalAppointVaccine::find()
+                ->where(['haid' => $appoint->id])->all();
 
-            if($hospitalV) {
+            if ($hospitalV) {
                 $vaccines = Vaccine::find()->all();
-            }else{
-                $vaccines=[];
+            } else {
+                $vaccines = [];
             }
 
 
-            return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone,'holiday'=>$holiday,'vaccines'=>$vaccines];
-        }else{
-            return new Code(20010,'社区医院暂未开通服务！');
+            return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone, 'holiday' => $holiday, 'vaccines' => $vaccines];
+        } else {
+            return new Code(20010, '社区医院暂未开通服务！');
         }
     }
 
-    public function actionVaccines($id,$type,$vid){
-        $appoint=HospitalAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
+    public function actionVaccines($id, $type, $vid)
+    {
+        $appoint = HospitalAppoint::findOne(['doctorid' => $id, 'type' => $type]);
 
-        $hospitalV=HospitalAppointVaccine::find()
-            ->select('week')
-            ->where(['haid'=>$appoint->id])
-            ->andWhere(['or',['vaccine'=>$vid],['vaccine' => 0]])->groupBy('week')->column();
+        $vaccine = Vaccine::findOne($vid);
+        if ($vaccine) {
 
+            $query = HospitalAppointVaccine::find()
+                ->select('week')
+                ->where(['haid' => $appoint->id]);
 
+            if($vaccine->source!=0){
+                $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0]]);
+            }else{
+                $query->andWhere(['vaccine' => $vid]);
+            }
+            $hospitalV=$query->groupBy('week')->column();
+
+        }
         return ['weeks' => $hospitalV];
 
     }
-    public function actionDayNum($doctorid,$week,$type,$day){
-        $rs=[];
-        $appoint=HospitalAppoint::findOne(['doctorid'=>$doctorid,'type'=>$type]);
-        if($appoint){
-            $weeks=HospitalAppointWeek::find()->andWhere(['week'=>$week])->andWhere(['haid'=>$appoint->id])->orderBy('time_type asc')->all();
-            if($weeks){
-                $appoints=Appoint::find()
+
+    public function actionDayNum($doctorid, $week, $type, $day)
+    {
+        $rs = [];
+        $appoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+        if ($appoint) {
+            $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $appoint->id])->orderBy('time_type asc')->all();
+            if ($weeks) {
+                $appoints = Appoint::find()
                     ->select('count(*)')
-                    ->andWhere(['type'=>$type])
-                    ->andWhere(['doctorid'=>$doctorid])
-                    ->andWhere(['appoint_date'=>strtotime($day)])
-                    ->andWhere(['!=','state',3])
-                    ->andWhere(['mode'=>0])
+                    ->andWhere(['type' => $type])
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->andWhere(['appoint_date' => strtotime($day)])
+                    ->andWhere(['!=', 'state', 3])
+                    ->andWhere(['mode' => 0])
                     ->indexBy('appoint_time')
                     ->groupBy('appoint_time')
                     ->column();
-                foreach($weeks as $k=>$v){
-                    if($appoints) {
+                foreach ($weeks as $k => $v) {
+                    if ($appoints) {
                         $num = $v->num - $appoints[$v->time_type];
                         $rs[$v->time_type] = $num > 0 ? $num : 0;
-                    }else{
-                        $rs[$v->time_type] =$v->num ;
+                    } else {
+                        $rs[$v->time_type] = $v->num;
                     }
                 }
                 return $rs;
             }
         }
-        return new Code(20020,'未设置');
+        return new Code(20020, '未设置');
     }
 }
