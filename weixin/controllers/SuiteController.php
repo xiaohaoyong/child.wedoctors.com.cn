@@ -147,7 +147,7 @@ class SuiteController extends Controller
                 } else {
 
 
-                    if($xml['text']=='社区'){
+                    if($xml['Content']=='社区'){
                         return self::sendText($xml['FromUserName'], $xml['ToUserName'],'http://child.wedoctors.com.cn/ 点击链接选择相应社区-扫码二维码-按照提示进入小程序并授权签字即可签约社区');
 
 
