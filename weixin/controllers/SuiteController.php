@@ -139,12 +139,19 @@ class SuiteController extends Controller
                         $url = \Yii::$app->params['htmlUrl'] . "#/sign?usertype=parent";
                         $url_doctor = \Yii::$app->params['htmlUrl'] . "#/accountdocter?usertype=docter";
 
-                        $text = "您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，请到管辖社区完成扫面签约哦！签约后即可享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
+                        $text = "您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，请到管辖社区完成扫码签约哦！签约后即可享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
                         $return= self::sendText($openid, $xml['ToUserName'], $text);
                         $this->custom_send($openid);
                         return $return;
                     }
                 } else {
+
+
+                    if($xml['text']=='社区'){
+                        return self::sendText($xml['FromUserName'], $xml['ToUserName'],'http://child.wedoctors.com.cn/ 点击链接选择相应社区-扫码二维码-按照提示进入小程序并授权签字即可签约社区');
+
+
+                    }
                     return self::sendText($xml['FromUserName'], $xml['ToUserName'],'宝宝家长，您在社区医院遇到体检查看问题，疫苗预约、体检预约、健康指导等问题时，可以添加儿宝小助手客服帮您进行解答。客服微信号（erbbzs）工作日内可随时联系儿宝小助手，我们会第一时间回复您的问题。');
                     $this->custom_send($openid);
                     return self::forwardToCustomService($xml['FromUserName'], $xml['ToUserName']);
