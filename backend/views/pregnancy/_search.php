@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model hospital\models\PregnancySearch */
+/* @var $model backend\models\PregnancySearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -15,19 +15,18 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
+
+    <?= $form->field($model, 'id') ?>
+
+    <?= $form->field($model, 'familyid') ?>
+
+    <?= $form->field($model, 'field0') ?>
+
     <?= $form->field($model, 'field1') ?>
 
-    <?= $form->field($model, 'field2')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true
-    ]]) ?>
-    <?= $form->field($model, 'field11')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true
-    ]]) ?>
-    <?= $form->field($model, 'level')->dropDownList([1=>'已签约'], ['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'field2') ?>
 
-    <?php  //echo $form->field($model, 'field49')->dropDownList(\common\models\Pregnancy::$field49) ?>
+    <?php // echo $form->field($model, 'field3') ?>
 
     <?php // echo $form->field($model, 'field4') ?>
 
@@ -197,11 +196,17 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'field88') ?>
 
+    <?php // echo $form->field($model, 'field89') ?>
+
     <?php // echo $form->field($model, 'source') ?>
 
     <?php // echo $form->field($model, 'isupdate') ?>
 
     <?php // echo $form->field($model, 'createtime') ?>
+
+    <?php // echo $form->field($model, 'doctorid') ?>
+
+    <?php // echo $form->field($model, 'field90') ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>

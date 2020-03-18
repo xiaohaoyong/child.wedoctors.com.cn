@@ -12,15 +12,14 @@ use common\models\Pregnancy;
  */
 class PregnancySearch extends Pregnancy
 {
-    public $level;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['level','id', 'familyid', 'field3', 'field5', 'field7', 'field8', 'field9', 'field12', 'field13', 'field14', 'field15', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field28', 'field29', 'field30', 'field31', 'field32', 'field35', 'field39', 'field40', 'field41', 'field43', 'field45', 'field46', 'field47', 'field48', 'field49', 'field50', 'field51', 'field52', 'field53', 'field54', 'field55', 'field56', 'field57', 'field58', 'field60', 'field61', 'field62', 'field63', 'field64', 'field65', 'field67', 'field68', 'field70', 'field72', 'field74', 'field76', 'field77', 'field78', 'field80', 'field81', 'field83', 'field84', 'field85', 'field87', 'field88', 'source', 'isupdate', 'createtime'], 'integer'],
-            [['field0', 'field1','field2','field11','field12', 'field4', 'field6', 'field10', 'field25', 'field26', 'field27', 'field33', 'field34', 'field36', 'field37', 'field38', 'field42', 'field44', 'field59', 'field66', 'field75', 'field79', 'field82', 'field86'], 'safe'],
+            [['id', 'familyid', 'field2', 'field3', 'field5', 'field7', 'field8', 'field9', 'field11', 'field12', 'field13', 'field14', 'field15', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field28', 'field29', 'field30', 'field31', 'field32', 'field35', 'field39', 'field40', 'field41', 'field43', 'field45', 'field46', 'field47', 'field48', 'field49', 'field50', 'field51', 'field52', 'field53', 'field54', 'field55', 'field56', 'field57', 'field58', 'field60', 'field61', 'field62', 'field63', 'field64', 'field65', 'field67', 'field68', 'field70', 'field72', 'field74', 'field76', 'field77', 'field78', 'field80', 'field81', 'field83', 'field84', 'field85', 'field87', 'field88', 'field89', 'source', 'isupdate', 'createtime', 'doctorid', 'field90'], 'integer'],
+            [['field0', 'field1', 'field4', 'field6', 'field10', 'field25', 'field26', 'field27', 'field33', 'field34', 'field36', 'field37', 'field38', 'field42', 'field44', 'field59', 'field66', 'field75', 'field79', 'field82', 'field86'], 'safe'],
             [['field71', 'field73'], 'number'],
         ];
     }
@@ -34,12 +33,6 @@ class PregnancySearch extends Pregnancy
         return Model::scenarios();
     }
 
-    public function attributeLabels(){
-        $attr=parent::attributeLabels();
-        $attr['level']='是否签约';
-        return $attr;
-    }
-
     /**
      * Creates data provider instance with search query applied
      *
@@ -49,7 +42,7 @@ class PregnancySearch extends Pregnancy
      */
     public function search($params)
     {
-            $query = Pregnancy::find();
+        $query = Pregnancy::find();
 
         // add conditions that should always apply here
 
@@ -66,18 +59,6 @@ class PregnancySearch extends Pregnancy
         }
 
         // grid filtering conditions
-        $query->andWhere(['field49'=>0]);
-        if($this->field11){
-
-            $query->andWhere(['or',['field11'=>strtotime($this->field11)],['field16'=>strtotime($this->field11)]]);//操作符格式的嵌套
-
-        }
-        if($this->level){
-
-            $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`');
-            $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
-        }
-
         $query->andFilterWhere([
             'id' => $this->id,
             'familyid' => $this->familyid,
@@ -87,10 +68,12 @@ class PregnancySearch extends Pregnancy
             'field7' => $this->field7,
             'field8' => $this->field8,
             'field9' => $this->field9,
+            'field11' => $this->field11,
             'field12' => $this->field12,
             'field13' => $this->field13,
             'field14' => $this->field14,
             'field15' => $this->field15,
+            'field16' => $this->field16,
             'field17' => $this->field17,
             'field18' => $this->field18,
             'field19' => $this->field19,
@@ -113,6 +96,7 @@ class PregnancySearch extends Pregnancy
             'field46' => $this->field46,
             'field47' => $this->field47,
             'field48' => $this->field48,
+            'field49' => $this->field49,
             'field50' => $this->field50,
             'field51' => $this->field51,
             'field52' => $this->field52,
@@ -145,9 +129,12 @@ class PregnancySearch extends Pregnancy
             'field85' => $this->field85,
             'field87' => $this->field87,
             'field88' => $this->field88,
+            'field89' => $this->field89,
             'source' => $this->source,
             'isupdate' => $this->isupdate,
             'createtime' => $this->createtime,
+            'doctorid' => $this->doctorid,
+            'field90' => $this->field90,
         ]);
 
         $query->andFilterWhere(['like', 'field0', $this->field0])
@@ -172,7 +159,7 @@ class PregnancySearch extends Pregnancy
             ->andFilterWhere(['like', 'field82', $this->field82])
             ->andFilterWhere(['like', 'field86', $this->field86]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
-        //var_dump($query->createCommand()->getRawSql());exit;
+
         return $dataProvider;
     }
 }

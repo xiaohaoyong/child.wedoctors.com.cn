@@ -125,9 +125,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'field86',
             'field87',
             'field88',
+            'field89',
             'source',
             'isupdate',
             'createtime:datetime',
+            'doctorid',
+            'field90',
                 ],
                 ]) ?>
 

@@ -30,7 +30,7 @@ class GravidaController extends Controller
             }
             //如果添加宝妈与当前用户不同 则转移登录 二胎
             if ($userParent && $userParent->userid != $this->userid) {
-                $this->userLogin->userid = $userParent;
+                $this->userLogin->userid = $userParent->userid;
                 $this->userid = $userParent->userid;
                 $this->userLogin->save();
             }

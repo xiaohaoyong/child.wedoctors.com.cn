@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel hospital\models\PregnancySearch */
+/* @var $searchModel backend\models\PregnancySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '管理列表';
 $this->params['breadcrumbs'][] = $this->title;
-\common\helpers\HeaderActionHelper::$action = [
-    0 => ['name' => '添加', 'url' => ['create']]
+\common\helpers\HeaderActionHelper::$action=[
+0=>['name'=>'添加','url'=>['create']]
 ];
 ?>
 <div class="pregnancy-index">
@@ -19,135 +19,135 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-header with-border">
                 <h3 class="box-title">检索：</h3>
                 <div>
-                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-                </div>
+                                                <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+                                    </div>
                 <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
+            <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
-                        <?= GridView::widget([
-                            'options' => ['class' => 'col-sm-12 table text-nowrap'],
+                                                                            <?= GridView::widget([
+                            'options'=>['class' => 'col-sm-12'],
                             'dataProvider' => $dataProvider,
+                            
+     'columns' => [
+                            ['class' => 'yii\grid\SerialColumn'],
 
-                            'columns' => [
-                                [
-                                    'attribute' => 'field5',
-                                    'value' => function ($e) {
-                                        return $e->field2 ? date('Y-m-d', $e->field5) : '';
-                                    }
-                                ],
-                                'field1',
-                                [
-                                    'attribute' => 'field2',
-                                    'value' => function ($e) {
-                                        return $e->field2 ? date('Y-m-d', $e->field2) : '';
-                                    }
-                                ],
-                                'field4',
-                                'field6',
-                                [
-                                    'attribute' => 'field16',
-                                    'value' => function ($e) {
-                                        return $e->field2 ? date('Y-m-d', $e->field16) : '';
-                                    }
-                                ],
-                                [
-                                    'attribute' => 'field15',
-                                    'value' => function ($e) {
-                                        return $e->field2 ? date('Y-m-d', $e->field15) : '';
-                                    }
-                                ],
+                                        'id',
+            'familyid',
+            'field0',
+            'field1',
+            'field2',
+            // 'field3',
+            // 'field4',
+            // 'field5',
+            // 'field6',
+            // 'field7',
+            // 'field8',
+            // 'field9',
+            // 'field10',
+            // 'field11',
+            // 'field12',
+            // 'field13',
+            // 'field14',
+            // 'field15',
+            // 'field16',
+            // 'field17',
+            // 'field18',
+            // 'field19',
+            // 'field20',
+            // 'field21',
+            // 'field22',
+            // 'field23',
+            // 'field24',
+            // 'field25',
+            // 'field26',
+            // 'field27',
+            // 'field28',
+            // 'field29',
+            // 'field30',
+            // 'field31',
+            // 'field32',
+            // 'field33',
+            // 'field34',
+            // 'field35',
+            // 'field36',
+            // 'field37',
+            // 'field38',
+            // 'field39',
+            // 'field40',
+            // 'field41',
+            // 'field42',
+            // 'field43',
+            // 'field44',
+            // 'field45',
+            // 'field46',
+            // 'field47',
+            // 'field48',
+            // 'field49',
+            // 'field50',
+            // 'field51',
+            // 'field52',
+            // 'field53',
+            // 'field54',
+            // 'field55',
+            // 'field56',
+            // 'field57',
+            // 'field58',
+            // 'field59',
+            // 'field60',
+            // 'field61',
+            // 'field62',
+            // 'field63',
+            // 'field64',
+            // 'field65',
+            // 'field66',
+            // 'field67',
+            // 'field68',
+            // 'field70',
+            // 'field71',
+            // 'field72',
+            // 'field73',
+            // 'field74',
+            // 'field75',
+            // 'field76',
+            // 'field77',
+            // 'field78',
+            // 'field79',
+            // 'field80',
+            // 'field81',
+            // 'field82',
+            // 'field83',
+            // 'field84',
+            // 'field85',
+            // 'field86',
+            // 'field87',
+            // 'field88',
+            // 'field89',
+            // 'source',
+            // 'isupdate',
+            // 'createtime:datetime',
+            // 'doctorid',
+            // 'field90',
 
-                                'field13',
-                                'field17',
-
-                                'field36',
-                                'field37',
-                                'field38',
-
-                                [
-                                    'attribute' => 'field49',
-                                    'value' => function ($e) {
-                                        return \common\models\Pregnancy::$field49[$e->field49];
-                                    }
-                                ],
-                                [
-                                    'attribute' => 'field61',
-                                    'value' => function ($e) {
-                                        return $e->field2 ? date('Y-m-d', $e->field61) : '';
-                                    }
-                                ],
-                                'field62',
-                                [
-                                    'attribute' => '签约社区',
-                                    'value' => function ($e) {
-                                        if ($e->familyid) {
-                                            $doctorParent = \common\models\DoctorParent::findOne(['parentid' => $e->familyid]);
-                                            if ($doctorParent && $doctorParent->doctorid) {
-                                                $doctor = \common\models\UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
-                                            }
-                                        }
-                                        return $doctor ? $doctor->name : '';
-                                    }
-                                ],
-                                [
-                                    'attribute' => '签约时间',
-                                    'value' => function ($e) {
-                                        if ($e->familyid) {
-                                            $doctorParent = \common\models\DoctorParent::findOne(['parentid' => $e->familyid]);
-                                        }
-                                        return $doctorParent ? date('Y-m-d',$doctorParent->createtime) : '';
-                                    }
-                                ],
-                                [
-                                    'attribute' => '签约状态',
-                                    'value' => function ($e) {
-                                        if ($e->familyid) {
-                                            $doctorParent = \common\models\DoctorParent::findOne(['parentid' => $e->familyid]);
-                                        }
-                                        return $doctorParent ? '已签约' : '未签约';
-                                    }
-                                ],
-                                [
-                                    'attribute' => '签约协议',
-                                    'value' => function ($e) {
-                                        if ($e->familyid) {
-                                            $auto=\common\models\Autograph::findOne(['userid'=>$e->familyid]);
-                                        }
-                                        return $auto ? '已签字' : '未签字';                                    }
-                                ],
-
-                                [
-                                    'class' => 'common\components\grid\ActionColumn',
-                                    'template' => '
+                            [
+                            'class' => 'common\components\grid\ActionColumn',
+                            'template'=>'
                             <div class="btn-group dropup">
                                 <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown"
                                    aria-expanded="false">
                                     <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                     <li>{show} </li><li>{parent} </li><li>{docpar} </li>
+                                    <li>{update}</li>
+                                    <li>{delete}</li>
                                 </ul>
                             </div>
-                            ', 'buttons' => [
-                                    'show' => function ($url, $model, $key) {
-                                        return Html::a('<span class="fa fa-database"></span> 查看追访记录', \yii\helpers\Url::to(['interview/index', 'InterviewSearch[userid]' => $model->familyid]));
-                                    },
-                                    'parent' => function ($url, $model, $key) {
-                                        return Html::a('<span class="fa fa-database"></span> 查看家庭数据', \yii\helpers\Url::to(['user-parent/view', 'id' => $model->familyid]));
-                                    },
-                                    'docpar' => function ($url, $model, $key) {
-                                        if ($model->familyid) {
-                                            $doctorParent = \common\models\DoctorParent::findOne(['parentid' => $model->familyid]);
-                                        }
-                                        return Html::a('<span class="fa fa-database"></span> 签约关系', \yii\helpers\Url::to(['doctor-parent/update', 'id' => $doctorParent->id]));
-                                    },
-                                ],
-                                ],
+                            ',
                             ],
-                        ]); ?>
-                    </div>
+                            ],
+                            ]); ?>
+                                                                    </div>
                 </div>
             </div>
         </div>

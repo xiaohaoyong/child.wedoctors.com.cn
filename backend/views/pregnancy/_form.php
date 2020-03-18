@@ -91,8 +91,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'field36')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'field37')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'field38')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'field39')->textInput() ?>
@@ -196,6 +194,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'source')->textInput() ?>
 
     <?= $form->field($model, 'isupdate')->textInput() ?>
+
+    <?= $form->field($model, 'doctorid')->textInput() ?>
+
+    <?= $form->field($model, 'field90')->textInput() ?>
 
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :

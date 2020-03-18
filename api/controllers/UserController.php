@@ -168,7 +168,9 @@ class UserController extends Controller
     public function actionWxUserInfo()
     {
         $log=new Log("weOpenidlevel");
+
         if ($this->userLogin) {
+
             $type = 0;
             $useridx = md5($this->userLogin->userid . "6623cXvY");
             $userLogin = UserLogin::findOne(['id'=>$this->userLogin->id]);
@@ -178,6 +180,7 @@ class UserController extends Controller
 
             $log->addLog($this->userLogin->userid."已登录");
         } else {
+
             $appid = \Yii::$app->params['wxXAppId'];
             $cache = \Yii::$app->rdmp;
             $session = $cache->get($this->seaver_token);
@@ -196,9 +199,9 @@ class UserController extends Controller
             if($openid!=='' and $unionid!=''){
                 $login->andWhere(['or',['xopenid' => $openid],['unionid' => $unionid]]);
             }elseif ($openid != '') {
-                $login->orWhere(['and', ['xopenid' => $openid]]);
+                $login->andWhere(['xopenid' => $openid]);
             }elseif ($unionid != '') {
-                $login->orWhere(['and', ['unionid' => $unionid]]);
+                $login->andWhere(['unionid' => $unionid]);
             }
             if ($openid || $unionid) {
                 $userLogin = $login->one();
