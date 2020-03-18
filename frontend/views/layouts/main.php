@@ -53,7 +53,7 @@ AppAsset::register($this);
             </div>
             <div class="list2">
                 <div class="item title">共享合作</div>
-                <div class="item">北京红十字基金</div>
+                <div class="item">北京市红十字基金会</div>
             </div>
         </div>
         <div class="qcode">
@@ -68,7 +68,7 @@ AppAsset::register($this);
         </div>
     </div>
     <div class="ftCon">
-        <div class="text">北京（微医）健康科技有限公司 服务咨询及合作联系热线：18201599388</div>
+        <div class="text">微医（北京）健康科技有限公司 服务咨询及合作联系热线：18201599388</div>
         <div class="text">CopyRight 2017 - 2019 wedoctors.com.cn 版权所有 京ICP备 16028326 号-1</div>
     </div>
 </div>
