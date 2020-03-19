@@ -172,12 +172,6 @@ class ChildInfoSearchModel extends ChildInfo
                 $query->andWhere(['or', ['`user_parent`.`mother_phone`' => $this->userphone], ['`user_parent`.`father_phone`' => $this->userphone], ['`user_parent`.`field12`' => $this->userphone]]);
             }
         }
-        if ($this->level == 1) {
-            $query->orderBy('`doctor_parent`.createtime desc');
-
-        } else {
-            $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
-        }
 
         //var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;

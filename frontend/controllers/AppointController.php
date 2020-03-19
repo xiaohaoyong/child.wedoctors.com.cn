@@ -19,6 +19,7 @@ class AppointController extends Controller
         'tU459foO'=>[248033],
         'a94PW3iX' => [206262],
         'KPW01H7g' => [113890],
+        'E1mUGz95'=>[192821],
 
     ];
     public function sign($h, $d, $s){
