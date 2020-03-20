@@ -98,12 +98,19 @@ class SiteController extends BaseController
             ->count();
 
         //管辖儿童数（0-6）
-        $data['achildNum']=ChildInfo::find()
-            ->andFilterWhere(['`child_info`.`source`' => \Yii::$app->user->identity->hospitalid])
+        $adminsix=ChildInfo::find()
             ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
             ->andFilterWhere(['`child_info`.admin'=>\Yii::$app->user->identity->hospitalid])
             ->count();
 
+        $nadminsix=ChildInfo::find()
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->andWhere(['!=','`child_info`.`source`' ,\Yii::$app->user->identity->hospitalid])
+            ->count();
+
+        $data['achildNum']=$adminsix+$nadminsix;
         //var_dump(\Yii::$app->user->identity->hospitalid);exit;
         //签约率
         if($data['childNum']) {
@@ -112,19 +119,20 @@ class SiteController extends BaseController
             $data['baifen'] = 0;
         }
 
-        $userDoctor=UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospitalid]);
-        $doctorParent=DoctorParent::find()->select('doctor_parent.parentid')
-            ->andFilterWhere(['doctor_parent.doctorid'=>$userDoctor->userid])
-            ->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`')
-            ->andWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
-            ->andWhere(['>', 'child_info.doctorid', 0])
-            ->column();
-        if(!$doctorParent){
-            $doctorParent=[0];
+
+
+
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
+
+        if($auto) {
+            $data['AutoNum'] = ChildInfo::find()
+                ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
+                ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+                ->count();
+        }else{
+            $data['AutoNum']=0;
         }
-        $auto=Autograph::find()->andWhere(['in','userid',$doctorParent]);
-        //签字数
-        $data['AutoNum']=$auto->count();
+
         //签约率
         if($data['AutoNum'] && $data['achildNum']) {
             $data['abaifen'] = round(($data['AutoNum'] / $data['achildNum']) * 100,1);
