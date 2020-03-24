@@ -157,6 +157,7 @@ class SuiteController extends Controller
                                 }
                                 $doctors=$query->orderBy('appoint desc')->all();
                                 if(count($doctors)>1){
+                                    $docName=urlencode($docName);
                                     return self::sendText($xml['FromUserName'], $xml['ToUserName'],"查询到多个结果请访问链接查看:http://child.wedoctors.com.cn/dostors?search={$docName}");
                                 }else{
                                     return self::sendText($xml['FromUserName'], $xml['ToUserName'],"{$docName}");
