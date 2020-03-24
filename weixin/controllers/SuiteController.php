@@ -163,7 +163,6 @@ class SuiteController extends Controller
 
                                 }
                             }
-                            return self::sendText($xml['FromUserName'], $xml['ToUserName'],$docName);
                             break;
                     }
 
