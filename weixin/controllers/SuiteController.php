@@ -146,10 +146,23 @@ class SuiteController extends Controller
                     }
                 } else {
 
-                    $str=strtolower(mb_substr($xml['Content'],0,1,'utf-8'));
+                    $str=strtolower(mb_substr($xml['Content'],0,2,'utf-8'));
                     switch ($str){
-                        case 's':
-                            $docName=substr($xml['Content'],1);
+                        case 'sq':
+                            $docName=substr($xml['Content'],2);
+                            if($docName){
+                                $query=UserDoctor::find();
+                                if($docName){
+                                    $query->andFilterWhere(['like','name',$docName]);
+                                }
+                                $doctors=$query->orderBy('appoint desc')->all();
+                                if(count($doctors)>1){
+                                    return self::sendText($xml['FromUserName'], $xml['ToUserName'],"查询到多个结果请访问链接查看:http://child.wedoctors.com.cn/dostors?search={$docName}");
+                                }else{
+                                    return self::sendText($xml['FromUserName'], $xml['ToUserName'],"{$docName}");
+
+                                }
+                            }
                             return self::sendText($xml['FromUserName'], $xml['ToUserName'],$docName);
                             break;
                     }
