@@ -149,7 +149,7 @@ class SuiteController extends Controller
                     $str=strtolower(mb_substr($xml['Content'],0,1,'utf-8'));
                     switch ($str){
                         case 's':
-                            $docName=mb_substr($xml['Content'],1,-1,'utf-8');
+                            $docName=strstr($xml['Content'],$str);
                             return self::sendText($xml['FromUserName'], $xml['ToUserName'],$docName);
                             break;
                     }
