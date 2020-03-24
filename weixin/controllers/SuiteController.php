@@ -146,12 +146,15 @@ class SuiteController extends Controller
                     }
                 } else {
 
-
-                    if($xml['Content']=='社区'){
-                        return self::sendText($xml['FromUserName'], $xml['ToUserName'],'http://child.wedoctors.com.cn/ 点击链接选择相应社区-扫码二维码-按照提示进入小程序并授权签字即可签约社区');
-
-
+                    $str=strtolower(mb_substr($xml['Content'],0,1,'utf-8'));
+                    switch ($str){
+                        case 's':
+                            $docName=mb_substr($xml['Content'],1,-1,'utf-8');
+                            return self::sendText($xml['FromUserName'], $xml['ToUserName'],$docName);
+                            break;
                     }
+
+
                     return self::sendText($xml['FromUserName'], $xml['ToUserName'],'宝宝家长，您在社区医院遇到体检查看问题，疫苗预约、体检预约、健康指导等问题时，可以添加儿宝小助手客服帮您进行解答。客服微信号（erbbzs）工作日内可随时联系儿宝小助手，我们会第一时间回复您的问题。');
                     $this->custom_send($openid);
                     return self::forwardToCustomService($xml['FromUserName'], $xml['ToUserName']);
