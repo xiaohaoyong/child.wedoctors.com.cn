@@ -76,6 +76,7 @@ $this->title = "社区医院查询"
             .fo {
                 text-align: center;
                 line-height: 40px;
+                margin-bottom: 50px;
             }
             .qrcode{text-align: center}
             .modal-dialog{margin-top: 100px;}
@@ -131,6 +132,7 @@ $this->title = "社区医院查询"
                     <div class="qrcode">
                     <img src="<?= \yii\helpers\Url::to('doctors/qr?size=8&text=' . urlencode($v['qrcode'])) ?>"/>
                     </div>
+                    <div style="text-align: center">长按识别二维码</div>
                     <?php
                     \yii\bootstrap\Modal::end();
                     ?>
