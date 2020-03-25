@@ -31,6 +31,7 @@ $this->title = "社区医院查询"
                 width: 90%;
                 outline: none;
                 border-radius: 0;
+                border: none;
             }
 
             .box {
