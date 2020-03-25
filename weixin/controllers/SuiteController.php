@@ -156,8 +156,9 @@ class SuiteController extends Controller
                                     $query->andFilterWhere(['like','name',$docName]);
                                 }
                                 $doctors=$query->orderBy('appoint desc')->all();
+                                $docName=urlencode($docName);
+
                                 if(count($doctors)>1){
-                                    $docName=urlencode($docName);
                                     return self::sendText($xml['FromUserName'], $xml['ToUserName'],"查询到多个结果请访问链接查看:http://child.wedoctors.com.cn/doctors?search={$docName}");
                                 }else{
                                     return self::sendText($xml['FromUserName'], $xml['ToUserName'],"请访问：http://child.wedoctors.com.cn/doctors?search={$docName} 查询结果");
