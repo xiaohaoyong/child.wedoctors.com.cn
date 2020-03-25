@@ -160,7 +160,7 @@ class SuiteController extends Controller
                                     $docName=urlencode($docName);
                                     return self::sendText($xml['FromUserName'], $xml['ToUserName'],"查询到多个结果请访问链接查看:http://child.wedoctors.com.cn/doctors?search={$docName}");
                                 }else{
-                                    return self::sendText($xml['FromUserName'], $xml['ToUserName'],"{$docName}");
+                                    return self::sendText($xml['FromUserName'], $xml['ToUserName'],"请访问：http://child.wedoctors.com.cn/doctors?search={$docName} 查询结果");
 
                                 }
                             }
