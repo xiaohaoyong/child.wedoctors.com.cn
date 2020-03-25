@@ -85,7 +85,7 @@ $this->title = "社区医院查询"
         <div class="content-wrapper">
             <div class="search">
 
-                <form method="get">
+                <form method="get" action="">
                     <input type="search" name="search" placeholder="搜索社区">
                 </form>
             </div>
