@@ -29,6 +29,7 @@ $this->title = "社区医院查询"
                 height: 44px;
                 line-height: 44px;
                 width: 90%;
+                border: none;
             }
 
             .box {
