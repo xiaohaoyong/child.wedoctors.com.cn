@@ -13,6 +13,7 @@ use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
+use dosamigos\qrcode\lib\Enum;
 use dosamigos\qrcode\QrCode;
 use yii\web\Controller;
 use yii\web\Response;
@@ -51,8 +52,8 @@ class DoctorsController extends Controller
             'county'=>$county
         ]);
     }
-    public function actionQr($text){
+    public function actionQr($text,$size=3){
 
-        QrCode::png($text);
+        QrCode::png($text,false,Enum::QR_ECLEVEL_L,$size);
     }
 }

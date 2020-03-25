@@ -77,6 +77,8 @@ $this->title = "社区医院查询"
                 text-align: center;
                 line-height: 40px;
             }
+            .qrcode{text-align: center}
+            .modal-dialog{margin-top: 100px;}
         </style>
     </head>
     <body class="hold-transition skin-green">
@@ -123,10 +125,12 @@ $this->title = "社区医院查询"
                     <?php
                     \yii\bootstrap\Modal::begin([
                         'id' => 'create-modal' . $v['userid'],
+                        'header'=>$v['name']
                     ]);
                     ?>
-                    <img src="<?= \yii\helpers\Url::to('doctors/qr?text=' . urlencode($v['qrcode'])) ?>" width="320"
-                         height="320"/>
+                    <div class="qrcode">
+                    <img src="<?= \yii\helpers\Url::to('doctors/qr?size=8&text=' . urlencode($v['qrcode'])) ?>"/>
+                    </div>
                     <?php
                     \yii\bootstrap\Modal::end();
                     ?>
