@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * PointsController implements the CRUD actions for Points model.
  */
-class PointsController extends Controller
+class PointsController extends BaseController
 {
     /**
      * @inheritdoc

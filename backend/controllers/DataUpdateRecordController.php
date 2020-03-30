@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * DataUpdateRecordController implements the CRUD actions for DataUpdateRecord model.
  */
-class DataUpdateRecordController extends Controller
+class DataUpdateRecordController extends BaseController
 {
     /**
      * @inheritdoc

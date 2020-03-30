@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * BabyGuideController implements the CRUD actions for BabyGuide model.
  */
-class BabyGuideController extends Controller
+class BabyGuideController extends BaseController
 {
     /**
      * @inheritdoc

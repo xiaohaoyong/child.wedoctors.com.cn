@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * VaccineController implements the CRUD actions for Vaccine model.
  */
-class VaccineController extends Controller
+class VaccineController extends BaseController
 {
     /**
      * @inheritdoc

@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
 * HospitalMailShowController implements the CRUD actions for HospitalMailShow model.
 */
-class HospitalMailShowController extends Controller
+class HospitalMailShowController extends BaseController
 {
 /**
 * @inheritdoc

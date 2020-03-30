@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
 * DataUserTaskController implements the CRUD actions for DataUserTask model.
 */
-class DataUserTaskController extends Controller
+class DataUserTaskController extends BaseController
 {
 /**
 * @inheritdoc

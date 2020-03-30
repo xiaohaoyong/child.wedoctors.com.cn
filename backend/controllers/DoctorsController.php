@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * DoctorsController implements the CRUD actions for Doctors model.
  */
-class DoctorsController extends Controller
+class DoctorsController extends BaseController
 {
     /**
      * @inheritdoc

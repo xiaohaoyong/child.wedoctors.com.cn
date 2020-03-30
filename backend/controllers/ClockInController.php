@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * ClockInController implements the CRUD actions for ClockIn model.
  */
-class ClockInController extends Controller
+class ClockInController extends BaseController
 {
     /**
      * @inheritdoc
