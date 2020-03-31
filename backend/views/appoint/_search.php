@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model hospital\models\AppointSearchModels */
+/* @var $model backend\models\AppointSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -15,21 +15,37 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
-    <?= $form->field($model, 'doctorid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->andFilterWhere(['>', 'userid', '37'])->column(), ['prompt' => '请选择']) ?>
 
-    <?= $form->field($model, 'appoint_dates')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true
-    ]])?>
+    <?= $form->field($model, 'id') ?>
 
-    <?php  echo $form->field($model, 'appoint_time')->dropDownList(\common\models\Appoint::$timeText,['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'userid') ?>
 
-    <?php  echo $form->field($model, 'state')->dropDownList(\common\models\Appoint::$stateText,['prompt'=>'请选择']) ?>
-    <?php  echo $form->field($model, 'type')->dropDownList(\common\models\Appoint::$typeText,['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'doctorid') ?>
 
-    <?php  echo $form->field($model, 'child_name') ?>
+
+    <?= $form->field($model, 'appoint_time') ?>
+
+    <?php  echo $form->field($model, 'appoint_date') ?>
+
+    <?php // echo $form->field($model, 'type') ?>
+
+    <?php  echo $form->field($model, 'childid') ?>
 
     <?php  echo $form->field($model, 'phone') ?>
+
+    <?php // echo $form->field($model, 'state') ?>
+
+    <?php  echo $form->field($model, 'loginid') ?>
+
+    <?php // echo $form->field($model, 'remark') ?>
+
+    <?php // echo $form->field($model, 'cancel_type') ?>
+
+    <?php // echo $form->field($model, 'push_state') ?>
+
+    <?php // echo $form->field($model, 'mode') ?>
+
+    <?php // echo $form->field($model, 'vaccine') ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>

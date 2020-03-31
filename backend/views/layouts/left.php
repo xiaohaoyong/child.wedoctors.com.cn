@@ -42,6 +42,7 @@
                             ['label' => '签到记录', 'icon' => 'list', 'url' => ['/clock-in'],],
 
                             ['label' => '数据上传记录', 'icon' => 'list', 'url' => ['/data-update-record'],],
+                            ['label' => '预约列表', 'icon' => 'list', 'url' => ['/appoint/index'],],
 
 
                             ['label' => '孕产管理', 'icon' => 'comments','url' => '#',
@@ -75,7 +76,7 @@
                             ['label' => '预约开通情况', 'icon' => 'list', 'url' => ['/hospital-appoint'],],
                             ['label' => '待审宣教指导', 'icon' => 'list', 'url' => ['/article/examine'],],
                             ['label' => '待发布宣教指导', 'icon' => 'list', 'url' => ['/article/release'],],
-                            ['label' => '发送预约通知', 'icon' => 'list', 'url' => ['/appoint/index'],],
+                            ['label' => '发送预约通知', 'icon' => 'list', 'url' => ['/appoint/indext'],],
                             ['label' => '轮播图', 'icon' => 'list', 'url' => ['/carousel'],],
                             ['label' => '数据后台账号', 'icon' => 'list', 'url' => ['/data-user'],],
                             ['label' => '聊天消息', 'icon' => 'comments', 'url' => ['/chat-record-content'],],

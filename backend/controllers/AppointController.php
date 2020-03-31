@@ -148,6 +148,21 @@ class AppointController extends BaseController
             'dataProvider' => $dataProvider,
         ]);
     }
+    /**
+     * Lists all Appoint models.
+     * @return mixed
+     */
+    public function actionIndext()
+    {
+        $searchModel = new AppointSearchModels();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('indext', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
 
     /**
      * Displays a single Appoint model.
