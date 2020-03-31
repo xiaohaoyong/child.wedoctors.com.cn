@@ -38,11 +38,11 @@ use yii\widgets\ActiveForm;
                                 '4' => '周四  ',
                                 '5' => '周五  '
                             ],['class'=>'flat-red'])->label(false) ?></td></tr>
-                    <tr><th>预约时间段</th><td><?= $form->field($model, 'interval')->radioList([
-                                '1' => '一小时  ',
-                                '2' => '半小时  '
-                            ],['class'=>'flat-red',
-                            ])->label(false) ?></td></tr>
+<!--                    <tr><th>预约时间段</th><td>--><?//= $form->field($model, 'interval')->radioList([
+//                                '1' => '一小时  ',
+//                                '2' => '半小时  '
+//                            ],['class'=>'flat-red',
+//                            ])->label(false) ?><!--</td></tr>-->
                     </tbody>
                 </table>
                 <table id="w0" class="table table-striped table-bordered detail-view">

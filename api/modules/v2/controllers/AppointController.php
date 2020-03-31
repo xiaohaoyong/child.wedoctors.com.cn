@@ -125,6 +125,20 @@ class AppointController extends \api\modules\v1\controllers\AppointController
                         $rs[$v->time_type] = $v->num;
                     }
                 }
+                if($appoint){
+                    foreach ($rs as $rk=>$rv){
+                        if($rs[$rk]>6){
+
+
+
+
+
+
+                        }
+                    }
+                }
+
+
                 return $rs;
             }
         }
