@@ -15,7 +15,6 @@ use yii\widgets\ActiveForm;
             <div class="box-body">
 
                 <?php
-                echo $model->id;
                 $form = ActiveForm::begin(); ?>
                 <table id="w0" class="table table-striped table-bordered detail-view">
                     <tbody>
@@ -39,6 +38,11 @@ use yii\widgets\ActiveForm;
                                 '4' => '周四  ',
                                 '5' => '周五  '
                             ],['class'=>'flat-red'])->label(false) ?></td></tr>
+                    <tr><th>预约时间段</th><td><?= $form->field($model, 'interval')->radioList([
+                                '1' => '一小时  ',
+                                '2' => '半小时  '
+                            ],['class'=>'flat-red',
+                            ])->label(false) ?></td></tr>
                     </tbody>
                 </table>
                 <table id="w0" class="table table-striped table-bordered detail-view">
@@ -53,8 +57,9 @@ use yii\widgets\ActiveForm;
                     </tr>
                     <?php
                     foreach(\common\models\HospitalAppointWeek::$typeText as $k=>$v){
+                        if($k<7){
                     ?>
-                    <tr>
+                    <tr class="yi">
                         <td><?=$v?></td>
                         <td><?=Html::textInput('num[1]['.$k.']',$nums[1][$k]?$nums[1][$k]:0,['style'=>'text-align:center;'])?></td>
                         <td><?=Html::textInput('num[2]['.$k.']',$nums[2][$k]?$nums[2][$k]:0,['style'=>'text-align:center;'])?></td>
@@ -62,7 +67,20 @@ use yii\widgets\ActiveForm;
                         <td><?=Html::textInput('num[4]['.$k.']',$nums[4][$k]?$nums[4][$k]:0,['style'=>'text-align:center;'])?></td>
                         <td><?=Html::textInput('num[5]['.$k.']',$nums[5][$k]?$nums[5][$k]:0,['style'=>'text-align:center;'])?></td>
                     </tr>
-                    <?php }?>
+                    <?php }}?>
+                    <?php
+                    foreach(\common\models\HospitalAppointWeek::$typeText as $k=>$v){
+                        if($k>6){
+                            ?>
+                            <tr class="ban">
+                                <td><?=$v?></td>
+                                <td><?=Html::textInput('num[1]['.$k.']',$nums[1][$k]?$nums[1][$k]:0,['style'=>'text-align:center;'])?></td>
+                                <td><?=Html::textInput('num[2]['.$k.']',$nums[2][$k]?$nums[2][$k]:0,['style'=>'text-align:center;'])?></td>
+                                <td><?=Html::textInput('num[3]['.$k.']',$nums[3][$k]?$nums[3][$k]:0,['style'=>'text-align:center;'])?></td>
+                                <td><?=Html::textInput('num[4]['.$k.']',$nums[4][$k]?$nums[4][$k]:0,['style'=>'text-align:center;'])?></td>
+                                <td><?=Html::textInput('num[5]['.$k.']',$nums[5][$k]?$nums[5][$k]:0,['style'=>'text-align:center;'])?></td>
+                            </tr>
+                        <?php }}?>
                     <?php if($model->type==2){?>
                     <tr>
                         <td>选择疫苗</td>
@@ -142,3 +160,18 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 </div>
+<?php
+$updateJs = <<<JS
+    $('input[name="HospitalAppoint[interval]"]').change(function(){
+        var interval=$(this).val();
+        if(interval==1){
+            $('.ban').hide();
+            $('.yi').show();
+        }else{
+            $('.ban').show();
+            $('.yi').hide();
+        }
+    });
+JS;
+$this->registerJs($updateJs);
+?>
