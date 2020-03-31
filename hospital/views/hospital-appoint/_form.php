@@ -162,6 +162,14 @@ use yii\widgets\ActiveForm;
 </div>
 <?php
 $updateJs = <<<JS
+    var default_interval={$model->interval};
+    if(default_interval==1){
+        $('.ban').hide();
+        $('.yi').show();
+    }else{
+        $('.ban').show();
+        $('.yi').hide();
+    }
     $('input[name="HospitalAppoint[interval]"]').change(function(){
         var interval=$(this).val();
         if(interval==1){
