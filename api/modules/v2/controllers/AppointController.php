@@ -126,6 +126,18 @@ class AppointController extends \api\modules\v1\controllers\AppointController
                     }
                 }
 
+                if($appoints){
+                    foreach($rs as $rk=>$rv){
+                        if($rk>6 && $rk%2==0 && $appoints[HospitalAppointWeek::$type_v[$rk]]!=0) {
+                            $zheng_total=$appoints[HospitalAppointWeek::$type_v[$rk]];
+                            if($zheng_total)
+                            {
+                                $rs[$rk]=0;
+                                $rs[$rk+1]=0;
+                            }
+                        }
+                    }
+                }
 
                 return $rs;
             }
