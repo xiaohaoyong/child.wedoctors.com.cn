@@ -21,10 +21,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+
         'todayHighlight' => true
     ]])?>
     <?= $form->field($model, 'docpartimeE')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+
         'todayHighlight' => true
     ]])?>
     <?= $form->field($model, 'doctorid') ?>

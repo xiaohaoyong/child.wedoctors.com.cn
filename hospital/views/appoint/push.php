@@ -42,6 +42,7 @@ $this->title ='发送预约通知';
 
                     <tr><th>日期</th><td><?= $form->field($model, 'date')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
                                 'format' => 'yyyy-mm-dd',
+                                'autocomplete'=>'off',
                                 'todayHighlight' => true
                             ]])?></td></tr>
                     <tr><th>时间段</th><td><?= $form->field($model, 'appoint_time')->dropDownList(\common\models\Appoint::$timeText, ['prompt'=>'请选择']) ?></td></tr>

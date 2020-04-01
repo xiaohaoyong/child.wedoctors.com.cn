@@ -16,10 +16,12 @@ use yii\widgets\ActiveForm;
     ]); ?>
        <?= $form->field($model, 'sdatetime')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+           'autocomplete'=>'off',
         'todayHighlight' => true
     ]])?>
     <?= $form->field($model, 'edatetime')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]])?>
     <div class="form-group">

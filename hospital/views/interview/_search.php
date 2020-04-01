@@ -22,26 +22,32 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'field5s')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'field5e')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'field15s')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'field15e')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'childbirth_dates')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'childbirth_datee')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
 

@@ -22,19 +22,23 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'level')->dropdownList([1=>'已签约',2=>'已签约未关联',3=>'未签约',4=>'服务过已签约'],['prompt'=>'请选择']) ?>
         <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
             'format' => 'yyyy-mm-dd',
+            'autocomplete'=>'off',
             'todayHighlight' => true
         ]])?>
         <?= $form->field($model, 'docpartimeE')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
             'format' => 'yyyy-mm-dd',
+            'autocomplete'=>'off',
             'todayHighlight' => true
         ]])?>
 
         <?= $form->field($model, 'birthdayS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
             'format' => 'yyyy-mm-dd',
+            'autocomplete'=>'off',
             'todayHighlight' => true
         ]])?>
         <?= $form->field($model, 'birthdayE')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
             'format' => 'yyyy-mm-dd',
+            'autocomplete'=>'off',
             'todayHighlight' => true
         ]])?>
         <?= $form->field($model, 'username')?>

@@ -24,6 +24,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'birthdayDate')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+
         'todayHighlight' => true
     ]])?>
     <?php // echo $form->field($model, 'gender') ?>

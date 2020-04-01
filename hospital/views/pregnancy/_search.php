@@ -19,27 +19,33 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'field2')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'field11')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'level')->dropDownList([1=>'已签约'], ['prompt'=>'请选择']) ?>
     <?= $form->field($model, 'contract1')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'contract2')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'field5a')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?= $form->field($model, 'field5b')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
     <?php  //echo $form->field($model, 'field49')->dropDownList(\common\models\Pregnancy::$field49) ?>

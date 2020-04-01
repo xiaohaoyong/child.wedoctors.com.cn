@@ -18,6 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'appoint_dates')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
 
