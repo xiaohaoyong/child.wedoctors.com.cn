@@ -38,7 +38,7 @@ use yii\widgets\ActiveForm;
                                 '4' => '周四  ',
                                 '5' => '周五  '
                             ],['class'=>'flat-red'])->label(false) ?></td></tr>
-                    <tr><th>预约时间段<br>注：预约时间段修改将会在周期结束后自动生效<br>（如在4月2日修改，周期长度为2周，则将会在4月17日生效）</th><td><?= $form->field($model, 'interval')->radioList([
+                    <tr><th>预约时间段<br>注：预约时间段修改将会在周期结束后可约<br>（如在4月2日修改为半点号，周期长度为2周，则4月17日可约半点号）</th><td><?= $form->field($model, 'interval')->radioList([
                                 '1' => '一小时  ',
                                 '2' => '半小时  '
                             ],['class'=>'flat-red',
