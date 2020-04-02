@@ -123,14 +123,16 @@ class HospitalAppointController extends BaseController
                         $hav->haid = $model->id;
                         $hav->week = $vk;
                         $hav->save();
-                        var_dump($hav->firstErrors);
                     }
                 }
             }
 
+            if($model->updateInterval>time()){
+                $text="预约时间段生效日期：".date('Y-m-d',$model->updateInterval);
+            }
 
 
-            \Yii::$app->getSession()->setFlash('success','成功');
+            \Yii::$app->getSession()->setFlash('success','成功 '.$text);
             return $this->redirect(['create', 'type' => $type]);
         } else {
             $hospitalAppointWeek=HospitalAppointWeek::findAll(['haid'=>$model->id]);
