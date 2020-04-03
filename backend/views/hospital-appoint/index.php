@@ -16,6 +16,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="hospital-appoint-index">
     <div class="col-xs-12">
         <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">检索：</h3>
+                <div>
+                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+
+                </div>
+                <!-- /.box-tools -->
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
@@ -40,6 +48,42 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+
+                                    'attribute' => 'cycle',
+                                    'value' => function ($e) {
+                                        return \common\models\HospitalAppoint::$cycleText[$e->cycle];
+                                    }
+                                ],
+                                [
+
+                                    'attribute' => 'delay',
+                                    'value' => function ($e) {
+                                        return $e->delay;
+                                    }
+                                ],
+                                [
+
+                                    'attribute' => 'weeks',
+                                    'value' => function ($e) {
+                                        return $e->weeks;
+                                    }
+                                ],
+                                [
+
+                                    'attribute' => 'interval',
+                                    'value' => function ($e) {
+                                        return \common\models\HospitalAppoint::$intervalText[$e->interval];
+                                    }
+                                ],
+                                [
+
+                                    'attribute' => 'updateInterval',
+                                    'value' => function ($e) {
+                                        return date('Y-m-d',$e->updateInterval);
+                                    }
+                                ],
+                                [
+
 
                                     'attribute' => '是否开通',
                                     'value' => function ($e) {

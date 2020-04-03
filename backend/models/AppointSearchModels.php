@@ -93,6 +93,7 @@ class AppointSearchModels extends Appoint
             'id' => $this->id,
             'userid' => $this->userid,
             'doctorid' => $this->doctorid,
+            'childid'=>$this->childid,
             'createtime' => $this->createtime,
             'appoint_time' => $this->appoint_time,
             'appoint_date' => $this->appoint_date,

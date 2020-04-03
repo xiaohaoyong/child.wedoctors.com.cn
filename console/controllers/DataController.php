@@ -86,6 +86,7 @@ class DataController extends Controller
     public function actionTesta()
     {
 
+
         $auto=Autograph::find()->all();
         foreach($auto as $k=>$v){
             $auto1=Autograph::find()->where(['userid'=>$v->userid])->andWhere(['!=','id',$v->id])->all();

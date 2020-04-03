@@ -15,7 +15,11 @@
                     ['label' => '仪表盘','icon' => 'dashboard','url' => \yii\helpers\Url::to(['site/index']),],
                     ['label' => '管辖儿童','icon' => 'archive','url' => \yii\helpers\Url::to(['child-info/index']),],
                     $a,
-
+                    ['label' => '统计数据','icon' => 'file-text-o','url' => "#",
+                        'items' => [
+                            ['label' => '社区预约情况', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['appoint/hospital'])],
+                        ]
+                    ],
                     ['label' => '宣教记录','icon' => 'database','url' => \yii\helpers\Url::to(['article-user/index']),],
                     ['label' => '社区管理','icon' => 'hospital-o','url' => \yii\helpers\Url::to(['user-doctor/index']),],
                     ['label' => '中医指导库','icon' => 'file-text-o','url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[type]=1'])],
