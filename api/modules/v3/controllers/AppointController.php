@@ -43,7 +43,7 @@ class AppointController extends \api\modules\v2\controllers\AppointController
                         $rs[$v->time_type] = $v->num;
                     }
                 }
-                if($appoint->updateInterval>time()){
+                if($appoint->updateInterval>strtotime($day)){
                     if($appoint->interval==1){
                         $interval=2;
                     }else{
