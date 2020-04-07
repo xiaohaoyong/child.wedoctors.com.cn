@@ -66,7 +66,7 @@ class AppointSearch extends Appoint
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => ['pageSize' => 100],
+            'pagination' => ['pageSize' => 500],
         ]);
 
         $this->load($params);
