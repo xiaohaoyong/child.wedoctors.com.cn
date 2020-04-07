@@ -9,6 +9,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = '各社区预约数据';
 $this->params['breadcrumbs'][] = $this->title;
+\databackend\assets\TableAsset::register($this);
 ?>
 <div class="appoint-index">
     <div class="col-xs-12">
@@ -45,7 +46,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
                                             'btn btn-primary']) ?>
                                     </div>
-
+                                    <div class="form-group">
+                                        <?= Html::button('下载当前结果', ['id'=>'export','class' => 'btn btn-primary']) ?>
+                                    </div>
                                     <?php ActiveForm::end(); ?>
                                     <div>
                                     </div>
@@ -103,3 +106,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+<?php
+$updateJs = <<<JS
+jQuery("#export").click(function () {
+        var table2excel = new Table2Excel();
+        table2excel.export(jQuery('#example2'));
+    });
+     
+JS;
+$this->registerJs($updateJs);
+?>
