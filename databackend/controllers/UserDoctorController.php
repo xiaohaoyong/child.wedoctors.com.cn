@@ -72,6 +72,22 @@ class UserDoctorController extends BaseController
      * Lists all UserDoctor models.
      * @return mixed
      */
+    public function actionList()
+    {
+        $params = Yii::$app->request->queryParams;
+
+
+        $doctor = UserDoctor::find()->andFilterWhere(['county' => \Yii::$app->user->identity->county])->andFilterWhere(['>', 'userid', 37])->all();
+
+        return $this->render('list', [
+            'doctor' => $doctor,
+        ]);
+    }
+
+    /**
+     * Lists all UserDoctor models.
+     * @return mixed
+     */
     public function actionDown()
     {
         $params = Yii::$app->request->queryParams;
