@@ -87,7 +87,7 @@ class DataController extends Controller
 
     public function actionTesta()
     {
-        $appoint=Appoint::find()->where(['doctorid'=>176156])->andWhere(['>','appoint_time',6])->groupBy('userid')->all();
+        $appoint=Appoint::find()->where(['doctorid'=>176156])->andWhere(['state'=>1])->andWhere(['>','appoint_time',6])->groupBy('userid')->all();
         foreach($appoint as $k=>$v){
             $login=UserLogin::find()->where(['id'=>$v->loginid])->one();
             if($login && $login->openid) {
@@ -99,20 +99,23 @@ class DataController extends Controller
                     'keyword3' => ARRAY('value' => '如有问题可联系儿宝宝小助手（erbbzs）或拨打社区医院电话'),
                     'remark' => ARRAY('value' => ""),
                 ];
-                $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', '3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=1',]);
+                $rs = WechatSendTmp::send($data, $login->openid, '3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=1',]);
             }
             sleep(1);
             $response = \Yii::$app->aliyun->sendSms(
                 "儿宝宝", // 短信签名
                 "SMS_187540377", // 短信模板编号
-                15811078604, // 短信接收者
+                $v->phone, // 短信接收者
                 Array(  // 短信模板中字段的值
                     "date" => date('Y年m月d月',$v->appoint_date),
                     "shijianduan" => Appoint::$timeText[$v->appoint_time],
                 )
             );
             $response = json_decode($response, true);
+            $v->state=3;
+            $v->save();
             sleep(1);
+            exit;
         }
         exit;
     }
