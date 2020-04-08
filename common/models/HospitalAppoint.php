@@ -71,7 +71,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
                 $day = self::$cycleNum[$this->cycle] + 1;
                 $updateInterval = strtotime('+ ' . $day . ' day', strtotime(date("Y-m-d"), time()));
                 $appoint=Appoint::find()->where(['doctorid'=>$this->doctorid])->orderBy('appoint_date desc')->one();
-                if($appoint->appoint_date>=$updateInterval){
+                if($appoint && $appoint->appoint_date>=$updateInterval){
                     $updateInterval=strtotime('+1 day', $appoint->appoint_date);
                 }
                 $this->updateInterval=$updateInterval;
