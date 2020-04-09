@@ -87,36 +87,36 @@ class DataController extends Controller
 
     public function actionTesta()
     {
-        $appoint=Appoint::find()->where(['doctorid'=>176156])->andWhere(['state'=>1])->andWhere(['>','appoint_time',6])->groupBy('userid')->all();
-        foreach($appoint as $k=>$v){
-            $login=UserLogin::find()->where(['id'=>$v->loginid])->one();
-            if($login && $login->openid) {
-
-                $data = [
-                    'first' => ['value' => '尊敬的儿童家长您好，由于您之前预约的铁营社区' . date('Y年m月d月', $v->appoint_date) . ' '. Appoint::$timeText[$v->appoint_time].'接种号为系统和社区联调的测试号，已经超出了社区医院可承受的服务极限，现已取消，请您预约其他时间段，给您带来的不便深感歉意,感谢您一直以来对铁营社区和儿宝宝的支持'],
-                    'keyword1' => ARRAY('value' => '铁营社区卫生服务中心'),
-                    'keyword2' => ARRAY('value' => 87644342),
-                    'keyword3' => ARRAY('value' => '如有问题可联系儿宝宝小助手（erbbzs）或拨打社区医院电话'),
-                    'remark' => ARRAY('value' => ""),
-                ];
-                $rs = WechatSendTmp::send($data, $login->openid, '3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=1',]);
-            }
-            sleep(1);
-            $response = \Yii::$app->aliyun->sendSms(
-                "儿宝宝", // 短信签名
-                "SMS_187540377", // 短信模板编号
-                $v->phone, // 短信接收者
-                Array(  // 短信模板中字段的值
-                    "date" => date('Y年m月d月',$v->appoint_date),
-                    "shijianduan" => Appoint::$timeText[$v->appoint_time],
-                )
-            );
-            $response = json_decode($response, true);
-            $v->state=3;
-            $v->save();
-            sleep(1);
-        }
-        exit;
+//        $appoint=Appoint::find()->where(['doctorid'=>176156])->andWhere(['state'=>1])->andWhere(['>','appoint_time',6])->groupBy('userid')->all();
+//        foreach($appoint as $k=>$v){
+//            $login=UserLogin::find()->where(['id'=>$v->loginid])->one();
+//            if($login && $login->openid) {
+//
+//                $data = [
+//                    'first' => ['value' => '尊敬的儿童家长您好，由于您之前预约的铁营社区' . date('Y年m月d月', $v->appoint_date) . ' '. Appoint::$timeText[$v->appoint_time].'接种号为系统和社区联调的测试号，已经超出了社区医院可承受的服务极限，现已取消，请您预约其他时间段，给您带来的不便深感歉意,感谢您一直以来对铁营社区和儿宝宝的支持'],
+//                    'keyword1' => ARRAY('value' => '铁营社区卫生服务中心'),
+//                    'keyword2' => ARRAY('value' => 87644342),
+//                    'keyword3' => ARRAY('value' => '如有问题可联系儿宝宝小助手（erbbzs）或拨打社区医院电话'),
+//                    'remark' => ARRAY('value' => ""),
+//                ];
+//                $rs = WechatSendTmp::send($data, $login->openid, '3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=1',]);
+//            }
+//            sleep(1);
+//            $response = \Yii::$app->aliyun->sendSms(
+//                "儿宝宝", // 短信签名
+//                "SMS_187540377", // 短信模板编号
+//                $v->phone, // 短信接收者
+//                Array(  // 短信模板中字段的值
+//                    "date" => date('Y年m月d月',$v->appoint_date),
+//                    "shijianduan" => Appoint::$timeText[$v->appoint_time],
+//                )
+//            );
+//            $response = json_decode($response, true);
+//            $v->state=3;
+//            $v->save();
+//            sleep(1);
+//        }
+//        exit;
     }
 
     public function actionTests()
