@@ -115,7 +115,6 @@ class DataController extends Controller
             $v->state=3;
             $v->save();
             sleep(1);
-            exit;
         }
         exit;
     }
