@@ -169,26 +169,63 @@ class AppointController extends Controller
     public function actionSave(){
         $post=\Yii::$app->request->post();
 
+        $doctor=UserDoctor::findOne(['userid'=>$post['doctorid']]);
+        if($doctor){
+            $hospital=Hospital::findOne($doctor->hospitalid);
+            if($doctor->appoint){
+                $types=str_split((string)$doctor->appoint);
+            }
+        }
+        if(!$doctor || !$doctor->appoint || !in_array($post['type'],$types)){
+            return new Code(21000, '社区未开通');
+        };
+        $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
+
+        $w=date("w",strtotime($post['appoint_date']));
+        $weeks = HospitalAppointWeek::find()
+            ->andWhere(['week' => $w])
+            ->andWhere(['haid' => $appoint->id])
+            ->andWhere(['time_type'=>$post['appoint_time']])->one();
+
+
+        $appointed = Appoint::find()
+            ->andWhere(['type' => $post['type']])
+            ->andWhere(['doctorid' => $post['doctorid']])
+            ->andWhere(['appoint_date' => strtotime($post['appoint_date'])])
+            ->andWhere(['appoint_time' => $post['appoint_time']])
+            ->andWhere(['mode' => 0])
+            ->andWhere(['<','state',3])
+            ->count();
+
+
+        if(($weeks->num-$appointed)<=0){
+            return new Code(21000,'该时间段已约满，请选择其他时间');
+        }
+
+
+
+
         $appoint=Appoint::findOne(['childid'=>$post['childid'],'type'=>$post['type'],'state'=>1]);
         if($appoint){
             return new Code(20020,'您有未完成的预约');
         }elseif(!$post['childid']){
             return new Code(20020,'请选择宝宝');
         } else{
+
             $model = new Appoint();
             $post['appoint_date'] = strtotime($post['appoint_date']);
             $post['state'] = 1;
             $post['userid'] = $this->userid;
             $post['loginid']=$this->userLogin->id;
             $model->load(["Appoint" => $post]);
+
+
+
             if ($model->save()) {
                 //var_dump($doctor->name);
                 $userLogin=$this->userLogin;
                 if($userLogin->openid) {
-                    $doctor=UserDoctor::findOne(['userid'=>$model->doctorid]);
-                    if($doctor){
-                        $hospital=Hospital::findOne($doctor->hospitalid);
-                    }
+
                     $child=ChildInfo::findOne($model->childid);
 
                     $data = [

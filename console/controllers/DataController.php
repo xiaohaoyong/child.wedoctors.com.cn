@@ -87,6 +87,17 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $query= \common\models\Pregnancy::find()
+            ->andWhere(['pregnancy.field49'=>0])
+            ->andWhere(['>', 'pregnancy.familyid', 0])
+            ->andWhere(['>','pregnancy.field16',strtotime('-11 month')])
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+        ->andWhere(['>','doctor_parent.level',0]);
+        $query->andWhere(['>=','doctor_parent.createtime',strtotime('2020-02-01')])->andWhere(['<=','doctor_parent.createtime',strtotime('2020-02-29')]);
+
+        echo $query->count();exit;
+
+
 //        $appoint=Appoint::find()->where(['doctorid'=>176156])->andWhere(['state'=>1])->andWhere(['>','appoint_time',6])->groupBy('userid')->all();
 //        foreach($appoint as $k=>$v){
 //            $login=UserLogin::find()->where(['id'=>$v->loginid])->one();
