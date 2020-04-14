@@ -14,6 +14,7 @@ use common\models\ChildInfo;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointWeek;
+use common\models\UserDoctor;
 use common\models\Vaccine;
 
 class AppointController extends \api\modules\v1\controllers\AppointController
@@ -25,7 +26,11 @@ class AppointController extends \api\modules\v1\controllers\AppointController
 
         //doctor
         $appoint = HospitalAppoint::findOne(['doctorid' => $id, 'type' => $type]);
-        if ($appoint) {
+        $userDoctor = UserDoctor::findOne(['userid' => $id]);
+        if($userDoctor->appoint){
+            $types=str_split((string)$userDoctor->appoint);
+        }
+        if ($appoint && in_array($type,$types)) {
 
             $phone = $this->userLogin->phone;
             $phone = $phone ? $phone : $this->user->phone;
