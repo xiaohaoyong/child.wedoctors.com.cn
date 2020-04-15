@@ -107,7 +107,9 @@ class SiteController extends BaseController
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andWhere(['!=','`child_info`.`source`' ,\Yii::$app->user->identity->hospitalid])
+            ->andWhere(['!=','`child_info`.`admin`' ,\Yii::$app->user->identity->hospitalid])
+            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+
             ->count();
 
         $data['achildNum']=$adminsix+$nadminsix;

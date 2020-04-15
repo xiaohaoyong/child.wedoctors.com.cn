@@ -79,24 +79,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <tr>
                                                     <td><?=$v->name?></td>
                                                     <td><?php
-                                                        echo ChildInfo::find()
-                                                            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-                                                            ->andFilterWhere(['`child_info`.`source`' => $v->hospitalid])
-                                                            ->andFilterWhere(['`child_info`.admin'=>$v->hospitalid])
-                                                            ->count();
+//                                                        echo ChildInfo::find()
+//                                                            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+//                                                            ->andFilterWhere(['`child_info`.`source`' => $v->hospitalid])
+//                                                            ->andFilterWhere(['`child_info`.admin'=>$v->hospitalid])
+//                                                            ->count();
                                                         ?></td>
                                                     <td>
                                                         <?php
-                                                        $query=ChildInfo::find()
-                                                            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                                                            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-                                                            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $v->userid])
-                                                            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
-                                                            ->andFilterWhere(['`child_info`.admin'=>$v->hospitalid]);
-                                                        if(Yii::$app->request->post('edate') && Yii::$app->request->post('sdate')){
-                                                            $query->andWhere(['>=','doctor_parent.createtime',strtotime($sdate)])->andWhere(['<=','doctor_parent.createtime',strtotime($edate)]);
-                                                        }
-                                                        echo $query->count();
+//                                                        $query=ChildInfo::find()
+//                                                            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+//                                                            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+//                                                            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $v->userid])
+//                                                            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
+//                                                            ->andFilterWhere(['`child_info`.admin'=>$v->hospitalid]);
+//                                                        if(Yii::$app->request->post('edate') && Yii::$app->request->post('sdate')){
+//                                                            $query->andWhere(['>=','doctor_parent.createtime',strtotime($sdate)])->andWhere(['<=','doctor_parent.createtime',strtotime($edate)]);
+//                                                        }
+//                                                        echo $query->count();
                                                         ?>
                                                     </td>
                                                     <td>
@@ -115,26 +115,40 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
 
                                                                 ->count();
+                                                        echo $adminsix;
+                                                        echo "====";
+                                                        echo $nadminsix;
                                                        $num=$adminsix+$nadminsix;
-                                                       echo $num;
+                                                       //echo $num;
                                                         ?>
                                                     </td>
                                                     <td>
 
                                                         <?php
-                                                        $query=\common\models\Autograph::find()->select('userid')->where(['doctorid'=>$v->userid]);
-                                                        if(Yii::$app->request->post('edate') && Yii::$app->request->post('sdate')){
-                                                            $query->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
-                                                        }
-                                                        $auto=$query->column();
-                                                        if($auto) {
-                                                            echo  ChildInfo::find()
-                                                                ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
-                                                                ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
-                                                                ->count();
-                                                        }else{
-                                                            echo 0;
-                                                        }
+                                                        $adminsix=ChildInfo::find()
+                                                            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+
+                                                            ->andFilterWhere(['or',['`child_info`.admin'=>$v->hospitalid],['`child_info`.doctorid'=>$v->hospitalid]])
+                                                            ->count();
+
+                                                        $num=$adminsix;
+                                                        echo $num;echo "===";
+                                                        $doctor=\common\models\DoctorParent::find()->where(['doctorid'=>$v->userid])->count();
+                                                        echo $doctor;
+//
+//                                                        $query=\common\models\Autograph::find()->select('userid')->where(['doctorid'=>$v->userid]);
+//                                                        if(Yii::$app->request->post('edate') && Yii::$app->request->post('sdate')){
+//                                                            $query->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
+//                                                        }
+//                                                        $auto=$query->column();
+//                                                        if($auto) {
+//                                                            echo  ChildInfo::find()
+//                                                                ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
+//                                                                ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+//                                                                ->count();
+//                                                        }else{
+//                                                            echo 0;
+//                                                        }
                                                         ?>
 
                                                     </td>
@@ -143,16 +157,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             ->andWhere(['field49'=>0])->andWhere(['>','field16',strtotime('-11 month')])->andWhere(['doctorid'=>$v->hospitalid])->count();
                                                         ?></td>
                                                     <td><?php
-                                                        $query= \common\models\Pregnancy::find()
-                                                            ->andWhere(['pregnancy.field49'=>0])
-                                                            ->andWhere(['>', 'pregnancy.familyid', 0])
-                                                            ->andWhere(['>','pregnancy.field16',strtotime('-11 month')])
-                                                            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
-                                                            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $v->userid]);
-                                                        if(Yii::$app->request->post('edate') && Yii::$app->request->post('sdate')){
-                                                            $query->andWhere(['>=','doctor_parent.createtime',strtotime($sdate)])->andWhere(['<=','doctor_parent.createtime',strtotime($edate)]);
-                                                        }
-                                                        echo $query->count();
+//                                                        $query= \common\models\Pregnancy::find()
+//                                                            ->andWhere(['pregnancy.field49'=>0])
+//                                                            ->andWhere(['>', 'pregnancy.familyid', 0])
+//                                                            ->andWhere(['>','pregnancy.field16',strtotime('-11 month')])
+//                                                            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+//                                                            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $v->userid]);
+//                                                        if(Yii::$app->request->post('edate') && Yii::$app->request->post('sdate')){
+//                                                            $query->andWhere(['>=','doctor_parent.createtime',strtotime($sdate)])->andWhere(['<=','doctor_parent.createtime',strtotime($edate)]);
+//                                                        }
+//                                                        echo $query->count();
                                                         ?></td>
                                                 </tr>
                                             <?php }?>

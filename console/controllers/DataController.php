@@ -87,6 +87,27 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        ini_set('memory_limit', '2048M');
+
+        $h=UserDoctor::find()->all();
+        foreach($h as $hk=>$hv ){
+            echo $hv->userid."==";
+            $doctor = DoctorParent::find()->where(['level' => 1])->andWhere(['doctorid'=>$hv->userid])->all();
+            foreach ($doctor as $k => $v) {
+                $child_info = ChildInfo::find()->where(['userid' => $v->parentid])->all();
+                if ($child_info) {
+                    $child_info = ChildInfo::find()->where(['userid' => $v->parentid])->andWhere(['doctorid'=>$hv->hospitalid])->all();
+                    if(!$child_info) {
+                        ChildInfo::updateAll(['doctorid'=>$hv->hospitalid],'userid ='.$v->parentid);
+                        echo $v->doctorid . "==" . $v->parentid;
+                        echo "\n";
+                    }
+                }
+            }
+        }
+        exit;
+
+
         $query= \common\models\Pregnancy::find()
             ->andWhere(['pregnancy.field49'=>0])
             ->andWhere(['>', 'pregnancy.familyid', 0])

@@ -147,7 +147,8 @@ class ChildController extends Controller
             $weOpenid=WeOpenid::findOne(['unionid'=>$this->userLogin->unionid]);
             $doctor_parent = $doctor_parent ? $doctor_parent : new DoctorParent();
 
-            if($weOpenid) {
+            //2020年4月15日 修改 判断扫码记录是否存在 改为 是否扫描社区二维码
+            if($weOpenid->doctorid) {
                 $doctor_parent->doctorid = $weOpenid->doctorid;
             }else{
                 $source=ChildInfo::findOne($childid)->source;
