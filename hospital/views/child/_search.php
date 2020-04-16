@@ -11,7 +11,6 @@ use yii\widgets\ActiveForm;
 <div class="child-info-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
         'method' => 'get',
         'options' => ['id'=>'child','class' => 'form-inline'],
     ]); ?>
@@ -19,7 +18,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')?>
     <?= $form->field($model, 'parentName')?>
     <?= $form->field($model, 'phone')?>
-<br>
+    <?= $form->field($model, 'loginPhone')?>
+
+    <br>
     <?= $form->field($model, 'docpartimeS')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'todayHighlight' => true

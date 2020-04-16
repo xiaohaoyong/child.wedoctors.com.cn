@@ -17,7 +17,7 @@ class ChildController extends BaseController
 
         $dataProvider = $searchModel->search($params);
 
-        return $this->render('index', [
+        return $this->render('signed', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

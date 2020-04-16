@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\UserDoctorAppoint */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title ='发送预约通知';
+$this->title ='加号';
 
 ?>
 

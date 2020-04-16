@@ -24,6 +24,8 @@ class ChildSearch extends ChildInfo
 
 
     public $phone;
+    public $loginPhone;
+
     public $parentName;
     public $birthdayS;
     public $birthdayE;
@@ -36,7 +38,7 @@ class ChildSearch extends ChildInfo
     {
         return [
             [['docpartimeS', 'docpartimeE', 'birthdayS', 'birthdayE'], 'string'],
-            [['phone'], 'integer'],
+            [['phone','loginPhone'], 'integer'],
             [['parentName'], 'safe'],
         ];
     }
@@ -50,6 +52,7 @@ class ChildSearch extends ChildInfo
         $attr['birthdayE'] = '~';
         $attr['parentName'] = '父母联系人姓名';
         $attr['phone'] = '联系电话';
+        $attr['loginPhone']='登录手机号';
         return $attr;
     }
 
@@ -90,10 +93,24 @@ class ChildSearch extends ChildInfo
             $query->andFilterWhere(['<=', '`birthday`', $end]);
         }
 
+        if ($this->parentName || $this->phone) {
 
+            $query->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`');
+            if ($this->parentName) {
+                $query->andWhere(['or', ['`user_parent`.`mother`' => $this->parentName], ['`user_parent`.`father`' => $this->parentName], ['`user_parent`.`field11`' => $this->parentName]]);
+            }
+            if ($this->phone) {
+                $query->andWhere(['or', ['`user_parent`.`mother_phone`' => $this->phone], ['`user_parent`.`father_phone`' => $this->phone], ['`user_parent`.`field12`' => $this->phone]]);
+            }
+        }
+        if($this->loginPhone){
+            $query->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`');
+            $query->andFilterWhere(['`user_login`.`phone`' => $this->loginPhone]);
+
+        }
 
         $query->orderBy('`doctor_parent`.createtime desc');
-        var_dump($query->createCommand()->getRawSql());exit;
+        //var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
     }
 }
