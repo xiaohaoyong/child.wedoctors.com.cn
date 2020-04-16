@@ -71,6 +71,25 @@ class ChildInfoSearchModel extends ChildInfo
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
+    public function searchNew($params){
+        $query = self::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $this->load($params);
+        $hospitalid = $this->admin ? $this->admin : \Yii::$app->user->identity->hospital;
+        $doctor = \common\models\UserDoctor::findOne(['hospitalid' => $hospitalid]);
+        $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+        $query->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctor->userid]);
+        $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
+
+        $query->orderBy('`doctor_parent`.createtime desc');
+        //var_dump($query->createCommand()->getRawSql());exit;
+        return $dataProvider;
+    }
 
     /**
      * Creates data provider instance with search query applied

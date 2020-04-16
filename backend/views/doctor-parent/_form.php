@@ -17,8 +17,9 @@ use yii\widgets\ActiveForm;
 
                 <?=\common\models\UserParent::findOne($model->parentid)->mother?>
                 <hr>
+                <?= $form->field($model, 'parentid'); ?>
+                <hr>
                 <?= $form->field($model, 'doctorid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->column(),['prompt'=>'请选择']) ?>
-
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
                         'btn btn-primary']) ?>

@@ -61,6 +61,7 @@
                         'items' => [
                             ['label' => '预约系统设置', 'url' => ['hospital-appoint/index']],
                             ['label' => '预约列表', 'url' => ['appoint/index']],
+                            ['label' => '加号', 'url' => ['appoint/index']],
                         ]
                     ],
                     ['label' => '医生管理', 'icon' => 'file-text-o', 'url' => "#",
