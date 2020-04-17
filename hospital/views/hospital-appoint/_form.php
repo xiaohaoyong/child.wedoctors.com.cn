@@ -97,7 +97,7 @@ use yii\widgets\ActiveForm;
                         ?>
                         <td><?= \kartik\select2\Select2::widget([
                                 'name'=>'vaccine[1]',
-                                'data' => [0=>'全部一类疫苗']+$data,
+                                'data' => [0=>'全部一类疫苗',-1=>'全部二类疫苗']+$data,
                                 'language' => 'de',
                                 'options' => ['placeholder' => '请选择','multiple'=>'multiple'],
                                 'showToggleAll'=>false,
@@ -108,7 +108,7 @@ use yii\widgets\ActiveForm;
                             ])?></td>
                         <td><?= \kartik\select2\Select2::widget([
                                 'name'=>'vaccine[2]',
-                                'data' => [0=>'全部一类疫苗']+$data,
+                                'data' => [0=>'全部一类疫苗',-1=>'全部二类疫苗']+$data,
                                 'language' => 'de',
                                 'showToggleAll'=>false,
                                 'value'=>\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid'=>$model->id])->andWhere(['week'=>2])->column(),
@@ -120,7 +120,7 @@ use yii\widgets\ActiveForm;
                             ])?></td>
                         <td><?= \kartik\select2\Select2::widget([
                                 'name'=>'vaccine[3]',
-                                'data' => [0=>'全部一类疫苗']+$data,
+                                'data' => [0=>'全部一类疫苗',-1=>'全部二类疫苗']+$data,
                                 'language' => 'de',
                                 'showToggleAll'=>false,
                                 'value'=>\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid'=>$model->id])->andWhere(['week'=>3])->column(),
@@ -132,7 +132,7 @@ use yii\widgets\ActiveForm;
                             ])?></td>
                         <td><?= \kartik\select2\Select2::widget([
                                 'name'=>'vaccine[4]',
-                                'data' => [0=>'全部一类疫苗']+$data,
+                                'data' => [0=>'全部一类疫苗',-1=>'全部二类疫苗']+$data,
                                 'language' => 'de',
                                 'showToggleAll'=>false,
                                 'value'=>\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid'=>$model->id])->andWhere(['week'=>4])->column(),
@@ -144,7 +144,7 @@ use yii\widgets\ActiveForm;
                             ])?></td>
                         <td><?= \kartik\select2\Select2::widget([
                                 'name'=>'vaccine[5]',
-                                'data' => [0=>'全部一类疫苗']+$data,
+                                'data' => [0=>'全部一类疫苗',-1=>'全部二类疫苗']+$data,
                                 'language' => 'de',
                                 'showToggleAll'=>false,
                                 'value'=>\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid'=>$model->id])->andWhere(['week'=>5])->column(),

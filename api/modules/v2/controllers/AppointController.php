@@ -71,6 +71,12 @@ class AppointController extends \api\modules\v1\controllers\AppointController
 
             if ($hospitalV) {
                 $vaccines = Vaccine::find()->all();
+                foreach($vaccines as $k=>$v){
+                    $rs=$v->toArray();
+                    $rs['name']=$rs['name']."【".Vaccine::$typeText[$rs['type']]."】";
+                    $rows[]=$rs;
+                }
+                $vaccines=$rows;
             } else {
                 $vaccines = [];
             }
@@ -93,10 +99,10 @@ class AppointController extends \api\modules\v1\controllers\AppointController
                 ->select('week')
                 ->where(['haid' => $appoint->id]);
 
-            if($vaccine->source!=0){
+            if($vaccine->type==0){
                 $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0]]);
             }else{
-                $query->andWhere(['vaccine' => $vid]);
+                $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => -1]]);
             }
             $hospitalV=$query->groupBy('week')->column();
 
