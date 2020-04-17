@@ -18,21 +18,22 @@ use yii\widgets\ActiveForm;
 
                     <?= $form->field($model, 'disease')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'adverseReactions')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'adverseReactions')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'contraindications')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'contraindications')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'diseaseHarm')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'diseaseHarm')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'dealFlow')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'dealFlow')->textarea(['rows' => 6]) ?>
 
 
-    <?= $form->field($model, 'intervalName')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'intervalName')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'source')->textInput() ?>
+                    <?= $form->field($model, 'source')->textInput() ?>
+                <?= $form->field($model, 'type')->radioList(\common\models\Vaccine::$typeText) ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
+                    <?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
                     'btn btn-primary']) ?>
                 </div>
 

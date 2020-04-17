@@ -16,9 +16,11 @@ use Yii;
  * @property string $name 疫苗名称
  * @property string $intervalName 建议接种时间
  * @property int $source 顺序
+ * @property int $type 类型
  */
 class Vaccine extends \yii\db\ActiveRecord
 {
+    public static $typeText=[0=>'一类',1=>'二类'];
     /**
      * @inheritdoc
      */
@@ -35,7 +37,7 @@ class Vaccine extends \yii\db\ActiveRecord
         return [
             [['disease', 'adverseReactions', 'contraindications', 'diseaseHarm', 'dealFlow'], 'required'],
             [['disease', 'adverseReactions', 'contraindications', 'diseaseHarm', 'dealFlow'], 'string'],
-            [['source'], 'integer'],
+            [['source','type'], 'integer'],
             [['name', 'intervalName'], 'string', 'max' => 50],
         ];
     }
@@ -55,6 +57,7 @@ class Vaccine extends \yii\db\ActiveRecord
             'name' => '疫苗名称',
             'intervalName' => '建议接种时间',
             'source' => '顺序',
+            'type'=>'类型'
         ];
     }
 }
