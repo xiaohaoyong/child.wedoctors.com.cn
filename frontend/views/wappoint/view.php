@@ -73,7 +73,7 @@ var type=[
     ];
 
 function select_time(day){
-    jQuery.get('/appoint/day-num?doctorid=47156&day='+day,function(e) {
+    jQuery.get('/wappoint/day-num?doctorid=47156&day='+day,function(e) {
       var times=e.times;
       var html='';
       jQuery.each(times,function(i,item){
@@ -140,7 +140,7 @@ jQuery("#appoint_phone").submit(phone_data,function(e){
 		return false;
 	}
 
-    $.get('/appoint/vphone?phone='+valueMap.phone+'&vcode='+valueMap.vcode,function(e){
+    $.get('/wappoint/vphone?phone='+valueMap.phone+'&vcode='+valueMap.vcode,function(e){
         if(e.code==10000){
            showMessage('验证成功',3500,true,'bounceInUp-hastrans','bounceOutDown-hastrans');
            jQuery('#appoint_from_phone').val(valueMap.phone);
@@ -162,7 +162,7 @@ var v = getCookieValue("secondsremained_login") ? getCookieValue("secondsremaine
     $('#second').on('click', function () {
         var phone=$('#phone').val();
         console.log(phone);
-        $.get('/appoint/code?phone='+phone+'&type=1',function(e){
+        $.get('/wappoint/code?phone='+phone+'&type=1',function(e){
             if(e.code==10000){
                showMessage('发送成功',3500,true,'bounceInUp-hastrans','bounceOutDown-hastrans');
 
