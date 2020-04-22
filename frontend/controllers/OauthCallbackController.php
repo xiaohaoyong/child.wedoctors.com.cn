@@ -8,9 +8,10 @@
 
 namespace frontend\controllers;
 use EasyWeChat\Factory;
+use yii\web\Controller;
 
 
-class OauthCallbackController
+class OauthCallbackController extends Controller
 {
     public function actionIndex(){
 
