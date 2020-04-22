@@ -1,0 +1,150 @@
+
+.content-wrapper {
+    padding: 0 16px;
+}
+
+.search {
+    height: 45px;
+    padding-left: 25px;
+    margin: 0 10px;
+    border-bottom: 1px solid #DADBDF;
+    background: url("/img/search.png") no-repeat center left;
+    background-size: 16px 16px;
+}
+
+.search input {
+    height: 44px;
+    line-height: 44px;
+    width: 90%;
+    outline: none;
+    border-radius: 0;
+    border: none;
+}
+
+.box {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 10px 0 10px
+}
+
+.dropdown-toggle {
+    border: none
+}
+
+.list {
+    margin-top: 20px;
+}
+
+.list .item {
+    display: flex;
+    border: 1px solid #F7F7F7;
+    margin-bottom: 10px;
+}
+
+.list .item .hospital {
+    padding-top: 19px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.list .item .hospital .name {
+    font-size: 16px;
+    color: #333333
+}
+
+.list .item .hospital .enlarge {
+    background: url("/img/enlarge.png") no-repeat center left;
+    background-size: 16px 16px;
+    padding-left: 20px;
+}
+
+.fo {
+    text-align: center;
+    line-height: 40px;
+    margin-bottom: 50px;
+}
+.qrcode{text-align: center}
+.modal-dialog{margin-top: 100px;}
+
+.appoint{padding: 0 25px;background:rgba(248,248,248,1);}
+.appoint .item{padding-top: 7px;}
+.appoint .item .title{font-size: 18px;line-height: 41px;color: #000000;}
+.appoint .item input{height:45px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(238,238,238,1);
+    border-radius:5px; width: 100%;padding: 0 12px;}
+.appoint .item select{height:45px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(238,238,238,1);
+    border-radius:5px; width: 100%;padding: 0 12px;color: #666666;}
+.appoint .item .dropdown button{height:45px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(238,238,238,1);
+    border-radius:5px; width: 100%; text-align: left;color: #666666;}
+.appoint .item .dropdown button .caret{float: right;margin-top: 9px;}
+
+.appoint .item .days {  width: 100%; height: 81px;white-space: nowrap;   overflow:scroll;display:inline-flex; }
+.appoint .item .days  .rs{flex-shrink: 0;width: 65px;height:81px;text-align: center;color: #555555;font-size: 34px;}
+.appoint .item .days  .rs .day{font-size: 15px;color: #333333;line-height: 50px;margin:0 auto;width:38px;height:38px;}
+.appoint .item .days  .rs .week{margin-bottom: 9px; height:31px;font-size: 10px;color: #999999;line-height: 31px;text-align: center;border-bottom: 1px solid #DDDDDD}
+.appoint .item .days .rs .on{ margin:0 auto;font-size: 15px;color: #FFFFFF;line-height: 38px;width:38px;
+    height:38px;
+    background:rgba(240,85,70,1);
+    border-radius:50%;}
+.appoint .item .days  .off{background-color: #eeeeee;text-align: center;border-radius: 10px;color: #ffffff;}
+
+
+.appoint .item .time{padding-top: 26px;display: flex;justify-content:space-around;flex-wrap:wrap;}
+.appoint .item .time .rs{
+    background:rgba(238,238,238,1);
+    border:1px solid rgba(238,238,238,1);
+    border-radius:5px;width:48%;
+    height:45px; text-align: center; line-height: 45px;
+    font-size:15px;
+    color: rgba(153,153,153,1);
+    margin-bottom: 11px;
+  }
+.appoint .item .time .ton {
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(238,238,238,1);
+    border-radius:5px;width:48%;
+    height:45px; text-align: center; line-height: 45px;
+    font-size:15px;
+    color: #000;
+    margin-bottom: 11px;
+}
+
+.appoint .item .time .a {background:#ffd303;
+    border:1px solid rgba(238,238,238,1);
+    border-radius:5px;width:48%;
+    height:45px; text-align: center; line-height: 45px;
+    font-size:15px;
+    color: #ffffff;
+    margin-bottom: 11px;
+}
+.appoint .button{margin: 0 auto; height: 115px; padding-top: 31px;}
+.appoint .button  button{width:100%;
+    height:53px;
+    background:rgba(240,85,70,1);
+    border-radius:26px; font-size:18px;
+    color:rgba(255,255,255,1);}
+
+
+.appoint_p{}
+.appoint_p .item{padding-top: 7px;}
+.appoint_p .item .title{font-size: 18px;line-height: 41px;color: #000000;}
+
+.vcode-model {padding-top:15px;display: flex;flex-direction: row;justify-content: space-between;}
+.vcode-model .botton input{height:45px;}
+.appoint_p .inputa{height:45px;
+    background:rgba(255,255,255,1);
+    border:1px solid rgba(238,238,238,1);
+    border-radius:5px; width: 100%;padding: 0 12px;}
+.appoint_p .button{padding-top: 20px;}
+.appoint_p .button  button{width:100%;
+    height:53px;
+    background:rgba(240,85,70,1);
+    border-radius:26px; font-size:18px;
+    color:rgba(255,255,255,1);}
