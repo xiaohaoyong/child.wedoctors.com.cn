@@ -43,7 +43,7 @@
                     'header'=>$v['name']
                 ]);
                 ?>
-                <?=\yii\bootstrap\Html::a('去预约',['appoint/view','userid'=>$v['userid']])?>
+                <?=\yii\bootstrap\Html::a('去预约',['wappoint/view','userid'=>$v['userid']])?>
                 <div style="text-align: center">长按识别二维码</div>
                 <?php
                 \yii\bootstrap\Modal::end();
