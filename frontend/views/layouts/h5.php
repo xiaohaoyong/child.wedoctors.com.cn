@@ -7,7 +7,7 @@ $this->title = "社区医院查询"
     <html lang="<?= Yii::$app->language ?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
         <?= \yii\helpers\Html::csrfMetaTags() ?>
         <title><?= \yii\helpers\Html::encode($this->title) ?></title>
         <?php $this->head() ?>
