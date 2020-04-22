@@ -151,12 +151,14 @@ class AppointController extends Controller
 // 未登录
         if (empty($_SESSION['wechat_user'])) {
 
-            $_SESSION['target_url'] = 'user/profile';
+            $_SESSION['target_url'] = 'appoint/view?id='.$userid;
 
             return $oauth->redirect();
             // 这里不一定是return，如果你的框架action不是返回内容的话你就得使用
             // $oauth->redirect()->send();
         }
+
+        var_dump($_SESSION['wechat_user']);exit;
         $holiday = [
             '2020-1-1',
             '2020-1-24',
