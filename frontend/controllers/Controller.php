@@ -49,6 +49,7 @@ class Controller extends \yii\web\Controller
                 $_SESSION['wechat_user']=$wechat_user;
             }
         }
+        var_dump($_SESSION['wechat_user']);exit;
 // 未登录
         if (!$_SESSION['wechat_user'] && !\Yii::$app->request->get('code')) {
 
