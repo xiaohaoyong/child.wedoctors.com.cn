@@ -14,6 +14,8 @@ use Yii;
  * @property int type
  * @property int weeks
  * @property int updateInterval
+ * @property int phone
+ * @property int info
  * @property int interval
  */
 class HospitalAppoint extends \yii\db\ActiveRecord
@@ -39,7 +41,8 @@ class HospitalAppoint extends \yii\db\ActiveRecord
     {
         return [
             [['cycle','delay','week'], 'required'],
-            [['doctorid', 'cycle', 'delay','weeks','interval','updateInterval'], 'integer'],
+            [['doctorid', 'cycle', 'delay','weeks','interval','updateInterval','phone'], 'integer'],
+            [['info'], 'string'],
         ];
     }
 

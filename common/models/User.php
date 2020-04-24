@@ -31,7 +31,7 @@ class User extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             //[['phone'], 'required'],
-            [['phone', 'level', 'type', 'createtime'], 'integer'],
+            [['phone', 'level', 'type', 'createtime','source'], 'integer'],
         ];
     }
 

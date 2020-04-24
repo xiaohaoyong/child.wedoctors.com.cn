@@ -1,6 +1,6 @@
 <?php
 frontend\assets\WebAsset::register($this);
-$this->title = "社区医院查询"
+$this->title = "预约成人疫苗"
 ?>
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
@@ -16,7 +16,9 @@ $this->title = "社区医院查询"
     </head>
     <body class="hold-transition skin-green">
     <?php $this->beginBody() ?>
+    <?= \common\widgets\Alert::widget() ?>
     <?=$content?>
+    <div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="50" height="50"></a></div>
     <?php $this->endBody() ?>
 
     </body>

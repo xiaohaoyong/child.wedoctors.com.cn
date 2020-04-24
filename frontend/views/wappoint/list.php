@@ -1,12 +1,6 @@
-<div class="wrapper">
+<div class="wrapper appoint_list">
     <div class="content-wrapper">
-        <div class="search">
-
-            <form method="get" action="">
-                <input type="search" name="search" placeholder="搜索社区">
-            </form>
-        </div>
-        <div class="box">
+        <div class="search_box">
             <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -17,8 +11,12 @@
                     <?php foreach (\common\models\Area::$county['11'] as $k => $v) { ?>
                         <li><a href="?county=<?= $k ?>"><?= $v ?></a></li>
                     <?php } ?>
-
                 </ul>
+            </div>
+            <div class="search">
+                <form method="get" action="">
+                    <input type="search" name="search" placeholder="搜索社区">
+                </form>
             </div>
         </div>
         <div class="list">
@@ -26,13 +24,25 @@
             foreach ($doctors as $k => $v) {
                 ?>
                 <div class="item" data-toggle="modal" data-target="#create-modal<?= $v['userid'] ?>">
-                    <div class="qrcode"><img
-                                src="/img/view_hospital_logo.png"/>
+                    <div class="item-content">
+                        <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
+                        </div>
+                        <div class="hospital">
+                            <div class="name"><?= $v['name'] ?></div>
+                            <?php if ($v['week']) { ?>
+                                <div class="address">门诊时间：每周工作日 <?= implode('，', $v['week']) ?></div>
+                            <?php } ?>
+                        </div>
                     </div>
-                    <div class="hospital">
-                        <div class="name"><?= $v['name'] ?></div>
-                        <div class="address">社区电话：<?= $v['phone'] ?></div>
-                        <div class="enlarge">点击放大识别二维码</div>
+                    <div class="item-button">
+                        <div class="phone"><a href="tel:<?= $v['phone'] ?>"><img src="/img/appoint_list_phone.png"
+                                                                                 width="18" height="18"/></a></div>
+                        <?php if ($v['week']) { ?>
+                            <div class="button">在线预约</div>
+                        <?php }else{ ?>
+                            <div class="button on">暂未开通</div>
+                        <?php }?>
+
                     </div>
                 </div>
 
@@ -40,11 +50,16 @@
                 <?php
                 \yii\bootstrap\Modal::begin([
                     'id' => 'create-modal' . $v['userid'],
-                    'header'=>$v['name']
+                    'header' => $v['name']
                 ]);
                 ?>
-                <?=\yii\bootstrap\Html::a('去预约',['wappoint/view','userid'=>$v['userid']])?>
-                <div style="text-align: center">长按识别二维码</div>
+                <?=$v['appoint_intro']?>
+                <?php if ($v['week']) { ?>
+                    <?= \yii\bootstrap\Html::a('去预约', ['wappoint/from', 'userid' => $v['userid']],['class'=>'button']) ?>
+                <?php }else{ ?>
+                    <div class="button on">暂未开通</div>
+                <?php }?>
+
                 <?php
                 \yii\bootstrap\Modal::end();
                 ?>

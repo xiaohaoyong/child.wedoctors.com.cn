@@ -13,14 +13,17 @@ use common\components\Code;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
+use common\models\AppointAdult;
+use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointWeek;
 use common\models\UserDoctor;
+use EasyWeChat\Factory;
 use yii\web\Response;
 
 
-class WappointController extends \frontend\controllers\Controller
+class WappointController extends Controller
 {
 
     public function actionIndex($search = '', $county = 0)
@@ -41,22 +44,36 @@ class WappointController extends \frontend\controllers\Controller
         }
 
         $docs = [];
+        $doctorParent=DoctorParent::findOne(['parentid'=>$this->login->userid]);
+        if($doctorParent)
+        {
+            $doctorid=$doctorParent->doctorid;
+        }
 
         foreach ($doctors as $k => $v) {
             $rs = $v->toArray();
             $rs['name'] = Hospital::findOne($v->hospitalid)->name;
+            $hospitalAppoint=HospitalAppoint::findOne(['doctorid'=>$v->userid,'type'=>4]);
+            if($hospitalAppoint) {
+                $week = str_replace([1, 2, 3, 4, 5, 6, 0], ['一', '二', '三', '四', '五', '六', '七'], $hospitalAppoint->weeks);
+                $rs['week']= preg_split('/(?<!^)(?!$)/u', $week );
+                $rs['phone']=$hospitalAppoint->phone;
+                $rs['appoint_intro']=$hospitalAppoint->info;
+            }
+
             $docs[] = $rs;
         }
 
+
         return $this->render('list', [
             'doctors' => $docs,
-            'county' => $county
+            'county' => $county,
+            'doctorid'=>$doctorid
         ]);
     }
 
-    public function actionView($userid)
+    public function actionFrom($userid)
     {
-
         $holiday = [
             '2020-1-1',
             '2020-1-24',
@@ -88,6 +105,7 @@ class WappointController extends \frontend\controllers\Controller
         ];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $userid, 'type' => 4]);
 
+        $days=[];
         $weekr = str_split((string)$hospitalA->weeks);
         $cycleType = [0, 7, 14, 30];
         $cycle = $cycleType[$hospitalA->cycle];
@@ -116,8 +134,10 @@ class WappointController extends \frontend\controllers\Controller
             $doctorRow['hospital']=Hospital::findOne($doctor->hospitalid)->name;
         }
 
+        $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
 
-        return $this->render('view', ['days' => $days,'day'=>$firstDay,'doctor'=>$doctorRow]);
+
+        return $this->render('from', ['days' => $days,'day'=>$firstDay,'doctor'=>$doctorRow,'user'=>$appointAdult]);
     }
     public function actionDayNum($doctorid, $day)
     {
@@ -212,8 +232,82 @@ class WappointController extends \frontend\controllers\Controller
     }
 
 
+    public function actionView($id){
+
+        $appoint=Appoint::findOne(['id'=>$id]);
+
+        $row=$appoint->toArray();
+        $doctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
+        if($doctor){
+            $hospital=Hospital::findOne($doctor->hospitalid);
+        }
+        $row['hospital']=$hospital->name;
+        $row['type']=Appoint::$typeText[$appoint->type];
+        $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
+        $row['child_name']=AppointAdult::findOne($appoint->userid)->name;
+        $row['duan']=$appoint->appoint_time;
+
+        $index=Appoint::find()
+            ->andWhere(['appoint_date'=>$appoint->appoint_date])
+            ->andWhere(['<','id',$id])
+            ->andWhere(['doctorid'=>$appoint->doctorid])
+            ->andWhere(['appoint_time'=>$appoint->appoint_time])
+            ->andWhere(['type' => $appoint->type])
+            ->count();
+        $row['index']=$index+1;
+
+        return $this->render('view',['row'=>$row]);
+
+    }
+
+    public function actionMy($type=1){
+        $appoints = Appoint::findAll(['userid' => $this->login->userid,'type'=>4,'state'=>$type]);
+        $list=[];
+        foreach($appoints as $k=>$v){
+            $row=$v->toArray();
+            $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+            if($doctor){
+                $hospital=Hospital::findOne($doctor->hospitalid);
+            }
+            $row['hospital']=$hospital->name;
+            $row['type']=Appoint::$typeText[$v->type];
+            $row['time']=date('Y.m.d',$v->appoint_date)."  ".Appoint::$timeText[$v->appoint_time];
+            $row['stateText']=Appoint::$stateText[$v->state];
+            $row['child_name']=AppointAdult::findOne(['userid'=>$v->userid])->name;
+            $list[]=$row;
+        }
+
+        return $this->render('my',['list'=>$list,'type'=>$type]);
+    }
+
+    public function actionState($id,$type){
+        $model=Appoint::findOne(['id'=>$id,'userid'=>$this->login->userid]);
+        if(!$model){
+            \Yii::$app->getSession()->setFlash('error','失败');
+            return $this->redirect(['wappoint/my']);
+        }else{
+
+            if($type==1){
+                $model->state=3;
+            }elseif($type==2){
+                $model->state=1;
+            }
+
+            if(!$model->save()) {
+                \Yii::$app->getSession()->setFlash('error','失败');
+            }
+            return $this->redirect(['wappoint/my']);
+        }
+    }
+
     public function actionSave(){
         $post=\Yii::$app->request->post();
+
+        if(!$post['appoint_name'] || !$post['phone'] || !$post['sex']
+            || !$post['doctorid'] || !$post['appoint_time'] || !$post['appoint_date'] || !$post['type']){
+            \Yii::$app->getSession()->setFlash('error','提交失败，缺少参数');
+            return $this->redirect(['wappoint/index']);
+        }
 
         $doctor=UserDoctor::findOne(['userid'=>$post['doctorid']]);
         if($doctor){
@@ -223,11 +317,12 @@ class WappointController extends \frontend\controllers\Controller
             }
         }
         if(!$doctor || !$doctor->appoint || !in_array($post['type'],$types)){
-            return new Code(21000, '社区未开通');
+            \Yii::$app->getSession()->setFlash('error','社区未开通');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
         };
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
 
-        $w=date("w",strtotime($post['appoint_date']));
+        $w=date("w",$post['appoint_date']);
         $weeks = HospitalAppointWeek::find()
             ->andWhere(['week' => $w])
             ->andWhere(['haid' => $appoint->id])
@@ -245,53 +340,51 @@ class WappointController extends \frontend\controllers\Controller
 
 
         if(($weeks->num-$appointed)<=0){
-            return new Code(21000,'该时间段已约满，请选择其他时间');
+            \Yii::$app->getSession()->setFlash('error','该时间段已约满，请选择其他时间');
+            return $this->redirect(['wappoint/from','id'=>$post['doctorid']]);
+
+        }
+
+        $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
+        $appointAdult=$appointAdult?$appointAdult:new AppointAdult();
+        $appointAdult->userid=$this->login->userid;
+        $appointAdult->name=$post['appoint_name'];
+        $appointAdult->phone=$post['phone'];
+        $appointAdult->gender=$post['sex'];
+        //$appointAdult->birthday=strtotime($post['birthday']);
+        if(!$appointAdult->save()){
+            \Yii::$app->getSession()->setFlash('error','联系人信息保存失败');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+
         }
 
 
-
-
-        $appoint=Appoint::findOne(['childid'=>$post['childid'],'type'=>$post['type'],'state'=>1]);
+        $appoint=Appoint::findOne(['userid'=>$appointAdult->userid,'type'=>$post['type'],'state'=>1]);
         if($appoint){
-            return new Code(20020,'您有未完成的预约');
-        }elseif(!$post['childid']){
-            return new Code(20020,'请选择宝宝');
+            \Yii::$app->getSession()->setFlash('error','您有未完成的预约');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+
+        }elseif(!$appointAdult->userid){
+            \Yii::$app->getSession()->setFlash('error','预约人联系信息保存失败');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+
         } else{
 
             $model = new Appoint();
-            $post['appoint_date'] = strtotime($post['appoint_date']);
             $post['state'] = 1;
-            $post['userid'] = $this->userid;
-            $post['loginid']=$this->userLogin->id;
+            $post['userid'] = $this->login->userid;
+            $post['loginid']=$this->login->id;
             $model->load(["Appoint" => $post]);
-
-
-
+            if(!$this->login->phone){
+                $this->login->phone=$post['phone'];
+                $this->login->save();
+            }
             if ($model->save()) {
-                //var_dump($doctor->name);
-                $userLogin=$this->userLogin;
-                if($userLogin->openid) {
-
-                    $child=ChildInfo::findOne($model->childid);
-
-                    $data = [
-                        'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
-                        'keyword2' => ARRAY('value' => $hospital->name),
-                        'keyword3' => ARRAY('value' => date('Y-m-d',$model->appoint_date)." ".Appoint::$timeText[$model->appoint_time]),
-                        'keyword4' => ARRAY('value' => $child?$child->name:''),
-                        'keyword5' => ARRAY('value' => $model->phone),
-                        'keyword6' => ARRAY('value' => "预约成功"),
-                        'keyword7' => ARRAY('value' => $model->createtime),
-                        'keyword8' => ARRAY('value' => Appoint::$typeInfoText[$model->type]),
-                    ];
-                    $rs = WechatSendTmp::send($data,$userLogin->openid, 'Ejdm_Ih_W0Dyi6XrEV8Afrsg6HILZh0w8zg2uF0aIS0', '/pages/appoint/view?id='.$model->id,$post['formid']);
-                }
-
-                return ['id' => $model->id];
+                return $this->redirect(['wappoint/view','id'=>$model->id]);
             } else {
-                return new Code(20010, implode(':', $model->firstErrors));
+                \Yii::$app->getSession()->setFlash('error','提交失败');
+                return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
             }
         }
-
     }
 }
