@@ -134,7 +134,6 @@ class WappointController extends Controller
             $doctorRow['hospital']=Hospital::findOne($doctor->hospitalid)->name;
         }
 
-        var_dump($this->login);exit;
         $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
 
 
