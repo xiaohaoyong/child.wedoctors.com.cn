@@ -34,7 +34,7 @@
         <div class="item">
             <div class="title">预约人性别</div>
             <div class="input">
-                <select name="sex" class="select appoint_input">
+                <select name="sex" class="select appoint_input form-control">
                     <option value="0">请选择您的性别</option>
                     <option value="1" <?=$user['gender']==1?'selected':''?>>男</option>
                     <option value="2" <?=$user['gender']==2?'selected':''?>>女</option>
