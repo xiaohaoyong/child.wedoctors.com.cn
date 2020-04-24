@@ -119,6 +119,8 @@ body{background: #F8F8F8;}
     border:1px solid rgba(238,238,238,1);
     border-radius:5px; width: 100%;padding: 0 12px;
     outline: none;
+    -webkit-appearance:none;
+
 }
 .appoint .item select{height:45px;
     background:rgba(255,255,255,1);
