@@ -54,6 +54,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </td>
                                     <td><?=Html::a('修改',['hospital-appoint/create','type'=>3])?></td>
                                 </tr>
+                                <tr>
+                                    <td>成人疫苗</td>
+                                    <td>
+                                        <?=in_array(4,$types)?"已设置":"未设置"?>，
+                                        <?=in_array(4,$userDoctorAppoint)?"已开通":"未开通"?>
+                                    </td>
+                                    <td><?=Html::a('修改',['hospital-appoint/create','type'=>4])?></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>

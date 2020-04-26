@@ -32,25 +32,43 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ['class' => 'yii\grid\SerialColumn'],
                                 [
 
-                                    'attribute' => '儿童姓名',
+                                    'attribute' => '姓名',
                                     'value' => function ($e) {
-                                        return \common\models\ChildInfo::findOne(['id' => $e->childid])->name;
+                            if($e->type==4){
+                                return \common\models\AppointAdult::findOne(['userid' => $e->userid])->name;
+
+                            }else {
+                                return \common\models\ChildInfo::findOne(['id' => $e->childid])->name;
+                            }
                                     }
                                 ],
                                 [
 
-                                    'attribute' => '儿童性别',
+                                    'attribute' => '性别',
                                     'value' => function ($e) {
-                                        $child = \common\models\ChildInfo::findOne(['id' => $e->childid]);
-                                        return \common\models\ChildInfo::$genderText[$child->gender];
+                                        if($e->type==4){
+                                            $a= \common\models\AppointAdult::findOne(['userid' => $e->userid]);
+                                            return \common\models\ChildInfo::$genderText[$a->gender];
+
+
+                                        }else {
+                                            $child = \common\models\ChildInfo::findOne(['id' => $e->childid]);
+                                            return \common\models\ChildInfo::$genderText[$child->gender];
+                                        }
+
                                     }
                                 ],
                                 [
 
-                                    'attribute' => '儿童生日',
+                                    'attribute' => '生日',
                                     'value' => function ($e) {
-                                        $child = \common\models\ChildInfo::findOne(['id' => $e->childid]);
-                                        return date('Y-m-d', $child->birthday);
+                                        if($e->type==4){
+                                            return '';
+                                        }else {
+                                            $child = \common\models\ChildInfo::findOne(['id' => $e->childid]);
+                                            return date('Y-m-d', $child->birthday);
+                                        }
+
                                     }
                                 ],
                                 [
@@ -64,7 +82,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => '母亲姓名',
                                     'value' => function ($e) {
-                                        return \common\models\UserParent::findOne(['userid' => $e->userid])->mother;
+                                        if($e->type!=4) {
+                                            return \common\models\UserParent::findOne(['userid' => $e->userid])->mother;
+                                        }
+                                        return '';
                                     }
                                 ],
                                 [

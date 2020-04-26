@@ -89,6 +89,47 @@ class DataController extends Controller
     {
         ini_set('memory_limit', '2048M');
 
+        $doctors=UserDoctor::find()->all();
+        foreach($doctors as $dk=>$dv) {
+            echo $dv->name."\n";
+            for ($i = 1; $i < 32; $i++) {
+
+                $time = strtotime('+' . $i . " day");
+                $time = strtotime(date('Ymd', $time));
+                $appoints = Appoint::find()->select('count(*) as c,appoint_time')->where(['appoint_date' => $time])->andWhere(['doctorid'=>$dv->userid])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->groupBy('appoint_time')->asArray()->all();
+                if($appoints) {
+                    echo date('Ymd',$time)."\n";
+                    foreach ($appoints as $ak => $av) {
+                        echo $av['appoint_time'] . ":" . $av['c'] . "===";
+                    }
+                    echo "\n";
+                }
+            }
+            echo "==================================\n";
+        }
+        exit;
+
+
+        $appoints=Appoint::find()->where(['>','appoint_date',time()])->andWhere(['type'=>2])->andWhere(['state'=>1])->andWhere(['mode'=>0])->all();
+        foreach($appoints as $k=>$v){
+
+            $query=Appoint::find()->where(['appoint_date'=>$v->appoint_date])->andWhere(['type'=>2])->andWhere(['state'=>1])->andWhere(['mode'=>0]);
+            if($v->appoint_time>6){
+                $query->andWhere(['<','appoint_time',7]);
+            }else{
+                $query->andWhere(['>','appoint_time',6]);
+            }
+            $count=$query->count();
+            if($count>0){
+                echo $v->appoint_date.",".$v->doctorid."\n";
+            }
+
+        }
+        exit;
+
+
+
+
         $h=UserDoctor::find()->all();
         foreach($h as $hk=>$hv ){
             echo $hv->userid."==";

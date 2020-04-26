@@ -51,8 +51,31 @@ use yii\widgets\ActiveForm;
                     }
                     ?>
                     <tr><th><?=$text?></th><td></td></tr>
+                    <tr>
+                        <th>
+                            科室电话
+                        </th>
+                        <td><?= $form->field($model, 'phone', ['options' => ['class' => "col-xs-5"]])->textInput()->label(false) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            门诊描述<br>
+                            门诊日期，预约注意事项等
+                        </th>
+                        <td><?= $form->field($model, 'info')->textarea()->label(false) ?>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
+                <div>
+
+                    <!-- Nav tabs -->
+                    <ul id="intervalTab" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#tabyi" aria-controls="tabyi" role="tab" data-toggle="tab">一小时</a></li>
+                        <li role="presentation"><a href="#tabban" aria-controls="tabban" role="tab" data-toggle="tab">半小时</a></li>
+                    </ul>
+                </div>
                 <table id="w0" class="table table-striped table-bordered detail-view">
                     <tbody>
                     <tr>
@@ -63,6 +86,7 @@ use yii\widgets\ActiveForm;
                         <td>星期四</td>
                         <td>星期五</td>
                     </tr>
+
                     <?php
                     foreach(\common\models\HospitalAppointWeek::$typeText as $k=>$v){
                         if($k<7){
@@ -169,25 +193,43 @@ use yii\widgets\ActiveForm;
     </div>
 </div>
 <?php
+$interval=isset($model->interval)?$model->interval:1;
 $updateJs = <<<JS
-    var default_interval={$model->interval};
+    var default_interval={$interval};
     if(default_interval==1){
         $('.ban').hide();
         $('.yi').show();
+        $('#intervalTab a:first').tab('show');
     }else{
         $('.ban').show();
         $('.yi').hide();
+        $('#intervalTab a:last').tab('show');
+
     }
     $('input[name="HospitalAppoint[interval]"]').change(function(){
         var interval=$(this).val();
         if(interval==1){
+           $('.ban').hide();
+        $('.yi').show();
+        $('#intervalTab a:first').tab('show');
+        }else{
+            $('.ban').show();
+        $('.yi').hide();
+        $('#intervalTab a:last').tab('show');
+        }
+    });
+    $('#intervalTab a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show')
+      var tab=$(this).attr('aria-controls');
+      if(tab=='tabyi'){
             $('.ban').hide();
             $('.yi').show();
         }else{
             $('.ban').show();
             $('.yi').hide();
         }
-    });
+    })
 JS;
 $this->registerJs($updateJs);
 ?>
