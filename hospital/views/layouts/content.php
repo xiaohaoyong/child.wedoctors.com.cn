@@ -45,4 +45,10 @@ use dmstr\widgets\Alert;
     </div>
     <strong>Copyright &copy; 2017-2018 技术支持：</strong> 微医（北京）健康科技有限公司。
 </footer>
+<?php
+$updateJs = <<<JS
+jQuery(".krajee-datepicker").attr("autocomplete", "off");
+JS;
+$this->registerJs($updateJs);
+?>
 

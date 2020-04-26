@@ -102,7 +102,7 @@ class AppointSearchModels extends Appoint
             'cancel_type'=>$this->cancel_type,
             'state'=>$this->state,
         ]);
-        $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+        $query->orderBy(['createtime' => SORT_DESC]);
         //echo $query->createCommand()->getRawSql();exit;
         return $dataProvider;
     }

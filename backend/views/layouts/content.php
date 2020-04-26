@@ -72,4 +72,10 @@ use dmstr\widgets\Alert;
     <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
     reserved.
 </footer>
+<?php
+$updateJs = <<<JS
+jQuery(".krajee-datepicker").attr("autocomplete", "off");
+JS;
+$this->registerJs($updateJs);
+?>
 
