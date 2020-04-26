@@ -18,7 +18,7 @@ $this->title = "预约成人疫苗"
     <?php $this->beginBody() ?>
     <?= \common\widgets\Alert::widget() ?>
     <?=$content?>
-    <div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="50" height="50"></a></div>
+    <div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
     <?php $this->endBody() ?>
 
     </body>
