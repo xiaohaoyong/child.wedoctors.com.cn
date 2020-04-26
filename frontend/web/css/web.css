@@ -168,7 +168,7 @@ button{    border: none;}
     margin-bottom: 11px;
 }
 
-.appoint .item .time .a {background:#ffd303;
+.appoint .item .time .a {background:rgba(240,85,70,1);
     border:1px solid rgba(240,85,70,1);
     border-radius:5px;width:48%;
     height:45px; text-align: center; line-height: 45px;
