@@ -52,9 +52,11 @@
             <div class="title">请选择日期</div>
             <input type="hidden" class="appoint_input" value="<?= $day ?>" name="appoint_date" id="appoint_date">
             <div class="days">
-                <?php foreach ($days as $k => $v) { ?>
+                <?php
+                $dweek=['日','一','二','三','四','五','日'];
+                foreach ($days as $k => $v) { ?>
                     <item class="rs" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
-                        <div class="week"><?= $v['week'] ?></div>
+                        <div class="week"><?= $dweek[$v['week']] ?></div>
                         <div class="day <?= $day == $v['date'] ? 'on' : '' ?>"><?= $v['day'] ?></div>
                     </item>
                 <?php } ?>
