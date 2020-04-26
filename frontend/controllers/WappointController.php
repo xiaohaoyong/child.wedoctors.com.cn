@@ -28,7 +28,9 @@ class WappointController extends Controller
 
     public function actionIndex($search = '', $county = 0)
     {
-        $query = UserDoctor::find();
+
+        $hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
+        $query = UserDoctor::find()->where(['in','userid',$hospitalAppoint]);
         if ($search) {
             $query->andFilterWhere(['like', 'name', $search]);
         }
