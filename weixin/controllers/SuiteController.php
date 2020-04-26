@@ -196,16 +196,16 @@ class SuiteController extends Controller
                 ['type' => 'view', 'name' => '问医生', 'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1147c2e491dfdf1d&redirect_uri=http://web.child.wedoctors.com.cn/haodf&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect',],
                 ['type' => 'view', 'name' => '我的', 'sub_button' => [
                     [
+                        'type' => 'view',
+                        'name' => '预约成人疫苗',
+                        'url' => 'http://web.child.wedoctors.com.cn/wappoint',
+                    ],
+                    [
                         'type' => 'miniprogram',
                         'name' => '我的宝宝预约',
                         'url' => Yii::$app->params['index_url'],
                         'appid' => \Yii::$app->params['wxXAppId'],
                         'pagepath' => 'pages/appoint/my'
-                    ],
-                    [
-                        'type' => 'view',
-                        'name' => '我的成人预约',
-                        'url' => 'http://web.child.wedoctors.com.cn/wappoint',
                     ],
                     [
                         'type' => 'miniprogram',
