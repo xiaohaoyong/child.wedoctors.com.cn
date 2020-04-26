@@ -167,6 +167,10 @@ class SuiteController extends Controller
                             }
                             break;
                     }
+                    if($xml['Content']=='成人疫苗'){
+                        return self::sendText($xml['FromUserName'], $xml['ToUserName'],"预约成人疫苗请点击下方链接，选择社区后预约:http://web.child.wedoctors.com.cn/wappoint");
+
+                    }
 
 
                     return self::sendText($xml['FromUserName'], $xml['ToUserName'],'宝宝家长，您在社区医院遇到体检查看问题，疫苗预约、体检预约、健康指导等问题时，可以添加儿宝小助手客服帮您进行解答。客服微信号（erbbzs）工作日内可随时联系儿宝小助手，我们会第一时间回复您的问题。');
