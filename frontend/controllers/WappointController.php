@@ -42,7 +42,7 @@ class WappointController extends Controller
 
             $doctors = $query->orderBy('appoint desc')->all();
         } else {
-            $doctors = $query->orderBy('appoint desc')->limit(10)->all();
+            $doctors = $query->orderBy('appoint desc')->limit(50)->all();
         }
 
         $docs = [];
