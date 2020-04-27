@@ -7,7 +7,11 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\HospitalAppoint */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<style>
+    @media screen and (max-width: 1450px) {
+        .select2-selection__rendered{max-width: 165px;}
+    }
+</style>
 <div class="hospital-appoint-form">
     <div class="col-xs-12">
         <div class="box">
@@ -76,7 +80,7 @@ use yii\widgets\ActiveForm;
                         <li role="presentation"><a href="#tabban" aria-controls="tabban" role="tab" data-toggle="tab">半小时</a></li>
                     </ul>
                 </div>
-                <table id="w0" class="table table-striped table-bordered detail-view">
+                <table id="w0" class="table table-striped table-bordered detail-view col-md-12">
                     <tbody>
                     <tr>
                         <td></td>
