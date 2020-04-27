@@ -82,7 +82,7 @@ var type=[
     ];
 
 function select_time(day){
-    jQuery.get('/wappoint/day-num?doctorid=47156&day='+day,function(e) {
+    jQuery.get('/wappoint/day-num?doctorid={$doctor['userid']}&day='+day,function(e) {
       var times=e.times;
       var html='';
       jQuery.each(times,function(i,item){
