@@ -63,20 +63,21 @@ class AppointController extends BaseController
             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
         $key1 = 1;
         $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A' . $key1, '儿童姓名')
-            ->setCellValue('B' . $key1, '儿童性别')
-            ->setCellValue('C' . $key1, '儿童生日')
-            ->setCellValue('D' . $key1, '母亲姓名')
-            ->setCellValue('E' . $key1, '户籍地')
-            ->setCellValue('F' . $key1, '预约日期')
-            ->setCellValue('G' . $key1, '预约时间')
-            ->setCellValue('H' . $key1, '手机号')
-            ->setCellValue('I' . $key1, '预约状态')
-            ->setCellValue('J' . $key1, '预约项目')
-            ->setCellValue('K' . $key1, '取消原因')
-            ->setCellValue('L' . $key1, '推送状态')
-            ->setCellValue('M' . $key1, '来源')
-            ->setCellValue('N' . $key1, '排号顺序');
+            ->setCellValue('A' . $key1, '姓名')
+            ->setCellValue('B' . $key1, '性别')
+            ->setCellValue('C' . $key1, '生日')
+            ->setCellValue('D' . $key1, '儿童户籍')
+            ->setCellValue('E' . $key1, '母亲姓名')
+            ->setCellValue('F' . $key1, '户籍地')
+            ->setCellValue('G' . $key1, '预约日期')
+            ->setCellValue('H' . $key1, '预约时间')
+            ->setCellValue('I' . $key1, '手机号')
+            ->setCellValue('J' . $key1, '预约状态')
+            ->setCellValue('K' . $key1, '预约项目')
+            ->setCellValue('L' . $key1, '取消原因')
+            ->setCellValue('M' . $key1, '推送状态')
+            ->setCellValue('N' . $key1, '来源')
+            ->setCellValue('O' . $key1, '排号顺序');
 //写入内容
         foreach ($dataProvider->query->limit(500)->all() as $k => $e) {
             $v = $e->toArray();
@@ -96,17 +97,18 @@ class AppointController extends BaseController
                 ->setCellValue('A' . $key1, $child->name)
                 ->setCellValue('B' . $key1, \common\models\ChildInfo::$genderText[$child->gender])
                 ->setCellValue('C' . $key1, date('Y-m-d', $child->birthday))
-                ->setCellValue('D' . $key1, $userParent->mother)
-                ->setCellValue('E' . $key1, $userParent->field44)
-                ->setCellValue('F' . $key1, date('Y-m-d', $v['appoint_date']))
-                ->setCellValue('G' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
-                ->setCellValue('H' . $key1,$e->phone)
-                ->setCellValue('I' . $key1, \common\models\Appoint::$stateText[$e->state])
-                ->setCellValue('J' . $key1, \common\models\Appoint::$typeText[$e->type])
-                ->setCellValue('K' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
-                ->setCellValue('L' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
-                ->setCellValue('M' . $key1, \common\models\Appoint::$modeText[$e->mode])
-                ->setCellValue('N' . $key1, $e->appoint_time . "-" . ($index + 1));
+                ->setCellValue('D' . $key1, $child->fieldu47)
+                ->setCellValue('E' . $key1, $userParent->mother)
+                ->setCellValue('F' . $key1, $userParent->field44)
+                ->setCellValue('G' . $key1, date('Y-m-d', $v['appoint_date']))
+                ->setCellValue('H' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
+                ->setCellValue('I' . $key1, $e->phone)
+                ->setCellValue('J' . $key1, \common\models\Appoint::$stateText[$e->state])
+                ->setCellValue('K' . $key1, \common\models\Appoint::$typeText[$e->type])
+                ->setCellValue('L' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
+                ->setCellValue('M' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
+                ->setCellValue('N' . $key1, \common\models\Appoint::$modeText[$e->mode])
+                ->setCellValue('O' . $key1, $e->appoint_time . "-" . ($index + 1));
 
         }
         // $objPHPExcel->setActiveSheetIndex(0);
@@ -135,7 +137,7 @@ class AppointController extends BaseController
                 'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
 
             ];
-           $rs = WechatSendTmp::send($data, $login->openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
+            $rs = WechatSendTmp::send($data, $login->openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
 
         }
         return $this->redirect(Yii::$app->request->referrer);
