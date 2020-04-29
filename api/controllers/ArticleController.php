@@ -15,6 +15,7 @@ use common\models\ArticleLog;
 use common\models\ArticleUser;
 use common\models\Carousel;
 use common\models\Points;
+use common\models\UserDoctor;
 use yii\data\Pagination;
 
 class ArticleController extends Controller
@@ -79,8 +80,13 @@ class ArticleController extends Controller
         $row=$article->toArray();
         $row['createtime']=date('Y-m-d',$row['createtime']);
         $row['info']=$article->info->toArray();
-        $row['info']['source']=$row['info']['source']?$row['info']['source']:"儿宝宝";
+        if($article->datauserid){
+            $doctor=UserDoctor::findOne(['hospitalid'=>$article->datauserid]);
+            $row['info']['source']=$doctor->name;
 
+        }else {
+            $row['info']['source'] = $row['info']['source'] ? $row['info']['source'] : "儿宝宝";
+        }
         $like=ArticleLike::find()->andFilterWhere(['artid'=>$id]);
         $row['likeNum']=$like->count();
         $row['isLike']=$like->andFilterWhere(['userid'=>$this->userid])->one()?1:0;
