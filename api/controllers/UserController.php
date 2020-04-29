@@ -66,6 +66,7 @@ class UserController extends Controller
         } else {
             $log->addLog("未登录");
 
+
             //获取用户微信登陆信息
             $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
@@ -119,9 +120,8 @@ class UserController extends Controller
                 if ($user['unionid'] || $user['xopenid']) {
                     $userLogin = $login->one();
                 }
-
                 $userid = $userLogin ? $userLogin->userid : 0;
-                if ($userLogin && !$userLogin->xopenid) {
+                if ($userLogin && $userLogin->xopenid!=$user['openid']) {
                     $log->addLog("userlogin:".$userLogin->id);
                     if ($weOpenid->openid) {
                         $userLogin->openid = $weOpenid->openid;
