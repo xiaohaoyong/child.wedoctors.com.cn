@@ -77,33 +77,22 @@ class WappointController extends Controller
     public function actionFrom($userid)
     {
         $holiday = [
-            '2020-1-1',
-            '2020-1-24',
-            '2020-1-25',
-            '2020-1-26',
-            '2020-1-27',
-            '2020-1-28',
-            '2020-1-29',
-            '2020-1-30',
-            '2020-4-4',
-            '2020-4-5',
-            '2020-4-6',
-            '2020-5-1',
-            '2020-5-2',
-            '2020-5-3',
-            '2020-5-4',
-            '2020-5-5',
-            '2020-6-25',
-            '2020-6-26',
-            '2020-6-27',
-            '2020-10-1',
-            '2020-10-2',
-            '2020-10-3',
-            '2020-10-4',
-            '2020-10-5',
-            '2020-10-6',
-            '2020-10-7',
-            '2020-10-8',
+            '2020-05-01',
+            '2020-05-02',
+            '2020-05-03',
+            '2020-05-04',
+            '2020-05-05',
+            '2020-06-25',
+            '2020-06-26',
+            '2020-06-27',
+            '2020-10-01',
+            '2020-10-02',
+            '2020-10-03',
+            '2020-10-04',
+            '2020-10-05',
+            '2020-10-06',
+            '2020-10-07',
+            '2020-10-08',
         ];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $userid, 'type' => 4]);
 
@@ -120,7 +109,7 @@ class WappointController extends Controller
             $rs['date']=$rs['time'];
             $rs['day'] = date('d', $rs['time']);
             $rs['week'] = date('w', $rs['time']);
-            if (!in_array(date('Y-m-d', $rs['time']), $holiday) && in_array($rs['week'], $weekr)) {
+            if (!in_array(date('Y-m-d', $rs['time']), $holiday) && in_array($rs['week'], $weekr) && !in_array(date('Y-m-d',$rs['date']), $holiday)) {
                 $days[] = $rs;
             }
         }
