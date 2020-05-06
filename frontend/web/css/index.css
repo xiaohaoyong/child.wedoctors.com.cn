@@ -96,7 +96,7 @@ a:hover {
 .printTxt h3{font-size: 18px;line-height: 20px;}
 .printTxt p{font-size:14px;line-height: 18px;}
 
-.content .map{margin-top: 49px;margin-bottom: 72px;}
+.map{width: 1110px;margin: 0 auto;margin-top: 49px;margin-bottom: 72px;}
 
 .footer{height: 452px;}
 .footer .main{width: 1110px;margin: 0 auto;display: flex;justify-content: space-between;}
