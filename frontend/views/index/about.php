@@ -133,11 +133,36 @@ $this->title="关于我们-儿宝宝";
             </div>
 
         </div>
-        <div class="map">
-            <img src="/img/about_content_map.png" width="1110">
-        </div>
-    </div>
 
+    </div>
+    <div class="map">
+        <!--百度地图容器-->
+        <script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.1&services=true"></script>
+        <div style="width:100%;height:595px;" id="dituContent"></div>
+        <script type="text/javascript">
+            // 百度地图API功能
+            var map = new BMap.Map("dituContent");
+            var point = new BMap.Point(116.428148,39.925613);
+            var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+            var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+            var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+            var marker = new BMap.Marker(point);  // 创建标注
+            map.addOverlay(marker);              // 将标注添加到地图中
+            map.centerAndZoom(point, 17);
+            var opts = {
+                width : 240,     // 信息窗口宽度
+                height: 100,     // 信息窗口高度
+                title : "" , // 信息窗口标题
+                enableMessage:true,//设置允许信息窗发送短息
+                message:"电话：18201599388"
+            }
+            var infoWindow = new BMap.InfoWindow('<p class="f14">地址：北京市东城区内务部街19号院<br>邮箱：lqsdhr@126.com<br>电话：186 1120 1265<p>', opts);  // 创建信息窗口对象
+            map.openInfoWindow(infoWindow,point); //开启信息窗口
+            map.addControl(top_left_control);
+            map.addControl(top_left_navigation);
+            map.addControl(top_right_navigation);
+        </script>
+    </div>
 <?php
 $updateJs = <<<JS
     
