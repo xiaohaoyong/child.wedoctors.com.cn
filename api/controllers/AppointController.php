@@ -33,7 +33,7 @@ use yii\data\Pagination;
 class AppointController extends Controller
 {
     public function actionDoctors($search=''){
-        $query=UserDoctor::find();
+        $query=UserDoctor::find()->andWhere(['city'=>11]);
         if($search){
             $query->andFilterWhere(['like','name',$search]);
         }
