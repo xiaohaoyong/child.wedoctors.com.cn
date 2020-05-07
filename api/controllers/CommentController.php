@@ -10,6 +10,7 @@ namespace api\controllers;
 
 use api\controllers\Controller;
 
+use common\models\Article;
 use common\models\ArticleComment;
 use common\models\Points;
 use common\models\UserParent;
@@ -35,7 +36,15 @@ class CommentController extends Controller
         return $comment->id;
     }
     public function actionList($id){
-        
+
+        $article=Article::findOne($id);
+        $doctors=[110580];
+        if(in_array($article->datauserid,$doctors)){
+            $data['list']=[];
+            $data['total']=0;
+            return $data;
+        }
+
         $comment=ArticleComment::find()->andFilterWhere(['artid'=>$id]);
         $pages = new Pagination(['totalCount' => $comment->count(), 'pageSize' => 10]);
         $list = $comment->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
