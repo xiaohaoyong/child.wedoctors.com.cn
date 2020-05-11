@@ -98,7 +98,7 @@ class DataController extends Controller
         foreach($list as $k=>$v){
             $userParent=UserParent::findOne(['userid'=>$v->userid]);
             if($userParent) {
-                echo $v->userid . "," .$userParent->mother_name . "\n";
+                echo $v->userid . "," .$userParent->mother . "\n";
             }
         }
         exit;
