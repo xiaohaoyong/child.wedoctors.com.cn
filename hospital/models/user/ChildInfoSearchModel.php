@@ -199,7 +199,7 @@ class ChildInfoSearchModel extends ChildInfo
             $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
         }
 
-        var_dump($query->createCommand()->getRawSql());exit;
+        //var_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
     }
 
