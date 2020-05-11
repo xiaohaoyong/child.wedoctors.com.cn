@@ -65,6 +65,11 @@ class AppointController extends \api\modules\v1\controllers\AppointController
                 '2020-10-7',
                 '2020-10-8',
             ];
+
+            if($id==4119){
+                $holiday[]='2020-6-15';
+            }
+
             $appoint = HospitalAppoint::findOne(['doctorid' => $id, 'type' => $type]);
             $hospitalV = HospitalAppointVaccine::find()
                 ->where(['haid' => $appoint->id])->all();
