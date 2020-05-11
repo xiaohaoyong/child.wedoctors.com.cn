@@ -88,12 +88,16 @@ class DataController extends Controller
     public function actionTesta()
     {
         $query=ChildInfo::find();
+        $query->select('userid');
         $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
         $query->andFilterWhere(['`doctor_parent`.`doctorid`' => 91722]);
         $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
         $query->andFilterWhere(['child_info.admin' => 110571]);
         $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-6 year")]);
-        $list=$query->all();
+
+        $au=Autograph::find()->select('userid')->where(['doctorid'=>91722])->column();
+        $list=$query->andWhere(['in','child_info.userid',$au])->column();
+
 
         foreach($list as $k=>$v){
             $userParent=UserParent::findOne(['userid'=>$v->userid]);
