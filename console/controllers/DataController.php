@@ -87,6 +87,20 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $query=ChildInfo::find();
+        $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
+        $query->andFilterWhere(['`doctor_parent`.`doctorid`' => 91722]);
+        $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
+        $query->andFilterWhere(['child_info.admin' => 110571]);
+        $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-6 year")]);
+        $list=$query->all();
+
+        foreach($list as $k=>$v){
+            echo $v->userid."\n";
+        }
+        exit;
+
+
         ini_set('memory_limit', '2048M');
 
         $doctors=UserDoctor::find()->all();
