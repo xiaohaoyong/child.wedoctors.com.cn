@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\UserParent;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -12,6 +13,9 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\ChildInfo;
+use common\models\DoctorParent;
+use common\models\UserDoctor;
 
 /**
  * Site controller
@@ -63,6 +67,24 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+    public function actionDown($userid,$type=0)
+    {
+        if($type) {
+            $userParent = UserParent::findOne(['userid' => $userid]);
+        }
+
+        $doctorParent=DoctorParent::findOne(['parentid'=>$userid]);
+        $userDoctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
+        $child=ChildInfo::find()->select('name')->where(['userid'=>$userid])->column();
+
+
+        return $this->renderPartial('down',[
+            'userParent'=>$userParent,
+            'userid'=>$userid,
+            'userDoctor'=>$userDoctor,
+            'child'=>$child,
+        ]);
     }
 
     /**
