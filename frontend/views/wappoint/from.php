@@ -53,7 +53,7 @@
             <input type="hidden" class="appoint_input" value="<?= $day ?>" name="appoint_date" id="appoint_date">
             <div class="days">
                 <?php
-                $dweek=['日','一','二','三','四','五','日'];
+                $dweek=['日','一','二','三','四','五','六'];
                 foreach ($days as $k => $v) { ?>
                     <item class="rs" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
                         <div class="week"><?= $dweek[$v['week']] ?></div>

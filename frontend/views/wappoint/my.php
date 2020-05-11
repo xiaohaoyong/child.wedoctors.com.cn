@@ -32,6 +32,7 @@ $this->title="我的预约";
                 </div>
             </div>
             <div>
+                <?php if($type==1){?><a href="/wappoint/view?id=<?=$v['id']?>"> <?php }?>
                 <div class="name"><?=$v['child_name']?></div>
                 <div class="mylist">
                     <div class="item">
@@ -47,6 +48,7 @@ $this->title="我的预约";
                         <div class="value"><?=$v['time']?></div>
                     </div>
                 </div>
+                    <?php if($type==1){?></a><?php }?>
             </div>
         </div>
         <?php }?>
