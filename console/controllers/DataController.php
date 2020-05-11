@@ -93,10 +93,10 @@ class DataController extends Controller
         $query->andFilterWhere(['`doctor_parent`.`level`' => 1]);
         $query->andFilterWhere(['child_info.admin' => 110571]);
         $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-6 year")]);
-        $list=$query->all();
+        $list=$query->asArray()->all();
 
         foreach($list as $k=>$v){
-            echo $v->userid."\n";
+            echo $v['userid'].",".$v['mother_name']."\n";
         }
         exit;
 
