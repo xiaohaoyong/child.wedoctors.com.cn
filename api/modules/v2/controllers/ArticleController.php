@@ -70,7 +70,7 @@ class ArticleController extends \api\modules\v1\controllers\ArticleController
         return $data;
     }
     public function actionPoint($id){
-        $point=new Points();
-        return $point->addPoint($this->userid,6,$id);
+//        $point=new Points();
+//        return $point->addPoint($this->userid,6,$id);
     }
 }
