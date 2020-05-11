@@ -30,7 +30,7 @@
     </div>
     <div style="line-height: 70px;text-indent: 2em;">
         <div>
-            <span style="padding-right: 100px;">姓名：<?=$userParent['mother']?></span>
+            <span style="padding-right: 100px;">姓名：<?=$userParent['mother']?>，<?=$userParent['father']?></span>
             <span style="padding-right: 100px;">性别：<?=$userParent['mother']?'女':''?></span>
             <span style="padding-right: 100px;">年龄：
                 <?php
