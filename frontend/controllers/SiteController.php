@@ -70,10 +70,7 @@ class SiteController extends Controller
     }
     public function actionDown($userid,$type=0)
     {
-        if($type) {
-            $userParent = UserParent::findOne(['userid' => $userid]);
-        }
-
+        $userParent = UserParent::findOne(['userid' => $userid]);
         $doctorParent=DoctorParent::findOne(['parentid'=>$userid]);
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
         $child=ChildInfo::find()->select('name')->where(['userid'=>$userid])->column();
