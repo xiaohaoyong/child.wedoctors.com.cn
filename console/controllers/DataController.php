@@ -96,7 +96,7 @@ class DataController extends Controller
         $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-6 year")]);
 
         $au=Autograph::find()->select('userid')->where(['doctorid'=>91722])->column();
-        $list=$query->andWhere(['in','child_info.userid',$au])->column();
+        $list=$query->andWhere(['in','child_info.userid',$au])->all();
 
 
         foreach($list as $k=>$v){
