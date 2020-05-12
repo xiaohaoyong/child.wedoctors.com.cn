@@ -24,6 +24,7 @@ use common\models\HospitalAppoint;
 use common\models\HospitalAppointWeek;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
+use common\models\Vaccine;
 use databackend\models\User;
 use dosamigos\qrcode\lib\Enum;
 use dosamigos\qrcode\QrCode;
@@ -264,6 +265,8 @@ class AppointController extends Controller
         $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
         $row['child_name']=ChildInfo::findOne($appoint->childid)->name;
         $row['duan']=$appoint->appoint_time;
+        $vaccine=Vaccine::findOne($appoint->vaccine);
+        $row['vaccineStr']=$vaccine?$vaccine->name:'';
 
         $index=Appoint::find()
             ->andWhere(['appoint_date'=>$appoint->appoint_date])
@@ -293,6 +296,8 @@ class AppointController extends Controller
             $row['time']=date('Y.m.d',$v->appoint_date)."  ".Appoint::$timeText[$v->appoint_time];
             $row['stateText']=Appoint::$stateText[$v->state];
             $row['child_name']=ChildInfo::findOne($v->childid)->name;
+            $vaccine=Vaccine::findOne($v->vaccine);
+            $row['vaccineStr']=$vaccine?$vaccine->name:'';
             $list[]=$row;
         }
         return $list;
