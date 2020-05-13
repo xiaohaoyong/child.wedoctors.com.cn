@@ -105,5 +105,13 @@ class AppointController extends Controller
         }
         return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功', 'data' => $arr];
     }
+    public function actionDone($h, $d, $s,$code=''){
+        if ($this->sign($h, $d, $s) && $this->hs[$h]) {
+            if($code){
+
+            }
+        }
+        return ['code' => 20000, 'msg' => '请求失败'];
+    }
 
 }
