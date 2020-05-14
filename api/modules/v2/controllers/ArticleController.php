@@ -10,6 +10,7 @@ namespace api\modules\v2\controllers;
 
 use api\models\Article;
 use common\models\ArticleCategory;
+use common\models\ArticleInfo;
 use common\models\Carousel;
 use common\models\Points;
 use yii\data\Pagination;
@@ -54,6 +55,10 @@ class ArticleController extends \api\modules\v1\controllers\ArticleController
             $articles->andFilterWhere(['!=','subject_pid',20]);
 
         }
+        $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
+
+        $articles->andFilterWhere(['not in','id',$view]);
+
 
         $pages = new Pagination(['totalCount' => $articles->count(), 'pageSize' => 10]);
         $list = $articles->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
