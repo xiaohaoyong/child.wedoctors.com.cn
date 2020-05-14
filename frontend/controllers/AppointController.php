@@ -25,6 +25,8 @@ use yii\web\Response;
 
 class AppointController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     //public $layout='@frontend/views/layouts/h5.php';
     public $hs = [
         '9RV7H6Dv' => [248035],
@@ -109,7 +111,6 @@ class AppointController extends Controller
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
         $post=\Yii::$app->request->post();
-        var_dump($post);
         if ($this->sign($h, $d, $s) && $this->hs[$h]) {
             if($code){
 
