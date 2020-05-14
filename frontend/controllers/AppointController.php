@@ -112,9 +112,8 @@ class AppointController extends Controller
 
         $post=\Yii::$app->request->post();
         if ($this->sign($h, $d, $s) && $this->hs[$h]) {
-            if($code){
+            return ['code' => 10000, 'msg' => '成功','data'=>$post];
 
-            }
         }
         return ['code' => 20000, 'msg' => '请求失败','data'=>$post];
     }
