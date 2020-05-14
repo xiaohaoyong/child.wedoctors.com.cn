@@ -77,7 +77,7 @@ class ArticleSearchModel extends Article
 
         if($this->title){
             $query->leftJoin('article_info', '`article_info`.`id` = `article`.`id`');
-            $query->andWhere(['title'=>$this->title]);
+            $query->andWhere(['like','title',$this->title]);
 
         }
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
