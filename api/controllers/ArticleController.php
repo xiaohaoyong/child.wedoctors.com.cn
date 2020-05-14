@@ -10,6 +10,7 @@ namespace api\controllers;
 
 use api\models\Article;
 use common\models\ArticleCategory;
+use common\models\ArticleInfo;
 use common\models\ArticleLike;
 use common\models\ArticleLog;
 use common\models\ArticleUser;
@@ -51,6 +52,10 @@ class ArticleController extends Controller
             $articles->andFilterWhere(['!=','catid',6]);
             $articles->andFilterWhere(['!=','type',2]);
         }
+        $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
+
+        $articles->andFilterWhere(['not in','id',$view]);
+
 
         $pages = new Pagination(['totalCount' => $articles->count(), 'pageSize' => 10]);
         $list = $articles->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
