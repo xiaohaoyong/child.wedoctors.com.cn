@@ -106,12 +106,16 @@ class AppointController extends Controller
         return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功', 'data' => $arr];
     }
     public function actionDone($h, $d, $s,$code=''){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $post=\Yii::$app->request->post();
+        var_dump($post);
         if ($this->sign($h, $d, $s) && $this->hs[$h]) {
             if($code){
 
             }
         }
-        return ['code' => 20000, 'msg' => '请求失败'];
+        return ['code' => 20000, 'msg' => '请求失败','data'=>$post];
     }
 
 }
