@@ -203,7 +203,7 @@ class DataUpdateController extends BeanstalkController
             return "\common\models\Pregnancy";
         }
         $field_ChildInfo=ChildInfo::$field;
-        if(!array_diff($field_ChildInfo,$rs) || array_search('母亲姓名',$rs)){
+        if(!array_diff($field_ChildInfo,$rs) || (array_search('母亲姓名',$rs) && array_search('母亲身份证号',$rs))){
             $dur->type=3;
             $dur->save();
             return "\common\models\ChildInfo";
