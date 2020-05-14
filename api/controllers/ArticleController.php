@@ -77,7 +77,9 @@ class ArticleController extends Controller
 
     public function actionView($id){
         $article=Article::findOne($id);
-        if(!$article) {
+        $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
+
+        if(!$article || in_array($id,$view)) {
 
             $article=Article::findOne(313);
 
