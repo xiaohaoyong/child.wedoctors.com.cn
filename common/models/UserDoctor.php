@@ -75,7 +75,7 @@ class UserDoctor extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return ['appoint_intro'=>'预约介绍（时间、周期、项目）','longitude' => '经度', 'latitude' => '纬度', 'appoints' => '预约项目', 'appoint' => '是否开通预约', 'userid' => '用户ID', 'name' => '姓名', 'sex' => '性别', 'age' => '年龄', 'birthday' => '生日', 'phone' => '医院电话', 'hospitalid' => '所以在医院', 'subject_b' => '一级科室', 'subject_s' => '二级科室', 'title' => '职称', 'intro' => '简介', 'avatar' => '头像', 'skilful' => '简介', 'idnum' => '身份证号码', 'province' => '省', 'county' => '县', 'city' => '市', 'atitle' => '行政职称', 'otype' => '职业类型', 'authimg' => '证件照',];
+        return ['appoint_intro'=>'预约介绍(社区选择列表页面)','longitude' => '经度', 'latitude' => '纬度', 'appoints' => '预约项目', 'appoint' => '是否开通预约', 'userid' => '用户ID', 'name' => '姓名', 'sex' => '性别', 'age' => '年龄', 'birthday' => '生日', 'phone' => '医院电话', 'hospitalid' => '所以在医院', 'subject_b' => '一级科室', 'subject_s' => '二级科室', 'title' => '职称', 'intro' => '简介', 'avatar' => '头像', 'skilful' => '简介', 'idnum' => '身份证号码', 'province' => '省', 'county' => '县', 'city' => '市', 'atitle' => '行政职称', 'otype' => '职业类型', 'authimg' => '证件照',];
     }
 
     /**
