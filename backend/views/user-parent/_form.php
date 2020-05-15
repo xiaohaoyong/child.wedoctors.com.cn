@@ -15,9 +15,9 @@ use yii\widgets\ActiveForm;
             <div class="box-body">
                 <?php $form = ActiveForm::begin(); ?>
 
-                    <?= $form->field($model, 'userid')->textInput() ?>
-
-    <?= $form->field($model, 'fieldp47')->textInput() ?>
+                <?= $form->field($model, 'userid')->textInput() ?>
+                <?= $form->field($model, 'mother')->textInput() ?>
+                <?= $form->field($model, 'mother_id')->textInput() ?>
 
 
                 <div class="form-group">

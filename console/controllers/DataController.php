@@ -41,6 +41,7 @@ use common\models\Interview;
 use common\models\Log;
 use common\models\Notice;
 use common\models\Pregnancy;
+use common\models\Test;
 use common\models\User;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
@@ -87,6 +88,74 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+
+
+        ini_set('memory_limit', '2048M');
+
+        $doctors=UserDoctor::find()->all();
+        foreach($doctors as $dk=>$dv) {
+            echo $dv->name."\n";
+            for ($i = 1; $i < 32; $i++) {
+
+                $time = strtotime('+' . $i . " day");
+                $time = strtotime(date('Ymd', $time));
+                $appoints1 = Appoint::find()->select('count(*) as c,appoint_time')->where(['appoint_date' => $time])->andWhere(['doctorid'=>$dv->userid])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->andWhere(['>','appoint_time',6])->count();
+                $appoints2 = Appoint::find()->select('count(*) as c,appoint_time')->where(['appoint_date' => $time])->andWhere(['doctorid'=>$dv->userid])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->andWhere(['<','appoint_time',7])->count();
+                if($appoints1 &&  $appoints2) {
+                    echo date('Ymd',$time)."==".$dv->userid;
+                    echo "\n";
+                }
+            }
+            echo "==================================\n";
+        }
+        exit;
+
+        $appoints=Appoint::find()->where(['>','appoint_date',time()])->andWhere(['type'=>2])->andWhere(['state'=>1])->andWhere(['mode'=>0])->all();
+        foreach($appoints as $k=>$v){
+
+            $query=Appoint::find()->where(['appoint_date'=>$v->appoint_date])->andWhere(['type'=>2])->andWhere(['state'=>1])->andWhere(['mode'=>0]);
+            if($v->appoint_time>6){
+                $query->andWhere(['<','appoint_time',7]);
+            }else{
+                $query->andWhere(['>','appoint_time',6]);
+            }
+            $count=$query->count();
+            if($count>0){
+                echo $v->appoint_date.",".$v->doctorid."\n";
+            }
+
+        }
+        exit;
+
+       $test=Test::find()->all();
+       foreach($test as $k=>$v){
+           $child=ChildInfo::find()->where(['name'=>$v->f6])->andWhere(['birthday'=>strtotime($v->f8)])->andWhere(['source'=>110620])->one();
+           if($child){
+               $userParent=UserParent::findOne(['userid'=>$child->userid]);
+               if($userParent){
+                   if($userParent->mother!=$v->f10  ||$userParent->father!=$v->f12 ){
+                       echo "false parent:".$userParent->userid.$v->f6."\n";
+                   }
+               }else{
+                   echo "no parent:".$v->f6."\n";
+               }
+           }
+       }
+       exit;
+
+        $child=ChildInfo::find()->where(['source'=>110620])->all();
+        foreach($child as $k=>$v){
+
+            $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid,'level'=>1]);
+            if(!$doctorParent){
+                $user=User::findOne($v->userid);
+                if($user){
+                    $user->delete();
+                }
+            }
+        }
+        exit;
+
         $query=ChildInfo::find();
         $query->select('userid');
         $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
@@ -131,22 +200,6 @@ class DataController extends Controller
         exit;
 
 
-        $appoints=Appoint::find()->where(['>','appoint_date',time()])->andWhere(['type'=>2])->andWhere(['state'=>1])->andWhere(['mode'=>0])->all();
-        foreach($appoints as $k=>$v){
-
-            $query=Appoint::find()->where(['appoint_date'=>$v->appoint_date])->andWhere(['type'=>2])->andWhere(['state'=>1])->andWhere(['mode'=>0]);
-            if($v->appoint_time>6){
-                $query->andWhere(['<','appoint_time',7]);
-            }else{
-                $query->andWhere(['>','appoint_time',6]);
-            }
-            $count=$query->count();
-            if($count>0){
-                echo $v->appoint_date.",".$v->doctorid."\n";
-            }
-
-        }
-        exit;
 
 
 

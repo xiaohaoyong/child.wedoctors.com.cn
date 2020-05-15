@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => 'type',
                                     'value' => function ($e) {
-                                        return \common\models\UserDoctorAppoint::$typeText[$e->type];
+                                        return \common\models\HospitalAppoint::$typeText[$e->type];
                                     }
                                 ],
                                 [

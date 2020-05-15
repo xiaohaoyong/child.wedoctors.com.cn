@@ -21,6 +21,9 @@ $config= [
         'v3' => [
             'class' => 'api\modules\v3\Module',
         ],
+        'v4' => [
+            'class' => 'api\modules\v4\Module',
+        ],
     ],
     'components' => [
         'request' => [
