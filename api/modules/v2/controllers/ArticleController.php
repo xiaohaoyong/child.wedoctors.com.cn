@@ -55,9 +55,9 @@ class ArticleController extends \api\modules\v1\controllers\ArticleController
             $articles->andFilterWhere(['!=','subject_pid',20]);
 
         }
-        $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
+       // $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
 
-        $articles->andFilterWhere(['not in','id',$view]);
+       // $articles->andFilterWhere(['not in','id',$view]);
 
 
         $pages = new Pagination(['totalCount' => $articles->count(), 'pageSize' => 10]);

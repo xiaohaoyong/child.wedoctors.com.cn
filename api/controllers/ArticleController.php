@@ -52,9 +52,9 @@ class ArticleController extends Controller
             $articles->andFilterWhere(['!=','catid',6]);
             $articles->andFilterWhere(['!=','type',2]);
         }
-        $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
+       // $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
 
-        $articles->andFilterWhere(['not in','id',$view]);
+        //$articles->andFilterWhere(['not in','id',$view]);
 
 
         $pages = new Pagination(['totalCount' => $articles->count(), 'pageSize' => 10]);
@@ -77,9 +77,9 @@ class ArticleController extends Controller
 
     public function actionView($id){
         $article=Article::findOne($id);
-        $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
+        //$view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
 
-        if(!$article || in_array($id,$view)) {
+        if(!$article) {
 
             $article=Article::findOne(313);
 
