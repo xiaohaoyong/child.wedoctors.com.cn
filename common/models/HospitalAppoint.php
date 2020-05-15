@@ -117,8 +117,10 @@ class HospitalAppoint extends \yii\db\ActiveRecord
      */
     public function is_appoint($date,$weekr=[])
     {
+
         $week = date('w', $date);
-        $weekr = $weekr?$weekr:str_split((string)$this->weeks);
+        $weeks =str_split((string)$this->weeks);
+        $weeks = $weekr?array_intersect($weekr, $weeks):$weeks;
         $holiday = [
             '2020-05-01',
             '2020-05-02',
@@ -145,12 +147,14 @@ class HospitalAppoint extends \yii\db\ActiveRecord
         if($this->sure_date) {
             $sure_date =explode(',',$this->sure_date);
         }
+
+
         $cycle=self::$cycleNum[$this->cycle];
         $sday = strtotime(date('Y-m-d', strtotime('+' . ($this->delay+1) . " day")));
         $eday = strtotime('+'.($cycle-1).' day',$sday);
 
-        if ((in_array($week, $weekr) && !in_array(date('Y-m-d', $date), $holiday)
-            || (in_array(date('Y-m-d',$date),$sure_date)))) {
+        if ((in_array($week, $weeks) && !in_array(date('Y-m-d', $date), $holiday)
+            || (in_array(date('Y-m-d',$date),$sure_date) && count($weekr)>0 && in_array($week, $weekr)))) {
             if(($date>=$sday && $date<$eday) || ($date==$eday && date('Gi')>$this->release_time."00")){
                 return 1;
             }else{

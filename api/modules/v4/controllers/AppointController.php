@@ -169,7 +169,19 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $rs = [];
         $times=[];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
-        $is_appoint=$hospitalA->is_appoint(strtotime($day),$vid);
+
+
+        $week=date('w',strtotime($day));
+        $weekv = HospitalAppointVaccine::find()
+            ->select('id')
+            ->where(['haid' => $hospitalA->id])
+            ->where(['week' => $week])->count();
+        if($weekv>0){
+            $weekvs[]=$week;
+        }
+;
+
+        $is_appoint=$hospitalA->is_appoint(strtotime($day),$weekvs);
         if(!$is_appoint){
             return ['list' => [],'is_appoint'=>$is_appoint,'text'=>'非线上预约门诊日，请选择其他日期！'];
         }
