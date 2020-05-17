@@ -55,7 +55,7 @@ class AppointController extends \api\modules\v2\controllers\AppointController
                 if($doctorid==4119 && date('Ymd',strtotime($day))=='20200615'){
                     foreach($rs as $k=>$v){
                         if(in_array($k,[4,5,6,13,14,15,16,17,18])){
-                            unset($rs[$k]);
+                            $rs[$k]=0;
                         }
                     }
                 }
