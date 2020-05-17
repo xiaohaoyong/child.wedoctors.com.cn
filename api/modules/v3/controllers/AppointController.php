@@ -52,7 +52,7 @@ class AppointController extends \api\modules\v2\controllers\AppointController
                 }else{
                     $interval=$appoint->interval;
                 }
-                if($doctorid==4119 && $day=='20200615'){
+                if($doctorid==4119 && date('Ymd',strtotime($day))=='20200615'){
                     foreach($rs as $k=>$v){
                         if(in_array($k,[4,5,6,13,14,15,16,17,18])){
                             unset($rs[$k]);
