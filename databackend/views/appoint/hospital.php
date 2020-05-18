@@ -65,18 +65,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             </thead>
                             <tbody>
                             <?php
+                            $sdate=Yii::$app->request->post('sdate');
+                            $edate=Yii::$app->request->post('edate');
                             foreach($hospital as $k=>$v){
                                 $query1=\common\models\Appoint::find()->where(['doctorid'=>$v->userid])->andWhere(['type'=>2]);
                                 $query2=\common\models\Appoint::find()->where(['doctorid'=>$v->userid])->andWhere(['type'=>1]);
                                 if(Yii::$app->request->post('edate') && Yii::$app->request->post('sdate')){
-                                    $sdate=Yii::$app->request->post('sdate');
-                                    $edate=Yii::$app->request->post('edate');
+
                                     $query1->andWhere(['>=','appoint_date',strtotime($sdate)])->andWhere(['<=','appoint_date',strtotime($edate)]);
                                     $query2->andWhere(['>=','appoint_date',strtotime($sdate)])->andWhere(['<=','appoint_date',strtotime($edate)]);
                                 }
                                 ?>
                                 <tr>
-                                    <td><?=$v->name?></td>
+                                    <td><?=$v->name?><?php
+                                        if($v->userid==216593){
+                                            echo "---其他预约途径:718(20200511-20200515)";
+                                        }
+                                        ?></td>
                                     <td><?=$query1->count()?></td>
                                     <td><?=$query2->count()?></td>
                                 </tr>
