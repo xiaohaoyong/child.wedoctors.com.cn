@@ -211,6 +211,13 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                     $rs[$v->time_type] = $v->num;
                 }
             }
+            if($doctorid==4119 && date('Ymd',strtotime($day))=='20200615'){
+                foreach($rs as $k=>$v){
+                    if(in_array($k,[4,5,6,13,14,15,16,17,18])){
+                        $rs[$k]=0;
+                    }
+                }
+            }
             $firstAppoint=Appoint::find()
                 ->andWhere(['type' => $type])
                 ->andWhere(['doctorid' => $doctorid])

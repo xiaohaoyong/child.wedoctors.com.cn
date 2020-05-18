@@ -89,6 +89,8 @@ class DataController extends Controller
     public function actionTesta()
     {
 
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        var_dump($app->rebind());exit;
 
         ini_set('memory_limit', '2048M');
 
