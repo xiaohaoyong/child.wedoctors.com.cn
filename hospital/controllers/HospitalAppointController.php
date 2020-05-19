@@ -93,8 +93,19 @@ class HospitalAppointController extends BaseController
         if($model->weeks){
             $model->week=str_split((string)$model->weeks);
         }
-
+        if($model->non_date){
+            $model->non_date=explode(',',$model->non_date);
+        }
+        if($model->sure_date){
+            $model->sure_date=explode(',',$model->sure_date);
+        }
         $post=Yii::$app->request->post();
+        if($post['HospitalAppoint']['non_date']){
+            $post['HospitalAppoint']['non_date']=implode(',',$post['HospitalAppoint']['non_date']);
+        }
+        if($post['HospitalAppoint']['sure_date']){
+            $post['HospitalAppoint']['sure_date']=implode(',',$post['HospitalAppoint']['sure_date']);
+        }
         //var_dump($post);exit;
         if ($model->load($post) && $model->save()) {
             HospitalAppointWeek::deleteAll('haid='.$model->id);
