@@ -53,6 +53,10 @@ class AppointController extends Controller
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $arr = [];
 
+        $types=[
+            1=>2,
+            2=>1,
+        ];
         if ($this->sign($h, $d, $s) && $this->hs[$h]) {
 
             $appoint = Appoint::find()->where(['in', 'doctorid', $this->hs[$h]])
@@ -96,7 +100,11 @@ class AppointController extends Controller
                         break;
                 }
 
-                $rs['dept_Name'] = $v->type == 1 ? 2 : 1;
+                if(!$type=$types[$v->type]){
+                    $type=$this->type;
+                }
+
+                $rs['dept_Name'] = $type;
                 $rs['yuyueDate'] = Appoint::$timeText[$v->appoint_time];
                 $rs['quyuName'] = $quyuName;
                 $arr[] = $rs;
