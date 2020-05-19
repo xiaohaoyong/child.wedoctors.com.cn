@@ -21,6 +21,31 @@ class AppointController extends \api\modules\v2\controllers\AppointController
     public function actionDayNum($doctorid, $week, $type, $day)
     {
         $rs = [];
+        $times=[];
+        $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+
+
+        $week=date('w',strtotime($day));
+        $weekv = HospitalAppointVaccine::find()
+            ->select('id')
+            ->where(['haid' => $hospitalA->id])
+            ->where(['week' => $week])->count();
+        if($weekv>0){
+            $weekvs[]=$week;
+        }
+        ;
+
+        $is_appoint=$hospitalA->is_appoint(strtotime($day),$weekvs);
+        if(!$is_appoint){
+            return ['list' => [],'is_appoint'=>$is_appoint,'text'=>'非线上预约门诊日，请选择其他日期！'];
+        }
+        if($is_appoint==2){
+            $date=date('Y年m月d日',strtotime('-'.HospitalAppoint::$cycleNum[$hospitalA->cycle].' day',strtotime($day)));
+            return ['list' => [],'is_appoint'=>$is_appoint,'text'=>$date." ".HospitalAppoint::$rtText[$hospitalA->release_time]];
+        }
+
+
+        $rs = [];
         $appoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         if ($appoint) {
             $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $appoint->id])->orderBy('time_type asc')->all();

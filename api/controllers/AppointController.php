@@ -185,6 +185,14 @@ class AppointController extends Controller
         };
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
 
+
+        $is_appoint=$appoint->is_appoint(strtotime($post['appoint_date']));
+        if($is_appoint!=1){
+            return new Code(21000,'预约日期非门诊日或未到放号时间!请更新客户端查看！');
+        }
+
+
+
         $w=date("w",strtotime($post['appoint_date']));
         $weeks = HospitalAppointWeek::find()
             ->andWhere(['week' => $w])
