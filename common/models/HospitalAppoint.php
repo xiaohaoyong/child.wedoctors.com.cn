@@ -69,16 +69,16 @@ class HospitalAppoint extends \yii\db\ActiveRecord
         ];
     }
 
-    public function dateNumValidation($attribute,$params){
+//    public function dateNumValidation($attribute,$params){
+//
+//        if(isset($this->$attribute)){
+//            $array=explode(',',$this->$attribute);
+//            if(count($array)>20){
+//                $this->addError($attribute, "不能超过20个日期，请清除过期日期");
+//            }
+//        }
 
-        if(isset($this->$attribute)){
-            $array=explode(',',$this->$attribute);
-            if(count($array)>20){
-                $this->addError($attribute, "不能超过20个日期，请清除过期日期");
-            }
-        }
-
-    }
+    //}
 
     /**
      * {@inheritdoc}
