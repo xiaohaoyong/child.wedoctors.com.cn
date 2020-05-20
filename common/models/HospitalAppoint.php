@@ -62,7 +62,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cycle', 'delay', 'week'], 'required'],
+            [['cycle', 'delay', 'week','interval','phone'], 'required'],
             [['doctorid', 'cycle', 'delay', 'weeks', 'interval', 'updateInterval', 'phone','release_time'], 'integer'],
             [['info'], 'string', 'max' => 150],
             //[['non_date','sure_date'],'dateNumValidation']

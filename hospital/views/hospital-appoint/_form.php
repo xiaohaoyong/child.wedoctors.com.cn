@@ -64,7 +64,7 @@ use yii\widgets\ActiveForm;
                         <th>
                             科室电话
                         </th>
-                        <td><?= $form->field($model, 'phone', ['options' => ['class' => "col-xs-5"]])->textInput()->label(false) ?>
+                        <td><?= $form->field($model, 'phone', ['options' => ['class' => "col-xs-5"]])->textInput(['value'=>0])->label(false) ?>
                         </td>
                     </tr>
                     <tr>
