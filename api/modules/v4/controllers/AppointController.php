@@ -170,7 +170,6 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $times=[];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
 
-
         $week=date('w',strtotime($day));
         $weekv = HospitalAppointVaccine::find()
             ->select('id')
@@ -179,7 +178,6 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         if($weekv>0){
             $weekvs[]=$week;
         }
-;
 
         $is_appoint=$hospitalA->is_appoint(strtotime($day),$weekvs);
         if(!$is_appoint){
@@ -218,6 +216,12 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                     }
                 }
             }
+            if($doctorid==176156 && date('Ymd',strtotime($day))=='20200522'){
+                foreach($rs as $k=>$v){
+                    $rs[$k]=0;
+                }
+            }
+
             $firstAppoint=Appoint::find()
                 ->andWhere(['type' => $type])
                 ->andWhere(['doctorid' => $doctorid])
