@@ -67,6 +67,11 @@ $this->title = "上传、同步数据";
                                             console.log(data);
                                             }",
                                         "filepreajax" => "function (event, data, id, index,obj) {
+                                        console.log(event);
+                                        console.log(data);
+                                        console.log(id);
+                                        console.log(index);
+                                        console.log(obj);
                                             var tmp = Date.parse( new Date() ).toString();
                                             tmp = tmp.substr(0,10);
                                             index.set('key',index.get('key')+'/'+tmp);
