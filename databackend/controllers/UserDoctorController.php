@@ -88,6 +88,29 @@ class UserDoctorController extends BaseController
      * Lists all UserDoctor models.
      * @return mixed
      */
+    public function actionForm()
+    {
+        $params = Yii::$app->request->queryParams;
+
+        $doctor = UserDoctor::find()->select('userid')->andFilterWhere(['county' => \Yii::$app->user->identity->county])->andFilterWhere(['>', 'userid', 37])->column();
+        $sdate=Yii::$app->request->post('sdate');
+        $edate=Yii::$app->request->post('edate');
+        $query=\common\models\HospitalForm::find()
+            ->select('sum(sign1) as a,sum(sign2) as b,sum(appoint_num) as c,sum(other_appoint_num) as d,doctorid')
+            ->where(['in','doctorid',$doctor]);
+        if($sdate && $edate){
+            $query->andWhere(['>=','date',strtotime($sdate)])->andWhere(['<=','date',strtotime($edate)]);
+        }
+        $doctors=$query->groupBy('doctorid')->asArray()->all();
+        return $this->render('form', [
+            'doctors' => $doctors,
+        ]);
+    }
+
+    /**
+     * Lists all UserDoctor models.
+     * @return mixed
+     */
     public function actionDown()
     {
         $params = Yii::$app->request->queryParams;
