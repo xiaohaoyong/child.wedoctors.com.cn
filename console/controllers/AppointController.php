@@ -17,7 +17,7 @@ class AppointController extends Controller
     public function actionOverdue(){
 
         $day=strtotime(date('Y-m-d'));
-        Appoint::updateAll(['state' => 4], 'state=1 and appoint_date <'.$day);
+        Appoint::updateAll(['state' => 4], 'state=1 and appoint_date <='.$day);
 
     }
 }
