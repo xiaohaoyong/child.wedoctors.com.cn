@@ -9,6 +9,7 @@
 namespace api\modules\v4\controllers;
 
 use common\components\Code;
+use common\helpers\WechatSendTmp;
 use common\models\Appoint;
 use common\models\AppointAdult;
 use common\models\ChildInfo;
@@ -268,5 +269,112 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
         }
         return new Code(20020, '未设置');
+    }
+
+    public function actionSave(){
+        $post=\Yii::$app->request->post();
+
+        $doctor=UserDoctor::findOne(['userid'=>$post['doctorid']]);
+        if($doctor){
+            $hospital=Hospital::findOne($doctor->hospitalid);
+            if($doctor->appoint){
+                $types=str_split((string)$doctor->appoint);
+            }
+        }
+        if(!$doctor || !$doctor->appoint || !in_array($post['type'],$types)){
+            return new Code(21000, '社区未开通');
+        };
+        $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
+
+
+        $is_appoint=$appoint->is_appoint(strtotime($post['appoint_date']));
+        if($is_appoint!=1){
+            return new Code(21000,'预约日期非门诊日或未到放号时间!请更新客户端查看！');
+        }
+
+        $firstAppoint=Appoint::find()
+            ->andWhere(['type' => $post['type']])
+            ->andWhere(['doctorid' => $doctor->userid])
+            ->andWhere(['appoint_date' => strtotime($post['appoint_date'])])
+            ->andWhere(['!=', 'state', 3])
+            ->andWhere(['mode' => 0])
+            ->orderBy('createtime desc')
+            ->one();
+        if($firstAppoint){
+            if($firstAppoint->appoint_time>6 && $post['appoint_time']<7){
+                return new Code(21000,'预约日期非门诊日或未到放号时间!请更新客户端查看！');
+            }
+            if($firstAppoint->appoint_time<7 && $post['appoint_time']>6){
+                return new Code(21000,'预约日期非门诊日或未到放号时间!请更新客户端查看！');
+            }
+        }
+
+
+
+        $w=date("w",strtotime($post['appoint_date']));
+        $weeks = HospitalAppointWeek::find()
+            ->andWhere(['week' => $w])
+            ->andWhere(['haid' => $appoint->id])
+            ->andWhere(['time_type'=>$post['appoint_time']])->one();
+
+
+        $appointed = Appoint::find()
+            ->andWhere(['type' => $post['type']])
+            ->andWhere(['doctorid' => $post['doctorid']])
+            ->andWhere(['appoint_date' => strtotime($post['appoint_date'])])
+            ->andWhere(['appoint_time' => $post['appoint_time']])
+            ->andWhere(['mode' => 0])
+            ->andWhere(['<','state',3])
+            ->count();
+
+
+        if(($weeks->num-$appointed)<=0){
+            return new Code(21000,'该时间段已约满，请选择其他时间');
+        }
+
+
+
+
+        $appoint=Appoint::findOne(['childid'=>$post['childid'],'type'=>$post['type'],'state'=>1]);
+        if($appoint){
+            return new Code(20020,'您有未完成的预约');
+        }elseif(!$post['childid']){
+            return new Code(20020,'请选择宝宝');
+        } else{
+
+            $model = new Appoint();
+            $post['appoint_date'] = strtotime($post['appoint_date']);
+            $post['state'] = 1;
+            $post['userid'] = $this->userid;
+            $post['loginid']=$this->userLogin->id;
+            $model->load(["Appoint" => $post]);
+
+
+
+            if ($model->save()) {
+                //var_dump($doctor->name);
+                $userLogin=$this->userLogin;
+                if($userLogin->openid) {
+
+                    $child=ChildInfo::findOne($model->childid);
+
+                    $data = [
+                        'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                        'keyword2' => ARRAY('value' => $hospital->name),
+                        'keyword3' => ARRAY('value' => date('Y-m-d',$model->appoint_date)." ".Appoint::$timeText[$model->appoint_time]),
+                        'keyword4' => ARRAY('value' => $child?$child->name:''),
+                        'keyword5' => ARRAY('value' => $model->phone),
+                        'keyword6' => ARRAY('value' => "预约成功"),
+                        'keyword7' => ARRAY('value' => $model->createtime),
+                        'keyword8' => ARRAY('value' => Appoint::$typeInfoText[$model->type]),
+                    ];
+                    $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'Ejdm_Ih_W0Dyi6XrEV8Afrsg6HILZh0w8zg2uF0aIS0', '/pages/appoint/view?id='.$model->id,$post['formid']);
+                }
+
+                return ['id' => $model->id];
+            } else {
+                return new Code(20010, implode(':', $model->firstErrors));
+            }
+        }
     }
 }

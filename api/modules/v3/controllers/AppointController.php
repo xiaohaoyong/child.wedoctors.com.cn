@@ -20,6 +20,8 @@ class AppointController extends \api\modules\v2\controllers\AppointController
 {
     public function actionDayNum($doctorid, $week, $type, $day)
     {
+        return new Code(21000, '客户端已过期,请升级客户端');
+
         $rs = [];
         $times=[];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);

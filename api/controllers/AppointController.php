@@ -141,6 +141,8 @@ class AppointController extends Controller
         }
     }
     public function actionDayNum($doctorid,$week,$type,$day){
+        return new Code(21000, '客户端已过期,请升级客户端');
+
         $rs=[];
         $appoint=HospitalAppoint::findOne(['doctorid'=>$doctorid,'type'=>$type]);
         if($appoint){
@@ -171,6 +173,8 @@ class AppointController extends Controller
     }
 
     public function actionSave(){
+        return new Code(21000, '客户端已过期,请升级客户端');
+
         $post=\Yii::$app->request->post();
 
         $doctor=UserDoctor::findOne(['userid'=>$post['doctorid']]);
