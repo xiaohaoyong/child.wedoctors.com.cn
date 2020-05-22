@@ -45,7 +45,7 @@ class CommentController extends Controller
             return $data;
         }
 
-        $comment=ArticleComment::find()->andFilterWhere(['artid'=>$id]);
+        $comment=ArticleComment::find()->andFilterWhere(['artid'=>$id])->andWhere(['level'=>1]);
         $pages = new Pagination(['totalCount' => $comment->count(), 'pageSize' => 10]);
         $list = $comment->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
         $data['list']=[];
