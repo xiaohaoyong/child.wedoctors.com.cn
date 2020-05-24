@@ -97,16 +97,14 @@ class DataController extends Controller
 
         $userids = [];
         $k = 0;
-        $child = ChildInfo::find()->select('userid')->where(['>', 'birthday', 1575129600])->andWhere(['>', 'doctorid', 0])->groupBy('userid')->all();
+        $child = ChildInfo::find()->select('userid')->where(['<', 'birthday', 1575129600])->andWhere(['>', 'doctorid', 0])->orderBy('birthday desc')->groupBy('userid')->all();
         foreach ($child as $k => $v) {
             $login = UserLogin::find()->where(['userid' => $v->userid])->andWhere(['!=', 'openid', ''])->all();
             foreach ($login as $lk => $lv) {
                 if (!in_array($lv->openid, $userids)) {
                     $userids[] = $lv->openid;
                     $k++;
-                    if($k%50==0){
-                        sleep(2);
-                    }
+
                     echo $k."\n";
 
                     $data = [
@@ -117,6 +115,7 @@ class DataController extends Controller
                     ];
                     $rs = WechatSendTmp::send($data, $lv->openid, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://wx1147c2e491dfdf1d.h5.xiaoe-tech.com/content_page/eyJ0eXBlIjoiMiIsInJlc291cmNlX3R5cGUiOjQsInJlc291cmNlX2lkIjoibF81ZWM3NGFiZTI5NDU2X1pwYkZhaGJMIiwiYXBwX2lkIjoiYXBwc3gwdjlxOEk4MzMxIiwicHJvZHVjdF9pZCI6IiJ9');
 
+                    var_dump($rs);
                 } else {
                     echo "=================";
                 }
