@@ -65,23 +65,25 @@ use yii\helpers\ArrayHelper;
 
 class DataController extends Controller
 {
-    public function dir_a($file){
-        $files=[];
+    public function dir_a($file)
+    {
+        $files = [];
         //1、首先先读取文件夹
-        $temp=scandir($file);
+        $temp = scandir($file);
         //遍历文件夹
-        foreach($temp as $v){
-            $a=$file.'/'.$v;
-            echo $a;echo "\n";
-            if($v === '.' || $v === '..' || $v === '.git' || $v==='.idea'|| $v==='upload'){
+        foreach ($temp as $v) {
+            $a = $file . '/' . $v;
+            echo $a;
+            echo "\n";
+            if ($v === '.' || $v === '..' || $v === '.git' || $v === '.idea' || $v === 'upload') {
                 continue;
             }
-            if(is_dir($a)){
-                $filesa=$this->dir_a($a);
-                $files=array_merge($files,$filesa);
+            if (is_dir($a)) {
+                $filesa = $this->dir_a($a);
+                $files = array_merge($files, $filesa);
 
-            }else{
-                $files[]=$a;
+            } else {
+                $files[] = $a;
             }
         }
         return $files;
@@ -89,54 +91,106 @@ class DataController extends Controller
 
     public function actionTesta()
     {
-        $stime=strtotime('2019-01-01');
-        $doctors=UserDoctor::find()->all();
-        foreach($doctors as $k=>$v){
-            for($stime=strtotime('2019-01-01');$stime<time();$stime=strtotime('+1 day',$stime)){
-                $etime=strtotime('+1 day',$stime);
-                $doctorParent=DoctorParent::find()->where(['doctorid'=>$v->userid])
-                    ->andWhere(['>=','createtime',$stime])
-                    ->andWhere(['<','createtime',$etime])
-                    ->count();
-                $Autograph=Autograph::find()->where(['doctorid'=>$v->userid])
-                    ->andWhere(['>=','createtime',$stime])
-                    ->andWhere(['<','createtime',$etime])
-                    ->count();
-                $appoint=Appoint::find()->where(['doctorid'=>$v->userid])
-                    ->andWhere(['appoint_date'=>$stime])
-                    ->andWhere(['!=','state',3])
-                    ->count();
-                $rs=[];
-                $rs['sign1']=$doctorParent;
-                $rs['sign2']=$Autograph;
-                $rs['appoint_num']=$appoint;
-                $rs['doctorid']=$v->userid;
-                $rs['date']=$stime;
+        ini_set('memory_limit', '6000M');
 
-                $hospitalFrom=HospitalForm::find()->where(['doctorid'=>$v->userid])->andWhere(['date'=>$stime])->one();
-                $hospitalFrom=$hospitalFrom?$hospitalFrom:new HospitalForm();
-                $hospitalFrom->load(['HospitalForm'=>$rs]);
+        //$appoint=Appoint::find()->where(['doctorid'=>176156])->andWhere(['state'=>1])->andWhere(['>','appoint_time',6])->groupBy('userid')->all();
+
+        $userids = [];
+        $k = 0;
+        $child = ChildInfo::find()->select('userid')->where(['>', 'birthday', 1575129600])->andWhere(['>', 'doctorid', 0])->groupBy('userid')->all();
+        foreach ($child as $k => $v) {
+            $login = UserLogin::find()->where(['userid' => $v->userid])->andWhere(['!=', 'openid', ''])->all();
+            foreach ($login as $lk => $lv) {
+                if (!in_array($lv->openid, $userids)) {
+                    $userids[] = $lv->openid;
+                    $k++;
+                    if($k%50==0){
+                        sleep(2);
+                    }
+                    echo $k."\n";
+
+                    $data = [
+                        'first' => ['value' => '母乳喂养是为婴儿健康生长和发育提供理想的食品和营养的无与伦比的方式，同时也是生殖过程的基本组成部分和母亲健康的重要指标，为此儿宝宝邀请了侯景丽主任为大家讲解《母乳喂养指南》是如何来解决宝宝母乳喂养的问题。'],
+                        'keyword1' => ARRAY('value' => '母乳喂养指南，第六期健康直播课即将开始'),
+                        'keyword2' => ARRAY('value' => '2020年5月24日下午3点'),
+                        'remark' => ARRAY('value' => ""),
+                    ];
+                    $rs = WechatSendTmp::send($data, $lv->openid, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://wx1147c2e491dfdf1d.h5.xiaoe-tech.com/content_page/eyJ0eXBlIjoiMiIsInJlc291cmNlX3R5cGUiOjQsInJlc291cmNlX2lkIjoibF81ZWM3NGFiZTI5NDU2X1pwYkZhaGJMIiwiYXBwX2lkIjoiYXBwc3gwdjlxOEk4MzMxIiwicHJvZHVjdF9pZCI6IiJ9');
+
+                } else {
+                    echo "=================";
+                }
+            }
+        }
+        $data = [
+            'first' => ['value' => '母乳喂养是为婴儿健康生长和发育提供理想的食品和营养的无与伦比的方式，同时也是生殖过程的基本组成部分和母亲健康的重要指标，为此儿宝宝邀请了侯景丽主任为大家讲解《母乳喂养指南》是如何来解决宝宝母乳喂养的问题。'],
+            'keyword1' => ARRAY('value' => '母乳喂养指南，第六期健康直播课即将开始'),
+            'keyword2' => ARRAY('value' => '2020年5月24日下午3点'),
+            'remark' => ARRAY('value' => ""),
+        ];
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://wx1147c2e491dfdf1d.h5.xiaoe-tech.com/content_page/eyJ0eXBlIjoiMiIsInJlc291cmNlX3R5cGUiOjQsInJlc291cmNlX2lkIjoibF81ZWM3NGFiZTI5NDU2X1pwYkZhaGJMIiwiYXBwX2lkIjoiYXBwc3gwdjlxOEk4MzMxIiwicHJvZHVjdF9pZCI6IiJ9');
+
+        $data = [
+            'first' => ['value' => '母乳喂养是为婴儿健康生长和发育提供理想的食品和营养的无与伦比的方式，同时也是生殖过程的基本组成部分和母亲健康的重要指标，为此儿宝宝邀请了侯景丽主任为大家讲解《母乳喂养指南》是如何来解决宝宝母乳喂养的问题。'],
+            'keyword1' => ARRAY('value' => '母乳喂养指南，第六期健康直播课即将开始'),
+            'keyword2' => ARRAY('value' => '2020年5月24日下午3点'),
+            'remark' => ARRAY('value' => ""),
+        ];
+        $rs = WechatSendTmp::send($data, 'o5ODa0wJpc-GaCJuAl7NnE5nnfsM', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://wx1147c2e491dfdf1d.h5.xiaoe-tech.com/content_page/eyJ0eXBlIjoiMiIsInJlc291cmNlX3R5cGUiOjQsInJlc291cmNlX2lkIjoibF81ZWM3NGFiZTI5NDU2X1pwYkZhaGJMIiwiYXBwX2lkIjoiYXBwc3gwdjlxOEk4MzMxIiwicHJvZHVjdF9pZCI6IiJ9');
+
+        var_dump($rs);
+        exit;
+        exit;
+
+
+        $stime = strtotime('2019-01-01');
+        $doctors = UserDoctor::find()->all();
+        foreach ($doctors as $k => $v) {
+            for ($stime = strtotime('2019-01-01'); $stime < time(); $stime = strtotime('+1 day', $stime)) {
+                $etime = strtotime('+1 day', $stime);
+                $doctorParent = DoctorParent::find()->where(['doctorid' => $v->userid])
+                    ->andWhere(['>=', 'createtime', $stime])
+                    ->andWhere(['<', 'createtime', $etime])
+                    ->count();
+                $Autograph = Autograph::find()->where(['doctorid' => $v->userid])
+                    ->andWhere(['>=', 'createtime', $stime])
+                    ->andWhere(['<', 'createtime', $etime])
+                    ->count();
+                $appoint = Appoint::find()->where(['doctorid' => $v->userid])
+                    ->andWhere(['appoint_date' => $stime])
+                    ->andWhere(['!=', 'state', 3])
+                    ->count();
+                $rs = [];
+                $rs['sign1'] = $doctorParent;
+                $rs['sign2'] = $Autograph;
+                $rs['appoint_num'] = $appoint;
+                $rs['doctorid'] = $v->userid;
+                $rs['date'] = $stime;
+
+                $hospitalFrom = HospitalForm::find()->where(['doctorid' => $v->userid])->andWhere(['date' => $stime])->one();
+                $hospitalFrom = $hospitalFrom ? $hospitalFrom : new HospitalForm();
+                $hospitalFrom->load(['HospitalForm' => $rs]);
                 $hospitalFrom->save();
                 var_dump($hospitalFrom->firstErrors);
             }
         }
         exit;
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-        var_dump($app->rebind());exit;
+        var_dump($app->rebind());
+        exit;
 
-        ini_set('memory_limit', '2048M');
 
-        $doctors=UserDoctor::find()->all();
-        foreach($doctors as $dk=>$dv) {
-            echo $dv->name."\n";
+        $doctors = UserDoctor::find()->all();
+        foreach ($doctors as $dk => $dv) {
+            echo $dv->name . "\n";
             for ($i = 1; $i < 32; $i++) {
 
                 $time = strtotime('+' . $i . " day");
                 $time = strtotime(date('Ymd', $time));
-                $appoints1 = Appoint::find()->select('count(*) as c,appoint_time')->where(['appoint_date' => $time])->andWhere(['doctorid'=>$dv->userid])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->andWhere(['>','appoint_time',6])->count();
-                $appoints2 = Appoint::find()->select('count(*) as c,appoint_time')->where(['appoint_date' => $time])->andWhere(['doctorid'=>$dv->userid])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->andWhere(['<','appoint_time',7])->count();
-                if($appoints1 &&  $appoints2) {
-                    echo date('Ymd',$time)."==".$dv->userid;
+                $appoints1 = Appoint::find()->select('count(*) as c,appoint_time')->where(['appoint_date' => $time])->andWhere(['doctorid' => $dv->userid])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->andWhere(['>', 'appoint_time', 6])->count();
+                $appoints2 = Appoint::find()->select('count(*) as c,appoint_time')->where(['appoint_date' => $time])->andWhere(['doctorid' => $dv->userid])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->andWhere(['<', 'appoint_time', 7])->count();
+                if ($appoints1 && $appoints2) {
+                    echo date('Ymd', $time) . "==" . $dv->userid;
                     echo "\n";
                 }
             }
@@ -144,53 +198,53 @@ class DataController extends Controller
         }
         exit;
 
-        $appoints=Appoint::find()->where(['>','appoint_date',time()])->andWhere(['type'=>2])->andWhere(['state'=>1])->andWhere(['mode'=>0])->all();
-        foreach($appoints as $k=>$v){
+        $appoints = Appoint::find()->where(['>', 'appoint_date', time()])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->all();
+        foreach ($appoints as $k => $v) {
 
-            $query=Appoint::find()->where(['appoint_date'=>$v->appoint_date])->andWhere(['type'=>2])->andWhere(['state'=>1])->andWhere(['mode'=>0]);
-            if($v->appoint_time>6){
-                $query->andWhere(['<','appoint_time',7]);
-            }else{
-                $query->andWhere(['>','appoint_time',6]);
+            $query = Appoint::find()->where(['appoint_date' => $v->appoint_date])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0]);
+            if ($v->appoint_time > 6) {
+                $query->andWhere(['<', 'appoint_time', 7]);
+            } else {
+                $query->andWhere(['>', 'appoint_time', 6]);
             }
-            $count=$query->count();
-            if($count>0){
-                echo $v->appoint_date.",".$v->doctorid."\n";
+            $count = $query->count();
+            if ($count > 0) {
+                echo $v->appoint_date . "," . $v->doctorid . "\n";
             }
 
         }
         exit;
 
-       $test=Test::find()->all();
-       foreach($test as $k=>$v){
-           $child=ChildInfo::find()->where(['name'=>$v->f6])->andWhere(['birthday'=>strtotime($v->f8)])->andWhere(['source'=>110620])->one();
-           if($child){
-               $userParent=UserParent::findOne(['userid'=>$child->userid]);
-               if($userParent){
-                   if($userParent->mother!=$v->f10  ||$userParent->father!=$v->f12 ){
-                       echo "false parent:".$userParent->userid.$v->f6."\n";
-                   }
-               }else{
-                   echo "no parent:".$v->f6."\n";
-               }
-           }
-       }
-       exit;
+        $test = Test::find()->all();
+        foreach ($test as $k => $v) {
+            $child = ChildInfo::find()->where(['name' => $v->f6])->andWhere(['birthday' => strtotime($v->f8)])->andWhere(['source' => 110620])->one();
+            if ($child) {
+                $userParent = UserParent::findOne(['userid' => $child->userid]);
+                if ($userParent) {
+                    if ($userParent->mother != $v->f10 || $userParent->father != $v->f12) {
+                        echo "false parent:" . $userParent->userid . $v->f6 . "\n";
+                    }
+                } else {
+                    echo "no parent:" . $v->f6 . "\n";
+                }
+            }
+        }
+        exit;
 
-        $child=ChildInfo::find()->where(['source'=>110620])->all();
-        foreach($child as $k=>$v){
+        $child = ChildInfo::find()->where(['source' => 110620])->all();
+        foreach ($child as $k => $v) {
 
-            $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid,'level'=>1]);
-            if(!$doctorParent){
-                $user=User::findOne($v->userid);
-                if($user){
+            $doctorParent = DoctorParent::findOne(['parentid' => $v->userid, 'level' => 1]);
+            if (!$doctorParent) {
+                $user = User::findOne($v->userid);
+                if ($user) {
                     $user->delete();
                 }
             }
         }
         exit;
 
-        $query=ChildInfo::find();
+        $query = ChildInfo::find();
         $query->select('userid');
         $query->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`');
         $query->andFilterWhere(['`doctor_parent`.`doctorid`' => 113896]);
@@ -198,14 +252,14 @@ class DataController extends Controller
         $query->andFilterWhere(['child_info.admin' => 110581]);
         $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-6 year")]);
 
-        $au=Autograph::find()->select('userid')->where(['doctorid'=>113896])->column();
-        $list=$query->andWhere(['in','child_info.userid',$au])->all();
+        $au = Autograph::find()->select('userid')->where(['doctorid' => 113896])->column();
+        $list = $query->andWhere(['in', 'child_info.userid', $au])->all();
 
 
-        foreach($list as $k=>$v){
-            $userParent=UserParent::findOne(['userid'=>$v->userid]);
-            if($userParent) {
-                echo $v->userid . "," .$userParent->mother . "\n";
+        foreach ($list as $k => $v) {
+            $userParent = UserParent::findOne(['userid' => $v->userid]);
+            if ($userParent) {
+                echo $v->userid . "," . $userParent->mother . "\n";
             }
         }
         exit;
@@ -213,16 +267,16 @@ class DataController extends Controller
 
         ini_set('memory_limit', '2048M');
 
-        $doctors=UserDoctor::find()->all();
-        foreach($doctors as $dk=>$dv) {
-            echo $dv->name."\n";
+        $doctors = UserDoctor::find()->all();
+        foreach ($doctors as $dk => $dv) {
+            echo $dv->name . "\n";
             for ($i = 1; $i < 32; $i++) {
 
                 $time = strtotime('+' . $i . " day");
                 $time = strtotime(date('Ymd', $time));
-                $appoints = Appoint::find()->select('count(*) as c,appoint_time')->where(['appoint_date' => $time])->andWhere(['doctorid'=>$dv->userid])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->groupBy('appoint_time')->asArray()->all();
-                if($appoints) {
-                    echo date('Ymd',$time)."\n";
+                $appoints = Appoint::find()->select('count(*) as c,appoint_time')->where(['appoint_date' => $time])->andWhere(['doctorid' => $dv->userid])->andWhere(['type' => 2])->andWhere(['state' => 1])->andWhere(['mode' => 0])->groupBy('appoint_time')->asArray()->all();
+                if ($appoints) {
+                    echo date('Ymd', $time) . "\n";
                     foreach ($appoints as $ak => $av) {
                         echo $av['appoint_time'] . ":" . $av['c'] . "===";
                     }
@@ -234,20 +288,16 @@ class DataController extends Controller
         exit;
 
 
-
-
-
-
-        $h=UserDoctor::find()->all();
-        foreach($h as $hk=>$hv ){
-            echo $hv->userid."==";
-            $doctor = DoctorParent::find()->where(['level' => 1])->andWhere(['doctorid'=>$hv->userid])->all();
+        $h = UserDoctor::find()->all();
+        foreach ($h as $hk => $hv) {
+            echo $hv->userid . "==";
+            $doctor = DoctorParent::find()->where(['level' => 1])->andWhere(['doctorid' => $hv->userid])->all();
             foreach ($doctor as $k => $v) {
                 $child_info = ChildInfo::find()->where(['userid' => $v->parentid])->all();
                 if ($child_info) {
-                    $child_info = ChildInfo::find()->where(['userid' => $v->parentid])->andWhere(['doctorid'=>$hv->hospitalid])->all();
-                    if(!$child_info) {
-                        ChildInfo::updateAll(['doctorid'=>$hv->hospitalid],'userid ='.$v->parentid);
+                    $child_info = ChildInfo::find()->where(['userid' => $v->parentid])->andWhere(['doctorid' => $hv->hospitalid])->all();
+                    if (!$child_info) {
+                        ChildInfo::updateAll(['doctorid' => $hv->hospitalid], 'userid =' . $v->parentid);
                         echo $v->doctorid . "==" . $v->parentid;
                         echo "\n";
                     }
@@ -257,15 +307,16 @@ class DataController extends Controller
         exit;
 
 
-        $query= \common\models\Pregnancy::find()
-            ->andWhere(['pregnancy.field49'=>0])
+        $query = \common\models\Pregnancy::find()
+            ->andWhere(['pregnancy.field49' => 0])
             ->andWhere(['>', 'pregnancy.familyid', 0])
-            ->andWhere(['>','pregnancy.field16',strtotime('-11 month')])
+            ->andWhere(['>', 'pregnancy.field16', strtotime('-11 month')])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
-        ->andWhere(['>','doctor_parent.level',0]);
-        $query->andWhere(['>=','doctor_parent.createtime',strtotime('2020-02-01')])->andWhere(['<=','doctor_parent.createtime',strtotime('2020-02-29')]);
+            ->andWhere(['>', 'doctor_parent.level', 0]);
+        $query->andWhere(['>=', 'doctor_parent.createtime', strtotime('2020-02-01')])->andWhere(['<=', 'doctor_parent.createtime', strtotime('2020-02-29')]);
 
-        echo $query->count();exit;
+        echo $query->count();
+        exit;
 
 
 //        $appoint=Appoint::find()->where(['doctorid'=>176156])->andWhere(['state'=>1])->andWhere(['>','appoint_time',6])->groupBy('userid')->all();
