@@ -70,13 +70,14 @@ class ChildSignController extends Controller
             ->setCellValue('L'.$key1, '联系人电话')
             ->setCellValue('M'.$key1, '签约社区')
             ->setCellValue('N'.$key1, '签约时间')
-            ->setCellValue('O'.$key1, '签约状态')
-            ->setCellValue('P'.$key1, '签约协议')
-            ->setCellValue('Q'.$key1, '现住址')
-            ->setCellValue('R'.$key1, '是否宣教')
-            ->setCellValue('S'.$key1, '宣教月龄')
-            ->setCellValue('T'.$key1, '宣教内容')
-            ->setCellValue('U'.$key1, '宣教时间');
+            ->setCellValue('O'.$key1, '签字时间')
+            ->setCellValue('P'.$key1, '签约状态')
+            ->setCellValue('Q'.$key1, '签约协议')
+            ->setCellValue('R'.$key1, '现住址')
+            ->setCellValue('S'.$key1, '是否宣教')
+            ->setCellValue('T'.$key1, '宣教月龄')
+            ->setCellValue('U'.$key1, '宣教内容')
+            ->setCellValue('V'.$key1, '宣教时间');
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
         $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
@@ -156,13 +157,14 @@ class ChildSignController extends Controller
                     ->setCellValue('L' . $key1, $userParent->field12 ? " " . $userParent->field12 : "无")
                     ->setCellValue('M' . $key1, $sign->level == 1 ? \common\models\UserDoctor::findOne(['userid' => $sign->doctorid])->name : "--")
                     ->setCellValue('N' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
-                    ->setCellValue('O' . $key1, $return)
-                    ->setCellValue('P' . $key1, $signa)
-                    ->setCellValue('Q' . $key1, $userParent->fieldu46)
-                    ->setCellValue('R' . $key1, $is_article)
-                    ->setCellValue('S' . $key1, $child_type)
-                    ->setCellValue('T' . $key1, $title)
-                    ->setCellValue('U' . $key1, $date);
+                    ->setCellValue('O' . $key1, date('Y-m-d H:i',  Autograph::find()->where(['userid'=>$userParent->userid])->orderBy('id desc')->one()->createtime))
+                    ->setCellValue('P' . $key1, $return)
+                    ->setCellValue('Q' . $key1, $signa)
+                    ->setCellValue('R' . $key1, $userParent->fieldu46)
+                    ->setCellValue('S' . $key1, $is_article)
+                    ->setCellValue('T' . $key1, $child_type)
+                    ->setCellValue('U' . $key1, $title)
+                    ->setCellValue('V' . $key1, $date);
 
             }
             // $objPHPExcel->setActiveSheetIndex(0);
