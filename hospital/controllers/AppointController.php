@@ -74,10 +74,11 @@ class AppointController extends BaseController
             ->setCellValue('I' . $key1, '手机号')
             ->setCellValue('J' . $key1, '预约状态')
             ->setCellValue('K' . $key1, '预约项目')
-            ->setCellValue('L' . $key1, '取消原因')
-            ->setCellValue('M' . $key1, '推送状态')
-            ->setCellValue('N' . $key1, '来源')
-            ->setCellValue('O' . $key1, '排号顺序');
+            ->setCellValue('L' . $key1, '选择疫苗/筛查')
+            ->setCellValue('M' . $key1, '取消原因')
+            ->setCellValue('N' . $key1, '推送状态')
+            ->setCellValue('O' . $key1, '来源')
+            ->setCellValue('P' . $key1, '排号顺序');
 //写入内容
         foreach ($dataProvider->query->limit(500)->all() as $k => $e) {
             $v = $e->toArray();
@@ -92,6 +93,7 @@ class AppointController extends BaseController
                 ->andWhere(['type' => $e->type])
                 ->count();
 
+            $vaccine=$e->vaccine?\common\models\Vaccine::findOne($e->vaccine)->name:"";
             $key1 = $k + 2;
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $key1, $child->name)
@@ -105,10 +107,11 @@ class AppointController extends BaseController
                 ->setCellValue('I' . $key1, $e->phone)
                 ->setCellValue('J' . $key1, \common\models\Appoint::$stateText[$e->state])
                 ->setCellValue('K' . $key1, \common\models\Appoint::$typeText[$e->type])
-                ->setCellValue('L' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
-                ->setCellValue('M' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
-                ->setCellValue('N' . $key1, \common\models\Appoint::$modeText[$e->mode])
-                ->setCellValue('O' . $key1, $e->appoint_time . "-" . ($index + 1));
+                ->setCellValue('L' . $key1, $e->vaccine==-2?"两癌筛查":$vaccine)
+                ->setCellValue('M' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
+                ->setCellValue('N' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
+                ->setCellValue('O' . $key1, \common\models\Appoint::$modeText[$e->mode])
+                ->setCellValue('P' . $key1, $e->appoint_time . "-" . ($index + 1));
 
         }
         // $objPHPExcel->setActiveSheetIndex(0);
