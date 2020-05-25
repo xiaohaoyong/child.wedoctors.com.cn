@@ -25,7 +25,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use yii\base\Controller;
 use yii\helpers\ArrayHelper;
 
-class ChildSignController extends Controller
+class ChildAllController extends Controller
 {
     public function actionDown(){
         ini_set('memory_limit', '2048M');
