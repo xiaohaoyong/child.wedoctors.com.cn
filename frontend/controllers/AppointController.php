@@ -101,7 +101,7 @@ class AppointController extends Controller
                 }
 
                 if(!$type=$types[$v->type]){
-                    $type=$this->type;
+                    $type=$appoint->type;
                 }
 
                 $rs['dept_Name'] = $type;
