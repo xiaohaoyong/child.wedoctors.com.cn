@@ -91,6 +91,39 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $stime = strtotime('2020-05-18');
+        $doctors = UserDoctor::find()->all();
+        foreach ($doctors as $k => $v) {
+            for ($stime = strtotime('2019-01-01'); $stime < time(); $stime = strtotime('+1 day', $stime)) {
+                $etime = strtotime('+1 day', $stime);
+                $doctorParent = DoctorParent::find()->where(['doctorid' => $v->userid])
+                    ->andWhere(['>=', 'createtime', $stime])
+                    ->andWhere(['<', 'createtime', $etime])
+                    ->count();
+                $Autograph = Autograph::find()->where(['doctorid' => $v->userid])
+                    ->andWhere(['>=', 'createtime', $stime])
+                    ->andWhere(['<', 'createtime', $etime])
+                    ->count();
+                $appoint = Appoint::find()->where(['doctorid' => $v->userid])
+                    ->andWhere(['appoint_date' => $stime])
+                    ->andWhere(['!=', 'state', 3])
+                    ->count();
+                $rs = [];
+                $rs['sign1'] = $doctorParent;
+                $rs['sign2'] = $Autograph;
+                $rs['appoint_num'] = $appoint;
+                $rs['doctorid'] = $v->userid;
+                $rs['date'] = $stime;
+
+                $hospitalFrom = HospitalForm::find()->where(['doctorid' => $v->userid])->andWhere(['date' => $stime])->one();
+                $hospitalFrom = $hospitalFrom ? $hospitalFrom : new HospitalForm();
+                $hospitalFrom->load(['HospitalForm' => $rs]);
+                $hospitalFrom->save();
+                var_dump($hospitalFrom->firstErrors);
+            }
+        }
+        exit;
+
         ini_set('memory_limit', '6000M');
 
         //$appoint=Appoint::find()->where(['doctorid'=>176156])->andWhere(['state'=>1])->andWhere(['>','appoint_time',6])->groupBy('userid')->all();
@@ -142,38 +175,7 @@ class DataController extends Controller
         exit;
 
 
-        $stime = strtotime('2019-01-01');
-        $doctors = UserDoctor::find()->all();
-        foreach ($doctors as $k => $v) {
-            for ($stime = strtotime('2019-01-01'); $stime < time(); $stime = strtotime('+1 day', $stime)) {
-                $etime = strtotime('+1 day', $stime);
-                $doctorParent = DoctorParent::find()->where(['doctorid' => $v->userid])
-                    ->andWhere(['>=', 'createtime', $stime])
-                    ->andWhere(['<', 'createtime', $etime])
-                    ->count();
-                $Autograph = Autograph::find()->where(['doctorid' => $v->userid])
-                    ->andWhere(['>=', 'createtime', $stime])
-                    ->andWhere(['<', 'createtime', $etime])
-                    ->count();
-                $appoint = Appoint::find()->where(['doctorid' => $v->userid])
-                    ->andWhere(['appoint_date' => $stime])
-                    ->andWhere(['!=', 'state', 3])
-                    ->count();
-                $rs = [];
-                $rs['sign1'] = $doctorParent;
-                $rs['sign2'] = $Autograph;
-                $rs['appoint_num'] = $appoint;
-                $rs['doctorid'] = $v->userid;
-                $rs['date'] = $stime;
 
-                $hospitalFrom = HospitalForm::find()->where(['doctorid' => $v->userid])->andWhere(['date' => $stime])->one();
-                $hospitalFrom = $hospitalFrom ? $hospitalFrom : new HospitalForm();
-                $hospitalFrom->load(['HospitalForm' => $rs]);
-                $hospitalFrom->save();
-                var_dump($hospitalFrom->firstErrors);
-            }
-        }
-        exit;
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
         var_dump($app->rebind());
         exit;
