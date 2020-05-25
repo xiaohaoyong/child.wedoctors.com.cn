@@ -80,7 +80,7 @@ class ChildAllController extends Controller
             ->setCellValue('V'.$key1, '宣教时间');
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
-        $auto=DoctorParent::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
+        $auto=DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid])->column();
 
         if($auto) {
             $data = ChildInfo::find()
