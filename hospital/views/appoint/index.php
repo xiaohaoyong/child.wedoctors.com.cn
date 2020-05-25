@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => 'vaccine',
                                     'value' => function ($e) {
-                                        return \common\models\Vaccine::findOne($e->vaccine)->name;
+                                        return $e->vaccine==-2?"两癌筛查":\common\models\Vaccine::findOne($e->vaccine)->name;
                                     }
                                 ],
                                 [
