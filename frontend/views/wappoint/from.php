@@ -25,6 +25,20 @@
                 <input type="hidden" class="appoint_input" value="<?= $day ?>" name="appoint_date" id="appoint_date">
             </div>
         </div>
+        <?php if($vaccines){?>
+            <div class="item">
+                <div class="title">选择疫苗</div>
+                <div class="input">
+                    <select name="vaccine" class="appoint_input" id="vaccine">
+                        <option value="0" >请选择</option>
+                        <?php
+                        foreach ($vaccines as $k => $v) { ?>
+                            <option value="<?=$v['id']?>" <?=$v['id']==Yii::$app->request->get('vid')?"selected":""?>><?=$v['name']?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+        <?php }?>
         <div class="item">
             <div class="title">预约人姓名</div>
             <div class="input">
@@ -48,20 +62,7 @@
                        placeholder="请输入您的手机号" data-toggle="modal" data-target="#modle_phone">
             </div>
         </div>
-        <?php if($vaccines){?>
-        <div class="item">
-            <div class="title">选择疫苗</div>
-            <div class="input">
-                <select name="vaccine" class="appoint_input" id="vaccine">
-                    <option value="0" >请选择</option>
-                    <?php
-                    foreach ($vaccines as $k => $v) { ?>
-                        <option value="<?=$v['id']?>" <?=$v['id']==Yii::$app->request->get('vid')?"selected":""?>><?=$v['name']?></option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-        <?php }?>
+
         <?php
         if(!$vaccines || Yii::$app->request->get('vid')){
             ?>
