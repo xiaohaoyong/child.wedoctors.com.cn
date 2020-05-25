@@ -40,6 +40,12 @@ $this->title='我的预约';
                 <div>预约时间</div>
                 <div><?=$row['time']?></div>
             </div>
+            <?php if($row['vaccineStr']){?>
+                <div class="item">
+                    <div>预约疫苗</div>
+                    <div><?=$row['vaccineStr']?></div>
+                </div>
+            <?php }?>
             <div class="item">
                 <div>排队序号</div>
                 <div><?=$row['duan']?>-<?=$row['index']?>号</div>

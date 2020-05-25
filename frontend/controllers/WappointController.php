@@ -17,8 +17,10 @@ use common\models\AppointAdult;
 use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
+use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointWeek;
 use common\models\UserDoctor;
+use common\models\Vaccine;
 use EasyWeChat\Factory;
 use yii\web\Response;
 
@@ -29,8 +31,8 @@ class WappointController extends Controller
     public function actionIndex($search = '', $county = 0)
     {
 
-        $hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
-        $query = UserDoctor::find()->where(['in','userid',$hospitalAppoint]);
+        //$hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
+        $query = UserDoctor::find()->where(['like','appoint',4]);
         if ($search) {
             $query->andFilterWhere(['like', 'name', $search]);
         }
@@ -62,8 +64,8 @@ class WappointController extends Controller
                 $rs['phone']=$hospitalAppoint->phone;
                 $rs['appoint_intro']=$hospitalAppoint->info;
             }
-
             $docs[] = $rs;
+
         }
 
 
@@ -74,26 +76,8 @@ class WappointController extends Controller
         ]);
     }
 
-    public function actionFrom($userid)
+    public function actionFrom($userid,$vid=0)
     {
-        $holiday = [
-            '2020-05-01',
-            '2020-05-02',
-            '2020-05-03',
-            '2020-05-04',
-            '2020-05-05',
-            '2020-06-25',
-            '2020-06-26',
-            '2020-06-27',
-            '2020-10-01',
-            '2020-10-02',
-            '2020-10-03',
-            '2020-10-04',
-            '2020-10-05',
-            '2020-10-06',
-            '2020-10-07',
-            '2020-10-08',
-        ];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $userid, 'type' => 4]);
 
         $days=[];
@@ -103,15 +87,48 @@ class WappointController extends Controller
         $delay = $hospitalA->delay;
         $day = strtotime(date('Y-m-d',strtotime('+' . $delay . " day")));
 
+
+        //判断所选疫苗都有周几可约
+        if ($vid) {
+            $vaccine = Vaccine::findOne($vid);
+            if ($vaccine) {
+                $query = HospitalAppointVaccine::find()
+                    ->select('week')
+                    ->where(['haid' => $hospitalA->id]);
+                if ($vaccine->type == 0) {
+                    $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0]]);
+                } else {
+                    $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => -1]]);
+                }
+                $weekr = $query->groupBy('week')->column();
+                //如该疫苗无法获取周几可约则视为非法访问
+                if (!$weekr) {
+                    return new Code(20010, '社区医院暂未开通服务！');
+                }
+            }
+            if($vid==-2){
+                $weekr = HospitalAppointVaccine::find()
+                    ->select('week')
+                    ->where(['haid' => $hospitalA->id])
+                    ->andWhere(['vaccine'=>$vid])
+                    ->groupBy('week')->column();
+
+            }
+        }
+        $dweek = ['日', '一', '二', '三', '四', '五', '六'];
+        $dateMsg = ['非门诊', '门诊日', '未放号'];
         for ($i = 1; $i <= $cycle; $i++) {
             $day = $day + 86400;
-            $rs['time'] = $day;
-            $rs['date']=$rs['time'];
-            $rs['day'] = date('d', $rs['time']);
-            $rs['week'] = date('w', $rs['time']);
-            if (!in_array(date('Y-m-d', $rs['time']), $holiday) && in_array($rs['week'], $weekr) && !in_array(date('Y-m-d',$rs['date']), $holiday)) {
+            $rs['date'] = $day;
+            $rs['day'] = date('m.d', $day);
+            $rs['dateStr'] = date('Ymd', $day);
+            $rs['week'] = date('w', $day);
+            $rs['weekStr'] = $dweek[$rs['week']];
+            $rs['dateState'] = $hospitalA->is_appoint($day, $weekr);
+            if($hospitalA->is_appoint($day, $weekr)){
                 $days[] = $rs;
             }
+
         }
 
         if($days){
@@ -126,9 +143,47 @@ class WappointController extends Controller
         }
 
         $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
+        $hospitalV = HospitalAppointVaccine::find()
+            ->select('vaccine')
+            ->where(['haid' => $hospitalA->id])->groupBy('vaccine')->column();
+        if ($hospitalV) {
+
+            if (in_array(0, $hospitalV) && in_array(-1, $hospitalV)) {
+                $vQuery = Vaccine::find()->select('id,name,type');
+            } else {
+                $vQuery = Vaccine::find()->select('id,name,type')->andWhere(['in', 'id', $hospitalV]);
+                if (in_array(-1, $hospitalV)) {
+                    //查询所有二类疫苗
+                    $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 1]);
+                }
+                if (in_array(0, $hospitalV)) {
+                    //查询所有一类类疫苗
+                    $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0]);
+                }
+                if ($Va) {
+                    $vQuery->union($Va);
+                }
+            }
+
+            $vaccines = $vQuery->asArray()->all();
 
 
-        return $this->render('from', ['days' => $days,'day'=>$firstDay,'doctor'=>$doctorRow,'user'=>$appointAdult]);
+            foreach ($vaccines as $k => $v) {
+                $rs = $v;
+                $rs['name'] = $rs['name'] . "【" . Vaccine::$typeText[$rs['type']] . "】";
+                $rows[] = $rs;
+            }
+            if(in_array('-2',$hospitalV)){
+                $rs['id']=-2;
+                $rs['name']='两癌筛查';
+                $rows[]=$rs;
+            }
+            $vaccines = $rows;
+        } else {
+            $vaccines = [];
+        }
+
+        return $this->render('from', [ 'vaccines' => $vaccines,'days' => $days,'day'=>$firstDay,'doctor'=>$doctorRow,'user'=>$appointAdult]);
     }
     public function actionDayNum($doctorid, $day)
     {
@@ -237,7 +292,12 @@ class WappointController extends Controller
         $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
         $row['child_name']=AppointAdult::findOne($appoint->userid)->name;
         $row['duan']=$appoint->appoint_time;
-
+        if($appoint->vaccine==-2){
+            $row['vaccineStr']='两癌筛查';
+        }else {
+            $vaccine = Vaccine::findOne($appoint->vaccine);
+            $row['vaccineStr'] = $vaccine ? $vaccine->name : '';
+        }
         $index=Appoint::find()
             ->andWhere(['appoint_date'=>$appoint->appoint_date])
             ->andWhere(['<','id',$id])
@@ -348,7 +408,6 @@ class WappointController extends Controller
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
 
         }
-
 
         $appoint=Appoint::findOne(['userid'=>$appointAdult->userid,'type'=>$post['type'],'state'=>1]);
         if($appoint){

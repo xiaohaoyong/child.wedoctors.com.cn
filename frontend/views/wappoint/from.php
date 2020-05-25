@@ -21,8 +21,8 @@
                 <input disabled="disabled" placeholder="<?= $doctor['hospital'] ?>">
                 <input type="hidden" class="appoint_input" value="<?= $doctor['userid'] ?>" name="doctorid">
                 <input type="hidden" class="appoint_input" value="4" name="type">
-                <input type="hidden" class="appoint_input" id="appoint_time" value="4" name="appoint_time">
-
+                <input type="hidden" class="appoint_input" id="appoint_time" value="0" name="appoint_time">
+                <input type="hidden" class="appoint_input" value="<?= $day ?>" name="appoint_date" id="appoint_date">
             </div>
         </div>
         <div class="item">
@@ -48,9 +48,25 @@
                        placeholder="请输入您的手机号" data-toggle="modal" data-target="#modle_phone">
             </div>
         </div>
+        <?php if($vaccines){?>
+        <div class="item">
+            <div class="title">选择疫苗</div>
+            <div class="input">
+                <select name="vaccine" class="appoint_input" id="vaccine">
+                    <option value="0" >请选择</option>
+                    <?php
+                    foreach ($vaccines as $k => $v) { ?>
+                        <option value="<?=$v['id']?>" <?=$v['id']==Yii::$app->request->get('vid')?"selected":""?>><?=$v['name']?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <?php }?>
+        <?php
+        if(!$vaccines || Yii::$app->request->get('vid')){
+            ?>
         <div class="item">
             <div class="title">请选择日期</div>
-            <input type="hidden" class="appoint_input" value="<?= $day ?>" name="appoint_date" id="appoint_date">
             <div class="days">
                 <?php
                 $dweek=['日','一','二','三','四','五','六'];
@@ -66,6 +82,8 @@
             </div>
 
         </div>
+        <?php }?>
+
         <div class="button">
             <button type="submit">确定预约</button>
         </div>
@@ -74,6 +92,12 @@
 <?php
 $date_day = date('Y-m-d', $day);
 $updateJs = <<<JS
+
+
+jQuery("#vaccine").change(function(e){
+    var a=jQuery("#vaccine").val();
+    window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+a);
+})
 
 var type=[
         '08：00-09：00','09：00-10：00','10：00-11：00','13：00-14：00','14：00-15：00','15：00-16：00',
@@ -98,13 +122,16 @@ function select_time(day){
 }
 select_time('{$date_day}');
 jQuery(".days .rs").bind("click",function(){
+    jQuery('#appoint_time').val(0);
+          jQuery('.time').html('加载中...');
+
   jQuery(".days .rs .day").removeClass('on');
   jQuery(this).children('.day').addClass('on');
   var day= jQuery(this).attr('date');
   jQuery('#appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
 });
-var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写预约人电话!',sex:'请选择预约人性别！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！'};
+var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写预约人电话!',sex:'请选择预约人性别！',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！'};
 jQuery("#appoint_form").submit(data,function(e){
     var labelMap = e.data;
     	var label = '';
