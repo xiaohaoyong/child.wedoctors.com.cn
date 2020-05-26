@@ -37,7 +37,7 @@ class Vaccine extends \yii\db\ActiveRecord
         return [
             [['disease', 'adverseReactions', 'contraindications', 'diseaseHarm', 'dealFlow'], 'required'],
             [['disease', 'adverseReactions', 'contraindications', 'diseaseHarm', 'dealFlow'], 'string'],
-            [['source','type'], 'integer'],
+            [['source','type','adult'], 'integer'],
             [['name', 'intervalName'], 'string', 'max' => 50],
         ];
     }
@@ -57,7 +57,8 @@ class Vaccine extends \yii\db\ActiveRecord
             'name' => '疫苗名称',
             'intervalName' => '建议接种时间',
             'source' => '顺序',
-            'type'=>'类型'
+            'type'=>'类型',
+            'adult'=>'成人'
         ];
     }
 }

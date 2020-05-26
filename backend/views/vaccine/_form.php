@@ -32,6 +32,8 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'source')->textInput() ?>
                 <?= $form->field($model, 'type')->radioList(\common\models\Vaccine::$typeText) ?>
 
+                <?= $form->field($model, 'adult')->checkbox() ?>
+
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
                     'btn btn-primary']) ?>
