@@ -139,7 +139,7 @@ use yii\widgets\ActiveForm;
                             $data=[-2 => '两癌筛查'] + $data;
                         }else{
                             $data=\common\models\Vaccine::find()->select('name')->where(['adult'=>0])->indexBy('id')->column();
-                            $data=[0 => '全部一类疫苗', -1 => '全部二类疫苗', -2 => '两癌筛查'] + $data;
+                            $data=[0 => '全部一类疫苗', -1 => '全部二类疫苗'] + $data;
                         }
                         ?>
                     <tr>
