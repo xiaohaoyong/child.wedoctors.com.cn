@@ -13,6 +13,7 @@ use common\components\Code;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
+use common\models\AppointAdult;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointWeek;
@@ -64,8 +65,14 @@ class AppointController extends Controller
                 ->all();
             foreach ($appoint as $k => $v) {
                 $rs['pat_Id'] = "appoint:" . $v->id;
-                $child = \common\models\ChildInfo::findOne(['id' => $v->childid]);
-                $rs['pat_Name'] = $child->name;
+                if($v->type<=2){
+                    $child = \common\models\ChildInfo::findOne(['id' => $v->childid]);
+                    $rs['pat_Name'] = $child->name;
+                }else{
+                    $appointAdult=AppointAdult::findOne(['userid'=>$v->userid]);
+                    $rs['pat_Name'] =$appointAdult->name;
+                }
+
                 $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $child->birthday));
                 if ($DiffDate[0]) {
                     $age = $DiffDate[0] . "岁";
@@ -101,7 +108,7 @@ class AppointController extends Controller
                 }
 
                 if(!$type=$types[$v->type]){
-                    $type=$appoint->type;
+                    $type=$v->type;
                 }
 
                 $rs['dept_Name'] = $type;
