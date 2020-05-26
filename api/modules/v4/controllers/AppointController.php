@@ -173,7 +173,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $weekv = HospitalAppointVaccine::find()
             ->select('id')
             ->where(['haid' => $hospitalA->id])
-            ->where(['week' => $week])->count();
+            ->andwhere(['week' => $week])->count();
         if ($weekv > 0) {
             $weekvs[] = $week;
         }
@@ -306,6 +306,18 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             }
             if ($firstAppoint->appoint_time < 7 && $post['appoint_time'] > 6) {
                 return new Code(21000, '预约日期非门诊日或未到放号时间!请更新客户端查看！');
+            }
+        }
+
+        //判断选择疫苗和日期是否匹配
+        if($post['vaccine']) {
+            $week = date('w', strtotime($post['appoint_date']));
+            $vaccines = HospitalAppointVaccine::find()
+                ->select('vaccine')
+                ->where(['haid' => $appoint->id])
+                ->andwhere(['week' => $week])->andwhere(['vaccine' => $post['vaccine']])->column();
+            if(!in_array($post['vaccine'],$vaccines)){
+                return new Code(21000, '此日期没有您选择的疫苗！请选择其他日期');
             }
         }
 
