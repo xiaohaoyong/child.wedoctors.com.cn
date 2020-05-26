@@ -91,7 +91,7 @@ class AppointSearchModels extends Appoint
 
 
         if($this->ids){
-            $query->andFilterWhere(['in','id',$this->ids]);
+            $query->andFilterWhere(['in','id',explode(',',$this->ids)]);
         }
 
 
