@@ -91,6 +91,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                 [
 
+                                    'attribute' => 'vaccine',
+                                    'value' => function ($e) {
+                                        return $e->vaccine==-2?"两癌筛查":\common\models\Vaccine::findOne($e->vaccine)->name;
+                                    }
+                                ],
+                                [
+
                                     'attribute' => 'cancel_type',
                                     'value' => function ($e) {
                                         return \common\models\Appoint::$cancel_typeText[$e->cancel_type];
