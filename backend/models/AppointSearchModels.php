@@ -15,6 +15,7 @@ class AppointSearchModels extends Appoint
 {
     public $child_name;
     public $appoint_dates = '';
+    public $ids;
 
     /**
      * @inheritdoc
@@ -23,7 +24,7 @@ class AppointSearchModels extends Appoint
     {
         return [
             [['state','cancel_type','id', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
-            [['child_name', 'appoint_dates'], 'string']
+            [['child_name', 'appoint_dates','ids'], 'string']
         ];
     }
     /**
@@ -43,6 +44,7 @@ class AppointSearchModels extends Appoint
         $return = parent::attributeLabels();
         $return ['child_name'] = '儿童姓名';
         $return ['appoint_dates'] = '预约日期';
+        $return ['ids'] = 'id';
 
         return $return;
     }
@@ -88,9 +90,13 @@ class AppointSearchModels extends Appoint
         }
 
 
+        if($this->ids){
+            $query->andFilterWhere(['in','id',$this->ids]);
+        }
+
+
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'userid' => $this->userid,
             'doctorid' => $this->doctorid,
             'childid'=>$this->childid,

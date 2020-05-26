@@ -36,6 +36,7 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'state') ?>
 
     <?php  echo $form->field($model, 'loginid') ?>
+    <?php  echo $form->field($model, 'ids') ?>
 
     <?php // echo $form->field($model, 'remark') ?>
 
