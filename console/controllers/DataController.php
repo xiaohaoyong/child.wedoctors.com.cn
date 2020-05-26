@@ -19,6 +19,7 @@ use common\components\wx\WxBizDataCrypt;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
+use common\models\AppointAdult;
 use common\models\Area;
 use common\models\Article;
 use common\models\ArticleComment;
@@ -36,6 +37,7 @@ use common\models\Doctors;
 use common\models\Examination;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
+use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointWeek;
 use common\models\HospitalForm;
 use common\models\Interview;
@@ -91,6 +93,22 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        $hav=HospitalAppointVaccine::findAll(['haid'=>98]);
+        $appoints=Appoint::find()->where(['doctorid'=>175877])->andWhere(['type'=>2])->andWhere(['>','appoint_date',time()])->all();
+        foreach($appoints as $k=>$v){
+            $hav=HospitalAppointVaccine::find()->select('week')->where(['haid'=>98])->andWhere(['vaccine'=>$v->vaccine])->column();
+            $w=date('w',$v->appoint_date);
+            if(!in_array($w,$hav))
+            {
+                echo $v->id;
+                echo "==".$v->vaccine;
+                echo "==".$w;
+                echo "\n";
+            }
+        }
+        exit;
+
+
         $stime = strtotime('2020-05-18');
         $doctors = UserDoctor::find()->all();
         foreach ($doctors as $k => $v) {
