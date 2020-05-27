@@ -93,48 +93,74 @@ class DataController extends Controller
 
     public function actionTesta()
     {
-        $hav=HospitalAppointVaccine::findAll(['haid'=>98]);
-        $appoints=Appoint::find()->andWhere(['type'=>2])->andWhere(['>','vaccine',0])->andWhere(['>','appoint_date',time()])->all();
-        foreach($appoints as $k=>$v){
+//        $hav=HospitalAppointVaccine::findAll(['haid'=>98]);
+//        $appoints=Appoint::find()->andWhere(['type'=>2])->andWhere(['>','vaccine',0])->andWhere(['>','appoint_date',time()])->all();
+//        foreach($appoints as $k=>$v){
+//
+//            $hospitalAppoint=HospitalAppoint::find()->where(['type'=>2])->andWhere(['doctorid'=>$v->doctorid])->one();
+//            $hav=HospitalAppointVaccine::find()->select('week')->where(['haid'=>$hospitalAppoint->id])->andWhere(['vaccine'=>$v->vaccine])->column();
+//            $w=date('w',$v->appoint_date);
+//            if(!in_array($w,$hav))
+//            {
+//                echo $v->id;
+//                echo "==".$v->vaccine;
+//                echo "==".$w;
+//                echo "\n";
+//            }
+//        }
+//        exit;
 
-            $hospitalAppoint=HospitalAppoint::find()->where(['type'=>2])->andWhere(['doctorid'=>$v->doctorid])->one();
-            $hav=HospitalAppointVaccine::find()->select('week')->where(['haid'=>$hospitalAppoint->id])->andWhere(['vaccine'=>$v->vaccine])->column();
-            $w=date('w',$v->appoint_date);
-            if(!in_array($w,$hav))
-            {
-                echo $v->id;
-                echo "==".$v->vaccine;
-                echo "==".$w;
-                echo "\n";
-            }
-        }
-        exit;
 
-
-        $stime = strtotime('2020-05-18');
+        $stime = strtotime('2019-01-01');
         $doctors = UserDoctor::find()->all();
         foreach ($doctors as $k => $v) {
-            for ($stime = strtotime('2019-01-01'); $stime < time(); $stime = strtotime('+1 day', $stime)) {
+            for ($stime = $stime; $stime < time(); $stime = strtotime('+1 day', $stime)) {
                 $etime = strtotime('+1 day', $stime);
                 $doctorParent = DoctorParent::find()->where(['doctorid' => $v->userid])
                     ->andWhere(['>=', 'createtime', $stime])
                     ->andWhere(['<', 'createtime', $etime])
                     ->count();
-                $Autograph = Autograph::find()->where(['doctorid' => $v->userid])
-                    ->andWhere(['>=', 'createtime', $stime])
-                    ->andWhere(['<', 'createtime', $etime])
+
+
+                $child_info1=ChildInfo::find()
+                    ->leftJoin('doctor_parent','doctor_parent.parentid=child_info.userid')
+                    ->andWhere(['doctor_parent.doctorid'=>$v->userid])
+                    ->leftJoin('autograph','autograph.userid=child_info.userid')
+                    ->andWhere(['>=', 'autograph.createtime', $stime])
+                    ->andWhere(['<', 'autograph.createtime', $etime])
+                    ->andWhere(['>=', 'child_info.birthday', strtotime('-6 year',$stime)])
+                    ->andWhere('autograph.createtime>=child_info.createtime')
                     ->count();
+                $child_info2=ChildInfo::find()
+                    ->leftJoin('doctor_parent','doctor_parent.parentid=child_info.userid')
+                    ->andWhere(['doctor_parent.doctorid'=>$v->userid])
+                    ->leftJoin('autograph','autograph.userid=child_info.userid')
+                    ->andWhere(['>=', 'child_info.createtime', $stime])
+                    ->andWhere(['<', 'child_info.createtime', $etime])
+                    ->andWhere(['>=', 'child_info.birthday', strtotime('-6 year',$stime)])
+                    ->andWhere('autograph.createtime<child_info.createtime')
+                    ->count();
+
+                $pregLCount=Pregnancy::find()
+                    ->andWhere(['pregnancy.field49'=>0])
+                    ->andWhere(['>', 'pregnancy.familyid', 0])
+                    ->leftJoin('autograph', '`autograph`.`userid` = `pregnancy`.`familyid`')
+                    ->andWhere(['>=', 'autograph.createtime', $stime])
+                    ->andWhere(['<', 'autograph.createtime', $etime])
+                    ->andFilterWhere(['`autograph`.`doctorid`' => $v->userid])->count();
+
+
                 $appoint = Appoint::find()->where(['doctorid' => $v->userid])
                     ->andWhere(['appoint_date' => $stime])
                     ->andWhere(['!=', 'state', 3])
                     ->count();
                 $rs = [];
                 $rs['sign1'] = $doctorParent;
-                $rs['sign2'] = $Autograph;
+                $rs['sign2'] = $child_info1+$child_info2;
+
                 $rs['appoint_num'] = $appoint;
                 $rs['doctorid'] = $v->userid;
                 $rs['date'] = $stime;
-
                 $hospitalFrom = HospitalForm::find()->where(['doctorid' => $v->userid])->andWhere(['date' => $stime])->one();
                 $hospitalFrom = $hospitalFrom ? $hospitalFrom : new HospitalForm();
                 $hospitalFrom->load(['HospitalForm' => $rs]);
