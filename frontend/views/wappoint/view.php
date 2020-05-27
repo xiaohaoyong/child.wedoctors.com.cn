@@ -15,7 +15,7 @@ $this->title='我的预约';
     <div class="container">
         <div class="content1">
             <div class="qrcode">
-                <image src="https://api.child.wedoctors.com.cn/image/qr-code?id=<?$row['id']?>" style="width: 225px;height: 225px;"></image>
+                <image src="https://api.child.wedoctors.com.cn/image/qr-code?id=<?=$row['id']?>" style="width: 225px;height: 225px;"></image>
             </div>
         </div>
         <div class="zhong">

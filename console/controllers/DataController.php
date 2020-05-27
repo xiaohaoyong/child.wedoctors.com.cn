@@ -94,9 +94,11 @@ class DataController extends Controller
     public function actionTesta()
     {
         $hav=HospitalAppointVaccine::findAll(['haid'=>98]);
-        $appoints=Appoint::find()->where(['doctorid'=>175877])->andWhere(['type'=>2])->andWhere(['>','appoint_date',time()])->all();
+        $appoints=Appoint::find()->andWhere(['type'=>2])->andWhere(['>','vaccine',0])->andWhere(['>','appoint_date',time()])->all();
         foreach($appoints as $k=>$v){
-            $hav=HospitalAppointVaccine::find()->select('week')->where(['haid'=>98])->andWhere(['vaccine'=>$v->vaccine])->column();
+
+            $hospitalAppoint=HospitalAppoint::find()->where(['type'=>2])->andWhere(['doctorid'=>$v->doctorid])->one();
+            $hav=HospitalAppointVaccine::find()->select('week')->where(['haid'=>$hospitalAppoint->id])->andWhere(['vaccine'=>$v->vaccine])->column();
             $w=date('w',$v->appoint_date);
             if(!in_array($w,$hav))
             {
