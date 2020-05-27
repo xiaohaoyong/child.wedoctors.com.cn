@@ -83,7 +83,21 @@ class UserDoctorController extends BaseController
             'doctor' => $doctor,
         ]);
     }
+    /**
+     * Lists all UserDoctor models.
+     * @return mixed
+     */
+    public function actionNum()
+    {
+        $params = Yii::$app->request->queryParams;
 
+
+        $doctor = UserDoctor::find()->andFilterWhere(['county' => \Yii::$app->user->identity->county])->andFilterWhere(['>', 'userid', 37])->all();
+
+        return $this->render('num', [
+            'doctor' => $doctor,
+        ]);
+    }
     /**
      * Lists all UserDoctor models.
      * @return mixed

@@ -17,6 +17,7 @@
                     $a,
                     ['label' => '统计数据','icon' => 'file-text-o','url' => "#",
                         'items' => [
+                            ['label' => '社区每日统计报表', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['user-doctor/form'])],
                             ['label' => '社区预约情况', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['appoint/hospital'])],
                             ['label' => '社区签约/签字情况', 'options' => ['class' => 'header'],'url' => \yii\helpers\Url::to(['user-doctor/list'])],
                         ]
