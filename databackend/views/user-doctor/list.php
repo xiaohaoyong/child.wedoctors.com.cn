@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'btn btn-primary']) ?>
                                         </div>
                                         <div class="form-group">
-                                            <?= Html::button('下次查询结果', ['id'=>'export','class' => 'btn btn-primary']) ?>
+                                            <?= Html::button('下载查询结果', ['id'=>'export','class' => 'btn btn-primary']) ?>
                                         </div>
                                         <?php ActiveForm::end(); ?>
                                         <div>
