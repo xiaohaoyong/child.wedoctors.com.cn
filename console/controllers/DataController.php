@@ -111,10 +111,13 @@ class DataController extends Controller
 //        exit;
 
 
-        $stime = strtotime('2019-01-01');
-        $doctors = UserDoctor::find()->all();
+        $satime = strtotime('2020-01-01');
+        $doctors = UserDoctor::find()->where(['county'=>1106])->andWhere(['not in','userid',[156256,192821]])->all();
         foreach ($doctors as $k => $v) {
-            for ($stime = $stime; $stime < time(); $stime = strtotime('+1 day', $stime)) {
+            echo $v->name;
+            for ($stime = $satime; $stime < time(); $stime = strtotime('+1 day', $stime)) {
+                echo date('Ymd',$stime);
+
                 $etime = strtotime('+1 day', $stime);
                 $doctorParent = DoctorParent::find()->where(['doctorid' => $v->userid])
                     ->andWhere(['>=', 'createtime', $stime])
@@ -141,14 +144,6 @@ class DataController extends Controller
                     ->andWhere('autograph.createtime<child_info.createtime')
                     ->count();
 
-                $pregLCount=Pregnancy::find()
-                    ->andWhere(['pregnancy.field49'=>0])
-                    ->andWhere(['>', 'pregnancy.familyid', 0])
-                    ->leftJoin('autograph', '`autograph`.`userid` = `pregnancy`.`familyid`')
-                    ->andWhere(['>=', 'autograph.createtime', $stime])
-                    ->andWhere(['<', 'autograph.createtime', $etime])
-                    ->andFilterWhere(['`autograph`.`doctorid`' => $v->userid])->count();
-
 
                 $appoint = Appoint::find()->where(['doctorid' => $v->userid])
                     ->andWhere(['appoint_date' => $stime])
@@ -161,6 +156,7 @@ class DataController extends Controller
                 $rs['appoint_num'] = $appoint;
                 $rs['doctorid'] = $v->userid;
                 $rs['date'] = $stime;
+                //var_dump($rs);
                 $hospitalFrom = HospitalForm::find()->where(['doctorid' => $v->userid])->andWhere(['date' => $stime])->one();
                 $hospitalFrom = $hospitalFrom ? $hospitalFrom : new HospitalForm();
                 $hospitalFrom->load(['HospitalForm' => $rs]);

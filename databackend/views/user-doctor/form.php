@@ -60,7 +60,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <thead>
                                             <tr>
                                                 <th>社区卫生服务中心</th>
-                                                <th>扫码签约数</th>
                                                 <th>签约签字数</th>
                                                 <th>门诊预约数</th>
                                                 <th>其他预约渠道</th>
@@ -73,7 +72,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ?>
                                                 <tr>
                                                     <td><?=$userDoctor->name?></td>
-                                                    <td><?=$v['a']?></td>
                                                     <td><?=$v['b']?></td>
                                                     <td><?=$v['c']?></td>
                                                     <td><?=$v['d']?></td>
