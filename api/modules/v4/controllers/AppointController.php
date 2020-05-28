@@ -189,7 +189,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         }
         $week = date('w', strtotime($day));
 
-        $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->orderBy('time_type asc')->all();
+        $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->all();
         if ($weeks) {
             $appoints = Appoint::find()
                 ->select('count(*)')
@@ -221,7 +221,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                     $rs[$k] = 0;
                 }
             }
-
+            if ($doctorid != 176156) {
+                unset($rs[19]);
+            }
             $firstAppoint = Appoint::find()
                 ->andWhere(['type' => $type])
                 ->andWhere(['doctorid' => $doctorid])

@@ -144,6 +144,13 @@ class DataController extends Controller
                     ->andWhere('autograph.createtime<child_info.createtime')
                     ->count();
 
+                $data['pregLCount']=Pregnancy::find()
+                    ->andWhere(['pregnancy.field49'=>0])
+                    ->andWhere(['>', 'pregnancy.familyid', 0])
+                    ->andWhere(['>','pregnancy.field16',strtotime('-11 month')])
+                    ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+                    ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
+
 
                 $appoint = Appoint::find()->where(['doctorid' => $v->userid])
                     ->andWhere(['appoint_date' => $stime])
