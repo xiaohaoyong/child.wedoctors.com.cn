@@ -222,7 +222,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 }
             }
             if ($doctorid != 176156) {
-                unset($rs[19]);
+                unset($rs[19]); unset($rs[20]);
             }
             $firstAppoint = Appoint::find()
                 ->andWhere(['type' => $type])

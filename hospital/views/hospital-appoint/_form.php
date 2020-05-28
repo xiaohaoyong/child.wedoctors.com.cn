@@ -104,7 +104,7 @@ use yii\widgets\ActiveForm;
                     $weeks=[1,2,3,4,5,6,0];
 
                     foreach(\common\models\HospitalAppointWeek::$typeText as $k=>$v){
-                        if(\Yii::$app->user->identity->hospital!=110591 && $k==19){
+                        if(\Yii::$app->user->identity->hospital!=110591 && in_array($k,[19,20])){
                             continue;
                         }
                         if($k<7){

@@ -109,7 +109,6 @@ class SiteController extends BaseController
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andWhere(['!=','`child_info`.`admin`' ,\Yii::$app->user->identity->hospitalid])
             ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
-
             ->count();
 
         $data['achildNum']=$adminsix+$nadminsix;
