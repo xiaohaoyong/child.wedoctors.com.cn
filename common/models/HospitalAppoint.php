@@ -148,13 +148,12 @@ class HospitalAppoint extends \yii\db\ActiveRecord
             $sure_date =explode(',',$this->sure_date);
         }
 
-
+        $sure_date=[1593273600];
         $cycle=self::$cycleNum[$this->cycle];
         $sday = strtotime(date('Y-m-d', strtotime('+' . ($this->delay+1) . " day")));
         $eday = strtotime('+'.($cycle-1).' day',$sday);
 
-        if ((in_array($week, $weeks) && !in_array(date('Y-m-d', $date), $holiday)
-            || (in_array(date('Y-m-d',$date),$sure_date) && count($weekr)>0 && in_array($week, $weekr)))) {
+        if (in_array($week, $weeks) && !in_array(date('Y-m-d', $date), $holiday)) {
             if(($date>=$sday && $date<$eday) || ($date==$eday && date('Gi')>$this->release_time."00")){
                 return 1;
             }else{
