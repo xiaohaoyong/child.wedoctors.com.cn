@@ -111,11 +111,11 @@ class DataController extends Controller
 //        exit;
 
 
-        $satime = strtotime('2020-01-01');
-        $doctors = UserDoctor::find()->where(['county'=>1106])->andWhere(['not in','userid',[156256,192821]])->all();
+        $satime = strtotime('2019-06-01');
+        $doctors = UserDoctor::find()->where(['county'=>1106])->all();
         foreach ($doctors as $k => $v) {
             echo $v->name;
-            for ($stime = $satime; $stime < time(); $stime = strtotime('+1 day', $stime)) {
+            for ($stime = $satime; $stime < strtotime('2020-01-01'); $stime = strtotime('+1 day', $stime)) {
                 echo date('Ymd',$stime);
 
                 $etime = strtotime('+1 day', $stime);
@@ -144,12 +144,13 @@ class DataController extends Controller
                     ->andWhere('autograph.createtime<child_info.createtime')
                     ->count();
 
-                $data['pregLCount']=Pregnancy::find()
-                    ->andWhere(['pregnancy.field49'=>0])
-                    ->andWhere(['>', 'pregnancy.familyid', 0])
-                    ->andWhere(['>','pregnancy.field16',strtotime('-11 month')])
+                $pregLCount=Pregnancy::find()
+                    ->andWhere(['>','pregnancy.field16',strtotime('-43 week',$stime)])
+                    //->leftJoin('autograph', '`autograph`.`userid` = `pregnancy`.`familyid`')
                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
-                    ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
+                    ->andWhere(['>=', 'doctor_parent.createtime', $stime])
+                    ->andWhere(['<', 'doctor_parent.createtime', $etime])
+                    ->andFilterWhere(['`doctor_parent`.`doctorid`' => $v->userid])->count();
 
 
                 $appoint = Appoint::find()->where(['doctorid' => $v->userid])
@@ -159,11 +160,12 @@ class DataController extends Controller
                 $rs = [];
                 $rs['sign1'] = $doctorParent;
                 $rs['sign2'] = $child_info1+$child_info2;
+                $rs['sign3'] = $pregLCount;
 
                 $rs['appoint_num'] = $appoint;
                 $rs['doctorid'] = $v->userid;
                 $rs['date'] = $stime;
-                //var_dump($rs);
+                var_dump($rs);
                 $hospitalFrom = HospitalForm::find()->where(['doctorid' => $v->userid])->andWhere(['date' => $stime])->one();
                 $hospitalFrom = $hospitalFrom ? $hospitalFrom : new HospitalForm();
                 $hospitalFrom->load(['HospitalForm' => $rs]);

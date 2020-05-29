@@ -60,7 +60,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <thead>
                                             <tr>
                                                 <th>社区卫生服务中心</th>
-                                                <th>签约签字数</th>
+                                                <th>儿童签字数</th>
+                                                <th>孕妇签字数</th>
                                                 <th>门诊预约数</th>
                                                 <th>其他预约渠道</th>
                                             </tr>
@@ -73,6 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <tr>
                                                     <td><?=$userDoctor->name?></td>
                                                     <td><?=$v['b']?></td>
+                                                    <td><?=$v['e']?></td>
                                                     <td><?=$v['c']?></td>
                                                     <td><?=$v['d']?></td>
                                                 </tr>
@@ -95,7 +97,7 @@ $updateJs = <<<JS
 jQuery(".krajee-datepicker").attr("autocomplete", "off");
 
 jQuery("#export").click(function () {
-        var table2excel = new Table2Excel({'defaultFileName':'{$sdate}至{$sdate}各社区签约情况'});
+        var table2excel = new Table2Excel({'defaultFileName':'{$sdate}至{$sdate}社区每日统计报表'});
         table2excel.export(jQuery('#example2'));
     });
      

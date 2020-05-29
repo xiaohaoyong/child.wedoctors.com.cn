@@ -110,7 +110,7 @@ class UserDoctorController extends BaseController
         $sdate=Yii::$app->request->post('sdate');
         $edate=Yii::$app->request->post('edate');
         $query=\common\models\HospitalForm::find()
-            ->select('sum(sign1) as a,sum(sign2) as b,sum(appoint_num) as c,sum(other_appoint_num) as d,doctorid')
+            ->select('sum(sign3) as e,sum(sign1) as a,sum(sign2) as b,sum(appoint_num) as c,sum(other_appoint_num) as d,doctorid')
             ->where(['in','doctorid',$doctor]);
         if($sdate && $edate){
             $query->andWhere(['>=','date',strtotime($sdate)])->andWhere(['<=','date',strtotime($edate)]);

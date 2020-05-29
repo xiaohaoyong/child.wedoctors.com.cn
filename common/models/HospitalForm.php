@@ -33,7 +33,7 @@ class HospitalForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sign1', 'sign2', 'date', 'ratio1', 'ratio2', 'appoint_num', 'other_appoint_num', 'doctorid'], 'integer'],
+            [['sign1', 'sign2', 'sign3', 'date', 'ratio1', 'ratio2', 'appoint_num', 'other_appoint_num', 'doctorid'], 'integer'],
         ];
     }
 
@@ -46,6 +46,7 @@ class HospitalForm extends \yii\db\ActiveRecord
             'id' => 'ID',
             'sign1' => '扫码签约数',
             'sign2' => '签约签字数',
+            'sign3' => '签约孕妇',
             'date' => '统计日期',
             'ratio1' => '当日整体签约率',
             'ratio2' => '当日整体签字率',
