@@ -289,7 +289,28 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
 
 
-        $is_appoint = $appoint->is_appoint(strtotime($post['appoint_date']));
+
+        //判断所选疫苗都有周几可约
+        if ($post['vaccine']) {
+            $vaccine = Vaccine::findOne($post['vaccine']);
+            if ($vaccine) {
+                $query = HospitalAppointVaccine::find()
+                    ->select('week')
+                    ->where(['haid' => $appoint->id]);
+                if ($vaccine->type == 0) {
+                    $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => 0]]);
+                } else {
+                    $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => -1]]);
+                }
+                $weekr = $query->groupBy('week')->column();
+                //如该疫苗无法获取周几可约则视为非法访问
+                if (!$weekr) {
+                    return new Code(20010, '社区医院暂未开通服务！');
+                }
+            }
+        }
+
+        $is_appoint = $appoint->is_appoint(strtotime($post['appoint_date']),$weekr);
         if ($is_appoint != 1) {
             return new Code(21000, '预约日期非门诊日或未到放号时间!请更新客户端查看！');
         }

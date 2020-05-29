@@ -65,20 +65,20 @@ class HospitalAppoint extends \yii\db\ActiveRecord
             [['cycle', 'delay', 'week','interval','phone'], 'required'],
             [['doctorid', 'cycle', 'delay', 'weeks', 'interval', 'updateInterval', 'phone','release_time'], 'integer'],
             [['info'], 'string', 'max' => 255],
-            //[['non_date','sure_date'],'dateNumValidation']
+            [['sure_date'],'dateNumValidation']
         ];
     }
 
-//    public function dateNumValidation($attribute,$params){
-//
-//        if(isset($this->$attribute)){
-//            $array=explode(',',$this->$attribute);
-//            if(count($array)>20){
-//                $this->addError($attribute, "不能超过20个日期，请清除过期日期");
-//            }
-//        }
+    public function dateNumValidation($attribute,$params){
 
-    //}
+        if(isset($this->$attribute)){
+            $array=explode(',',$this->$attribute);
+            if(count($array)>20){
+                $this->addError($attribute, "不能超过20个日期，请清除过期日期");
+            }
+        }
+
+    }
 
     /**
      * {@inheritdoc}
@@ -153,6 +153,12 @@ class HospitalAppoint extends \yii\db\ActiveRecord
         $sday = strtotime(date('Y-m-d', strtotime('+' . ($this->delay+1) . " day")));
         $eday = strtotime('+'.($cycle-1).' day',$sday);
 
+
+        if($sure_date && $weekr) {
+            if (in_array(date('Y-m-d', $date), $sure_date) && in_array($week, $weekr)) {
+                return 1;
+            }
+        }
         if (in_array($week, $weeks) && !in_array(date('Y-m-d', $date), $holiday)) {
             if(($date>=$sday && $date<$eday) || ($date==$eday && date('Gi')>$this->release_time."00")){
                 return 1;

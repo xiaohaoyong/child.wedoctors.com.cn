@@ -51,6 +51,31 @@ use yii\widgets\ActiveForm;
                             ])->label(false) ?>
                         </td></tr>
 
+                    <tr>
+                        <th>
+                            可预约日期<br>
+                            预约系统已判断了该年度节假日，如需要在周末，节假日，或者串休日开通门诊，则需要单独在此处添加门诊日期
+
+                            <?php
+                            $sdate=strtotime(date('Y-m-01'));
+                            $edate=strtotime('+6 month',strtotime(date('Y-m-01')));
+                            $days=($edate-$sdate)/86400;
+                            for ($i=0;$i<$days;$i++){
+                                $time=strtotime('+'.$i.' day',$sdate);
+                                $dayList[date('Y-m-d',$time)]=date('Y-m-d',$time);
+                            }
+                            ?>
+                        </th>
+                        <td><?= $form->field($model, 'sure_date', ['options' => ['class' => "col-xs-5"]])->widget(\kartik\select2\Select2::classname(), [
+                                'data' => $dayList,
+                                'language' => 'de',
+                                'options' => ['placeholder' => '请选择','multiple'=>'multiple'],
+                                'pluginOptions' => [
+                                    'allowClear' => true
+                                ],
+                            ])->label(false)?>
+                        </td>
+                    </tr>
 
                     <tr>
                         <th>
