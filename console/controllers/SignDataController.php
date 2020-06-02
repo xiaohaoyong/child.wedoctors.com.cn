@@ -23,7 +23,7 @@ class SignDataController extends \yii\base\Controller
      */
     function actionDay(){
         $satime = strtotime('-1 day',strtotime(date('Y-m-d')));
-        $doctors = UserDoctor::find()->where(['county'=>1106])->all();
+        $doctors = UserDoctor::find()->all();
         foreach ($doctors as $k => $v) {
             echo $v->name;
             for ($stime = $satime; $stime < time(); $stime = strtotime('+1 day', $stime)) {
@@ -73,12 +73,11 @@ class SignDataController extends \yii\base\Controller
                 $rs['appoint_num'] = $appoint;
                 $rs['doctorid'] = $v->userid;
                 $rs['date'] = $stime;
-                var_dump($rs);
                 $hospitalFrom = HospitalForm::find()->where(['doctorid' => $v->userid])->andWhere(['date' => $stime])->one();
                 $hospitalFrom = $hospitalFrom ? $hospitalFrom : new HospitalForm();
                 $hospitalFrom->load(['HospitalForm' => $rs]);
                 $hospitalFrom->save();
-                var_dump($hospitalFrom->firstErrors);
+                echo "\n";
             }
         }
     }
