@@ -32,7 +32,7 @@
                     ['label' => '管辖儿童', 'icon' => 'archive', 'url' => \yii\helpers\Url::to(['child-info/index']),],
                     $a,
                     $b,
-                    ['label' => '社区管理', 'icon' => 'hospital-o', 'url' => \yii\helpers\Url::to(['user-doctor/index']),],
+                    ['label' => '社区数据统计', 'icon' => 'hospital-o', 'url' => \yii\helpers\Url::to(['user-doctor/index']),],
                     ['label' => '中医指导库', 'icon' => 'file-text-o', 'url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[type]=1']),
                         'items' => [
                             ['label' => '指导文章列表', 'url' => ['article/zindex?ArticleSearchModel[type]=1']],
