@@ -334,12 +334,13 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
         //判断选择疫苗和日期是否匹配
         if($post['vaccine']) {
+            $vaccine = Vaccine::findOne($post['vaccine']);
+            $type=$vaccine->type==1?-1:0;
             $week = date('w', strtotime($post['appoint_date']));
             $vaccines = HospitalAppointVaccine::find()
-                ->select('vaccine')
                 ->where(['haid' => $appoint->id])
-                ->andwhere(['week' => $week])->andwhere(['vaccine' => $post['vaccine']])->column();
-            if(!in_array($post['vaccine'],$vaccines)){
+                ->andwhere(['week' => $week])->andwhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => $type]])->column();
+            if(!$vaccines){
                 return new Code(21000, '此日期没有您选择的疫苗！请选择其他日期');
             }
         }
