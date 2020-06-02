@@ -244,7 +244,7 @@ class UserController extends Controller
                         $useridx = md5($userLogin->userid . "6623cXvY");
                         $userLogin->xopenid = $openid;
                         $userLogin->unionid = $unionid;
-                        $userLogin->logintime = time();
+                        $userLogin->logintime = time() ;
                         $userLogin->save();
                         $userid=$userLogin->userid;
                         $log->addLog("已录入登录手机号");

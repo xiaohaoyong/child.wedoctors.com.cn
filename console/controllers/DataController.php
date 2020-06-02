@@ -111,20 +111,17 @@ class DataController extends Controller
 //        exit;
 
 
-        $satime = strtotime('2019-06-01');
+        $satime = strtotime('-1 day',strtotime(date('Y-m-d')));
         $doctors = UserDoctor::find()->where(['county'=>1106])->all();
         foreach ($doctors as $k => $v) {
             echo $v->name;
-            for ($stime = $satime; $stime < strtotime('2020-01-01'); $stime = strtotime('+1 day', $stime)) {
+            for ($stime = $satime; $stime < time(); $stime = strtotime('+1 day', $stime)) {
                 echo date('Ymd',$stime);
-
                 $etime = strtotime('+1 day', $stime);
                 $doctorParent = DoctorParent::find()->where(['doctorid' => $v->userid])
                     ->andWhere(['>=', 'createtime', $stime])
                     ->andWhere(['<', 'createtime', $etime])
                     ->count();
-
-
                 $child_info1=ChildInfo::find()
                     ->leftJoin('doctor_parent','doctor_parent.parentid=child_info.userid')
                     ->andWhere(['doctor_parent.doctorid'=>$v->userid])

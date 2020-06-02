@@ -178,6 +178,8 @@ class WappointController extends Controller
                 $rs['name']='两癌筛查';
                 $rows[]=$rs;
             }
+            //var_dump($rows);exit;
+
             $vaccines = $rows;
         } else {
             $vaccines = [];
