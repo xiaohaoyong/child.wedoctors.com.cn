@@ -135,7 +135,7 @@ class Pregnancy extends \yii\db\ActiveRecord
     public static $field90=[
         0=>'无',
         1=>'孕妇为本市户籍',
-        2=>'孕妇为外地户籍，配偶为本市户籍（外嫁京）',
+        2=>'孕妇外地配偶本市(外嫁京)',
         3=>'孕妇及其配偶均为外地户籍',
     ];
     public static $field49=[
