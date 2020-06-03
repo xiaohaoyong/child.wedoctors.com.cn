@@ -93,6 +93,20 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        ini_set('memory_limit', '6000M');
+
+        $auto=Autograph::find()->andWhere(['<','endtime',date('Ymd')])->all();
+        foreach ($auto as $k=>$v){
+            $v->starttime=date('Ymd',strtotime('+1 year',strtotime($v->starttime)));
+            $v->endtime=date('Ymd',strtotime('+1 year',strtotime($v->starttime)));
+            $v->save();
+        }
+        exit;
+
+
+
+
+
 //        $hav=HospitalAppointVaccine::findAll(['haid'=>98]);
 //        $appoints=Appoint::find()->andWhere(['type'=>2])->andWhere(['>','vaccine',0])->andWhere(['>','appoint_date',time()])->all();
 //        foreach($appoints as $k=>$v){
@@ -172,7 +186,6 @@ class DataController extends Controller
         }
         exit;
 
-        ini_set('memory_limit', '6000M');
 
         //$appoint=Appoint::find()->where(['doctorid'=>176156])->andWhere(['state'=>1])->andWhere(['>','appoint_time',6])->groupBy('userid')->all();
 
