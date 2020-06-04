@@ -25,8 +25,8 @@ databackend\assets\DatabasesAsset::register($this);
                     <th>id</th>
 
                     <th>社区卫生服务中心</th>
+                    <th>上线时间</th>
                     <th>名称</th>
-
                     <th>辖区内管理儿童数</th>
                     <th>今日签约 </th>
                     <th>签约总数</th>
@@ -38,11 +38,14 @@ databackend\assets\DatabasesAsset::register($this);
                 <tbody>
                 <?php
                 foreach($doctor as $k=>$v){
+                    $createtime=\common\models\User::findOne($v->userid)->createtime;
                     ?>
                     <tr>
                         <td><?=$v->hospitalid?>,<?=$v->userid?></td>
 
                         <td><?=$v->name?></td>
+                        <td><?=$createtime?date('Y-m-d',$createtime):""?></td>
+
                         <td><?=$v->phone?></td>
 
                         <td><?=$total=\common\models\ChildInfo::find()

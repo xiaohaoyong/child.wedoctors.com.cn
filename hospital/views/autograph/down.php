@@ -74,7 +74,7 @@
             <div>签约医生：<?=$userDoctor['name']?></div>
             <div>团队服务电话：<?=$userDoctor['phone']?></div>
             <div>医生签字：<?=$userDoctor['name']?></div>
-            <div>日期：<?=date('Y年m月d日',$autograph->createtime)?></div>
+            <div>日期：<?=date('Y年m月d日',strtotime($autograph->starttime))?></div>
         </div>
         <div style="float: left;">
             <div>居民姓名：<?=$userParent['mother']?></div>
