@@ -66,7 +66,7 @@
         </div>
         <?php $autograph=\common\models\Autograph::findOne(['userid'=>$userid]); ?>
         <div>本协议一式二份，双方各执一份，自 <?=date('Y年m月d日',strtotime($autograph->starttime))?> 至 <?=date('Y年m月d日',strtotime('+1 year',strtotime($autograph->endtime)))?> 止。</div>
-        <div>首次签约日期： <?=date('Y年m月d日',strtotime($autograph->createtime))?></div>
+        <div>首次签约日期： <?=date('Y年m月d日',$autograph->createtime)?></div>
 
     </div>
     <div style="text-indent: 2em; padding-top:40px; height: 200px; line-height: 60px;">
@@ -84,7 +84,7 @@
                     echo $autograph->img;
                 }
                 ?>" style="width: 200px; position: absolute; top: -30px; "></image></div>
-            <div>日期：<?=date('Y年m月d日',$autograph->createtime)?></div>
+            <div>日期：<?=date('Y年m月d日',strtotime($autograph->starttime))?></div>
         </div>
     </div>
 </div>
