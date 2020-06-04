@@ -30,38 +30,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <?php
+                                foreach(\common\models\HospitalAppoint::$typeText as $k=>$v){
+                                    ?>
                                 <tr>
-                                    <td>体检预约</td>
+                                    <td><?=$v?></td>
                                     <td>
-                                        <?=in_array(1,$userDoctorAppoint)?"已设置":"未设置"?>，
-                                        <?=in_array(1,$types)?"已开通":"未开通"?>
+                                        <?=in_array($k,$userDoctorAppoint)?"已设置":"未设置"?>，
+                                        <?=in_array($k,$types)?"已开通":"未开通"?>
                                     </td>
-                                    <td><?=Html::a('修改',['hospital-appoint/create','type'=>1])?></td>
+                                    <td><?=Html::a('修改',['hospital-appoint/create','type'=>$k])?></td>
                                 </tr>
-                                <tr>
-                                    <td>疫苗预约</td>
-                                    <td>
-                                        <?=in_array(2,$userDoctorAppoint)?"已设置":"未设置"?>，
-                                        <?=in_array(2,$types)?"已开通":"未开通"?>
-                                    </td>
-                                    <td><?=Html::a('修改',['hospital-appoint/create','type'=>2])?></td>
-                                </tr>
-                                <tr>
-                                    <td>微量元素</td>
-                                    <td>
-                                        <?=in_array(3,$userDoctorAppoint)?"已设置":"未设置"?>，
-                                        <?=in_array(3,$types)?"已开通":"未开通"?>
-                                    </td>
-                                    <td><?=Html::a('修改',['hospital-appoint/create','type'=>3])?></td>
-                                </tr>
-                                <tr>
-                                    <td>成人疫苗</td>
-                                    <td>
-                                        <?=in_array(4,$userDoctorAppoint)?"已设置":"未设置"?>，
-                                        <?=in_array(4,$types)?"已开通":"未开通"?>
-                                    </td>
-                                    <td><?=Html::a('修改',['hospital-appoint/create','type'=>4])?></td>
-                                </tr>
+                                <?php }?>
                                 </tbody>
                             </table>
                         </div>
