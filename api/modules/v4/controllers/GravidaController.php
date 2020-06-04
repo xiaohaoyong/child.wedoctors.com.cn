@@ -20,7 +20,7 @@ use common\models\UserParent;
 
 class GravidaController extends Controller
 {
-    public function actionSave($id){
+    public function actionNewSave($id){
         $data=\Yii::$app->request->post();
         $data['field11']=strtotime($data['field11']);
         $data=array_filter($data,function($e){
@@ -90,22 +90,22 @@ class GravidaController extends Controller
             return new Code(20010,implode(',',$preg->firstErrors));
         }
     }
-    public function actionView($id){
+    public function actionNewView($id){
         if($id) {
             $preg = Pregnancy::findOne($id);
             if ($preg) {
                 $pregRow = $preg->toArray();
                 $pregRow['date'] = date('Y-m-d', $preg->field11);
                 $key=array_keys(Area::$province);
-                $pregRow['field90']=$preg->field90-1;
+                $pregRow['field90']=$preg->field90?$preg->field90-1:0;
                 $pregRow['field90_name']=Pregnancy::$field90[$preg->field90];
                 $pregRow['field90_id']=$preg->field90;
 
-                $pregRow['field7']=array_search($preg->field7,$key);
+                $pregRow['field7']=$preg->field7?array_search($preg->field7,$key):0;
                 $pregRow['field7_name']=Area::$province[$preg->field7];
                 $pregRow['field7_id']=$preg->field7;
 
-                $pregRow['field39']=array_search($preg->field39,$key);
+                $pregRow['field39']=$preg->field39?array_search($preg->field39,$key):0;
                 $pregRow['field39_name']=Area::$province[$preg->field39];
                 $pregRow['field39_id']=$preg->field39;
 

@@ -17,6 +17,7 @@ use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointWeek;
+use common\models\Pregnancy;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
 use common\models\Vaccine;
@@ -67,8 +68,14 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
     public function actionForm($id, $type, $vid = 0)
     {
-        $childs = ChildInfo::findAll(['userid' => $this->userid]);
-
+        if($type==5) {
+            $gravida = Pregnancy::find()->where(['familyid' => $this->userid])->orderBy('id desc')->one();
+            if(!$gravida->field1 ||!$gravida->field4 ||!$gravida->field11 ||!$gravida->field90 || !$gravida->field7 || !$gravida->field39 || !$gravida->field10){
+                $gravida_is=1;
+            }
+        }else{
+            $childs = ChildInfo::findAll(['userid' => $this->userid]);
+        }
 
         //doctor
         $appoint = HospitalAppoint::findOne(['doctorid' => $id, 'type' => $type]);
@@ -155,7 +162,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $vaccines = [];
             }
 
-            return ['childs' => $childs, 'phone' => $phone, 'vaccines' => $vaccines, 'days' => $days];
+            return ['gravida_is'=>$gravida_is,'childs' => $childs,'gravida'=>$gravida,'phone' => $phone, 'vaccines' => $vaccines, 'days' => $days];
 
         } else {
             return new Code(20010, '社区医院暂未开通服务！');
