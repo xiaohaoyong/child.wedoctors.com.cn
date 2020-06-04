@@ -65,7 +65,7 @@
             本协议期限为一年，一年后自动续约。如需解约请及时与您的家庭医生团队成员联系，办理解约手续。如涉及已经收费的服务项目在签约期内未能完成，经双方协商可延期3个月提供服务或退费。在签约期内，您如果因居住地变更等客观原因，可终止现有的签约服务关系，并可根据实际情况重新启动签约程序。
         </div>
         <?php $autograph=\common\models\Autograph::findOne(['userid'=>$userid]); ?>
-        <div>本协议一式二份，双方各执一份，自 <?=date('Y年m月d日',strtotime($autograph->starttime))?> 至 <?=date('Y年m月d日',strtotime('+1 year',strtotime($autograph->endtime)))?> 止。</div>
+        <div>本协议一式二份，双方各执一份，自 <?=date('Y年m月d日',strtotime($autograph->starttime))?> 至 <?=date('Y年m月d日',strtotime($autograph->endtime))?> 止。</div>
         <div>首次签约日期： <?=date('Y年m月d日',$autograph->createtime)?></div>
 
     </div>

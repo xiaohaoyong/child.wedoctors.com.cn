@@ -95,7 +95,7 @@ class DataController extends Controller
     {
         ini_set('memory_limit', '6000M');
 
-        $auto=Autograph::find()->andWhere(['createtime'=>0])->all();
+        $auto=Autograph::find()->andWhere(['starttime'=>0])->all();
         foreach ($auto as $k=>$v){
             $v->starttime=date('Ymd',$v->createtime);
             //$v->endtime=date('Ymd',strtotime('+1 year',strtotime($v->starttime)));
