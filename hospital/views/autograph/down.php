@@ -49,7 +49,7 @@
         </div>
         <div>宝宝姓名：<?=$child?implode(',',$child):''?></div>
         <div>手机：<?=$userParent['mother_phone']?$userParent['mother_phone']:''?></div>
-        <div>住址：<?=$userParent['address']?></div>
+        <div>住址：<?=$userParent['fieldp47']?></div>
         <div>紧急联系人：<?=$userParent['father']?></div>
         <div>关系：<?=$userParent['mother']?'夫妻':''?></div>
         <div>紧急联系人电话：<?=$userParent['father_phone']?$userParent['father_phone']:''?></div>
