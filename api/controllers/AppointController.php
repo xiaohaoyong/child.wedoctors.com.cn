@@ -38,7 +38,7 @@ class AppointController extends Controller
         if($search){
             $query->andFilterWhere(['like','name',$search]);
         }
-        if(!YII_DEBUG){
+        if(!$this->userid==325910){
             $query->andWhere(['city'=>11]);
         }
         $doctors=$query->orderBy('appoint desc')->all();
