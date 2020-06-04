@@ -58,10 +58,12 @@ class Appoint extends \yii\db\ActiveRecord
     public static $typeText = [
         1 => '体检预约',
         2 => '疫苗预约',
-        3 => '微量元素',
         4 => '成人疫苗',
-
+        5 => '建册预约',
+        6 => '领取叶酸预约',
+        3 => '微量元素'
     ];
+
     public static $typeText1 = [
         1 => '体检',
         2 => '接种',

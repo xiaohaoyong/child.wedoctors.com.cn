@@ -23,6 +23,10 @@ class GravidaController extends Controller
     public function actionSave($id){
         $data=\Yii::$app->request->post();
         $data['field11']=strtotime($data['field11']);
+        $data=array_filter($data,function($e){
+            if($e=='') return false;
+            return true;
+        });
         if(!$id) {
             //确定家庭数据
             $userParent = UserParent::findOne(['mother_id' => $data['field4']]);
@@ -107,14 +111,15 @@ class GravidaController extends Controller
 
             }
         }
+        $row['preg']=$pregRow;
         foreach(Area::$province as $k=>$v){
             $rs['id']=$k;
             $rs['name']=$v;
             $area[]=$rs;
         }
 
-        $pregRow['area']=$area;
-        return $pregRow;
+        $row['area']=$area;
+        return $row;
     }
 
 }
