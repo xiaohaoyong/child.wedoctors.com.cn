@@ -96,19 +96,6 @@ class GravidaController extends \api\modules\v2\controllers\GravidaController
             if ($preg) {
                 $pregRow = $preg->toArray();
                 $pregRow['date'] = date('Y-m-d', $preg->field11);
-                $key=array_keys(Area::$province);
-                $pregRow['field90']=$preg->field90?$preg->field90-1:0;
-                $pregRow['field90_name']=Pregnancy::$field90[$preg->field90];
-                $pregRow['field90_id']=$preg->field90;
-
-                $pregRow['field7']=$preg->field7?array_search($preg->field7,$key):0;
-                $pregRow['field7_name']=Area::$province[$preg->field7];
-                $pregRow['field7_id']=$preg->field7;
-
-                $pregRow['field39']=$preg->field39?array_search($preg->field39,$key):0;
-                $pregRow['field39_name']=Area::$province[$preg->field39];
-                $pregRow['field39_id']=$preg->field39;
-
             }
         }
         $row['preg']=$pregRow;
@@ -119,6 +106,14 @@ class GravidaController extends \api\modules\v2\controllers\GravidaController
         }
 
         $row['area']=$area;
+        foreach(Pregnancy::$field90 as $k=>$v){
+            if(!$k) continue;
+            $rs['id']=$k;
+            $rs['name']=$v;
+            $field90s[]=$rs;
+        }
+        $row['field90s']=$field90s;
+
         return $row;
     }
 

@@ -22,6 +22,7 @@ use common\models\Doctors;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointWeek;
+use common\models\Pregnancy;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
 use common\models\Vaccine;
@@ -33,68 +34,68 @@ use yii\data\Pagination;
 
 class AppointController extends Controller
 {
-    public function actionDoctors($search=''){
-        $query=UserDoctor::find();
-        if($search){
-            $query->andFilterWhere(['like','name',$search]);
+    public function actionDoctors($search = '')
+    {
+        $query = UserDoctor::find();
+        if ($search) {
+            $query->andFilterWhere(['like', 'name', $search]);
         }
-        if($this->userid!=325910){
-            $query->andWhere(['city'=>11]);
+        if ($this->userid != 325910) {
+            $query->andWhere(['city' => 11]);
         }
-        $doctors=$query->orderBy('appoint desc')->all();
+        $doctors = $query->orderBy('appoint desc')->all();
 
-        $docs=[];
+        $docs = [];
 
-        $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
-        if($doctorParent)
-        {
-            $doctorid=$doctorParent->doctorid;
+        $doctorParent = DoctorParent::findOne(['parentid' => $this->userid]);
+        if ($doctorParent) {
+            $doctorid = $doctorParent->doctorid;
         }
 
-        foreach($doctors as $k=>$v){
-            $rs=$v->toArray();
-            $uda=UserDoctorAppoint::findOne(['doctorid'=>$v->userid]);
-            $rs['name']=Hospital::findOne($v->hospitalid)->name;
-            $docs[]=$rs;
-            if($doctorid==$v->userid){
-                $doc=$rs;
+        foreach ($doctors as $k => $v) {
+            $rs = $v->toArray();
+            $uda = UserDoctorAppoint::findOne(['doctorid' => $v->userid]);
+            $rs['name'] = Hospital::findOne($v->hospitalid)->name;
+            $docs[] = $rs;
+            if ($doctorid == $v->userid) {
+                $doc = $rs;
             }
         }
 
 
-
-
-        return ['doctors'=>$docs,'doc'=>$doc];
+        return ['doctors' => $docs, 'doc' => $doc];
     }
 
-    public function actionDoctor($id){
-        $uda=UserDoctor::findOne(['userid'=>$id]);
-        $row=$uda->toArray();
-        if($uda->appoint){
-            $types=str_split((string)$uda->appoint);
+    public function actionDoctor($id)
+    {
+        $uda = UserDoctor::findOne(['userid' => $id]);
+        $row = $uda->toArray();
+        if ($uda->appoint) {
+            $types = str_split((string)$uda->appoint);
         }
-        $row['type1']=in_array(1,$types)?1:0;
-        $row['type2']=in_array(2,$types)?1:0;
-        $row['type3']=in_array(3,$types)?1:0;
-        $hospital=Hospital::findOne($uda->hospitalid);
+        $row['type1'] = in_array(1, $types) ? 1 : 0;
+        $row['type2'] = in_array(2, $types) ? 1 : 0;
+        $row['type3'] = in_array(3, $types) ? 1 : 0;
+        $hospital = Hospital::findOne($uda->hospitalid);
 
-        $row['hospital']=$hospital->name;
+        $row['hospital'] = $hospital->name;
         return $row;
     }
 
-    public function actionForm($id,$type){
-        $childs=ChildInfo::findAll(['userid'=>$this->userid]);
+    public function actionForm($id, $type)
+    {
+        $childs = ChildInfo::findAll(['userid' => $this->userid]);
 
 
         //doctor
-        $appoint=UserDoctorAppoint::findOne(['doctorid'=>$id,'type'=>$type]);
-        if($appoint) {
+        $appoint = UserDoctorAppoint::findOne(['doctorid' => $id, 'type' => $type]);
+        if ($appoint) {
 
             $phone = $this->userLogin->phone;
             $phone = $phone ? $phone : $this->user->phone;
-            $row=$appoint->toArray();
+            $row = $appoint->toArray();
 
-            $holiday=[
+            $holiday = [
                 '2018-12-30',
                 '2018-12-31',
                 '2019-1-1',
@@ -127,81 +128,83 @@ class AppointController extends Controller
                 '2019-10-7',
             ];
 
-            $appoints=Appoint::find()->select("count(*)")->indexBy('appoint_time')->where(['doctorid'=>$id,'type'=>$type])->groupBy('appoint_time')->column();
-            $row['type1_num']=$row['type1_num']-$appoints[1]>=0?$row['type1_num']-$appoints[1]:0;
-            $row['type2_num']=$row['type2_num']-$appoints[2]>=0?$row['type2_num']-$appoints[2]:0;
-            $row['type3_num']=$row['type3_num']-$appoints[3]>=0?$row['type3_num']-$appoints[3]:0;
-            $row['type4_num']=$row['type4_num']-$appoints[4]>=0?$row['type4_num']-$appoints[4]:0;
-            $row['type5_num']=$row['type5_num']-$appoints[5]>=0?$row['type5_num']-$appoints[5]:0;
-            $row['type6_num']=$row['type6_num']-$appoints[6]>=0?$row['type6_num']-$appoints[6]:0;
+            $appoints = Appoint::find()->select("count(*)")->indexBy('appoint_time')->where(['doctorid' => $id, 'type' => $type])->groupBy('appoint_time')->column();
+            $row['type1_num'] = $row['type1_num'] - $appoints[1] >= 0 ? $row['type1_num'] - $appoints[1] : 0;
+            $row['type2_num'] = $row['type2_num'] - $appoints[2] >= 0 ? $row['type2_num'] - $appoints[2] : 0;
+            $row['type3_num'] = $row['type3_num'] - $appoints[3] >= 0 ? $row['type3_num'] - $appoints[3] : 0;
+            $row['type4_num'] = $row['type4_num'] - $appoints[4] >= 0 ? $row['type4_num'] - $appoints[4] : 0;
+            $row['type5_num'] = $row['type5_num'] - $appoints[5] >= 0 ? $row['type5_num'] - $appoints[5] : 0;
+            $row['type6_num'] = $row['type6_num'] - $appoints[6] >= 0 ? $row['type6_num'] - $appoints[6] : 0;
 
-            return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone,'holiday'=>$holiday];
-        }else{
-            return new Code(20010,'社区医院暂未开通服务！');
+            return ['childs' => $childs, 'appoint' => $row, 'phone' => $phone, 'holiday' => $holiday];
+        } else {
+            return new Code(20010, '社区医院暂未开通服务！');
         }
     }
-    public function actionDayNum($doctorid,$week,$type,$day){
+
+    public function actionDayNum($doctorid, $week, $type, $day)
+    {
         return new Code(21000, '客户端已过期,请升级客户端');
 
-        $rs=[];
-        $appoint=HospitalAppoint::findOne(['doctorid'=>$doctorid,'type'=>$type]);
-        if($appoint){
-            $weeks=HospitalAppointWeek::find()->andWhere(['week'=>$week])->andWhere(['haid'=>$appoint->id])->orderBy('time_type asc')->all();
-            if($weeks){
-                $appoints=Appoint::find()
+        $rs = [];
+        $appoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+        if ($appoint) {
+            $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $appoint->id])->orderBy('time_type asc')->all();
+            if ($weeks) {
+                $appoints = Appoint::find()
                     ->select('count(*)')
-                    ->andWhere(['type'=>$type])
-                    ->andWhere(['doctorid'=>$doctorid])
-                    ->andWhere(['appoint_date'=>strtotime($day)])
-                    ->andWhere(['!=','state',3])
-                    ->andWhere(['mode'=>0])
+                    ->andWhere(['type' => $type])
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->andWhere(['appoint_date' => strtotime($day)])
+                    ->andWhere(['!=', 'state', 3])
+                    ->andWhere(['mode' => 0])
                     ->indexBy('appoint_time')
                     ->groupBy('appoint_time')
                     ->column();
-                foreach($weeks as $k=>$v){
-                    if($appoints) {
+                foreach ($weeks as $k => $v) {
+                    if ($appoints) {
                         $num = $v->num - $appoints[$v->time_type];
                         $rs[$v->time_type] = $num > 0 ? $num : 0;
-                    }else{
-                        $rs[$v->time_type] =$v->num ;
+                    } else {
+                        $rs[$v->time_type] = $v->num;
                     }
                 }
                 return $rs;
             }
         }
-        return new Code(20020,'未设置');
+        return new Code(20020, '未设置');
     }
 
-    public function actionSave(){
+    public function actionSave()
+    {
         return new Code(21000, '客户端已过期,请升级客户端');
 
-        $post=\Yii::$app->request->post();
+        $post = \Yii::$app->request->post();
 
-        $doctor=UserDoctor::findOne(['userid'=>$post['doctorid']]);
-        if($doctor){
-            $hospital=Hospital::findOne($doctor->hospitalid);
-            if($doctor->appoint){
-                $types=str_split((string)$doctor->appoint);
+        $doctor = UserDoctor::findOne(['userid' => $post['doctorid']]);
+        if ($doctor) {
+            $hospital = Hospital::findOne($doctor->hospitalid);
+            if ($doctor->appoint) {
+                $types = str_split((string)$doctor->appoint);
             }
         }
-        if(!$doctor || !$doctor->appoint || !in_array($post['type'],$types)){
+        if (!$doctor || !$doctor->appoint || !in_array($post['type'], $types)) {
             return new Code(21000, '社区未开通');
         };
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
 
 
-        $is_appoint=$appoint->is_appoint(strtotime($post['appoint_date']));
-        if($is_appoint!=1){
-            return new Code(21000,'预约日期非门诊日或未到放号时间!请更新客户端查看！');
+        $is_appoint = $appoint->is_appoint(strtotime($post['appoint_date']));
+        if ($is_appoint != 1) {
+            return new Code(21000, '预约日期非门诊日或未到放号时间!请更新客户端查看！');
         }
 
 
-
-        $w=date("w",strtotime($post['appoint_date']));
+        $w = date("w", strtotime($post['appoint_date']));
         $weeks = HospitalAppointWeek::find()
             ->andWhere(['week' => $w])
             ->andWhere(['haid' => $appoint->id])
-            ->andWhere(['time_type'=>$post['appoint_time']])->one();
+            ->andWhere(['time_type' => $post['appoint_time']])->one();
 
 
         $appointed = Appoint::find()
@@ -210,51 +213,48 @@ class AppointController extends Controller
             ->andWhere(['appoint_date' => strtotime($post['appoint_date'])])
             ->andWhere(['appoint_time' => $post['appoint_time']])
             ->andWhere(['mode' => 0])
-            ->andWhere(['<','state',3])
+            ->andWhere(['<', 'state', 3])
             ->count();
 
 
-        if(($weeks->num-$appointed)<=0){
-            return new Code(21000,'该时间段已约满，请选择其他时间');
+        if (($weeks->num - $appointed) <= 0) {
+            return new Code(21000, '该时间段已约满，请选择其他时间');
         }
 
 
-
-
-        $appoint=Appoint::findOne(['childid'=>$post['childid'],'type'=>$post['type'],'state'=>1]);
-        if($appoint){
-            return new Code(20020,'您有未完成的预约');
-        }elseif(!$post['childid']){
-            return new Code(20020,'请选择宝宝');
-        } else{
+        $appoint = Appoint::findOne(['childid' => $post['childid'], 'type' => $post['type'], 'state' => 1]);
+        if ($appoint) {
+            return new Code(20020, '您有未完成的预约');
+        } elseif (!$post['childid']) {
+            return new Code(20020, '请选择宝宝');
+        } else {
 
             $model = new Appoint();
             $post['appoint_date'] = strtotime($post['appoint_date']);
             $post['state'] = 1;
             $post['userid'] = $this->userid;
-            $post['loginid']=$this->userLogin->id;
+            $post['loginid'] = $this->userLogin->id;
             $model->load(["Appoint" => $post]);
-
 
 
             if ($model->save()) {
                 //var_dump($doctor->name);
-                $userLogin=$this->userLogin;
-                if($userLogin->openid) {
+                $userLogin = $this->userLogin;
+                if ($userLogin->openid) {
 
-                    $child=ChildInfo::findOne($model->childid);
+                    $child = ChildInfo::findOne($model->childid);
 
                     $data = [
                         'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
                         'keyword2' => ARRAY('value' => $hospital->name),
-                        'keyword3' => ARRAY('value' => date('Y-m-d',$model->appoint_date)." ".Appoint::$timeText[$model->appoint_time]),
-                        'keyword4' => ARRAY('value' => $child?$child->name:''),
+                        'keyword3' => ARRAY('value' => date('Y-m-d', $model->appoint_date) . " " . Appoint::$timeText[$model->appoint_time]),
+                        'keyword4' => ARRAY('value' => $child ? $child->name : ''),
                         'keyword5' => ARRAY('value' => $model->phone),
                         'keyword6' => ARRAY('value' => "预约成功"),
                         'keyword7' => ARRAY('value' => $model->createtime),
                         'keyword8' => ARRAY('value' => Appoint::$typeInfoText[$model->type]),
                     ];
-                    $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'Ejdm_Ih_W0Dyi6XrEV8Afrsg6HILZh0w8zg2uF0aIS0', '/pages/appoint/view?id='.$model->id,$post['formid']);
+                    $rs = WechatSendTmp::sendX($data, $userLogin->xopenid, 'Ejdm_Ih_W0Dyi6XrEV8Afrsg6HILZh0w8zg2uF0aIS0', '/pages/appoint/view?id=' . $model->id, $post['formid']);
                 }
 
                 return ['id' => $model->id];
@@ -264,93 +264,108 @@ class AppointController extends Controller
         }
     }
 
-    public function actionView($id){
-        $appoint=Appoint::findOne(['id'=>$id]);
+    public function actionView($id)
+    {
+        $appoint = Appoint::findOne(['id' => $id]);
 
-        $row=$appoint->toArray();
-        $doctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
-        if($doctor){
-            $hospital=Hospital::findOne($doctor->hospitalid);
+        $row = $appoint->toArray();
+        $doctor = UserDoctor::findOne(['userid' => $appoint->doctorid]);
+        if ($doctor) {
+            $hospital = Hospital::findOne($doctor->hospitalid);
         }
-        $row['hospital']=$hospital->name;
-        $row['type']=Appoint::$typeText[$appoint->type];
-        $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
-        $row['child_name']=ChildInfo::findOne($appoint->childid)->name;
-        $row['duan']=$appoint->appoint_time;
-        $vaccine=Vaccine::findOne($appoint->vaccine);
-        $row['vaccineStr']=$vaccine?$vaccine->name:'';
+        $row['hospital'] = $hospital->name;
+        $row['type'] = Appoint::$typeText[$appoint->type];
+        $row['time'] = date('Y.m.d', $appoint->appoint_date) . "  " . Appoint::$timeText[$appoint->appoint_time];
+        if ($appoint->type == 5 || $appoint->type == 6) {
+            $row['child_name'] = Pregnancy::findOne($appoint->childid)->field1;
 
-        $index=Appoint::find()
-            ->andWhere(['appoint_date'=>$appoint->appoint_date])
-            ->andWhere(['<','id',$id])
-            ->andWhere(['doctorid'=>$appoint->doctorid])
-            ->andWhere(['appoint_time'=>$appoint->appoint_time])
+        } else {
+            $row['child_name'] = ChildInfo::findOne($appoint->childid)->name;
+        }
+        $row['duan'] = $appoint->appoint_time;
+        $vaccine = Vaccine::findOne($appoint->vaccine);
+        $row['vaccineStr'] = $vaccine ? $vaccine->name : '';
+
+        $index = Appoint::find()
+            ->andWhere(['appoint_date' => $appoint->appoint_date])
+            ->andWhere(['<', 'id', $id])
+            ->andWhere(['doctorid' => $appoint->doctorid])
+            ->andWhere(['appoint_time' => $appoint->appoint_time])
             ->andWhere(['type' => $appoint->type])
             ->count();
-        $row['index']=$index+1;
+        $row['index'] = $index + 1;
         return $row;
     }
 
-    public function actionMy($state=1){
-        if($state==1) {
-            $appoints = Appoint::find()->andFilterWhere(['in','state',[1,5]])->andWhere(['userid' => $this->userid])->andWhere(['>','childid' ,0])->all();
-        }else{
+    public function actionMy($state = 1)
+    {
+        if ($state == 1) {
+            $appoints = Appoint::find()->andFilterWhere(['in', 'state', [1, 5]])->andWhere(['userid' => $this->userid])->andWhere(['>', 'childid', 0])->all();
+        } else {
             $appoints = Appoint::findAll(['userid' => $this->userid, 'state' => $state]);
         }
-        foreach($appoints as $k=>$v){
-            $row=$v->toArray();
-            $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
-            if($doctor){
-                $hospital=Hospital::findOne($doctor->hospitalid);
+        foreach ($appoints as $k => $v) {
+            $row = $v->toArray();
+            $doctor = UserDoctor::findOne(['userid' => $v->doctorid]);
+            if ($doctor) {
+                $hospital = Hospital::findOne($doctor->hospitalid);
             }
-            $row['hospital']=$hospital->name;
-            $row['type']=Appoint::$typeText[$v->type];
-            $row['time']=date('Y.m.d',$v->appoint_date)."  ".Appoint::$timeText[$v->appoint_time];
-            $row['stateText']=Appoint::$stateText[$v->state];
-            $row['child_name']=ChildInfo::findOne($v->childid)->name;
-            $vaccine=Vaccine::findOne($v->vaccine);
-            $row['vaccineStr']=$vaccine?$vaccine->name:'';
-            $list[]=$row;
+            $row['hospital'] = $hospital->name;
+            $row['type'] = Appoint::$typeText[$v->type];
+            $row['time'] = date('Y.m.d', $v->appoint_date) . "  " . Appoint::$timeText[$v->appoint_time];
+            $row['stateText'] = Appoint::$stateText[$v->state];
+            if ($v->type == 5 || $v->type == 6) {
+                $row['child_name'] = Pregnancy::findOne($v->childid)->field1;
+            } else {
+                $row['child_name'] = ChildInfo::findOne($v->childid)->name;
+            }
+            $row['child_name']=$row['child_name']?$row['child_name']:"-";
+            $vaccine = Vaccine::findOne($v->vaccine);
+            $row['vaccineStr'] = $vaccine ? $vaccine->name : '';
+            $list[] = $row;
         }
         return $list;
     }
-    public function actionDelete($id,$formid){
 
-        $model=Appoint::findOne(['id'=>$id,'userid'=>$this->userid]);
-        if(!$model->delete()){
-            return new Code(20010,'取消失败！');
-        }else{
-            $userLogin=$this->userLogin;
-            if($userLogin->openid) {
-                $doctor=UserDoctor::findOne(['userid'=>$model->doctorid]);
-                if($doctor){
-                    $hospital=Hospital::findOne($doctor->hospitalid);
+    public function actionDelete($id, $formid)
+    {
+
+        $model = Appoint::findOne(['id' => $id, 'userid' => $this->userid]);
+        if (!$model->delete()) {
+            return new Code(20010, '取消失败！');
+        } else {
+            $userLogin = $this->userLogin;
+            if ($userLogin->openid) {
+                $doctor = UserDoctor::findOne(['userid' => $model->doctorid]);
+                if ($doctor) {
+                    $hospital = Hospital::findOne($doctor->hospitalid);
                 }
-                $child=ChildInfo::findOne($model->childid);
+                $child = ChildInfo::findOne($model->childid);
 
                 $data = [
                     'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
-                    'keyword2' => ARRAY('value' => date('Y-m-d',$model->appoint_date)." ".Appoint::$timeText[$model->appoint_time]),
+                    'keyword2' => ARRAY('value' => date('Y-m-d', $model->appoint_date) . " " . Appoint::$timeText[$model->appoint_time]),
                     'keyword3' => ARRAY('value' => date('Y年m月d日 H:i:00')),
                     'keyword4' => ARRAY('value' => "已取消"),
 
                 ];
-                $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'sG19zJw7LhBT-SrZYNJbuH1TTYtQFKfVEviXKf1ERFI','',$formid);
+                $rs = WechatSendTmp::sendX($data, $userLogin->xopenid, 'sG19zJw7LhBT-SrZYNJbuH1TTYtQFKfVEviXKf1ERFI', '', $formid);
             }
         }
     }
 
-    public function actionState($id,$formid,$type,$cancel_type=0){
-        $model=Appoint::findOne(['id'=>$id,'userid'=>$this->userid]);
-        if(!$model){
-            return new Code(20010,'取消失败！');
-        }else{
+    public function actionState($id, $formid, $type, $cancel_type = 0)
+    {
+        $model = Appoint::findOne(['id' => $id, 'userid' => $this->userid]);
+        if (!$model) {
+            return new Code(20010, '取消失败！');
+        } else {
 
-            if($type==1){
-                $model->state=3;
-                $model->cancel_type=$cancel_type;
-            }elseif($type==2){
-                $model->state=1;
+            if ($type == 1) {
+                $model->state = 3;
+                $model->cancel_type = $cancel_type;
+            } elseif ($type == 2) {
+                $model->state = 1;
             }
             $userLogin = $this->userLogin;
             if ($userLogin->openid) {
@@ -360,9 +375,9 @@ class AppointController extends Controller
                 }
                 $child = ChildInfo::findOne($model->childid);
             }
-            if($model->save() && $userLogin->xopenid) {
+            if ($model->save() && $userLogin->xopenid) {
 
-                if($type==1) {
+                if ($type == 1) {
                     $data = [
                         'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
                         'keyword2' => ARRAY('value' => date('Y-m-d', $model->appoint_date) . " " . Appoint::$timeText[$model->appoint_time]),
@@ -371,29 +386,31 @@ class AppointController extends Controller
                     ];
                     $rs = WechatSendTmp::sendX($data, $userLogin->xopenid, 'sG19zJw7LhBT-SrZYNJbuH1TTYtQFKfVEviXKf1ERFI', '', $formid);
 
-                }elseif($type==2){
+                } elseif ($type == 2) {
                     $data = [
                         'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
                         'keyword2' => ARRAY('value' => $hospital->name),
-                        'keyword3' => ARRAY('value' => date('Y-m-d',$model->appoint_date)." ".Appoint::$timeText[$model->appoint_time]),
-                        'keyword4' => ARRAY('value' => $child?$child->name:''),
+                        'keyword3' => ARRAY('value' => date('Y-m-d', $model->appoint_date) . " " . Appoint::$timeText[$model->appoint_time]),
+                        'keyword4' => ARRAY('value' => $child ? $child->name : ''),
                         'keyword5' => ARRAY('value' => $model->phone),
                         'keyword6' => ARRAY('value' => "预约成功"),
                         'keyword7' => ARRAY('value' => $model->createtime),
                         'keyword8' => ARRAY('value' => Appoint::$typeInfoText[$model->type]),
                     ];
-                    $rs = WechatSendTmp::sendX($data,$userLogin->xopenid, 'Ejdm_Ih_W0Dyi6XrEV8Afrsg6HILZh0w8zg2uF0aIS0', '/pages/appoint/view?id='.$model->id,$formid);
-                }else{
+                    $rs = WechatSendTmp::sendX($data, $userLogin->xopenid, 'Ejdm_Ih_W0Dyi6XrEV8Afrsg6HILZh0w8zg2uF0aIS0', '/pages/appoint/view?id=' . $model->id, $formid);
+                } else {
                     return [];
                 }
-            }else{
-                return new Code(20011,implode(',',$model->firstErrors));
+            } else {
+                return new Code(20011, implode(',', $model->firstErrors));
             }
         }
     }
 
-    public function actionQrCode($id){
-        QrCode::png('appoint:'.$id,false,Enum::QR_ECLEVEL_H,10);exit;
+    public function actionQrCode($id)
+    {
+        QrCode::png('appoint:' . $id, false, Enum::QR_ECLEVEL_H, 10);
+        exit;
     }
 
 

@@ -68,7 +68,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
     public function actionForm($id, $type, $vid = 0)
     {
-        if($type==5) {
+        if($type==5 || $type==6) {
             $gravida = Pregnancy::find()->where(['familyid' => $this->userid])->orderBy('id desc')->one();
             if(!$gravida->field1 ||!$gravida->field4 ||!$gravida->field11 ||!$gravida->field90 || !$gravida->field7 || !$gravida->field39 || !$gravida->field10){
                 $gravida_is=1;
