@@ -37,7 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             if($e->type==4){
                                 return \common\models\AppointAdult::findOne(['userid' => $e->userid])->name;
 
-                            }else {
+                            }elseif($e->type==5){
+                                return '';
+                            }else{
                                 return \common\models\ChildInfo::findOne(['id' => $e->childid])->name;
                             }
                                     }
@@ -51,7 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                             return \common\models\ChildInfo::$genderText[$a->gender];
 
 
-                                        }else {
+                                        }else if($e->type==5){
+                                            return '';
+                                        }else{
                                             $child = \common\models\ChildInfo::findOne(['id' => $e->childid]);
                                             return \common\models\ChildInfo::$genderText[$child->gender];
                                         }
@@ -64,7 +68,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'value' => function ($e) {
                                         if($e->type==4){
                                             return '';
-                                        }else {
+                                        }else if($e->type==5){
+                                            return '';
+                                        }else{
                                             $child = \common\models\ChildInfo::findOne(['id' => $e->childid]);
                                             return date('Y-m-d', $child->birthday);
                                         }

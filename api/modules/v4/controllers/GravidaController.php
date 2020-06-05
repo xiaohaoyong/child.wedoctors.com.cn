@@ -18,7 +18,7 @@ use common\models\Pregnancy;
 use common\models\UserDoctor;
 use common\models\UserParent;
 
-class GravidaController extends Controller
+class GravidaController extends \api\modules\v2\controllers\GravidaController
 {
     public function actionNewSave($id){
         $data=\Yii::$app->request->post();
