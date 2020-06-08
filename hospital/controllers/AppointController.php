@@ -102,24 +102,24 @@ class AppointController extends BaseController
             }
             if($e->type==4){
                 $row=\common\models\AppointAdult::findOne(['userid' => $e->userid]);
-                $html="姓名：".$row->name."<br>";
-                $html.="性别：".\common\models\AppointAdult::$genderText[$row->gender]."<br>";
+                $html="姓名：".$row->name."\n";
+                $html.="性别：".\common\models\AppointAdult::$genderText[$row->gender]."\n";
             }elseif($e->type==5 || $e->type==6){
                 $preg=\common\models\Pregnancy::findOne(['id' => $e->childid]);
-                $html="末次月经：".date('Ymd',$preg->field11)."<br>";
-                $html.="证件号：".$preg->field4."<br>";
-                $html.="户籍地：".\common\models\Pregnancy::$field90[$preg->field90]."<br>";
-                $html.="孕妇户籍地：".\common\models\Area::$all[$preg->field7]."<br>";
-                $html.="丈夫户籍地：".\common\models\Area::$all[$preg->field39]."<br>";
-                $html.="现住址：".$preg->field10."<br>";
+                $html="末次月经：".date('Ymd',$preg->field11)."\n";
+                $html.="证件号：".$preg->field4."\n";
+                $html.="户籍地：".\common\models\Pregnancy::$field90[$preg->field90]."\n";
+                $html.="孕妇户籍地：".\common\models\Area::$all[$preg->field7]."\n";
+                $html.="丈夫户籍地：".\common\models\Area::$all[$preg->field39]."\n";
+                $html.="现住址：".$preg->field10."\n";
             }else{
                 $child= \common\models\ChildInfo::findOne(['id' => $e->childid]);
                 $parent= \common\models\UserParent::findOne(['userid' => $e->userid]);
-                $html="性别：".$child->name."<br>";
-                $html.="生日：".date('Ymd',$child->birthday)."<br>";
-                $html.="儿童户籍：".$child->fieldu47."<br>";
-                $html.="母亲姓名：".$parent->mother."<br>";
-                $html.="户籍地：".$parent->field44."<br>";
+                $html="性别：".$child->name."\n";
+                $html.="生日：".date('Ymd',$child->birthday)."\n";
+                $html.="儿童户籍：".$child->fieldu47."\n";
+                $html.="母亲姓名：".$parent->mother."\n";
+                $html.="户籍地：".$parent->field44."\n";
             }
 
             $key1 = $k + 2;
