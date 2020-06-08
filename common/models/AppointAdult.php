@@ -16,6 +16,7 @@ use Yii;
  */
 class AppointAdult extends \yii\db\ActiveRecord
 {
+    public static $genderText=[1=>'男',2=>'女'];
     /**
      * {@inheritdoc}
      */
