@@ -45,7 +45,7 @@ databackend\assets\DatabasesAsset::register($this);
                         <td><?=$v->hospitalid?>,<?=$v->userid?></td>
 
                         <td><?=$v->name?></td>
-                        <td><?=\common\models\Hospital::findOne($v->hospitalid)?></td>
+                        <td><?=\common\models\Hospital::findOne($v->hospitalid)->name?></td>
 
                         <td><?=$createtime?date('Y-m-d',$createtime):""?></td>
 
