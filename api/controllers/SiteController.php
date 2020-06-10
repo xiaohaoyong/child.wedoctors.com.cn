@@ -12,6 +12,7 @@ use api\controllers\Controller;
 
 use app\components\UploadForm;
 use common\components\HttpRequest;
+use common\components\Log;
 use yii\web\UploadedFile;
 
 class SiteController extends \yii\web\Controller
@@ -22,6 +23,10 @@ class SiteController extends \yii\web\Controller
         $xml = simplexml_load_string($postStr, null, LIBXML_NOCDATA);
         $xmlArray = json_encode($xml);
         $xmlArray = json_decode($xmlArray, true);
+
+        $log=new Log('messagex');
+        $log->addLog(json_encode($xmlArray));
+        $log->saveLog();
 
         $template = <<<XML
  <xml>
