@@ -24,9 +24,7 @@ class SiteController extends \yii\web\Controller
         $xmlArray = json_encode($xml);
         $xmlArray = json_decode($xmlArray, true);
 
-        $log=new Log('messagex');
-        $log->addLog(json_encode($xmlArray));
-        $log->saveLog();
+        $xopenid=$xmlArray['FromUserName'];
 
         $template = <<<XML
  <xml>
