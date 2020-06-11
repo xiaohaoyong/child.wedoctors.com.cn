@@ -98,12 +98,12 @@ class ArticleController extends Controller
         $row['likeNum']=$like->count();
         $row['isLike']=$like->andFilterWhere(['userid'=>$this->userid])->one()?1:0;
 
-        if (!ArticleLog::findOne(['userid' => $this->userid, 'artid' => $id])) {
-            $article_log = new ArticleLog();
-            $article_log->userid = $this->userid;
-            $article_log->artid = $id;
-            $article_log->save();
-        }
+//        if (!ArticleLog::findOne(['userid' => $this->userid, 'artid' => $id])) {
+//            $article_log = new ArticleLog();
+//            $article_log->userid = $this->userid;
+//            $article_log->artid = $id;
+//            $article_log->save();
+//        }
         $point=new Points();
         if ($article_user = ArticleUser::findOne(['touserid' => $this->userid, 'artid' => $id])) {
             $article_user->level = 2;
