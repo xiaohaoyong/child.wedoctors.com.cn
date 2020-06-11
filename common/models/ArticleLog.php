@@ -28,7 +28,6 @@ class ArticleLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
             [['id', 'artid', 'userid', 'createtime'], 'integer'],
         ];
     }
