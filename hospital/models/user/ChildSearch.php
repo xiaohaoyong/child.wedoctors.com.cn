@@ -36,11 +36,13 @@ class ChildSearch extends ChildInfo
      */
     public function rules()
     {
-        return [
+        $rules=parent::rules();
+        $rules1= [
             [['docpartimeS', 'docpartimeE', 'birthdayS', 'birthdayE'], 'string'],
             [['phone','loginPhone'], 'integer'],
             [['parentName'], 'safe'],
         ];
+        return $rules+$rules1;
     }
 
     public function attributeLabels()
