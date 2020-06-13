@@ -44,6 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+                                    'attribute' => '手机号码',
+                                    'value' => function ($e) {
+                                        $child=\common\models\UserLogin::findOne(['userid'=>$e->userid]);
+                                        return $child->phone;
+                                    }
+                                ],
+                                [
                                     'attribute' => '儿童性别',
                                     'value' => function ($e) {
                                         $child=\common\models\ChildInfo::findOne(['userid'=>$e->userid]);
