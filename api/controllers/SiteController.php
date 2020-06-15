@@ -13,6 +13,7 @@ use api\controllers\Controller;
 use app\components\UploadForm;
 use common\components\HttpRequest;
 use common\components\Log;
+use common\models\WeMessage;
 use yii\web\UploadedFile;
 
 class SiteController extends \yii\web\Controller
@@ -24,7 +25,12 @@ class SiteController extends \yii\web\Controller
         $xmlArray = json_encode($xml);
         $xmlArray = json_decode($xmlArray, true);
 
-        $xopenid=$xmlArray['FromUserName'];
+        if($xmlArray['FromUserName'])
+        {
+            $weMessage=new WeMessage();
+            $weMessage->load(['Wemessage'=>$xmlArray]);
+            $weMessage->save();
+        }
 
         $template = <<<XML
  <xml>
