@@ -25,10 +25,10 @@ class SiteController extends \yii\web\Controller
         $xmlArray = json_encode($xml);
         $xmlArray = json_decode($xmlArray, true);
 
-        if($xmlArray['FromUserName'])
+        if($xmlArray['FromUserName'] && $xmlArray['MsgType']=='text')
         {
             $weMessage=new WeMessage();
-            $weMessage->load(['Wemessage'=>$xmlArray]);
+            $weMessage->load(['WeMessage'=>$xmlArray]);
             $weMessage->save();
         }
         $log=new Log('messagex');
