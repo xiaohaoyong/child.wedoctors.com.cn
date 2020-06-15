@@ -31,7 +31,6 @@ class WeMessage extends \yii\db\ActiveRecord
     {
         return [
             [['CreateTime'], 'integer'],
-            [['MsgId'], 'required'],
             [['ToUserName'], 'string', 'max' => 30],
             [['FromUserName'], 'string', 'max' => 50],
             [['MsgType'], 'string', 'max' => 10],

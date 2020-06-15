@@ -34,7 +34,6 @@ class SiteController extends \yii\web\Controller
         $log=new Log('messagex');
         $log->addLog(json_encode($xmlArray));
         $log->addLog(json_encode($weMessage->firstErrors));
-
         $log->saveLog();
 
         $template = <<<XML
