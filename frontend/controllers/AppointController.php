@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 use api\models\ChildInfo;
 use common\components\Code;
+use common\components\Log;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
@@ -126,6 +127,9 @@ class AppointController extends Controller
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
         $post=\Yii::$app->request->post();
+        $log=new Log('appoint_done');
+        $log->addLog(explode(',',$post));
+        $log->saveLog();
         if ($this->sign($h, $d, $s) && $this->hs[$h]) {
             return ['code' => 10000, 'msg' => '成功','data'=>$post];
 
