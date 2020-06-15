@@ -30,33 +30,70 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
+                                ['class' => 'yii\grid\SerialColumn'],
                                 [
 
-                                    'attribute' => '儿童姓名',
+                                    'attribute' => '姓名',
                                     'value' => function ($e) {
-                                        return \common\models\ChildInfo::findOne(['id'=>$e->childid])->name;
+                                        if($e->type==4){
+                                            return \common\models\AppointAdult::findOne(['userid' => $e->userid])->name;
+
+                                        }elseif($e->type==5 || $e->type==6){
+                                            return \common\models\Pregnancy::findOne(['id' => $e->childid])->field1;
+                                        }else{
+                                            return \common\models\ChildInfo::findOne(['id' => $e->childid])->name;
+                                        }
+                                    }
+                                ],
+                                'phone',
+                                [
+
+                                    'attribute' => 'type',
+                                    'format'=>'raw',
+                                    'value' => function ($e) {
+                                        if($e->type==1){
+                                            $class='label label-success';
+                                        }elseif($e->type==2){
+                                            $class='label label-primary';
+                                        }elseif ($e->type==4){
+                                            $class='label label-danger';
+                                        }elseif ($e->type==5){
+                                            $class='label label-warning';
+                                        }elseif ($e->type==6){
+                                            $class='label label-info';
+                                        }
+                                        return '<span class="'.$class.'">'.\common\models\Appoint::$typeText[$e->type].'</span>';
                                     }
                                 ],
                                 [
-
-                                    'attribute' => '儿童生日',
-                                    'value' => function ($e) {
-                                        $child= \common\models\ChildInfo::findOne(['id'=>$e->childid]);
-                                        return date('Y-m-d',$child->birthday);
-                                    }
-                                ],
-                                [
-
-                                    'attribute' => '母亲姓名',
-                                    'value' => function ($e) {
-                                        return \common\models\UserParent::findOne(['userid'=>$e->userid])->mother;
-                                    }
-                                ],
-                                [
-
-                                    'attribute' => 'doctorid',
-                                    'value' => function ($e) {
-                                        return \common\models\UserDoctor::findOne(['userid'=>$e->doctorid])->name;
+                                    'class' => 'yii\grid\Column',
+                                    'contentOptions' => [
+                                        'style'=>'word-break:break-all;word-wrap:break-word'
+                                    ],
+                                    'header' => '预约人其他信息',
+                                    'content' => function ($e, $key, $index, $column){
+                                        if($e->type==4){
+                                            $row=\common\models\AppointAdult::findOne(['userid' => $e->userid]);
+                                            $html="姓名：".$row->name."<br>";
+                                            $html.="性别：".\common\models\AppointAdult::$genderText[$row->gender]."<br>";
+                                        }elseif($e->type==5 || $e->type==6){
+                                            $preg=\common\models\Pregnancy::findOne(['id' => $e->childid]);
+                                            $html="末次月经：".date('Ymd',$preg->field11)."<br>";
+                                            $html.="证件号：".$preg->field4."<br>";
+                                            $html.="户籍地：".\common\models\Pregnancy::$field90[$preg->field90]."<br>";
+                                            $html.="孕妇户籍地：".\common\models\Area::$all[$preg->field7]."<br>";
+                                            $html.="丈夫户籍地：".\common\models\Area::$all[$preg->field39]."<br>";
+                                            $html.="现住址：".$preg->field10."<br>";
+                                        }else{
+                                            $child= \common\models\ChildInfo::findOne(['id' => $e->childid]);
+                                            $parent= \common\models\UserParent::findOne(['userid' => $e->userid]);
+                                            $html="性别：".$child->name."<br>";
+                                            $html.="生日：".date('Ymd',$child->birthday)."<br>";
+                                            $html.="儿童户籍：".$child->fieldu47."<br>";
+                                            $html.="母亲姓名：".$parent->mother."<br>";
+                                            $html.="户籍地：".$parent->field44."<br>";
+                                        }
+                                        return $html;
                                     }
                                 ],
 
@@ -64,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => 'appoint_date',
                                     'value' => function ($e) {
-                                        return date('Y-m-d',$e->appoint_date);
+                                        return date('Y-m-d', $e->appoint_date);
                                     }
                                 ],
                                 [
@@ -74,7 +111,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return \common\models\Appoint::$timeText[$e->appoint_time];
                                     }
                                 ],
-                                'phone',
                                 [
 
                                     'attribute' => 'state',
@@ -82,20 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return \common\models\Appoint::$stateText[$e->state];
                                     }
                                 ],
-                                [
 
-                                    'attribute' => 'type',
-                                    'value' => function ($e) {
-                                        return \common\models\Appoint::$typeText[$e->type];
-                                    }
-                                ],
-                                [
-
-                                    'attribute' => 'vaccine',
-                                    'value' => function ($e) {
-                                        return $e->vaccine==-2?"两癌筛查":\common\models\Vaccine::findOne($e->vaccine)->name;
-                                    }
-                                ],
                                 [
 
                                     'attribute' => 'cancel_type',
@@ -103,13 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return \common\models\Appoint::$cancel_typeText[$e->cancel_type];
                                     }
                                 ],
-                                [
 
-                                    'attribute' => 'push_state',
-                                    'value' => function ($e) {
-                                        return \common\models\Appoint::$push_stateText[$e->push_state];
-                                    }
-                                ],
                                 [
 
                                     'attribute' => 'mode',
@@ -117,11 +134,30 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return \common\models\Appoint::$modeText[$e->mode];
                                     }
                                 ],
-                                [
 
-                                    'attribute' => 'createtime',
+                                [
+                                    'class' => 'yii\grid\Column',
+                                    'contentOptions' => [
+                                        'width'=>'100',
+                                    ],
+                                    'header' => '预约疫苗',
+                                    'content' => function ($e, $key, $index, $column){
+                                        return $e->vaccine==-2?"两癌筛查":\common\models\Vaccine::findOne($e->vaccine)->name;
+
+                                    }
+                                ],
+                                [
+                                    'attribute' => '排号顺序',
                                     'value' => function ($e) {
-                                        return date('Y-m-d H:i:s',$e->createtime);
+
+                                        $index = \common\models\Appoint::find()
+                                            ->andWhere(['appoint_date' => $e->appoint_date])
+                                            ->andWhere(['<', 'id', $e->id])
+                                            ->andWhere(['doctorid' => $e->doctorid])
+                                            ->andWhere(['appoint_time' => $e->appoint_time])
+                                            ->andWhere(['type' => $e->type])
+                                            ->count();
+                                        return $e->appoint_time . "-" . ($index + 1);
                                     }
                                 ],
                                 [

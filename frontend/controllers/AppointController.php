@@ -129,7 +129,7 @@ class AppointController extends Controller
 
         $post=\Yii::$app->request->post();
         $log=new Log('appoint_done');
-        $log->addLog(implode(',',$post));
+        $log->addLog($h);
         $log->saveLog();
         if ($this->sign($h, $d, $s) && $this->hs[$h]) {
             return ['code' => 10000, 'msg' => '成功','data'=>$post];
