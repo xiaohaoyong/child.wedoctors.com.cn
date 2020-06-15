@@ -58,6 +58,7 @@ class AppointController extends Controller
         $types=[
             1=>2,
             2=>1,
+            4=>3,
         ];
         if ($this->sign($h, $d, $s) && $this->hs[$h]) {
 
