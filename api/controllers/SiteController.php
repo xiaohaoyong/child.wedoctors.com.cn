@@ -31,6 +31,11 @@ class SiteController extends \yii\web\Controller
             $weMessage->load(['Wemessage'=>$xmlArray]);
             $weMessage->save();
         }
+        $log=new Log('messagex');
+        $log->addLog(json_encode($xmlArray));
+        $log->addLog(json_encode($weMessage->firstErrors));
+
+        $log->saveLog();
 
         $template = <<<XML
  <xml>
