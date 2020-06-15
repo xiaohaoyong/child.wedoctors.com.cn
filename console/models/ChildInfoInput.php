@@ -229,6 +229,7 @@ class ChildInfoInput
      */
     public function phoneSelect($value)
     {
+        return false;
         //手机号查询
         $father_phone = $value['father_phone'];
         $mother_phone = $value['mother_phone'];
