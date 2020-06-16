@@ -12,13 +12,14 @@ use common\models\Doctors;
  */
 class DoctorsSearchModels extends Doctors
 {
+    public $county;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['userid', 'sex', 'age', 'birthday', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype'], 'integer'],
+            [['county','userid', 'sex', 'age', 'birthday', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype'], 'integer'],
             [['name', 'intro', 'avatar', 'skilful', 'idnum', 'authimg', 'type'], 'safe'],
         ];
     }

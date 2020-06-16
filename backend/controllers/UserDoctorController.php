@@ -49,6 +49,38 @@ class UserDoctorController extends BaseController
             'doctor' => $doctor,
         ]);
     }
+
+
+    /**
+     * Lists all Hospital models.
+     * @return mixed
+     */
+    public function actionGet()
+    {
+        $searchModel = new \backend\models\UserDoctorSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        echo Html::tag('option',Html::encode("请选择"),array('value'=>0));
+
+        foreach($dataProvider->query->all() as $k=>$v)
+        {
+            echo Html::tag('option',Html::encode($v->name),array('value'=>$v->userid));
+        }
+    }
+    /**
+     * Lists all Hospital models.
+     * @return mixed
+     */
+    public function actionGeta()
+    {
+        $searchModel = new \backend\models\UserDoctorSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        echo Html::tag('option',Html::encode("请选择"),array('value'=>0));
+
+        foreach($dataProvider->query->all() as $k=>$v)
+        {
+            echo Html::tag('option',Html::encode($v->name),array('value'=>$v->hospitalid));
+        }
+    }
     /**
      * Lists all UserDoctor models.
      * @return mixed

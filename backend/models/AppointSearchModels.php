@@ -17,13 +17,14 @@ class AppointSearchModels extends Appoint
     public $appoint_dates = '';
     public $ids;
 
+    public $county;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['state','cancel_type','id', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
+            [['county','state','cancel_type','id', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
             [['child_name', 'appoint_dates','ids'], 'string']
         ];
     }
@@ -44,6 +45,8 @@ class AppointSearchModels extends Appoint
         $return = parent::attributeLabels();
         $return ['child_name'] = '儿童姓名';
         $return ['appoint_dates'] = '预约日期';
+        $return ['county'] = '区/县';
+
         $return ['ids'] = 'id';
 
         return $return;

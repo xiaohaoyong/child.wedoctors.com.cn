@@ -15,7 +15,19 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
-    <?= $form->field($model, 'doctorid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->andFilterWhere(['>', 'userid', '37'])->column(), ['prompt' => '请选择']) ?>
+    <?php $county = \common\models\Area::$city[11] ? \common\models\Area::$county[11] : []; ?>
+
+    <?= $form->field($model, 'county')->dropDownList($county, [
+        'prompt' => '请选择',
+        'onchange' => '
+            $("#' . Html::getInputId($model, 'doctorid') . '").html(\'' . Html::tag('option', Html::encode("请选择"), array('value' => 0)) . '\');
+            $.post("' . \yii\helpers\Url::to(['user-doctor/get']) . '?UserDoctorSearchModel[county]="+$(this).val(),function(data){
+                $("#' . Html::getInputId($model, 'doctorid') . '").html(data);
+            });',
+    ]) ?>
+
+    <?= $form->field($model, 'doctorid')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->where(['county' => $model['county']])->column(), ['prompt' => '请选择']) ?>
+
 
     <?= $form->field($model, 'appoint_dates')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
