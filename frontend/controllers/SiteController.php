@@ -68,6 +68,14 @@ class SiteController extends Controller
             ],
         ];
     }
+
+    public function actionForm(){
+
+
+
+
+        return $this->renderPartial('form');
+    }
     public function actionDown($userid,$type=0)
     {
         $userParent = UserParent::findOne(['userid' => $userid]);
