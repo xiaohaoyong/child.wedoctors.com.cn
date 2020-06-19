@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
         <?php if($v->type==1){
             echo $form->field($qnaa,'answer['.$v->id.']')->textInput()->label(false);
         }else{
-            echo $form->field($qnaa,'answer['.$v->id.']')->checkboxList([0=>'否',1=>'是'])->label(false);
+            echo $form->field($qnaa,'answer['.$v->id.']')->radioList([0=>'否',1=>'是'])->label(false);
         }
         ?>
     </div>
