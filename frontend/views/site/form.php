@@ -17,10 +17,13 @@ $this->title = "社区医院查询"
             }
             .field input{
                 width: 50px;height: 30px;
+                line-height: 30px;
+                font-size: 14px;
             }
             .field{
                 line-height: 40px;
             }
+
         </style>
     </head>
     <body class="hold-transition skin-green">
