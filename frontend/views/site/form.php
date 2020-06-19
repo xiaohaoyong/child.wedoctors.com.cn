@@ -16,7 +16,7 @@ $this->title = "社区医院查询"
                 padding: 0 16px;
             }
             .field input{
-                width: 50px;height: 20px;margin-top: 10px;
+                width: 50px;margin-top: 10px;
             }
         </style>
     </head>
