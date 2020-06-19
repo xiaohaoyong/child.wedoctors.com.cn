@@ -16,7 +16,10 @@ $this->title = "社区医院查询"
                 padding: 0 16px;
             }
             .field input{
-                width: 50px;margin-top: 10px;
+                width: 50px;height: 30px;
+            }
+            .field{
+                line-height: 40px;
             }
         </style>
     </head>
@@ -35,7 +38,7 @@ $this->title = "社区医院查询"
             <div><?php echo \yii\helpers\Html::checkboxList('ask[]',null,[0=>'否',1=>'是'])?></div>
             <div>5. 14天内是否有新型冠状病毒肺炎确诊或疑似病例接触史</div>
             <div><?php echo \yii\helpers\Html::checkboxList('ask[]',null,[0=>'否',1=>'是'])?></div>
-            <div class="field" style="height: 30px;">6. 今日体温<?php echo \yii\helpers\Html::textInput('field1')?>℃</div>
+            <div class="field">6. 今日体温<?php echo \yii\helpers\Html::textInput('field1')?>℃</div>
             <div>以上信息填写"是"者，请您前往就近二级以上医疗机构发热门诊筛查，感谢您的配合！</div>
             <div>日期：2020年06月19日</div>
         </div>
