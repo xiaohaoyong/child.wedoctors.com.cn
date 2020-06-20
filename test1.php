@@ -10,6 +10,10 @@
 total*0.9-灭火*7-火抗1-火抗2-total*10%/(TN+5)*0.5-机器人-老八第一
 /人数+1
  */
+
+
+echo date('Y-m-d',strtotime('+1 month',strtotime('2020-01-30')));exit;
+
 $field=[
     'name' => '儿童姓名',
     'birthday' => '出生日期',

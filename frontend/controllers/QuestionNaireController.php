@@ -17,7 +17,12 @@ class QuestionNaireController extends QnController
 {
     public function actionForm($id)
     {
+        $qnaa=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid]);
 
+        if($qnaa){
+            return $this->redirect(['question-naire/healthy','id'=>$id]);
+
+        }
         $qnaa = new QuestionNaireAnswer();
         $qn = QuestionNaire::findOne($id);
         $qna = QuestionNaireAsk::findAll(['qnid' => $id]);
