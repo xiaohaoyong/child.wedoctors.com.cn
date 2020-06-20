@@ -52,7 +52,8 @@ class QuestionNaireController extends QnController
     }
 
     public function actionHealthy($id){
-        $qnaa=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid,'answer'=>1]);
+        $qnaa=QuestionNaireAnswer::find()->where(['qnid'=>$id,'userid'=>$this->login->userid,'answer'=>1])
+            ->andWhere(['>','createtime',strtotime('-1 day')])->one();
         if($qnaa){
             $is_healthy=false;
         }else{
