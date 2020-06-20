@@ -19,9 +19,8 @@ class QuestionNaireController extends QnController
     {
         $qnaa=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid]);
 
-        if($qnaa){
+        if($qnaa && strtotime('+1 day',$qnaa->createtime) >time()){
             return $this->redirect(['question-naire/healthy','id'=>$id]);
-
         }
         $qnaa = new QuestionNaireAnswer();
         $qn = QuestionNaire::findOne($id);
