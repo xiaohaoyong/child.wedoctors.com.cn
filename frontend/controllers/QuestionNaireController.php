@@ -63,12 +63,12 @@ class QuestionNaireController extends QnController
         if($qnaa1){
             $is_healthy=false;
         }else{
-            $qnaa2=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid,'createtime'=>$qnaa->createtime]);
+            $qnaa1=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid,'createtime'=>$qnaa->createtime]);
             $is_healthy=true;
         }
         return $this->render('healthy',[
             'is_healthy'=>$is_healthy,
-            'qnaa'=>$qnaa2,
+            'qnaa'=>$qnaa1,
             'id'=>$id
         ]);
     }
