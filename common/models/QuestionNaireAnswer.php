@@ -34,7 +34,7 @@ class QuestionNaireAnswer extends \yii\db\ActiveRecord
     {
         return [
             [['answer','phone','idcode'], 'required'],
-            [[ 'qnaid', 'userid'], 'integer'],
+            [[ 'qnaid', 'userid','createtime','doctorid'], 'integer'],
             [['value'], 'string'],
             [['phone'],'match','pattern'=>'/^1[23456789]\d{9}$/'],
             [['idcode'],'match','pattern'=>'/^[1-9]\d{5}(19|20)\d{2}[01]\d[0123]\d\d{3}[xX\d]$/'],
