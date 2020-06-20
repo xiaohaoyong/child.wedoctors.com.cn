@@ -63,6 +63,8 @@ class QuestionNaireController extends QnController
                 {
                     return $this->redirect(['question-naire/form','id'=>$id,'doctorid'=>$qnaa->doctorid]);
                 }
+            }else{
+                return $this->redirect(['question-naire/form','id'=>$id]);
             }
 
             $is_healthy=true;
