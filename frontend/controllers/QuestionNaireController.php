@@ -15,7 +15,7 @@ use common\models\QuestionNaireAsk;
 
 class QuestionNaireController extends QnController
 {
-    public function actionForm($id)
+    public function actionForm($id,$doctorid=0)
     {
         $qnaa=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid]);
 
@@ -35,6 +35,7 @@ class QuestionNaireController extends QnController
                     $qnaa->value='';
                     $qnaa->idcode='230107198908232610';
                     $qnaa->answer=$pv;
+                    $qnaa->doctorid=$doctorid;
                     $qnaa->qnaid=$pk;
                     $qnaa->qnid=$id;
                     $qnaa->userid=$this->login->userid;
