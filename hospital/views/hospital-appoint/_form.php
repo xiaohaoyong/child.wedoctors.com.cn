@@ -54,7 +54,7 @@ use yii\widgets\ActiveForm;
                     <tr>
                         <th>
                             可预约日期<br>
-                            如需要在周末，节假日，或者串休日开通门诊，则需要单独在此处添加门诊日期
+                            预约系统已判断了该年度节假日，如需要在周末，节假日，或者串休日开通门诊，则需要单独在此处添加门诊日期
 
                             <?php
                             $sdate=strtotime(date('Y-m-01'));
@@ -93,65 +93,17 @@ use yii\widgets\ActiveForm;
                         </td>
                     </tr>
                     <tr>
-                        <th><?=$type?>
+                        <th>
                             门诊描述（选择预约项目温馨提醒）<br>
                             门诊日期，预约注意事项等
                         </th>
                         <td><?= $form->field($model, 'info')->textarea([ 'rows'=>5])->label(false) ?>
                         </td>
                     </tr>
-                    <?php if($type==1){?>
-                    <tr>
-                        <td><?= $form->field($model,'is_month')->checkbox([],false) ?>
-                            <br>
-                            注1：限制月龄开启后家长预约儿童体检需要选择体检月龄，系统会根据下方"体检限制月龄设置"<br>
-                            和儿童生日判断是否可以预约<br>
-                            注2：判断宝宝是否可约是按照宝宝出生日期和预约日期判断
-                        </td>
-                        <td></td>
-
-                    </tr>
-                    <?php }?>
                     </tbody>
                 </table>
-<?php if($type==1){?>
                 <div>
-                    <!-- Nav tabs -->
-                    <ul id="intervalTab" class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#">体检限制月龄设置</a></li>
-                    </ul>
-                </div>
 
-                <div class="box-body table-responsive no-padding" >
-                    <div id="example1_wrapper1" class="dataTables_wrapper form-inline dt-bootstrap" >
-                        <table id="w1" class="table table-striped table-bordered detail-view col-md-12">
-                            <tbody>
-                            <?php
-                            foreach (\common\models\HospitalAppointMonth::$typeText as $k=>$v){
-                                ?>
-                                <tr>
-                                    <td><?=$v?></td>
-                                    <td><?=Html::checkboxList('month['.$k.']',$hospitalAppointMonth,\common\models\HospitalAppointMonth::$monthText[$k])?></td>
-                                </tr>
-                            <?php }?>
-                            <tr>
-                                <td>注：如选择2月，则宝宝出生日至今必须满2个自然月且小于3个自然月之间才可预约，
-                                    如选择2月，3月则宝宝出生至今必须满2个自然月且小于4个自然月才可预约
-
-                                </td>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div></div>
-<?php }?>
-                <div>
-                    <!-- Nav tabs -->
-                    <ul id="intervalTab" class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#">号源设置</a></li>
-                    </ul>
-                </div>
-                <div>
                     <!-- Nav tabs -->
                     <ul id="intervalTab" class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#tabyi" aria-controls="tabyi" role="tab" data-toggle="tab">一小时</a></li>
@@ -209,8 +161,8 @@ use yii\widgets\ActiveForm;
                                 <td><?=Html::textInput('num[0]['.$k.']',$nums[0][$k]?$nums[0][$k]:0,['style'=>'text-align:center;'])?></td>
                             </tr>
                         <?php }}?>
-                    <?php if(in_array($type,[2,4])){
-                        if($type==4){
+                    <?php if(in_array($model->type,[2,4])){
+                        if($model->type==4){
                             $data=\common\models\Vaccine::find()->select('name')->where(['adult'=>1])->indexBy('id')->column();
                             $data=[-2 => '两癌筛查'] + $data;
                         }else{
@@ -253,25 +205,7 @@ use yii\widgets\ActiveForm;
 </div>
 <?php
 $interval=isset($model->interval)?$model->interval:1;
-$is_month=isset($model->is_month)?$model->is_month:0;
-
 $updateJs = <<<JS
-var is_month={$is_month};
-if(is_month==1){
-    $('#w1').show();
-}else{
-    $('#w1').hide();
-}
-$('input[name="HospitalAppoint[is_month]"]').change(function(){
-        var is_month=$(this).val();
-        if(is_month==1){
-              $('#w1').show();
-
-        }else{
-            $('#w1').hide();
-        }
-    });
-
     var default_interval={$interval};
     if(default_interval==1){
         $('.ban').hide();

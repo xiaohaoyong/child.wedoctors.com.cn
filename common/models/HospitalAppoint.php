@@ -63,7 +63,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
     {
         return [
             [['cycle', 'delay', 'week','interval','phone'], 'required'],
-            [['doctorid', 'cycle', 'delay', 'weeks', 'interval', 'updateInterval', 'phone','release_time','is_month'], 'integer'],
+            [['doctorid', 'cycle', 'delay', 'weeks', 'interval', 'updateInterval', 'phone','release_time'], 'integer'],
             [['info'], 'string', 'max' => 255],
             [['sure_date'],'dateNumValidation']
         ];
@@ -93,8 +93,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
             'type' => 'Type',
             'weeks' => 'weeks',
             'interval' => '预约时间段',
-            'updateInterval' => '间隔时间段上线时间',
-            'is_month'=>'是否限制月龄',
+            'updateInterval' => '间隔时间段上线时间'
 
         ];
     }

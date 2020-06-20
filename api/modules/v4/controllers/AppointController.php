@@ -164,14 +164,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $vaccines = [];
             }
 
-            $monthType=[];
-            if($appoint->type==1 && $appoint->is_month){
-                $hospitalAppointMonth=HospitalAppointMonth::findAll(['haid'=>$appoint->id]);
-                $monthType=HospitalAppointMonth::$typeText;
-            }
-
-
-            return ['monthType'=>$monthType,'gravida_is'=>$gravida_is,'childs' => $childs,'gravida'=>$gravida,'phone' => $phone, 'vaccines' => $vaccines, 'days' => $days];
+            return ['gravida_is'=>$gravida_is,'childs' => $childs,'gravida'=>$gravida,'phone' => $phone, 'vaccines' => $vaccines, 'days' => $days];
 
         } else {
             return new Code(20010, '社区医院暂未开通服务！');
@@ -181,7 +174,6 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
     public function actionDayNum($doctorid, $week = 0, $type, $day, $vid = 0)
     {
-
         $rs = [];
         $times = [];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
@@ -307,24 +299,6 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
 
 
-
-        //体检限制月龄预约
-        if($post['type']==1 && $post['childid']){
-            $hospitalAppointMonth = HospitalAppointMonth::find()->select('month')->where(['type' => $post['month']])->orderBy('month asc')->column();
-            if($hospitalAppointMonth && $appoint->is_month) {
-                $child = ChildInfo::findOne($post['childid']);
-                if ($child) {
-                    $first = $hospitalAppointMonth[0];
-                    $end = $hospitalAppointMonth[count($hospitalAppointMonth) - 1];
-                    $daytime = strtotime(strtotime($post['appoint_date']));
-                    if (strtotime("+$first month", $child->birthday) < $daytime || strtotime("+" . ($end + 1) . " month", $child->birthday) > $daytime) {
-                        return new Code(21000,'宝宝' . HospitalAppointMonth::$typeText[$post['month']] .
-                            "，需宝宝满" . HospitalAppointMonth::$monthText[$post['month']][$first] . "且不超过" . HospitalAppointMonth::$monthText[$post['month']][$end] . "才可预约");
-                    }
-                }
-            }
-        }
-
         //判断所选疫苗都有周几可约
         if ($post['vaccine']) {
             $vaccine = Vaccine::findOne($post['vaccine']);
@@ -443,9 +417,5 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 return new Code(20010, implode(':', $model->firstErrors));
             }
         }
-    }
-
-    public function actionMonth($childid,$type){
-
     }
 }
