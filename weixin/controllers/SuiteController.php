@@ -201,6 +201,11 @@ class SuiteController extends Controller
                 ['type' => 'view', 'name' => '我的', 'sub_button' => [
                     [
                         'type' => 'view',
+                        'name' => '流行病史调查表',
+                        'url' => 'http://web.child.wedoctors.com.cn/question-naire/form?id=1',
+                    ],
+                    [
+                        'type' => 'view',
                         'name' => '预约成人疫苗',
                         'url' => 'http://web.child.wedoctors.com.cn/wappoint',
                     ],
