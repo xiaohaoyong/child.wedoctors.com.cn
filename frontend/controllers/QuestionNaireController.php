@@ -55,7 +55,7 @@ class QuestionNaireController extends QnController
     public function actionHealthy($id){
 
         $qnaa=QuestionNaireAnswer::find()->where(['qnid'=>$id,'userid'=>$this->login->userid])->orderBy('id desc')->one();
-        if(time()<strtotime('+1 day',$qnaa->createtime))
+        if(time()>strtotime('+1 day',$qnaa->createtime))
         {
             return $this->redirect(['question-naire/form','id'=>$id,'doctorid'=>$qnaa->doctorid]);
         }
