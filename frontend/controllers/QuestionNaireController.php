@@ -57,10 +57,19 @@ class QuestionNaireController extends QnController
         if($qnaa){
             $is_healthy=false;
         }else{
+            $qnaa=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid]);
+            if($qnaa){
+                if(strtotime('+1 day',$qnaa->createtime) <=time())
+                {
+                    return $this->redirect(['question-naire/form','id'=>$id,'doctorid'=>$qnaa->doctorid]);
+                }
+            }
+
             $is_healthy=true;
         }
         return $this->render('healthy',[
             'is_healthy'=>$is_healthy,
+            'qnaa'=>$qnaa,
             'id'=>$id
         ]);
     }
