@@ -12,6 +12,7 @@ $this->title=$qn->title;
  */
 ?>
 <?php $form = ActiveForm::begin(); ?>
+<fieldset disabled>
 
 <div style="text-align: center;line-height: 100px;font-size: 20px;"><?=$qn->title?></div>
 <?php foreach ($qna as $k=>$v){
@@ -22,9 +23,9 @@ $this->title=$qn->title;
     <div style="padding: 0 20px;">
         <div><?=$v->content?></div>
         <?php if($v->type==1){
-            echo $form->field($qnaa,$field.'['.$v->id.']')->textInput()->label(false);
+            echo $form->field($qnaa[$v->id],$field.'['.$v->id.']')->textInput(['value'=>$qnaa[$v->id]->answer])->label(false);
         }else{
-            echo $form->field($qnaa,'answer['.$v->id.']')->radioList([0=>'否',1=>'是'])->label(false);
+            echo $form->field($qnaa[$v->id],'answer['.$v->id.']')->radioList([0=>'否',1=>'是'],['value'=>$qnaa[$v->id]->answer])->label(false);
         }
         ?>
     </div>
@@ -34,9 +35,7 @@ $this->title=$qn->title;
     请您如实填写此表，鉴于目前疫情特殊期间，如果不能按时就诊，请及时取消号源，感谢您的理解与配合。
 </div>
 <hr>
-<div style="padding: 0 20px;">
-    <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-</div>
+</fieldset>
 <hr>
 <?php ActiveForm::end(); ?>
 

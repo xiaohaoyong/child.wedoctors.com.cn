@@ -11,9 +11,15 @@ use Yii;
  * @property string $content
  * @property int $type
  * @property int $qnid
+ * @property int $field
  */
 class QuestionNaireAsk extends \yii\db\ActiveRecord
 {
+    public static $fieldText=[
+        1=>'phone',
+        2=>'idcode',
+        3=>'value',
+    ];
     /**
      * {@inheritdoc}
      */
@@ -28,7 +34,7 @@ class QuestionNaireAsk extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'qnid'], 'integer'],
+            [['type', 'qnid','field'], 'integer'],
             [['content'], 'string', 'max' => 500],
         ];
     }

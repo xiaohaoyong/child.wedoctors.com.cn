@@ -1,6 +1,5 @@
 <?php
 frontend\assets\WebAsset::register($this);
-$this->title = "预约成人疫苗"
 ?>
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
