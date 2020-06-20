@@ -38,6 +38,7 @@ class QuestionNaireController extends QnController
                     $qnaa->qnaid=$pk;
                     $qnaa->qnid=$id;
                     $qnaa->userid=$this->login->userid;
+                    $qnaa->createtime=time();
                     $qnaa->save();
                 }
             }
@@ -52,26 +53,23 @@ class QuestionNaireController extends QnController
     }
 
     public function actionHealthy($id){
-        $qnaa=QuestionNaireAnswer::find()->where(['qnid'=>$id,'userid'=>$this->login->userid,'answer'=>1])
-            ->andWhere(['>','createtime',strtotime('-1 day')])->one();
-        if($qnaa){
+
+        $qnaa=QuestionNaireAnswer::find()->where(['qnid'=>$id,'userid'=>$this->login->userid])->orderBy('id desc')->one();
+        if(time()<strtotime('+1 day',$qnaa->createtime))
+        {
+            return $this->redirect(['question-naire/form','id'=>$id,'doctorid'=>$qnaa->doctorid]);
+        }
+        $qnaa1=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid,'answer'=>1,'createtime'=>$qnaa->createtime]);
+
+        if($qnaa1){
             $is_healthy=false;
         }else{
-            $qnaa=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid]);
-            if($qnaa){
-                if(strtotime('+1 day',$qnaa->createtime) <=time())
-                {
-                    return $this->redirect(['question-naire/form','id'=>$id,'doctorid'=>$qnaa->doctorid]);
-                }
-            }else{
-                return $this->redirect(['question-naire/form','id'=>$id]);
-            }
-
+            $qnaa2=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid,'createtime'=>$qnaa->createtime]);
             $is_healthy=true;
         }
         return $this->render('healthy',[
             'is_healthy'=>$is_healthy,
-            'qnaa'=>$qnaa,
+            'qnaa'=>$qnaa2,
             'id'=>$id
         ]);
     }
