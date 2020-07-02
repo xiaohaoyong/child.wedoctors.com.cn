@@ -117,7 +117,6 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 }
             }
 
-
             for ($i = 1; $i <= 60; $i++) {
                 $day = $day + 86400;
                 $rs['date'] = $day;
@@ -164,7 +163,14 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $vaccines = [];
             }
 
-            return ['gravida_is'=>$gravida_is,'childs' => $childs,'gravida'=>$gravida,'phone' => $phone, 'vaccines' => $vaccines, 'days' => $days];
+            $monthType=[];
+            if($appoint->type==1 && $appoint->is_month){
+                $hospitalAppointMonth=HospitalAppointMonth::findAll(['haid'=>$appoint->id]);
+                $monthType=HospitalAppointMonth::$typeText;
+            }
+
+
+            return ['monthType'=>$monthType,'gravida_is'=>$gravida_is,'childs' => $childs,'gravida'=>$gravida,'phone' => $phone, 'vaccines' => $vaccines, 'days' => $days];
 
         } else {
             return new Code(20010, '社区医院暂未开通服务！');
@@ -180,14 +186,12 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
         $week = date('w', strtotime($day));
         $weekv = HospitalAppointVaccine::find()
-            ->select('id')
+            ->select('week')
             ->where(['haid' => $hospitalA->id])
-            ->andwhere(['week' => $week])->count();
-        if ($weekv > 0) {
-            $weekvs[] = $week;
-        }
+            ->andwhere(['vaccine' => $vid])->column();
 
-        $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekvs);
+
+        $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekv);
         if (!$is_appoint) {
             return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];
         }
@@ -298,6 +302,24 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
 
 
+
+
+        //体检限制月龄预约
+        if($post['type']==1 && $post['childid']){
+            $hospitalAppointMonth = HospitalAppointMonth::find()->select('month')->where(['type' => $post['month']])->orderBy('month asc')->column();
+            if($hospitalAppointMonth && $appoint->is_month) {
+                $child = ChildInfo::findOne($post['childid']);
+                if ($child) {
+                    $first = $hospitalAppointMonth[0];
+                    $end = $hospitalAppointMonth[count($hospitalAppointMonth) - 1];
+                    $daytime =strtotime($post['appoint_date']);
+                    if (strtotime("-$first month", $daytime) < $child->birthday || strtotime("-" . ($end + 1) . " month", $daytime) > $child->birthday) {
+                        return new Code(21000,date('Y年m月d日',$daytime).HospitalAppointMonth::$typeText[$post['month']]
+                            ."，需宝宝在预约日期时满".$first."个月且小于".($end + 1)."个月");
+                    }
+                }
+            }
+        }
 
         //判断所选疫苗都有周几可约
         if ($post['vaccine']) {
@@ -417,5 +439,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 return new Code(20010, implode(':', $model->firstErrors));
             }
         }
+    }
+
+    public function actionMonth($childid,$type){
+
     }
 }

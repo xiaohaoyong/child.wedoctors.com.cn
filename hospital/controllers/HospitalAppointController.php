@@ -139,13 +139,20 @@ class HospitalAppointController extends BaseController
                     }
                 }
             }
-
-            if($model->updateInterval>time()){
-                $text="预约时间段生效日期：".date('Y-m-d',$model->updateInterval);
+            if($post['month']){
+                HospitalAppointMonth::deleteAll(['haid'=>$model->id]);
+                foreach($post['month'] as $k=>$v){
+                    foreach ($v as $vk=>$vv) {
+                        $hospitalAppointMonth = new HospitalAppointMonth();
+                        $hospitalAppointMonth->month = $vv;
+                        $hospitalAppointMonth->haid = $model->id;
+                        $hospitalAppointMonth->type = $k;
+                        $hospitalAppointMonth->save();
+                        var_dump($hospitalAppointMonth->firstErrors);
+                    }
+                }
             }
 
-
-            \Yii::$app->getSession()->setFlash('success','成功 '.$text);
             return $this->redirect(['create', 'type' => $type]);
         } else {
             $hospitalAppointWeek=HospitalAppointWeek::findAll(['haid'=>$model->id]);
@@ -155,9 +162,13 @@ class HospitalAppointController extends BaseController
                     $nums[$v->week][$v->time_type]=$v->num;
                 }
             }
+            $hospitalAppointMonth=HospitalAppointMonth::find()->select('month')->where(['haid'=>$model->id])->column();
+            $hospitalAppointMonth=$hospitalAppointMonth?$hospitalAppointMonth:new HospitalAppointMonth();
             return $this->render('create', [
                 'model' => $model,
                 'nums'=>$nums,
+                'type'=>$type,
+                'hospitalAppointMonth'=>$hospitalAppointMonth,
             ]);
         }
     }
