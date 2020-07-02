@@ -184,12 +184,14 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $times = [];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
 
-        $week = date('w', strtotime($day));
-        $weekv = HospitalAppointVaccine::find()
-            ->select('week')
-            ->where(['haid' => $hospitalA->id])
-            ->andwhere(['vaccine' => $vid])->column();
-
+        $weekv=[];
+        if($vid) {
+            $week = date('w', strtotime($day));
+            $weekv = HospitalAppointVaccine::find()
+                ->select('week')
+                ->where(['haid' => $hospitalA->id])
+                ->andwhere(['vaccine' => $vid])->column();
+        }
 
         $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekv);
         if (!$is_appoint) {
