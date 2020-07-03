@@ -297,6 +297,7 @@ class AppointController extends Controller
         $row['appid']='wxfef8925dfaa329d7';
         $row['path']='/pages/index-form/index-form?productId=1107001&srcType=2';
         $row['envVersion']='release';
+        $row['adv']=1;
         return $row;
     }
 

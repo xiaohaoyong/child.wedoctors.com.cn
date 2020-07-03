@@ -56,7 +56,7 @@ class Controller extends \yii\web\Controller
             $session = $cache->get($this->seaver_token);
             $session = explode('@@', $session);
             if ($session[0]) {
-                $userLogin = UserLogin::findOne(['xopenid' => $session[0],'type'=>0]);
+                $userLogin = UserLogin::findOne(['xopenid' => $session[0]]);
 
                 if (!$userLogin && !in_array($controllerID . "/" . $actionID, $this->result)) {
                     $cache = \Yii::$app->rdmp;
