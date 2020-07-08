@@ -99,15 +99,13 @@ class Doctors extends \yii\db\ActiveRecord
     {
         if($insert) {
             $user = new User();
-        }else{
-            $user = User::findOne($this->userid);
-        }
-        $user->phone = $this->phone;
-        $user->type = 3;
-        if ($user->save()) {
-            $this->userid = $user->id;
-        } else {
-            $this->addError('userid', implode(',', $user->firstErrors));
+            $user->phone = $this->phone;
+            $user->type = 3;
+            if ($user->save()) {
+                $this->userid = $user->id;
+            } else {
+                $this->addError('userid', implode(',', $user->firstErrors));
+            }
         }
         if(is_array($this->type)) {
             $this->type = bindec(array_sum($this->type));

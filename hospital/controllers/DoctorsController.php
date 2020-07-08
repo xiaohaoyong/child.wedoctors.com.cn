@@ -2,6 +2,7 @@
 
 namespace hospital\controllers;
 
+use common\models\DoctorHospital;
 use common\models\User;
 use Yii;
 use common\models\Doctors;
@@ -66,22 +67,38 @@ class DoctorsController extends BaseController
      */
     public function actionCreate()
     {
-        $model = new Doctors();
 
-        $model->province=11;
-        $model->city=11;
-        $model->county=Yii::$app->user->identity->county;
-        $model->hospitalid=Yii::$app->user->identity->hospitalid;
-        //var_dump(Yii::$app->request->post());exit;
-        if ($model->load(Yii::$app->request->post())) {
+        $post=Yii::$app->request->post();
+        if($post){
+            $user=User::findOne(['phone'=>$post['Doctors']['phone'],'type'=>3]);
+            $model=$user?$this->findModel($user->id):new Doctors();
+            $model->province=11;
+            $model->city=11;
+            $model->county=Yii::$app->user->identity->county;
+            $model->hospitalid=Yii::$app->user->identity->hospitalid;
+            //var_dump(Yii::$app->request->post());exit;
+            $model->load(Yii::$app->request->post());
             if($model->save()){
+                $docHospital=DoctorHospital::findOne(['doctorid'=>$model->userid,'hospitalid'=>Yii::$app->user->identity->hospitalid]);
+                if(!$docHospital){
+                    $docHospital=new DoctorHospital();
+                    $docHospital->hospitalid=Yii::$app->user->identity->hospitalid;
+                    $docHospital->doctorid=$model->userid;
+                    $docHospital->save();
+                }
                 return $this->redirect(['view', 'id' => $model->userid]);
             }
+        }else{
+            $model=new Doctors();
+            $model->province=11;
+            $model->city=11;
+            $docHospital=new DoctorHospital();
         }
         if ($model->firstErrors) {
             \Yii::$app->getSession()->setFlash('error', implode(',', $model->firstErrors));
         }
         return $this->render('create', [
+            'docHospital'=>$docHospital,
             'model' => $model,
         ]);
     }
@@ -94,7 +111,10 @@ class DoctorsController extends BaseController
      */
     public function actionUpdate($id)
     {
+        $post=Yii::$app->request->post();
         $model = $this->findModel($id);
+        $docHospital=new DoctorHospital();
+
         if($model->type){
             $t=(string)decbin($model->type);
             $c=strlen($t);
@@ -113,6 +133,7 @@ class DoctorsController extends BaseController
             return $this->redirect(['view', 'id' => $model->userid]);
         } else {
             return $this->render('update', [
+                'docHospital'=>$docHospital,
                 'model' => $model,
             ]);
         }

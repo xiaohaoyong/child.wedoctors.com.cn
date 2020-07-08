@@ -27,6 +27,10 @@ use yii\helpers\Html;
             ?>
             <ul class="nav navbar-nav">
                 <li class="dropdown messages-menu">
+                    <a href="/site/hospitals" class="dropdown-toggle">切换社区</a>
+                </li>
+
+                <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
                         <?php if($Unread){?>

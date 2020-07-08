@@ -72,6 +72,12 @@ class UserLogin extends \yii\db\ActiveRecord
 
     public function getHospitalid()
     {
+
+        $cookies = Yii::$app->request->cookies;//注意此处是request
+        $language = $cookies->get('hospital');//设置默认值
+
+        
+        return $language->value;
         if ($this->type == 1) {
             $doctor = Doctors::findOne(['userid' => $this->userid]);
             return $doctor->hospitalid;

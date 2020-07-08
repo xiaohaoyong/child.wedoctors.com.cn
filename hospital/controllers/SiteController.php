@@ -7,7 +7,9 @@ use common\models\Article;
 use common\models\ArticleUser;
 use common\models\Autograph;
 use common\models\ChildInfo;
+use common\models\DoctorHospital;
 use common\models\DoctorParent;
+use common\models\Hospital;
 use common\models\Pregnancy;
 use common\models\UserDoctor;
 use Yii;
@@ -45,7 +47,7 @@ class SiteController extends BaseController
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['logout','index','login', 'error', 'captcha','code'],
+                        'actions' => ['logout','index','login', 'error', 'captcha','code','hospitals'],
                         'allow' => true,
                     ],
                 ],
@@ -59,7 +61,6 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-
         $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospitalid])->userid;
 
         $today=strtotime(date('Y-m-d 00:00:00'));
@@ -229,6 +230,29 @@ class SiteController extends BaseController
         ]);
     }
 
+
+    public function actionHospitals($hospitalid=0){
+        $this->layout = "@hospital/views/layouts/main-login.php";
+
+        if($hospitalid){
+
+            $cookies = Yii::$app->response->cookies;
+            $cookies->add(new \yii\web\Cookie([
+                'name' => 'hospital',
+                'value' => $hospitalid,
+                'expire'=>time()+3600
+            ]));
+            return $this->redirect(['site/index']);
+
+        }
+
+        $hospitalids=DoctorHospital::find()->select('hospitalid')->where(['doctorid'=>\Yii::$app->user->identity->userid])->column();
+        $hospitals=Hospital::find()->select('name')->indexBy('id')->where(['id'=>$hospitalids])->column();
+
+        return $this->render('hospitals',[
+            'hospitals'=>$hospitals
+        ]);
+    }
     /**
      * Login action.
      *
@@ -242,7 +266,8 @@ class SiteController extends BaseController
 
         $model = new \hospital\models\LoginForm();             //②
         if ($model->load(Yii::$app->request->post()) && $model->login()) {      //③
-            return $this->goBack();          //④
+            return $this->redirect(['site/hospitals']);
+            //return $this->goBack();          //④
         }
         return $this->render('login', [
             'model' => $model,

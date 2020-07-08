@@ -18,6 +18,8 @@ $this->params['breadcrumbs'][] = 'Update';
 <div class="doctors-update">
 
     <?= $this->render('_form', [
+        'docHospital'=>$docHospital,
+
         'model' => $model,
     ]) ?>
 

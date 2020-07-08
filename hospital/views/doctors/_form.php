@@ -25,6 +25,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'type')->checkboxList(\common\models\Doctors::$typeText) ?>
+
                 <div class="col-lg-3 control-label">
                     <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
                         'btn btn-primary']) ?>
