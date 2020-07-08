@@ -68,9 +68,7 @@ class DoctorsController extends BaseController
         $post=Yii::$app->request->post();
         if($post){
 
-            $user=User::findOne(['phone'=>$post['Doctors']['phone'],'type'=>3]);
-            $doctors= DoctorHospital::findOne($user->id);
-            $model=$user && $doctors?$doctors:new Doctors();
+            $model=new Doctors();
             $model->province=11;
             $model->city=11;
             //var_dump(Yii::$app->request->post());exit;
@@ -78,9 +76,9 @@ class DoctorsController extends BaseController
             if($model->save()){
 
                 if($post['hospitalid']){
-                    DoctorHospital::deleteAll(['doctorid'=>$user->id]);
+                    DoctorHospital::deleteAll(['doctorid'=>$model->userid]);
                     foreach ($post['hospitalid'] as $k=>$v){
-                        $data[$k][]=$user->id;
+                        $data[$k][]=$model->userid;
                         $data[$k][]=$v;
                     }
                     Yii::$app->db->createCommand()->batchInsert(DoctorHospital::tableName(), ['doctorid','hospitalid'],

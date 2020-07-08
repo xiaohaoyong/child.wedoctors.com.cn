@@ -98,7 +98,8 @@ class Doctors extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if($insert) {
-            $user = new User();
+            $user=User::findOne(['phone'=>$this->phone,'type'=>3]);
+            $user =$user?$user: new User();
             $user->phone = $this->phone;
             $user->type = 3;
             if ($user->save()) {
