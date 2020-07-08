@@ -403,9 +403,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
         $appoint = Appoint::findOne(['childid' => $post['childid'], 'type' => $post['type'], 'state' => 1]);
         if ($appoint) {
-            return new Code(20020, '您有未完成的预约');
+            return new Code(21000, '您有未完成的预约');
         } elseif (!$post['childid']) {
-            return new Code(20020, '请选择宝宝');
+            return new Code(21000, '请选择宝宝');
         } else {
 
             $model = new Appoint();
