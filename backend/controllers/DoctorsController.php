@@ -69,12 +69,14 @@ class DoctorsController extends BaseController
         if($post){
 
             $user=User::findOne(['phone'=>$post['Doctors']['phone'],'type'=>3]);
-            $model=$user?$this->findModel($user->id):new Doctors();
+            $doctors= DoctorHospital::findOne($user->id);
+            $model=$user && $doctors?$doctors:new Doctors();
             $model->province=11;
             $model->city=11;
             //var_dump(Yii::$app->request->post());exit;
             $model->load(Yii::$app->request->post());
             if($model->save()){
+
                 if($post['hospitalid']){
                     DoctorHospital::deleteAll(['doctorid'=>$user->id]);
                     foreach ($post['hospitalid'] as $k=>$v){
@@ -87,6 +89,7 @@ class DoctorsController extends BaseController
                 }
                 return $this->redirect(['view', 'id' => $model->userid]);
             }
+
         }else{
             $model=new Doctors();
             $model->province=11;
@@ -96,6 +99,7 @@ class DoctorsController extends BaseController
         if ($model->firstErrors) {
             \Yii::$app->getSession()->setFlash('error', implode(',', $model->firstErrors));
         }
+
         return $this->render('create', [
             'docHospital'=>$docHospital,
             'model' => $model,
