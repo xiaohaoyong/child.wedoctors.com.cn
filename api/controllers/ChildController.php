@@ -62,10 +62,39 @@ class ChildController extends Controller
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $child->birthday));
             $row['age'] = $DiffDate[0].'岁'.$DiffDate[1].'个月'.$DiffDate[2].'天';
             $row['parent']=$child->parent->toArray();
+            $row['parent']['mother_id1']=$this->dataDesensitization($row['parent']['mother_id'],6,8);
+            $row['idcard1']=$row['idcard']?$this->dataDesensitization($row['idcard'],6,8):'';
+
             return $row;
         }else{
             return new Code(20010,'失败');
         }
+    }
+    function dataDesensitization($string, $start = 0, $length = 0, $re = '*')
+    {
+        if (empty($string)){
+            return false;
+        }
+        $strarr = array();
+        $mb_strlen = mb_strlen($string);
+        while ($mb_strlen) {//循环把字符串变为数组
+            $strarr[] = mb_substr($string, 0, 1, 'utf8');
+            $string = mb_substr($string, 1, $mb_strlen, 'utf8');
+            $mb_strlen = mb_strlen($string);
+        }
+        $strlen = count($strarr);
+        $begin = $start >= 0 ? $start : ($strlen - abs($start));
+        $end = $last = $strlen - 1;
+        if ($length > 0) {
+            $end = $begin + $length - 1;
+        } elseif ($length < 0) {
+            $end -= abs($length);
+        }
+        for ($i = $begin; $i <= $end; $i++) {
+            $strarr[$i] = $re;
+        }
+        if ($begin >= $end || $begin >= $last || $end > $last) return false;
+        return implode('', $strarr);
     }
     public function actionChildEx($id){
         $ex=Examination::find()->andFilterWhere(['childid'=>$id])->orderBy('field2 desc,field3 desc')->all();

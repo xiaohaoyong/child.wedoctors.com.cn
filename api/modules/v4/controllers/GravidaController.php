@@ -49,6 +49,13 @@ class GravidaController extends \api\modules\v2\controllers\GravidaController
                 $userParent->save();
             }
             $preg = Pregnancy::find()->where(['field4' => $data['field4']])->andWhere(['field11'=>$data['field11']])->one();
+
+            foreach($data as $k=>$v)
+            {
+                if($v=='null'){
+                    unset($data[$k]);
+                }
+            }
             if(!$preg){
                 $preg=new Pregnancy();
                 $preg->load(['Pregnancy'=>$data]);
@@ -113,8 +120,35 @@ class GravidaController extends \api\modules\v2\controllers\GravidaController
             $field90s[]=$rs;
         }
         $row['field90s']=$field90s;
+        $row['preg']['field4a']=$row['preg']['field4']?$this->dataDesensitization($row['preg']['field4'],6,8):'';
 
         return $row;
+    }
+    function dataDesensitization($string, $start = 0, $length = 0, $re = '*')
+    {
+        if (empty($string)){
+            return false;
+        }
+        $strarr = array();
+        $mb_strlen = mb_strlen($string);
+        while ($mb_strlen) {//循环把字符串变为数组
+            $strarr[] = mb_substr($string, 0, 1, 'utf8');
+            $string = mb_substr($string, 1, $mb_strlen, 'utf8');
+            $mb_strlen = mb_strlen($string);
+        }
+        $strlen = count($strarr);
+        $begin = $start >= 0 ? $start : ($strlen - abs($start));
+        $end = $last = $strlen - 1;
+        if ($length > 0) {
+            $end = $begin + $length - 1;
+        } elseif ($length < 0) {
+            $end -= abs($length);
+        }
+        for ($i = $begin; $i <= $end; $i++) {
+            $strarr[$i] = $re;
+        }
+        if ($begin >= $end || $begin >= $last || $end > $last) return false;
+        return implode('', $strarr);
     }
 
 }

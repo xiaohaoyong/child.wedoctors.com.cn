@@ -161,6 +161,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+
+                                    'attribute' => 'createtime',
+                                    'value' => function ($e) {
+                                        return date('Y-m-d',$e->createtime);
+                                    }
+                                ],
+
+                                [
                                     'class' => 'common\components\grid\ActionColumn',
                                     'template' => '
                             <div class="btn-group dropup">
