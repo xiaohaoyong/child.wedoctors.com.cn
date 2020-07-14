@@ -32,6 +32,7 @@ use common\models\ChatRecord;
 use common\models\ChildInfo;
 use common\models\DataUpdateRecord;
 use common\models\DataUser;
+use common\models\DoctorHospital;
 use common\models\DoctorParent;
 use common\models\Doctors;
 use common\models\Examination;
@@ -90,15 +91,110 @@ class DataController extends Controller
         }
         return $files;
     }
-
+    public function getAgeByBirth($date,$type = 1){
+        $nowYear = date("Y",time());
+        $nowMonth = date("m",time());
+        $nowDay = date("d",time());
+        $birthYear = date("Y",$date);
+        $birthMonth = date("m",$date);
+        $birthDay = date("d",$date);
+        if($type == 1){
+            $age = $nowYear - ($birthYear - 1);
+        }elseif($type==2){
+            if($nowMonth<$birthMonth){
+                $age = $nowYear - $birthYear - 1;
+            }elseif($nowMonth==$birthMonth){
+                if($nowDay<$birthDay){
+                    $age = $nowYear - $birthYear - 1;
+                }else{
+                    $age = $nowYear - $birthYear;
+                }
+            }else{
+                $age = $nowYear - $birthYear;
+            }
+        }
+        return $age;
+    }
     public function actionTesta()
     {
+
+
+        system('wkhtmltopdf http://web.child.wedoctors.com.cn/question-naire/new-view?id=1&time=1592533163&userid=325910 325910.pdf');
+        exit;
+
         ini_set('memory_limit', '6000M');
 
-        $auto=Autograph::findAll(['doctorid'=>110592]);
+        $doctors=Doctors::find()->all();
+        foreach($doctors as $k=>$v){
+            $docHospital=DoctorHospital::findOne(['doctorid'=>$v->userid,'hospitalid'=>$v->hospitalid]);
+            $docHospital=$docHospital?$docHospital:new DoctorHospital();
+            $docHospital->doctorid=$v->userid;
+            $docHospital->hospitalid=$v->hospitalid;
+            $docHospital->save();
+        }
+        exit;
+
+        $f=fopen('appoint_id.log','r');
+        while (($line=fgets($f))!==false){
+            preg_match('/id=(\d*)/',$line,$m);
+            if(intval($m[1])) {
+                $id[] = $m[1];
+            }
+        }
+        $appoint=Appoint::find()->select('count(*) as a')->having(['>','a',1000])->indexBy('doctorid')->where(['in','id',$id])->groupBy('doctorid')->column();
+        $userDoctor=UserDoctor::find()->select('name')->where(['in','userid',array_keys($appoint)])->column();
+        var_dump($userDoctor);exit;
+
+        $f=fopen('123.csv','r');
+        while (($line=fgetcsv($f))!==false){
+            $rs=[];
+            $phone=trim($line[19]);
+            $name=trim($line[18]);
+            $rs[]='';
+            $rs[]=$name;
+            $preg=Pregnancy::find()->where(['field1'=>$name,'field6'=>$phone])->andWhere(['>','field11',strtotime('-11 month')])->one();
+            if($preg){
+
+            }else{
+                $preg=Pregnancy::find()->where(['field1'=>$name,'doctorid'=>110599])->andWhere(['>','field11',strtotime('-11 month')])->one();
+            }
+            if($preg){
+                $rs[]=$this->getAgeByBirth($preg->field2,2);
+                $rs[]=$preg->field4;
+                $rs[]=$phone;
+                $rs[]=$preg->field5;
+                $rs[]=date('Y-m-d',$preg->field11);
+                $rs[]=$preg->field81;
+
+            }else{
+                $rs[]='';
+                $rs[]='';
+                $rs[]='';
+                $rs[]='';
+                $rs[]='';
+                $rs[]='';
+
+            }
+            $rs[]=trim($line[20]);
+            $rs[]=trim($line[21]);
+            $rs[]=trim($line[22]);
+            $rs[]=trim($line[23]);
+            $rs[]=trim($line[24]);
+            $rs[]=trim($line[25]);
+            echo implode("\t,",$rs);
+            echo "\n";
+        }
+        exit;
+
+        $auto=Autograph::findAll(['doctorid'=>206260]);
 
         foreach($auto as $k=>$v){
-            echo $v->id."\n";
+            $rs=[];
+            $preg=Pregnancy::find()->where(['familyid'=>$v->userid])->andWhere(['>','field11',strtotime('-11 month')])->one();
+            if($preg){
+                $openid=UserLogin::getOpenid($v->userid);
+                echo $openid."\n";
+            }
         }
 
 exit;
