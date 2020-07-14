@@ -93,8 +93,8 @@ class HospitalAppoint extends \yii\db\ActiveRecord
             'type' => 'Type',
             'weeks' => 'weeks',
             'interval' => '预约时间段',
-            'updateInterval' => '间隔时间段上线时间'
-
+            'updateInterval' => '间隔时间段上线时间',
+            'is_month'=>'体检月龄限制',
         ];
     }
 
