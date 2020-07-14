@@ -124,6 +124,46 @@ class AppointController extends Controller
         }
         return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功', 'data' => $arr];
     }
+
+    public function actionData($h, $d, $s)
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $arr = [];
+
+        if ($this->sign($h, $d, $s) && $this->hs[$h]) {
+            $appoint = Appoint::find()->where(['doctorid'=>$this->hs[$h]])
+                ->andWhere(['appoint_date' => strtotime(date('Ymd'))])
+                ->all();
+            foreach ($appoint as $k => $v) {
+                $rs['qrcode'] = "appoint:" . $v->id;
+                if($v->type<=2){
+                    $child = \common\models\ChildInfo::findOne(['id' => $v->childid]);
+                    $rs['name'] = $child->name;
+                }else{
+                    $appointAdult=AppointAdult::findOne(['userid'=>$v->userid]);
+                    $rs['name'] =$appointAdult->name;
+                }
+                $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $child->birthday));
+                if ($DiffDate[0]) {
+                    $age = $DiffDate[0] . "岁";
+                } elseif ($DiffDate[1]) {
+                    $age = $DiffDate[1] . "月";
+                } else {
+                    $age = $DiffDate[2] . "天";
+                }
+                $rs['age'] = $age;
+                $rs['date'] = date('Y-m-d');
+                $rs['project'] = Appoint::$typeText[$v->type];
+                $rs['time'] = Appoint::$timeText[$v->appoint_time];
+                $arr[] = $rs;
+            }
+        } else {
+            $code = 20010;
+            $msg = 'sign错误';
+        }
+        return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功', 'data' => $arr];
+    }
+
     public function actionDone($h, $d, $s,$code=''){
         \Yii::$app->response->format = Response::FORMAT_JSON;
 

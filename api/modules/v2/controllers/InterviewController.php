@@ -74,7 +74,7 @@ class InterviewController extends Controller
                 $data[] = $row;
             }
         }
-        return ['preg' => $pregRow, 'inter' => array_reverse($data)];
+        return ['preg' => $pregRow, 'inter' => $data?array_reverse($data):[]];
     }
 
     public function actionRemind()

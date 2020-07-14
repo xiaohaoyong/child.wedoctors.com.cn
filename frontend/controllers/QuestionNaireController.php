@@ -82,5 +82,14 @@ class QuestionNaireController extends QnController
             'qnaa' => $qnaa
         ]);
     }
-
+    public function actionNewView($id,$time,$userid){
+        $qnaa=QuestionNaireAnswer::find()->where(['qnid'=>$id,'userid'=>$userid,'createtime'=>$time])->indexBy('qnaid')->all();
+        $qn = QuestionNaire::findOne($id);
+        $qna = QuestionNaireAsk::findAll(['qnid' => $id]);
+        return $this->render('view1', [
+            'qn' => $qn,
+            'qna' => $qna,
+            'qnaa' => $qnaa
+        ]);
+    }
 }

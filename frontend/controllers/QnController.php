@@ -17,10 +17,7 @@ class QnController extends \yii\web\Controller
 {
     public $login;
     private $ignore = [
-        'oauth-callback/index',
-        'wappoint/day-num',
-        'wappoint/code',
-        'wappoint/vphone',
+        'question-naire/new-view',
     ];
 
     public function beforeAction($action)
