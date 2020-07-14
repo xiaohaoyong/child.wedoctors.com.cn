@@ -20,6 +20,7 @@ use Yii;
  * @property string non_date
  * @property string sure_date
  * @property int release_time
+ * @property int  is_month
  */
 class HospitalAppoint extends \yii\db\ActiveRecord
 {
@@ -63,7 +64,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
     {
         return [
             [['cycle', 'delay', 'week','interval','phone'], 'required'],
-            [['doctorid', 'cycle', 'delay', 'weeks', 'interval', 'updateInterval', 'phone','release_time'], 'integer'],
+            [['is_month','doctorid', 'cycle', 'delay', 'weeks', 'interval', 'updateInterval', 'phone','release_time'], 'integer'],
             [['info'], 'string', 'max' => 255],
             [['sure_date'],'dateNumValidation']
         ];
