@@ -8,7 +8,9 @@
 
 
 $this->title='疫情调查表';
-$doctorid=Yii::$app->user->identity->userid;
+$userDoctor=\common\models\UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospitalid]);
+$doctorid=$userDoctor->userid;
+
 echo \yii\helpers\Html::a('下载全部','http://static.i.wedoctors.com.cn/down/'.$doctorid.'.zip');
 ?>
 <hr>
