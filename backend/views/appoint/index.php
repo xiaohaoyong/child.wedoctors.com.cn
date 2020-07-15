@@ -164,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => 'createtime',
                                     'value' => function ($e) {
-                                        return date('Y-m-d',$e->createtime);
+                                        return date('Y-m-d H:i:s',$e->createtime);
                                     }
                                 ],
 

@@ -54,6 +54,7 @@
                             ['label' => '平台召回用户统计', 'url' => ['/push-log']],
                             ['label' => '同步已签约数据', 'url' => ['/synchronization']],
                             ['label' => '数据同步（测试版）', 'url' => ['/synchronization/data']],
+                            ['label' => '疫情调查表下载', 'url' => ['/yiqing/down']],
 
                         ]
                     ],
