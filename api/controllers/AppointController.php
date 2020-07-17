@@ -297,7 +297,7 @@ class AppointController extends Controller
         $row['appid']='wxfef8925dfaa329d7';
         $row['path']='/pages/index-form/index-form?productId=1107001&srcType=2';
         $row['envVersion']='release';
-        $row['adv']=0;
+        $row['adv']=1;
         $row['advText']='点击即可领取疫苗险';
         return $row;
     }
