@@ -36,15 +36,16 @@ class AppointController extends Controller
         'a94PW3iX' => [206262],
         'KPW01H7g' => [113890],
         'E1mUGz95' => [192821],
-        'ER8GOz85'=>[257888]
+        'ER8GOz85'=>[257888],
+        'y479PewU'=>[314896],
 
     ];
 
 
-    public function sign($h, $d, $s)
+    public function sign($h, $d, $s,$q='')
     {
-        //echo md5($h.date('Ymd')."rh6FcKyWOUqF52hf");exit;
-        if ($s == md5($h . date('Ymd') . "rh6FcKyWOUqF52hf")) {
+        //echo md5($h.$q.date('Ymd')."rh6FcKyWOUqF52hf");exit;
+        if ($s == md5($h .$q. date('Ymd') . "rh6FcKyWOUqF52hf")) {
             return true;
         }
         return false;
@@ -143,16 +144,7 @@ class AppointController extends Controller
                     $appointAdult=AppointAdult::findOne(['userid'=>$v->userid]);
                     $rs['name'] =$appointAdult->name;
                 }
-                $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $child->birthday));
-                if ($DiffDate[0]) {
-                    $age = $DiffDate[0] . "岁";
-                } elseif ($DiffDate[1]) {
-                    $age = $DiffDate[1] . "月";
-                } else {
-                    $age = $DiffDate[2] . "天";
-                }
-                $rs['age'] = $age;
-                $rs['date'] = date('Y-m-d');
+                $rs['date'] = date('Y-m-d',$v->appoint_date);
                 $rs['project'] = Appoint::$typeText[$v->type];
                 $rs['time'] = Appoint::$timeText[$v->appoint_time];
                 $arr[] = $rs;
@@ -162,6 +154,32 @@ class AppointController extends Controller
             $msg = 'sign错误';
         }
         return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功', 'data' => $arr];
+    }
+    public function actionDoneNew($h, $d, $s,$q)
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($this->sign($h, $d, $s,$q) && $this->hs[$h]) {
+
+            $appid=explode(':',$q);
+            if($id=intval($appid[1])){
+                $appoint=Appoint::findOne($id);
+                if($appoint){
+                    $appoint->state=2;
+                    $appoint->save();
+                }else{
+                    $code = 20010;
+                    $msg = '参数错误';
+                }
+            }else{
+                $code = 20010;
+                $msg = '参数错误';
+            }
+
+        } else {
+            $code = 20010;
+            $msg = 'sign错误';
+        }
+        return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功'];
     }
 
     public function actionDone($h, $d, $s,$code=''){
