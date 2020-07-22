@@ -53,8 +53,10 @@ class ArticleController extends BaseController
     public function actionIndex()
     {
         $searchModel = new \hospital\models\article\ArticleSearchModel();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,0);
 
+        $post=Yii::$app->request->queryParams;
+        $post['ArticleSearchModel']['datauserid']=Yii::$app->user->identity->hospitalid;
+        $dataProvider = $searchModel->search($post);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

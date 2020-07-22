@@ -17,7 +17,7 @@ class ArticleSearchModel extends Article
     public function rules()
     {
         return [
-            [['id', 'catid', 'subject', 'subject_pid', 'level', 'createtime', 'child_type', 'num', 'type'], 'integer'],
+            [['id', 'catid', 'subject', 'subject_pid', 'level', 'createtime', 'child_type', 'num', 'type','datauserid'], 'integer'],
         ];
     }
 
@@ -66,6 +66,7 @@ class ArticleSearchModel extends Article
             'subject_pid' => $this->subject_pid,
             'num' => $this->num,
             'type' => $this->type,
+            'datauserid'=>$this->datauserid,
         ]);
 
         if ($this->type==2) {

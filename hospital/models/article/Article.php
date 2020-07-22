@@ -27,7 +27,7 @@ class Article extends \common\models\Article
     {
         return [
             [['child_type','type'], 'required'],
-            [['subject','subject_pid','catid', 'level', 'createtime', 'child_type', 'num', 'type'], 'integer'],
+            [['subject','subject_pid','catid', 'level', 'createtime', 'child_type', 'num', 'type','datauserid'], 'integer'],
         ];
     }
 
