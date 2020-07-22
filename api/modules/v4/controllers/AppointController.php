@@ -308,7 +308,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
         //体检限制月龄预约
         if($post['type']==1 && $post['childid']){
-            $hospitalAppointMonth = HospitalAppointMonth::find()->select('month')->where(['type' => $post['month']])->orderBy('month asc')->column();
+            $hospitalAppointMonth = HospitalAppointMonth::find()->select('month')->where(['type' => $post['month']])->andWhere(['haid'=>$appoint->id])->orderBy('month asc')->column();
             if($hospitalAppointMonth && $appoint->is_month) {
                 $child = ChildInfo::findOne($post['childid']);
                 if ($child) {
@@ -322,6 +322,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 }
             }
         }
+        exit;
 
         //判断所选疫苗都有周几可约
         if ($post['vaccine']) {
