@@ -322,7 +322,6 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 }
             }
         }
-        exit;
 
         //判断所选疫苗都有周几可约
         if ($post['vaccine']) {
