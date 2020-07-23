@@ -11,6 +11,7 @@ namespace docapi\modules\v1\controllers;
 use api\models\Article;
 use common\models\ArticleCategory;
 use common\models\Carousel;
+use common\models\Doctors;
 use yii\data\Pagination;
 
 class ArticleController extends \docapi\controllers\ArticleController
@@ -65,8 +66,8 @@ class ArticleController extends \docapi\controllers\ArticleController
             $data['list'][]=$row;
         }
         $data['pageTotal']=ceil($articles->count()/10);
-
-        if($this->userid==154815){
+        $doctors=Doctors::findOne(['userid'=>$this->userid]);
+        if($doctors->hospitalid==110587){
             $data['pageTotal']=0;
             $data['list']=[];
         }
