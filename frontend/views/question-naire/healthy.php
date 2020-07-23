@@ -13,9 +13,9 @@
         <div class="title"style="padding-right: 40px; font-size: 16px;">调查结果显示</div>
     </div>
     <div class="zhuangtai">
-        <img src="/img/zhuangtai_<?php echo $is_healthy?'true':'false'?>.png" width="65">
-        <div class="value" style="font-size: 30px; margin-top: 10px;"><?php echo $is_healthy?'正常':'异常'?></div>
-        <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;"><?php echo $is_healthy?'前往社区请出示此页':'请您前往就近二级以上医疗机构发热门诊筛查，感谢您的配合！'?></div>
+        <img src="/img/zhuangtai_true.png" width="65">
+        <div class="value" style="font-size: 30px; margin-top: 10px;">提交成功</div>
+        <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;"></div>
         <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;">有效日期截止至：<?=date('Y年m月d日 H:i',strtotime('+1 day',$qnaa->createtime))?></div>
         <a href="/question-naire/view?id=<?=$id?>&time=<?=$qnaa->createtime?>" class="view">查看</a>
     </div>
