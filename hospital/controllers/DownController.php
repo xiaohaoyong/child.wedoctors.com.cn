@@ -177,41 +177,43 @@ class DownController extends BaseController
         $filename='article-' .$hospitalid. date("Ymd") . '.zip';
 
         $zipname = dirname(__ROOT__)."/static/childEducation/".$filename;
+        if(file_exists($zipname)) {
 
+            $zip = new \ZipArchive();
+            $res = $zip->open($zipname, \ZipArchive::OVERWRITE | \ZipArchive::CREATE);
 
-        $zip = new \ZipArchive();
-        $res = $zip->open($zipname, \ZipArchive::OVERWRITE | \ZipArchive::CREATE);
-
-        if ($res === TRUE) {
-            foreach ($dataProvider->query->all() as $k => $e) {
-                $n=ceil($e->id%100);
-                $file=dirname(__ROOT__)."/static/childEducation/".$n."/".$e->id.".xlsx";
-                if(file_exists($file)) {
-                    $child=ChildInfo::findOne($e->id);
-                    $zip->addFile($file, $child->name . ".xlsx");
+            if ($res === TRUE) {
+                foreach ($dataProvider->query->all() as $k => $e) {
+                    $n = ceil($e->id % 100);
+                    $file = dirname(__ROOT__) . "/static/childEducation/" . $n . "/" . $e->id . ".xlsx";
+                    if (file_exists($file)) {
+                        $child = ChildInfo::findOne($e->id);
+                        $zip->addFile($file, $child->name . ".xlsx");
+                    }
                 }
+                $zip->close();
+                //Begin writing headers
+                header("Pragma: public");
+                header("Expires: 0");
+                header("Connection: keep-alive");
+
+                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                header("Cache-Control: public");
+                header("Content-Description: File Transfer");
+
+                //Use the switch-generated Content-Type
+                header("Content-Type: application/zip");
+
+                //Force the download
+                $header = "Content-Disposition: attachment; filename=中医儿童健康管理宣教记录.zip;";
+                header($header);
+                header("Content-Transfer-Encoding: binary");
+                header("Content-Length: " . filesize($zipname));
+                ob_end_clean();
+                @readfile($zipname);
             }
-            $zip->close();
-            //Begin writing headers
-            header("Pragma: public");
-            header("Expires: 0");
-            header("Connection: keep-alive");
-
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Cache-Control: public");
-            header("Content-Description: File Transfer");
-
-            //Use the switch-generated Content-Type
-            header("Content-Type: application/zip");
-
-            //Force the download
-            $header="Content-Disposition: attachment; filename=中医儿童健康管理宣教记录.zip;";
-            header($header );
-            header("Content-Transfer-Encoding: binary");
-            header("Content-Length: ".filesize($zipname));
-            ob_end_clean();
-            @readfile($zipname);
         }
+        exit('暂无数据！');
     }
 
     public function actionDownload($childid=0)
