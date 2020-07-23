@@ -66,6 +66,11 @@ class ArticleController extends \docapi\controllers\ArticleController
         }
         $data['pageTotal']=ceil($articles->count()/10);
 
+        if($this->userid==154815){
+            $data['pageTotal']=0;
+            $data['list']=[];
+        }
+
         return $data;
     }
 }

@@ -53,7 +53,6 @@ class ArticleController extends BaseController
     public function actionIndex()
     {
         $searchModel = new \hospital\models\article\ArticleSearchModel();
-
         $post=Yii::$app->request->queryParams;
         if(Yii::$app->user->identity->hospitalid==110587){
             $post['ArticleSearchModel']['datauserid']=Yii::$app->user->identity->hospitalid;
