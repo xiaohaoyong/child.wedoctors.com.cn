@@ -165,6 +165,8 @@ class DownController extends BaseController
         $objWriter->save('php://output');
     }
     public function actionArticle(){
+        exit('暂停使用维护中！');
+
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
         ini_set('zlib.output_compression', 'Off');
@@ -213,7 +215,6 @@ class DownController extends BaseController
                     ob_end_clean();
                     @readfile($zipname);
                 }else{
-                    exit('暂无数据！');
                 }
         }
     }
