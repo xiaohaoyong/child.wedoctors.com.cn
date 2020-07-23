@@ -97,7 +97,7 @@ class ArticleUserController extends Controller
             $objWriter= \PHPExcel_IOFactory::createWriter($excel,'Excel2007');
             $n=ceil($childid%100);
 
-            if (!file_exists(dirname(__ROOT__)."/static/childEducation/".$n)){
+            if (!file_exists(dirname(__ROOT__)."/static/cd childEducation/".$n)){
                 mkdir (dirname(__ROOT__)."/static/childEducation/".$n,0777,true);
             }
             $objWriter->save(dirname(__ROOT__)."/static/childEducation/".$n."/".$childid.".xlsx");
