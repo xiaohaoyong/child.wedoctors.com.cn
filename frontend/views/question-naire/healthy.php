@@ -17,7 +17,7 @@
         <div class="value" style="font-size: 30px; margin-top: 10px;">提交成功</div>
         <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;"></div>
         <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;">有效日期截止至：<?=date('Y年m月d日 H:i',strtotime('+1 day',$qnaa->createtime))?></div>
-        <a href="/question-naire/view?id=<?=$id?>&time=<?=$qnaa->createtime?>" class="view">查看</a>
+        <a href="/question-naire/view?id=<?=$id?>&fid=<?=$qnaa->qnfid?>" class="view">查看</a>
     </div>
 
 </div>
