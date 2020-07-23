@@ -46,6 +46,11 @@ class ArticleSendController extends \docapi\controllers\Controller
         {
             $results['list1'][] = \weixin\models\Article::findById($v->id);
         }
+        $doctors=Doctors::findOne(['userid'=>$this->userid]);
+        if($doctors->hospitalid==110587){
+            $results['list1']=[];
+            $results['list']=[];
+        }
         return $results;
     }
 
