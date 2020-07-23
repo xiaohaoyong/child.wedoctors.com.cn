@@ -3,6 +3,8 @@
 namespace hospital\controllers;
 
 
+use hospital\models\Doctors;
+
 class BaseController extends \yii\web\Controller {
     private $notCheckAccess = ['/rbac/access-error', 'site/index'];
 
@@ -33,6 +35,24 @@ class BaseController extends \yii\web\Controller {
             return $this->redirect(\Yii::$app->user->loginUrl)->send();
         }
         if(!\Yii::$app->user->identity->hospital){
+            \Yii::$app->user->logout();
+            return $this->redirect(\Yii::$app->user->loginUrl)->send();
+        }
+        $doctors=Doctors::findOne(['userid'=>\Yii::$app->user->identity->userid]);
+        if($doctors && $doctors->type){
+            $t=(string)decbin($doctors->type);
+            $c=strlen($t);
+            for($i=0;$i<$c;$i++){
+                if((string)$t[$i]==1) {
+                    $d[] = pow(10, $i);
+                }
+            }
+
+            if(!in_array(1,$d)){
+                \Yii::$app->user->logout();
+                return $this->redirect(\Yii::$app->user->loginUrl)->send();
+            }
+        }else{
             \Yii::$app->user->logout();
             return $this->redirect(\Yii::$app->user->loginUrl)->send();
         }
