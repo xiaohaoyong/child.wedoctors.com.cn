@@ -57,7 +57,9 @@
                             ['label' => '通知列表', 'url' => ['article/tindex?ArticleSearchModel[type]=2']],
                             ['label' => '发布通知', 'url' => ['article/tongzhi']],
                             ['label' => '平台召回用户统计', 'url' => ['/push-log']],
-                            $e, $c, ['label' => '疫情调查表下载', 'url' => ['/yiqing/down']],
+                            ['label' => '同步已签约数据', 'url' => ['/synchronization']],
+                            $c,
+                            ['label' => '疫情调查表下载', 'url' => ['/yiqing/down']],
 
                         ]
                     ],
