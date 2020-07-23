@@ -192,7 +192,7 @@ class DownController extends BaseController
                     }
                 }
                 if(count($list)>0) {
-                    $zip->close();
+                    \ZipArchive::CREATE;
                     //Begin writing headers
                     header("Pragma: public");
                     header("Expires: 0");
