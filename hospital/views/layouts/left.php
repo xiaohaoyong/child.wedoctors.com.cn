@@ -22,7 +22,9 @@
             ];
         }
         if(Yii::$app->user->identity->hospitalid!=110587){
-            $c=                            ['label' => '数据同步（测试版）', 'url' => ['/synchronization/data']];
+            $c= ['label' => '数据同步（测试版）', 'url' => ['/synchronization/data']];
+            $d= ['label' => '指导文章列表', 'url' => ['article/zindex?ArticleSearchModel[type]=1']];
+            $e= ['label' => '同步已签约数据', 'url' => ['/synchronization']];
         }
         ?>
 
@@ -38,8 +40,7 @@
                     ['label' => '社区数据统计', 'icon' => 'hospital-o', 'url' => \yii\helpers\Url::to(['user-doctor/index']),],
                     ['label' => '中医指导库', 'icon' => 'file-text-o', 'url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[type]=1']),
                         'items' => [
-                            ['label' => '指导文章列表', 'url' => ['article/zindex?ArticleSearchModel[type]=1']],
-                            ['label' => '宣教任务（设置自动）', 'url' => ['/article-send']],
+$d,                            ['label' => '宣教任务（设置自动）', 'url' => ['/article-send']],
                         ]
                     ],
                     ['label' => '健康知识库', 'icon' => 'file-text-o', 'url' => "#",
@@ -55,8 +56,7 @@
                             ['label' => '通知列表', 'url' => ['article/tindex?ArticleSearchModel[type]=2']],
                             ['label' => '发布通知', 'url' => ['article/tongzhi']],
                             ['label' => '平台召回用户统计', 'url' => ['/push-log']],
-                            ['label' => '同步已签约数据', 'url' => ['/synchronization']],
-$c,                            ['label' => '疫情调查表下载', 'url' => ['/yiqing/down']],
+$e,$c,                            ['label' => '疫情调查表下载', 'url' => ['/yiqing/down']],
 
                         ]
                     ],
