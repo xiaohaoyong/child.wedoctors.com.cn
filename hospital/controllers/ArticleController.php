@@ -55,7 +55,9 @@ class ArticleController extends BaseController
         $searchModel = new \hospital\models\article\ArticleSearchModel();
 
         $post=Yii::$app->request->queryParams;
-        $post['ArticleSearchModel']['datauserid']=Yii::$app->user->identity->hospitalid;
+        if(Yii::$app->user->identity->hospitalid==110587){
+            $post['ArticleSearchModel']['datauserid']=Yii::$app->user->identity->hospitalid;
+        }
         $dataProvider = $searchModel->search($post);
         return $this->render('index', [
             'searchModel' => $searchModel,
