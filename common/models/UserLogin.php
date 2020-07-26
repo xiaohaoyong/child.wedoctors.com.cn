@@ -100,6 +100,12 @@ class UserLogin extends \yii\db\ActiveRecord
     public function getCounty()
     {
         if ($this->type == 1) {
+            $cookies = Yii::$app->request->cookies;//注意此处是request
+            $language = $cookies->get('hospital');//设置默认值
+            if($language) {
+                $userDoctor=UserDoctor::findOne(['hospitalid'=>$language]);
+                return $userDoctor->county;
+            }
             $doctor = Doctors::findOne(['userid' => $this->userid]);
             return $doctor->county;
         }
