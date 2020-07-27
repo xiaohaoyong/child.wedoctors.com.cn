@@ -21,8 +21,10 @@ class AppointController extends \docapi\controllers\AppointController
 {
     public function actionView($id)
     {
+        $doctor = Doctors::findOne(['userid' => $this->userid]);
+        $userDoctor = UserDoctor::findOne(['hospitalid' => $doctor->hospitalid]);
         $time=strtotime(date('Ymd'));
-        $appoint=Appoint::findOne(['id'=>$id,'doctorid'=>$this->userid,'appoint_date'=>$time]);
+        $appoint=Appoint::findOne(['id'=>$id,'doctorid'=>$userDoctor->userid,'appoint_date'=>$time]);
         $row=[];
         if ($appoint) {
             $appoint->state = 2;
