@@ -71,6 +71,8 @@ class DoctorsController extends BaseController
             $model=new Doctors();
             $model->province=11;
             $model->city=11;
+            $model->hospitalid=$post['hospitalid'][0];
+
             //var_dump(Yii::$app->request->post());exit;
             $model->load(Yii::$app->request->post());
             if($model->save()){
