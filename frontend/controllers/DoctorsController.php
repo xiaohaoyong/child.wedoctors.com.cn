@@ -21,30 +21,35 @@ use yii\web\Response;
 class DoctorsController extends Controller
 {
     public function actionIndex($search='',$county=0){
-        $query=UserDoctor::find();
+        $docs=[];
+        $query=Hospital::find();
         if($search){
             $query->andFilterWhere(['like','name',$search]);
         }
         if($search || $county){
-
             if($county){
                 $query->andWhere(['county'=>$county]);
             }
-
-
-            $doctors=$query->orderBy('appoint desc')->all();
+            $doctors=$query->all();
+            foreach($doctors as $k=>$v){
+                $rs=UserDoctor::findOne(['hospitalid'=>$v->id]);
+                if($rs) {
+                    $docs[] = $rs->toArray();
+                }
+            }
         }else{
-            $doctors=$query->orderBy('appoint desc')->limit(10)->all();
+            $query=UserDoctor::find();
+            if($county){
+                $query->andWhere(['county'=>$county]);
+            }
+            $doctors=$query->limit('10')->all();
+
+            foreach($doctors as $k=>$v){
+                $rs=$v->toArray();
+                $rs['name']=Hospital::findOne($v->hospitalid)->name;
+                $docs[]=$rs;
+            }
         }
-
-        $docs=[];
-
-        foreach($doctors as $k=>$v){
-            $rs=$v->toArray();
-            $rs['name']=Hospital::findOne($v->hospitalid)->name;
-            $docs[]=$rs;
-        }
-
 
 
         return $this->renderPartial('list', [
