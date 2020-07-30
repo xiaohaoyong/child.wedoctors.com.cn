@@ -190,9 +190,8 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             $weekv = HospitalAppointVaccine::find()
                 ->select('week')
                 ->where(['haid' => $hospitalA->id])
-                ->andwhere(['vaccine' => $vid])->column();
+                ->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0], ['vaccine' => -1]])->groupBy('week')->column();
         }
-
         $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekv);
         if (!$is_appoint) {
             return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];

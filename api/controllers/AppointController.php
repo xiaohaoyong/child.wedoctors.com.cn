@@ -299,8 +299,10 @@ class AppointController extends Controller
         $row['envVersion']='release';
         $row['adv']=0;
         $row['advText']='30万元保额的疫苗保障，仅需2元，点此领取';
-        $row['is_index']='1';
-        $row['appoint_text']='请根据社区现场安排排队！';
+        if($row['doctorid']==206260) {
+            $row['is_index'] = '1';
+            $row['appoint_text'] = '请根据社区现场安排排队！';
+        }
         return $row;
     }
 
