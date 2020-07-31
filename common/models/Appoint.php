@@ -61,7 +61,9 @@ class Appoint extends \yii\db\ActiveRecord
         4 => '成人疫苗',
         5 => '建册预约',
         6 => '领取叶酸预约',
-        3 => '微量元素'
+        3 => '微量元素',
+        7 => '两癌筛查'
+
     ];
 
     public static $typeText1 = [
@@ -106,7 +108,10 @@ class Appoint extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['appoint_time','appoint_date','type'], 'required'],
+            [['appoint_date','type'], 'required'],
+            ['appoint_time','required','message'=>'请选择预约时间'],
+            ['appoint_date','required','message'=>'请选择预约日期'],
+
             [['vaccine','push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
             [['remark'], 'string', 'max' => 100],
             [['date'], 'string'],

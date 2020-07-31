@@ -46,12 +46,8 @@ $this->title='我的预约';
                     <div><?=$row['vaccineStr']?></div>
                 </div>
             <?php }?>
-            <div class="item">
-                <div>排队序号</div>
-                <div><?=$row['duan']?>-<?=$row['index']?>号</div>
-            </div>
         </div>
     </div>
-    <div class="myAppoint"><?=\yii\helpers\Html::a('我的预约',['wappoint/my'])?></div>
+    <div class="myAppoint"><?=\yii\helpers\Html::a('我的预约',['qappoint/my'])?></div>
 </div>
-<div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+<div class="appoint_my"><a href="/qappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>

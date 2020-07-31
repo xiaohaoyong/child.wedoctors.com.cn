@@ -5,6 +5,8 @@
  * Date: 2020/4/20
  * Time: 上午11:38
  */
+$this->title='成人疫苗接种预约';
+
 ?>
 <div class="appoint">
     <form name="appoint" id="appoint_form" action="/wappoint/save" method="post">
@@ -90,6 +92,8 @@
         </div>
     </form>
 </div>
+<div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+
 <?php
 $date_day = date('Y-m-d', $day);
 $updateJs = <<<JS

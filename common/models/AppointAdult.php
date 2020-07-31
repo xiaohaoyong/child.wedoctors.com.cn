@@ -24,7 +24,12 @@ class AppointAdult extends \yii\db\ActiveRecord
     {
         return 'appoint_adult';
     }
-
+    public function scenarios()
+    {
+        return [
+            'lisc' => ['userid', 'name', 'gender','phone','id_card','place'],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -33,9 +38,25 @@ class AppointAdult extends \yii\db\ActiveRecord
         return [
             [['userid', 'name', 'gender', 'phone'], 'required'],
             [['userid', 'birthday', 'gender', 'createtime', 'phone'], 'integer'],
-            [['name'], 'string', 'max' => 20],
+            [['name','place'], 'string', 'max' => 20],
             [['userid'], 'unique'],
+            [['id_card','place'],'required','on'=>'lisc'],
+            [['id_card'], 'validateid_card'],
+            [['phone'], 'validatePhone'],
         ];
+    }
+    public function validateid_card($attribute, $params){
+        preg_match('/^[1-9]\d{5}(19|20)\d{2}[01]\d[0123]\d\d{3}[xX\d]$/', $this->id_card, $arr);
+        if(!$arr){
+            $this->addError($attribute, '请输入正确身份证号码！');
+        }
+
+    }
+    public function validatePhone($attribute, $params){
+        preg_match('/^1[3456789]\d{9}$/', $this->phone, $arr);
+        if(!$arr){
+            $this->addError($attribute, '请输入正确手机号码！');
+        }
     }
 
     /**
@@ -50,6 +71,9 @@ class AppointAdult extends \yii\db\ActiveRecord
             'gender' => '性别',
             'createtime' => '添加时间',
             'phone' => '联系电话',
+            'id_card' => '联系电话',
+            'place' => '户籍地址',
+
         ];
     }
     public function beforeSave($insert)
