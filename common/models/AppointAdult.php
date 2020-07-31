@@ -28,6 +28,7 @@ class AppointAdult extends \yii\db\ActiveRecord
     {
         return [
             'lisc' => ['userid', 'name', 'gender','phone','id_card','place'],
+            'default'=>['userid', 'name', 'gender','phone'],
         ];
     }
     /**
