@@ -70,7 +70,7 @@ class QappointController extends Controller
         }
 
 
-        return $this->render('list', [
+        return $this->render('index', [
             'doctors' => $docs,
             'county' => $county,
             'doctorid'=>$doctorid
@@ -340,5 +340,10 @@ class QappointController extends Controller
             }
             return $this->redirect(['qappoint/my']);
         }
+    }
+
+    public function actionList(){
+
+        return $this->render('list');
     }
 }

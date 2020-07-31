@@ -1,79 +1,39 @@
+<?php
+$this->title="成人疫苗接种及两癌筛查预约"
+?>
 <div class="wrapper appoint_list">
     <div class="content-wrapper">
         <div class="search_box">
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <?= $county ? \common\models\Area::$all[$county] : "选择区/县" ?>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <?php foreach (\common\models\Area::$county['11'] as $k => $v) { ?>
-                        <li><a href="?county=<?= $k ?>"><?= $v ?></a></li>
-                    <?php } ?>
-                </ul>
-            </div>
-            <div class="search">
-                <form method="get" action="">
-                    <input type="search" name="search" placeholder="搜索社区">
-                </form>
-            </div>
         </div>
         <div class="list">
-            <?php
-            foreach ($doctors as $k => $v) {
-                ?>
-                <div class="item" data-toggle="modal" data-target="#create-modal<?= $v['userid'] ?>">
-                    <div class="item-content">
-                        <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
-                        </div>
-                        <div class="hospital">
-                            <div class="name"><?= $v['name'] ?></div>
-                            <?php if ($v['week']) { ?>
-                                <div class="address">门诊时间：每周工作日 <?= implode('，', $v['week']) ?></div>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <div class="item-button">
-                        <div class="phone"><a href="tel:<?= $v['phone'] ?>"><img src="/img/appoint_list_phone.png"
-                                                                                 width="18" height="18"/></a></div>
-                        <?php if ($v['week']) { ?>
-                            <div class="button">在线预约</div>
-                        <?php }else{ ?>
-                            <div class="button on">暂未开通</div>
-                        <?php }?>
-
+            <div class="item" style="padding: 10px; border-radius: 20px; border: 1px solid #999999;">
+                <div class="item-content">
+                    <div class="hospital">
+                        <div class="name">预约成人疫苗接种疫苗</div>
+                        <div class="address">温馨提示：各社区接种方式不同，请预约前仔细查看各社区温馨提示或电话咨询预约社区是否可以进行接种</div>
                     </div>
                 </div>
-
-
-                <?php
-                \yii\bootstrap\Modal::begin([
-                    'id' => 'create-modal' . $v['userid'],
-                    'header' => $v['name']
-                ]);
-                ?>
-                <?=$v['appoint_intro']?>
-                <?php if ($v['week']) { ?>
-                    <?= \yii\bootstrap\Html::a('去预约', ['qappoint/from', 'userid' => $v['userid']],['class'=>'button']) ?>
-                <?php }else{ ?>
-                    <div class="button on">暂未开通</div>
-                <?php }?>
-
-                <?php
-                \yii\bootstrap\Modal::end();
-                ?>
-
-                <?php
-            }
-            ?>
+                <div class="item-button">
+                    <div class="phone"></div>
+                    <?=\yii\helpers\Html::a('在线预约',['wappoint/index'],['class'=>'button'])?>
+                </div>
+            </div>
+            <div class="item" style="padding: 10px; border-radius: 20px; border: 1px solid #999999;">
+                <div class="item-content">
+                    <div class="hospital">
+                        <div class="name">预约两癌筛查</div>
+                        <div class="address">温馨提示：筛查人群为北京市户籍年满35-64岁妇女，三年筛查一次（如2019年已筛查，下次筛查时间为2022年），必须携带身份证。注：请务必按照自己的预约时间段前来筛查现场，如有疑问请咨询预约社区或联系在线客服</div>
+                    </div>
+                </div>
+                <div class="item-button">
+                    <div class="phone"></div>
+                    <?=\yii\helpers\Html::a('在线预约',['qappoint/index'],['class'=>'button'])?>
+                </div>
+            </div>
         </div>
-        <div class="fo">
-            查询更多请点击搜索
-        </div>
+
     </div>
 </div>
-<div class="appoint_my"><a href="/qappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 
 <?php
 \yii\bootstrap\Modal::begin([

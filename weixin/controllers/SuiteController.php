@@ -206,14 +206,10 @@ class SuiteController extends Controller
                     ],
                     [
                         'type' => 'view',
-                        'name' => '预约成人疫苗',
-                        'url' => 'http://web.child.wedoctors.com.cn/wappoint',
+                        'name' => '预约成人疫苗/两癌筛查',
+                        'url' => 'http://web.child.wedoctors.com.cn/qappoint/list',
                     ],
-                    [
-                        'type' => 'view',
-                        'name' => '预约两癌筛查',
-                        'url' => 'http://web.child.wedoctors.com.cn/qappoint',
-                    ],
+
                     [
                         'type' => 'miniprogram',
                         'name' => '我的宝宝预约',
