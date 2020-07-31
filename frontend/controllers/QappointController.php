@@ -153,12 +153,12 @@ class QappointController extends Controller
                                 }
 
 
-                                $appointb = Appoint::find()->where(['userid' => $appointAdult->userid, 'type' => $appoint->type])->orderBy('id desc')->one();
+                                $appointb = Appoint::find()->where(['userid' => $appointAdult->userid, 'type' => $appoint->type])->andWhere(['state'=>2])->orderBy('id desc')->one();
                                 if ($appointb->state == 1) {
                                     \Yii::$app->getSession()->setFlash('error', '您有未完成的预约');
                                     return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
                                 }
-                                if (strtotime('+3 year', $appointb->appoint_date) > time()) {
+                                if (strtotime('+3 year', $appointb->appoint_date) > time() ) {
                                     \Yii::$app->getSession()->setFlash('error', '两癌筛查三年筛查一次（如2019年已筛查，下次筛查时间为2022年）');
                                     return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
                                 }

@@ -36,8 +36,6 @@ $this->title='两癌筛查预约';
 
     </div>
 
-
-
     <div class="form-group">
         <?= \yii\helpers\Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
