@@ -107,7 +107,7 @@ class QappointController extends Controller
 //strtotime加上这个年数后得到那日的时间戳后与今日的时间戳相比
                     $age=strtotime(substr($appointAdult->id_card,6,8).' +'.$diff.'years')>$today?($diff+1):$diff;
 
-                    if($age<35 || $age>60){
+                    if($age<35 || $age>64){
                         \Yii::$app->getSession()->setFlash('error', '目前筛查需要年满35岁-64岁的妇女');
                     }else {
                         $appointOrder = AppointOrder::findOne(['id_card' => $appointAdult->id_card]);
