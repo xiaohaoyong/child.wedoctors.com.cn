@@ -72,7 +72,7 @@ class AppointAdult extends \yii\db\ActiveRecord
             'gender' => '性别',
             'createtime' => '添加时间',
             'phone' => '联系电话',
-            'id_card' => '联系电话',
+            'id_card' => '身份证号',
             'place' => '户籍地址',
 
         ];
