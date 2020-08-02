@@ -13,7 +13,7 @@ $this->title='两癌筛查预约';
     <?= $form->field($user, 'phone')->textInput(['maxlength' => true]) ?>
     <?= $form->field($user, 'place')->textInput(['maxlength' => true]) ?>
     <div class="item">
-        温馨提示：筛查人群为北京市户籍35-64岁妇女，三年筛查一次（如2019年已筛查，下次筛查时间为2022年），必须携带身份证。注：请务必按照自己的预约时间段前来筛查现场
+        温馨提示：筛查人群为预约社区管辖内户籍35-64岁妇女，三年筛查一次（如2019年已筛查，下次筛查时间为2022年），必须携带身份证。注：请务必按照自己的预约时间段前来筛查现场
     </div>
     <div class="item">
         <div class="title">请选择日期</div>
