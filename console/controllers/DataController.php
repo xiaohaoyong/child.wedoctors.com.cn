@@ -118,10 +118,23 @@ class DataController extends Controller
     public function actionTesta()
     {
 
+        for($i=1;$i<200;$i++){
+            $curl = new HttpRequest('https://admin.xiaoe-tech.com/get/comment_admin_page?type=2&page='.$i, true, 10);
+            $curl->setHeader('Cookie','XIAOEID=ada9443a1046c1e9c6290d70dd6e9d80; cookie_channel=2-1568; cookie_is_signed=1; channel=16-6821; Hm_lvt_32573db0e6d7780af79f38632658ed95=1593418195,1593570326,1593573265,1594634419; dataUpJssdkCookie={"wxver":"","net":"","sid":""}; Hm_lvt_081e3681cee6a2749a63db50a17625e2=1595818576,1595913780,1596007326,1596092383; cookie_session_id=Rz4QVV3vyLL1ndEFFlHihygfcZ2s4N5V; b_user_token=token_5f2779139bd3fn84fvGcrIT5alVtTRQ1W; shop_type=TRQ1W; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22b_u_5e74684507bd0_LVMTUeNW%22%2C%22%24device_id%22%3A%22170f6b59dc0f3-08a5f8f462d0fa-396a7400-1024000-170f6b59dc149b%22%2C%22props%22%3A%7B%22%24latest_referrer%22%3A%22%22%2C%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22page_submodule%22%3A%22%E8%B4%A6%E5%8F%B7%E4%B8%BB%E9%A1%B5%22%2C%22page_name%22%3A%22%E8%B4%A6%E5%8F%B7%E4%B8%BB%E9%A1%B5_old%22%2C%22page_module%22%3A%22%E7%AE%A1%E7%90%86%E5%8F%B0%22%2C%22page_button%22%3A%22%22%7D%2C%22first_id%22%3A%22170f6b59dc0f3-08a5f8f462d0fa-396a7400-1024000-170f6b59dc149b%22%7D; appsc=appsx0v9q8I8331; with_app_id=appsx0v9q8I8331; Hm_lpvt_081e3681cee6a2749a63db50a17625e2=1596426127; laravel_session=eyJpdiI6InZGWG5paGxQRWpiUmhCUmxVZHp6V1E9PSIsInZhbHVlIjoiTVwvcmdyUktVbzN6WnpESnNCQzZRbVV0czR1aWpJWXV2MURQMzRxdmE1QlNLZ3ZKalNsS3JvMUZQT0xWRUZhN2c4TFZjYitpeEl2dHZqWGVETWd6Rm1RPT0iLCJtYWMiOiJkYTU4MWVlNzk3ZDcyM2FjODc3MDQ4ZTFmY2M3Njg4ZjBhYTZjYmYwMzQ2ODZlMzZmNzFiNmRlYzYwNWNjYzhkIn0%3D');
+            $html=$curl->get();
+            $data=json_decode($html,true);
+            $list=$data['data']['data'];
+            if($list) {
+                foreach ($list as $k => $v) {
+                    $text=iconv("UTF-8","GBK",$v['content']);
+                    file_put_contents($v['record_title'].'.csv', $text . "\n", FILE_APPEND);
+                }
+            }else{
+                continue;
+            }
+        }
 
-        system('wkhtmltopdf http://web.child.wedoctors.com.cn/question-naire/new-view?id=1&time=1592533163&userid=325910 325910.pdf');
         exit;
-
         ini_set('memory_limit', '6000M');
 
         $doctors=Doctors::find()->all();
