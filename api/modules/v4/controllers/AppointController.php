@@ -303,11 +303,16 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
 
 
+        if(!isset($post['month']) && $appoint->is_month)
+        {
+            return new Code(21000, '您的版本过低，请更新版本后预约（点击左上角三个点选择重新进入小程序）');
+        }
 
 
         //体检限制月龄预约
         if($post['type']==1 && $post['childid']){
             $hospitalAppointMonth = HospitalAppointMonth::find()->select('month')->where(['type' => $post['month']])->andWhere(['haid'=>$appoint->id])->orderBy('month asc')->column();
+
             if($hospitalAppointMonth && $appoint->is_month) {
                 $child = ChildInfo::findOne($post['childid']);
                 if ($child) {
