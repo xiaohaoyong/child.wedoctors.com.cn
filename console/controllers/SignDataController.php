@@ -81,5 +81,30 @@ class SignDataController extends \yii\base\Controller
             }
         }
     }
+    function actionDayg(){
+        $satime = strtotime('-30 day',strtotime(date('Y-m-d')));
+        $doctors = UserDoctor::find()->where(['userid'=>216593])->all();
+        foreach ($doctors as $k => $v) {
+            echo $v->name;
+            for ($stime = $satime; $stime < time(); $stime = strtotime('+1 day', $stime)) {
+                echo date('Ymd',$stime);
+                $etime = strtotime('+1 day', $stime);
 
+                $appoint = Appoint::find()->where(['doctorid' => $v->userid])
+                    ->andWhere(['appoint_date' => $stime])
+                    ->andWhere(['!=', 'state', 3])
+                    ->count();
+                $rs = [];
+
+                $rs['appoint_num'] = $appoint;
+                $rs['doctorid'] = $v->userid;
+                $rs['date'] = $stime;
+                $hospitalFrom = HospitalForm::find()->where(['doctorid' => $v->userid])->andWhere(['date' => $stime])->one();
+                $hospitalFrom = $hospitalFrom ? $hospitalFrom : new HospitalForm();
+                $hospitalFrom->load(['HospitalForm' => $rs]);
+                $hospitalFrom->save();
+                echo "\n";
+            }
+        }
+    }
 }

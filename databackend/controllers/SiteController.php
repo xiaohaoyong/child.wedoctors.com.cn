@@ -102,12 +102,24 @@ class SiteController extends BaseController
             ->andFilterWhere(['in','child_info.admin',$hospitalids])
             ->count();
 
+
+
+
         //管辖儿童数（0-6）
-        $data['achildNum']=ChildInfo::find()
+        $adminsix=ChildInfo::find()
             ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
-            ->andFilterWhere(['in','child_info.source',$hospitalids])
             ->andFilterWhere(['in','child_info.admin',$hospitalids])
             ->count();
+
+        $nadminsix=ChildInfo::find()
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['in','`doctor_parent`.`doctorid`' ,$doctorids])
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->andFilterWhere(['in','child_info.admin',$hospitalids])
+            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+            ->count();
+
+        $data['achildNum']=$adminsix+$nadminsix;
 
         //签约率
         if($data['childNum']) {
