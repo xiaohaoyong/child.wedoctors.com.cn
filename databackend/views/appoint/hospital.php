@@ -77,11 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                                 ?>
                                 <tr>
-                                    <td><?=$v->name?><?php
-                                        if($v->userid==216593){
-                                            echo "---其他预约途径:718(20200511-20200515)";
-                                        }
-                                        ?></td>
+                                    <td><?=$v->name?></td>
                                     <td><?=$query1->count()?></td>
                                     <td><?=$query2->count()?></td>
                                 </tr>

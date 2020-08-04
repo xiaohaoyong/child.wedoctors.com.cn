@@ -91,6 +91,7 @@ class Appoint extends \yii\db\ActiveRecord
     public static $modeText=[
         0=>'用户预约',
         1=>'医生预约',
+        2=>'系统导入',
     ];
 
     public $date;
@@ -112,7 +113,7 @@ class Appoint extends \yii\db\ActiveRecord
             ['appoint_time','required','message'=>'请选择预约时间'],
             ['appoint_date','required','message'=>'请选择预约日期'],
 
-            [['vaccine','push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
+            [['orderid','vaccine','push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
             [['remark'], 'string', 'max' => 100],
             [['date'], 'string'],
 

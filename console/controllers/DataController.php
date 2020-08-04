@@ -20,6 +20,8 @@ use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
 use common\models\AppointAdult;
+use common\models\AppointOrder;
+use common\models\AppointOrder1;
 use common\models\Area;
 use common\models\Article;
 use common\models\ArticleComment;
@@ -61,6 +63,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use saviorlv\aliyun\Sms;
 use yii\base\Controller;
+use yii\helpers\FileHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
@@ -117,6 +120,54 @@ class DataController extends Controller
     }
     public function actionTesta()
     {
+        $time=['08'=>1,'09'=>2,'10'=>3,'13'=>4,'14'=>5,'15'=>6,'16'=>6];
+        $list=FileHelper::findFiles('g');
+        foreach($list as $k=>$v){
+            $appoint=[];
+            $field=fopen($v,'r');
+            while (($line=fgets($field))!==false){
+                $rs=explode(',',trim($line));
+                if(intval($rs[0])){
+                    $birthday=strtotime($rs[3]);
+                    $appointOrder=AppointOrder1::findOne(['birthday'=>$birthday,'name'=>$rs[1]]);
+                    if(!$appointOrder){
+                        $appointOrder=new AppointOrder1();
+                        $appointOrder->birthday=$birthday;
+                        $appointOrder->name=$rs[1];
+                        $appointOrder->save();
+                        var_dump($appointOrder->firstErrors);
+                    }
+                    $orderid=$appointOrder->id;
+
+
+
+                    $app=new Appoint();
+                    $ti=explode(':',$rs[2]);
+                    $appoint['appoint_time']=$time[$ti[0]];
+                    preg_match("/([0-9]{4})-([0-1]?[0-9]{1})-([0-3]?[0-9]{1})/",$v,$m);
+                    $appoint['appoint_date']=strtotime($m[0]);
+                    $appoint['userid']=0;
+                    $appoint['doctorid']=216593;
+                    $appoint['type']=2;
+                    $appoint['childid']=0;
+                    $appoint['phone']=0;
+                    $appoint['state']=2;
+                    $appoint['login']=0;
+                    $appoint['mode']=2;
+                    $appoint['vaccine']=0;
+                    $appoint['month']=0;
+                    $appoint['orderid']=$orderid;
+                    $app->load(['Appoint'=>$appoint]);
+                    $app->save();
+                    var_dump($app->firstErrors);
+
+                }
+            }
+            fclose($field);
+        }
+        exit;
+
+
 
         for($i=1;$i<200;$i++){
             $curl = new HttpRequest('https://admin.xiaoe-tech.com/get/comment_admin_page?type=2&page='.$i, true, 10);
