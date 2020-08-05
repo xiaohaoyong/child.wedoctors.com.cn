@@ -217,7 +217,7 @@ class QappointController extends Controller
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => 7]);
         $week=date('w',strtotime($day));
 
-        $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->orderBy('time_type asc')->all();
+        $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->andWhere(['<','time_type','19'])->orderBy('time_type asc')->all();
         if ($weeks) {
             $appoints = Appoint::find()
                 ->select('count(*)')
