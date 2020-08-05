@@ -54,7 +54,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $typeInfo[6] = '须在本社区管辖片区内方可领取';
 
         foreach (HospitalAppoint::$typeText as $k => $v) {
-            if ($k == 4) continue;
+            if ($k == 4 or $k==7) continue;
             $rs['id'] = $k;
             $rs['name'] = $v;
             $rs['info'] = $typeInfo[$k];
