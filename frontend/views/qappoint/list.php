@@ -27,7 +27,7 @@ $this->title="成人疫苗接种及两癌筛查预约"
                 </div>
                 <div class="item-button">
                     <div class="phone"></div>
-
+                    <?=\yii\helpers\Html::a('在线预约',['qappoint/index'],['class'=>'button'])?>
                 </div>
             </div>
         </div>
