@@ -53,6 +53,7 @@ class SignDataController extends \yii\base\Controller
                     ->count();
 
                 $pregLCount=Pregnancy::find()
+                    ->andWhere(['pregnancy.field49'=>0])
                     ->andWhere(['>','pregnancy.field16',strtotime('-43 week',$stime)])
                     //->leftJoin('autograph', '`autograph`.`userid` = `pregnancy`.`familyid`')
                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
