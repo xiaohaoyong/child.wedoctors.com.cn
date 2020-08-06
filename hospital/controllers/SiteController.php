@@ -205,12 +205,12 @@ class SiteController extends BaseController
 
 
         $data['pregCount']=Pregnancy::find()
-            ->andWhere(['field49'=>0])->andWhere(['>','field16',strtotime('-11 month')])->andWhere(['doctorid'=>\Yii::$app->user->identity->hospitalid])->count();
+            ->andWhere(['field49'=>0])->andWhere(['>','field16',strtotime('-43 week')])->andWhere(['doctorid'=>\Yii::$app->user->identity->hospitalid])->count();
 
         $data['pregLCount']=Pregnancy::find()
             ->andWhere(['pregnancy.field49'=>0])
             ->andWhere(['>', 'pregnancy.familyid', 0])
-            ->andWhere(['>','pregnancy.field16',strtotime('-11 month')])
+            ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
 
