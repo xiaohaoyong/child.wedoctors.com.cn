@@ -254,7 +254,7 @@ use yii\widgets\ActiveForm;
                                 <tr>
                                     <td>选择街道</td>
                                     <?php
-                                    $street=\common\models\Street::find(['doctorid'=>Yii::$app->user->identity->doctorid])->select('title')->indexBy('id')->column();
+                                    $street=\common\models\Street::find()->where(['doctorid'=>Yii::$app->user->identity->doctorid])->select('title')->indexBy('id')->column();
                                     foreach ($weeks as $wk => $wv) { ?>
 
                                         <td><?= \kartik\select2\Select2::widget([
