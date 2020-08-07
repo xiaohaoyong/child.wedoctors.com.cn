@@ -97,8 +97,9 @@ class QappointController extends Controller
                 if($appointAdult->save())
                 {
 
-                    $birthday=strtotime(substr($appointAdult->id_card,6,4));
+                    $birthday=substr($appointAdult->id_card,6,4);
                     $year=date('Y');
+                    //var_dump($birthday);exit;
 
                     if(($year-$birthday)<35 || ($year-$birthday)>64){
                         \Yii::$app->getSession()->setFlash('error', '目前筛查需要年满35岁-64岁的妇女');
