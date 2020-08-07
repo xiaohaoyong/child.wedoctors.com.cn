@@ -40,7 +40,7 @@ class AppointController extends Controller
         if ($search) {
             $query->andFilterWhere(['like', 'name', $search]);
         }
-        if ($this->userid != 390512) {
+        if (!in_array($this->userid,[346470,390512,175579,349835])) {
             $query->andWhere(['city' => 11]);
         }
         $doctors = $query->orderBy('appoint desc')->all();
