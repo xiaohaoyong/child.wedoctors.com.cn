@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => '姓名',
                                     'value' => function ($e) {
-                                        if($e->type==4){
+                                        if($e->type==4 ||$e->type==7){
                                             return \common\models\AppointAdult::findOne(['userid' => $e->userid])->name;
 
                                         }elseif($e->type==5 || $e->type==6){
@@ -71,10 +71,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ],
                                     'header' => '预约人其他信息',
                                     'content' => function ($e, $key, $index, $column){
-                                        if($e->type==4){
+                                        if($e->type==4||$e->type==7){
                                             $row=\common\models\AppointAdult::findOne(['userid' => $e->userid]);
                                             $html="姓名：".$row->name."<br>";
                                             $html.="性别：".\common\models\AppointAdult::$genderText[$row->gender]."<br>";
+                                            $html.="手机：".$row->phone."<br>";
+
                                         }elseif($e->type==5 || $e->type==6){
                                             $preg=\common\models\Pregnancy::findOne(['id' => $e->childid]);
                                             $html="末次月经：".date('Ymd',$preg->field11)."<br>";

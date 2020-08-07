@@ -3,6 +3,7 @@
 namespace hospital\controllers;
 
 use common\models\HospitalAppointMonth;
+use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointWeek;
 use Yii;
@@ -133,6 +134,20 @@ class HospitalAppointController extends BaseController
                     foreach ($vv as $vvk=>$vvv) {
                         $hav = new HospitalAppointVaccine();
                         $hav->vaccine = $vvv;
+                        $hav->haid = $model->id;
+                        $hav->week = $vk;
+                        $hav->save();
+                    }
+                }
+            }
+
+            HospitalAppointStreet::deleteAll('haid='.$model->id);
+            if($post['streets']){
+
+                foreach($post['streets'] as $vk=>$vv){
+                    foreach ($vv as $vvk=>$vvv) {
+                        $hav = new HospitalAppointStreet();
+                        $hav->street = $vvv;
                         $hav->haid = $model->id;
                         $hav->week = $vk;
                         $hav->save();

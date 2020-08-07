@@ -16,9 +16,11 @@ use common\models\ChildInfo;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointMonth;
+use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointWeek;
 use common\models\Pregnancy;
+use common\models\Street;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
 use common\models\Vaccine;
@@ -67,7 +69,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         return $row;
     }
 
-    public function actionForm($id, $type, $vid = 0)
+    public function actionForm($id, $type, $vid = 0,$sid=0)
     {
         if($type==5 || $type==6) {
             $gravida = Pregnancy::find()->where(['familyid' => $this->userid])->orderBy('id desc')->one();
@@ -109,13 +111,38 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                     } else {
                         $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => -1]]);
                     }
-                    $weekr = $query->groupBy('week')->column();
+                    $vaccineWeek = $query->groupBy('week')->column();
                     //如该疫苗无法获取周几可约则视为非法访问
-                    if (!$weekr) {
+                    if (!$vaccineWeek) {
                         return new Code(20010, '社区医院暂未开通服务！');
                     }
                 }
             }
+
+
+            //判断所选社区都有周几可约
+            if ($sid) {
+                $streetView = Street::findOne($sid);
+                if ($streetView) {
+                    $query = HospitalAppointStreet::find()
+                        ->select('week')
+                        ->where(['haid' => $appoint->id]);
+                    $query->andWhere(['or', ['street' => $sid], ['street' => 0]]);
+                    $streetWeek = $query->groupBy('week')->column();
+                    //如该疫苗无法获取周几可约则视为非法访问
+                    if (!$streetWeek) {
+                        return new Code(20010, '社区医院暂未开通服务！');
+                    }
+                }
+            }
+
+            if($vaccineWeek && $streetWeek){
+                $weekr=array_intersect($vaccineWeek,$streetWeek);
+            }elseif($streetWeek || $vaccineWeek){
+                $weekr=$streetWeek?$streetWeek:$vaccineWeek;
+            }
+
+
 
             for ($i = 1; $i <= 60; $i++) {
                 $day = $day + 86400;
@@ -163,6 +190,26 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $vaccines = [];
             }
 
+            $hospitalS=HospitalAppointStreet::find()->select('street')
+                ->where(['haid'=>$appoint->id])->groupBy('street')->column();
+            if ($hospitalS) {
+                $vQuery = Street::find()->select('id,title');
+                if (!in_array(0, $hospitalS)) {
+                    $vQuery->andWhere(['in', 'id', $hospitalS]);
+                }
+                $street = $vQuery->asArray()->all();
+                foreach ($street as $k => $v) {
+                    $rs = $v;
+                    $rs['name'] = $rs['title'] ;
+                    $streetRows[] = $rs;
+                }
+                $streets = $streetRows;
+            } else {
+                $streets = [];
+            }
+
+
+
             $monthType=[];
             if($appoint->type==1 && $appoint->is_month){
                 $hospitalAppointMonth=HospitalAppointMonth::findAll(['haid'=>$appoint->id]);
@@ -170,7 +217,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             }
 
 
-            return ['monthType'=>$monthType,'gravida_is'=>$gravida_is,'childs' => $childs,'gravida'=>$gravida,'phone' => $phone, 'vaccines' => $vaccines, 'days' => $days];
+            return ['weekr'=>$weekr,'streets'=>$streets,'monthType'=>$monthType,'gravida_is'=>$gravida_is,'childs' => $childs,'gravida'=>$gravida,'phone' => $phone, 'vaccines' => $vaccines, 'days' => $days];
 
         } else {
             return new Code(20010, '社区医院暂未开通服务！');
@@ -339,12 +386,35 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 } else {
                     $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => -1]]);
                 }
-                $weekr = $query->groupBy('week')->column();
+                $vaccineWeek = $query->groupBy('week')->column();
                 //如该疫苗无法获取周几可约则视为非法访问
-                if (!$weekr) {
+                if (!$vaccineWeek) {
                     return new Code(20010, '社区医院暂未开通服务！');
                 }
             }
+        }
+
+
+        //判断所选社区都有周几可约
+        if ($post['street']) {
+            $streetView = Street::findOne($post['street']);
+            if ($streetView) {
+                $query = HospitalAppointStreet::find()
+                    ->select('week')
+                    ->where(['haid' => $appoint->id]);
+                $query->andWhere(['or', ['street' => $post['street']], ['street' => 0]]);
+                $streetWeek = $query->groupBy('week')->column();
+                //如该疫苗无法获取周几可约则视为非法访问
+                if (!$streetWeek) {
+                    return new Code(20010, '社区医院暂未开通服务！');
+                }
+            }
+        }
+
+        if($vaccineWeek && $streetWeek){
+            $weekr=array_intersect($vaccineWeek,$streetWeek);
+        }elseif($streetWeek || $vaccineWeek){
+            $weekr=$streetWeek?$streetWeek:$vaccineWeek;
         }
 
         $is_appoint = $appoint->is_appoint(strtotime($post['appoint_date']),$weekr);

@@ -67,6 +67,8 @@
                         'items' => [
                             ['label' => '预约系统设置', 'url' => ['hospital-appoint/index']],
                             ['label' => '预约列表', 'url' => ['appoint/index']],
+                            ['label' => '街道管理', 'url' => ['street/index']],
+                            ['label' => '添加街道', 'url' => ['street/create']],
                             ['label' => '加号', 'url' => ['child/signed']],
                         ]
                     ],
