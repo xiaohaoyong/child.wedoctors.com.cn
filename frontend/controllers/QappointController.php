@@ -97,17 +97,10 @@ class QappointController extends Controller
                 if($appointAdult->save())
                 {
 
-                    $birthday=strtotime(substr($appointAdult->id_card,6,8));
-//获得出生年月日的时间戳
-                    $today=strtotime('today');
-//获得今日的时间戳 111cn.net
-                    $diff=floor(($today-$birthday)/86400/365);
-//得到两个日期相差的大体年数
+                    $birthday=strtotime(substr($appointAdult->id_card,6,4));
+                    $year=date('Y');
 
-//strtotime加上这个年数后得到那日的时间戳后与今日的时间戳相比
-                    $age=strtotime(substr($appointAdult->id_card,6,8).' +'.$diff.'years')>$today?($diff+1):$diff;
-
-                    if($age<=35 || $age>=64){
+                    if(($year-$birthday)<35 || ($year-$birthday)>64){
                         \Yii::$app->getSession()->setFlash('error', '目前筛查需要年满35岁-64岁的妇女');
                     }else {
                         $appointOrder = AppointOrder::findOne(['id_card' => $appointAdult->id_card]);
