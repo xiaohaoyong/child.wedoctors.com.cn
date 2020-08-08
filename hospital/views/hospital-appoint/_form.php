@@ -225,16 +225,11 @@ use yii\widgets\ActiveForm;
                                 } ?>
                                 <?php
                                 if (in_array($type, [2, 4])) {
-                                    if ($type == 4) {
-                                        $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 1])->indexBy('id')->column();
-                                        $data = [-2 => '两癌筛查'] + $data;
-                                    } else {
-                                        $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 0])->indexBy('id')->column();
-                                        $data = [0 => '全部一类疫苗', -1 => '全部二类疫苗'] + $data;
-                                    }
+                                    $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 0])->indexBy('id')->column();
+                                    $data = [0 => '全部一类疫苗', -1 => '全部二类疫苗'] + $data;
                                     ?>
                                     <tr>
-                                        <td>选择疫苗</td>
+                                        <td>选择上午/全天疫苗</td>
                                         <?php foreach ($weeks as $wk => $wv) { ?>
 
                                             <td><?= \kartik\select2\Select2::widget([
@@ -243,7 +238,24 @@ use yii\widgets\ActiveForm;
                                                     'language' => 'de',
                                                     'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
                                                     'showToggleAll' => false,
-                                                    'value' => \common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid' => $model->id])->andWhere(['week' => $wv])->column(),
+                                                    'value' => \common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid' => $model->id,'type'=>1])->andWhere(['week' => $wv])->column(),
+                                                    'pluginOptions' => [
+                                                        'allowClear' => true
+                                                    ],
+                                                ]) ?></td>
+                                        <?php } ?>
+                                    </tr>
+                                    <tr>
+                                        <td>选择下午疫苗</td>
+                                        <?php foreach ($weeks as $wk => $wv) { ?>
+
+                                            <td><?= \kartik\select2\Select2::widget([
+                                                    'name' => 'vaccine1[' . $wv . ']',
+                                                    'data' => $data,
+                                                    'language' => 'de',
+                                                    'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
+                                                    'showToggleAll' => false,
+                                                    'value' => \common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid' => $model->id,'type'=>2])->andWhere(['week' => $wv])->column(),
                                                     'pluginOptions' => [
                                                         'allowClear' => true
                                                     ],
@@ -273,6 +285,10 @@ use yii\widgets\ActiveForm;
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        注：只设置上午/全天疫苗，则按照全天可约判断，如需下午不可以设置无号即可
+                        注：选择街道目前对一类疫苗有效，二类疫苗不受限制
                     </div>
                     <div class="form-group">
                         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :

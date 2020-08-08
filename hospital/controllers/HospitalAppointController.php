@@ -140,6 +140,19 @@ class HospitalAppointController extends BaseController
                     }
                 }
             }
+            if($post['vaccine1']){
+
+                foreach($post['vaccine1'] as $vk=>$vv){
+                    foreach ($vv as $vvk=>$vvv) {
+                        $hav = new HospitalAppointVaccine();
+                        $hav->vaccine = $vvv;
+                        $hav->haid = $model->id;
+                        $hav->week = $vk;
+                        $hav->type = 2;
+                        $hav->save();
+                    }
+                }
+            }
 
             HospitalAppointStreet::deleteAll('haid='.$model->id);
             if($post['streets']){

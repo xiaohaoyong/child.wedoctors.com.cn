@@ -143,7 +143,6 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             }
 
 
-
             for ($i = 1; $i <= 60; $i++) {
                 $day = $day + 86400;
                 $rs['date'] = $day;
@@ -293,8 +292,32 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 ->andWhere(['mode' => 0])
                 ->orderBy('createtime desc')
                 ->one();
+
+            //获取疫苗预约时间（上午/下午）
+            if($vid) {
+                $vaccine = Vaccine::findOne($vid);
+                $query = HospitalAppointVaccine::find()
+                    ->where(['haid' => $hospitalA->id,'week' => $week]);
+
+                if ($vaccine->type == 0) {
+                    $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0]]);
+                } else {
+                    $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => -1]]);
+                }
+                $vWeek = $query->select('type')->column();
+
+                //如果该日期只设置了上午则代表设置的上午疫苗全天可约
+                $vTypes = HospitalAppointVaccine::find()->select('type')
+                    ->where(['haid' => $hospitalA->id,'week' => $week])->column();
+            }
+            //如果当天已有预约则按照当天第一个预约信息判断半小时/一小时
             if ($firstAppoint) {
                 foreach ($rs as $k => $v) {
+                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek)){
+                        $v=0;
+                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes)){
+                        $v=0;
+                    }
                     if ($firstAppoint->appoint_time > 6 && $k > 6) {
                         $rows['time'] = Appoint::$timeText[$k];
                         $rows['appoint_time'] = $k;
@@ -312,6 +335,11 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 }
             } else {
                 foreach ($rs as $k => $v) {
+                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek)){
+                        $v=0;
+                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes)){
+                        $v=0;
+                    }
                     if ($hospitalA->interval == 2 && $k > 6) {
                         $rows['time'] = Appoint::$timeText[$k];
                         $rows['appoint_time'] = $k;
