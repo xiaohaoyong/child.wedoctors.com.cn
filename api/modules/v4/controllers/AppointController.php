@@ -316,9 +316,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             //如果当天已有预约则按照当天第一个预约信息判断半小时/一小时
             if ($firstAppoint) {
                 foreach ($rs as $k => $v) {
-                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek)){
+                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek) && $vWeek){
                         $v=0;
-                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes)){
+                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes)&& $vWeek){
                         $v=0;
                     }
                     if ($firstAppoint->appoint_time > 6 && $k > 6) {
@@ -338,9 +338,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 }
             } else {
                 foreach ($rs as $k => $v) {
-                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek)){
+                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek) && $vWeek){
                         $v=0;
-                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes)){
+                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes) && $vWeek){
                         $v=0;
                     }
                     if ($hospitalA->interval == 2 && $k > 6) {
