@@ -293,6 +293,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 ->orderBy('createtime desc')
                 ->one();
 
+
+            $vWeek=[];
+            $vTypes=[];
             //获取疫苗预约时间（上午/下午）
             if($vid) {
                 $vaccine = Vaccine::findOne($vid);
