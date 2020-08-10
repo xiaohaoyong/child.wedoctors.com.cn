@@ -70,7 +70,7 @@ class AppointController extends BaseController
 
         $objPHPExcel=$objPHPExcel->setActiveSheetIndex(0);
         foreach($fields as $k=>$v){
-            $objPHPExcel=$objPHPExcel->setCellValue(chr(65+$k) . $key1, $v);
+            $objPHPExcel->setCellValue(chr(65+$k) . $key1, $v);
         }
 //写入内容
         foreach ($dataProvider->query->limit(500)->all() as $k => $e) {
