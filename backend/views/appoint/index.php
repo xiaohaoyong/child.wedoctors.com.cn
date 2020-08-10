@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ],
                                     'header' => '预约人其他信息',
                                     'content' => function ($e, $key, $index, $column){
-                                        if($e->type==4){
+                                        if($e->type==4 || $e->type==7){
                                             $row=\common\models\AppointAdult::findOne(['userid' => $e->userid]);
                                             $html="姓名：".$row->name."<br>";
                                             $html.="性别：".\common\models\AppointAdult::$genderText[$row->gender]."<br>";
