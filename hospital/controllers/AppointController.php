@@ -68,9 +68,9 @@ class AppointController extends BaseController
             $fields = ['姓名', '性别', '身份证号', '联系电话', '户籍地', '预约日期', '预约时间', '预约状态', '预约项目', '取消原因', '推送状态', '来源'];
         }
 
-        $objPHPExcel->setActiveSheetIndex(0);
+        $objPHPExcel=$objPHPExcel->setActiveSheetIndex(0);
         foreach($fields as $k=>$v){
-            $objPHPExcel->setCellValue(chr(65+$k) . $key1, $v);
+            $objPHPExcel=$objPHPExcel->setCellValue(chr(65+$k) . $key1, $v);
         }
 //写入内容
         foreach ($dataProvider->query->limit(500)->all() as $k => $e) {
