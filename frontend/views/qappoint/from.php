@@ -37,7 +37,7 @@ $this->title='两癌筛查预约';
     </div>
 
     <div class="form-group">
-        <?= \yii\helpers\Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= \yii\helpers\Html::submitButton($model->isNewRecord ? '提交' : '提交', ['id'=>'but','class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
 
@@ -102,6 +102,8 @@ jQuery("#w0").submit(data,function(e){
 	    showMessage(label,3500,true,'bounceInUp-hastrans','bounceOutDown-hastrans');
 		return false;
 	}
+	$("#but").attr('disabled',true);
+
 });
 JS;
 $this->registerJs($updateJs);
