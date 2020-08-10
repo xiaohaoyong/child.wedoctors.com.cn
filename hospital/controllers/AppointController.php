@@ -140,7 +140,7 @@ class AppointController extends BaseController
                     ->setCellValue('O' . $key1, \common\models\Appoint::$modeText[$e->mode])
                     ->setCellValue('P' . $key1, $e->appoint_time . "-" . ($index + 1));
             }else{
-                $row=\common\models\AppointAdult::findOne(['userid' => $e->userid]);
+                $row=\common\models\AppointAdult::findOne(['userid' => $v['userid']]);
 
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $key1, $row->name)
