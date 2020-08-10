@@ -96,6 +96,10 @@ class AppointController extends BaseController
                 ->setCellValue('J' . $key1, '取消原因')
                 ->setCellValue('K' . $key1, '推送状态')
                 ->setCellValue('L' . $key1, '来源');
+            $objPHPExcel->getActiveSheet()->getStyle('C')->getNumberFormat()
+                ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            $objPHPExcel->getActiveSheet()->getStyle('D')->getNumberFormat()
+                ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
         }
 
 //        $objPHPExcel=$objPHPExcel->setActiveSheetIndex(0);
@@ -145,7 +149,7 @@ class AppointController extends BaseController
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $key1, $row->name)
                     ->setCellValue('B' . $key1, \common\models\AppointAdult::$genderText[$row->gender])
-                    ->setCellValue('C' . $key1, $row->id_card)
+                    ->setCellValue('C' . $key1, $row->id_card."  ")
                     ->setCellValue('D' . $key1, $row->phone)
                     ->setCellValue('E' . $key1, $row->place)
                     ->setCellValue('F' . $key1, date('Y-m-d', $v['appoint_date']))
