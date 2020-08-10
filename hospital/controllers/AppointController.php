@@ -62,56 +62,67 @@ class AppointController extends BaseController
         $objPHPExcel->getActiveSheet()->getStyle('I')->getNumberFormat()
             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
         $key1 = 1;
-        $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A' . $key1, '姓名')
-            ->setCellValue('B' . $key1, '性别')
-            ->setCellValue('C' . $key1, '生日')
-            ->setCellValue('D' . $key1, '儿童户籍')
-            ->setCellValue('E' . $key1, '母亲姓名')
-            ->setCellValue('F' . $key1, '户籍地')
-            ->setCellValue('G' . $key1, '预约日期')
-            ->setCellValue('H' . $key1, '预约时间')
-            ->setCellValue('I' . $key1, '手机号')
-            ->setCellValue('J' . $key1, '预约状态')
-            ->setCellValue('K' . $key1, '预约项目')
-            ->setCellValue('L' . $key1, '选择疫苗/筛查')
-            ->setCellValue('M' . $key1, '取消原因')
-            ->setCellValue('N' . $key1, '推送状态')
-            ->setCellValue('O' . $key1, '来源')
-            ->setCellValue('P' . $key1, '排号顺序');
+        if($searchModel->type!==7) {
+            $fields = ['姓名', '性别', '生日', '儿童户籍', '母亲姓名', '户籍地', '预约日期', '预约时间', '手机号', '预约状态', '预约项目', '选择疫苗', '取消原因', '推送状态', '来源', '排号顺序'];
+        }else{
+            $fields = ['姓名', '性别', '身份证号', '联系电话', '户籍地', '预约日期', '预约时间', '预约状态', '预约项目', '取消原因', '推送状态', '来源'];
+        }
+
+        $objPHPExcel->setActiveSheetIndex(0);
+        foreach($fields as $k=>$v){
+            $objPHPExcel->setCellValue(chr(65+$k) . $key1, $v);
+        }
 //写入内容
         foreach ($dataProvider->query->limit(500)->all() as $k => $e) {
             $v = $e->toArray();
-            $child = \common\models\ChildInfo::findOne(['id' => $v['childid']]);
-            $userParent = \common\models\UserParent::findOne(['userid' => $v['userid']]);
-
-            $index = \common\models\Appoint::find()
-                ->andWhere(['appoint_date' => $e->appoint_date])
-                ->andWhere(['<', 'id', $e->id])
-                ->andWhere(['doctorid' => $e->doctorid])
-                ->andWhere(['appoint_time' => $e->appoint_time])
-                ->andWhere(['type' => $e->type])
-                ->count();
-
-            $vaccine=$e->vaccine?\common\models\Vaccine::findOne($e->vaccine)->name:"";
             $key1 = $k + 2;
-            $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $key1, $child->name)
-                ->setCellValue('B' . $key1, \common\models\ChildInfo::$genderText[$child->gender])
-                ->setCellValue('C' . $key1, date('Y-m-d', $child->birthday))
-                ->setCellValue('D' . $key1, $child->fieldu47)
-                ->setCellValue('E' . $key1, $userParent->mother)
-                ->setCellValue('F' . $key1, $userParent->field44)
-                ->setCellValue('G' . $key1, date('Y-m-d', $v['appoint_date']))
-                ->setCellValue('H' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
-                ->setCellValue('I' . $key1, $e->phone)
-                ->setCellValue('J' . $key1, \common\models\Appoint::$stateText[$e->state])
-                ->setCellValue('K' . $key1, \common\models\Appoint::$typeText[$e->type])
-                ->setCellValue('L' . $key1, $e->vaccine==-2?"两癌筛查":\common\models\Vaccine::findOne($e->vaccine)->name)
-                ->setCellValue('M' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
-                ->setCellValue('N' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
-                ->setCellValue('O' . $key1, \common\models\Appoint::$modeText[$e->mode])
-                ->setCellValue('P' . $key1, $e->appoint_time . "-" . ($index + 1));
+            if($searchModel->type!==7) {
+                $child = \common\models\ChildInfo::findOne(['id' => $v['childid']]);
+                $userParent = \common\models\UserParent::findOne(['userid' => $v['userid']]);
+
+                $index = \common\models\Appoint::find()
+                    ->andWhere(['appoint_date' => $e->appoint_date])
+                    ->andWhere(['<', 'id', $e->id])
+                    ->andWhere(['doctorid' => $e->doctorid])
+                    ->andWhere(['appoint_time' => $e->appoint_time])
+                    ->andWhere(['type' => $e->type])
+                    ->count();
+
+                $vaccine=$e->vaccine?\common\models\Vaccine::findOne($e->vaccine)->name:"";
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $key1, $child->name)
+                    ->setCellValue('B' . $key1, \common\models\ChildInfo::$genderText[$child->gender])
+                    ->setCellValue('C' . $key1, date('Y-m-d', $child->birthday))
+                    ->setCellValue('D' . $key1, $child->fieldu47)
+                    ->setCellValue('E' . $key1, $userParent->mother)
+                    ->setCellValue('F' . $key1, $userParent->field44)
+                    ->setCellValue('G' . $key1, date('Y-m-d', $v['appoint_date']))
+                    ->setCellValue('H' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
+                    ->setCellValue('I' . $key1, $e->phone)
+                    ->setCellValue('J' . $key1, \common\models\Appoint::$stateText[$e->state])
+                    ->setCellValue('K' . $key1, \common\models\Appoint::$typeText[$e->type])
+                    ->setCellValue('L' . $key1, $e->vaccine == -2 ? "两癌筛查" : \common\models\Vaccine::findOne($e->vaccine)->name)
+                    ->setCellValue('M' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
+                    ->setCellValue('N' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
+                    ->setCellValue('O' . $key1, \common\models\Appoint::$modeText[$e->mode])
+                    ->setCellValue('P' . $key1, $e->appoint_time . "-" . ($index + 1));
+            }else{
+                $row=\common\models\AppointAdult::findOne(['userid' => $e->userid]);
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $key1, $row->name)
+                    ->setCellValue('B' . $key1, \common\models\AppointAdult::$genderText[$row->gender])
+                    ->setCellValue('C' . $key1, $row->id_card)
+                    ->setCellValue('D' . $key1, $row->phone)
+                    ->setCellValue('E' . $key1, $row->place)
+                    ->setCellValue('F' . $key1, date('Y-m-d', $v['appoint_date']))
+                    ->setCellValue('G' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
+                    ->setCellValue('H' . $key1, \common\models\Appoint::$stateText[$e->state])
+                    ->setCellValue('I' . $key1, \common\models\Appoint::$typeText[$e->type])
+                    ->setCellValue('J' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
+                    ->setCellValue('K' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
+                    ->setCellValue('L' . $key1, \common\models\Appoint::$modeText[$e->mode]);
+            }
 
         }
         // $objPHPExcel->setActiveSheetIndex(0);
