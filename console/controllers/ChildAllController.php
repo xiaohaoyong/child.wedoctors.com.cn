@@ -78,6 +78,10 @@ class ChildAllController extends Controller
             ->setCellValue('T'.$key1, '宣教月龄')
             ->setCellValue('U'.$key1, '宣教内容')
             ->setCellValue('V'.$key1, '宣教时间');
+        $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
+            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
         $auto=DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid])->column();

@@ -286,10 +286,12 @@ use yii\widgets\ActiveForm;
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
-                        注：只设置上午/全天疫苗，则按照全天可约判断，如需下午不可以设置无号即可
-                        注：选择街道目前对一类疫苗有效，二类疫苗不受限制
-                    </div>
+<?php if ($type == 2) { ?>
+<div class="form-group">
+    注：只设置上午/全天疫苗，则按照全天可约判断，如需下午不可以设置无号即可
+    注：选择街道目前对一类疫苗有效，二类疫苗不受限制
+</div>
+<?php }?>
                     <div class="form-group">
                         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
                             'btn btn-primary']) ?>

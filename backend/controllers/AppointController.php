@@ -36,11 +36,11 @@ class AppointController extends BaseController
         ];
     }
 
-    public function actionDone($id)
+    public function actionDone($id,$state=2)
     {
 
         $model = $this->findModel($id);
-        $model->state = 2;
+        $model->state = $state;
         if ($model->save()) {
 
             $login = UserLogin::findOne(['id' => $model->loginid]);
@@ -55,7 +55,7 @@ class AppointController extends BaseController
 
         }
 
-        return $this->redirect(['index']);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     public function actionPush($childid)
