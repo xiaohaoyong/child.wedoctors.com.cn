@@ -22,9 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'options'=>['class' => 'col-sm-12'],
                             'dataProvider' => $dataProvider,
                             'columns' => [
-
-                                'id',
-                                [
+                                    [
                                     'attribute' => '标题',
                                     'value' => function($e)
                                     {
@@ -51,29 +49,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     {
                                         return \common\models\Article::$childText[$e->child_type];
                                     }
-                                ],
-                                [
-                                    'attribute' => 'createtime',
-                                    'format' => ['date', 'php:Y-m-d']
-                                ],
-                                // 'num',
-                                // 'type',
-
-                                [
-                                    'class' => 'common\components\grid\ActionColumn',
-                                    'template'=>'
-                <div class="btn-group dropup">
-                    <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
-                        <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
-                    <ul class="dropdown-menu pull-right" role="menu">
-                        <li>{show} </li>
-                    </ul>
-                </div>
-                ','buttons' => [
-                                    'show' => function ($url, $model, $key) {
-                                        return Html::a('<span class="fa fa-database"></span> 查看', \yii\helpers\Url::to(['zhongyi', 'id' => $model->id]));
-                                    }
-                                ],
                                 ],
                             ],
                         ]); ?>

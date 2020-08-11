@@ -21,14 +21,15 @@
                 ]
             ];
         }
+        $d = ['label' => '中医指导库', 'icon' => 'file-text-o', 'url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[type]=1']),
+            'items' => [
+                ['label' => '指导文章列表', 'url' => ['article/zindex?ArticleSearchModel[type]=1']],
+                ['label' => '宣教任务（设置自动）', 'url' => ['/article-send']],
+            ]
+        ];
         if (Yii::$app->user->identity->hospitalid != 110587) {
             $c = ['label' => '数据同步（测试版）', 'url' => ['/synchronization/data']];
-            $d = ['label' => '中医指导库', 'icon' => 'file-text-o', 'url' => \yii\helpers\Url::to(['article/zindex?ArticleSearchModel[type]=1']),
-                'items' => [
-                    ['label' => '指导文章列表', 'url' => ['article/zindex?ArticleSearchModel[type]=1']],
-                    ['label' => '宣教任务（设置自动）', 'url' => ['/article-send']],
-                ]
-            ];
+
             $e = ['label' => '同步已签约数据', 'url' => ['/synchronization']];
         }
         ?>

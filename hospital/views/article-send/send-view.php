@@ -38,11 +38,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr><th>宣教发送基本内容</th><th>可选宣教内容</th></tr>
                         <tr><td>
                                 <?php foreach($article as $k=>$v){?>
-                                    <?=$v."--".Html::a('查看详情',['article/view','id'=>$k])?><br>
+                                    <?=$v?><br>
                                 <?php }?>
                             </td><td>
                                 <?php foreach($article2 as $k=>$v){?>
-                                    <?=Html::checkbox('artid[]',false,['value'=>$k,'label'=>$v."--".Html::a('查看详情',['article/view','id'=>$k])])?>
+                                    <?=Html::checkbox('artid[]',false,['value'=>$k,'label'=>$v])?>
                                 <?php }?>
                             </td></tr>
                         <tr><th>被宣教人数</th><th>
