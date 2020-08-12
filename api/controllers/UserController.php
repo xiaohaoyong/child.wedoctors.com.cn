@@ -54,9 +54,8 @@ class UserController extends Controller
             $log->addLog("userlogin:".$this->userLogin->userid);
             $log->addLog("seaver_token:".$this->seaver_token);
 
-//
-//            $session_key = $this->seaver_token;
-//            $login = UserLogin::findOne(['id'=>$this->userLogin->id]);
+            $session_key = $this->seaver_token;
+            $login = UserLogin::findOne(['id'=>$this->userLogin->id]);
 //            if($login && !$login->unionid){
 //                //获取用户微信登陆信息
 //                $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
