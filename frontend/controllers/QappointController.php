@@ -91,86 +91,91 @@ class QappointController extends Controller
         }
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $userid, 'type' => 7]);
 
+       if ($post=\Yii::$app->request->post()){
 
-        if ($post=\Yii::$app->request->post()){
-            if($appointAdult->load($post) && $appointAdult->validate()) {
-                if($appointAdult->save())
-                {
+           $appoint_log=Appoint::find()->where(['userid'=>$this->login->userid,'type'=>7])->andWhere(['<','state',3])->one();
+           if($appoint_log){
+               \Yii::$app->getSession()->setFlash('error', '您有未完成的预约！');
+           }else {
 
-                    $birthday=substr($appointAdult->id_card,6,4);
-                    $year=date('Y');
-                    //var_dump($birthday);exit;
+               if ($appointAdult->load($post) && $appointAdult->validate()) {
+                   if ($appointAdult->save()) {
 
-                    if(($year-$birthday)<35 || ($year-$birthday)>64){
-                        \Yii::$app->getSession()->setFlash('error', '目前筛查需要年满35岁-64岁的妇女');
-                    }else {
-                        $appointOrder = AppointOrder::findOne(['id_card' => $appointAdult->id_card]);
-                        if ($appointOrder && strtotime('+3 year', strtotime($appointOrder->createtime)) > time()) {
-                            \Yii::$app->getSession()->setFlash('error', '两癌筛查三年筛查一次（如2019年已筛查，下次筛查时间为2022年）');
-                        } else {
+                       $birthday = substr($appointAdult->id_card, 6, 4);
+                       $year = date('Y');
+                       //var_dump($birthday);exit;
 
-                            $appoint->state = 1;
-                            $appoint->userid = $this->login->userid;
-                            $appoint->loginid = $this->login->id;
-                            if ($appoint->load($post) && $appoint->validate()) {
-                                if ($doctor) {
-                                    if ($doctor->appoint) {
-                                        $types = str_split((string)$doctor->appoint);
-                                    }
-                                }
-                                if (!$doctor || !$doctor->appoint || !in_array($appoint->type, $types)) {
-                                    \Yii::$app->getSession()->setFlash('error', '社区暂未开通');
-                                    return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
-                                };
-                                $hospitalA = HospitalAppoint::findOne(['doctorid' => $appoint->doctorid, 'type' => $appoint->type]);
+                       if (($year - $birthday) < 35 || ($year - $birthday) > 64) {
+                           \Yii::$app->getSession()->setFlash('error', '目前筛查需要年满35岁-64岁的妇女');
+                       } else {
+                           $appointOrder = AppointOrder::findOne(['id_card' => $appointAdult->id_card]);
+                           if ($appointOrder && strtotime('+3 year', strtotime($appointOrder->createtime)) > time()) {
+                               \Yii::$app->getSession()->setFlash('error', '两癌筛查三年筛查一次（如2019年已筛查，下次筛查时间为2022年）');
+                           } else {
 
-                                $w = date("w", $appoint->appoint_date);
-                                $weeks = HospitalAppointWeek::find()
-                                    ->andWhere(['week' => $w])
-                                    ->andWhere(['haid' => $hospitalA->id])
-                                    ->andWhere(['time_type' => $appoint->appoint_time])->one();
+                               $appoint->state = 1;
+                               $appoint->userid = $this->login->userid;
+                               $appoint->loginid = $this->login->id;
+                               if ($appoint->load($post) && $appoint->validate()) {
+                                   if ($doctor) {
+                                       if ($doctor->appoint) {
+                                           $types = str_split((string)$doctor->appoint);
+                                       }
+                                   }
+                                   if (!$doctor || !$doctor->appoint || !in_array($appoint->type, $types)) {
+                                       \Yii::$app->getSession()->setFlash('error', '社区暂未开通');
+                                       return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
+                                   };
+                                   $hospitalA = HospitalAppoint::findOne(['doctorid' => $appoint->doctorid, 'type' => $appoint->type]);
 
-
-                                $appointed = Appoint::find()
-                                    ->andWhere(['type' => $appoint->type])
-                                    ->andWhere(['doctorid' => $appoint->doctorid])
-                                    ->andWhere(['appoint_date' => $appoint->appoint_date])
-                                    ->andWhere(['appoint_time' => $appoint->appoint_time])
-                                    ->andWhere(['mode' => 0])
-                                    ->andWhere(['<', 'state', 3])
-                                    ->count();
-
-                                if (($weeks->num - $appointed) <= 0) {
-                                    \Yii::$app->getSession()->setFlash('error', '该时间段已约满，请选择其他时间');
-                                    return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
-
-                                }
+                                   $w = date("w", $appoint->appoint_date);
+                                   $weeks = HospitalAppointWeek::find()
+                                       ->andWhere(['week' => $w])
+                                       ->andWhere(['haid' => $hospitalA->id])
+                                       ->andWhere(['time_type' => $appoint->appoint_time])->one();
 
 
-                                $appointb = Appoint::find()->where(['userid' => $appointAdult->userid, 'type' => $appoint->type])->andWhere(['state'=>2])->orderBy('id desc')->one();
-                                if ($appointb->state == 1) {
-                                    \Yii::$app->getSession()->setFlash('error', '您有未完成的预约');
-                                    return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
-                                }
-                                if (strtotime('+3 year', $appointb->appoint_date) > time() ) {
-                                    \Yii::$app->getSession()->setFlash('error', '两癌筛查三年筛查一次（如2019年已筛查，下次筛查时间为2022年）');
-                                    return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
-                                }
+                                   $appointed = Appoint::find()
+                                       ->andWhere(['type' => $appoint->type])
+                                       ->andWhere(['doctorid' => $appoint->doctorid])
+                                       ->andWhere(['appoint_date' => $appoint->appoint_date])
+                                       ->andWhere(['appoint_time' => $appoint->appoint_time])
+                                       ->andWhere(['mode' => 0])
+                                       ->andWhere(['<', 'state', 3])
+                                       ->count();
+
+                                   if (($weeks->num - $appointed) <= 0) {
+                                       \Yii::$app->getSession()->setFlash('error', '该时间段已约满，请选择其他时间');
+                                       return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
+
+                                   }
 
 
-                                //三年内禁止预约
-                                if ($appoint->save()) {
-                                    return $this->redirect(['qappoint/view', 'id' => $appoint->id]);
-                                } else {
-                                    \Yii::$app->getSession()->setFlash('error', '提交失败');
-                                    return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
-                                }
+                                   $appointb = Appoint::find()->where(['userid' => $appointAdult->userid, 'type' => $appoint->type])->andWhere(['state' => 2])->orderBy('id desc')->one();
+                                   if ($appointb->state == 1) {
+                                       \Yii::$app->getSession()->setFlash('error', '您有未完成的预约');
+                                       return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
+                                   }
+                                   if (strtotime('+3 year', $appointb->appoint_date) > time()) {
+                                       \Yii::$app->getSession()->setFlash('error', '两癌筛查三年筛查一次（如2019年已筛查，下次筛查时间为2022年）');
+                                       return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
+                                   }
 
-                            }
-                        }
-                    }
-                }
-            }
+
+                                   //三年内禁止预约
+                                   if ($appoint->save()) {
+                                       return $this->redirect(['qappoint/view', 'id' => $appoint->id]);
+                                   } else {
+                                       \Yii::$app->getSession()->setFlash('error', '提交失败');
+                                       return $this->redirect(['qappoint/from', 'userid' => $appoint->doctorid]);
+                                   }
+
+                               }
+                           }
+                       }
+                   }
+               }
+           }
         }
 
 
