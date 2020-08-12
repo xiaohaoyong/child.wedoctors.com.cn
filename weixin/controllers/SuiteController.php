@@ -146,7 +146,14 @@ class SuiteController extends Controller
                     }
                 } else {
 
-                    $str=strtolower(mb_substr($xml['Content'],0,2,'utf-8'));
+
+                    if ($xml['Event'] == 'TEMPLATESENDJOBFINISH') {
+
+                        return '';
+
+                    }
+
+                        $str=strtolower(mb_substr($xml['Content'],0,2,'utf-8'));
                     switch ($str){
                         case 'sq':
                             $docName=substr($xml['Content'],2);
