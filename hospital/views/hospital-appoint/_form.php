@@ -223,10 +223,14 @@ use yii\widgets\ActiveForm;
                                         </tr>
                                     <?php }
                                 } ?>
-                                <?php
+                                <?
                                 if (in_array($type, [2, 4])) {
-                                    $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 0])->indexBy('id')->column();
-                                    $data = [0 => '全部一类疫苗', -1 => '全部二类疫苗'] + $data;
+                                    if($type==4){
+                                        $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 1])->indexBy('id')->column();
+                                    }else{
+                                        $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 0])->indexBy('id')->column();
+                                        $data = [0 => '全部一类疫苗', -1 => '全部二类疫苗'] + $data;
+                                    }
                                     ?>
                                     <tr>
                                         <td>选择上午/全天疫苗</td>
