@@ -66,13 +66,12 @@ class AppointSearch extends Appoint
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => ['pageSize' => 500],
         ]);
 
         $this->load($params);
 
-        if($this->appoint_dates){
-            $this->appoint_date=strtotime($this->appoint_dates);
+        if($this->appoint_date){
+            $this->appoint_date=$this->appoint_date;
         }else{
             $query->andFilterWhere(['>=', 'appoint_date', time()]);
         }
@@ -97,6 +96,7 @@ class AppointSearch extends Appoint
             'state'=>$this->state,
         ]);
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
+        //echo $query->createCommand()->getRawSql();exit;
 
         return $dataProvider;
     }

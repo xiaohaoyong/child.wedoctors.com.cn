@@ -14,7 +14,6 @@ class Application extends \yii\web\Application
     private $version_number=[
         0=>'v1',
         1=>'v2',
-        2=>'v3',
     ];
     public function createController($route)
     {
@@ -26,10 +25,7 @@ class Application extends \yii\web\Application
             if (strpos($route, '/') !== false) {
                 if($this->version_number[$v]!==false) {
                     $v = $v ? $v - 1 : 0;
-                    $module = $this->getModule($this->version_number[$v]);
-                    if ($module !== null) {
-                        $result = $module->createController($route);
-                    }
+                    $result=$this->createController($this->version_number[$v]."/".$route);
                 }else{
                     throw new NotFoundHttpException('version is not!',404);
                 }
