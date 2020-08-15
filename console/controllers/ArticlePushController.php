@@ -1,5 +1,6 @@
 <?php
 namespace console\controllers;
+use common\models\ArticlePushVaccine;
 use yii\console\Controller;
 
 /**
@@ -33,12 +34,13 @@ class ArticlePushController extends Controller
                 $aid=1369;
                 break;
             case 3:
-                $childs=\common\models\ChildInfo::find()->where('>','brithday',strtotime('-2 month'))
+                $childs=\common\models\ChildInfo::find()->where(['<','birthday',strtotime('-2 month')])
+                    ->andWhere(['>','birthday',strtotime('-3 month')])
                     ->select('userid')
                     ->groupBy('userid')
                     ->column();
                 $openids=\common\models\UserLogin::find()->select('openid')
-                    ->where('in','userid',$childs)->andWhere(['!=','openid',''])->column();
+                    ->where(['in','userid',$childs])->andWhere(['!=','openid',''])->column();
                 $aid=1370;
                 break;
 
@@ -61,15 +63,19 @@ class ArticlePushController extends Controller
                 "pagepath" => "pages/article/view/index?id=$aid",
             ];
             foreach($openids as $k=>$v){
-                \common\helpers\WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', \Yii::$app->params['zhidao'], $url, $miniprogram);
-                return '';
+
+                $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$v,'aid'=>$aid]);
+                if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
+                    $pushReturn = \common\helpers\WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', \Yii::$app->params['zhidao'], $url, $miniprogram);
+                    $articlePushVaccine = new ArticlePushVaccine();
+                    $articlePushVaccine->aid = $aid;
+                    $articlePushVaccine->openid = $v;
+                    $articlePushVaccine->state = 1;
+                    $articlePushVaccine->save();
+                }
+                exit;
             }
-
-
         }
-
-
-
     }
 
 

@@ -13,6 +13,7 @@ use common\models\ArticleCategory;
 use common\models\ArticleInfo;
 use common\models\ArticleLike;
 use common\models\ArticleLog;
+use common\models\ArticlePushVaccine;
 use common\models\ArticleUser;
 use common\models\Carousel;
 use common\models\Points;
@@ -110,6 +111,12 @@ class ArticleController extends Controller
             $article_user->save();
             $point->addPoint($this->userid,1,$id);
         }
+
+        if ($this->userLogin->openid && $article_user = ArticlePushVaccine::findOne(['openid' => $this->userLogin->openid, 'aid' => $id])) {
+            $article_user->level = 1;
+            $article_user->save();
+        }
+
         $point->addPoint($this->userid,3,$id);
 
 
