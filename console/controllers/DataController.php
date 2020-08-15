@@ -121,25 +121,6 @@ class DataController extends Controller
     public function actionTesta()
     {
 
-        $preg=Pregnancy::find()
-            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 113890])->all();
-        foreach($preg as $k=>$v){
-            $rs=[];
-            $userlogin=UserLogin::find()->where(['userid'=>$v->familyid])->andWhere(['!=','phone',''])->one();
-            $userParent=UserParent::find()->where(['userid'=>$v->familyid])->one();
-            $rs[]=$v->field1;
-            $rs[]="女";
-            $rs[]=$v->field2?date('Y-m-d',$v->field2):"";
-            $userlogin=UserLogin::find()->where(['userid'=>$v->familyid])->andWhere(['!=','phone',''])->one();
-            $rs[]=$v->field6?$v->field6."-":$userlogin->phone."-";
-            $rs[]=$v->field4?$v->field4."-":$userParent->mother_id."-";
-            $doctorParent=DoctorParent::findOne(['doctorid'=>113890,'parentid'=>$v->familyid]);
-            $rs[]=date('Y-m-d',$doctorParent->createtime);
-            echo implode(',',$rs);
-            echo "\n";
-        }
-        exit;
 
 
         $time=['08'=>1,'09'=>2,'10'=>3,'13'=>4,'14'=>5,'15'=>6,'16'=>6];
