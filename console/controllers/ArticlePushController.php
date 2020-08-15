@@ -66,7 +66,7 @@ class ArticlePushController extends Controller
 
                 $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$v,'aid'=>$aid]);
                 if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
-                    $pushReturn = \common\helpers\WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', \Yii::$app->params['zhidao'], $url, $miniprogram);
+                    $pushReturn = \common\helpers\WechatSendTmp::send($data, $v, \Yii::$app->params['zhidao'], $url, $miniprogram);
                     $articlePushVaccine = new ArticlePushVaccine();
                     $articlePushVaccine->aid = $aid;
                     $articlePushVaccine->openid = $v;

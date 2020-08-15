@@ -116,6 +116,14 @@ class ArticleController extends Controller
             $article_user->level = 1;
             $article_user->save();
         }
+        if(in_array($id,[1371,1370,1369])){
+            $article_log=new ArticleLog();
+            $article_log->userid=$this->userid;
+            $article_log->createtime=time();
+            $article_log->artid=$id;
+            $article_log->save();
+        }
+
 
         $point->addPoint($this->userid,3,$id);
 
