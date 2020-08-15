@@ -70,7 +70,7 @@ class ArticlePushController extends Controller
                     $articlePushVaccine = new ArticlePushVaccine();
                     $articlePushVaccine->aid = $aid;
                     $articlePushVaccine->openid = $v;
-                    $articlePushVaccine->state = 1;
+                    $articlePushVaccine->state = $pushReturn?1:0;
                     $articlePushVaccine->save();
                 }
                 exit;
