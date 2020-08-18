@@ -51,9 +51,11 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $typeInfo[1] = '身高、体重、头围、面色...';
         $typeInfo[2] = '乙肝疫苗、卡介苗、百日破疫苗...';
         $typeInfo[3] = '微量元素检查，锌、铁、钙...';
-        $typeInfo[4] = '入托体检是宝宝上幼儿园前的必要检查';
+        $typeInfo[4] = '';
         $typeInfo[5] = '建母子手册预约必须怀孕满6周...';
         $typeInfo[6] = '须在本社区管辖片区内方可领取';
+        $typeInfo[8] = '入托体检是宝宝上幼儿园前的必要检查';
+
 
         foreach (HospitalAppoint::$typeText as $k => $v) {
             if ($k == 4 or $k==7) continue;
