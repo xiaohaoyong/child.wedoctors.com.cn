@@ -18,6 +18,7 @@ use common\models\HospitalAppoint;
 use common\models\HospitalAppointMonth;
 use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
+use common\models\HospitalAppointVaccineNum;
 use common\models\HospitalAppointWeek;
 use common\models\Pregnancy;
 use common\models\Street;
@@ -228,13 +229,13 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
     public function actionDayNum($doctorid, $week = 0, $type, $day, $vid = 0)
     {
+
         $rs = [];
         $times = [];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
 
         $weekv=[];
         if($vid) {
-            $week = date('w', strtotime($day));
             $weekv = HospitalAppointVaccine::find()
                 ->select('week')
                 ->where(['haid' => $hospitalA->id])
@@ -250,6 +251,15 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             return ['list' => [], 'is_appoint' => $is_appoint, 'text' => $date . " " . HospitalAppoint::$rtText[$hospitalA->release_time]];
         }
         $week = date('w', strtotime($day));
+
+        $vaccine_count=Appoint::find()->where(['vaccine'=>$vid,'appoint_date'=>strtotime($day),'doctorid'=>$doctorid])->andWhere(['<','state',3])->count();
+        $hospitalAppointVaccineNum=HospitalAppointVaccineNum::findOne(['haid'=>$hospitalA->id,'week'=>$week,'vaccine'=>$vid]);
+        if($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num-$vaccine_count<=0){
+            return ['list' => [], 'is_appoint' => 0, 'text' =>'此疫苗'.date('Y年m月d日',strtotime($day))."已约满，请选择其他日期".($hospitalAppointVaccineNum->num-$vaccine_count)];
+
+        }
+
+
 
         $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->all();
         if ($weeks) {
@@ -369,6 +379,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
     public function actionSave()
     {
         $post = \Yii::$app->request->post();
+        $week = date('w', strtotime($post['appoint_date']));
 
         $doctor = UserDoctor::findOne(['userid' => $post['doctorid']]);
         if ($doctor) {
@@ -388,6 +399,12 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             return new Code(21000, '您的版本过低，请更新版本后预约（点击左上角三个点选择重新进入小程序）');
         }
 
+
+        $vaccine_count=Appoint::find()->where(['doctorid'=>$post['doctorid'],'vaccine'=>$post['vaccine'],'appoint_date'=>strtotime($post['appoint_date'])])->andWhere(['<','state',3])->count();
+        $hospitalAppointVaccineNum=HospitalAppointVaccineNum::findOne(['haid'=>$appoint->id,'week'=>$week,'vaccine'=>$post['vaccine']]);
+        if($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num-$vaccine_count<=0){
+            return new Code(21000, '此疫苗'.date('Y年m月d日',strtotime($post['appoint_date']))."已约满，请选择其他日期");
+        }
 
         //体检限制月龄预约
         if($post['type']==1 && $post['childid']){
@@ -476,7 +493,6 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         if($post['vaccine']) {
             $vaccine = Vaccine::findOne($post['vaccine']);
             $type=$vaccine->type==1?-1:0;
-            $week = date('w', strtotime($post['appoint_date']));
             $vaccines = HospitalAppointVaccine::find()
                 ->where(['haid' => $appoint->id])
                 ->andwhere(['week' => $week])->andwhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => $type]])->column();

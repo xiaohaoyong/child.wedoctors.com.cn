@@ -5,6 +5,7 @@ namespace hospital\controllers;
 use common\models\HospitalAppointMonth;
 use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
+use common\models\HospitalAppointVaccineNum;
 use common\models\HospitalAppointWeek;
 use Yii;
 use common\models\HospitalAppoint;
@@ -150,6 +151,23 @@ class HospitalAppointController extends BaseController
                         $hav->week = $vk;
                         $hav->type = 2;
                         $hav->save();
+                    }
+                }
+            }
+
+
+            if($post['vaccine_num']){
+                HospitalAppointVaccineNum::deleteAll('haid='.$model->id);
+                foreach($post['vaccine_num'] as $vk=>$vv){
+                    foreach ($vv as $vvk=>$vvv) {
+                        if(is_numeric($vvv)) {
+                            $hav = new HospitalAppointVaccineNum();
+                            $hav->vaccine = $vvk;
+                            $hav->haid = $model->id;
+                            $hav->week = $vk;
+                            $hav->num = $vvv;
+                            $hav->save();
+                        }
                     }
                 }
             }
