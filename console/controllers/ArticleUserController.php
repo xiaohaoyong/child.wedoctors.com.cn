@@ -22,7 +22,7 @@ class ArticleUserController extends Controller
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
         set_time_limit(0);
-        $users=ArticleUser::find()->where('>','createtime',1577808000)->groupBy('childid')->orderBy('childid asc')->all();
+        $users=ArticleUser::find()->where(['>','createtime',1577808000])->groupBy('childid')->orderBy('childid asc')->all();
         foreach($users as $uk=>$uv) {
             $childid=$uv->childid;
             $chileInfo = ChildInfo::findOne($childid);
