@@ -227,7 +227,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
     }
 
-    public function actionDayNum($doctorid, $week = 0, $type, $day, $vid = 0)
+    public function actionDayNum($doctorid, $week = 0, $type, $day, $vid = 0,$sid=0)
     {
 
         $rs = [];
@@ -241,7 +241,31 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 ->where(['haid' => $hospitalA->id])
                 ->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0], ['vaccine' => -1]])->groupBy('week')->column();
         }
-        $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekv);
+
+        //判断所选社区都有周几可约
+        if ($sid) {
+            $streetView = Street::findOne($sid);
+            if ($streetView) {
+                $query = HospitalAppointStreet::find()
+                    ->select('week')
+                    ->where(['haid' => $hospitalA->id]);
+                $query->andWhere(['or', ['street' => $sid], ['street' => 0]]);
+                $streetWeek = $query->groupBy('week')->column();
+                //如该疫苗无法获取周几可约则视为非法访问
+                if (!$streetWeek) {
+                    return new Code(20010, '社区医院暂未开通服务！');
+                }
+            }
+        }
+
+        if($weekv && $streetWeek){
+            $weekr=array_intersect($weekv,$streetWeek);
+        }elseif($streetWeek || $weekv){
+            $weekr=$streetWeek?$streetWeek:$weekv;
+        }
+
+
+        $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekr);
         if (!$is_appoint) {
             return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];
         }

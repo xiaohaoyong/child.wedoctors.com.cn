@@ -225,7 +225,7 @@ use common\models\Vaccine;
                                     if ($type == 4) {
                                         $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 1])->indexBy('id')->column();
                                     } else {
-                                        $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 0])->indexBy('id')->column();
+                                        $data = \common\models\Vaccine::find()->select('GROUP_CONCAT(`name` ,`type`) as a,id')->where(['adult' => 0])->indexBy('id')->groupBy('id')->column();
                                         $data = [0 => '全部一类疫苗', -1 => '全部二类疫苗'] + $data;
                                     }
                                     ?>
