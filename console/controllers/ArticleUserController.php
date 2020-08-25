@@ -100,6 +100,7 @@ class ArticleUserController extends Controller
             if (!file_exists(dirname(__ROOT__)."/static/childEducation/".$n)){
                 mkdir (dirname(__ROOT__)."/static/childEducation/".$n,0777,true);
             }
+            echo dirname(__ROOT__)."/static/childEducation/".$n."/".$childid.".xlsx";
             $objWriter->save(dirname(__ROOT__)."/static/childEducation/".$n."/".$childid.".xlsx");
         }
     }
