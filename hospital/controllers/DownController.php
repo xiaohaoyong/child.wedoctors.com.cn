@@ -165,7 +165,6 @@ class DownController extends BaseController
         $objWriter->save('php://output');
     }
     public function actionArticle(){
-        exit('暂停使用维护中！');
 
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
