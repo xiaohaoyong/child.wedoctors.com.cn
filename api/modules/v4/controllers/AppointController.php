@@ -560,6 +560,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             $post['state'] = 1;
             $post['userid'] = $this->userid;
             $post['loginid'] = $this->userLogin->id;
+            $post['month']=isset($post['month'])?$post['month']:-1;
             $model->load(["Appoint" => $post]);
 
 
