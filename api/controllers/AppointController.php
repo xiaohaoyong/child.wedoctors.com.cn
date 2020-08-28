@@ -62,7 +62,6 @@ class AppointController extends Controller
             }
         }
 
-
         return ['doctors' => $docs, 'doc' => $doc];
     }
 
