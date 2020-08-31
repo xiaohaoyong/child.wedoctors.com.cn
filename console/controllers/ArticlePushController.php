@@ -38,7 +38,7 @@ class ArticlePushController extends Controller
                 $first='准妈您好，在您的宝宝出生时需要接种的疫苗，请认真阅读疫苗接种前注意事项，喜迎宝宝出生。';
                 break;
             case 3:
-                $childs=\common\models\ChildInfo::find()->where(['<','birthday',strtotime('-2 month')])
+                $childs=\common\models\ChildInfo::find()->where(['<','birthday',strtotime('-1 month')])
                     ->andWhere(['>','birthday',strtotime('-3 month')])
                     ->select('userid')
                     ->groupBy('userid')
@@ -46,7 +46,7 @@ class ArticlePushController extends Controller
                 $openids=\common\models\UserLogin::find()->select('openid')
                     ->where(['in','userid',$childs])->andWhere(['!=','openid',''])->column();
                 $aid=1370;
-                $title='二月龄宝宝家长';
+                $title='一，二月龄宝宝家长';
                 $first='宝妈您好，您的宝宝已经到达了接种脊灰疫苗的月龄，请认真阅读脊灰疫苗接种前注意事项，选择自己宝宝适合的接种方式。';
                 break;
 
@@ -71,12 +71,12 @@ class ArticlePushController extends Controller
 
                 $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$v,'aid'=>$aid]);
                 if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
-                    $pushReturn = \common\helpers\WechatSendTmp::send($data, 'o5ODa0-bub-ivqdbwA-GuTw5U9-A', \Yii::$app->params['zhidao'], $url, $miniprogram);
+                    $pushReturn = \common\helpers\WechatSendTmp::send($data, $v, \Yii::$app->params['zhidao'], $url, $miniprogram);
                     $articlePushVaccine = new ArticlePushVaccine();
                     $articlePushVaccine->aid = $aid;
                     $articlePushVaccine->openid = $v;
                     $articlePushVaccine->state = $pushReturn?1:0;
-                    //$articlePushVaccine->save();
+                    $articlePushVaccine->save();
                 }
                 exit;
             }
