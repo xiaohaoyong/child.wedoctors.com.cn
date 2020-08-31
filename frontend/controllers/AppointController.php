@@ -145,7 +145,8 @@ class AppointController extends Controller
                     $rs['name'] =$appointAdult->name;
                 }
                 $rs['date'] = date('Y-m-d',$v->appoint_date);
-                $rs['project'] = Appoint::$typeText[$v->type];
+                $rs['project'] = $v->type;
+                $rs['project_t'] = Appoint::$typeText;
                 $rs['time'] = Appoint::$timeText[$v->appoint_time];
                 $arr[] = $rs;
             }
