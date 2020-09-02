@@ -2,6 +2,7 @@
 
 namespace weixin\controllers;
 
+use common\models\Appoint;
 use EasyWeChat\Factory;
 use common\components\HttpRequest;
 use common\components\Log;
@@ -64,8 +65,20 @@ class SuiteController extends Controller
 
                     $scene = str_replace('qrscene_', '', $xml['EventKey']);
                     if ($scene) {
-                        $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene, 'type' => 0]);
-                        $doctor_id = $qrcodeid->mappingid;
+                        $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene]);
+                        if($qrcodeid->type==0) {
+                            $doctor_id = $qrcodeid->mappingid;
+                        }elseif($qrcodeid->type==1){
+                            //线上叫号系统
+                            $user = UserLogin::findOne(['openid' => $openid]);
+                            $appoint=Appoint::findOne(['doctorid'=>$qrcodeid->mappingid,'userid'=>$user->userid,'appoint_date'=>strtotime('today')]);
+                            if(!$appoint){
+                                return self::sendText($xml['FromUserName'], $xml['ToUserName'],"未查询到您的预约信息，请点击链接输入您的预约码：:http://web.child.wedoctors.com.cn/wappoint");
+                            }else{
+                                return self::sendText($xml['FromUserName'], $xml['ToUserName'],"存在，请点击链接输入您的预约码：:http://web.child.wedoctors.com.cn/wappoint");
+
+                            }
+                        }
                     } else {
                         $doctor_id = 0;
                     }
@@ -106,12 +119,12 @@ class SuiteController extends Controller
                             $doctorParent->save();
                             //已注册用户直接签约成功
 
-                            $user = UserParent::findOne($userid);
-                            //微信模板消息
-                            $data = ['first' => array('value' => "您有一个新的签约儿童\n"), 'keyword1' => ARRAY('value' => date('Y-m-d H:i')), 'keyword2' => ARRAY('value' => $user->father), 'remark' => ARRAY('value' => "\n点击查看！", 'color' => '#221d95'),];
-                            $touser = UserLogin::findOne(['userid' => $doctor_id])->openid;
-                            $url = Url::to(\Yii::$app->params['site_url'] . '#/docters-user?p=1');
-                            WechatSendTmp::send($data, $touser, \Yii::$app->params['tongzhi'], $url);
+//                            $user = UserParent::findOne($userid);
+//                            //微信模板消息
+//                            $data = ['first' => array('value' => "您有一个新的签约儿童\n"), 'keyword1' => ARRAY('value' => date('Y-m-d H:i')), 'keyword2' => ARRAY('value' => $user->father), 'remark' => ARRAY('value' => "\n点击查看！", 'color' => '#221d95'),];
+//                            $touser = UserLogin::findOne(['userid' => $doctor_id])->openid;
+//                            $url = Url::to(\Yii::$app->params['site_url'] . '#/docters-user?p=1');
+//                            WechatSendTmp::send($data, $touser, \Yii::$app->params['tongzhi'], $url);
 
                         }
 
