@@ -159,6 +159,12 @@ class HospitalAppoint extends \yii\db\ActiveRecord
             if (in_array(date('Y-m-d', $date), $sure_date) && in_array($week, $weekr)) {
                 return 1;
             }
+        }elseif($sure_date && in_array(date('Y-m-d', $date), $sure_date) ){
+            if(($date>=$sday && $date<$eday) || ($date==$eday && date('Gi')>$this->release_time."00")){
+                return 1;
+            }else{
+                return 2;
+            }
         }
         if (in_array($week, $weeks) && !in_array(date('Y-m-d', $date), $holiday)) {
             if(($date>=$sday && $date<$eday) || ($date==$eday && date('Gi')>$this->release_time."00")){
