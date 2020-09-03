@@ -154,7 +154,7 @@ class AppointController extends Controller
             $code = 20010;
             $msg = 'sign错误';
         }
-        return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功', 'data' => $arr];
+        return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功', 'data' => $arr,'project_t'=>Appoint::$typeText];
     }
     public function actionDoneNew($h, $d, $s,$q)
     {
