@@ -78,7 +78,6 @@ class ArticlePushController extends Controller
                     $articlePushVaccine->state = $pushReturn?1:0;
                     $articlePushVaccine->save();
                 }
-                exit;
             }
         }
     }
