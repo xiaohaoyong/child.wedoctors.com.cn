@@ -61,53 +61,109 @@ class SuiteController extends Controller
                 $log->addLog(implode(',', $xml));
                 $log->saveLog();
 
-                $loga=new Log('subscribe');
+                $loga = new Log('subscribe');
                 //分享是的二维码
                 $openid = $xml['FromUserName'];
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
                     $loga->addLog(file_get_contents('php://input'));
-                    $loga->addLog( $_GET['msg_signature'].'|||'. $_GET['timestamp'].'|||'. $nonce = $_GET['nonce'].'|||'.$_GET['encrypt_type']);
+                    $loga->addLog($_GET['msg_signature'] . '|||' . $_GET['timestamp'] . '|||' . $nonce = $_GET['nonce'] . '|||' . $_GET['encrypt_type']);
                     $loga->saveLog();
 
                     $scene = str_replace('qrscene_', '', $xml['EventKey']);
+
                     if ($scene) {
                         $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene]);
                         if ($qrcodeid->type == 0) {
                             $doctor_id = $qrcodeid->mappingid;
                         } elseif ($qrcodeid->type == 1) {
-//                            //线上叫号系统
-//                            $user = UserLogin::findOne(['openid' => $openid]);
-//                            $appoint = Appoint::findOne(['doctorid' => $qrcodeid->mappingid, 'userid' => $user->userid, 'appoint_date' => strtotime('today')]);
-//                            if (!$appoint) {
-//                                return self::sendText($xml['FromUserName'], $xml['ToUserName'], "未查询到您的预约信息，请点击链接输入您的预约码：:http://web.child.wedoctors.com.cn/wappoint");
-//                            } else {
-//                                $appointCalling = AppointCalling::find()->select('id')->where(['doctorid' => $qrcodeid->mappingid])->andWhere(['>', 'updatetime', strtotime('-1 hour')])->orderBy('id asc')->column();
-//                                $appointCallingList = AppointCallingList::find()->select('acid')
-//                                    ->where(['in', 'acid', $appointCalling])
-//                                    ->andWhere(['>', 'createtime', strtotime('today')])
-//                                    ->orderBy('id desc')
-//                                    ->column();
-//                                if (count($appointCallingList) == 0) {
-//                                    $acid = $appointCalling[0];
-//                                } else {
-//                                    $backCalling = $appointCallingList[0];
-//                                    $key = array_search($backCalling, $appointCalling);
-//                                    if ($key === false || count($appointCalling) < ($key + 1)) {
-//                                        $acid = $appointCalling[0];
-//                                    } else {
-//                                        $acid = $appointCalling[$key + 1];
-//                                    }
-//                                }
-//                                $appointCallingListModel=new AppointCallingList();
-//                                $appointCallingListModel->acid=$acid;
-//                                $appointCallingListModel->aid=$appoint->id;
-//                                $appointCallingListModel->openid=$openid;
-//                                $appointCallingListModel->save();
-//
-//                                $appointCallingView=AppointCalling::findOne($acid);
-//
-//                                return self::sendText($xml['FromUserName'], $xml['ToUserName'], $appointCallingView->name."请等待叫号，叫号会通过微信公众号发送，请时刻关注，以免错过叫号");
-//                            }
+                            //线上叫号系统
+                            $user = UserLogin::findOne(['openid' => $openid]);
+                            $appoint = Appoint::findOne(['doctorid' => $qrcodeid->mappingid, 'userid' => $user->userid, 'appoint_date' => strtotime('today')]);
+                            if (!$appoint) {
+                                return self::sendText($xml['FromUserName'], $xml['ToUserName'], "未查询到您的预约信息，请点击链接输入您的预约码：:http://web.child.wedoctors.com.cn/wappoint");
+                            } else {
+                                $appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
+                                //判断用户是否已经排队
+                                if ($appointCallingListModel) {
+                                    if ($appointCallingListModel->state == 1) {
+                                        $appointCallingView = AppointCalling::findOne($appointCallingListModel->acid);
+
+                                        $num = AppointCallingList::find()->where(['acid' => $appointCallingListModel->acid])
+                                            ->andWhere(['>', 'createtime', strtotime('today')])
+                                            ->andWhere(['<', 'createtime', strtotime('+1 day')])
+                                            ->andWhere(['<=', 'id', $appointCallingListModel->id])
+                                            ->orderBy('id asc')
+                                            ->count();
+                                        $num2 = AppointCallingList::find()->where(['acid' => $appointCallingListModel->acid, 'state' => 1])
+                                            ->andWhere(['>', 'createtime', strtotime('today')])
+                                            ->andWhere(['<', 'createtime', strtotime('+1 day')])
+                                            ->andWhere(['<', 'id', $appointCallingListModel->id])
+                                            ->orderBy('id asc')
+                                            ->count();
+                                        $text[] = "诊室：" . $appointCallingView->name;
+                                        $text[] = "号码：" . $num;
+                                        $text[] = "前方等待：" . $num2 . "位";
+                                        $txt = implode("\n", $text);
+                                        return self::sendText($xml['FromUserName'], $xml['ToUserName'], $txt);
+                                    } elseif ($appointCallingListModel->state == 2) {
+                                        return self::sendText($xml['FromUserName'], $xml['ToUserName'], '您的预约已完成');
+                                    } elseif ($appointCallingListModel->state == 3) {
+                                        return self::sendText($xml['FromUserName'], $xml['ToUserName'], '您的预约已过期！');
+                                    }
+                                }else {
+                                    //排队
+                                    $appointCalling = AppointCalling::find()->select('id')->where(['doctorid' => $qrcodeid->mappingid,'type'=>$appoint->type])->andWhere(['>', 'updatetime', strtotime('-1 hour')])->orderBy('id asc')->column();
+
+                                    if (!$appointCalling) {
+                                        return self::sendText($xml['FromUserName'], $xml['ToUserName'], "暂未开诊请稍后扫码尝试");
+                                    }
+                                    $appointCallingList = AppointCallingList::find()->select('acid')
+                                        ->where(['in', 'acid', $appointCalling])
+                                        ->andWhere(['>', 'createtime', strtotime('today')])
+                                        ->orderBy('id desc')
+                                        ->column();
+                                    if (count($appointCallingList) == 0 || count($appointCalling) == 1) {
+                                        $acid = $appointCalling[0];
+                                    } else {
+                                        $backCalling = $appointCallingList[0];
+                                        $key = array_search($backCalling, $appointCalling);
+                                        if ($key === false || count($appointCalling) <= ($key + 1)) {
+                                            $acid = $appointCalling[0];
+                                        } else {
+                                            $acid = $appointCalling[$key + 1];
+                                        }
+                                    }
+                                    if ($acid) {
+
+                                        $appointCallingListModel = new AppointCallingList();
+                                        $appointCallingListModel->acid = $acid;
+                                        $appointCallingListModel->aid = $appoint->id;
+                                        $appointCallingListModel->openid = $openid;
+                                        $appointCallingListModel->save();
+                                        $appointCallingView = AppointCalling::findOne($acid);
+                                        $num = AppointCallingList::find()->where(['acid' => $appointCallingListModel->acid])
+                                            ->andWhere(['>', 'createtime', strtotime('today')])
+                                            ->andWhere(['<', 'createtime', strtotime('+1 day')])
+                                            ->andWhere(['<=', 'id', $appointCallingListModel->id])
+                                            ->orderBy('id asc')
+                                            ->count();
+                                        $num2 = AppointCallingList::find()->where(['acid' => $appointCallingListModel->acid, 'state' => 1])
+                                            ->andWhere(['>', 'createtime', strtotime('today')])
+                                            ->andWhere(['<', 'createtime', strtotime('+1 day')])
+                                            ->andWhere(['<', 'id', $appointCallingListModel->id])
+                                            ->orderBy('id asc')
+                                            ->count();
+                                        $text[] = "诊室：" . $appointCallingView->name;
+                                        $text[] = "号码：" . $num;
+                                        $text[] = "前方等待：" . $num2 . "位";
+                                        $txt = implode("\n", $text);
+
+                                        return self::sendText($xml['FromUserName'], $xml['ToUserName'], $txt . "\n 叫号会通过微信公众号发送，请时刻关注，以免错过叫号!");
+                                    } else {
+                                        return self::sendText($xml['FromUserName'], $xml['ToUserName'], "暂未开诊请稍后扫码尝试!");
+                                    }
+                                }
+                            }
                         }
                     } else {
                         $doctor_id = 0;
