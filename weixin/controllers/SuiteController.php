@@ -88,7 +88,7 @@ class SuiteController extends Controller
                                     if ($appointCallingListModel->state == 1) {
                                         $appointCallingView = AppointCalling::findOne($appointCallingListModel->acid);
 
-                                        $num = AppointCallingList::find()->where(['acid' => $appointCallingListModel->acid])
+                                        $num = AppointCallingList::find()->where(['doctorid' =>$qrcodeid->mappingid ])
                                             ->andWhere(['>', 'createtime', strtotime('today')])
                                             ->andWhere(['<', 'createtime', strtotime('+1 day')])
                                             ->andWhere(['<=', 'id', $appointCallingListModel->id])
@@ -139,6 +139,8 @@ class SuiteController extends Controller
                                         $appointCallingListModel->acid = $acid;
                                         $appointCallingListModel->aid = $appoint->id;
                                         $appointCallingListModel->openid = $openid;
+                                        $appointCallingListModel->doctorid = $qrcodeid->mappingid;
+
                                         $appointCallingListModel->save();
                                         $appointCallingView = AppointCalling::findOne($acid);
                                         $num = AppointCallingList::find()->where(['acid' => $appointCallingListModel->acid])
