@@ -14,7 +14,7 @@ class ArticlePushController extends Controller
     public function actionVaccine($type){
         $today=date('Ymd');
         $todayS=strtotime($today);
-        $todayE=strtotime('+1 day',$todayS);
+        $todayE=strtotime('-6 day',$todayS);
         switch ($type){
             case 1:
                 $openids=\common\models\WeOpenid::find()->where(['>=','createtime',$todayS])
@@ -27,7 +27,7 @@ class ArticlePushController extends Controller
                 $first='您好，在您接种疫苗前，请认真阅读疫苗接种前后注意事项，提前做好相应功课。';
                 break;
             case 2:
-                $preg=\common\models\Pregnancy::find()->where(['>','field11',strtotime('-28 week')])
+                $preg=\common\models\Pregnancy::find()->where(['>','field11',strtotime('-29 week')])
                     ->select('familyid')
                     ->groupBy('familyid')
                     ->column();
