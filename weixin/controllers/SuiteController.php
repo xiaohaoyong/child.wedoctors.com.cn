@@ -61,13 +61,13 @@ class SuiteController extends Controller
                 $log->addLog(implode(',', $xml));
                 $log->saveLog();
 
-                $loga = new Log('subscribe');
+               // $loga = new Log('subscribe');
                 //分享是的二维码
                 $openid = $xml['FromUserName'];
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
-                    $loga->addLog(file_get_contents('php://input'));
-                    $loga->addLog($_GET['msg_signature'] . '|||' . $_GET['timestamp'] . '|||' . $nonce = $_GET['nonce'] . '|||' . $_GET['encrypt_type']);
-                    $loga->saveLog();
+//                    $loga->addLog(file_get_contents('php://input'));
+//                    $loga->addLog($_GET['msg_signature'] . '|||' . $_GET['timestamp'] . '|||' . $nonce = $_GET['nonce'] . '|||' . $_GET['encrypt_type']);
+//                    $loga->saveLog();
 
                     $scene = str_replace('qrscene_', '', $xml['EventKey']);
 
@@ -143,7 +143,7 @@ class SuiteController extends Controller
 
                                         $appointCallingListModel->save();
                                         $appointCallingView = AppointCalling::findOne($acid);
-                                        $num = AppointCallingList::find()->where(['acid' => $appointCallingListModel->acid])
+                                        $num = AppointCallingList::find()->where(['doctorid' =>$qrcodeid->mappingid ])
                                             ->andWhere(['>', 'createtime', strtotime('today')])
                                             ->andWhere(['<', 'createtime', strtotime('+1 day')])
                                             ->andWhere(['<=', 'id', $appointCallingListModel->id])
