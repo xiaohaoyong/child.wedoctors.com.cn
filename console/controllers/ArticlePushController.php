@@ -13,7 +13,7 @@ class ArticlePushController extends Controller
 {
     public function actionVaccine($type){
         $today=date('Ymd');
-        $todayS=strtotime($today);
+        $todayS=strtotime("-6 day");
         $todayE=strtotime('+1 day',$todayS);
         switch ($type){
             case 1:
