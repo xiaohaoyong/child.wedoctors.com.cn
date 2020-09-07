@@ -22,7 +22,7 @@ class AppointSearchModels extends Appoint
     public function rules()
     {
         return [
-            [['state','cancel_type','id', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
+            [['vaccine','state','cancel_type','id', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
             [['child_name', 'appoint_dates'], 'string']
         ];
     }
@@ -103,6 +103,7 @@ class AppointSearchModels extends Appoint
             'phone' => $this->phone,
             'cancel_type'=>$this->cancel_type,
             'state'=>$this->state,
+            'vaccine'=>$this->vaccine
         ]);
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
 

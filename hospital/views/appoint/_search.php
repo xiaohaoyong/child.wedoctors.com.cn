@@ -26,6 +26,7 @@ use yii\widgets\ActiveForm;
 
     <?php echo $form->field($model, 'state')->dropDownList(\common\models\Appoint::$stateText, ['prompt' => '请选择']) ?>
     <?php echo $form->field($model, 'type')->dropDownList(\common\models\Appoint::$typeText, ['prompt' => '请选择']) ?>
+    <?php echo $form->field($model, 'vaccine')->dropDownList(\common\models\Vaccine::find()->select('name')->indexBy('id')->column(), ['prompt' => '请选择']) ?>
 
     <?php echo $form->field($model, 'child_name') ?>
 
