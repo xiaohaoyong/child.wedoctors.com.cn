@@ -23,6 +23,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'createtime')->textInput() ?>
 
     <?= $form->field($model, 'gender')->textInput() ?>
+                <?= $form->field($model, 'idcard')->textInput() ?>
 
 
                 <div class="form-group">
