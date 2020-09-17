@@ -248,8 +248,8 @@ use common\models\Vaccine;
                                                     'id' => 'modal' . $wv,
                                                     'header' => '<h5>设置疫苗</h5>',
                                                 ]);
+                                                if($type==2){
                                                 ?>
-
                                                 <table class="table table-striped table-bordered detail-view">
                                                     <tbody>
                                                     <tr>
@@ -345,7 +345,41 @@ use common\models\Vaccine;
                                                     </tr>
                                                     </tbody>
                                                 </table>
+                                                    <?php }else{?>
+                                                <table class="table table-striped table-bordered detail-view">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td style="font-weight: bold;">选择疫苗:</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <?= \kartik\select2\Select2::widget([
+                                                                'name' => 'vaccine[' . $wv . ']',
+                                                                'data' => $data,
+                                                                'language' => 'de',
+                                                                'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
+                                                                'showToggleAll' => false,
+                                                                'value' => $vaccines1,
+                                                                'pluginOptions' => [
+                                                                    'allowClear' => true
+                                                                ],
+                                                            ]) ?>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-red">关闭后点击"提交"保存设置</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+
                                                 <?php
+                                                    }
                                                 Modal::end();
                                                 ?>
 
