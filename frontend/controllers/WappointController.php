@@ -292,7 +292,7 @@ class WappointController extends Controller
         $row['hospital']=$hospital->name;
         $row['type']=Appoint::$typeText[$appoint->type];
         $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
-        $row['child_name']=AppointAdult::findOne($appoint->userid)->name;
+        $row['child_name']=AppointAdult::findOne(['id'=>$appoint->childid])->name;
         $row['duan']=$appoint->appoint_time;
         if($appoint->vaccine==-2){
             $row['vaccineStr']='两癌筛查';
@@ -326,7 +326,7 @@ class WappointController extends Controller
             $row['type']=Appoint::$typeText[$v->type];
             $row['time']=date('Y.m.d',$v->appoint_date)."  ".Appoint::$timeText[$v->appoint_time];
             $row['stateText']=Appoint::$stateText[$v->state];
-            $row['child_name']=AppointAdult::findOne(['userid'=>$v->userid])->name;
+            $row['child_name']=AppointAdult::findOne(['id'=>$v->childid])->name;
             $list[]=$row;
         }
 
@@ -398,7 +398,7 @@ class WappointController extends Controller
 
         }
 
-        $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
+        $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid,'name'=>$post['appoint_name']]);
         $appointAdult=$appointAdult?$appointAdult:new AppointAdult();
         $appointAdult->userid=$this->login->userid;
         $appointAdult->name=$post['appoint_name'];
@@ -406,12 +406,13 @@ class WappointController extends Controller
         $appointAdult->gender=$post['sex'];
         //$appointAdult->birthday=strtotime($post['birthday']);
         if(!$appointAdult->save()){
+            var_dump($appointAdult->firstErrors);exit;
             \Yii::$app->getSession()->setFlash('error','联系人信息保存失败');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
 
         }
 
-        $appoint=Appoint::findOne(['userid'=>$appointAdult->userid,'type'=>$post['type'],'state'=>1]);
+        $appoint=Appoint::findOne(['userid'=>$appointAdult->userid,'childid'=>$appointAdult->id,'type'=>$post['type'],'state'=>1]);
         if($appoint){
             \Yii::$app->getSession()->setFlash('error','您有未完成的预约');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
@@ -426,6 +427,7 @@ class WappointController extends Controller
             $post['state'] = 1;
             $post['userid'] = $this->login->userid;
             $post['loginid']=$this->login->id;
+            $post['childid']=$appointAdult->id;
             $model->load(["Appoint" => $post]);
             if(!$this->login->phone){
                 $this->login->phone=$post['phone'];

@@ -29,7 +29,7 @@ $this->title='成人疫苗接种预约';
         </div>
         <?php if($vaccines){?>
             <div class="item">
-                <div class="title">疫苗或两癌筛查</div>
+                <div class="title">疫苗</div>
                 <div class="input">
                     <select name="vaccine" class="appoint_input" id="vaccine">
                         <option value="0" >请选择</option>
