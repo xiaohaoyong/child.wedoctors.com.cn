@@ -6,8 +6,8 @@ use Yii;
 
 /**
  * This is the model class for table "appoint_adult".
- *
  * @property int $userid 用户主键
+ * @property int $id 用户主键
  * @property string $name 姓名
  * @property int $birthday 生日
  * @property int $gender 性别
@@ -40,7 +40,6 @@ class AppointAdult extends \yii\db\ActiveRecord
             [['userid', 'name', 'gender', 'phone'], 'required'],
             [['userid', 'birthday', 'gender', 'createtime', 'phone'], 'integer'],
             [['name','place'], 'string', 'max' => 20],
-            [['userid'], 'unique'],
             [['id_card','place'],'required','on'=>'lisc'],
             [['id_card'], 'validateid_card'],
             [['phone'], 'validatePhone'],

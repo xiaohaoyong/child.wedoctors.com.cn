@@ -57,24 +57,13 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($userInfo, 'sex')->radioList(\common\models\UserDoctor::$sexText, ['prompt' => '请选择']) ?>
 
-                <?= $form->field($userInfo, 'age')->textInput() ?>
-
-
-                <?= $form->field($model, 'phone')->textInput() ?>
                 <?= $form->field($userInfo, 'phone')->textInput() ?>
                 <?= $form->field($userInfo, 'appoints')->checkboxList(\common\models\HospitalAppoint::$typeText, ['prompt' => '请选择']) ?>
+                <?= $form->field($userInfo, 'is_calling')->radioList(['关闭','开通']) ?>
 
                 <?= $form->field($userInfo, 'longitude')->textInput() ?>
                 <?= $form->field($userInfo, 'latitude')->textInput() ?>
 
-
-                <?= $form->field($userInfo, 'subject_b')->dropDownList(\common\models\Subject::$subject_b,
-                    [
-                        'prompt' => '请选择',
-
-                    ]) ?>
-
-                <?= $form->field($userInfo, 'title')->dropDownList(\common\models\UserDoctor::$titleText, ['prompt' => '请选择']) ?>
 
                 <?= $form->field($userInfo, 'intro')->textInput() ?>
                 <?= $form->field($userInfo, 'skilful')->textInput() ?>
@@ -135,7 +124,9 @@ use yii\widgets\ActiveForm;
                     </div>
                 <?php } ?>
                 <div class="form-group">
-                <?=$userInfo->qrcode?>
+                社区签约二维码：<?=$userInfo->qrcode?>
+                    <br>
+                    线上叫号系统二维码：<?=$userInfo->calling_qrcode?>
                 </div>
 
                 <div class="form-group">
