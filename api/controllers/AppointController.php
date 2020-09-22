@@ -280,7 +280,11 @@ class AppointController extends Controller
             $row['child_name'] = Pregnancy::findOne($appoint->childid)->field1;
 
         } else {
-            $row['child_name'] = ChildInfo::findOne($appoint->childid)->name;
+            if($appoint->type==4 && $appoint->childid) {
+                $row['child_name'] = AppointAdult::findOne($appoint->childid)->name;
+            }else{
+                $row['child_name'] = ChildInfo::findOne($appoint->childid)->name;
+            }
         }
         $row['duan'] = $appoint->appoint_time;
         $vaccine = Vaccine::findOne($appoint->vaccine);
