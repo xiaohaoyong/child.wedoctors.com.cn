@@ -18,6 +18,7 @@ use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointVaccine;
+use common\models\HospitalAppointVaccineNum;
 use common\models\HospitalAppointWeek;
 use common\models\UserDoctor;
 use common\models\Vaccine;
@@ -187,13 +188,22 @@ class WappointController extends Controller
 
         return $this->render('from', [ 'vaccines' => $vaccines,'days' => $days,'day'=>$firstDay,'doctor'=>$doctorRow,'user'=>$appointAdult]);
     }
-    public function actionDayNum($doctorid, $day)
+    public function actionDayNum($doctorid, $day,$vid=0)
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $rs = [];
         $times=[];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => 4]);
         $week=date('w',strtotime($day));
+
+
+        $vaccine_count=Appoint::find()->where(['vaccine'=>$vid,'appoint_date'=>strtotime($day),'doctorid'=>$doctorid])->andWhere(['<','state',3])->count();
+        $hospitalAppointVaccineNum=HospitalAppointVaccineNum::findOne(['haid'=>$hospitalA->id,'week'=>$week,'vaccine'=>$vid]);
+        if($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num-$vaccine_count<=0){
+            return ['times' => [], 'is_appoint' => 0, 'text' =>'此疫苗'.date('Y年m月d日',strtotime($day))."已约满，请选择其他日期".($hospitalAppointVaccineNum->num-$vaccine_count)];
+        }
+
+
 
         $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->orderBy('time_type asc')->all();
         if ($weeks) {
@@ -214,6 +224,10 @@ class WappointController extends Controller
                 } else {
                     $rs[$v->time_type] = $v->num;
                 }
+            }
+
+            if ($doctorid != 176156) {
+                unset($rs[19]); unset($rs[20]);
             }
             $firstAppoint=Appoint::find()
                 ->andWhere(['type' => 4])

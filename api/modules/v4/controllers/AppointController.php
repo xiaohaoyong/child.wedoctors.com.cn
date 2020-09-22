@@ -192,6 +192,8 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $vaccines = [];
             }
 
+
+            //判断街道
             $hospitalS=HospitalAppointStreet::find()->select('street')
                 ->where(['haid'=>$appoint->id])->groupBy('street')->column();
             if ($hospitalS) {

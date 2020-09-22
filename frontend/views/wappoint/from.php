@@ -5,7 +5,7 @@
  * Date: 2020/4/20
  * Time: 上午11:38
  */
-$this->title='成人疫苗接种预约';
+$this->title = '成人疫苗接种预约';
 
 ?>
 <div class="appoint">
@@ -16,7 +16,7 @@ $this->title='成人疫苗接种预约';
 
                id="_csrf-frontend"
 
-               value="<?= Yii::$app -> request -> csrfToken ?>">
+               value="<?= Yii::$app->request->csrfToken ?>">
         <div class="item">
             <div class="title">预约社区</div>
             <div class="input">
@@ -27,24 +27,24 @@ $this->title='成人疫苗接种预约';
                 <input type="hidden" class="appoint_input" value="<?= $day ?>" name="appoint_date" id="appoint_date">
             </div>
         </div>
-        <?php if($vaccines){?>
+        <?php if ($vaccines) { ?>
             <div class="item">
                 <div class="title">疫苗</div>
                 <div class="input">
                     <select name="vaccine" class="appoint_input" id="vaccine">
-                        <option value="0" >请选择</option>
+                        <option value="0">请选择</option>
                         <?php
                         foreach ($vaccines as $k => $v) { ?>
-                            <option value="<?=$v['id']?>" <?=$v['id']==Yii::$app->request->get('vid')?"selected":""?>><?=$v['name']?></option>
+                            <option value="<?= $v['id'] ?>" <?= $v['id'] == Yii::$app->request->get('vid') ? "selected" : "" ?>><?= $v['name'] ?></option>
                         <?php } ?>
                     </select>
                 </div>
             </div>
-        <?php }?>
+        <?php } ?>
         <div class="item">
             <div class="title">预约人姓名</div>
             <div class="input">
-                <input name="appoint_name" class="appoint_input" value="<?=$user['name']?>" placeholder="请输入您的姓名">
+                <input name="appoint_name" class="appoint_input" value="<?= $user['name'] ?>" placeholder="请输入您的姓名">
             </div>
         </div>
         <div class="item">
@@ -52,40 +52,41 @@ $this->title='成人疫苗接种预约';
             <div class="input">
                 <select name="sex" class="select appoint_input form-control">
                     <option value="0">请选择您的性别</option>
-                    <option value="1" <?=$user['gender']==1?'selected':''?>>男</option>
-                    <option value="2" <?=$user['gender']==2?'selected':''?>>女</option>
+                    <option value="1" <?= $user['gender'] == 1 ? 'selected' : '' ?>>男</option>
+                    <option value="2" <?= $user['gender'] == 2 ? 'selected' : '' ?>>女</option>
                 </select>
             </div>
         </div>
         <div class="item">
             <div class="title">联系电话</div>
             <div class="input">
-                <input name="phone" readonly unselectable="on" id="appoint_from_phone" class="appoint_input" value="<?=$user['phone']?>"
+                <input name="phone" readonly unselectable="on" id="appoint_from_phone" class="appoint_input"
+                       value="<?= $user['phone'] ?>"
                        placeholder="请输入您的手机号" data-toggle="modal" data-target="#modle_phone">
             </div>
         </div>
 
         <?php
-        if(!$vaccines || Yii::$app->request->get('vid')){
+        if (!$vaccines || Yii::$app->request->get('vid')) {
             ?>
-        <div class="item">
-            <div class="title">请选择日期</div>
-            <div class="days">
-                <?php
-                $dweek=['日','一','二','三','四','五','六'];
-                foreach ($days as $k => $v) { ?>
-                    <item class="rs" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
-                        <div class="week"><?= $dweek[$v['week']] ?></div>
-                        <div class="day <?= $day == $v['date'] ? 'on' : '' ?>"><?= $v['day'] ?></div>
-                    </item>
-                <?php } ?>
-            </div>
-            <div class="time">
+            <div class="item">
+                <div class="title">请选择日期</div>
+                <div class="days">
+                    <?php
+                    $dweek = ['日', '一', '二', '三', '四', '五', '六'];
+                    foreach ($days as $k => $v) { ?>
+                        <item class="rs" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
+                            <div class="week"><?= $dweek[$v['week']] ?></div>
+                            <div class="day <?= $day == $v['date'] ? 'on' : '' ?>"><?= $v['day'] ?></div>
+                        </item>
+                    <?php } ?>
+                </div>
+                <div class="time">
+
+                </div>
 
             </div>
-
-        </div>
-        <?php }?>
+        <?php } ?>
 
         <div class="button">
             <button type="submit">确定预约</button>
@@ -96,6 +97,7 @@ $this->title='成人疫苗接种预约';
 
 <?php
 $date_day = date('Y-m-d', $day);
+$vid = Yii::$app->request->get('vid');
 $updateJs = <<<JS
 
 
@@ -111,12 +113,17 @@ var type=[
     ];
 
 function select_time(day){
-    jQuery.get('/wappoint/day-num?doctorid={$doctor['userid']}&day='+day,function(e) {
+    jQuery.get('/wappoint/day-num?doctorid={$doctor['userid']}&day='+day+'&vid={$vid}',function(e) {
       var times=e.times;
-      var html='';
-      jQuery.each(times,function(i,item){
-          html=html+'<div class="rs '+(item>0?'ton':'')+'" id="'+i+'">'+type[parseInt(i)-1]+'  '+(item>0?'有号':'无号')+'</div>';
-      });
+      
+      if(times.length<1){
+          var html=e.text;
+      }else{
+          var html='';
+          jQuery.each(times,function(i,item){
+              html=html+'<div class="rs '+(item>0?'ton':'')+'" id="'+i+'">'+type[parseInt(i)-1]+'  '+(item>0?'有号':'无号')+'</div>';
+          });
+      }
       jQuery('.time').html(html);
       jQuery(".ton").bind("click",function(){
           jQuery(".ton").removeClass('a');
@@ -266,7 +273,7 @@ $this->registerJs($updateJs);
 <?php
 \yii\bootstrap\Modal::begin([
     'id' => 'modle_phone',
-    'header'=>'验证/修改手机号码'
+    'header' => '验证/修改手机号码'
 ]);
 ?>
 <div class="appoint_p">
