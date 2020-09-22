@@ -11,6 +11,7 @@ namespace api\controllers;
 use common\components\Code;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
+use common\models\AppointAdult;
 use common\models\Article;
 use common\models\ArticleLike;
 use common\models\ArticleLog;
@@ -325,7 +326,11 @@ class AppointController extends Controller
             if ($v->type == 5 || $v->type == 6) {
                 $row['child_name'] = Pregnancy::findOne($v->childid)->field1;
             } else {
-                $row['child_name'] = ChildInfo::findOne($v->childid)->name;
+                if($v->type==4 && $v->childid) {
+                    $row['child_name'] = AppointAdult::findOne($v->childid)->name;
+                }else{
+                    $row['child_name'] = ChildInfo::findOne($v->childid)->name;
+                }
             }
             $row['child_name']=$row['child_name']?$row['child_name']:"-";
             $vaccine = Vaccine::findOne($v->vaccine);
