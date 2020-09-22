@@ -248,7 +248,7 @@ use common\models\Vaccine;
                                                     'id' => 'modal' . $wv,
                                                     'header' => '<h5>设置疫苗</h5>',
                                                 ]);
-                                                if($type==2){
+                                                if($type==2 || $type==4){
                                                 ?>
                                                 <table class="table table-striped table-bordered detail-view">
                                                     <tbody>
@@ -270,6 +270,7 @@ use common\models\Vaccine;
                                                             ]) ?>
                                                         </td>
                                                     </tr>
+                                                    <?php if($type==2){?>
                                                     <tr>
                                                         <td style="font-weight: bold;">选择下午疫苗:</td>
                                                     </tr>
@@ -288,8 +289,9 @@ use common\models\Vaccine;
                                                             ]) ?>
                                                         </td>
                                                     </tr>
+                                                        <?php }?>
                                                     <tr>
-                                                        <td style="font-weight: bold;">疫苗预约上线设置(如设置10，则单日最多可以预约10个此疫苗，空表示不限制此疫苗，0表示该疫苗无号）:</td>
+                                                        <td style="font-weight: bold;">疫苗预约上限设置(如设置10，则单日最多可以预约10个此疫苗，空表示不限制此疫苗，0表示该疫苗无号）:</td>
                                                     </tr>
                                                     <?php
                                                     $hospitalV = \common\models\HospitalAppointVaccine::find()
@@ -345,41 +347,8 @@ use common\models\Vaccine;
                                                     </tr>
                                                     </tbody>
                                                 </table>
-                                                    <?php }else{?>
-                                                <table class="table table-striped table-bordered detail-view">
-                                                    <tbody>
-                                                    <tr>
-                                                        <td style="font-weight: bold;">选择疫苗:</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <?= \kartik\select2\Select2::widget([
-                                                                'name' => 'vaccine[' . $wv . ']',
-                                                                'data' => $data,
-                                                                'language' => 'de',
-                                                                'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
-                                                                'showToggleAll' => false,
-                                                                'value' => $vaccines1,
-                                                                'pluginOptions' => [
-                                                                    'allowClear' => true
-                                                                ],
-                                                            ]) ?>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-red">关闭后点击"提交"保存设置</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-
+                                                    <?php }?>
                                                 <?php
-                                                    }
                                                 Modal::end();
                                                 ?>
 
