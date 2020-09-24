@@ -16,7 +16,6 @@ use hospital\models\AppointSearchModels;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
 /**
  * AppointController implements the CRUD actions for Appoint model.
  */
@@ -47,6 +46,7 @@ class AppointController extends BaseController
         $params = \Yii::$app->request->queryParams;
         $searchModel = new AppointSearchModels();
         $dataProvider = $searchModel->search($params);
+        //require('/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/vendor/phpoffice/phpexcel/Classes/PHPExcel.php');
 
 
         $objPHPExcel = new \PHPExcel();
@@ -62,40 +62,20 @@ class AppointController extends BaseController
         $objPHPExcel->getActiveSheet()->getStyle('I')->getNumberFormat()
             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
         $key1 = 1;
-        if($searchModel->type!=7) {
+        if($searchModel->type!=7 and $searchModel->type!=4) {
             $fields = ['姓名', '性别', '生日', '儿童户籍', '母亲姓名', '户籍地', '预约日期', '预约时间', '手机号', '预约状态', '预约项目', '选择疫苗', '取消原因', '推送状态', '来源', '排号顺序'];
-            $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $key1, '姓名')
-                ->setCellValue('B' . $key1, '性别')
-                ->setCellValue('C' . $key1, '生日')
-                ->setCellValue('D' . $key1, '儿童户籍')
-                ->setCellValue('E' . $key1, '母亲姓名')
-                ->setCellValue('F' . $key1, '户籍地')
-                ->setCellValue('G' . $key1, '预约日期')
-                ->setCellValue('H' . $key1, '预约时间')
-                ->setCellValue('I' . $key1, '手机号')
-                ->setCellValue('J' . $key1, '预约状态')
-                ->setCellValue('K' . $key1, '预约项目')
-                ->setCellValue('L' . $key1, '选择疫苗')
-                ->setCellValue('M' . $key1, '取消原因')
-                ->setCellValue('N' . $key1, '推送状态')
-                ->setCellValue('O' . $key1, '来源')
-                ->setCellValue('P' . $key1, '排号顺序');
+            $model=$objPHPExcel->setActiveSheetIndex(0);
+            foreach($fields as $k=>$v){
+                $key=65+$k;
+                $model->setCellValue(chr($key) . $key1, $v);
+            }
         }else{
             $fields = ['姓名', '性别', '身份证号', '联系电话', '户籍地', '预约日期', '预约时间', '预约状态', '预约项目', '取消原因', '推送状态', '来源'];
-            $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $key1, '姓名')
-                ->setCellValue('B' . $key1, '性别')
-                ->setCellValue('C' . $key1, '身份证号')
-                ->setCellValue('D' . $key1, '联系电话')
-                ->setCellValue('E' . $key1, '户籍地')
-                ->setCellValue('F' . $key1, '预约日期')
-                ->setCellValue('G' . $key1, '预约时间')
-                ->setCellValue('H' . $key1, '预约状态')
-                ->setCellValue('I' . $key1, '预约项目')
-                ->setCellValue('J' . $key1, '取消原因')
-                ->setCellValue('K' . $key1, '推送状态')
-                ->setCellValue('L' . $key1, '来源');
+            $model=$objPHPExcel->setActiveSheetIndex(0);
+            foreach($fields as $k=>$v){
+                $key=65+$k;
+                $model->setCellValue(chr($key) . $key1, $v);
+            }
             $objPHPExcel->getActiveSheet()->getStyle('C')->getNumberFormat()
                 ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
             $objPHPExcel->getActiveSheet()->getStyle('D')->getNumberFormat()
@@ -113,7 +93,7 @@ class AppointController extends BaseController
         foreach ($dataProvider->query->limit(500)->all() as $k => $e) {
             $v = $e->toArray();
             $key1 = $k + 2;
-            if($searchModel->type!=7) {
+            if($searchModel->type!=7 and $searchModel->type!=4) {
                 $child = \common\models\ChildInfo::findOne(['id' => $v['childid']]);
                 $userParent = \common\models\UserParent::findOne(['userid' => $v['userid']]);
 
