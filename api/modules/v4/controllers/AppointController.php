@@ -99,7 +99,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             $day = strtotime(date('Y-m-d', strtotime('+' . $delay . " day")));
 
             $dweek = ['日', '一', '二', '三', '四', '五', '六'];
-            $dateMsg = ['非门诊', '门诊日', '未放号'];
+            $dateMsg = [' ', '门诊日', '未放号'];
 
 
             //判断所选疫苗都有周几可约
