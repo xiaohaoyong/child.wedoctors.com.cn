@@ -289,6 +289,12 @@ use common\models\Vaccine;
                                                             ]) ?>
                                                         </td>
                                                     </tr>
+                                                        <tr>
+                                                            <div class="form-group">
+                                                                注：只设置上午/全天疫苗，则按照全天可约判断，如需下午不可以设置无号即可<br>
+                                                                注：选择街道目前对一类疫苗有效，二类疫苗不受限制
+                                                            </div>
+                                                        </tr>
                                                         <?php }?>
                                                     <tr>
                                                         <td style="font-weight: bold;">疫苗预约上限设置(如设置10，则单日最多可以预约10个此疫苗，空表示不限制此疫苗，0表示该疫苗无号）:</td>
@@ -377,16 +383,14 @@ use common\models\Vaccine;
                                             ]) ?></td>
                                     <?php } ?>
                                 </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="7">(如社区不需要按照街道预约则不需要设置为空即可)</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <?php if ($type == 2) { ?>
-                        <div class="form-group">
-                            注：只设置上午/全天疫苗，则按照全天可约判断，如需下午不可以设置无号即可
-                            注：选择街道目前对一类疫苗有效，二类疫苗不受限制
-                        </div>
-                    <?php } ?>
                     <div class="form-group">
                         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
                             'btn btn-primary']) ?>
