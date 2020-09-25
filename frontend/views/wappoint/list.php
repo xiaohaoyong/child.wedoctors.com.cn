@@ -19,6 +19,14 @@
                 </form>
             </div>
         </div>
+        <style>
+            .modal_title text {
+                font-weight: bold;
+                font-size: 16px
+            }
+            .modal_body{line-height: 24px;}
+            .rad{color: rgba(240,85,70,1); font-size: 14px; margin-top: 10px;}
+        </style>
         <div class="list">
             <?php
             foreach ($doctors as $k => $v) {
@@ -30,7 +38,7 @@
                         <div class="hospital">
                             <div class="name"><?= $v['name'] ?></div>
                             <?php if ($v['week']) { ?>
-                                <div class="address">门诊时间：每周工作日 <?= implode('，', $v['week']) ?></div>
+                                <div class="address">接种时间：每周工作日 <?= implode('，', $v['week']) ?></div>
                             <?php } ?>
                         </div>
                     </div>
@@ -39,27 +47,39 @@
                                                                                  width="18" height="18"/></a></div>
                         <?php if ($v['week']) { ?>
                             <div class="button">在线预约</div>
-                        <?php }else{ ?>
+                        <?php } else { ?>
                             <div class="button on">暂未开通</div>
-                        <?php }?>
+                        <?php } ?>
 
                     </div>
+                    <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
                 </div>
 
 
                 <?php
                 \yii\bootstrap\Modal::begin([
                     'id' => 'create-modal' . $v['userid'],
+                    'class' => 'create-modal',
                     'header' => $v['name']
                 ]);
                 ?>
-                <?=$v['appoint_intro']?>
-                <?php if ($v['week']) { ?>
-                    <?= \yii\bootstrap\Html::a('去预约', ['wappoint/from', 'userid' => $v['userid']],['class'=>'button']) ?>
-                <?php }else{ ?>
-                    <div class="button on">暂未开通</div>
-                <?php }?>
+                <div class="modal_body">
+                    <div class="modal_title">
+                        <text>预约周期：</text><?= $v['cycleDay'] ?>天
+                    </div>
+                    <div class="modal_title">
+                        <text>新号放号时间：</text><?= $v['release_time'] ?></div>
 
+                    <div class="modal_title">
+                        <text>温馨提醒：</text>
+                    </div>
+                    <?= str_replace("\n", "<br>", $v['appoint_intro']) ?>
+                    <?php if ($v['week']) { ?>
+                        <?= \yii\bootstrap\Html::a('去预约', ['wappoint/from', 'userid' => $v['userid']], ['class' => 'button']) ?>
+                    <?php } else { ?>
+                        <div class="button on">暂未开通</div>
+                    <?php } ?>
+                </div>
                 <?php
                 \yii\bootstrap\Modal::end();
                 ?>

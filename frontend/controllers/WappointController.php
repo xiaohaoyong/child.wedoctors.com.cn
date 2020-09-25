@@ -64,6 +64,9 @@ class WappointController extends Controller
                 $rs['week']= preg_split('/(?<!^)(?!$)/u', $week );
                 $rs['phone']=$hospitalAppoint->phone;
                 $rs['appoint_intro']=$hospitalAppoint->info;
+                $rs['cycleDay'] = HospitalAppoint::$cycleNum[$hospitalAppoint->cycle];
+                $rs['release_time'] = HospitalAppoint::$rtText[$hospitalAppoint->release_time];
+
             }
             $docs[] = $rs;
 
