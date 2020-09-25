@@ -49,9 +49,8 @@ class AppointController extends \docapi\controllers\AppointController
                 ->count();
             $row['index'] = $index + 1;
 
-
             if ($appoint->type == 4 || $appoint->type == 7) {
-                $AppointAdult = \common\models\AppointAdult::findOne(['userid' => $appoint->userid]);
+                $AppointAdult = \common\models\AppointAdult::findOne($appoint->childid);
                 $row['child_name'] = $AppointAdult->name;
 
                 $r['field']='姓名';
