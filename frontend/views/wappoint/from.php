@@ -88,8 +88,12 @@ $this->title = '成人疫苗接种预约';
             </div>
         <?php } ?>
 
+        <style>
+            .rad{color: rgba(240,85,70,1); font-size: 14px; margin-top: 10px;}
+        </style>
         <div class="button">
             <button type="submit">确定预约</button>
+            <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
         </div>
     </form>
 </div>
