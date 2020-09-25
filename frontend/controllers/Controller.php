@@ -26,11 +26,7 @@ class Controller extends \yii\web\Controller
     public function beforeAction($action)
     {
         session_start();
-        $time=time();
-        $log=new \common\components\Log('webindex');
-        $log->addLog($time);
-        $log->addLog(\Yii::$app->request->get('code'));
-        $log->saveLog();
+
         $this->layout = "@frontend/views/layouts/h5.php";
         $path = \Yii::$app->request->pathInfo;
         parent::beforeAction($action);
