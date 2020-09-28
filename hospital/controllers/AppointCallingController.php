@@ -4,6 +4,8 @@ namespace hospital\controllers;
 
 use common\models\Appoint;
 use common\models\AppointCallingList;
+use common\models\HospitalAppoint;
+use common\models\queuing\Queue;
 use EasyWeChat\Factory;
 use hospital\models\AppointSearchModels;
 use Yii;
@@ -70,13 +72,13 @@ class AppointCallingController extends BaseController
         $this->layout = "@hospital/views/layouts/main-login.php";
 
 
-        $model = AppointCalling::findOne(['userid'=>Yii::$app->user->identity->userid,'doctorid'=>Yii::$app->user->identity->doctorid]);
-        $model=$model?$model:new AppointCalling();
+        $model = AppointCalling::findOne(['userid' => Yii::$app->user->identity->userid, 'doctorid' => Yii::$app->user->identity->doctorid]);
+        $model = $model ? $model : new AppointCalling();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->userid=Yii::$app->user->identity->userid;
-            $model->doctorid=Yii::$app->user->identity->doctorid;
-            if($model->save()){
+            $model->userid = Yii::$app->user->identity->userid;
+            $model->doctorid = Yii::$app->user->identity->doctorid;
+            if ($model->save()) {
                 return $this->redirect(['room']);
             }
 
@@ -91,70 +93,124 @@ class AppointCallingController extends BaseController
     {
         $this->layout = "@hospital/views/layouts/main-login.php";
 
-        $model = AppointCalling::findOne(['userid'=>Yii::$app->user->identity->userid,'doctorid'=>Yii::$app->user->identity->doctorid]);
-        if(!$model){
+        $model = AppointCalling::findOne(['userid' => Yii::$app->user->identity->userid, 'doctorid' => Yii::$app->user->identity->doctorid]);
+        if (!$model) {
             return $this->redirect('appoint-calling/create');
         }
 
-        $appointCallingList=AppointCallingList::find()->where(['acid'=>$model->id])
-            ->select('aid')
+        $appointCallingList = AppointCallingList::find()->where(['acid' => $model->id])
             ->andWhere(['>', 'createtime', strtotime('today')])
             ->andWhere(['<', 'createtime', strtotime('+1 day')])
             ->orderBy('state asc,id asc')
-            ->column();
+            ->one();
+        if($appointCallingList){
+            $appoint=Appoint::findOne($appointCallingList->aid);
 
-        $searchModel = new AppointSearchModels();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->orderBy([new \yii\db\Expression('FIELD (id, '.implode(',',$appointCallingList).')')]);
-        $dataProvider->query->andWhere(['in','id',$appointCallingList]);
-        $dataProvider->setPagination(['pageSize'=>200]);
-
-        //echo $dataProvider->query->createCommand()->getRawSql();exit;
-
-        return $this->render('room',[
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'model'=>$model,
+        }
+        return $this->render('room', [
+            'appointCallingList'=>$appointCallingList,
+            'appoint' => $appoint,
         ]);
     }
-    public function actionState($id,$state=3){
-        $appointCallingList=AppointCallingList::findOne(['aid'=>$id]);
-        $appointCallingList->state=$state;
-        $appointCallingList->save();
 
-        $appointCalling=AppointCalling::findOne($appointCallingList->acid);
-        if($appointCalling->updatetime!=0) {
-            $appointCalling->updatetime = time();
-            $appointCalling->save();
+    public function actionState($id = 0, $state = 3)
+    {
+        $model = AppointCalling::findOne(['userid' => Yii::$app->user->identity->userid, 'doctorid' => Yii::$app->user->identity->doctorid]);
+        if (!$model) {
+            return $this->redirect('appoint-calling/create');
         }
+
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
 
 
+        if($id){
+            $ord_appointCallingList = AppointCallingList::findOne($id);
+            if ($state != 4) {
+                $ord_appointCallingList->state = $state;
+                $ord_appointCallingList->save();
+            }
+        }
 
-        if($state==4){
-            $app->customer_service->message("您好，请前往".$appointCalling->name."就诊")->to($appointCallingList->openid)->send();
-        }elseif($state==3){
-            $appoint=Appoint::findOne($id);
-            $appoint->state=2;
-            $appoint->save();
-            $openids=AppointCallingList::find()->where(['acid'=>$appointCallingList->acid])
-                ->select('openid')
-                ->andWhere(['>', 'createtime', strtotime('today')])
-                ->andWhere(['<', 'createtime', strtotime('+1 day')])
-                ->orderBy('state asc,id asc')
-                ->column();
-            if($openids[0]) {
-                $app->customer_service->message("您好，请前往" . $appointCalling->name . "就诊")->to($openids[0])->send();
+        if($state==3) {
+            $appointCallingList=$this->calling($model);
+            if($appointCallingList){
+                $app->customer_service->message("您好，请前往" . $model->name . "就诊")->to($appointCallingList->openid)->send();
+                //上一个预约标记为完成
+                if ($ord_appointCallingList && $ord_appointCallingList->aid) {
+                    $appoint = Appoint::findOne($ord_appointCallingList->aid);
+                    $appoint->state = 2;
+                    $appoint->save();
+                }
+            }else{
+                \Yii::$app->getSession()->setFlash('error', '暂无患者排队！');
+            }
+        }elseif ($state==2){
+            if($id) {
+                $app->customer_service->message("您的排号已失效，请重新扫码排号！")->to($ord_appointCallingList->openid)->send();
+                $appointCallingList=$this->calling($model);
+                if($appointCallingList){
+                    $app->customer_service->message("您好，请前往" . $model->name . "就诊")->to($appointCallingList->openid)->send();
+                }else{
+                    \Yii::$app->getSession()->setFlash('error', '暂无患者排队！');
+                }
+            }else{
+                \Yii::$app->getSession()->setFlash('error', '暂无患者排队！');
+            }
+        }elseif ($state == 4) {
+            if($ord_appointCallingList) {
+                $app->customer_service->message("您好，请前往" . $model->name . "就诊")->to($ord_appointCallingList->openid)->send();
+                \Yii::$app->getSession()->setFlash('success', '已发送！');
+            }else{
+                \Yii::$app->getSession()->setFlash('error', '暂无患者需要提醒！');
             }
         }
         return $this->redirect(['room']);
     }
-    public function actionDone($type=1){
-        $model = AppointCalling::findOne(['userid'=>Yii::$app->user->identity->userid,'doctorid'=>Yii::$app->user->identity->doctorid]);
-        if($type==1) {
+
+    /**
+     * 叫号操作
+     * @param $AppointCalling
+     * @return AppointCallingList|null
+     */
+    public function calling($AppointCalling){
+        $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $AppointCalling->doctorid, 'type' => $AppointCalling->type]);
+        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+        $aclid=$this->queue($AppointCalling->type,$timeType,$hospitalAppoint);
+        if ($aclid) {
+            $appointCallingList = AppointCallingList::findOne($aclid);
+            $appointCallingList->acid = $AppointCalling->id;
+            $appointCallingList->save();
+        }
+        return $appointCallingList;
+    }
+
+    /**
+     * 出号操作
+     * @param $type
+     * @param $timeType
+     * @return mixed
+     */
+    public function queue($type,$timeType,$hospitalAppoint){
+        $queue = new Queue(Yii::$app->user->identity->doctorid,$type, $timeType);
+        $aclid = $queue->rpop();
+        $key=date('H:i')<'12:00'?1:2;
+        if (!$aclid) {
+            while ($mode = next(Appoint::$timeTextRow[$hospitalAppoint->interval][$key]) !== false && !$aclid) {
+                $timeType = array_search($mode, Appoint::$timeText1);
+                $queue = new Queue(Yii::$app->user->identity->doctorid,$type, $timeType);
+                $aclid = $queue->rpop();
+            }
+        }
+        return $aclid;
+    }
+
+    public function actionDone($type = 1)
+    {
+        $model = AppointCalling::findOne(['userid' => Yii::$app->user->identity->userid, 'doctorid' => Yii::$app->user->identity->doctorid]);
+        if ($type == 1) {
             $model->updatetime = time();
             $model->save();
-        }else{
+        } else {
             $model->updatetime = 0;
             $model->save();
         }

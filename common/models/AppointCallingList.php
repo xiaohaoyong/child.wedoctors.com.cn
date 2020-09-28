@@ -13,6 +13,8 @@ use Yii;
  * @property string $openid
  * @property int $createtime
  * @property int $state
+ * @property int $doctorid
+ * @property int $type
  */
 class AppointCallingList extends \yii\db\ActiveRecord
 {
@@ -30,7 +32,7 @@ class AppointCallingList extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['aid', 'acid', 'createtime', 'state'], 'integer'],
+            [['aid', 'acid', 'createtime', 'state','type','doctorid'], 'integer'],
             [['openid'], 'string', 'max' => 50],
         ];
     }
@@ -48,6 +50,17 @@ class AppointCallingList extends \yii\db\ActiveRecord
             'createtime' => 'Createtime',
             'state' => 'State',
         ];
+    }
+
+    public static function listName($id,$doctorid,$type){
+        $num = AppointCallingList::find()->where(['doctorid' =>$doctorid])
+            ->andWhere(['>', 'createtime', strtotime('today')])
+            ->andWhere(['<', 'createtime', strtotime('+1 day')])
+            ->andWhere(['<=', 'id', $id])
+            ->andWhere(['type'=>$type])
+            ->orderBy('id asc')
+            ->count();
+        return $num;
     }
     public function beforeSave($insert)
     {
