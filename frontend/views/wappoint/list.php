@@ -31,8 +31,8 @@
             <?php
             foreach ($doctors as $k => $v) {
                 ?>
-                <div class="item" data-toggle="modal" data-target="#create-modal<?= $v['userid'] ?>">
-                    <div class="item-content">
+                <div class="item">
+                    <div class="item-content" data-toggle="modal" data-target="#create-modal<?= $v['userid'] ?>">
                         <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
                         </div>
                         <div class="hospital">
@@ -46,7 +46,9 @@
                         <div class="phone"><a href="tel:<?= $v['phone'] ?>"><img src="/img/appoint_list_phone.png"
                                                                                  width="18" height="18"/></a></div>
                         <?php if ($v['week']) { ?>
-                            <div class="button">在线预约</div>
+                        <a class="button" href="" onclick="return false;" data-toggle="modal" data-target="#create-modal<?= $v['userid'] ?>">
+                            在线预约
+                        </a>
                         <?php } else { ?>
                             <div class="button on">暂未开通</div>
                         <?php } ?>
