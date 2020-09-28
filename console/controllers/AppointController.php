@@ -34,13 +34,10 @@ class AppointController extends Controller
         $day = strtotime('+1 day', strtotime(date('Y-m-d 00:00:00')));
         $appoint = Appoint::find()->where(['appoint_date' => $day])->andWhere(['not in', 'doctorid', [221895]])->andWhere(['!=', 'state', 3])->all();
 
-        $log = new Log('appoint_notice');
         if ($appoint) {
             foreach ($appoint as $k => $v) {
-                $log->addLog($v->id);
-                $log->addLog($v->userid);
+
                 $openid = UserLogin::getOpenid($v->userid);
-                $log->addLog($openid);
 
                 if ($openid) {
                     $temp = 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE';
@@ -56,8 +53,6 @@ class AppointController extends Controller
                         $data['remark'] = '此消息为系统自动推送，如已取消请忽略。';
                         $rs = WechatSendTmp::send($data, $openid, $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,]);
                     }
-                    $log->addLog($rs ? 'true' : 'false');
-                    $log->saveLog();
                 }
             }
         }

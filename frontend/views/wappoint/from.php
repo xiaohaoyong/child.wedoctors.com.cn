@@ -24,7 +24,7 @@ $this->title = '成人疫苗接种预约';
                 <input type="hidden" class="appoint_input" value="<?= $doctor['userid'] ?>" name="doctorid">
                 <input type="hidden" class="appoint_input" value="4" name="type">
                 <input type="hidden" class="appoint_input" id="appoint_time" value="0" name="appoint_time">
-                <input type="hidden" class="appoint_input" value="<?= $day ?>" name="appoint_date" id="appoint_date">
+                <input type="hidden" class="appoint_input" value="<?= $firstday ?>" name="appoint_date" id="appoint_date">
             </div>
         </div>
         <?php if ($vaccines) { ?>
@@ -69,27 +69,35 @@ $this->title = '成人疫苗接种预约';
         <?php
         if (!$vaccines || Yii::$app->request->get('vid')) {
             ?>
-            <div class="item">
-                <div class="title">请选择日期</div>
-                <div class="days">
-                    <?php
-                    $dweek = ['日', '一', '二', '三', '四', '五', '六'];
-                    foreach ($days as $k => $v) { ?>
-                        <item class="rs" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
-                            <div class="week"><?= $dweek[$v['week']] ?></div>
-                            <div class="day <?= $day == $v['date'] ? 'on' : '' ?>"><?= $v['day'] ?></div>
-                        </item>
-                    <?php } ?>
-                </div>
-                <div class="time">
+            <div class="appoint_day">
+                <div class="item">
+                    <div class="title">请选择日期</div>
+                    <div class="days">
+                        <?php
+                        $dweek = ['日', '一', '二', '三', '四', '五', '六'];
+                        foreach ($days as $k => $v) { ?>
+                            <div class="rs <?= $firstday == $v['date'] && $v['dateState']==1 ? 'on' : '' ?><?= !$v['dateState'] ? 'notOp' : '' ?>" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
+                                <div class="week"><?= $dweek[$v['week']] ?></div>
+                                <div class="day"><?= $v['day'] ?></div>
+                                <div class="msg"><?=$v['dateMsg']?></div>
+
+                            </div>
+                        <?php } ?>
+                    </div>
+                    <div class="time">
+
+                    </div>
 
                 </div>
-
             </div>
         <?php } ?>
 
         <style>
-            .rad{color: rgba(240,85,70,1); font-size: 14px; margin-top: 10px;}
+            .rad {
+                color: rgba(240, 85, 70, 1);
+                font-size: 14px;
+                margin-top: 10px;
+            }
         </style>
         <div class="button">
             <button type="submit">确定预约</button>
@@ -100,7 +108,7 @@ $this->title = '成人疫苗接种预约';
 <div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 
 <?php
-$date_day = date('Y-m-d', $day);
+$date_day = date('Y-m-d', $firstday);
 $vid = Yii::$app->request->get('vid');
 $updateJs = <<<JS
 
@@ -118,14 +126,14 @@ var type=[
 
 function select_time(day){
     jQuery.get('/wappoint/day-num?doctorid={$doctor['userid']}&day='+day+'&vid={$vid}',function(e) {
-      var times=e.times;
+      var times=e.list;
       
       if(times.length<1){
           var html=e.text;
       }else{
           var html='';
           jQuery.each(times,function(i,item){
-              html=html+'<div class="rs '+(item>0?'ton':'')+'" id="'+i+'">'+type[parseInt(i)-1]+'  '+(item>0?'有号':'无号')+'</div>';
+              html=html+'<div class="rs '+(item.num>0?'ton':'')+'" id="'+item.appoint_time+'">'+item.time+'  '+(item.num>0?'有号':'无号')+'</div>';
           });
       }
       jQuery('.time').html(html);
@@ -141,8 +149,8 @@ jQuery(".days .rs").bind("click",function(){
     jQuery('#appoint_time').val(0);
           jQuery('.time').html('加载中...');
 
-  jQuery(".days .rs .day").removeClass('on');
-  jQuery(this).children('.day').addClass('on');
+  jQuery(".days .rs").removeClass('on');
+  jQuery(this).addClass('on');
   var day= jQuery(this).attr('date');
   jQuery('#appoint_date').val(jQuery(this).attr('time'));
   select_time(day);

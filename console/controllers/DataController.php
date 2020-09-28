@@ -25,6 +25,7 @@ use common\models\AppointOrder1;
 use common\models\Area;
 use common\models\Article;
 use common\models\ArticleComment;
+use common\models\ArticlePushVaccine;
 use common\models\ArticleUser;
 use common\models\Autograph;
 use common\models\BabyGuide;
@@ -48,6 +49,7 @@ use common\models\Log;
 use common\models\Notice;
 use common\models\Pregnancy;
 use common\models\Test;
+use common\models\Test1;
 use common\models\User;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
@@ -94,73 +96,241 @@ class DataController extends Controller
         }
         return $files;
     }
-    public function getAgeByBirth($date,$type = 1){
-        $nowYear = date("Y",time());
-        $nowMonth = date("m",time());
-        $nowDay = date("d",time());
-        $birthYear = date("Y",$date);
-        $birthMonth = date("m",$date);
-        $birthDay = date("d",$date);
-        if($type == 1){
+
+    public function getAgeByBirth($date, $type = 1)
+    {
+        $nowYear = date("Y", time());
+        $nowMonth = date("m", time());
+        $nowDay = date("d", time());
+        $birthYear = date("Y", $date);
+        $birthMonth = date("m", $date);
+        $birthDay = date("d", $date);
+        if ($type == 1) {
             $age = $nowYear - ($birthYear - 1);
-        }elseif($type==2){
-            if($nowMonth<$birthMonth){
+        } elseif ($type == 2) {
+            if ($nowMonth < $birthMonth) {
                 $age = $nowYear - $birthYear - 1;
-            }elseif($nowMonth==$birthMonth){
-                if($nowDay<$birthDay){
+            } elseif ($nowMonth == $birthMonth) {
+                if ($nowDay < $birthDay) {
                     $age = $nowYear - $birthYear - 1;
-                }else{
+                } else {
                     $age = $nowYear - $birthYear;
                 }
-            }else{
+            } else {
                 $age = $nowYear - $birthYear;
             }
         }
         return $age;
     }
+
     public function actionTesta()
     {
+        ini_set('memory_limit', '2048M');
+
+        $exam=ChildInfo::find();
+        $sql = "select field63,count(*) from examination group by field63";
+        $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
+        foreach ($query as $k=>$v){
+            $v['field63']=str_replace(',','，',$v['field63']);
+            echo implode(',',$v);
+            echo "\n";
+        }
+
+        exit;
+
+//
+//        $openids=[];
+//        $list=FileHelper::findFiles('login');
+//        foreach($list as $k=>$v){
+//            $field=fopen($v,'r');
+//            if(!stripos($v,'2020-09-2'))
+//            {
+//                continue;
+//            }
+//            echo $v."\n";
+//            while (($line=fgets($field))!==false){
+//                $rs=explode('|,|',trim($line));
+//                if($rs[2]=='已登录'){
+//                    $userStr=explode(':',$rs[5]);
+//                    if($userStr[1]){
+//                        $openid=$userStr[1];
+//                    }
+//                }else{
+//                    $userStr=explode(':',$rs[4]);
+//                    if($userStr[1]){
+//                        $userStr2=explode('@@',$userStr[1]);
+//                        if($userStr2[0]){
+//                            $openid=$userStr2[0];
+//
+//                        }
+//                    }
+//                }
+//                $m = substr($rs[0], 4, 2);
+//                $d = substr($rs[0], 6, 2);
+//                $test1=new Test1();
+//                $test1->m=$m;
+//                $test1->openid=$openid;
+//                $test1->d=$d;
+//                $test1->save();
+////
+////                $userLogin=UserLogin::findOne(['xopenid'=>$openid]);
+////
+////                if($userLogin) {
+////                    $doctorParents=DoctorParent::findOne(['parentid'=>$userLogin->userid]);
+////                    if($doctorParents) {
+////                        if(!$openids[$doctorParents->doctorid][$m]){
+////                            $openids[$doctorParents->doctorid][$m]=[];
+////                        }
+////                        if (!in_array($openid, $openids[$doctorParents->doctorid][$m])) {
+////                            $openids[$doctorParents->doctorid][$m][] = $openid;
+////                        }
+////                    }
+////                }
+//                echo $openid."\n";
+//            }
+//        }
+//exit;
+        $test1 = Test1::find()->where(['m' => '08'])->andWhere(['doctorid'=>0])
+            ->andWhere(['>','d','15'])
+
+            ->orderBy('d desc')->all();
+        foreach ($test1 as $k => $v) {
+
+            $userLogin = UserLogin::findOne(['xopenid' => $v->openid]);
+            if ($userLogin) {
+                $doctorParents = DoctorParent::findOne(['parentid' => $userLogin->userid]);
+                if ($doctorParents) {
+                    $v->doctorid=$doctorParents->doctorid;
+                    $v->save();
+                }
+            }
+            echo $v->m;
+            echo $v->d;
+            echo "\n";
+        }
+       exit;
 
 
+        $userDoctors = UserDoctor::find()->all();
+        foreach ($userDoctors as $k => $v) {
+            $rs = [];
+            $doctorParents = DoctorParent::find()->where(['doctorid' => $v->userid])
+                ->select('parentid,createtime')
+                ->andWhere(['>', 'createtime', strtotime('20200918')])
+                ->andWhere(['<', 'createtime', strtotime('20200926')])
+                ->all();
+            $doctorParents3 = DoctorParent::find()->where(['doctorid' => $v->userid])
+                ->select('parentid')
+                ->andWhere(['>', 'createtime', strtotime('20200918')])
+                ->andWhere(['<', 'createtime', strtotime('20200926')])
+                ->column();
 
-        $time=['08'=>1,'09'=>2,'10'=>3,'13'=>4,'14'=>5,'15'=>6,'16'=>6];
-        $list=FileHelper::findFiles('g');
-        foreach($list as $k=>$v){
-            $appoint=[];
-            $field=fopen($v,'r');
-            while (($line=fgets($field))!==false){
-                $rs=explode(',',trim($line));
-                if(intval($rs[0])){
-                    $birthday=strtotime($rs[3]);
-                    $appointOrder=AppointOrder1::findOne(['birthday'=>$birthday,'name'=>$rs[1]]);
-                    if(!$appointOrder){
-                        $appointOrder=new AppointOrder1();
-                        $appointOrder->birthday=$birthday;
-                        $appointOrder->name=$rs[1];
+            $doctorParents2 = DoctorParent::find()->where(['doctorid' => $v->userid])
+                ->select('parentid')
+                ->column();
+            $pregs = \common\models\Pregnancy::find()->where(['>', 'field11', strtotime('-28 week', strtotime('20200918'))])
+                ->select('familyid')
+                ->andWhere(['in', 'familyid', $doctorParents2])
+                ->column();
+            $pregCount2 = UserLogin::find()->select('openid')->where(['in', 'userid', $pregs])->count();
+            $rs[] = $pregCount2;
+            $pregRow = [];
+            foreach ($doctorParents as $dk => $dv) {
+                $preg = \common\models\Pregnancy::find()->where(['>', 'field11', strtotime('-28 week', $dv->createtime)])
+                    ->andWhere(['familyid' => $dv->parentid])
+                    ->one();
+                $pregRow[] = $preg->familyid;
+            }
+            $pregCount = UserLogin::find()->select('openid')->where(['in', 'userid', $pregRow])->count();
+            $rs[] = $pregCount;
+
+            $userLogin = UserLogin::find()->select('openid')->where(['in', 'userid', $doctorParents2])->andWhere(['!=', 'openid', ''])->groupBy('userid')->column();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',1600358400])->andWhere(['aid' => 1369])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',1600358400])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = "";
+
+            $childs = \common\models\ChildInfo::find()
+                ->select('userid')
+                ->andWhere(['>', 'birthday', strtotime('-3 month', strtotime('20200831'))])
+                ->andWhere(['in', 'userid', $doctorParents2])
+                ->column();
+            $childRow1 = UserLogin::find()->select('openid')->where(['in', 'userid', $childs])->groupBy('userid')->count();
+
+            $rs[] = $childRow1;
+            $childs1 = \common\models\ChildInfo::find()
+                ->select('userid')
+                ->andWhere(['>', 'birthday', strtotime('-3 month')])
+                ->andWhere(['in', 'userid', $doctorParents3])
+                ->column();
+            $rs[] = UserLogin::find()->select('openid')->where(['in', 'userid', $childs1])->groupBy('userid')->count();
+
+
+            //$userLogin=UserLogin::find()->select('openid')->where(['in','userid',$childs])->andWhere(['!=','openid',''])->groupBy('userid')->column();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',1600358400])->andWhere(['aid' => 1370])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',1600358400])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = "";
+            $rs[] = Appoint::find()->where(['doctorid' => $v->userid])->andWhere(['type' => 2])->andWhere(['>', 'createtime', strtotime('20200918')])
+                ->andWhere(['<', 'createtime', strtotime('20200926')])->count();
+
+
+            $rs[] = WeOpenid::find()->where(['doctorid' => $v->userid])->andWhere(['>', 'createtime', strtotime('20200918')])
+                ->andWhere(['<', 'createtime', strtotime('20200926')])->count();
+            echo $v->name . "," . implode(',', $rs);
+            echo "\n";
+        }
+
+        exit;
+
+
+        $i = '00:00';
+        $time = date('H:i');
+        $j = 1;
+        while ($i != $time) {
+            $time = date('H:i', strtotime("2020-09-18 +$j minute"));
+            $j++;
+            echo $time . "--";
+            echo Appoint::getTimeType(2, $time);
+            echo "\n";
+        }
+        exit;
+
+        $time = ['08' => 1, '09' => 2, '10' => 3, '13' => 4, '14' => 5, '15' => 6, '16' => 6];
+        $list = FileHelper::findFiles('g');
+        foreach ($list as $k => $v) {
+            $appoint = [];
+            $field = fopen($v, 'r');
+            while (($line = fgets($field)) !== false) {
+                $rs = explode(',', trim($line));
+                if (intval($rs[0])) {
+                    $birthday = strtotime($rs[3]);
+                    $appointOrder = AppointOrder1::findOne(['birthday' => $birthday, 'name' => $rs[1]]);
+                    if (!$appointOrder) {
+                        $appointOrder = new AppointOrder1();
+                        $appointOrder->birthday = $birthday;
+                        $appointOrder->name = $rs[1];
                         $appointOrder->save();
                         var_dump($appointOrder->firstErrors);
                     }
-                    $orderid=$appointOrder->id;
+                    $orderid = $appointOrder->id;
 
 
-
-                    $app=new Appoint();
-                    $ti=explode(':',$rs[2]);
-                    $appoint['appoint_time']=$time[$ti[0]];
-                    preg_match("/([0-9]{4})-([0-1]?[0-9]{1})-([0-3]?[0-9]{1})/",$v,$m);
-                    $appoint['appoint_date']=strtotime($m[0]);
-                    $appoint['userid']=0;
-                    $appoint['doctorid']=216593;
-                    $appoint['type']=2;
-                    $appoint['childid']=0;
-                    $appoint['phone']=0;
-                    $appoint['state']=2;
-                    $appoint['login']=0;
-                    $appoint['mode']=2;
-                    $appoint['vaccine']=0;
-                    $appoint['month']=0;
-                    $appoint['orderid']=$orderid;
-                    $app->load(['Appoint'=>$appoint]);
+                    $app = new Appoint();
+                    $ti = explode(':', $rs[2]);
+                    $appoint['appoint_time'] = $time[$ti[0]];
+                    preg_match("/([0-9]{4})-([0-1]?[0-9]{1})-([0-3]?[0-9]{1})/", $v, $m);
+                    $appoint['appoint_date'] = strtotime($m[0]);
+                    $appoint['userid'] = 0;
+                    $appoint['doctorid'] = 216593;
+                    $appoint['type'] = 2;
+                    $appoint['childid'] = 0;
+                    $appoint['phone'] = 0;
+                    $appoint['state'] = 2;
+                    $appoint['login'] = 0;
+                    $appoint['mode'] = 2;
+                    $appoint['vaccine'] = 0;
+                    $appoint['month'] = 0;
+                    $appoint['orderid'] = $orderid;
+                    $app->load(['Appoint' => $appoint]);
                     $app->save();
                     var_dump($app->firstErrors);
 
@@ -171,19 +341,18 @@ class DataController extends Controller
         exit;
 
 
-
-        for($i=1;$i<200;$i++){
-            $curl = new HttpRequest('https://admin.xiaoe-tech.com/get/comment_admin_page?type=2&page='.$i, true, 10);
-            $curl->setHeader('Cookie','XIAOEID=ada9443a1046c1e9c6290d70dd6e9d80; cookie_channel=2-1568; cookie_is_signed=1; channel=16-6821; Hm_lvt_32573db0e6d7780af79f38632658ed95=1593418195,1593570326,1593573265,1594634419; dataUpJssdkCookie={"wxver":"","net":"","sid":""}; Hm_lvt_081e3681cee6a2749a63db50a17625e2=1595818576,1595913780,1596007326,1596092383; cookie_session_id=Rz4QVV3vyLL1ndEFFlHihygfcZ2s4N5V; b_user_token=token_5f2779139bd3fn84fvGcrIT5alVtTRQ1W; shop_type=TRQ1W; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22b_u_5e74684507bd0_LVMTUeNW%22%2C%22%24device_id%22%3A%22170f6b59dc0f3-08a5f8f462d0fa-396a7400-1024000-170f6b59dc149b%22%2C%22props%22%3A%7B%22%24latest_referrer%22%3A%22%22%2C%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22page_submodule%22%3A%22%E8%B4%A6%E5%8F%B7%E4%B8%BB%E9%A1%B5%22%2C%22page_name%22%3A%22%E8%B4%A6%E5%8F%B7%E4%B8%BB%E9%A1%B5_old%22%2C%22page_module%22%3A%22%E7%AE%A1%E7%90%86%E5%8F%B0%22%2C%22page_button%22%3A%22%22%7D%2C%22first_id%22%3A%22170f6b59dc0f3-08a5f8f462d0fa-396a7400-1024000-170f6b59dc149b%22%7D; appsc=appsx0v9q8I8331; with_app_id=appsx0v9q8I8331; Hm_lpvt_081e3681cee6a2749a63db50a17625e2=1596426127; laravel_session=eyJpdiI6InZGWG5paGxQRWpiUmhCUmxVZHp6V1E9PSIsInZhbHVlIjoiTVwvcmdyUktVbzN6WnpESnNCQzZRbVV0czR1aWpJWXV2MURQMzRxdmE1QlNLZ3ZKalNsS3JvMUZQT0xWRUZhN2c4TFZjYitpeEl2dHZqWGVETWd6Rm1RPT0iLCJtYWMiOiJkYTU4MWVlNzk3ZDcyM2FjODc3MDQ4ZTFmY2M3Njg4ZjBhYTZjYmYwMzQ2ODZlMzZmNzFiNmRlYzYwNWNjYzhkIn0%3D');
-            $html=$curl->get();
-            $data=json_decode($html,true);
-            $list=$data['data']['data'];
-            if($list) {
+        for ($i = 1; $i < 200; $i++) {
+            $curl = new HttpRequest('https://admin.xiaoe-tech.com/get/comment_admin_page?type=2&page=' . $i, true, 10);
+            $curl->setHeader('Cookie', 'XIAOEID=ada9443a1046c1e9c6290d70dd6e9d80; cookie_channel=2-1568; cookie_is_signed=1; channel=16-6821; Hm_lvt_32573db0e6d7780af79f38632658ed95=1593418195,1593570326,1593573265,1594634419; dataUpJssdkCookie={"wxver":"","net":"","sid":""}; Hm_lvt_081e3681cee6a2749a63db50a17625e2=1595818576,1595913780,1596007326,1596092383; cookie_session_id=Rz4QVV3vyLL1ndEFFlHihygfcZ2s4N5V; b_user_token=token_5f2779139bd3fn84fvGcrIT5alVtTRQ1W; shop_type=TRQ1W; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22b_u_5e74684507bd0_LVMTUeNW%22%2C%22%24device_id%22%3A%22170f6b59dc0f3-08a5f8f462d0fa-396a7400-1024000-170f6b59dc149b%22%2C%22props%22%3A%7B%22%24latest_referrer%22%3A%22%22%2C%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22page_submodule%22%3A%22%E8%B4%A6%E5%8F%B7%E4%B8%BB%E9%A1%B5%22%2C%22page_name%22%3A%22%E8%B4%A6%E5%8F%B7%E4%B8%BB%E9%A1%B5_old%22%2C%22page_module%22%3A%22%E7%AE%A1%E7%90%86%E5%8F%B0%22%2C%22page_button%22%3A%22%22%7D%2C%22first_id%22%3A%22170f6b59dc0f3-08a5f8f462d0fa-396a7400-1024000-170f6b59dc149b%22%7D; appsc=appsx0v9q8I8331; with_app_id=appsx0v9q8I8331; Hm_lpvt_081e3681cee6a2749a63db50a17625e2=1596426127; laravel_session=eyJpdiI6InZGWG5paGxQRWpiUmhCUmxVZHp6V1E9PSIsInZhbHVlIjoiTVwvcmdyUktVbzN6WnpESnNCQzZRbVV0czR1aWpJWXV2MURQMzRxdmE1QlNLZ3ZKalNsS3JvMUZQT0xWRUZhN2c4TFZjYitpeEl2dHZqWGVETWd6Rm1RPT0iLCJtYWMiOiJkYTU4MWVlNzk3ZDcyM2FjODc3MDQ4ZTFmY2M3Njg4ZjBhYTZjYmYwMzQ2ODZlMzZmNzFiNmRlYzYwNWNjYzhkIn0%3D');
+            $html = $curl->get();
+            $data = json_decode($html, true);
+            $list = $data['data']['data'];
+            if ($list) {
                 foreach ($list as $k => $v) {
-                    $text=iconv("UTF-8","GBK",$v['content']);
-                    file_put_contents($v['record_title'].'.csv', $text . "\n", FILE_APPEND);
+                    $text = iconv("UTF-8", "GBK", $v['content']);
+                    file_put_contents($v['record_title'] . '.csv', $text . "\n", FILE_APPEND);
                 }
-            }else{
+            } else {
                 continue;
             }
         }
@@ -191,92 +360,90 @@ class DataController extends Controller
         exit;
         ini_set('memory_limit', '6000M');
 
-        $doctors=Doctors::find()->all();
-        foreach($doctors as $k=>$v){
-            $docHospital=DoctorHospital::findOne(['doctorid'=>$v->userid,'hospitalid'=>$v->hospitalid]);
-            $docHospital=$docHospital?$docHospital:new DoctorHospital();
-            $docHospital->doctorid=$v->userid;
-            $docHospital->hospitalid=$v->hospitalid;
+        $doctors = Doctors::find()->all();
+        foreach ($doctors as $k => $v) {
+            $docHospital = DoctorHospital::findOne(['doctorid' => $v->userid, 'hospitalid' => $v->hospitalid]);
+            $docHospital = $docHospital ? $docHospital : new DoctorHospital();
+            $docHospital->doctorid = $v->userid;
+            $docHospital->hospitalid = $v->hospitalid;
             $docHospital->save();
         }
         exit;
 
-        $f=fopen('appoint_id.log','r');
-        while (($line=fgets($f))!==false){
-            preg_match('/id=(\d*)/',$line,$m);
-            if(intval($m[1])) {
+        $f = fopen('appoint_id.log', 'r');
+        while (($line = fgets($f)) !== false) {
+            preg_match('/id=(\d*)/', $line, $m);
+            if (intval($m[1])) {
                 $id[] = $m[1];
             }
         }
-        $appoint=Appoint::find()->select('count(*) as a')->having(['>','a',1000])->indexBy('doctorid')->where(['in','id',$id])->groupBy('doctorid')->column();
-        $userDoctor=UserDoctor::find()->select('name')->where(['in','userid',array_keys($appoint)])->column();
-        var_dump($userDoctor);exit;
+        $appoint = Appoint::find()->select('count(*) as a')->having(['>', 'a', 1000])->indexBy('doctorid')->where(['in', 'id', $id])->groupBy('doctorid')->column();
+        $userDoctor = UserDoctor::find()->select('name')->where(['in', 'userid', array_keys($appoint)])->column();
+        var_dump($userDoctor);
+        exit;
 
-        $f=fopen('123.csv','r');
-        while (($line=fgetcsv($f))!==false){
-            $rs=[];
-            $phone=trim($line[19]);
-            $name=trim($line[18]);
-            $rs[]='';
-            $rs[]=$name;
-            $preg=Pregnancy::find()->where(['field1'=>$name,'field6'=>$phone])->andWhere(['>','field11',strtotime('-11 month')])->one();
-            if($preg){
+        $f = fopen('123.csv', 'r');
+        while (($line = fgetcsv($f)) !== false) {
+            $rs = [];
+            $phone = trim($line[19]);
+            $name = trim($line[18]);
+            $rs[] = '';
+            $rs[] = $name;
+            $preg = Pregnancy::find()->where(['field1' => $name, 'field6' => $phone])->andWhere(['>', 'field11', strtotime('-11 month')])->one();
+            if ($preg) {
 
-            }else{
-                $preg=Pregnancy::find()->where(['field1'=>$name,'doctorid'=>110599])->andWhere(['>','field11',strtotime('-11 month')])->one();
+            } else {
+                $preg = Pregnancy::find()->where(['field1' => $name, 'doctorid' => 110599])->andWhere(['>', 'field11', strtotime('-11 month')])->one();
             }
-            if($preg){
-                $rs[]=$this->getAgeByBirth($preg->field2,2);
-                $rs[]=$preg->field4;
-                $rs[]=$phone;
-                $rs[]=$preg->field5;
-                $rs[]=date('Y-m-d',$preg->field11);
-                $rs[]=$preg->field81;
+            if ($preg) {
+                $rs[] = $this->getAgeByBirth($preg->field2, 2);
+                $rs[] = $preg->field4;
+                $rs[] = $phone;
+                $rs[] = $preg->field5;
+                $rs[] = date('Y-m-d', $preg->field11);
+                $rs[] = $preg->field81;
 
-            }else{
-                $rs[]='';
-                $rs[]='';
-                $rs[]='';
-                $rs[]='';
-                $rs[]='';
-                $rs[]='';
+            } else {
+                $rs[] = '';
+                $rs[] = '';
+                $rs[] = '';
+                $rs[] = '';
+                $rs[] = '';
+                $rs[] = '';
 
             }
-            $rs[]=trim($line[20]);
-            $rs[]=trim($line[21]);
-            $rs[]=trim($line[22]);
-            $rs[]=trim($line[23]);
-            $rs[]=trim($line[24]);
-            $rs[]=trim($line[25]);
-            echo implode("\t,",$rs);
+            $rs[] = trim($line[20]);
+            $rs[] = trim($line[21]);
+            $rs[] = trim($line[22]);
+            $rs[] = trim($line[23]);
+            $rs[] = trim($line[24]);
+            $rs[] = trim($line[25]);
+            echo implode("\t,", $rs);
             echo "\n";
         }
         exit;
 
-        $auto=Autograph::findAll(['doctorid'=>206260]);
+        $auto = Autograph::findAll(['doctorid' => 206260]);
 
-        foreach($auto as $k=>$v){
-            $rs=[];
-            $preg=Pregnancy::find()->where(['familyid'=>$v->userid])->andWhere(['>','field11',strtotime('-11 month')])->one();
-            if($preg){
-                $openid=UserLogin::getOpenid($v->userid);
-                echo $openid."\n";
+        foreach ($auto as $k => $v) {
+            $rs = [];
+            $preg = Pregnancy::find()->where(['familyid' => $v->userid])->andWhere(['>', 'field11', strtotime('-11 month')])->one();
+            if ($preg) {
+                $openid = UserLogin::getOpenid($v->userid);
+                echo $openid . "\n";
             }
         }
 
-exit;
+        exit;
 
 
-        $auto=Autograph::find()->andWhere(['starttime'=>0])->all();
-        foreach ($auto as $k=>$v){
-            $v->starttime=date('Ymd',$v->createtime);
+        $auto = Autograph::find()->andWhere(['starttime' => 0])->all();
+        foreach ($auto as $k => $v) {
+            $v->starttime = date('Ymd', $v->createtime);
             //$v->endtime=date('Ymd',strtotime('+1 year',strtotime($v->starttime)));
             $v->save();
         }
         exit;
-
-
-
 
 
 //        $hav=HospitalAppointVaccine::findAll(['haid'=>98]);
@@ -297,38 +464,38 @@ exit;
 //        exit;
 
 
-        $satime = strtotime('-1 day',strtotime(date('Y-m-d')));
-        $doctors = UserDoctor::find()->where(['county'=>1106])->all();
+        $satime = strtotime('-1 day', strtotime(date('Y-m-d')));
+        $doctors = UserDoctor::find()->where(['county' => 1106])->all();
         foreach ($doctors as $k => $v) {
             echo $v->name;
             for ($stime = $satime; $stime < time(); $stime = strtotime('+1 day', $stime)) {
-                echo date('Ymd',$stime);
+                echo date('Ymd', $stime);
                 $etime = strtotime('+1 day', $stime);
                 $doctorParent = DoctorParent::find()->where(['doctorid' => $v->userid])
                     ->andWhere(['>=', 'createtime', $stime])
                     ->andWhere(['<', 'createtime', $etime])
                     ->count();
-                $child_info1=ChildInfo::find()
-                    ->leftJoin('doctor_parent','doctor_parent.parentid=child_info.userid')
-                    ->andWhere(['doctor_parent.doctorid'=>$v->userid])
-                    ->leftJoin('autograph','autograph.userid=child_info.userid')
+                $child_info1 = ChildInfo::find()
+                    ->leftJoin('doctor_parent', 'doctor_parent.parentid=child_info.userid')
+                    ->andWhere(['doctor_parent.doctorid' => $v->userid])
+                    ->leftJoin('autograph', 'autograph.userid=child_info.userid')
                     ->andWhere(['>=', 'autograph.createtime', $stime])
                     ->andWhere(['<', 'autograph.createtime', $etime])
-                    ->andWhere(['>=', 'child_info.birthday', strtotime('-6 year',$stime)])
+                    ->andWhere(['>=', 'child_info.birthday', strtotime('-6 year', $stime)])
                     ->andWhere('autograph.createtime>=child_info.createtime')
                     ->count();
-                $child_info2=ChildInfo::find()
-                    ->leftJoin('doctor_parent','doctor_parent.parentid=child_info.userid')
-                    ->andWhere(['doctor_parent.doctorid'=>$v->userid])
-                    ->leftJoin('autograph','autograph.userid=child_info.userid')
+                $child_info2 = ChildInfo::find()
+                    ->leftJoin('doctor_parent', 'doctor_parent.parentid=child_info.userid')
+                    ->andWhere(['doctor_parent.doctorid' => $v->userid])
+                    ->leftJoin('autograph', 'autograph.userid=child_info.userid')
                     ->andWhere(['>=', 'child_info.createtime', $stime])
                     ->andWhere(['<', 'child_info.createtime', $etime])
-                    ->andWhere(['>=', 'child_info.birthday', strtotime('-6 year',$stime)])
+                    ->andWhere(['>=', 'child_info.birthday', strtotime('-6 year', $stime)])
                     ->andWhere('autograph.createtime<child_info.createtime')
                     ->count();
 
-                $pregLCount=Pregnancy::find()
-                    ->andWhere(['>','pregnancy.field16',strtotime('-43 week',$stime)])
+                $pregLCount = Pregnancy::find()
+                    ->andWhere(['>', 'pregnancy.field16', strtotime('-43 week', $stime)])
                     //->leftJoin('autograph', '`autograph`.`userid` = `pregnancy`.`familyid`')
                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
                     ->andWhere(['>=', 'doctor_parent.createtime', $stime])
@@ -342,7 +509,7 @@ exit;
                     ->count();
                 $rs = [];
                 $rs['sign1'] = $doctorParent;
-                $rs['sign2'] = $child_info1+$child_info2;
+                $rs['sign2'] = $child_info1 + $child_info2;
                 $rs['sign3'] = $pregLCount;
 
                 $rs['appoint_num'] = $appoint;
@@ -371,7 +538,7 @@ exit;
                     $userids[] = $lv->openid;
                     $k++;
 
-                    echo $k."\n";
+                    echo $k . "\n";
 
                     $data = [
                         'first' => ['value' => '母乳喂养是为婴儿健康生长和发育提供理想的食品和营养的无与伦比的方式，同时也是生殖过程的基本组成部分和母亲健康的重要指标，为此儿宝宝邀请了侯景丽主任为大家讲解《母乳喂养指南》是如何来解决宝宝母乳喂养的问题。'],
@@ -406,7 +573,6 @@ exit;
         var_dump($rs);
         exit;
         exit;
-
 
 
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);

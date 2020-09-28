@@ -128,12 +128,17 @@ class SiteController extends BaseController
             $data['baifen'] = 0;
         }
 
-        $auto=Autograph::find()->andFilterWhere(['in','`doctorid`' ,$doctorids])
-        ;
+        $auto=Autograph::find()->select('userid')->andFilterWhere(['in','`doctorid`' ,$doctorids])->column();
+        if($auto) {
+            $data['AutoNum'] = ChildInfo::find()
+                ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
+                ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+                ->count();
+        }
         //签字数
-        $data['AutoNum']=$auto->count();
         //签约率
         if($data['AutoNum']) {
+
             $data['abaifen'] = round(($data['AutoNum'] / $data['achildNum']) * 100,1);
         }else{
             $data['abaifen'] = 0;

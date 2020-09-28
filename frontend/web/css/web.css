@@ -134,18 +134,45 @@ button{    border: none;}
     border-radius:5px; width: 100%; text-align: left;color: #666666;}
 .appoint .item .dropdown button .caret{float: right;margin-top: 9px;}
 
-.appoint .item .days {  width: 100%; height: 81px;white-space: nowrap;   overflow:scroll;display:inline-flex; }
-.appoint .item .days::-webkit-scrollbar {
-    display: none;
-}
-.appoint .item .days  .rs{flex-shrink: 0;width: 65px;height:81px;text-align: center;color: #555555;font-size: 34px;}
-.appoint .item .days  .rs .day{font-size: 15px;color: #333333;line-height: 50px;margin:0 auto;width:38px;height:38px;}
-.appoint .item .days  .rs .week{margin-bottom: 9px; height:31px;font-size: 10px;color: #999999;line-height: 31px;text-align: center;border-bottom: 1px solid #DDDDDD}
-.appoint .item .days .rs .on{ margin:0 auto;font-size: 15px;color: #FFFFFF;line-height: 38px;width:38px;
-    height:38px;
-    background:rgba(240,85,70,1);
-    border-radius:50%;}
-.appoint .item .days  .off{background-color: #eeeeee;text-align: center;border-radius: 10px;color: #ffffff;}
+
+
+/*.appoint .item .days {  width: 100%; height: 81px;white-space: nowrap;   overflow:scroll;display:inline-flex; }*/
+/*.appoint .item .days::-webkit-scrollbar {*/
+    /*display: none;*/
+/*}*/
+/*.appoint .item .days  .rs{flex-shrink: 0;width: 65px;height:81px;text-align: center;color: #555555;font-size: 34px;}*/
+/*.appoint .item .days  .rs .day{font-size: 15px;color: #333333;line-height: 50px;margin:0 auto;width:38px;height:38px;}*/
+/*.appoint .item .days  .rs .week{margin-bottom: 9px; height:31px;font-size: 10px;color: #999999;line-height: 31px;text-align: center;border-bottom: 1px solid #DDDDDD}*/
+/*.appoint .item .days .rs .on{ margin:0 auto;font-size: 15px;color: #FFFFFF;line-height: 38px;width:38px;*/
+    /*height:38px;*/
+    /*background:rgba(240,85,70,1);*/
+    /*border-radius:50%;}*/
+/*.appoint .item .days  .off{background-color: #eeeeee;text-align: center;border-radius: 10px;color: #ffffff;}*/
+
+.appoint .item .days {  width: 100%; white-space: nowrap;   overflow:scroll;display:inline-flex; }
+.appoint .item .days{background-color: #ffffff;padding: 10px 0;}
+.appoint .item .days {  width: 100%;  white-space: nowrap;}
+.appoint .item .days  .rs{margin: 0 2px;flex-shrink: 0;padding:5px 0;display: inline-block; width: 70px; border: 2px solid #fafafa; background-color: #ffffff;border-radius:5px;text-align: center;color: #555555;font-size: 17px;}
+.appoint .item .days  .rs .day{font-size: 5px;color: #555555;line-height: 20px;}
+.appoint .item .days  .rs .week{font-size: 12px;color: #999999;line-height: 20px;}
+.appoint .item .days  .rs .msg{font-size: 10px;color: #999999;line-height: 12px;}
+
+.appoint .item .days  .on{text-align: center;color: #ffffff;background-color: #e56659;border: 2px solid #e56659; }
+.appoint .item .days  .on .day{color: #ffffff;}
+.appoint .item .days  .on .week{color: #ffffff;}
+.appoint .item .days  .on .msg{color: #ffffff;}
+
+.appoint .item .days  .notOp{background-color:#fafafa;text-align: center;color: #bbbbbb;border: none;padding: 2px;}
+.appoint .item .days  .notOp .day{color: #999999;}
+.appoint .item .days  .notOp .week{color: #999999;}
+.appoint .item .days  .notOp .msg{color: #999999;}
+
+
+.appoint .item .days .off{background-color: #eeeeee;text-align: center;color: #ffffff;}
+
+
+
+
 
 
 .appoint .item .time{padding-top: 26px;display: flex;justify-content:space-around;flex-wrap:wrap;}

@@ -17,9 +17,11 @@ use common\models\AppointAdult;
 use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
+use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointVaccineNum;
 use common\models\HospitalAppointWeek;
+use common\models\Street;
 use common\models\UserDoctor;
 use common\models\Vaccine;
 use EasyWeChat\Factory;
@@ -80,8 +82,10 @@ class WappointController extends Controller
         ]);
     }
 
-    public function actionFrom($userid,$vid=0)
+    public function actionFrom($userid,$vid=0,$sid=0)
     {
+        $dweek = ['日', '一', '二', '三', '四', '五', '六'];
+        $dateMsg = ['不可约', '可约', '未放号'];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $userid, 'type' => 4]);
 
         $days=[];
@@ -92,36 +96,49 @@ class WappointController extends Controller
         $day = strtotime(date('Y-m-d',strtotime('+' . $delay . " day")));
 
 
+
         //判断所选疫苗都有周几可约
         if ($vid) {
             $vaccine = Vaccine::findOne($vid);
             if ($vaccine) {
                 $query = HospitalAppointVaccine::find()
                     ->select('week')
-                    ->where(['haid' => $hospitalA->id]);
-                if ($vaccine->type == 0) {
-                    $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0]]);
-                } else {
-                    $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => -1]]);
-                }
-                $weekr = $query->groupBy('week')->column();
+                    ->where(['haid' => $hospitalA->id])
+                    ->andWhere(['vaccine'=>$vid]);
+                $vaccineWeek = $query->groupBy('week')->column();
                 //如该疫苗无法获取周几可约则视为非法访问
-                if (!$weekr) {
+                if (!$vaccineWeek) {
                     return new Code(20010, '社区医院暂未开通服务！');
                 }
             }
-            if($vid==-2){
-                $weekr = HospitalAppointVaccine::find()
-                    ->select('week')
-                    ->where(['haid' => $hospitalA->id])
-                    ->andWhere(['vaccine'=>$vid])
-                    ->groupBy('week')->column();
+        }
+        //var_dump($vaccineWeek);exit;
 
+
+        //判断所选社区都有周几可约
+        if ($sid) {
+            $streetView = Street::findOne($sid);
+            if ($streetView) {
+                $query = HospitalAppointStreet::find()
+                    ->select('week')
+                    ->where(['haid' => $hospitalA->id]);
+                $query->andWhere(['or', ['street' => $sid], ['street' => 0]]);
+                $streetWeek = $query->groupBy('week')->column();
+                //如该疫苗无法获取周几可约则视为非法访问
+                if (!$streetWeek) {
+                    return new Code(20010, '社区医院暂未开通服务！');
+                }
             }
         }
-        $dweek = ['日', '一', '二', '三', '四', '五', '六'];
-        $dateMsg = ['非门诊', '门诊日', '未放号'];
-        for ($i = 1; $i <= $cycle; $i++) {
+
+        if($vaccineWeek && $streetWeek){
+            $weekr=array_intersect($vaccineWeek,$streetWeek);
+        }elseif($streetWeek || $vaccineWeek){
+            $weekr=$streetWeek?$streetWeek:$vaccineWeek;
+        }
+
+
+        for ($i = 1; $i <= 60; $i++) {
             $day = $day + 86400;
             $rs['date'] = $day;
             $rs['day'] = date('m.d', $day);
@@ -129,24 +146,10 @@ class WappointController extends Controller
             $rs['week'] = date('w', $day);
             $rs['weekStr'] = $dweek[$rs['week']];
             $rs['dateState'] = $hospitalA->is_appoint($day, $weekr);
-            if($hospitalA->is_appoint($day, $weekr)){
-                $days[] = $rs;
-            }
-
+            $rs['dateMsg'] = $dateMsg[$rs['dateState']];
+            $days[] = $rs;
         }
 
-        if($days){
-            $firstDay = $days[0]['date'];
-        }else{
-            $firstDay = $day + 86400;
-        }
-        $doctor=UserDoctor::findOne(['userid'=>$userid]);
-        if($doctor){
-            $doctorRow=$doctor->toArray();
-            $doctorRow['hospital']=Hospital::findOne($doctor->hospitalid)->name;
-        }
-
-        $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
         $hospitalV = HospitalAppointVaccine::find()
             ->select('vaccine')
             ->where(['haid' => $hospitalA->id])->groupBy('vaccine')->column();
@@ -171,48 +174,89 @@ class WappointController extends Controller
 
             $vaccines = $vQuery->asArray()->all();
 
-
             foreach ($vaccines as $k => $v) {
                 $rs = $v;
                 $rs['name'] = $rs['name'] . "【" . Vaccine::$typeText[$rs['type']] . "】";
                 $rows[] = $rs;
             }
-            if(in_array('-2',$hospitalV)){
-                $rs['id']=-2;
-                $rs['name']='两癌筛查';
-                $rows[]=$rs;
-            }
-            //var_dump($rows);exit;
-
             $vaccines = $rows;
         } else {
             $vaccines = [];
         }
+        $doctor=UserDoctor::findOne(['userid'=>$userid]);
+        if($doctor){
+            $doctorRow=$doctor->toArray();
+            $doctorRow['hospital']=Hospital::findOne($doctor->hospitalid)->name;
+        }
 
-        return $this->render('from', [ 'vaccines' => $vaccines,'days' => $days,'day'=>$firstDay,'doctor'=>$doctorRow,'user'=>$appointAdult]);
+        $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
+
+        return $this->render('from', [ 'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
     }
-    public function actionDayNum($doctorid, $day,$vid=0)
+    public function actionDayNum($doctorid, $week = 0, $type=4, $day, $vid = 0,$sid=0)
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        $rs = [];
-        $times=[];
-        $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => 4]);
-        $week=date('w',strtotime($day));
 
+        $rs = [];
+        $times = [];
+        $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+
+        $weekv=[];
+        if($vid) {
+            $weekv = HospitalAppointVaccine::find()
+                ->select('week')
+                ->where(['haid' => $hospitalA->id])
+                ->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0], ['vaccine' => -1]])->groupBy('week')->column();
+        }
+
+        //判断所选社区都有周几可约
+        if ($sid) {
+            $streetView = Street::findOne($sid);
+            if ($streetView) {
+                $query = HospitalAppointStreet::find()
+                    ->select('week')
+                    ->where(['haid' => $hospitalA->id]);
+                $query->andWhere(['or', ['street' => $sid], ['street' => 0]]);
+                $streetWeek = $query->groupBy('week')->column();
+                //如该疫苗无法获取周几可约则视为非法访问
+                if (!$streetWeek) {
+                    return new Code(20010, '社区医院暂未开通服务！');
+                }
+            }
+        }
+
+        if($weekv && $streetWeek){
+            $weekr=array_intersect($weekv,$streetWeek);
+        }elseif($streetWeek || $weekv){
+            $weekr=$streetWeek?$streetWeek:$weekv;
+        }
+
+
+        $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekr);
+        if (!$is_appoint) {
+            return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];
+        }
+        if ($is_appoint == 2) {
+            $d=HospitalAppoint::$cycleNum[$hospitalA->cycle]+$hospitalA->delay;
+            $date = date('Y年m月d日', strtotime('-' .$d. ' day', strtotime($day)));
+            return ['list' => [], 'is_appoint' => $is_appoint, 'text' =>"放号时间：". $date . " " . HospitalAppoint::$rtText[$hospitalA->release_time]];
+        }
+        $week = date('w', strtotime($day));
 
         $vaccine_count=Appoint::find()->where(['vaccine'=>$vid,'appoint_date'=>strtotime($day),'doctorid'=>$doctorid])->andWhere(['<','state',3])->count();
         $hospitalAppointVaccineNum=HospitalAppointVaccineNum::findOne(['haid'=>$hospitalA->id,'week'=>$week,'vaccine'=>$vid]);
         if($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num-$vaccine_count<=0){
-            return ['times' => [], 'is_appoint' => 0, 'text' =>'此疫苗'.date('Y年m月d日',strtotime($day))."已约满，请选择其他日期".($hospitalAppointVaccineNum->num-$vaccine_count)];
+            return ['list' => [], 'is_appoint' => 0, 'text' =>'此疫苗'.date('Y年m月d日',strtotime($day))."已约满，请选择其他日期".($hospitalAppointVaccineNum->num-$vaccine_count)];
+
         }
 
 
 
-        $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->orderBy('time_type asc')->all();
+        $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->all();
         if ($weeks) {
             $appoints = Appoint::find()
                 ->select('count(*)')
-                ->andWhere(['type' => 4])
+                ->andWhere(['type' => $type])
                 ->andWhere(['doctorid' => $doctorid])
                 ->andWhere(['appoint_date' => strtotime($day)])
                 ->andWhere(['!=', 'state', 3])
@@ -228,40 +272,99 @@ class WappointController extends Controller
                     $rs[$v->time_type] = $v->num;
                 }
             }
-
+            if ($doctorid == 4119 && date('Ymd', strtotime($day)) == '20200615') {
+                foreach ($rs as $k => $v) {
+                    if (in_array($k, [4, 5, 6, 13, 14, 15, 16, 17, 18])) {
+                        $rs[$k] = 0;
+                    }
+                }
+            }
+            if ($doctorid == 176156 && date('Ymd', strtotime($day)) == '20200522') {
+                foreach ($rs as $k => $v) {
+                    $rs[$k] = 0;
+                }
+            }
             if ($doctorid != 176156) {
                 unset($rs[19]); unset($rs[20]);
             }
-            $firstAppoint=Appoint::find()
-                ->andWhere(['type' => 4])
+            $firstAppoint = Appoint::find()
+                ->andWhere(['type' => $type])
                 ->andWhere(['doctorid' => $doctorid])
                 ->andWhere(['appoint_date' => strtotime($day)])
                 ->andWhere(['!=', 'state', 3])
                 ->andWhere(['mode' => 0])
                 ->orderBy('createtime desc')
                 ->one();
-            if($firstAppoint){
-                foreach($rs as $k=>$v){
-                    if($firstAppoint->appoint_time>6 && $k>6){
-                        $times[$k]=$v;
+
+
+            $vWeek=[];
+            $vTypes=[];
+            //获取疫苗预约时间（上午/下午）
+            if($vid) {
+                $vaccine = Vaccine::findOne($vid);
+                $query = HospitalAppointVaccine::find()
+                    ->where(['haid' => $hospitalA->id,'week' => $week]);
+
+                if ($vaccine->type == 0) {
+                    $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0]]);
+                } else {
+                    $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => -1]]);
+                }
+                $vWeek = $query->select('type')->column();
+
+                //如果该日期只设置了上午则代表设置的上午疫苗全天可约
+                $vTypes = HospitalAppointVaccine::find()->select('type')
+                    ->where(['haid' => $hospitalA->id,'week' => $week])->column();
+            }
+            //如果当天已有预约则按照当天第一个预约信息判断半小时/一小时
+            if ($firstAppoint) {
+                foreach ($rs as $k => $v) {
+                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek) && $vWeek){
+                        $v=0;
+                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes)&& $vWeek){
+                        $v=0;
                     }
-                    if($firstAppoint->appoint_time<7 && $k<7){
-                        $times[$k]=$v;
+                    if ($firstAppoint->appoint_time > 6 && $k > 6) {
+                        $rows['time'] = Appoint::$timeText[$k];
+                        $rows['appoint_time'] = $k;
+                        $rows['num'] = $v;
+                        $times[] = $rows;
+
+                    }
+                    if ($firstAppoint->appoint_time < 7 && $k < 7) {
+                        $rows['time'] = Appoint::$timeText[$k];
+                        $rows['appoint_time'] = $k;
+                        $rows['num'] = $v;
+                        $times[] = $rows;
+
                     }
                 }
-            }else{
-                foreach($rs as $k=>$v){
-                    if($hospitalA->interval==2 && $k>6){
-                        $times[$k]=$v;
+            } else {
+                foreach ($rs as $k => $v) {
+                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek) && $vWeek){
+                        $v=0;
+                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes) && $vWeek){
+                        $v=0;
                     }
-                    if($hospitalA->interval==1 && $k<7){
-                        $times[$k]=$v;
+                    if ($hospitalA->interval == 2 && $k > 6) {
+                        $rows['time'] = Appoint::$timeText[$k];
+                        $rows['appoint_time'] = $k;
+                        $rows['num'] = $v;
+                        $times[] = $rows;
+
+                    }
+                    if ($hospitalA->interval == 1 && $k < 7) {
+                        $rows['time'] = Appoint::$timeText[$k];
+                        $rows['appoint_time'] = $k;
+                        $rows['num'] = $v;
+                        $times[] = $rows;
                     }
                 }
             }
+            return ['list' => $times, 'is_appoint' => $is_appoint, 'text' => ''];
 
         }
-        return ['times'=>$times];
+        return new Code(20020, '未设置');
     }
     /**
      * 发送验证码
@@ -408,6 +511,16 @@ class WappointController extends Controller
             ->andWhere(['<','state',3])
             ->count();
 
+        if($post['vaccine']) {
+            $week = date('w', strtotime($post['appoint_date']));
+
+            $vaccine_count = Appoint::find()->where(['doctorid' => $post['doctorid'], 'vaccine' => $post['vaccine'], 'appoint_date' => strtotime($post['appoint_date'])])->andWhere(['<', 'state', 3])->count();
+            $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $post['vaccine']]);
+            if ($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num - $vaccine_count <= 0) {
+                \Yii::$app->getSession()->setFlash('此疫苗' . date('Y年m月d日', strtotime($post['appoint_date'])) . "已约满，请选择其他日期");
+                return $this->redirect(['wappoint/from','id'=>$post['doctorid']]);
+            }
+        }
 
         if(($weeks->num-$appointed)<=0){
             \Yii::$app->getSession()->setFlash('error','该时间段已约满，请选择其他时间');
