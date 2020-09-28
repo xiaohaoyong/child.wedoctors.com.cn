@@ -31,7 +31,7 @@
             <?php
             foreach ($doctors as $k => $v) {
                 ?>
-                <a href="#" οnclick="return false;" class="item" data-toggle="modal" data-target="#create-modal<?= $v['userid'] ?>">
+                <div class="item" data-toggle="modal" data-target="#create-modal<?= $v['userid'] ?>">
                     <div class="item-content">
                         <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
                         </div>
@@ -53,7 +53,7 @@
 
                     </div>
                     <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
-                </a>
+                </div>
 
 
                 <?php
