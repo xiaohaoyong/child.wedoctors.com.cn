@@ -184,7 +184,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
                 foreach ($vaccines as $k => $v) {
                     $rs = $v;
-                    $rs['name'] = $rs['name'] . "【" . Vaccine::$typeText[$rs['type']] . "】";
+                    $rs['name'] = $rs['name'] . "【" . $rs['type']==1?'自费':'一类' . "】";
                     $rows[] = $rs;
                 }
                 $vaccines = $rows;
