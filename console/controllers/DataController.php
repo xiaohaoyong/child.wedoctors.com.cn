@@ -126,89 +126,8 @@ class DataController extends Controller
     public function actionTesta()
     {
         ini_set('memory_limit', '2048M');
-
-        $exam=ChildInfo::find();
-        $sql = "select field63,count(*) from examination group by field63";
-        $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
-        foreach ($query as $k=>$v){
-            $v['field63']=str_replace(',','，',$v['field63']);
-            echo implode(',',$v);
-            echo "\n";
-        }
-
-        exit;
-
-//
-//        $openids=[];
-//        $list=FileHelper::findFiles('login');
-//        foreach($list as $k=>$v){
-//            $field=fopen($v,'r');
-//            if(!stripos($v,'2020-09-2'))
-//            {
-//                continue;
-//            }
-//            echo $v."\n";
-//            while (($line=fgets($field))!==false){
-//                $rs=explode('|,|',trim($line));
-//                if($rs[2]=='已登录'){
-//                    $userStr=explode(':',$rs[5]);
-//                    if($userStr[1]){
-//                        $openid=$userStr[1];
-//                    }
-//                }else{
-//                    $userStr=explode(':',$rs[4]);
-//                    if($userStr[1]){
-//                        $userStr2=explode('@@',$userStr[1]);
-//                        if($userStr2[0]){
-//                            $openid=$userStr2[0];
-//
-//                        }
-//                    }
-//                }
-//                $m = substr($rs[0], 4, 2);
-//                $d = substr($rs[0], 6, 2);
-//                $test1=new Test1();
-//                $test1->m=$m;
-//                $test1->openid=$openid;
-//                $test1->d=$d;
-//                $test1->save();
-////
-////                $userLogin=UserLogin::findOne(['xopenid'=>$openid]);
-////
-////                if($userLogin) {
-////                    $doctorParents=DoctorParent::findOne(['parentid'=>$userLogin->userid]);
-////                    if($doctorParents) {
-////                        if(!$openids[$doctorParents->doctorid][$m]){
-////                            $openids[$doctorParents->doctorid][$m]=[];
-////                        }
-////                        if (!in_array($openid, $openids[$doctorParents->doctorid][$m])) {
-////                            $openids[$doctorParents->doctorid][$m][] = $openid;
-////                        }
-////                    }
-////                }
-//                echo $openid."\n";
-//            }
-//        }
-//exit;
-        $test1 = Test1::find()->where(['m' => '08'])->andWhere(['doctorid'=>0])
-            ->andWhere(['>','d','15'])
-
-            ->orderBy('d desc')->all();
-        foreach ($test1 as $k => $v) {
-
-            $userLogin = UserLogin::findOne(['xopenid' => $v->openid]);
-            if ($userLogin) {
-                $doctorParents = DoctorParent::findOne(['parentid' => $userLogin->userid]);
-                if ($doctorParents) {
-                    $v->doctorid=$doctorParents->doctorid;
-                    $v->save();
-                }
-            }
-            echo $v->m;
-            echo $v->d;
-            echo "\n";
-        }
-       exit;
+        $s_time='20201002';
+        $e_time='20201010';
 
 
         $userDoctors = UserDoctor::find()->all();
@@ -216,19 +135,19 @@ class DataController extends Controller
             $rs = [];
             $doctorParents = DoctorParent::find()->where(['doctorid' => $v->userid])
                 ->select('parentid,createtime')
-                ->andWhere(['>', 'createtime', strtotime('20200918')])
-                ->andWhere(['<', 'createtime', strtotime('20200926')])
+                ->andWhere(['>', 'createtime', strtotime($s_time)])
+                ->andWhere(['<', 'createtime', strtotime($e_time)])
                 ->all();
             $doctorParents3 = DoctorParent::find()->where(['doctorid' => $v->userid])
                 ->select('parentid')
-                ->andWhere(['>', 'createtime', strtotime('20200918')])
-                ->andWhere(['<', 'createtime', strtotime('20200926')])
+                ->andWhere(['>', 'createtime', strtotime($s_time)])
+                ->andWhere(['<', 'createtime', strtotime($e_time)])
                 ->column();
 
             $doctorParents2 = DoctorParent::find()->where(['doctorid' => $v->userid])
                 ->select('parentid')
                 ->column();
-            $pregs = \common\models\Pregnancy::find()->where(['>', 'field11', strtotime('-28 week', strtotime('20200918'))])
+            $pregs = \common\models\Pregnancy::find()->where(['>', 'field11', strtotime('-28 week', strtotime($s_time))])
                 ->select('familyid')
                 ->andWhere(['in', 'familyid', $doctorParents2])
                 ->column();
@@ -245,13 +164,13 @@ class DataController extends Controller
             $rs[] = $pregCount;
 
             $userLogin = UserLogin::find()->select('openid')->where(['in', 'userid', $doctorParents2])->andWhere(['!=', 'openid', ''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',1600358400])->andWhere(['aid' => 1369])->groupBy('openid')->count();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',1600358400])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
             $rs[] = "";
 
             $childs = \common\models\ChildInfo::find()
                 ->select('userid')
-                ->andWhere(['>', 'birthday', strtotime('-3 month', strtotime('20200831'))])
+                ->andWhere(['>', 'birthday', strtotime('-3 month', strtotime($s_time))])
                 ->andWhere(['in', 'userid', $doctorParents2])
                 ->column();
             $childRow1 = UserLogin::find()->select('openid')->where(['in', 'userid', $childs])->groupBy('userid')->count();
@@ -266,15 +185,15 @@ class DataController extends Controller
 
 
             //$userLogin=UserLogin::find()->select('openid')->where(['in','userid',$childs])->andWhere(['!=','openid',''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',1600358400])->andWhere(['aid' => 1370])->groupBy('openid')->count();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',1600358400])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
             $rs[] = "";
-            $rs[] = Appoint::find()->where(['doctorid' => $v->userid])->andWhere(['type' => 2])->andWhere(['>', 'createtime', strtotime('20200918')])
-                ->andWhere(['<', 'createtime', strtotime('20200926')])->count();
+            $rs[] = Appoint::find()->where(['doctorid' => $v->userid])->andWhere(['type' => 2])->andWhere(['>', 'createtime', strtotime($s_time)])
+                ->andWhere(['<', 'createtime', strtotime($e_time)])->count();
 
 
-            $rs[] = WeOpenid::find()->where(['doctorid' => $v->userid])->andWhere(['>', 'createtime', strtotime('20200918')])
-                ->andWhere(['<', 'createtime', strtotime('20200926')])->count();
+            $rs[] = WeOpenid::find()->where(['doctorid' => $v->userid])->andWhere(['>', 'createtime', strtotime($s_time)])
+                ->andWhere(['<', 'createtime', strtotime($e_time)])->count();
             echo $v->name . "," . implode(',', $rs);
             echo "\n";
         }

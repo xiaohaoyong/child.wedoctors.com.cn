@@ -271,18 +271,7 @@ class WappointController extends Controller
                 } else {
                     $rs[$v->time_type] = $v->num;
                 }
-            }
-            if ($doctorid == 4119 && date('Ymd', strtotime($day)) == '20200615') {
-                foreach ($rs as $k => $v) {
-                    if (in_array($k, [4, 5, 6, 13, 14, 15, 16, 17, 18])) {
-                        $rs[$k] = 0;
-                    }
-                }
-            }
-            if ($doctorid == 176156 && date('Ymd', strtotime($day)) == '20200522') {
-                foreach ($rs as $k => $v) {
-                    $rs[$k] = 0;
-                }
+                $rs_num[$v->time_type] = $v->num;
             }
             if ($doctorid != 176156) {
                 unset($rs[19]); unset($rs[20]);
@@ -328,6 +317,7 @@ class WappointController extends Controller
                         $rows['time'] = Appoint::$timeText[$k];
                         $rows['appoint_time'] = $k;
                         $rows['num'] = $v;
+                        $rows['num1']=$rs_num[$k];
                         $times[] = $rows;
 
                     }
@@ -335,6 +325,7 @@ class WappointController extends Controller
                         $rows['time'] = Appoint::$timeText[$k];
                         $rows['appoint_time'] = $k;
                         $rows['num'] = $v;
+                        $rows['num1']=$rs_num[$k];
                         $times[] = $rows;
 
                     }
@@ -350,6 +341,8 @@ class WappointController extends Controller
                         $rows['time'] = Appoint::$timeText[$k];
                         $rows['appoint_time'] = $k;
                         $rows['num'] = $v;
+                        $rows['num1']=$rs_num[$k];
+
                         $times[] = $rows;
 
                     }
@@ -357,6 +350,8 @@ class WappointController extends Controller
                         $rows['time'] = Appoint::$timeText[$k];
                         $rows['appoint_time'] = $k;
                         $rows['num'] = $v;
+                        $rows['num1']=$rs_num[$k];
+
                         $times[] = $rows;
                     }
                 }

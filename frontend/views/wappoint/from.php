@@ -133,7 +133,15 @@ function select_time(day){
       }else{
           var html='';
           jQuery.each(times,function(i,item){
-              html=html+'<div class="rs '+(item.num>0?'ton':'')+'" id="'+item.appoint_time+'">'+item.time+'  '+(item.num>0?'有号':'无号')+'</div>';
+              var txt="";
+              if(item.num1==0){
+                  txt='无号';
+              }else if(item.num1>0 && item.num==0){
+                  txt='约满';
+              }else if(item.num>0){
+                  txt='有号';
+              }
+              html=html+'<div class="rs '+(item.num>0?'ton':'')+'" id="'+item.appoint_time+'">'+item.time+'  '+txt+'</div>';
           });
       }
       jQuery('.time').html(html);
