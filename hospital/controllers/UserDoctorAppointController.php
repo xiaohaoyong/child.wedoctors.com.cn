@@ -76,7 +76,7 @@ class UserDoctorAppointController extends BaseController
             $model->weeks=str_split((string)$model->weeks);
         }
         $model->weeks="星期".implode(',',$model->weeks);
-        $model->cycle=\common\models\UserDoctorAppoint::$cycleText[$model->cycle];
+        $model->cycle=\common\models\HospitalAppoint::$cycleText[$model->cycle];
         $model->delay=$model->delay."天";
         $model->type1_num=$model->type1_num."人";
         $model->type2_num=$model->type2_num."人";

@@ -26,7 +26,7 @@ use yii\widgets\ActiveForm;
                                 '4' => '周四  ',
                                 '5' => '周五  '
                             ],['class'=>'flat-red'])->label(false) ?></td></tr>
-                    <tr><th>周期长度</th><td><?= $form->field($model, 'cycle',['options'=>['class'=>"col-xs-3"]])->dropDownList(\common\models\UserDoctorAppoint::$cycleText, ['prompt'=>'请选择'])->label(false) ?></td></tr>
+                    <tr><th>周期长度</th><td><?= $form->field($model, 'cycle',['options'=>['class'=>"col-xs-3"]])->dropDownList(\common\models\HospitalAppoint::$cycleText, ['prompt'=>'请选择'])->label(false) ?></td></tr>
                     <tr><th>
                             延迟日期<br>
                             注：0为可可预约次日，1为后天以此类推
