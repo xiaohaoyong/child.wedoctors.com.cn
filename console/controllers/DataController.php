@@ -125,6 +125,23 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+
+
+        $f = fopen('323232.csv', 'r');
+        while (($line = fgetcsv($f)) !== false) {
+            $child=ChildInfo::findOne(['name'=>$line[0],'birthday'=>strtotime($line[1]),'doctorid'=>110645]);
+            if($child) {
+
+                $auto = Autograph::findOne(['doctorid' => 156256, 'userid' => $child->userid]);
+                if ($auto) {
+                    $auto->doctorid = 386661;
+                    $auto->save();
+                }
+
+            }
+            echo "\n";
+        }
+        exit;
         ini_set('memory_limit', '2048M');
         $s_time='20201002';
         $e_time='20201010';
