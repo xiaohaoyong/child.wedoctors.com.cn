@@ -506,23 +506,6 @@ class WappointController extends Controller
             ->andWhere(['<','state',3])
             ->count();
 
-        if($post['vaccine']) {
-            $week = date('w', strtotime($post['appoint_date']));
-
-            $vaccine_count = Appoint::find()->where(['doctorid' => $post['doctorid'], 'vaccine' => $post['vaccine'], 'appoint_date' => strtotime($post['appoint_date'])])->andWhere(['<', 'state', 3])->count();
-            $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $post['vaccine']]);
-            if ($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num - $vaccine_count <= 0) {
-                \Yii::$app->getSession()->setFlash('此疫苗' . date('Y年m月d日', strtotime($post['appoint_date'])) . "已约满，请选择其他日期");
-                return $this->redirect(['wappoint/from','id'=>$post['doctorid']]);
-            }
-        }
-
-        if(($weeks->num-$appointed)<=0){
-            \Yii::$app->getSession()->setFlash('error','该时间段已约满，请选择其他时间');
-            return $this->redirect(['wappoint/from','id'=>$post['doctorid']]);
-
-        }
-
         $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid,'name'=>$post['appoint_name']]);
         $appointAdult=$appointAdult?$appointAdult:new AppointAdult();
         $appointAdult->userid=$this->login->userid;
@@ -531,11 +514,29 @@ class WappointController extends Controller
         $appointAdult->gender=$post['sex'];
         //$appointAdult->birthday=strtotime($post['birthday']);
         if(!$appointAdult->save()){
-            var_dump($appointAdult->firstErrors);exit;
             \Yii::$app->getSession()->setFlash('error','联系人信息保存失败');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
 
         }
+
+        if($post['vaccine']) {
+            $week = date('w', $post['appoint_date']);
+
+            $vaccine_count = Appoint::find()->where(['doctorid' => $post['doctorid'], 'vaccine' => $post['vaccine'], 'appoint_date' => strtotime($post['appoint_date'])])->andWhere(['<', 'state', 3])->count();
+            $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $post['vaccine']]);
+            if ($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num - $vaccine_count <= 0) {
+                \Yii::$app->getSession()->setFlash('此疫苗' . date('Y年m月d日', $post['appoint_date']) . "已约满，请选择其他日期");
+                return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+            }
+        }
+
+        if(($weeks->num-$appointed)<=0){
+            \Yii::$app->getSession()->setFlash('error','该时间段已约满，请选择其他时间');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+
+        }
+
+
 
         $appoint=Appoint::findOne(['userid'=>$appointAdult->userid,'childid'=>$appointAdult->id,'type'=>$post['type'],'state'=>1]);
         if($appoint){
