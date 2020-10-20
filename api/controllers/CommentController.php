@@ -38,7 +38,7 @@ class CommentController extends Controller
     public function actionList($id){
 
         $article=Article::findOne($id);
-        $doctors=[110580];
+        $doctors=[110580,110598];
         if(in_array($article->datauserid,$doctors)){
             $data['list']=[];
             $data['total']=0;
