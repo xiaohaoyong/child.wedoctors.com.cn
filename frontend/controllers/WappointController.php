@@ -379,7 +379,7 @@ class WappointController extends Controller
     public function actionVphone($phone,$vcode){
         \Yii::$app->response->format=Response::FORMAT_JSON;
 
-        if(!preg_match("/^1[34578]\d{9}$/", $phone)){
+        if(!preg_match("/^1[3456789]\d{9}$/", $phone)){
             return ['code'=>20010,'msg'=>'请填写正确手机号码'];
         }
 
