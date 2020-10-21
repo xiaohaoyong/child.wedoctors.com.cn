@@ -176,7 +176,6 @@ class WappointController extends Controller
 
             foreach ($vaccines as $k => $v) {
                 $rs = $v;
-                $rs['name'] = $rs['name'] . "【" . Vaccine::$typeText[$rs['type']] . "】";
                 $rows[] = $rs;
             }
             $vaccines = $rows;
