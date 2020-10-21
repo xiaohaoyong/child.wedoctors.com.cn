@@ -369,7 +369,7 @@ class WappointController extends Controller
     public function actionCode($phone){
         \Yii::$app->response->format=Response::FORMAT_JSON;
 
-        if(!preg_match("/^1[34578]\d{9}$/", $phone)){
+        if(!preg_match("/^1[3456789]\d{9}$/", $phone)){
             return ['code'=>20010,'msg'=>'手机号码格式错误'];
         }
         $sendData=SmsSend::sendSms($phone,'SMS_150575871');
