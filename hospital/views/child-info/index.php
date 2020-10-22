@@ -29,9 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
-                        <?php
-                        if (in_array(Yii::$app->user->identity->county, [1105, 1106]) || in_array(Yii::$app->user->identity->hospitalid, [110586, 110582, 110583, 110584, 110589, 110571, 110590, 110591, 110593, 110592, 110594, 110595, 110596, 110597, 110598, 110599, 110602, 110601, 110603, 110604, 110605, 110606, 110607, 110608, 110609, 110610, 110613, 110614, 110615, 110616, 110617, 110618, 110620])) {
-                            $q = [
+                        <?php if (in_array(Yii::$app->user->identity->county, [1105, 1106,1109,1116]) || in_array(Yii::$app->user->identity->hospitalid, [110587,110586, 110582, 110583, 110584, 110589, 110571, 110590, 110591, 110593, 110592, 110594, 110595, 110596, 110597, 110598, 110599, 110602, 110601, 110603, 110604, 110605, 110606, 110607, 110608, 110609, 110610, 110613, 110614, 110615, 110616, 110617, 110618, 110620,110624,110625,110626,110627,110628,110629,110630,110632,110633,110634])) {
+                        $q = [
                                 'attribute' => '签约协议',
                                 'value' => function ($e) {
                                     $autograph = \common\models\Autograph::findOne(['userid' => $e->userid]);
