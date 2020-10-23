@@ -499,7 +499,7 @@ class WappointController extends Controller
         $appointed = Appoint::find()
             ->andWhere(['type' => $post['type']])
             ->andWhere(['doctorid' => $post['doctorid']])
-            ->andWhere(['appoint_date' => strtotime($post['appoint_date'])])
+            ->andWhere(['appoint_date' =>$post['appoint_date']])
             ->andWhere(['appoint_time' => $post['appoint_time']])
             ->andWhere(['mode' => 0])
             ->andWhere(['<','state',3])
@@ -521,7 +521,7 @@ class WappointController extends Controller
         if($post['vaccine']) {
             $week = date('w', $post['appoint_date']);
 
-            $vaccine_count = Appoint::find()->where(['doctorid' => $post['doctorid'], 'vaccine' => $post['vaccine'], 'appoint_date' => strtotime($post['appoint_date'])])->andWhere(['<', 'state', 3])->count();
+            $vaccine_count = Appoint::find()->where(['doctorid' => $post['doctorid'], 'vaccine' => $post['vaccine'], 'appoint_date' => $post['appoint_date']])->andWhere(['<', 'state', 3])->count();
             $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $post['vaccine']]);
             if ($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num - $vaccine_count <= 0) {
                 \Yii::$app->getSession()->setFlash('此疫苗' . date('Y年m月d日', $post['appoint_date']) . "已约满，请选择其他日期");
