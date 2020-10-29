@@ -12,6 +12,7 @@ use Yii;
  * @property int $num
  * @property int $haid
  * @property int $week
+ *  @property int $type
  */
 class HospitalAppointVaccineNum extends \yii\db\ActiveRecord
 {
@@ -29,7 +30,7 @@ class HospitalAppointVaccineNum extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['vaccine', 'num', 'haid', 'week'], 'integer'],
+            [['vaccine', 'num', 'haid', 'week','type'], 'integer'],
         ];
     }
 
@@ -44,6 +45,7 @@ class HospitalAppointVaccineNum extends \yii\db\ActiveRecord
             'num' => 'Num',
             'haid' => 'Haid',
             'week' => 'Week',
+            'type'=>'type',
         ];
     }
 }

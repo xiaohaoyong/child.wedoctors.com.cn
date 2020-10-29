@@ -125,26 +125,42 @@ class DataController extends Controller
 
     public function actionTesta()
     {
+        
+        ini_set('memory_limit', '2048M');
 
+        $i=0;
+        $child=ChildInfo::find()->where(['<','birthday',1506823495])->all();
+        foreach ($child as $k=>$v){
+            $ex=Examination::find()->where(['!=','field35','通过'])->andWhere(['childid'=>$v->id])->one();
+            if($ex){
+                $i++;
+            }
+        }
+        var_dump($i);exit;
 
         $f = fopen('323232.csv', 'r');
         while (($line = fgetcsv($f)) !== false) {
-            $child=ChildInfo::findOne(['name'=>$line[0],'birthday'=>strtotime($line[1]),'doctorid'=>110645]);
-            if($child) {
+            $preg=Pregnancy::findOne(['field1'=>$line[0],'source'=>110588]);
+            if($preg){
+                $preg->source=110645;
+                $doctorParent=DoctorParent::findOne(['parentid'=>$preg->familyid,'doctorid'=>156256]);
+                if($doctorParent){
+                    $doctorParent->doctorid=386661;
+                    $doctorParent->save();
+                    $auto = Autograph::findOne(['doctorid' => 156256, 'userid' => $preg->familyid]);
+                    if($auto){
+                        $auto->doctorid=386661;
+                        $auto->save();
+                    }
 
-                $auto = Autograph::findOne(['doctorid' => 156256, 'userid' => $child->userid]);
-                if ($auto) {
-                    $auto->doctorid = 386661;
-                    $auto->save();
                 }
-
             }
-            echo "\n";
+
+            var_dump($preg);
         }
         exit;
-        ini_set('memory_limit', '2048M');
-        $s_time='20201002';
-        $e_time='20201010';
+        $s_time='20201009';
+        $e_time='20201025';
 
 
         $userDoctors = UserDoctor::find()->all();

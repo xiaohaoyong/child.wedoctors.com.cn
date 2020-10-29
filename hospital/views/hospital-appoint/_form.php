@@ -9,7 +9,13 @@ use common\models\Vaccine;
 /* @var $model common\models\HospitalAppoint */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<style>
+    .modal_over {overflow: hidden;}
+    .modal_over .modal {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+</style>
     <div class="hospital-appoint-form">
         <div class="col-xs-12">
             <div class="box">
@@ -160,10 +166,14 @@ use common\models\Vaccine;
                     <div>
                         <!-- Nav tabs -->
                         <ul id="intervalTab" class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#tabyi" aria-controls="tabyi" role="tab"
-                                                                      data-toggle="tab">一小时</a></li>
-                            <li role="presentation"><a href="#tabban" aria-controls="tabban" role="tab"
-                                                       data-toggle="tab">半小时</a></li>
+                            <li role="presentation" <?php if ($model->interval == 1) {
+                                echo 'class="active"';
+                            } ?>><a href="#tabyi" aria-controls="tabyi" role="tab"
+                                    data-toggle="tab">一小时</a></li>
+                            <li role="presentation" <?php if ($model->interval == 2) {
+                                echo 'class="active"';
+                            } ?>><a href="#tabban" aria-controls="tabban" role="tab"
+                                    data-toggle="tab">半小时</a></li>
                         </ul>
                     </div>
                     <div class="box-body table-responsive no-padding">
@@ -236,8 +246,8 @@ use common\models\Vaccine;
 
                                             <td>
                                                 <?php
-                                                $vaccines1=\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid' => $model->id, 'type' => 1])->andWhere(['week' => $wv])->column();
-                                                $vaccines2=\common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid' => $model->id, 'type' => 2])->andWhere(['week' => $wv])->column();
+                                                $vaccines1 = \common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid' => $model->id, 'type' => 1])->andWhere(['week' => $wv])->column();
+                                                $vaccines2 = \common\models\HospitalAppointVaccine::find()->select('vaccine')->where(['haid' => $model->id, 'type' => 2])->andWhere(['week' => $wv])->column();
 
                                                 echo Html::a('展开', '#', [
                                                     'data-target' => '#modal' . $wv,//关联模拟框(模拟框的ID)
@@ -245,115 +255,142 @@ use common\models\Vaccine;
                                                     'data-id' => $wv,
                                                 ]);
                                                 Modal::begin([
+                                                    'class' => 'modal',
                                                     'id' => 'modal' . $wv,
                                                     'header' => '<h5>设置疫苗</h5>',
                                                 ]);
-                                                if($type==2 || $type==4){
-                                                ?>
-                                                <table class="table table-striped table-bordered detail-view">
-                                                    <tbody>
-                                                    <tr>
-                                                        <td style="font-weight: bold;">选择上午/全天疫苗:</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <?= \kartik\select2\Select2::widget([
-                                                                'name' => 'vaccine[' . $wv . ']',
-                                                                'data' => $data,
-                                                                'language' => 'de',
-                                                                'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
-                                                                'showToggleAll' => false,
-                                                                'value' => $vaccines1,
-                                                                'pluginOptions' => [
-                                                                    'allowClear' => true
-                                                                ],
-                                                            ]) ?>
-                                                        </td>
-                                                    </tr>
-                                                    <?php if($type==2){?>
-                                                    <tr>
-                                                        <td style="font-weight: bold;">选择下午疫苗:</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <?= \kartik\select2\Select2::widget([
-                                                                'name' => 'vaccine1[' . $wv . ']',
-                                                                'data' => $data,
-                                                                'language' => 'de',
-                                                                'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
-                                                                'showToggleAll' => false,
-                                                                'value' => $vaccines2,
-                                                                'pluginOptions' => [
-                                                                    'allowClear' => true
-                                                                ],
-                                                            ]) ?>
-                                                        </td>
-                                                    </tr>
+                                                if ($type == 2 || $type == 4) {
+                                                    ?>
+                                                    <table class="table table-striped table-bordered detail-view">
+                                                        <tbody>
                                                         <tr>
-                                                            <div class="form-group">
-                                                                注：只设置上午/全天疫苗，则按照全天可约判断，如需下午不可以设置无号即可<br>
-                                                                注：选择街道目前对一类疫苗有效，二类疫苗不受限制
-                                                            </div>
+                                                            <td colspan="3" style="font-weight: bold;">选择上午/全天疫苗:</td>
                                                         </tr>
-                                                        <?php }?>
-                                                    <tr>
-                                                        <td style="font-weight: bold;">疫苗预约上限设置(如设置10，则单日最多可以预约10个此疫苗，空表示不限制此疫苗，0表示该疫苗无号）:</td>
-                                                    </tr>
-                                                    <?php
-                                                    $hospitalV = \common\models\HospitalAppointVaccine::find()
-                                                        ->select('vaccine')
-                                                        ->where(['haid' => $model->id,'week'=>$wv])->groupBy('vaccine')->column();
-                                                    if ($hospitalV) {
-
-                                                        if (in_array(0, $hospitalV) && in_array(-1, $hospitalV)) {
-                                                            $vQuery = Vaccine::find()->select('id,name,type');
-                                                        } else {
-                                                            $vQuery = Vaccine::find()->select('id,name,type')->andWhere(['in', 'id', $hospitalV]);
-                                                            if (in_array(-1, $hospitalV)) {
-                                                                //查询所有二类疫苗
-                                                                $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 1]);
-                                                            }
-                                                            if (in_array(0, $hospitalV)) {
-                                                                //查询所有一类类疫苗
-                                                                $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0]);
-                                                            }
-                                                            if ($Va) {
-                                                                $vQuery->union($Va);
-                                                            }
-                                                        }
-
-                                                        $vaccines = $vQuery->all();
-
-                                                    } else {
-                                                        $vaccines = [];
-                                                    }
-
-
-                                                    foreach ($vaccines as $hak => $hav) {
-                                                        $havn=\common\models\HospitalAppointVaccineNum::findOne(['haid'=>$model->id,'week'=>$wv,'vaccine'=>$hav->id]);
-                                                        ?>
                                                         <tr>
-                                                            <td>
-                                                                <div class="input-group">
-                                                                    <input type="text" class="form-control" name="vaccine_num[<?=$wv?>][<?=$hav->id?>]" value="<?=is_numeric($havn->num)?$havn->num:''?>" style="width: 50px;">
-                                                                    <span class="input-group-addon"><?= $hav->name ?></span>
-                                                                </div>
+                                                            <td colspan="3">
+                                                                <?= \kartik\select2\Select2::widget([
+                                                                    'name' => 'vaccine[' . $wv . ']',
+                                                                    'data' => $data,
+                                                                    'language' => 'de',
+                                                                    'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
+                                                                    'showToggleAll' => false,
+                                                                    'value' => $vaccines1,
+                                                                    'pluginOptions' => [
+                                                                        'allowClear' => true
+                                                                    ],
+                                                                ]) ?>
                                                             </td>
                                                         </tr>
-                                                    <?php } ?>
+                                                        <?php if ($type == 2) { ?>
+                                                            <tr>
+                                                                <td colspan="3" style="font-weight: bold;">选择下午疫苗:</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <?= \kartik\select2\Select2::widget([
+                                                                        'name' => 'vaccine1[' . $wv . ']',
+                                                                        'data' => $data,
+                                                                        'language' => 'de',
+                                                                        'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
+                                                                        'showToggleAll' => false,
+                                                                        'value' => $vaccines2,
+                                                                        'pluginOptions' => [
+                                                                            'allowClear' => true
+                                                                        ],
+                                                                    ]) ?>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <div class="form-group">
+                                                                        注：只设置上午/全天疫苗，则按照全天可约判断，如需下午不可以设置无号即可<br>
+                                                                        注：选择街道目前对一类疫苗有效，二类疫苗不受限制
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
+                                                        <tr>
+                                                            <td colspan="3" style="font-weight: bold;">
+                                                                疫苗预约上限设置(如设置10，则单日最多可以预约10个此疫苗，空表示不限制此疫苗，0表示该疫苗无号）:
+                                                            </td>
+                                                        </tr>
+                                                        <?php
+                                                        $hospitalV = \common\models\HospitalAppointVaccine::find()
+                                                            ->select('vaccine')
+                                                            ->where(['haid' => $model->id, 'week' => $wv])->groupBy('vaccine')->column();
+                                                        if ($hospitalV) {
+
+                                                            if (in_array(0, $hospitalV) && in_array(-1, $hospitalV)) {
+                                                                $vQuery = Vaccine::find()->select('id,name,type');
+                                                            } else {
+                                                                $vQuery = Vaccine::find()->select('id,name,type')->andWhere(['in', 'id', $hospitalV]);
+                                                                if (in_array(-1, $hospitalV)) {
+                                                                    //查询所有二类疫苗
+                                                                    $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 1]);
+                                                                }
+                                                                if (in_array(0, $hospitalV)) {
+                                                                    //查询所有一类类疫苗
+                                                                    $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0]);
+                                                                }
+                                                                if ($Va) {
+                                                                    $vQuery->union($Va);
+                                                                }
+                                                            }
+
+                                                            $vaccines = $vQuery->all();
+
+                                                        } else {
+                                                            $vaccines = [];
+                                                        }
+                                                        ?>
+                                                        <tr>
+                                                            <td>数量</td>
+                                                            <td>疫苗名称</td>
+                                                            <td>分配疫苗号源</td>
+                                                        </tr>
+                                                        <?php
 
 
-                                                    <tr>
-                                                        <td>
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-red">关闭后点击"提交"保存设置</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                                    <?php }?>
+                                                        foreach ($vaccines as $hak => $hav) {
+                                                            $havn = \common\models\HospitalAppointVaccineNum::findOne(['haid' => $model->id, 'week' => $wv, 'vaccine' => $hav->id]);
+                                                            ?>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control"
+                                                                           name="vaccine_num[<?= $wv ?>][<?= $hav->id ?>]"
+                                                                           value="<?= is_numeric($havn->num) ? $havn->num : '' ?>"
+                                                                           style="width: 50px;">
+                                                                </td>
+                                                                <td>
+                                                                    <?= $hav->name . $havn->type ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?php echo Html::a('分配', '#', [
+                                                                            'class'=>'fenpei',
+                                                                        'data-target' => '#vaccine-num',//关联模拟框(模拟框的ID)
+                                                                        'data-toggle' => "modal", //定义为模拟框 触发按钮
+                                                                        'data-week' => $wv,
+                                                                        'data-vaccine' => $hav->id,
+                                                                    ]);
+                                                                    ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
+
+
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">关闭
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3" class="text-red">关闭后点击"提交"保存设置</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                <?php } ?>
                                                 <?php
                                                 Modal::end();
                                                 ?>
@@ -401,13 +438,107 @@ use common\models\Vaccine;
             </div>
         </div>
     </div>
+<?php
+Modal::begin([
+    'id' => 'vaccine-num',
+    'header' => '<h5>分配疫苗</h5>',
+]);
+?>
+    <form name="vaccine-num-form" id="vaccine_num_form" action="vaccine-save" method="post">
+        <input name="_csrf-frontend"
 
+               type="hidden"
+
+               id="_csrf-frontend"
+
+               value="<?= Yii::$app->request->csrfToken ?>">
+        <input type="hidden" value="0" name="week">
+        <input type="hidden" value="0" name="vaccine">
+        <input type="hidden" value="<?= $type ?>" name="type">
+        <table class="table table-striped table-bordered detail-view">
+            <tbody>
+            <tr>
+                <td>
+                    时间段
+                </td>
+                <td>
+                    可预约数量
+                </td>
+            </tr>
+            <?php foreach (\common\models\HospitalAppointWeek::$typeText as $k => $v) {
+                if ($model->interval == 1 && $k > 6) {
+                    break;
+                }
+                if ($model->interval == 2 && $k < 7) {
+                    continue;
+                }
+                ?>
+                <tr>
+                    <td><?= $v ?></td>
+                    <td><input type="text" class="form-control vaccine_num" name="vaccine_num[<?= $k ?>]" value=""
+                               style="width: 50px;"></td>
+                </tr>
+            <?php } ?>
+            <tr>
+                <td colspan="2">
+                    <button class="btn btn-default" type="submit">保存</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+<?php
+Modal::end();
+?>
 
 <?php
 $interval = isset($model->interval) ? $model->interval : 1;
 $is_month = isset($model->is_month) ? $model->is_month : 0;
 
 $updateJs = <<<JS
+
+var _week=0;
+var is_add=0;
+$('#vaccine-num').on('show.bs.modal', function (event) {
+
+  var button = $(event.relatedTarget); // Button that triggered the modal
+  var vaccine = button.data('vaccine'); // Extract info from data-* attributes
+  var week=button.data('week');
+  _week=week;
+  $('#modal'+week).modal('hide');
+  var modal = $(this);
+  modal.find('.modal-body input[name="vaccine"]').val(vaccine);
+  modal.find('.modal-body input[name="week"]').val(week);
+  $('#vaccine_num_form').find(".vaccine_num").each(function(){
+      $(this).val('');
+  });
+  $.get('/hospital-appoint/vaccine-num?vaccine='+vaccine+'&week='+week+'&type='+{$type},function(e){
+        var list=e.list
+        $.each(list, function(key, value){
+            $('#vaccine_num_form input[name="vaccine_num['+value.appoint_time+']"]').val(value.num);
+        });
+    },'json');
+  
+  
+})	
+$('#vaccine-num').on('shown.bs.modal', function (event) {
+  $("body").addClass("modal-open");
+})
+jQuery("#vaccine_num_form").submit(function(){
+    let data = $("#vaccine_num_form").serialize();
+    console.log(data);
+    $.post('/hospital-appoint/vaccine-save',data,function(e){
+        is_add=1;
+        $('#vaccine-num').modal('hide');
+        $('#modal'+_week).modal('show');
+    },'json');
+    return false;
+});
+$('#vaccine-num').on('hidden.bs.modal', function (event) {
+            $('#modal'+_week).modal('show');
+    $("body").addClass("modal-open");
+
+})
 var is_month={$is_month};
 if(is_month==1){
     $('#w1').show();

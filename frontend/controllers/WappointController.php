@@ -20,6 +20,7 @@ use common\models\HospitalAppoint;
 use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointVaccineNum;
+use common\models\HospitalAppointVaccineTimeNum;
 use common\models\HospitalAppointWeek;
 use common\models\Street;
 use common\models\UserDoctor;
@@ -56,7 +57,7 @@ class WappointController extends Controller
         {
             $doctorid=$doctorParent->doctorid;
         }
-
+        
         foreach ($doctors as $k => $v) {
             $rs = $v->toArray();
             $rs['name'] = Hospital::findOne($v->hospitalid)->name;
@@ -249,9 +250,34 @@ class WappointController extends Controller
 
         }
 
+        $firstAppoint = Appoint::find()
+            ->andWhere(['type' => $type])
+            ->andWhere(['doctorid' => $doctorid])
+            ->andWhere(['appoint_date' => strtotime($day)])
+            ->andWhere(['!=', 'state', 3])
+            ->andWhere(['mode' => 0])
+            ->orderBy('createtime desc')
+            ->one();
+        $wquery = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id]);
 
+        if($firstAppoint) {
+            if ($firstAppoint->appoint_time < 7) {
+                $wquery->andWhere(['<', 'time_type', 7]);
+            }
+            if ($firstAppoint->appoint_time > 6) {
+                $wquery->andWhere(['>', 'time_type', 6]);
+            }
+        }else{
+            if($hospitalA->interval==1){
+                $wquery->andWhere(['<', 'time_type', 7]);
 
-        $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->all();
+            }
+            if($hospitalA->interval==2){
+                $wquery->andWhere(['>', 'time_type', 6]);
+            }
+        }
+        $weeks=$wquery->all();
+
         if ($weeks) {
             $appoints = Appoint::find()
                 ->select('count(*)')
@@ -275,14 +301,6 @@ class WappointController extends Controller
             if ($doctorid != 176156) {
                 unset($rs[19]); unset($rs[20]);
             }
-            $firstAppoint = Appoint::find()
-                ->andWhere(['type' => $type])
-                ->andWhere(['doctorid' => $doctorid])
-                ->andWhere(['appoint_date' => strtotime($day)])
-                ->andWhere(['!=', 'state', 3])
-                ->andWhere(['mode' => 0])
-                ->orderBy('createtime desc')
-                ->one();
 
 
             $vWeek=[];
@@ -304,56 +322,51 @@ class WappointController extends Controller
                 $vTypes = HospitalAppointVaccine::find()->select('type')
                     ->where(['haid' => $hospitalA->id,'week' => $week])->column();
             }
-            //如果当天已有预约则按照当天第一个预约信息判断半小时/一小时
-            if ($firstAppoint) {
-                foreach ($rs as $k => $v) {
-                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek) && $vWeek){
-                        $v=0;
-                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes)&& $vWeek){
-                        $v=0;
-                    }
-                    if ($firstAppoint->appoint_time > 6 && $k > 6) {
-                        $rows['time'] = Appoint::$timeText[$k];
-                        $rows['appoint_time'] = $k;
-                        $rows['num'] = $v;
-                        $rows['num1']=$rs_num[$k];
-                        $times[] = $rows;
+            //判断所选疫苗是否按照时间段分配
+            if($vid){
+                $hospitalAppointVaccineTimeNum=HospitalAppointVaccineTimeNum::find()
+                    ->where(['vaccine'=>$vid,'week'=>$week,'type'=>$type,'doctorid'=>$doctorid])
+                    ->select('num')
+                    ->indexBy('appoint_time')
+                    ->column();
+                if($hospitalAppointVaccineTimeNum) {
+                    //获取当前时间段该疫苗已预约数量
+                    $appointVaccineNum = Appoint::find()
+                        ->select('count(*)')
+                        ->andWhere(['type' => $type])
+                        ->andWhere(['doctorid' => $doctorid])
+                        ->andWhere(['appoint_date' => strtotime($day)])
+                        ->andWhere(['vaccine' => $vid])
+                        ->andWhere(['!=', 'state', 3])
+                        ->andWhere(['mode' => 0])
+                        ->indexBy('appoint_time')
+                        ->groupBy('appoint_time')
+                        ->column();
+                }
+            }
 
-                    }
-                    if ($firstAppoint->appoint_time < 7 && $k < 7) {
-                        $rows['time'] = Appoint::$timeText[$k];
-                        $rows['appoint_time'] = $k;
-                        $rows['num'] = $v;
-                        $rows['num1']=$rs_num[$k];
-                        $times[] = $rows;
+            foreach ($rs as $k => $v) {
+                if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek) && $vWeek){
+                    $v=0;
+                }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes)&& $vWeek){
+                    $v=0;
+                }
+                $num=$v;
 
+                if($hospitalAppointVaccineTimeNum){
+                    if($hospitalAppointVaccineTimeNum[$k]) {
+                        if($v>=($hospitalAppointVaccineTimeNum[$k]-$appointVaccineNum[$k])) {
+                            $num = ($hospitalAppointVaccineTimeNum[$k]-$appointVaccineNum[$k]);
+                        }
+                    }else{
+                        $num = 0;
                     }
                 }
-            } else {
-                foreach ($rs as $k => $v) {
-                    if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek) && $vWeek){
-                        $v=0;
-                    }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes) && $vWeek){
-                        $v=0;
-                    }
-                    if ($hospitalA->interval == 2 && $k > 6) {
-                        $rows['time'] = Appoint::$timeText[$k];
-                        $rows['appoint_time'] = $k;
-                        $rows['num'] = $v;
-                        $rows['num1']=$rs_num[$k];
-
-                        $times[] = $rows;
-
-                    }
-                    if ($hospitalA->interval == 1 && $k < 7) {
-                        $rows['time'] = Appoint::$timeText[$k];
-                        $rows['appoint_time'] = $k;
-                        $rows['num'] = $v;
-                        $rows['num1']=$rs_num[$k];
-
-                        $times[] = $rows;
-                    }
-                }
+                $rows['time'] = Appoint::$timeText[$k];
+                $rows['appoint_time'] = $k;
+                $rows['num'] = $num;
+                $rows['num1']=$rs_num[$k];
+                $times[] = $rows;
             }
             return ['list' => $times, 'is_appoint' => $is_appoint, 'text' => ''];
 

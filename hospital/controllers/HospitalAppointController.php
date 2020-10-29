@@ -6,6 +6,7 @@ use common\models\HospitalAppointMonth;
 use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
 use common\models\HospitalAppointVaccineNum;
+use common\models\HospitalAppointVaccineTimeNum;
 use common\models\HospitalAppointWeek;
 use Yii;
 use common\models\HospitalAppoint;
@@ -13,6 +14,7 @@ use hospital\models\HospitalAppointSearchModels;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * HospitalAppointController implements the CRUD actions for HospitalAppoint model.
@@ -166,6 +168,9 @@ class HospitalAppointController extends BaseController
                             $hav->haid = $model->id;
                             $hav->week = $vk;
                             $hav->num = $vvv;
+                            if($post['vaccine_num_type'][$vk][$vvk]){
+                                $hav->type=1;
+                            }
                             $hav->save();
                         }
                     }
@@ -265,5 +270,35 @@ class HospitalAppointController extends BaseController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionVaccineSave(){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+
+        $post=Yii::$app->request->post();
+        HospitalAppointVaccineTimeNum::deleteAll(['vaccine'=>$post['vaccine'],'week'=>$post['week'],'type'=>$post['type'],'doctorid'=>$doctor->userid]);
+        foreach($post['vaccine_num'] as $k=>$v){
+            if($v>0) {
+                $hospitalAppointMonth = new HospitalAppointVaccineTimeNum();
+                $hospitalAppointMonth->type = $post['type'];
+                $hospitalAppointMonth->doctorid = $doctor->userid;
+                $hospitalAppointMonth->vaccine = $post['vaccine'];
+                $hospitalAppointMonth->num = $v;
+                $hospitalAppointMonth->appoint_time = $k;
+                $hospitalAppointMonth->week = $post['week'];
+                $hospitalAppointMonth->save();
+            }
+        }
+        return ['code'=>10000];
+    }
+
+    public function actionVaccineNum($week,$type,$vaccine){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+        $list=HospitalAppointVaccineTimeNum::findAll(['vaccine'=>$vaccine,'week'=>$week,'type'=>$type,'doctorid'=>$doctor->userid]);
+        return ['list'=>$list];
+
     }
 }

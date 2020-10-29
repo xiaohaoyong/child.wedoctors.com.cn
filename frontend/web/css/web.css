@@ -302,3 +302,62 @@ button{    border: none;}
 .my .modal-footer{padding-bottom: 48px;padding-top: 27px;}
 .my .modal-footer button{background-color: #F65C52;height: 108px;line-height: 108px;color: #ffffff;}
 .my .modal-footer button:after{border: 0;}
+
+
+.health-records{width: 100%;}
+.health-records .control-label{padding-left: 20px;padding-right: 15px;width: 120px;
+    font-size: 14px;
+    color: #333333;
+    flex-shrink: 0;
+    line-height: 36px;margin-bottom: 0;}
+.health-records .form-group .form-input{display: flex;flex-direction: column;justify-content : center;flex: auto;padding-right: 35px;}
+.health-records .form-group{background-color: #ffffff; margin: 0;border-bottom: 1px solid rgba(0, 0, 0, 0.1);}
+.health-records .form-group .form-group-info{display: flex;}
+.health-records .form-group .help-block{margin: 0;padding-left: 125px; color: #e56659;font-size: 12px;}
+.health-records .has-error{border: 1px solid #e56659}
+.health-records .title{ height: 34px;
+    background: #F8F8F8; line-height: 34px;
+    padding-left: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+}
+.health-records .header{padding: 20px 20px;display: flex;flex-direction: column; align-items: center;}
+.health-records .header .info{padding-top: 20px;
+
+    font-size: 16px;
+    font-weight: bold;
+    color: #666666;
+    line-height: 25px;
+}
+.health-records .header .info p{text-indent:2em;}
+.health-records .button{display: flex;justify-content: center;height: 100px;align-items: center;}
+.health-records .button button { width: 90%; height: 34px;}
+.health-records-button{display: flex;justify-content: center;align-items: center;}
+.health-records-button button{
+    width: 170px;
+    height: 60px;
+    background: #007AFF;
+    border-radius: 28px;
+    color: #ffffff;
+}
+.health-records-txt{text-align: center;
+
+    font-size: 14px;
+    font-weight: 500;
+    color: #999999;
+    line-height: 40px;
+}
+.health-records-done {display: flex;flex-direction: column;justify-content: center;align-items: center;}
+.health-records-done .img{padding-top: 100px}
+.health-records-done .title{padding-top: 30px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #333333;
+    line-height: 28px;}
+.health-records-done .info{padding-top: 25px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #999999;
+    line-height: 20px;
+}
