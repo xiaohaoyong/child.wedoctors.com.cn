@@ -54,6 +54,7 @@
     "cache/apcu-adapter": "^1.0",
     "overtrue/wechat": "~4.0",
     "kop/yii2-scroll-pager": "dev-master",
+    "jormin/baidu-speech": "^1.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
