@@ -28,24 +28,27 @@ $updateJs = <<<JS
         })
     })
     $('#save').click(function () {
-            //标准格式但是base64会被tp框架过滤，所不校验，但是jSignature默认是使用png
-            var datapair = $("#signature").jSignature("getData", "image");
-            var i = new Image();
-            i.src = "data:" + datapair[0] + "," + datapair[1];
-            i.image = datapair[1];
-            console.log(i.image);
-            $.ajax({
-                url: "/health-records/save",
-                //dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                data: "{\"image_data\":\"" + encodeURIComponent(i.image) + "\"}",//避免base64长度过大，json传输
-                type: "post",
-                cache: false,
-                success: function (msg) {
-                               window.location.href="/health-records/done"; 
-
-                }
-            });
+            if( $("#signature").jSignature('getData', 'native').length == 0){
+                alert("请先进行签名");
+                return;
+            }else{
+                var datapair = $("#signature").jSignature("getData", "image");
+                var i = new Image();
+                i.src = "data:" + datapair[0] + "," + datapair[1];
+                i.image = datapair[1];
+                console.log(i.image);
+                $.ajax({
+                    url: "/health-records/save",
+                    //dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: "{\"image_data\":\"" + encodeURIComponent(i.image) + "\"}",//避免base64长度过大，json传输
+                    type: "post",
+                    cache: false,
+                    success: function (msg) {
+                        window.location.href="/health-records/done";
+                    }
+                });
+            }
         });
     
 JS;

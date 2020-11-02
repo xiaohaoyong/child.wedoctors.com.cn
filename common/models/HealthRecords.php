@@ -72,7 +72,7 @@ class HealthRecords extends \yii\db\ActiveRecord
     public static $field23Txt=[1=>'不锻炼',2=>'规律',3=>'偶尔'];
     public static $field24Txt=[1=>'每天',2=>'>3次/周',3=>'1-2次/周'];
     public static $field25Txt=[1=>'有氧',2=>'无氧'];
-    public static $field35Txt=[1=>'基础',2=>'附加'];
+    public static $field35Txt=[1=>''];
 
     public static $field26Txt=[1=>'小于30分钟',2=>'30-60分钟',3=>'1小时以上'];
     public static $field27Txt=[1=>'睡眠困难',2=>'入睡困难',3=>'早睡',4=>'梦游',5=>'其他'];
@@ -93,13 +93,21 @@ class HealthRecords extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['field1' ,'field2' ,'field3' ,'field4' ,'field5' ,'field6' ,'field7' ,'field8' ,'field9' ,'field10','field11','field12','field13','field14','field15','field16','field17','field18','field19','field20','field21','field22','field23','field24','field25','field26','field27','field28','field29','field30','field31','field32','field34', 'field39', 'field35', 'field36', 'field37'],'required'],
-            [['field1', 'field2', 'field4', 'field5', 'field7', 'field8', 'field9', 'field10', 'field11', 'field12', 'field13', 'field14', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'createtime', 'doctorid'], 'integer'],
+            [['field1' ,'field2' ,'field3' ,'field4' ,'field5' ,'field6' ,'field7' ,'field8' ,'field9' ,'field10','field11','field12','field13','field14','field15','field16','field17','field18','field19','field20','field21','field22','field23','field24','field25','field26','field27','field28','field29','field30','field31','field32','field34'],'required'],
+            [['field1', 'field2', 'field4', 'field5', 'field7', 'field8', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'createtime', 'doctorid', 'field39', 'field35', 'field36', 'field37', 'field38'], 'integer'],
+
+            [['field9', 'field10', 'field11', 'field12', 'field13', 'field14'], 'number'],
+
+
+            [['field9', 'field10', 'field11', 'field12', 'field13', 'field14'], 'compare', 'compareValue' => 251, 'operator' => '<'],
+
             [['field3'], 'string', 'max' => 30],
             [['field5_text', 'field8_text', 'field15', 'field16_text', 'field17_text', 'field18_text', 'field19_text', 'field20_text'], 'string', 'max' => 50],
             [['field6','field33'], 'string', 'max' => 100],
             [['field29', 'field30','field34', 'field31', 'field32'], 'string', 'max' => 20],
             [['field5_text','field8_text','field16_text','field17_text','field18_text','field19_text','field20_text'], 'validateField', 'skipOnEmpty' => false, 'skipOnError' => false],
+            ['field4','match','pattern'=>'/^[1][2345789][0-9]{9}$/'],
+            [['field15'],'match','pattern'=>'/^[1-9]\d{5}(19|20)\d{2}[01]\d[0123]\d\d{3}[xX\d]$|^([A-Z]\d{6,10}(\w1)?)$|^1[45][0-9]{7}$|([P|p|S|s]\d{7}$)|([S|s|G|g]\d{8}$)|([Gg|Tt|Ss|Ll|Qq|Dd|Aa|Ff]\d{8}$)|([H|h|M|m]\d{8,10})$/'],
         ];
     }
     public function validateField($attribute, $params){

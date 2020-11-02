@@ -125,108 +125,56 @@ class DataController extends Controller
 
     public function actionTesta()
     {
-        
-        ini_set('memory_limit', '2048M');
 
-        $i=0;
-        $child=ChildInfo::find()->where(['<','birthday',1506823495])->all();
-        foreach ($child as $k=>$v){
-            $ex=Examination::find()->where(['!=','field35','通过'])->andWhere(['childid'=>$v->id])->one();
-            if($ex){
-                $i++;
-            }
-        }
-        var_dump($i);exit;
+        //$hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
+        $query = UserDoctor::find()->where(['like','appoint',4]);
 
-        $f = fopen('323232.csv', 'r');
-        while (($line = fgetcsv($f)) !== false) {
-            $preg=Pregnancy::findOne(['field1'=>$line[0],'source'=>110588]);
-            if($preg){
-                $preg->source=110645;
-                $doctorParent=DoctorParent::findOne(['parentid'=>$preg->familyid,'doctorid'=>156256]);
-                if($doctorParent){
-                    $doctorParent->doctorid=386661;
-                    $doctorParent->save();
-                    $auto = Autograph::findOne(['doctorid' => 156256, 'userid' => $preg->familyid]);
-                    if($auto){
-                        $auto->doctorid=386661;
-                        $auto->save();
-                    }
+        $doctors = $query->orderBy('appoint desc')->all();
 
-                }
-            }
 
-            var_dump($preg);
+        foreach ($doctors as $k => $v) {
+            $name= Hospital::findOne($v->hospitalid)->name;
+            echo $name."\n";
+
         }
         exit;
-        $s_time='20201009';
-        $e_time='20201025';
+
+        $appoint=Appoint::find()->select('phone')->where(['doctorid'=>160226,'state'=>1,'type'=>4])->andWhere(['in','vaccine',[56,55,54,0]])->column();
+        foreach($appoint as $k=>$v){
+            $rs=[];
+
+            $rs[]=$v;
+            $rs[]="西罗园社区卫生服务中心";
+            $rs[]="四价宫颈癌疫苗";
+            $rs[]="010-87289908";
+
+            echo implode(',',$rs);
+            echo "\n";
+        }
+        exit;
+        $s_time='20201001';
+        $e_time='20201026';
 
 
         $userDoctors = UserDoctor::find()->all();
         foreach ($userDoctors as $k => $v) {
             $rs = [];
-            $doctorParents = DoctorParent::find()->where(['doctorid' => $v->userid])
-                ->select('parentid,createtime')
-                ->andWhere(['>', 'createtime', strtotime($s_time)])
-                ->andWhere(['<', 'createtime', strtotime($e_time)])
-                ->all();
-            $doctorParents3 = DoctorParent::find()->where(['doctorid' => $v->userid])
-                ->select('parentid')
-                ->andWhere(['>', 'createtime', strtotime($s_time)])
-                ->andWhere(['<', 'createtime', strtotime($e_time)])
-                ->column();
+            $rs[]=$v->county;
 
             $doctorParents2 = DoctorParent::find()->where(['doctorid' => $v->userid])
                 ->select('parentid')
                 ->column();
-            $pregs = \common\models\Pregnancy::find()->where(['>', 'field11', strtotime('-28 week', strtotime($s_time))])
-                ->select('familyid')
-                ->andWhere(['in', 'familyid', $doctorParents2])
-                ->column();
-            $pregCount2 = UserLogin::find()->select('openid')->where(['in', 'userid', $pregs])->count();
-            $rs[] = $pregCount2;
-            $pregRow = [];
-            foreach ($doctorParents as $dk => $dv) {
-                $preg = \common\models\Pregnancy::find()->where(['>', 'field11', strtotime('-28 week', $dv->createtime)])
-                    ->andWhere(['familyid' => $dv->parentid])
-                    ->one();
-                $pregRow[] = $preg->familyid;
-            }
-            $pregCount = UserLogin::find()->select('openid')->where(['in', 'userid', $pregRow])->count();
-            $rs[] = $pregCount;
+
 
             $userLogin = UserLogin::find()->select('openid')->where(['in', 'userid', $doctorParents2])->andWhere(['!=', 'openid', ''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
             $rs[] = "";
-
-            $childs = \common\models\ChildInfo::find()
-                ->select('userid')
-                ->andWhere(['>', 'birthday', strtotime('-3 month', strtotime($s_time))])
-                ->andWhere(['in', 'userid', $doctorParents2])
-                ->column();
-            $childRow1 = UserLogin::find()->select('openid')->where(['in', 'userid', $childs])->groupBy('userid')->count();
-
-            $rs[] = $childRow1;
-            $childs1 = \common\models\ChildInfo::find()
-                ->select('userid')
-                ->andWhere(['>', 'birthday', strtotime('-3 month')])
-                ->andWhere(['in', 'userid', $doctorParents3])
-                ->column();
-            $rs[] = UserLogin::find()->select('openid')->where(['in', 'userid', $childs1])->groupBy('userid')->count();
-
 
             //$userLogin=UserLogin::find()->select('openid')->where(['in','userid',$childs])->andWhere(['!=','openid',''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>','createtime',strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
             $rs[] = "";
-            $rs[] = Appoint::find()->where(['doctorid' => $v->userid])->andWhere(['type' => 2])->andWhere(['>', 'createtime', strtotime($s_time)])
-                ->andWhere(['<', 'createtime', strtotime($e_time)])->count();
-
-
-            $rs[] = WeOpenid::find()->where(['doctorid' => $v->userid])->andWhere(['>', 'createtime', strtotime($s_time)])
-                ->andWhere(['<', 'createtime', strtotime($e_time)])->count();
             echo $v->name . "," . implode(',', $rs);
             echo "\n";
         }

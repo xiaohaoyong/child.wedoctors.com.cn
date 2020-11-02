@@ -19,24 +19,34 @@ class HealthRecordsController extends Controller
 {
     public function actionForm($doctorid){
         $healthRecords=HealthRecords::findOne(['userid'=>$this->login->id]);
-
-        if($healthRecords){
-            if($healthRecords->field33) {
-                return $this->redirect(['done']);
-            }else{
-                return $this->redirect(['sign']);
-            }
+        if($healthRecords && $healthRecords->field33){
+            return $this->redirect(['done']);
         }
-        $model = new HealthRecords();
+
+        $model = $healthRecords?$healthRecords:new HealthRecords();
         if ($model->load(\Yii::$app->request->post())) {
             $model->userid = $this->login->id;
             $model->doctorid = $doctorid;
             if ($model->save()) {
-                return $this->redirect(['sign', 'id' => $model->id]);
-
+                return $this->redirect(['form1', 'doctorid' => $doctorid]);
             }
         }
         return $this->render('form', [
+            'doctorid'=>$doctorid,
+            'model' => $model,
+        ]);
+    }
+    public function actionForm1($doctorid){
+        $model=HealthRecords::findOne(['userid'=>$this->login->id]);
+
+            if ($model->load(\Yii::$app->request->post())) {
+            $model->userid = $this->login->id;
+            $model->doctorid = $doctorid;
+            if ($model->save()) {
+                return $this->redirect(['sign', 'id' => $model->id]);
+            }
+        }
+        return $this->render('form1', [
             'doctorid'=>$doctorid,
             'model' => $model,
         ]);
@@ -54,9 +64,9 @@ class HealthRecordsController extends Controller
 
     public function actionSave(){
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        $image_data = json_decode(file_get_contents('php://input'), true); //只能这样接收
+        $image_data = json_decode(file_get_contents('php://input'), true);
         $healthRecords=HealthRecords::findOne(['userid'=>$this->login->id]);
-        if($healthRecords) {
+        if($healthRecords && $image_data) {
             $baseimage = base64_decode(rawurldecode($image_data['image_data']));
             $time = time();
             $filen = substr(md5($time . rand(10, 100)), 4, 14);

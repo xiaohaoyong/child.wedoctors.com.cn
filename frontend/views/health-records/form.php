@@ -117,19 +117,6 @@ use common\models\HealthRecords;
     <?= $form->field($model, 'field27')->radioList(HealthRecords::$field27Txt) ?>
 
     <?= $form->field($model, 'field28')->textInput(['placeholder'=>'请填写'.$model->getAttributeLabel('field28')]) ?>
-    <div class="title">社区定制服务包</div>
-
-    <?= $form->field($model, 'field39')->checkboxList(HealthRecords::$field35Txt,['value'=>[1],'onclick'=>"return false;"]) ?>
-
-    <?= $form->field($model, 'field35')->checkboxList(HealthRecords::$field35Txt,['value'=>[1],'onclick'=>"return false;"]) ?>
-
-    <?= $form->field($model, 'field36')->checkboxList(HealthRecords::$field35Txt,['value'=>[1],'onclick'=>"return false;"]) ?>
-
-    <?= $form->field($model, 'field37')->checkboxList(HealthRecords::$field35Txt,['value'=>[1],'onclick'=>"return false;"]) ?>
-
-    <?= $form->field($model, 'field38')->checkboxList(HealthRecords::$field35Txt) ?>
-    <div class="title" style="height: auto">中医外治法防治青少年近视（自愿选择，非强制）服务描述：中医按摩、点穴、拔罐、耳穴压豆、梅花针等方法防治青少年近视，收费标准：202元</div>
-
     <div class="form-group button">
         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
             'btn btn-primary']) ?>
