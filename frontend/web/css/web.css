@@ -314,6 +314,7 @@ button{    border: none;}
 .health-records .form-group{background-color: #ffffff; margin: 0;border-bottom: 1px solid rgba(0, 0, 0, 0.1);}
 .health-records .form-group .form-group-info{display: flex;}
 .health-records .form-group .help-block{margin: 0;padding-left: 125px; color: #e56659;font-size: 12px;}
+
 .health-records .has-error{border: 1px solid #e56659}
 .health-records .title{ height: 34px;
     background: #F8F8F8; line-height: 34px;
@@ -322,7 +323,7 @@ button{    border: none;}
     font-weight: bold;
     color: #000000;
 }
-.health-records .header{padding: 20px 20px;display: flex;flex-direction: column; align-items: center;}
+.health-records .header{padding: 20px 20px;display: flex; justify-content: right; align-items: center;}
 .health-records .header .info{padding-top: 20px;
 
     font-size: 16px;
@@ -333,6 +334,7 @@ button{    border: none;}
 .health-records .header .info p{text-indent:2em;}
 .health-records .button{display: flex;justify-content: center;height: 100px;align-items: center;}
 .health-records .button button { width: 90%; height: 34px;}
+.health-records .info-title{line-height: 40px;text-align: center;font-weight: bold;color:#000000;}
 .health-records-button{display: flex;justify-content: center;align-items: center;}
 .health-records-button button{
     width: 170px;
@@ -361,3 +363,6 @@ button{    border: none;}
     color: #999999;
     line-height: 20px;
 }
+.health-records .form-table{display: flex;border-bottom: 1px solid rgba(0, 0, 0, 0.1); line-height: 30px;}
+.health-records .form-table-td1{width: 110px;flex-shrink: 0;display: flex;align-items: center;padding-left: 10px;padding-right:10px;font-weight: bold;}
+.health-records .form-table-td3{width: 50px;flex-shrink: 0;display: flex;align-items: center;padding-left: 10px;}
