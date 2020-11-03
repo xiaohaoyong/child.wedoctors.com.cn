@@ -151,6 +151,10 @@ use common\models\HealthRecords;
         <div class="form-table-td2">中医按摩、点穴、拔罐、耳穴压豆、梅花针等方法防治青少年近视</div>
         <div class="form-table-td3"><?=Html::checkbox('HealthRecords[field38]',false)?></div>
     </div>
+    <div class="form-group" style="line-height: 30px;text-align: center">
+        <a href="/img/xieyi.pdf">查看协议模板</a>
+    </div>
+
     <div class="form-group button">
         <?= Html::submitButton($model->isNewRecord ? '确认并签约' : '确认并签约', ['class' => $model->isNewRecord ? 'btn btn-success' :
             'btn btn-primary']) ?>
