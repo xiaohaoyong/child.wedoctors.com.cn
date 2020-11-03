@@ -17,6 +17,13 @@ use yii\web\UploadedFile;
 
 class HealthRecordsController extends Controller
 {
+    public function actionDown($id){
+        $model=HealthRecords::findOne($id);
+
+        return $this->renderPartial('down',[
+            'model'=>$model,
+        ]);
+    }
     public function actionForm($doctorid){
         $healthRecords=HealthRecords::findOne(['userid'=>$this->login->id]);
         if($healthRecords && $healthRecords->field33){

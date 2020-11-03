@@ -13,7 +13,8 @@
     <div class="title">
         提交成功
     </div>
-    <div class="info">
+    <div class="info" style="padding-bottom: 20px;">
         学生个人健康档案已提交，感谢您的配合
     </div>
+    <a href="/img/xieyi.pdf">查看/下载协议</a>
 </div>
