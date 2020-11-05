@@ -72,7 +72,7 @@ class HealthRecordsController extends Controller
     public function actionSave(){
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $image_data = json_decode(file_get_contents('php://input'), true);
-        $healthRecords=HealthRecords::findOne(['userid'=>$this->login->id]);
+        $healthRecords=HealthRecords::findOne(['userid'=>573886]);
         if($healthRecords && $image_data) {
             $baseimage = base64_decode(rawurldecode($image_data['image_data']));
             $time = time();
