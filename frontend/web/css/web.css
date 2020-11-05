@@ -367,15 +367,34 @@ button{    border: none;}
 .health-records .form-table-td1{width: 110px;flex-shrink: 0;display: flex;align-items: center;padding-left: 10px;padding-right:10px;font-weight: bold;}
 .health-records .form-table-td3{width: 50px;flex-shrink: 0;display: flex;align-items: center;padding-left: 10px;}
 
-.health-records-sign .right-button{
-    position: absolute;
-    left: 0;
-    bottom: 70px;
-    transform: rotate(90deg);
+@media all and (orientation : landscape) {
+
+
+    .health-records-sign .right-button{
+        position: absolute;
+        right: 30px;
+        bottom: 20px;
+    }
+    .health-records-sign .left-title{
+        position: absolute;
+        left: 30px;
+        top: 20px;
+    }
 }
-.health-records-sign .left-title{
-    position: absolute;
-    right: -90px;
-    top: 150px;
-    transform: rotate(90deg);
+
+@media all and (orientation : portrait){
+
+    .health-records-sign .right-button{
+        position: absolute;
+        left: 0;
+        bottom: 70px;
+        transform: rotate(90deg);
+    }
+    .health-records-sign .left-title{
+        position: absolute;
+        right: -90px;
+        top: 150px;
+        transform: rotate(90deg);
+    }
+
 }
