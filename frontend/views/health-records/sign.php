@@ -12,18 +12,26 @@ frontend\assets\SignAsset::register($this);
             background: #F3F3F3;
         }
     </style>
-    <div id="signature" style="padding: 10px;"></div>
-    <div class="health-records-button">
-        <button id="save">确认</button>
+<div class="health-records-sign">
+    <div id="signature" style="padding: 10px 10px;"></div>
+    <div class="right-button">
+        <div class="health-records-button">
+            <button id="save">确认</button>
+        </div>
+        <div class="health-records-txt">请于白色区域签字确认</div>
     </div>
-    <div class="health-records-txt">请于上方区域签字确认</div>
+    <div class="left-title">
+        签字既代表阅读并接受协议，<a href="/img/xieyi.pdf" target="_blank"> 查看协议模板</a>
+    </div>
+</div>
 <?php
 $updateJs = <<<JS
     var width=$(window).width()-20;
+    var height=$(window).height()-25;
     $(document).ready(function() {
         $("#signature").jSignature({
                 'width':width ,
-                'height': 400,
+                'height': height,
                 'background-color':'#fff'
         })
     })

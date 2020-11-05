@@ -60,11 +60,11 @@ class HealthRecordsController extends Controller
     }
 
     public function actionSign(){
-        $healthRecords=HealthRecords::find()->where(['userid'=>$this->login->id])->andWhere(['!=','field33',''])->one();
-
-        if($healthRecords){
-            return $this->redirect(['done']);
-        }
+//        $healthRecords=HealthRecords::find()->where(['userid'=>$this->login->id])->andWhere(['!=','field33',''])->one();
+//
+//        if($healthRecords){
+//            return $this->redirect(['done']);
+//        }
 
         return $this->render('sign');
     }
