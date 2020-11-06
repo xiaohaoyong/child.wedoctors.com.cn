@@ -11,7 +11,11 @@ frontend\assets\SignAsset::register($this);
         body {
             background: #F3F3F3;
         }
-        #signature{width:100vw;height: 100vh;}
+
+        #signature {
+            width: 100vw;
+            height: 100vh;
+        }
     </style>
     <div class="health-records-sign">
         <div id="signature" style="padding: 10px 10px;"></div>
@@ -30,39 +34,32 @@ $updateJs = <<<JS
     var width=$(window).width()-20;
     var height=$(window).height()-25;
     $(document).ready(function() {
-        
         $("#signature").jSignature('init',{height:'100%',width:'100%','background-color':'#fff'})
     })
-        //监听屏幕旋转
-    $(window).on('orientationchange', function() {
-        var width=$(window).width()-20;
-        var height=$(window).height()-25;
-       
-$("#signature").jSignature('clear');
-    });
+
     $('#save').click(function () {
-            if( $("#signature").jSignature('getData', 'native').length == 0){
-                alert("请先进行签名");
-                return;
-            }else{
-                var datapair = $("#signature").jSignature("getData", "image");
-                var i = new Image();
-                i.src = "data:" + datapair[0] + "," + datapair[1];
-                i.image = datapair[1];
-                console.log(i.image);
-                $.ajax({
-                    url: "/health-records/save",
-                    //dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    data: "{\"image_data\":\"" + encodeURIComponent(i.image) + "\"}",//避免base64长度过大，json传输
-                    type: "post",
-                    cache: false,
-                    success: function (msg) {
-                        window.location.href="/health-records/done";
-                    }
-                });
-            }
-        });
+        if( $("#signature").jSignature('getData', 'native').length == 0){
+            alert("请先进行签名");
+            return;
+        }else{
+            var datapair = $("#signature").jSignature("getData", "image");
+            var i = new Image();
+            i.src = "data:" + datapair[0] + "," + datapair[1];
+            i.image = datapair[1];
+            console.log(i.image);
+            $.ajax({
+                url: "/health-records/save?type={$type}&id={$id}&sign={$sign}",
+                //dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: "{\"image_data\":\"" + encodeURIComponent(i.image) + "\"}",//避免base64长度过大，json传输
+                type: "post",
+                cache: false,
+                success: function (msg) {
+                    window.location.href="/health-records/done";
+                }
+            });
+        }
+    });
     
 JS;
 $this->registerJs($updateJs);

@@ -21,7 +21,6 @@ class Controller extends \yii\web\Controller
         'wappoint/day-num',
         'wappoint/code',
         'wappoint/vphone',
-        'health-records/sign',
     ];
 
     public function beforeAction($action)

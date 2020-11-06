@@ -38,6 +38,7 @@ use common\models\HealthRecords;
             'inputOptions' => ['class' => ''],
         ],
     ]);
+    echo $form->field($model, 'doctorid')->hiddenInput();
     ?>
     <div class="title">基本信息</div>
     <div class="form-group ">

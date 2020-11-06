@@ -32,6 +32,19 @@
 
             $e = ['label' => '同步已签约数据', 'url' => ['/synchronization']];
         }
+
+        if(in_array(Yii::$app->user->identity->hospitalid,[110647,110565])){
+            $health_records=['label' => '6岁以上学生签约', 'icon' => 'file-text-o', 'url' => "#",
+                'items' => [
+                    ['label' => '签约列表', 'url' => '#'],
+                    ['label' => '管辖学校管理', 'url' => ['/health-records-school']],
+                    ['label' => '添加学校', 'url' => ['/health-records-school/create']],
+                ]
+            ];
+        }
+
+
+
         ?>
 
         <?= dmstr\widgets\Menu::widget(
@@ -62,6 +75,7 @@
                             $c,
                             ['label' => '疫情调查表下载', 'url' => ['/yiqing/down']],
 
+
                         ]
                     ],
                     ['label' => '预约系统管理', 'icon' => 'file-text-o', 'url' => "#",
@@ -75,6 +89,7 @@
 
                         ]
                     ],
+                    $health_records,
                     ['label' => '医生管理', 'icon' => 'file-text-o', 'url' => "#",
                         'items' => [
                             ['label' => '医生管理', 'url' => ['doctors/index']],

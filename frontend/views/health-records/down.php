@@ -53,12 +53,19 @@
         <div>本协议一式三份，三方各执一份，自  至  止。</div>
 
     </div>
+    <?php
+    $healthRecordsSchool=\common\models\HealthRecordsSchool::findOne($model->field30);
+    ?>
     <div style="text-indent: 2em; padding-top:40px; line-height: 60px;display: flex;">
         <div style=" width: 450px;">
             <div>签约医生：</div>
             <div>团队服务电话：</div>
-            <div>医生签字：</div>
-            <div>日期：</div>
+            <div>医生签字：<image src="<?php
+                if($healthRecordsSchool->sign1){
+                    echo $healthRecordsSchool->sign1;
+                }
+                ?>" style="width: 200px;  "></image></div>
+            <div>日期：<?=date('Y-m-d',$model->createtime)?></div>
         </div>
         <div style="width: 450px;">
             <div>儿童姓名：<?=$model->field29?></div>
@@ -74,8 +81,12 @@
     <div style="text-indent: 2em; padding-top:40px; line-height: 60px;margin-bottom: 30px;">
         <div style="width: 450px;">
             <div>校医：</div>
-            <div>医生签字：</div>
-            <div>日期：</div>
+            <div>校医签字：<image src="<?php
+                if($healthRecordsSchool->sign1){
+                    echo $healthRecordsSchool->sign1;
+                }
+                ?>"</div>
+            <div>日期：<?=date('Y-m-d',$model->createtime)?></div>
         </div>
     </div>
 </div>
