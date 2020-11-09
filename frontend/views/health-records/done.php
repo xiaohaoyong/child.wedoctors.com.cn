@@ -16,5 +16,5 @@
     <div class="info" style="padding-bottom: 20px;">
         感谢您的配合
     </div>
-    <a href="/img/xieyi.pdf">查看/下载协议</a>
+    <a href="/health-records/down">查看协议</a>
 </div>
