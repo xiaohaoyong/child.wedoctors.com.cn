@@ -73,7 +73,7 @@ class AppointSearch extends Appoint
         if($this->appoint_date){
             $this->appoint_date=$this->appoint_date;
         }else{
-            $query->andFilterWhere(['>=', 'appoint_date', time()]);
+            $query->andFilterWhere(['>=', 'appoint_date', strtotime(date('Ymd'))]);
         }
 
         if (!$this->validate()) {
