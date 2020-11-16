@@ -9,12 +9,16 @@
 namespace frontend\controllers;
 
 
+use common\models\Vaccine;
+
 class ApiVaccineController extends ApiController
 {
     public function actionList(){
-
+        $list=Vaccine::find()->where(['>','source',0])->orderBy('source asc')->all();
+        return $list;
     }
     public function actionView($id){
-
+        $view=Vaccine::findOne($id);
+        return $view;
     }
 }

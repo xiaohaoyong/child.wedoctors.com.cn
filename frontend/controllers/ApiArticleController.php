@@ -10,25 +10,52 @@ namespace frontend\controllers;
 
 
 use common\models\Article;
+use common\models\ArticleCategory;
+use common\models\ArticleLike;
+use common\models\Points;
+use common\models\UserDoctor;
 use yii\data\Pagination;
 
 class ApiArticleController extends ApiController
 {
     public function actionCats(){
-
+        $row['id']=0;
+        $row['name']='推荐';
+        $data['cat'][]=$row;
+        $cat=ArticleCategory::find()->andWhere(['pid'=>0])->orderBy('sort asc')->all();
+        foreach($cat as $k=>$v){
+            $row=$v->toArray();
+            $rs=ArticleCategory::find()->andWhere(['pid'=>$v->id])->all();
+            $row['list']=[];
+            foreach($rs as $rk=>$rv){
+                $row['list'][]=$rv->toArray();
+            }
+            $data['cat'][]=$row;
+        }
+        return $data;
     }
-    public function actionList($catid=0){
+    public function actionList($pid=0,$id=0){
+
         $articles=Article::find();
-        if(intval($catid))
+        $articles->andWhere(['>','`article`.level',0]);
+        if(intval($pid))
         {
-            $articles->andFilterWhere(['catid'=>$catid]);
-        }else{
+            $articles->andFilterWhere(['subject_pid'=>$pid]);
+        }
+        if(intval($id))
+        {
+            $articles->andFilterWhere(['subject'=>$id]);
+        }
+        if(!$pid && !$id)
+        {
             $articles->andFilterWhere(['!=','catid',6]);
             $articles->andFilterWhere(['!=','type',2]);
+            $articles->andFilterWhere(['!=','subject_pid',20]);
+
         }
         // $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
 
-        //$articles->andFilterWhere(['not in','id',$view]);
+        // $articles->andFilterWhere(['not in','id',$view]);
 
 
         $pages = new Pagination(['totalCount' => $articles->count(), 'pageSize' => 10]);
@@ -46,7 +73,28 @@ class ApiArticleController extends ApiController
         return $data;
     }
     public function actionView($id){
+        $article=Article::findOne($id);
+        //$view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();
 
+        if(!$article) {
+
+            $article=Article::findOne(313);
+
+        }
+        $row=$article->toArray();
+        $row['createtime']=date('Y-m-d',$row['createtime']);
+        $row['info']=$article->info->toArray();
+        if($article->datauserid){
+            $doctor=UserDoctor::findOne(['hospitalid'=>$article->datauserid]);
+            $row['info']['source']=$doctor->name;
+
+        }else {
+            $row['info']['source'] = $row['info']['source'] ? $row['info']['source'] : "儿宝宝";
+        }
+        $like=ArticleLike::find()->andFilterWhere(['artid'=>$id]);
+        $row['likeNum']=$like->count();
+
+        return $row;
     }
 
 }

@@ -13,6 +13,7 @@ use Yii;
  * @property int $gender 性别
  * @property int $createtime 添加时间
  * @property int $phone 联系电话
+ * @property int $source 来源
  */
 class AppointAdult extends \yii\db\ActiveRecord
 {
@@ -38,7 +39,7 @@ class AppointAdult extends \yii\db\ActiveRecord
     {
         return [
             [['userid', 'name', 'gender', 'phone'], 'required'],
-            [['userid', 'birthday', 'gender', 'createtime', 'phone'], 'integer'],
+            [['userid', 'birthday', 'gender', 'createtime', 'phone','source'], 'integer'],
             [['name','place'], 'string', 'max' => 20],
             [['id_card','place'],'required','on'=>'lisc'],
             [['id_card'], 'validateid_card'],
