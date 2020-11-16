@@ -17,7 +17,7 @@ use common\models\BabyToolTag;
 class ApiBabytoolController extends ApiController
 {
     public function actionAge(){
-        $tags=BabyToolTag::find()->orderBy('week asc,id asc')->all();
+        $tags=BabyToolTag::find()->select('id,tag,name')->orderBy('week asc,id asc')->all();
         return $tags;
     }
     public function actionList($period){

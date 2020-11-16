@@ -21,16 +21,16 @@ class ApiArticleController extends ApiController
     public function actionCats(){
         $row['id']=0;
         $row['name']='推荐';
-        $data['cat'][]=$row;
-        $cat=ArticleCategory::find()->andWhere(['pid'=>0])->orderBy('sort asc')->all();
+        $data[]=$row;
+        $cat=ArticleCategory::find()->select('id,name')->andWhere(['pid'=>0])->orderBy('sort asc')->all();
         foreach($cat as $k=>$v){
             $row=$v->toArray();
-            $rs=ArticleCategory::find()->andWhere(['pid'=>$v->id])->all();
+            $rs=ArticleCategory::find()->select('id,name')->andWhere(['pid'=>$v->id])->all();
             $row['list']=[];
             foreach($rs as $rk=>$rv){
                 $row['list'][]=$rv->toArray();
             }
-            $data['cat'][]=$row;
+            $data[]=$row;
         }
         return $data;
     }
@@ -64,6 +64,10 @@ class ApiArticleController extends ApiController
         foreach($list as $k=>$v)
         {
             $row=$v->info->toArray();
+            unset($row['content']);
+            unset($row['video_url']);
+            unset($row['ftitle']);
+
             $row['createtime']=date('Y/m/d',$v->createtime);
             $row['source']=$row['source']?$row['source']:"儿宝宝";
             $data['list'][]=$row;
@@ -78,18 +82,17 @@ class ApiArticleController extends ApiController
 
         if(!$article) {
 
-            $article=Article::findOne(313);
+            $article=Article::findOne(313   );
 
         }
-        $row=$article->toArray();
+        $row=$article->info->toArray();
         $row['createtime']=date('Y-m-d',$row['createtime']);
-        $row['info']=$article->info->toArray();
         if($article->datauserid){
             $doctor=UserDoctor::findOne(['hospitalid'=>$article->datauserid]);
-            $row['info']['source']=$doctor->name;
+            $row['source']=$doctor->name;
 
         }else {
-            $row['info']['source'] = $row['info']['source'] ? $row['info']['source'] : "儿宝宝";
+            $row['source'] = $row['source'] ? $row['source'] : "儿宝宝";
         }
         $like=ArticleLike::find()->andFilterWhere(['artid'=>$id]);
         $row['likeNum']=$like->count();

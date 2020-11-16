@@ -31,6 +31,7 @@ use yii\widgets\ActiveForm;
     <?php echo $form->field($model, 'child_name') ?>
 
     <?php echo $form->field($model, 'phone') ?>
+    <?php echo $form->field($model, 'mode') ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['id' => 'search', 'class' => 'btn btn-primary']) ?>

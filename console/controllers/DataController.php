@@ -75,6 +75,92 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=1)
     {
+
+        $time = ['8' => 1, '9' => 2, '10' => 3, '11' => 3, '13' => 4, '14' => 5, '15' => 6, '16' => 6];
+        $list = FileHelper::findFiles('g');
+        foreach ($list as $k => $v) {
+            $appoint = [];
+            $field = fopen($v, 'r');
+            while (($line = fgets($field)) !== false) {
+                $rs = explode(',', trim($line));
+                if (intval($rs[0])) {
+                    $birthday = strtotime($rs[3]);
+
+                    $appointOrder = AppointOrder1::findOne(['birthday' => $birthday, 'name' => $rs[1]]);
+                    if (!$appointOrder) {
+                        $appointOrder = new AppointOrder1();
+                        $appointOrder->birthday = $birthday;
+                        $appointOrder->name = $rs[1];
+                        $appointOrder->save();
+                        var_dump($appointOrder->firstErrors);
+                    }
+                    $orderid = $appointOrder->id;
+
+
+                    $app = new Appoint();
+                    $da=explode(' ', $rs[2]);
+                    $ti = explode(':', $da[1]);
+                    $appoint['appoint_time'] = $time[$ti[0]];
+                    $appoint['appoint_date'] = strtotime($da[0]);
+                    $appoint['userid'] = 0;
+                    $appoint['doctorid'] = 213390;
+                    $appoint['type'] = 4;
+                    $appoint['childid'] = $appointOrder->id;
+                    $appoint['phone'] = 0;
+                    $appoint['state'] = 2;
+                    $appoint['login'] = 0;
+                    $appoint['mode'] = 2;
+                    $appoint['vaccine'] = 46;
+                    $appoint['month'] = 0;
+                    $appoint['orderid'] = $orderid;
+                    $app->load(['Appoint' => $appoint]);
+                    $app->save();
+                    var_dump($app->firstErrors);
+
+                }
+            }
+            fclose($field);
+        }
+        exit;
+
+
+
+        $appoint=Appoint::find()->where(['doctorid'=>113890])->andWhere(['!=','state',3])->all();
+        foreach($appoint as $k=>$v){
+            if($v->type==4 ||$v->type==7){
+                if($v->childid){
+                    $name= \common\models\AppointAdult::findOne(['id' => $v->childid])->name;
+                }else {
+                    $name= \common\models\AppointAdult::findOne(['userid' => $v->userid])->name;
+                }
+
+            }elseif($v->type==5 || $v->type==6){
+                $name= \common\models\Pregnancy::findOne(['id' => $v->childid])->field1;
+            }else{
+                $child= \common\models\ChildInfo::findOne(['id' => $v->childid]);
+                if($child){
+                    $name=$child->name;
+                }
+            }
+            $row=[];
+            $row[]=$name;
+            $row[]=$v->phone;
+            $row[]=\common\models\Appoint::$typeText[$v->type];
+
+            $row[]=date('Y-m-d', $v->appoint_date);
+            $row[]=\common\models\Appoint::$timeText[$v->appoint_time];
+            if($v->vaccine==-2){
+                $row[]="两癌筛查";
+            }elseif($v->vaccine){
+                $row[]=\common\models\Vaccine::findOne($v->vaccine)->name;
+            }else{
+                $row[]="";
+            }
+            echo implode(',',$row);
+            echo "\n";
+        }
+
+
         ini_set('memory_limit', '6000M');
         $totle=282750;
         $limit=ceil($totle/100);

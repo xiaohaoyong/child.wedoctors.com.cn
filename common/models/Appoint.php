@@ -183,6 +183,8 @@ class Appoint extends \yii\db\ActiveRecord
         0=>'用户预约',
         1=>'医生预约',
         2=>'系统导入',
+        3=>'西城预约',
+
     ];
 
     public $date;

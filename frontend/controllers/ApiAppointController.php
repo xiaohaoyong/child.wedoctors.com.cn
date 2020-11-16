@@ -214,7 +214,7 @@ class ApiAppointController extends ApiController
             }
 
 
-            return ['weekr'=>$weekr,'streets'=>$streets,'monthType'=>$monthType, 'vaccines' => $vaccines, 'days' => $days];
+            return ['streets'=>$streets,'monthType'=>$monthType, 'vaccines' => $vaccines, 'days' => $days];
 
         } else {
             return new Code(20010, '社区医院暂未开通服务！');
@@ -413,16 +413,18 @@ class ApiAppointController extends ApiController
         if($doctor){
             $hospital=Hospital::findOne($doctor->hospitalid);
         }
-        $row['hospital']=$hospital->name;
-        $row['type']=Appoint::$typeText[$appoint->type];
-        $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
-        $row['child_name']=AppointAdult::findOne(['id'=>$appoint->childid])->name;
-        $row['duan']=$appoint->appoint_time;
+        $rs['hospital']=$hospital->name;
+        $rs['type']=Appoint::$typeText[$appoint->type];
+        $rs['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
+        $rs['name']=AppointAdult::findOne(['id'=>$appoint->childid])->name;
+
+
+        $rs['duan']=$appoint->appoint_time;
         if($appoint->vaccine==-2){
-            $row['vaccineStr']='两癌筛查';
+            $rs['vaccineStr']='两癌筛查';
         }else {
             $vaccine = Vaccine::findOne($appoint->vaccine);
-            $row['vaccineStr'] = $vaccine ? $vaccine->name : '';
+            $rs['vaccineStr'] = $vaccine ? $vaccine->name : '';
         }
         $index=Appoint::find()
             ->andWhere(['appoint_date'=>$appoint->appoint_date])
@@ -433,12 +435,12 @@ class ApiAppointController extends ApiController
             ->count();
         $row['index']=$index+1;
 
-        return $row;
+        return $rs;
 
     }
 
-    public function actionMy($userid,$type=1){
-        $appoints = Appoint::findAll(['userid' => $userid,'type'=>4,'state'=>$type]);
+    public function actionMy($userid,$type=1,$state=1){
+        $appoints = Appoint::findAll(['userid' => $userid,'type'=>$type,'state'=>$state,'mode'=>3]);
         $list=[];
         foreach($appoints as $k=>$v){
             $row=$v->toArray();
@@ -446,51 +448,169 @@ class ApiAppointController extends ApiController
             if($doctor){
                 $hospital=Hospital::findOne($doctor->hospitalid);
             }
-            $row['hospital']=$hospital->name;
-            $row['type']=Appoint::$typeText[$v->type];
-            $row['time']=date('Y.m.d',$v->appoint_date)."  ".Appoint::$timeText[$v->appoint_time];
-            $row['stateText']=Appoint::$stateText[$v->state];
-            $row['child_name']=AppointAdult::findOne(['id'=>$v->childid])->name;
-            $list[]=$row;
+            $rs['id']=$v->id;
+            $rs['hospital']=$hospital->name;
+            $rs['type']=Appoint::$typeText[$v->type];
+            $rs['time']=date('Y.m.d',$v->appoint_date)."  ".Appoint::$timeText[$v->appoint_time];
+            $rs['stateText']=Appoint::$stateText[$v->state];
+            $rs['name']=AppointAdult::findOne(['id'=>$v->childid])->name;
+            $list[]=$rs;
         }
 
-        return ['list'=>$list,'type'=>$type];
+        return $list;
 
     }
     public function actionSave(){
-        $post=\Yii::$app->request->post();
+        $post = \Yii::$app->request->post();
+
 
         if(!$post['appoint_name'] || !$post['phone'] || !$post['sex']
-            || !$post['doctorid'] || !$post['appoint_time'] || !$post['appoint_date'] || !$post['type']){
+            || !$post['doctorid'] || !$post['appoint_time'] || !$post['appoint_date'] || !$post['type'] || !$post['birthday'] || !$post['userid']){
             return new Code(20010, '提交失败，缺少参数');
         }
 
-        $doctor=UserDoctor::findOne(['userid'=>$post['doctorid']]);
-        if($doctor){
-            if($doctor->appoint){
-                $types=str_split((string)$doctor->appoint);
+        $week = date('w', strtotime($post['appoint_date']));
+
+        $doctor = UserDoctor::findOne(['userid' => $post['doctorid']]);
+        if ($doctor) {
+            $hospital = Hospital::findOne($doctor->hospitalid);
+            if ($doctor->appoint) {
+                $types = str_split((string)$doctor->appoint);
             }
         }
-        if(!$doctor || !$doctor->appoint || !in_array($post['type'],$types)){
-            return new Code(20010, '社区未开通');
+        if (!$doctor || !$doctor->appoint || !in_array($post['type'], $types)) {
+            return new Code(21000, '社区未开通');
         };
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
 
-        $w=date("w",$post['appoint_date']);
+
+        if(!isset($post['month']) && $appoint->is_month)
+        {
+            return new Code(21000, '您的版本过低，请更新版本后预约');
+        }
+
+
+        $vaccine_count=Appoint::find()->where(['doctorid'=>$post['doctorid'],'vaccine'=>$post['vaccine'],'appoint_date'=>strtotime($post['appoint_date'])])->andWhere(['<','state',3])->count();
+        $hospitalAppointVaccineNum=HospitalAppointVaccineNum::findOne(['haid'=>$appoint->id,'week'=>$week,'vaccine'=>$post['vaccine']]);
+        if($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num-$vaccine_count<=0){
+            return new Code(21000, '此疫苗'.date('Y年m月d日',strtotime($post['appoint_date']))."已约满，请选择其他日期");
+        }
+
+        //体检限制月龄预约
+        if($post['type']==1 && $post['birthday']){
+            $hospitalAppointMonth = HospitalAppointMonth::find()->select('month')->where(['type' => $post['month']])->andWhere(['haid'=>$appoint->id])->orderBy('month asc')->column();
+
+            if($hospitalAppointMonth && $appoint->is_month) {
+                $birthday=strtotime($post['birthday']);
+                $first = $hospitalAppointMonth[0];
+                $end = $hospitalAppointMonth[count($hospitalAppointMonth) - 1];
+                $daytime =strtotime($post['appoint_date']);
+                if (strtotime("-$first month", $daytime) < $birthday || strtotime("-" . ($end + 1) . " month", $daytime) > $birthday) {
+                    return new Code(21000,date('Y年m月d日',$daytime).HospitalAppointMonth::$typeText[$post['month']]
+                        ."，需宝宝在预约日期时满".$first."个月且小于".($end + 1)."个月");
+                }
+
+            }
+        }
+
+        //判断所选疫苗都有周几可约
+        if ($post['vaccine']) {
+            $vaccine = Vaccine::findOne($post['vaccine']);
+            if ($vaccine) {
+                $query = HospitalAppointVaccine::find()
+                    ->select('week')
+                    ->where(['haid' => $appoint->id]);
+                if ($vaccine->type == 0) {
+                    $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => 0]]);
+                } else {
+                    $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => -1]]);
+                }
+                $vaccineWeek = $query->groupBy('week')->column();
+                //如该疫苗无法获取周几可约则视为非法访问
+                if (!$vaccineWeek) {
+                    return new Code(20010, '社区医院暂未开通服务！');
+                }
+            }
+        }
+
+
+        //判断所选社区都有周几可约
+        if ($post['street']) {
+            $streetView = Street::findOne($post['street']);
+            if ($streetView) {
+                $query = HospitalAppointStreet::find()
+                    ->select('week')
+                    ->where(['haid' => $appoint->id]);
+                $query->andWhere(['or', ['street' => $post['street']], ['street' => 0]]);
+                $streetWeek = $query->groupBy('week')->column();
+                //如该疫苗无法获取周几可约则视为非法访问
+                if (!$streetWeek) {
+                    return new Code(20010, '社区医院暂未开通服务！');
+                }
+            }
+        }
+
+        if($vaccineWeek && $streetWeek){
+            $weekr=array_intersect($vaccineWeek,$streetWeek);
+        }elseif($streetWeek || $vaccineWeek){
+            $weekr=$streetWeek?$streetWeek:$vaccineWeek;
+        }
+
+        $is_appoint = $appoint->is_appoint(strtotime($post['appoint_date']),$weekr);
+        if ($is_appoint != 1) {
+            return new Code(21000, '预约日期非门诊日或未到放号时间!请更新客户端查看！');
+        }
+
+        $firstAppoint = Appoint::find()
+            ->andWhere(['type' => $post['type']])
+            ->andWhere(['doctorid' => $doctor->userid])
+            ->andWhere(['appoint_date' => strtotime($post['appoint_date'])])
+            ->andWhere(['!=', 'state', 3])
+            ->andWhere(['mode' => 0])
+            ->orderBy('createtime desc')
+            ->one();
+        if ($firstAppoint) {
+            if ($firstAppoint->appoint_time > 6 && $post['appoint_time'] < 7) {
+                return new Code(21000, '预约日期非门诊日或未到放号时间!请更新客户端查看！');
+            }
+            if ($firstAppoint->appoint_time < 7 && $post['appoint_time'] > 6) {
+                return new Code(21000, '预约日期非门诊日或未到放号时间!请更新客户端查看！');
+            }
+        }
+
+        //判断选择疫苗和日期是否匹配
+        if($post['vaccine']) {
+            $vaccine = Vaccine::findOne($post['vaccine']);
+            $type=$vaccine->type==1?-1:0;
+            $vaccines = HospitalAppointVaccine::find()
+                ->where(['haid' => $appoint->id])
+                ->andwhere(['week' => $week])->andwhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => $type]])->column();
+            if(!$vaccines){
+                return new Code(21000, '此日期没有您选择的疫苗！请选择其他日期');
+            }
+        }
+
+
+        $w = date("w", strtotime($post['appoint_date']));
         $weeks = HospitalAppointWeek::find()
             ->andWhere(['week' => $w])
             ->andWhere(['haid' => $appoint->id])
-            ->andWhere(['time_type'=>$post['appoint_time']])->one();
+            ->andWhere(['time_type' => $post['appoint_time']])->one();
 
 
         $appointed = Appoint::find()
             ->andWhere(['type' => $post['type']])
             ->andWhere(['doctorid' => $post['doctorid']])
-            ->andWhere(['appoint_date' =>$post['appoint_date']])
+            ->andWhere(['appoint_date' => strtotime($post['appoint_date'])])
             ->andWhere(['appoint_time' => $post['appoint_time']])
             ->andWhere(['mode' => 0])
-            ->andWhere(['<','state',3])
+            ->andWhere(['<', 'state', 3])
             ->count();
+
+
+        if (($weeks->num - $appointed) <= 0) {
+            return new Code(21000, '该时间段已约满，请选择其他时间');
+        }
 
         $appointAdult=AppointAdult::findOne(['userid'=>$post['userid'],'name'=>$post['appoint_name']]);
         $appointAdult=$appointAdult?$appointAdult:new AppointAdult();
@@ -498,45 +618,32 @@ class ApiAppointController extends ApiController
         $appointAdult->name=$post['appoint_name'];
         $appointAdult->phone=$post['phone'];
         $appointAdult->gender=$post['sex'];
-        $appointAdult->source=1;
-
         //$appointAdult->birthday=strtotime($post['birthday']);
         if(!$appointAdult->save()){
-            return new Code(20010, '联系人信息保存失败');
+            return new Code(21000, '联系人信息保存失败');
         }
 
-        if($post['vaccine']) {
-            $week = date('w', $post['appoint_date']);
 
-            $vaccine_count = Appoint::find()->where(['doctorid' => $post['doctorid'], 'vaccine' => $post['vaccine'], 'appoint_date' => $post['appoint_date']])->andWhere(['<', 'state', 3])->count();
-            $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $post['vaccine']]);
-            if ($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num - $vaccine_count <= 0) {
-                return new Code(20010, '此疫苗' . date('Y年m月d日', $post['appoint_date']) . "已约满，请选择其他日期");
-            }
-        }
+        $appoint=Appoint::findOne(['userid'=>$appointAdult->userid,'childid'=>$appointAdult->id,'type'=>$post['type'],'state'=>1,'mode'=>3]);
 
-        if(($weeks->num-$appointed)<=0){
-            return new Code(20010, '该时间段已约满，请选择其他时间');
-        }
+        if ($appoint) {
+            return new Code(21000, '您有未完成的预约');
+        }  else {
 
-        $appoint=Appoint::findOne(['userid'=>$appointAdult->userid,'childid'=>$appointAdult->id,'type'=>$post['type'],'state'=>1]);
-        if($appoint){
-            return new Code(20010, '您有未完成的预约');
-        }elseif(!$appointAdult->userid){
-            return new Code(20010, '预约人联系信息保存失败');
-        } else{
             $model = new Appoint();
+            $post['appoint_date'] = strtotime($post['appoint_date']);
             $post['state'] = 1;
             $post['userid'] = $appointAdult->userid;
-            $post['loginid']=0;
-            $post['childid']=$appointAdult->id;
-            $post['source']=1;
-            $model->load(["Appoint" => $post]);
-            if ($model->save()) {
-                return new Code(10000, '成功');
-            } else {
-                return new Code(20010, '提交失败');
+            $post['childid'] = $appointAdult->id;
+            $post['mode'] =3;
 
+            $model->load(["Appoint" => $post]);
+
+
+            if ($model->save()) {
+                return ['id' => $model->id];
+            } else {
+                return new Code(20010, implode(':', $model->firstErrors));
             }
         }
     }
