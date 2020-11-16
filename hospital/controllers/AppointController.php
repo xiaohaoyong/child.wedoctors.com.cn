@@ -90,7 +90,7 @@ class AppointController extends BaseController
 
 
 //写入内容
-        foreach ($dataProvider->query->limit(1000)->all() as $k => $e) {
+        foreach ($dataProvider->query->all() as $k => $e) {
             $v = $e->toArray();
             $key1 = $k + 2;
             if($searchModel->type!=7 and $searchModel->type!=4) {
