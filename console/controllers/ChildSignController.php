@@ -37,7 +37,7 @@ class ChildSignController extends Controller
 //            $this->setDownExcel($v->userid);
 //            echo "\n";
 //        }
-        //$this->setDownExcel(206260);
+        $this->setDownExcel(206260);
     }
     public function setDownExcel($doctorid){
 
