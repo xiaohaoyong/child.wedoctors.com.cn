@@ -125,7 +125,6 @@ class SiteController extends BaseController
 
 
         $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
-
         if($auto) {
             $data['AutoNum'] = ChildInfo::find()
                 ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
