@@ -81,13 +81,13 @@ class ChildSignController extends Controller
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
         $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
-        var_dump(count($auto));exit;
 
         if($auto) {
             $data = ChildInfo::find()
                 ->andFilterWhere(['in', '`child_info`.`userid`' , array_unique($auto)])
                 ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                 ->asArray()->all();
+            var_dump(count($data));exit;
 
 
             foreach ($data as $k => $v) {
