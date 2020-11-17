@@ -87,7 +87,6 @@ class ChildSignController extends Controller
                 ->andFilterWhere(['in', '`child_info`.`userid`' , array_unique($auto)])
                 ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                 ->asArray()->all();
-            var_dump(count($data));exit;
 
 
             foreach ($data as $k => $v) {
