@@ -409,7 +409,7 @@ use common\models\Vaccine;
 
                                         <td><?= \kartik\select2\Select2::widget([
                                                 'name' => 'streets[' . $wv . ']',
-                                                'data' => ['全部'] + $street,
+                                                'data' => $street,
                                                 'language' => 'de',
                                                 'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
                                                 'showToggleAll' => false,
