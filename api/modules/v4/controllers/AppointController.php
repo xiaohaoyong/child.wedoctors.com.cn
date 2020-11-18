@@ -199,7 +199,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 ->where(['haid'=>$appoint->id])->groupBy('street')->column();
             if ($hospitalS) {
                 $vQuery = Street::find()->select('id,title');
-                if (!in_array(0, $hospitalS)) {
+                if (!in_array(0, $hospitalS) && $hospitalS) {
                     $vQuery->andWhere(['in', 'id', $hospitalS]);
                 }
                 $street = $vQuery->asArray()->all();

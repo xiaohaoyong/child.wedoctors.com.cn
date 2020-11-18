@@ -56,12 +56,6 @@ class UserController extends Controller
             $session_key = md5($value . time());
             $cache->set($session_key, $value);
 
-
-            UserLogin::updateAll(['dopenid'=>''],["dopenid"=>$user['openid']]);
-            //更新用户平台id
-            if ($user['unionid']) {
-                $login->unionid = $user['unionid'];
-            }
             $login->dopenid = $user['openid'];
             $login->save();
 
