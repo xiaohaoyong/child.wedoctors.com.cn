@@ -14,6 +14,7 @@ use common\models\ChildInfo;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
+use console\models\Pregnancy;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use yii\console\Controller;
 
@@ -181,6 +182,29 @@ class FamilyDoctorController extends Controller
 
                 $i++;
             }
+            $preg=Pregnancy::find()
+                ->andWhere(['pregnancy.field49'=>0])
+                ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
+                ->andWhere(['in','familyid',$auto])
+                ->all();
+
+            foreach($preg as $k=>$v){
+                $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
+                $worksheet->getCellByColumnAndRow(4,$i)->setValue($v->field1);
+                $worksheet->getCellByColumnAndRow(5,$i)->setValue("\t".$v->field4);
+                $au=Autograph::findOne(['userid'=>$v->familyid]);
+                $worksheet->getCellByColumnAndRow(6,$i)->setValue(date('Y-m-d',$au->createtime));
+
+                if($v->field6){
+                    $phone="\t".$v->field6;
+                }else{
+                    $phone="\t".UserLogin::getPhone($v->familyid);
+                }
+                $worksheet->getCellByColumnAndRow(7,$i)->setValue($phone);
+                $worksheet->getCellByColumnAndRow(17,$i)->setValue('✅');
+                $i++;
+            }
+
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family.xlsx');
