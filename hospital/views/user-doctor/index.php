@@ -34,6 +34,7 @@ hospital\assets\DatabasesAsset::register($this);
                         <th>辖区内管理儿童数</th>
                         <th>今日签约 </th>
                         <th>签约总数</th>
+                        <th>其他渠道签约数</th>
                         <th>今日宣教</th>
                         <th>已宣教数</th>
                         <th>管理服务率</th>
@@ -71,6 +72,9 @@ hospital\assets\DatabasesAsset::register($this);
                                     ->andFilterWhere(['child_info.admin'=>$v->hospitalid])
                                     ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
                                 ?>
+                            </td>
+                            <td>
+                                <?=\common\models\UserDoctor::$num[$v->hospitalid]?>
                             </td>
                             <td><?php
                                 $today=strtotime(date('Y-m-d 00:00:00'));
