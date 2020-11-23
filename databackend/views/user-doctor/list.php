@@ -143,11 +143,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             ->andWhere(['field49'=>0])->andWhere(['>','field16',strtotime('-11 month')])->andWhere(['doctorid'=>$v->hospitalid])->count();
                                                         ?></td>
                                                     <td><?php
+
                                                         $query= \common\models\Pregnancy::find()
                                                             ->andWhere(['pregnancy.field49'=>0])
-                                                            ->andWhere(['>', 'pregnancy.familyid', 0])
-                                                            ->andWhere(['>','pregnancy.field16',strtotime('-11 month')])
+                                                            ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
                                                             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+                                                            ->andWhere(['pregnancy.doctorid'=>$v->hospitalid])
                                                             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $v->userid]);
                                                         if(Yii::$app->request->post('edate') && Yii::$app->request->post('sdate')){
                                                             $query->andWhere(['>=','doctor_parent.createtime',strtotime($sdate)])->andWhere(['<=','doctor_parent.createtime',strtotime($edate)]);

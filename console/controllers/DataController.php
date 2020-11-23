@@ -75,6 +75,50 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=1)
     {
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>206260])->column();
+        $child= ChildInfo::find()
+            ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
+            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+            ->all();
+        foreach($child as $k=>$v){
+            $rs=[];
+            $rs[]=$v->name;
+            $rs[]="\t".$v->idcard;
+            $au=Autograph::findOne(['userid'=>$v->userid]);
+
+            $rs[] = date('Y-m-d',$au->createtime);
+            $userParent=UserParent::findOne(['userid'=>$v->userid]);
+            if($userParent && $userParent->mother_phone){
+                $rs[]="\t".$userParent->mother_phone;
+            }else{
+                $rs[]="\t".UserLogin::getPhone($v->userid);
+            }
+            echo implode(',',$rs);
+            echo "\n";
+        }
+        exit;
+
+        $doctorids=[110627];
+        $doctors=UserDoctor::find()->where(['in','hospitalid',$doctorids])->column();
+        $doctorParent=DoctorParent::find()->select('parentid')->where(['in','doctorid',$doctors])->column();
+
+        $child=ChildInfo::find()->where(['in','source',$doctorids])->andWhere(['>','birthday',strtotime('-3 year')])->andWhere(['not in','userid',$doctorParent])->all();
+        foreach($child as $k=>$v){
+            $rs=[];
+            $hospital=Hospital::findOne($v->source);
+            $userParent=UserParent::findOne(['userid'=>$v->userid]);
+            if($userParent && $userParent->mother_phone) {
+                $rs[] = $userParent->mother_phone;
+                $rs[] = $hospital->name;
+
+            echo implode(',',$rs);
+            echo "\n";
+            }
+        }
+        exit;
+
+
+
 
         $time = ['8' => 1, '9' => 2, '10' => 3, '11' => 3, '13' => 4, '14' => 5, '15' => 6, '16' => 6];
         $list = FileHelper::findFiles('g');
