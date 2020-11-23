@@ -34,7 +34,7 @@ class FamilyDoctorController extends Controller
 
     public function setDownExcel($doctorid)
     {
-
+        echo $doctorid."\n";
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
         $worksheet->getCellByColumnAndRow(1,1)->setValue('家庭医生签约服务签约居民基本信息汇总表');
