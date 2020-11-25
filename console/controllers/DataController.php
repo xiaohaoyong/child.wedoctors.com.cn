@@ -75,6 +75,25 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=1)
     {
+        ini_set('memory_limit', '6000M');
+        $totle=282750;
+        $limit=ceil($totle/100);
+        $snum=$num*$limit;
+
+        $login=UserLogin::find()->select('openid')->where(['!=','openid',''])->groupBy('openid')->offset($snum)->limit($limit)->column();
+        foreach($login as $k=>$v){
+            $data = [
+                'first' => ['value' => '为什么不同月龄段要接种不同的疫苗，接种疫苗有什么好处？什么是免疫规划疫苗，什么是非免疫规划疫苗？有没有什么组合是最高效？到月龄了必须接种疫苗吗？为了解决这些疑问，我们邀请了海淀区妇幼保健院儿保科主任张良芬大夫为我们详细讲解。'],
+                'keyword1' => ARRAY('value' => '张良芬主任告诉你为什么不同月龄要接种不同疫苗，第十六期健康直播课即将开始'),
+                'keyword2' => ARRAY('value' => '2020年11月25日下午3点'),
+                'remark' => ARRAY('value' => ""),
+            ];
+            $rs = WechatSendTmp::send($data,$v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5fbdb284e4b0231ba88896b7?type=2');
+            sleep(1);
+        }
+        var_dump($login);exit;
+
+
         $auto=Autograph::find()->select('userid')->where(['doctorid'=>206260])->column();
         $child= ChildInfo::find()
             ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
