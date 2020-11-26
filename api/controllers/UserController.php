@@ -56,23 +56,23 @@ class UserController extends Controller
 
             $session_key = $this->seaver_token;
             $login = UserLogin::findOne(['id'=>$this->userLogin->id]);
-            if($login && !$login->unionid){
-                //获取用户微信登陆信息
-                $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
-                $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
-                $userJson = $curl->get();
-                $user = json_decode($userJson, true);
-                if($user['unionid']){
-                    $login->unionid=$user['unionid'];
-                    $login->save();
-                    $weOpenid = WeOpenid::findOne(['unionid' => $user['unionid']]);
-                    if ($weOpenid) {
-                        $log->addLog("openid:".$weOpenid->openid);
-                        $weOpenid->xopenid = $user['openid'];
-                        $weOpenid->save();
-                    }
-                }
-            }
+//            if($login && !$login->unionid){
+//                //获取用户微信登陆信息
+//                $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
+//                $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
+//                $userJson = $curl->get();
+//                $user = json_decode($userJson, true);
+//                if($user['unionid']){
+//                    $login->unionid=$user['unionid'];
+//                    $login->save();
+//                    $weOpenid = WeOpenid::findOne(['unionid' => $user['unionid']]);
+//                    if ($weOpenid) {
+//                        $log->addLog("openid:".$weOpenid->openid);
+//                        $weOpenid->xopenid = $user['openid'];
+//                        $weOpenid->save();
+//                    }
+//                }
+//            }
             $xopenid = $login->xopenid;
             $unionid = $login->unionid;
             $useridKey = md5($this->userid . "6623cXvY");
