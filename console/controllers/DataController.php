@@ -75,6 +75,17 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=1)
     {
+        $doctorParent=DoctorParent::findAll(['doctorid'=>386661]);
+        foreach($doctorParent as $k=>$v){
+            $auto=Autograph::findOne(['userid'=>$v->parentid]);
+            if($auto && $auto->createtime){
+                $v->createtime=$auto->createtime;
+                $v->save();
+            }
+        }
+        exit;
+
+
         ini_set('memory_limit', '6000M');
         $totle=282750;
         $limit=ceil($totle/100);

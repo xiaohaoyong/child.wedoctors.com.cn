@@ -639,12 +639,12 @@ class ApiAppointController extends ApiController
 
             $model->load(["Appoint" => $post]);
 
-
-            if ($model->save()) {
-                return ['id' => $model->id];
-            } else {
-                return new Code(20010, implode(':', $model->firstErrors));
-            }
+            return ['id' => $model->id];
+//            if ($model->save()) {
+//                return ['id' => $model->id];
+//            } else {
+//                return new Code(20010, implode(':', $model->firstErrors));
+//            }
         }
     }
 }
