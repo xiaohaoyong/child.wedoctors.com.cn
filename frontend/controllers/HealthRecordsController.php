@@ -85,6 +85,7 @@ class HealthRecordsController extends Controller
 
     public function actionSave($type='',$id=0,$sign=''){
 
+        var_dump($_POST);exit;
         if($type && $id && $sign){
             $sign1=md5($type.$id.HealthRecordsSchool::$typeSign[$type].date('Ymd'));
             if($sign1!=$sign){
@@ -120,6 +121,8 @@ class HealthRecordsController extends Controller
                 $ossClient->putObject('childimage', 'upload/' . $filen . '.' . UploadForm::filetype2($baseimage), $baseimage);
                 $healthRecords->field33=$images;
                 $healthRecords->save();
+                var_dump($healthRecords->firstErrors);exit;
+
             }
         }
 
