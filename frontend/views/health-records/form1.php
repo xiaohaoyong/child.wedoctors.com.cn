@@ -40,38 +40,6 @@ use common\models\HealthRecords;
     ]);
     echo $form->field($model, 'doctorid')->hiddenInput();
     ?>
-    <div class="title">基本信息</div>
-    <div class="form-group ">
-        <div class="form-group-info"><label class="w120 control-label">申请社区</label>
-            <div class="form-input">八里庄社区卫生服务中心</div>
-        </div>
-    </div>
-    <div class="form-group ">
-        <div class="form-group-info"><label class="w120 control-label">联系人</label>
-            <div class="form-input">刘涛</div>
-        </div>
-    </div>
-    <div class="form-group ">
-        <div class="form-group-info"><label class="w120 control-label ">联系电话</label>
-            <div class="form-input">13552061388</div>
-        </div>
-    </div>
-    <div class="title">服务包信息</div>
-    <div class="form-group ">
-        <div class="form-group-info"><label class="w120 control-label">申请理由</label>
-            <div class="form-input">提高学龄儿童健康管理水平</div>
-        </div>
-    </div>
-    <div class="form-group ">
-        <div class="form-group-info"><label class="w120 control-label">服务包名称</label>
-            <div class="form-input">学龄儿童服务包</div>
-        </div>
-    </div>
-    <div class="form-group ">
-        <div class="form-group-info"><label class="w120 control-label">针对人群</label>
-            <div class="form-input">非重点人群</div>
-        </div>
-    </div>
     <div class="title">基本服务包</div>
     <div class="form-group ">
         <div class="info-title" style="text-align: center">基本医疗服务项目</div>
@@ -144,12 +112,12 @@ use common\models\HealthRecords;
     </div>
     <div class="form-table ">
         <div class="form-table-td1">预防接种</div>
-        <div class="form-table-td2">疫苗接种提醒、咨询、指导以及计划内免疫接种</div>
+        <div class="form-table-td2">疫苗接种提醒、咨询、流感疫苗接种指导以及计划内免疫接种</div>
         <div class="form-table-td3">免费</div>
     </div>
     <div class="form-table ">
         <div class="form-table-td1">中医外治法防治青少年近视（自愿选择，非强制）</div>
-        <div class="form-table-td2">中医按摩、点穴、拔罐、耳穴压豆、梅花针等方法防治青少年近视</div>
+        <div class="form-table-td2">中医按摩、点穴、拔罐、耳穴压豆、梅花针等方法防治青少年近视（收费，按照医保收费标准执行。自愿选择。）</div>
         <div class="form-table-td3"><?=Html::checkbox('HealthRecords[field38]',false)?></div>
     </div>
     <div class="form-group" style="line-height: 30px;text-align: center">

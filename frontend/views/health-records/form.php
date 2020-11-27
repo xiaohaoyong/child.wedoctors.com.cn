@@ -40,10 +40,6 @@ use common\models\HealthRecords;
     <?= $form->field($model, 'field30')->dropDownList(\common\models\HealthRecordsSchool::find()->select('name')->indexBy('id')->where(['doctorid'=>$doctorid])->column(),['prompt'=>'请选择']) ?>
     <?= $form->field($model, 'field34')->textInput(['maxlength' => true,'placeholder'=>'请填写学生班级']) ?>
 
-    <?= $form->field($model, 'field31')->textInput(['maxlength' => true,'placeholder'=>'请填写校医姓名']) ?>
-
-    <?= $form->field($model, 'field32')->textInput(['maxlength' => true,'placeholder'=>'请填写校医电话']) ?>
-
     <div class="title">基本信息</div>
 
     <?= $form->field($model, 'field1')->radioList(HealthRecords::$field1Txt) ?>
@@ -56,7 +52,6 @@ use common\models\HealthRecords;
 
     <?= $form->field($model, 'field5')->radioList(HealthRecords::$field5Txt) ?>
 
-    <?= $form->field($model, 'field5_text')->textInput(['maxlength' => true,'placeholder'=>'请填写'.$model->getAttributeLabel('field5_text')]) ?>
 
     <?= $form->field($model, 'field6')->textInput(['maxlength' => true,'placeholder'=>'请填写'.$model->getAttributeLabel('field6')]) ?>
 
@@ -64,7 +59,6 @@ use common\models\HealthRecords;
 
     <?= $form->field($model, 'field8')->radioList(HealthRecords::$field8Txt) ?>
 
-    <?= $form->field($model, 'field8_text')->textInput(['maxlength' => true,'placeholder'=>'请填写'.$model->getAttributeLabel('field8_text')]) ?>
 
     <?= $form->field($model, 'field9')->textInput(['placeholder'=>'请填写'.$model->getAttributeLabel('field9')]) ?>
 
