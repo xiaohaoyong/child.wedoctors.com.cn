@@ -61,8 +61,8 @@
             <div>签约医生：</div>
             <div>团队服务电话：</div>
             <div>医生签字：<image src="<?php
-                if($healthRecordsSchool->sign1){
-                    echo $healthRecordsSchool->sign1;
+                if($healthRecordsSchool->sign2){
+                    echo $healthRecordsSchool->sign2;
                 }
                 ?>" style="width: 200px;  "></image></div>
             <div>日期：<?=date('Y-m-d',$model->createtime)?></div>

@@ -120,7 +120,6 @@ class HealthRecordsController extends Controller
                 $ossClient->putObject('childimage', 'upload/' . $filen . '.' . UploadForm::filetype2($baseimage), $baseimage);
                 $healthRecords->field33=$images;
                 $healthRecords->save();
-                var_dump($healthRecords->firstErrors);exit;
 
             }
         }
