@@ -165,10 +165,13 @@ class FamilyDoctorController extends Controller
                 ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                 ->all();
             $i=8;
+
             foreach($child as $k=>$v){
+                $idcard=$v->field27?$v->field27:$v->idcard;
+
                 $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
                 $worksheet->getCellByColumnAndRow(4,$i)->setValue($v->name);
-                $worksheet->getCellByColumnAndRow(5,$i)->setValue("\t".$v->idcard);
+                $worksheet->getCellByColumnAndRow(5,$i)->setValue("\t".$idcard);
                 $au=Autograph::findOne(['userid'=>$v->userid]);
                 $worksheet->getCellByColumnAndRow(6,$i)->setValue(date('Y-m-d',$au->createtime));
 
