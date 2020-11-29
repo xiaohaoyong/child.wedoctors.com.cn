@@ -78,8 +78,9 @@ class DataController extends \yii\console\Controller
         $doctorParent=DoctorParent::findAll(['doctorid'=>400564]);
         foreach($doctorParent as $k=>$v) {
             $openid = UserLogin::getOpenid($v->parentid);
+            $child=ChildInfo::find()->where(['userid'=>$v->parentid])->andWhere(['field27'=>''])->andWhere(['idcard'=>''])->one();
 
-            if($openid) {
+            if($openid && $child) {
                 $data = [
                     'first' => array('value' => '八里庄社区卫生服务中心提醒您完善宝宝信息'),
                     'keyword1' => ARRAY('value' => date('Y年m月d H:i')),

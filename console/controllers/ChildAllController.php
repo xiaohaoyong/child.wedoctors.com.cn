@@ -143,6 +143,8 @@ class ChildAllController extends Controller
                 }
                 echo "\n";
 
+
+                $idcard=$v['field27']?$v['field27']:$v['idcard'];
                 $key1 = $k + 2;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $key1, $v['name'])
@@ -151,7 +153,7 @@ class ChildAllController extends Controller
                     ->setCellValue('D' . $key1, $age)
                     ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
                     ->setCellValueExplicit('F' . $key1, $v['field6'],\PHPExcel_Cell_DataType::TYPE_STRING)
-                    ->setCellValueExplicit('G' . $key1, " " . $v['field27'],\PHPExcel_Cell_DataType::TYPE_STRING)
+                    ->setCellValueExplicit('G' . $key1, " " . $idcard,\PHPExcel_Cell_DataType::TYPE_STRING)
                     ->setCellValue('H' . $key1, $userParent->mother || $userParent->father ? $userParent->mother . "/" . $userParent->father : "无")
                     ->setCellValue('I' . $key1, $userParent->mother_phone ? " " . $userParent->mother_phone : "无")
                     ->setCellValue('J' . $key1, $userParent->father_phone ? " " . $userParent->father_phone : "无")
