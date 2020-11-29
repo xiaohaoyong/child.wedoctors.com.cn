@@ -78,9 +78,11 @@ class DataController extends \yii\console\Controller
         $doctorParent=DoctorParent::findAll(['doctorid'=>400564]);
         foreach($doctorParent as $k=>$v) {
             $openid = UserLogin::getOpenid($v->parentid);
-            $child=ChildInfo::find()->where(['userid'=>$v->parentid])->andWhere(['field27'=>''])->andWhere(['idcard'=>''])->one();
+            $child=ChildInfo::find()->where(['userid'=>$v->parentid])->andWhere(['>','userid',405669])->andWhere(['field27'=>''])->andWhere(['idcard'=>''])->one();
 
+            echo $v->parentid;
             if($openid && $child) {
+                echo "f";
                 $data = [
                     'first' => array('value' => '八里庄社区卫生服务中心提醒您完善宝宝信息'),
                     'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
@@ -92,8 +94,10 @@ class DataController extends \yii\console\Controller
                     "appid" => \Yii::$app->params['wxXAppId'],
                     "pagepath" => "/pages/article/view/index?id=1484",
                 ];
+                WechatSendTmp::send($data, $openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE', '', $miniprogram);
             }
-            WechatSendTmp::send($data, $openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE', '', $miniprogram);
+            echo "\n";
+
         }
 exit;
         ini_set('memory_limit', '6000M');
