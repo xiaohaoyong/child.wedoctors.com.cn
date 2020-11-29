@@ -32,12 +32,12 @@ class ChildAllController extends Controller
         ini_set("max_execution_time", "0");
         set_time_limit(0);
         $doctor=UserDoctor::find()->all();
-        foreach($doctor as $v)
-        {
-            $this->setDownExcel($v->userid);
-            echo "\n";
-        }
-        //$this->setDownExcel(192821);
+//        foreach($doctor as $v)
+//        {
+//            $this->setDownExcel($v->userid);
+//            echo "\n";
+//        }
+        $this->setDownExcel(400564);
     }
     public function setDownExcel($doctorid){
 
