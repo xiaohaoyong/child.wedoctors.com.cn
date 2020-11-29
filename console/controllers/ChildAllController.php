@@ -84,7 +84,7 @@ class ChildAllController extends Controller
             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
-        $auto=Autograph::find()->select('familyid')->where(['doctorid'=>$doctorid])->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
 
         if($auto) {
             $data = ChildInfo::find()
