@@ -151,6 +151,8 @@ class ChildAllController extends Controller
                     $idcard=$idcard?$idcard:$v['field6'];
                 }
 
+
+                北京市朝阳区高碑店社区卫生服务中心
                 $phone=$userParent->mother_phone?$userParent->mother_phone:UserLogin::getPhone($userParent->userid);
 
                 $key1 = $k + 2;
@@ -168,7 +170,7 @@ class ChildAllController extends Controller
                     ->setCellValue('K' . $key1, $userParent->field11 ? $userParent->field11 : "无")
                     ->setCellValue('L' . $key1, $userParent->field12 ? " " . $userParent->field12 : "无")
                     ->setCellValue('M' . $key1, $sign->level == 1 ? \common\models\UserDoctor::findOne(['userid' => $sign->doctorid])->name : "--")
-                    ->setCellValue('N' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
+                    ->setCellValue('N' . $key1, $sign->level == 1 ? date('Y-m-d', $sign->createtime) : "无")
                     ->setCellValue('O' . $key1, date('Y-m-d H:i',  Autograph::find()->where(['userid'=>$userParent->userid])->orderBy('id desc')->one()->createtime))
                     ->setCellValue('P' . $key1, $return)
                     ->setCellValue('Q' . $key1, $signa)
