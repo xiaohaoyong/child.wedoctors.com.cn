@@ -145,6 +145,7 @@ class ChildAllController extends Controller
 
 
                 $idcard=$v['field27']?$v['field27']:$v['idcard'];
+                $idcard=$idcard?$idcard:$v['field6'];
                 $key1 = $k + 2;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $key1, $v['name'])
