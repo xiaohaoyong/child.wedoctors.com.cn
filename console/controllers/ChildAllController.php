@@ -145,7 +145,7 @@ class ChildAllController extends Controller
 
 
                 $idcard=$v['field27']?$v['field27']:$v['idcard'];
-                if($v['birthday']<strtotime('-6 month'))
+                if($v['birthday']>strtotime('-6 month'))
                 {
                     $idcard=$idcard?$idcard:$v['field6'];
                 }
