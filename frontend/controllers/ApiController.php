@@ -33,7 +33,9 @@ class ApiController extends Controller
         ksort($array);
         $sign=md5($path.http_build_query($array)."EX555Ji=i46H6;e7");
         if($debug==1){
-            echo $sign;exit;
+            echo $sign;
+            echo $path.http_build_query($array)."EX555Ji=i46H6;e7";
+            exit;
         }
         if(!$sign1 ||  $sign!=$sign1){
             \Yii::$app->response->data = ['code' => 30001, 'msg' => '数字签证错误'];
