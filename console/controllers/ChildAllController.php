@@ -17,6 +17,7 @@ use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\UserDoctor;
+use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\WeOpenid;
 use console\models\ChildInfoInput;
@@ -149,6 +150,9 @@ class ChildAllController extends Controller
                 {
                     $idcard=$idcard?$idcard:$v['field6'];
                 }
+
+                $phone=$userParent->mother_phone?$userParent->mother_phone:UserLogin::getPhone($userParent->userid);
+
                 $key1 = $k + 2;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $key1, $v['name'])
@@ -159,7 +163,7 @@ class ChildAllController extends Controller
                     ->setCellValueExplicit('F' . $key1, $v['field6'],\PHPExcel_Cell_DataType::TYPE_STRING)
                     ->setCellValueExplicit('G' . $key1, " " . $idcard,\PHPExcel_Cell_DataType::TYPE_STRING)
                     ->setCellValue('H' . $key1, $userParent->mother || $userParent->father ? $userParent->mother . "/" . $userParent->father : "无")
-                    ->setCellValue('I' . $key1, $userParent->mother_phone ? " " . $userParent->mother_phone : "无")
+                    ->setCellValue('I' . $key1, $phone ? " " . $phone : "无")
                     ->setCellValue('J' . $key1, $userParent->father_phone ? " " . $userParent->father_phone : "无")
                     ->setCellValue('K' . $key1, $userParent->field11 ? $userParent->field11 : "无")
                     ->setCellValue('L' . $key1, $userParent->field12 ? " " . $userParent->field12 : "无")
