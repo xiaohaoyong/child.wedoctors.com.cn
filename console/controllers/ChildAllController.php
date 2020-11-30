@@ -152,7 +152,6 @@ class ChildAllController extends Controller
                 }
 
 
-                北京市朝阳区高碑店社区卫生服务中心
                 $phone=$userParent->mother_phone?$userParent->mother_phone:UserLogin::getPhone($userParent->userid);
 
                 $key1 = $k + 2;
