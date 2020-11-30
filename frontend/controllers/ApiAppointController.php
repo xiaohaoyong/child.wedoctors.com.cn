@@ -620,7 +620,8 @@ class ApiAppointController extends ApiController
         $appointAdult->gender=$post['sex'];
         //$appointAdult->birthday=strtotime($post['birthday']);
         if(!$appointAdult->save()){
-            return new Code(21000, '联系人信息保存失败');
+
+            return ['code'=>21000,'msg'=>'联系人信息保存失败',$appointAdult->firstErrors];
         }
 
 
