@@ -34,6 +34,7 @@ class ApiController extends Controller
         $sign=md5($path.http_build_query($array)."EX555Ji=i46H6;e7");
         if($debug==1){
             echo $sign;
+            echo "<hr>";
             echo $path.http_build_query($array)."EX555Ji=i46H6;e7";
             exit;
         }

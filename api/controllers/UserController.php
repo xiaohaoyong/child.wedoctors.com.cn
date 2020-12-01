@@ -55,30 +55,41 @@ class UserController extends Controller
             $log->addLog("seaver_token:".$this->seaver_token);
 
             $session_key = $this->seaver_token;
-            $login = UserLogin::findOne(['id'=>$this->userLogin->id]);
-//            if($login && !$login->unionid){
-//                //获取用户微信登陆信息
-//                $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
-//                $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
-//                $userJson = $curl->get();
-//                $user = json_decode($userJson, true);
-//                if($user['unionid']){
-//                    $login->unionid=$user['unionid'];
-//                    $login->save();
-//                    $weOpenid = WeOpenid::findOne(['unionid' => $user['unionid']]);
-//                    if ($weOpenid) {
-//                        $log->addLog("openid:".$weOpenid->openid);
-//                        $weOpenid->xopenid = $user['openid'];
-//                        $weOpenid->save();
-//                    }
-//                }
-//            }
-            $xopenid = $login->xopenid;
-            $unionid = $login->unionid;
+            if(!$this->userLogin->unionid){
+                //获取用户微信登陆信息
+                $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
+                $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
+                $userJson = $curl->get();
+                $user = json_decode($userJson, true);
+                if($user['unionid']){
+                    $this->userLogin->unionid=$user['unionid'];
+                    $weOpenid = WeOpenid::findOne(['unionid' => $user['unionid']]);
+                    if ($weOpenid) {
+                        $log->addLog("openid:".$weOpenid->openid);
+                        $weOpenid->xopenid = $user['openid'];
+                        $this->userLogin->openid=$weOpenid->openid;
+                        $weOpenid->save();
+
+                        $doctorParent = DoctorParent::findOne(['parentid' => $this->userLogin->userid]);
+
+                        if ($doctorParent->level == 1 && $doctorParent->doctorid == 47156) {
+                            //未签约 或 签约了互联网社区医院（修改签约对象）
+                            $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
+                            $doctorParent->doctorid = $weOpenid->doctorid;
+                            $doctorParent->parentid = $this->userLogin->userid;
+                            $doctorParent->level = 1;
+                            $doctorParent->save();
+                        }
+                    }
+                    $this->userLogin->save();
+                }
+            }
+            $xopenid = $this->userLogin->xopenid;
+            $unionid = $this->userLogin->unionid;
             $useridKey = md5($this->userid . "6623cXvY");
 
-            $log->addLog("xopenid:".$login->xopenid);
-            $log->addLog("unionid:".$login->unionid);
+            $log->addLog("xopenid:".$this->userLogin->xopenid);
+            $log->addLog("unionid:".$this->userLogin->unionid);
         } else {
             $log->addLog("未登录");
 
