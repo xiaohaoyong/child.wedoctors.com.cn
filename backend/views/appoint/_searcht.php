@@ -42,6 +42,8 @@ use yii\widgets\ActiveForm;
     <?php  echo $form->field($model, 'child_name') ?>
 
     <?php  echo $form->field($model, 'phone') ?>
+    <?php  echo $form->field($model, 'userid') ?>
+
     <?php  echo $form->field($model, 'ids') ?>
 
     <div class="form-group">
