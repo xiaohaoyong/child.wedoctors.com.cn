@@ -648,4 +648,23 @@ class ApiAppointController extends ApiController
 //            }
         }
     }
+
+    public function actionState($id, $cancel_type = 0,$userid)
+    {
+        $model = Appoint::findOne(['id' => $id, 'userid' => $userid]);
+        if (!$model) {
+            return new Code(20010, '取消失败！');
+        } else {
+
+            $model->state = 3;
+            $model->cancel_type = $cancel_type;
+            if ($model->save()) {
+
+                return [];
+
+            } else {
+                return new Code(20011, implode(',', $model->firstErrors));
+            }
+        }
+    }
 }
