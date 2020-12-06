@@ -105,7 +105,7 @@ class DataController extends \yii\console\Controller
         $limit=ceil($totle/50);
         $snum=$num*$limit;
 
-        $login=UserLogin::find()->select('openid')->where(['!=','openid',''])->groupBy('openid')->offset($snum)->limit($limit)->column();
+        $login=UserLogin::find()->select('openid')->where(['!=','openid',''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
         foreach($login as $k=>$v){
             echo $v."\n";
             $data = [
