@@ -75,45 +75,45 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=1)
     {
-        $doctorParent=DoctorParent::findAll(['doctorid'=>400564]);
-        foreach($doctorParent as $k=>$v) {
-            $openid = UserLogin::getOpenid($v->parentid);
-            $child=ChildInfo::find()->where(['userid'=>$v->parentid])->andWhere(['>','userid',405669])->andWhere(['field27'=>''])->andWhere(['idcard'=>''])->one();
-
-            echo $v->parentid;
-            if($openid && $child) {
-                echo "f";
-                $data = [
-                    'first' => array('value' => '八里庄社区卫生服务中心提醒您完善宝宝信息'),
-                    'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
-                    'keyword2' => ARRAY('value' => '各位家长：为了更好的为签约儿童提供签约管理服务，现需要各位家长完善儿童身份证号码或儿童医学编码信息（六个月以下，没有身份证号的儿童），请各位家长按照以下说明完善信息即可，感谢您的支持。八里庄社区卫生服务中心预防保健科'),
-                    'remark' => ARRAY('value' => "点击查看信息完善说明！", 'color' => '#221d95')
-                ];
-
-                $miniprogram = [
-                    "appid" => \Yii::$app->params['wxXAppId'],
-                    "pagepath" => "/pages/article/view/index?id=1484",
-                ];
-                WechatSendTmp::send($data, $openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE', '', $miniprogram);
-            }
-            echo "\n";
-
-        }
-exit;
+//        $doctorParent=DoctorParent::findAll(['doctorid'=>400564]);
+//        foreach($doctorParent as $k=>$v) {
+//            $openid = UserLogin::getOpenid($v->parentid);
+//            $child=ChildInfo::find()->where(['userid'=>$v->parentid])->andWhere(['>','userid',405669])->andWhere(['field27'=>''])->andWhere(['idcard'=>''])->one();
+//
+//            echo $v->parentid;
+//            if($openid && $child) {
+//                echo "f";
+//                $data = [
+//                    'first' => array('value' => '八里庄社区卫生服务中心提醒您完善宝宝信息'),
+//                    'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
+//                    'keyword2' => ARRAY('value' => '各位家长：为了更好的为签约儿童提供签约管理服务，现需要各位家长完善儿童身份证号码或儿童医学编码信息（六个月以下，没有身份证号的儿童），请各位家长按照以下说明完善信息即可，感谢您的支持。八里庄社区卫生服务中心预防保健科'),
+//                    'remark' => ARRAY('value' => "点击查看信息完善说明！", 'color' => '#221d95')
+//                ];
+//
+//                $miniprogram = [
+//                    "appid" => \Yii::$app->params['wxXAppId'],
+//                    "pagepath" => "/pages/article/view/index?id=1484",
+//                ];
+//                WechatSendTmp::send($data, $openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE', '', $miniprogram);
+//            }
+//            echo "\n";
+//
+//        }
+//exit;
         ini_set('memory_limit', '6000M');
         $totle=282750;
-        $limit=ceil($totle/100);
+        $limit=ceil($totle/50);
         $snum=$num*$limit;
 
         $login=UserLogin::find()->select('openid')->where(['!=','openid',''])->groupBy('openid')->offset($snum)->limit($limit)->column();
         foreach($login as $k=>$v){
             $data = [
-                'first' => ['value' => '为什么不同月龄段要接种不同的疫苗，接种疫苗有什么好处？什么是免疫规划疫苗，什么是非免疫规划疫苗？有没有什么组合是最高效？到月龄了必须接种疫苗吗？为了解决这些疑问，我们邀请了海淀区妇幼保健院儿保科主任张良芬大夫为我们详细讲解。'],
-                'keyword1' => ARRAY('value' => '张良芬主任告诉你为什么不同月龄要接种不同疫苗，第十六期健康直播课即将开始'),
-                'keyword2' => ARRAY('value' => '2020年11月25日下午3点'),
+                'first' => ['value' => '在生完孩子后，总感觉下身有下坠感，有时咳嗽、大笑、运动、抱重物还漏尿，松松的肚子总下不去，或是稍微累一点就腰酸背痛。很多宝妈表示自己都遇到过这种情况，有时简直太尴尬了。本期杨主任为各位宝妈讲解盆底康复是什么'],
+                'keyword1' => ARRAY('value' => '杨主任为您揭秘产后盆底会有什么变化？第十七期健康直播课即将开始'),
+                'keyword2' => ARRAY('value' => '2020年12月06日下午3点'),
                 'remark' => ARRAY('value' => ""),
             ];
-            $rs = WechatSendTmp::send($data,$v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5fbdb284e4b0231ba88896b7?type=2');
+            $rs = WechatSendTmp::send($data,$v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5fcc3594e4b0231ba88aead3?type=2');
             sleep(1);
         }
         var_dump($login);exit;
