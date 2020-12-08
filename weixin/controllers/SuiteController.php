@@ -268,6 +268,15 @@ class SuiteController extends Controller
     public function custom_send($openid)
     {
         return;
+        $data=[
+            "touser"=>"$openid",
+            "msgtype"=>"text",
+            "text"=>
+            [
+                "content"=>"Hello World"
+            ]
+        ];
+        WechatSendTmp::sendMessage($data);
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
         $app->customer_service->message("儿宝宝为您准备了免费的产后恢复课程、亲子游泳体验，请到<a href=\"http://www.qq.com\" data-miniprogram-appid=\"wx6c33bfd66eb0a4f0\" data-miniprogram-path=\"pages/index/index\">儿宝宝福利社</a>中领取")->to($openid)->send();
 

@@ -265,7 +265,15 @@ class UserController extends Controller
 
                 if ($code == 0) {
                     $wephone = $phone['phoneNumber'];
-                    $userLogin = UserLogin::findOne(['phone' => $wephone]);
+                    $weOpenid = WeOpenid::findOne(['unionid' => $unionid]);
+                    if($weOpenid){
+                        $doctorid=$weOpenid->doctorid;
+                    }
+                    if ($doctorid!=442975) {
+                        $userLogin = UserLogin::findOne(['phone' => $wephone]);
+                    }else{
+                        $userLogin = UserLogin::findOne(['unionid' => $unionid]);
+                    }
                     if ($userLogin) {
                         $type = 2;
                         $useridx = md5($userLogin->userid . "6623cXvY");
@@ -278,16 +286,17 @@ class UserController extends Controller
 
                     } else {
                         $log->addLog("未录入登录手机号");
-
-                        $type = 3;
-                        $user = User::findOne(['phone' => $wephone]);
-                        if (!$user) {
-                            $userParent = UserParent::find()->where(['mother_phone' => $wephone])->orFilterWhere(['father_phone' => $wephone])->orFilterWhere(['field12' => $wephone])->one();
-                            if ($userParent) {
-                                $userid = $userParent->userid;
+                        if ($doctorid!=442975) {
+                            $type = 3;
+                            $user = User::findOne(['phone' => $wephone]);
+                            if (!$user) {
+                                $userParent = UserParent::find()->where(['mother_phone' => $wephone])->orFilterWhere(['father_phone' => $wephone])->orFilterWhere(['field12' => $wephone])->one();
+                                if ($userParent) {
+                                    $userid = $userParent->userid;
+                                }
+                            } else {
+                                $userid = $user->id;
                             }
-                        } else {
-                            $userid = $user->id;
                         }
                         //注册
                         if (!$userid) {
