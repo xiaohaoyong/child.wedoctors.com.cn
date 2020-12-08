@@ -75,31 +75,31 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=1)
     {
-//        $doctorParent=DoctorParent::findAll(['doctorid'=>400564]);
-//        foreach($doctorParent as $k=>$v) {
-//            $openid = UserLogin::getOpenid($v->parentid);
-//            $child=ChildInfo::find()->where(['userid'=>$v->parentid])->andWhere(['>','userid',405669])->andWhere(['field27'=>''])->andWhere(['idcard'=>''])->one();
-//
-//            echo $v->parentid;
-//            if($openid && $child) {
-//                echo "f";
-//                $data = [
-//                    'first' => array('value' => '八里庄社区卫生服务中心提醒您完善宝宝信息'),
-//                    'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
-//                    'keyword2' => ARRAY('value' => '各位家长：为了更好的为签约儿童提供签约管理服务，现需要各位家长完善儿童身份证号码或儿童医学编码信息（六个月以下，没有身份证号的儿童），请各位家长按照以下说明完善信息即可，感谢您的支持。八里庄社区卫生服务中心预防保健科'),
-//                    'remark' => ARRAY('value' => "点击查看信息完善说明！", 'color' => '#221d95')
-//                ];
-//
-//                $miniprogram = [
-//                    "appid" => \Yii::$app->params['wxXAppId'],
-//                    "pagepath" => "/pages/article/view/index?id=1484",
-//                ];
-//                WechatSendTmp::send($data, $openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE', '', $miniprogram);
-//            }
-//            echo "\n";
-//
-//        }
-//exit;
+        $doctorParent=DoctorParent::findAll(['doctorid'=>400564]);
+        foreach($doctorParent as $k=>$v) {
+            $openid = UserLogin::getOpenid($v->parentid);
+            $child=ChildInfo::find()->where(['userid'=>$v->parentid])->andWhere(['>','userid',405669])->andWhere(['field27'=>''])->andWhere(['idcard'=>''])->one();
+
+            echo $v->parentid;
+            if($openid && $child) {
+                echo "f";
+                $data = [
+                    'first' => array('value' => '八里庄社区卫生服务中心提醒您完善宝宝信息'),
+                    'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
+                    'keyword2' => ARRAY('value' => '各位家长：为了更好的为签约儿童提供签约管理服务，现需要各位家长完善儿童身份证号码或儿童医学编码信息（六个月以下，没有身份证号的儿童），请各位家长按照以下说明完善信息即可，感谢您的支持。八里庄社区卫生服务中心预防保健科'),
+                    'remark' => ARRAY('value' => "点击查看信息完善说明！", 'color' => '#221d95')
+                ];
+
+                $miniprogram = [
+                    "appid" => \Yii::$app->params['wxXAppId'],
+                    "pagepath" => "/pages/article/view/index?id=1484",
+                ];
+                WechatSendTmp::send($data, $openid, 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE', '', $miniprogram);
+            }
+            echo "\n";
+
+        }
+exit;
         ini_set('memory_limit', '6000M');
         $totle=282750;
         $limit=ceil($totle/50);
