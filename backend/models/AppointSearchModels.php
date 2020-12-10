@@ -101,6 +101,8 @@ class AppointSearchModels extends Appoint
         // grid filtering conditions
         $query->andFilterWhere([
             'userid' => $this->userid,
+            'loginid' => $this->loginid,
+
             'doctorid' => $this->doctorid,
             'childid'=>$this->childid,
             'createtime' => $this->createtime,
