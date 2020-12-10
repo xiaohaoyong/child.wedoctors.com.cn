@@ -28,7 +28,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'doctorid')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->where(['county' => $model['county']])->column(), ['prompt' => '请选择']) ?>
 
-    <?php  echo $form->field($model, 'userid') ?>
 
     <?= $form->field($model, 'appoint_dates')->widget(\kartik\date\DatePicker::className(),['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
@@ -44,6 +43,7 @@ use yii\widgets\ActiveForm;
 
     <?php  echo $form->field($model, 'phone') ?>
     <?php  echo $form->field($model, 'userid') ?>
+    <?php  echo $form->field($model, 'loginid') ?>
 
     <?php  echo $form->field($model, 'ids') ?>
 
