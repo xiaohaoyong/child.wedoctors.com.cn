@@ -651,7 +651,7 @@ class ApiAppointController extends ApiController
 
     public function actionState($id, $cancel_type = 0,$userid)
     {
-        $model = Appoint::findOne(['id' => $id, 'userid' => $userid]);
+        $model = Appoint::findOne(['id' => $id, 'userid' => $userid,'mode'=>3]);
         if (!$model) {
             return new Code(20010, '取消失败！');
         } else {
