@@ -112,7 +112,7 @@ class HospitalAppointController extends BaseController
             $post['HospitalAppoint']['sure_date']=implode(',',$post['HospitalAppoint']['sure_date']);
         }
 
-        //var_dump($post);exit;
+
         if ($model->load($post) && $model->save()) {
             HospitalAppointWeek::deleteAll('haid='.$model->id);
 

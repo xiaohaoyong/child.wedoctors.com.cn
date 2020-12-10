@@ -87,6 +87,31 @@ use common\models\Vaccine;
                                 ])->label(false) ?>
                             </td>
                         </tr>
+                        <tr>
+                            <th>
+                                单独屏蔽日期<br>
+                                如需在正常门诊日屏蔽预约请设置此日期
+
+                                <?php
+                                $sdate = strtotime(date('Y-m-01'));
+                                $edate = strtotime('+6 month', strtotime(date('Y-m-01')));
+                                $days = ($edate - $sdate) / 86400;
+                                for ($i = 0; $i < $days; $i++) {
+                                    $time = strtotime('+' . $i . ' day', $sdate);
+                                    $dayList[date('Y-m-d', $time)] = date('Y-m-d', $time);
+                                }
+                                ?>
+                            </th>
+                            <td><?= $form->field($model, 'non_date', ['options' => ['class' => "col-xs-5"]])->widget(\kartik\select2\Select2::classname(), [
+                                    'data' => $dayList,
+                                    'language' => 'de',
+                                    'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
+                                    'pluginOptions' => [
+                                        'allowClear' => true
+                                    ],
+                                ])->label(false) ?>
+                            </td>
+                        </tr>
 
                         <tr>
                             <th>
