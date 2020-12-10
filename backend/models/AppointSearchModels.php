@@ -24,7 +24,7 @@ class AppointSearchModels extends Appoint
     public function rules()
     {
         return [
-            [['county','state','cancel_type','id', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
+            [['county','state','cancel_type','id', 'userid','loginid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
             [['child_name', 'appoint_dates','ids'], 'string']
         ];
     }
