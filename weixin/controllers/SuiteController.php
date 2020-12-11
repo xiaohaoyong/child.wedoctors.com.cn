@@ -267,16 +267,20 @@ class SuiteController extends Controller
     //客服消息
     public function custom_send($openid)
     {
+        $weOpenid=WeOpenid::findOne(['openid'=>$openid]);
+        if($weOpenid && $weOpenid->doctorid==442975){
+            $data=[
+                "touser"=>'o5ODa0451fMb_sJ1D1T4YhYXDOcg',
+                "msgtype"=>"text",
+                "text"=>
+                    [
+                        "content"=>"宝宝家长您好。\n请您务必添加医生小助手！长按自动识别医生小助手微信号（erbbxzs）。\n医生小助手会帮您解答：体检结果查看、疫苗预约、体检预约、健康指导、健康宣教、健康咨询等问题。"
+                    ]
+            ];
+            WechatSendTmp::sendMessage($data);
+        }
         return;
-        $data=[
-            "touser"=>"$openid",
-            "msgtype"=>"text",
-            "text"=>
-            [
-                "content"=>"Hello World"
-            ]
-        ];
-        WechatSendTmp::sendMessage($data);
+
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
         $app->customer_service->message("儿宝宝为您准备了免费的产后恢复课程、亲子游泳体验，请到<a href=\"http://www.qq.com\" data-miniprogram-appid=\"wx6c33bfd66eb0a4f0\" data-miniprogram-path=\"pages/index/index\">儿宝宝福利社</a>中领取")->to($openid)->send();
 
