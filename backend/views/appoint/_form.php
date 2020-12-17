@@ -29,6 +29,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'type')->textInput() ?>
 
     <?= $form->field($model, 'childid')->textInput() ?>
+                <?= $form->field($model, 'loginid')->textInput() ?>
 
     <?= $form->field($model, 'phone')->textInput() ?>
                 <?= $form->field($model, 'state')->textInput() ?>

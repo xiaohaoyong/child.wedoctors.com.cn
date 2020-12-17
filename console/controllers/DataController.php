@@ -75,6 +75,63 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=1)
     {
+
+        $file=fopen('110588.csv','r');
+        while (($line=fgets($file))!==false){
+            $row=explode(',',trim($line));
+            $name=$row[0];
+            $birthday=$row[3];
+            $child=ChildInfo::findOne(['name'=>$name,'birthday'=>strtotime($birthday),'doctorid'=>110588]);
+            if($child) {
+                $auto=Autograph::findOne(['userid'=>$child->userid]);
+                if($auto){
+                    $auto->doctorid=386661;
+                    $auto->save();
+                }
+                $doctorParent=DoctorParent::findOne(['parentid'=>$child->userid]);
+                if($doctorParent){
+                    $doctorParent->doctorid=386661;
+                    $doctorParent->save();
+                }
+                $child->doctorid=110645;
+                $child->save();
+
+            }else{
+                var_dump("");
+            }
+        }
+        exit;
+
+
+        $s_time='20201101';
+        $e_time='20201130';
+
+
+        $userDoctors = UserDoctor::find()->all();
+        foreach ($userDoctors as $k => $v) {
+            $rs = [];
+            $rs[]=$v->county;
+
+            $doctorParents2 = DoctorParent::find()->where(['doctorid' => $v->userid])
+                ->select('parentid')
+                ->column();
+
+
+            $userLogin = UserLogin::find()->select('openid')->where(['in', 'userid', $doctorParents2])->andWhere(['!=', 'openid', ''])->groupBy('userid')->column();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['<=','createtime',strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['<=','createtime',strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = "";
+
+            //$userLogin=UserLogin::find()->select('openid')->where(['in','userid',$childs])->andWhere(['!=','openid',''])->groupBy('userid')->column();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['<=','createtime',strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['<=','createtime',strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = "";
+            echo $v->name . "," . implode(',', $rs);
+            echo "\n";
+        }
+
+        exit;
+
         $doctorParent=DoctorParent::findAll(['doctorid'=>400564]);
         foreach($doctorParent as $k=>$v) {
             $openid = UserLogin::getOpenid($v->parentid);

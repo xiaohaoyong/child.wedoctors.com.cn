@@ -55,7 +55,7 @@ class UserController extends Controller
             $log->addLog("seaver_token:".$this->seaver_token);
 
             $session_key = $this->seaver_token;
-            if(!$this->userLogin->unionid){
+            if(!$this->userLogin->unionid || !$this->userLogin->openid){
                 //获取用户微信登陆信息
                 $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
                 $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
