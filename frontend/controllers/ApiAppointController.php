@@ -487,7 +487,7 @@ class ApiAppointController extends ApiController
 
         if(!isset($post['month']) && $appoint->is_month)
         {
-            return new Code(21000, '您的版本过低，请更新版本后预约');
+            return new Code(21000, '请选择月龄！');
         }
 
 
