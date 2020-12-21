@@ -41,6 +41,7 @@ class ApiAppointController extends ApiController
         foreach ($doctors as $k => $v) {
             $rs = $v->toArray();
             $rs['name'] = Hospital::findOne($v->hospitalid)->name;
+            $rs['is_appoint'] = $v->appoint==0?0:1;
             $docs[] = $rs;
         }
 

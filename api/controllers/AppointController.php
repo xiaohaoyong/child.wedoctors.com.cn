@@ -55,7 +55,6 @@ class AppointController extends Controller
 
         foreach ($doctors as $k => $v) {
             $rs = $v->toArray();
-            $uda = UserDoctorAppoint::findOne(['doctorid' => $v->userid]);
             $rs['name'] = Hospital::findOne($v->hospitalid)->name;
             $docs[] = $rs;
             if ($doctorid == $v->userid) {
