@@ -36,7 +36,7 @@ class ApiAppointController extends ApiController
             $query->andFilterWhere(['like', 'name', $search]);
         }
         $query->andWhere(['county'=>1102]);
-        $doctors = $query->select('userid,name,phone,skilful,appoint_intro,hospitalid')->orderBy('appoint desc')->all();
+        $doctors = $query->select('appoint,userid,name,phone,skilful,appoint_intro,hospitalid')->orderBy('appoint desc')->all();
         $docs = [];
         foreach ($doctors as $k => $v) {
             $rs = $v->toArray();
