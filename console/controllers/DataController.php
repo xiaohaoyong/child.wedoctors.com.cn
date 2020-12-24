@@ -75,7 +75,23 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=1)
     {
+        ini_set('memory_limit', '6000M');
+        $totle=282750;
+        $limit=ceil($totle/50);
+        $snum=$num*$limit;
 
+        $login=UserLogin::find()->select('openid')->where(['!=','openid',''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach($login as $k=>$v){
+            $data = [
+                'first' => ['value' => '怎么样能判断什么样的小问题会对宝宝大健康有影响呢？为了帮助家长了解这些小问题，我们邀请了首都医科大学附属北京儿童医院儿内科知名专家刘小梅。'],
+                'keyword1' => ARRAY('value' => '北京儿童医院 小梅主任教您关注小问题，维护大健康，第十八期健康直播即将开始'),
+                'keyword2' => ARRAY('value' => '2020年12月24日下午3点半'),
+                'remark' => ARRAY('value' => ""),
+            ];
+            $rs = WechatSendTmp::send($data,$v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5fe2f2e2e4b04db7c0969bab?type=2');
+            sleep(1);
+        }
+        var_dump($login);exit;
         $file=fopen('110588.csv','r');
         while (($line=fgets($file))!==false){
             $row=explode(',',trim($line));
@@ -157,23 +173,7 @@ class DataController extends \yii\console\Controller
 
         }
 exit;
-        ini_set('memory_limit', '6000M');
-        $totle=282750;
-        $limit=ceil($totle/50);
-        $snum=$num*$limit;
 
-        $login=UserLogin::find()->select('openid')->where(['!=','openid',''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
-        foreach($login as $k=>$v){
-            $data = [
-                'first' => ['value' => '在生完孩子后，总感觉下身有下坠感，有时咳嗽、大笑、运动、抱重物还漏尿，松松的肚子总下不去，或是稍微累一点就腰酸背痛。很多宝妈表示自己都遇到过这种情况，有时简直太尴尬了。本期杨主任为各位宝妈讲解盆底康复是什么'],
-                'keyword1' => ARRAY('value' => '杨主任为您揭秘产后盆底会有什么变化？第十七期健康直播课即将开始'),
-                'keyword2' => ARRAY('value' => '2020年12月06日下午3点'),
-                'remark' => ARRAY('value' => ""),
-            ];
-            $rs = WechatSendTmp::send($data,$v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5fcc3594e4b0231ba88aead3?type=2');
-            sleep(1);
-        }
-        var_dump($login);exit;
 
 
         $auto=Autograph::find()->select('userid')->where(['doctorid'=>206260])->column();
