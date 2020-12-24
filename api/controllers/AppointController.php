@@ -43,6 +43,7 @@ class AppointController extends Controller
         }
         if (!in_array($this->userid,[346470,390512,175579,349835,236368,240818])) {
             $query->andWhere(['city' => 11]);
+            $query->andWhere(['!=','userid', 47156]);
         }
         $doctors = $query->orderBy('appoint desc')->all();
 
