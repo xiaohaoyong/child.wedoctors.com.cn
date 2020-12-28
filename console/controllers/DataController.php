@@ -69,7 +69,8 @@ use yii\helpers\FileHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
-
+use Cache\Adapter\Redis\RedisCachePool;
+use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
@@ -77,6 +78,21 @@ class DataController extends \yii\console\Controller
     {
         ini_set('memory_limit', '6000M');
 
+
+
+//        $pool = new RedisCachePool(\Yii::$app->rd);
+//        $simpleCache = new SimpleCacheBridge($pool);
+//        \PhpOffice\PhpSpreadsheet\Settings::setCache($simpleCache);
+
+        $objRead = new Xlsx();   //建立reader对象
+        $objRead->setReadDataOnly(true);
+        $obj = $objRead->load('110571.xlsx');  //建立excel对象
+        $currSheet = $obj->getSheet(0);   //获取指定的sheet表
+        $columnH = $currSheet->getHighestColumn();   //取得最大的列号
+        $highestColumnNum = Coordinate::columnIndexFromString($columnH);
+        $rowCnt = $currSheet->getHighestRow();   //获取总行数
+
+        var_dump($highestColumnNum);exit;
 
         $file=file_get_contents('data/1.txt');
         $data=json_decode($file,true);
