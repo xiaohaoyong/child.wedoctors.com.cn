@@ -16,7 +16,7 @@ class Queue
     {
         if($doctorid && $type) {
             $this->_name = "Queue"."-".$doctorid . "-" . $type."-".$time;
-            $this->_redis = \Yii::$app->rdmp;
+            $this->_redis = \Yii::$app->rd;
         }
     }
 
