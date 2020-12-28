@@ -33,7 +33,7 @@ class ChildAllController extends \yii\console\Controller
         ini_set("max_execution_time", "0");
         set_time_limit(0);
         if($doctorid){
-            $this->setDownExcel(400564);
+            $this->setDownExcel($doctorid);
         }else {
             $doctor = UserDoctor::find()->all();
             foreach ($doctor as $v) {
