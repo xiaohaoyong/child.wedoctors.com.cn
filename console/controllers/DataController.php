@@ -76,6 +76,21 @@ class DataController extends \yii\console\Controller
     public function actionTesta($num=1)
     {
         ini_set('memory_limit', '6000M');
+
+
+        $file=file_get_contents('data/1.txt');
+        $data=json_decode($file,true);
+        foreach($data['words_result'] as $k=>$v){
+
+            var_dump($v['words']);
+
+        }
+        exit;
+
+
+
+
+
         $totle=282750;
         $limit=ceil($totle/50);
         $snum=$num*$limit;
