@@ -74,90 +74,105 @@ use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
-    public function actionTesta($num=1)
+    public function actionTesta($num = 1)
     {
-        ini_set('memory_limit', '1500M');
 
+        $totle = 707218;
+        $limit = ceil($totle / 50);
+        $snum = $num * $limit;
 
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+            $data = [
+                'first' => ['value' => '2020年11月5日，中国保险行业协会、中国医师协会联合在京举办新闻通气会，正式发布《重大疾病保险的疾病定义使用规范（2020年修订版）》。这是保险业协会和医师协会继2007年制定发布《重大疾病保险的疾病定义使用规范》后，在中国银保监会指导下，再度合作开展修订工作。'],
+                'keyword1' => ARRAY('value' => '2020重大疾病险新规政策解读，第十九期健康直播即将开始'),
+                'keyword2' => ARRAY('value' => '2020年12月30日下午3点'),
+                'remark' => ARRAY('value' => ""),
+            ];
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5feaed31e4b04db7c097ce6a?type=2');
+            sleep(1);
+        }
+        var_dump($login);
+        exit;
 
-//        $pool = new RedisCachePool(\Yii::$app->rd);
-//        $simpleCache = new SimpleCacheBridge($pool);
-//        \PhpOffice\PhpSpreadsheet\Settings::setCache($simpleCache);
+        for ($i = 1; $i<8; $i++) {
+            $file = file_get_contents('data/'.$i.'.txt');
+            $data = json_decode($file, true);
+            foreach ($data['words_result'] as $k => $v) {
 
-        $objRead = new Xlsx();   //建立reader对象
-        $objRead->setReadDataOnly(true);
-        $obj = $objRead->load('110571.xlsx');  //建立excel对象
-        $currSheet = $obj->getSheet(0);   //获取指定的sheet表
-        $columnH = $currSheet->getHighestColumn();   //取得最大的列号
-        $highestColumnNum = Coordinate::columnIndexFromString($columnH);
-        $rowCnt = $currSheet->getHighestRow();   //获取总行数
+                if ($k % 2 == 0) {
+                    $rs['name'] = $v['words'];
+                } else {
+                    $rs['time'] = $v['words'];
+                    $row[] = $rs;
+                    $rs = [];
+                }
+            }
+            foreach ($row as $k => $v) {
+                $child = ChildInfo::findOne(['name' => $v['name'], 'birthday' => strtotime($v['time']), 'source' => 110595]);
+                if ($child) {
+                }else{
+                    var_dump($v['name']);
+                    var_dump($v['time']);
+                }
 
-        var_dump($highestColumnNum);exit;
-
-        $file=file_get_contents('data/1.txt');
-        $data=json_decode($file,true);
-        foreach($data['words_result'] as $k=>$v){
-
-            var_dump($v['words']);
-
+            }
         }
         exit;
 
 
+        $totle = 282750;
+        $limit = ceil($totle / 50);
+        $snum = $num * $limit;
 
-
-
-        $totle=282750;
-        $limit=ceil($totle/50);
-        $snum=$num*$limit;
-
-        $login=UserLogin::find()->select('openid')->where(['!=','openid',''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
-        foreach($login as $k=>$v){
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
             $data = [
                 'first' => ['value' => '怎么样能判断什么样的小问题会对宝宝大健康有影响呢？为了帮助家长了解这些小问题，我们邀请了首都医科大学附属北京儿童医院儿内科知名专家刘小梅。'],
                 'keyword1' => ARRAY('value' => '北京儿童医院 小梅主任教您关注小问题，维护大健康，第十八期健康直播即将开始'),
                 'keyword2' => ARRAY('value' => '2020年12月24日下午3点半'),
                 'remark' => ARRAY('value' => ""),
             ];
-            $rs = WechatSendTmp::send($data,$v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5fe2f2e2e4b04db7c0969bab?type=2');
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5fe2f2e2e4b04db7c0969bab?type=2');
             sleep(1);
         }
-        var_dump($login);exit;
-        $file=fopen('110588.csv','r');
-        while (($line=fgets($file))!==false){
-            $row=explode(',',trim($line));
-            $name=$row[0];
-            $birthday=$row[3];
-            $child=ChildInfo::findOne(['name'=>$name,'birthday'=>strtotime($birthday),'doctorid'=>110588]);
-            if($child) {
-                $auto=Autograph::findOne(['userid'=>$child->userid]);
-                if($auto){
-                    $auto->doctorid=386661;
+        var_dump($login);
+        exit;
+        $file = fopen('110588.csv', 'r');
+        while (($line = fgets($file)) !== false) {
+            $row = explode(',', trim($line));
+            $name = $row[0];
+            $birthday = $row[3];
+            $child = ChildInfo::findOne(['name' => $name, 'birthday' => strtotime($birthday), 'doctorid' => 110588]);
+            if ($child) {
+                $auto = Autograph::findOne(['userid' => $child->userid]);
+                if ($auto) {
+                    $auto->doctorid = 386661;
                     $auto->save();
                 }
-                $doctorParent=DoctorParent::findOne(['parentid'=>$child->userid]);
-                if($doctorParent){
-                    $doctorParent->doctorid=386661;
+                $doctorParent = DoctorParent::findOne(['parentid' => $child->userid]);
+                if ($doctorParent) {
+                    $doctorParent->doctorid = 386661;
                     $doctorParent->save();
                 }
-                $child->doctorid=110645;
+                $child->doctorid = 110645;
                 $child->save();
 
-            }else{
+            } else {
                 var_dump("");
             }
         }
         exit;
 
 
-        $s_time='20201101';
-        $e_time='20201130';
+        $s_time = '20201101';
+        $e_time = '20201130';
 
 
         $userDoctors = UserDoctor::find()->all();
         foreach ($userDoctors as $k => $v) {
             $rs = [];
-            $rs[]=$v->county;
+            $rs[] = $v->county;
 
             $doctorParents2 = DoctorParent::find()->where(['doctorid' => $v->userid])
                 ->select('parentid')
@@ -165,13 +180,13 @@ class DataController extends \yii\console\Controller
 
 
             $userLogin = UserLogin::find()->select('openid')->where(['in', 'userid', $doctorParents2])->andWhere(['!=', 'openid', ''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['<=','createtime',strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['<=','createtime',strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<=', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<=', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
             $rs[] = "";
 
             //$userLogin=UserLogin::find()->select('openid')->where(['in','userid',$childs])->andWhere(['!=','openid',''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['<=','createtime',strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['<=','createtime',strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<=', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<=', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
             $rs[] = "";
             echo $v->name . "," . implode(',', $rs);
             echo "\n";
@@ -179,13 +194,13 @@ class DataController extends \yii\console\Controller
 
         exit;
 
-        $doctorParent=DoctorParent::findAll(['doctorid'=>400564]);
-        foreach($doctorParent as $k=>$v) {
+        $doctorParent = DoctorParent::findAll(['doctorid' => 400564]);
+        foreach ($doctorParent as $k => $v) {
             $openid = UserLogin::getOpenid($v->parentid);
-            $child=ChildInfo::find()->where(['userid'=>$v->parentid])->andWhere(['>','userid',405669])->andWhere(['field27'=>''])->andWhere(['idcard'=>''])->one();
+            $child = ChildInfo::find()->where(['userid' => $v->parentid])->andWhere(['>', 'userid', 405669])->andWhere(['field27' => ''])->andWhere(['idcard' => ''])->one();
 
             echo $v->parentid;
-            if($openid && $child) {
+            if ($openid && $child) {
                 echo "f";
                 $data = [
                     'first' => array('value' => '八里庄社区卫生服务中心提醒您完善宝宝信息'),
@@ -203,53 +218,50 @@ class DataController extends \yii\console\Controller
             echo "\n";
 
         }
-exit;
+        exit;
 
 
-
-        $auto=Autograph::find()->select('userid')->where(['doctorid'=>206260])->column();
-        $child= ChildInfo::find()
+        $auto = Autograph::find()->select('userid')->where(['doctorid' => 206260])->column();
+        $child = ChildInfo::find()
             ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
             ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
             ->all();
-        foreach($child as $k=>$v){
-            $rs=[];
-            $rs[]=$v->name;
-            $rs[]="\t".$v->idcard;
-            $au=Autograph::findOne(['userid'=>$v->userid]);
+        foreach ($child as $k => $v) {
+            $rs = [];
+            $rs[] = $v->name;
+            $rs[] = "\t" . $v->idcard;
+            $au = Autograph::findOne(['userid' => $v->userid]);
 
-            $rs[] = date('Y-m-d',$au->createtime);
-            $userParent=UserParent::findOne(['userid'=>$v->userid]);
-            if($userParent && $userParent->mother_phone){
-                $rs[]="\t".$userParent->mother_phone;
-            }else{
-                $rs[]="\t".UserLogin::getPhone($v->userid);
+            $rs[] = date('Y-m-d', $au->createtime);
+            $userParent = UserParent::findOne(['userid' => $v->userid]);
+            if ($userParent && $userParent->mother_phone) {
+                $rs[] = "\t" . $userParent->mother_phone;
+            } else {
+                $rs[] = "\t" . UserLogin::getPhone($v->userid);
             }
-            echo implode(',',$rs);
+            echo implode(',', $rs);
             echo "\n";
         }
         exit;
 
-        $doctorids=[110627];
-        $doctors=UserDoctor::find()->where(['in','hospitalid',$doctorids])->column();
-        $doctorParent=DoctorParent::find()->select('parentid')->where(['in','doctorid',$doctors])->column();
+        $doctorids = [110627];
+        $doctors = UserDoctor::find()->where(['in', 'hospitalid', $doctorids])->column();
+        $doctorParent = DoctorParent::find()->select('parentid')->where(['in', 'doctorid', $doctors])->column();
 
-        $child=ChildInfo::find()->where(['in','source',$doctorids])->andWhere(['>','birthday',strtotime('-3 year')])->andWhere(['not in','userid',$doctorParent])->all();
-        foreach($child as $k=>$v){
-            $rs=[];
-            $hospital=Hospital::findOne($v->source);
-            $userParent=UserParent::findOne(['userid'=>$v->userid]);
-            if($userParent && $userParent->mother_phone) {
+        $child = ChildInfo::find()->where(['in', 'source', $doctorids])->andWhere(['>', 'birthday', strtotime('-3 year')])->andWhere(['not in', 'userid', $doctorParent])->all();
+        foreach ($child as $k => $v) {
+            $rs = [];
+            $hospital = Hospital::findOne($v->source);
+            $userParent = UserParent::findOne(['userid' => $v->userid]);
+            if ($userParent && $userParent->mother_phone) {
                 $rs[] = $userParent->mother_phone;
                 $rs[] = $hospital->name;
 
-            echo implode(',',$rs);
-            echo "\n";
+                echo implode(',', $rs);
+                echo "\n";
             }
         }
         exit;
-
-
 
 
         $time = ['8' => 1, '9' => 2, '10' => 3, '11' => 3, '13' => 4, '14' => 5, '15' => 6, '16' => 6];
@@ -274,7 +286,7 @@ exit;
 
 
                     $app = new Appoint();
-                    $da=explode(' ', $rs[2]);
+                    $da = explode(' ', $rs[2]);
                     $ti = explode(':', $da[1]);
                     $appoint['appoint_time'] = $time[$ti[0]];
                     $appoint['appoint_date'] = strtotime($da[0]);
@@ -300,95 +312,95 @@ exit;
         exit;
 
 
-
-        $appoint=Appoint::find()->where(['doctorid'=>113890])->andWhere(['!=','state',3])->all();
-        foreach($appoint as $k=>$v){
-            if($v->type==4 ||$v->type==7){
-                if($v->childid){
-                    $name= \common\models\AppointAdult::findOne(['id' => $v->childid])->name;
-                }else {
-                    $name= \common\models\AppointAdult::findOne(['userid' => $v->userid])->name;
+        $appoint = Appoint::find()->where(['doctorid' => 113890])->andWhere(['!=', 'state', 3])->all();
+        foreach ($appoint as $k => $v) {
+            if ($v->type == 4 || $v->type == 7) {
+                if ($v->childid) {
+                    $name = \common\models\AppointAdult::findOne(['id' => $v->childid])->name;
+                } else {
+                    $name = \common\models\AppointAdult::findOne(['userid' => $v->userid])->name;
                 }
 
-            }elseif($v->type==5 || $v->type==6){
-                $name= \common\models\Pregnancy::findOne(['id' => $v->childid])->field1;
-            }else{
-                $child= \common\models\ChildInfo::findOne(['id' => $v->childid]);
-                if($child){
-                    $name=$child->name;
+            } elseif ($v->type == 5 || $v->type == 6) {
+                $name = \common\models\Pregnancy::findOne(['id' => $v->childid])->field1;
+            } else {
+                $child = \common\models\ChildInfo::findOne(['id' => $v->childid]);
+                if ($child) {
+                    $name = $child->name;
                 }
             }
-            $row=[];
-            $row[]=$name;
-            $row[]=$v->phone;
-            $row[]=\common\models\Appoint::$typeText[$v->type];
+            $row = [];
+            $row[] = $name;
+            $row[] = $v->phone;
+            $row[] = \common\models\Appoint::$typeText[$v->type];
 
-            $row[]=date('Y-m-d', $v->appoint_date);
-            $row[]=\common\models\Appoint::$timeText[$v->appoint_time];
-            if($v->vaccine==-2){
-                $row[]="两癌筛查";
-            }elseif($v->vaccine){
-                $row[]=\common\models\Vaccine::findOne($v->vaccine)->name;
-            }else{
-                $row[]="";
+            $row[] = date('Y-m-d', $v->appoint_date);
+            $row[] = \common\models\Appoint::$timeText[$v->appoint_time];
+            if ($v->vaccine == -2) {
+                $row[] = "两癌筛查";
+            } elseif ($v->vaccine) {
+                $row[] = \common\models\Vaccine::findOne($v->vaccine)->name;
+            } else {
+                $row[] = "";
             }
-            echo implode(',',$row);
+            echo implode(',', $row);
             echo "\n";
         }
 
 
         ini_set('memory_limit', '6000M');
-        $totle=282750;
-        $limit=ceil($totle/100);
-        $snum=$num*$limit;
+        $totle = 282750;
+        $limit = ceil($totle / 100);
+        $snum = $num * $limit;
 
-        $login=UserLogin::find()->select('openid')->where(['!=','openid',''])->groupBy('openid')->offset($snum)->limit($limit)->column();
-        foreach($login as $k=>$v){
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
             $data = [
                 'first' => ['value' => '秋冬季节是呼吸道传染病的流行季节，我们如何做好个人防护呢？在践行健康文明的生活方式里，在防控新冠肺炎流行的同时怎么能同时抵御流感等其他呼吸道传染病的威胁呢？不要着急，本期健康直播有幸邀请到孙瑛博士为您详细讲解。'],
                 'keyword1' => ARRAY('value' => '秋冬季流行疾病预防及疫情防控，第十五期健康直播即将开始'),
                 'keyword2' => ARRAY('value' => '2020年10月04日上午9点'),
                 'remark' => ARRAY('value' => ""),
             ];
-            $rs = WechatSendTmp::send($data,$v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5fa124f0e4b01f764d887635?type=2');
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_5fa124f0e4b01f764d887635?type=2');
             sleep(1);
         }
-        var_dump($login);exit;
+        var_dump($login);
+        exit;
 
         //$hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
-        $query = UserDoctor::find()->where(['like','appoint',4]);
+        $query = UserDoctor::find()->where(['like', 'appoint', 4]);
 
         $doctors = $query->orderBy('appoint desc')->all();
 
 
         foreach ($doctors as $k => $v) {
-            $name= Hospital::findOne($v->hospitalid)->name;
-            echo $name."\n";
+            $name = Hospital::findOne($v->hospitalid)->name;
+            echo $name . "\n";
 
         }
         exit;
 
-        $appoint=Appoint::find()->select('phone')->where(['doctorid'=>160226,'state'=>1,'type'=>4])->andWhere(['in','vaccine',[56,55,54,0]])->column();
-        foreach($appoint as $k=>$v){
-            $rs=[];
+        $appoint = Appoint::find()->select('phone')->where(['doctorid' => 160226, 'state' => 1, 'type' => 4])->andWhere(['in', 'vaccine', [56, 55, 54, 0]])->column();
+        foreach ($appoint as $k => $v) {
+            $rs = [];
 
-            $rs[]=$v;
-            $rs[]="西罗园社区卫生服务中心";
-            $rs[]="四价宫颈癌疫苗";
-            $rs[]="010-87289908";
+            $rs[] = $v;
+            $rs[] = "西罗园社区卫生服务中心";
+            $rs[] = "四价宫颈癌疫苗";
+            $rs[] = "010-87289908";
 
-            echo implode(',',$rs);
+            echo implode(',', $rs);
             echo "\n";
         }
         exit;
-        $s_time='20201001';
-        $e_time='20201026';
+        $s_time = '20201001';
+        $e_time = '20201026';
 
 
         $userDoctors = UserDoctor::find()->all();
         foreach ($userDoctors as $k => $v) {
             $rs = [];
-            $rs[]=$v->county;
+            $rs[] = $v->county;
 
             $doctorParents2 = DoctorParent::find()->where(['doctorid' => $v->userid])
                 ->select('parentid')
@@ -396,13 +408,13 @@ exit;
 
 
             $userLogin = UserLogin::find()->select('openid')->where(['in', 'userid', $doctorParents2])->andWhere(['!=', 'openid', ''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
             $rs[] = "";
 
             //$userLogin=UserLogin::find()->select('openid')->where(['in','userid',$childs])->andWhere(['!=','openid',''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=','createtime',strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
             $rs[] = "";
             echo $v->name . "," . implode(',', $rs);
             echo "\n";
