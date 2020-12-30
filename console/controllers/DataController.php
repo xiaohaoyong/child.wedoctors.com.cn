@@ -76,6 +76,7 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num = 1)
     {
+        ini_set('memory_limit', '6000M');
 
         $totle = 707218;
         $limit = ceil($totle / 50);
