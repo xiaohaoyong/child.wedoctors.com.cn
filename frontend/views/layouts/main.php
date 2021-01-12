@@ -69,7 +69,7 @@ AppAsset::register($this);
     </div>
     <div class="ftCon">
         <div class="text">微医（北京）健康科技有限公司 服务咨询及合作联系热线：18611201265</div>
-        <div class="text">CopyRight 2017 - 2019 wedoctors.com.cn 版权所有 京ICP备 16028326 号-1</div>
+        <div class="text">CopyRight 2017 - 2019 wedoctors.com.cn 版权所有 <a href="https://beian.miit.gov.cn"> 京ICP备 16028326 号-1</a></div>
     </div>
 </div>
 <?php
