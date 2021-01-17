@@ -66,32 +66,29 @@ class Question extends \yii\db\ActiveRecord
      * @param $tag
      * @return int
      */
-    public static function Create($orderid, $userid, $childid, $content, $tag)
+    public static function Create($userid, $content)
     {
-        $order = Order::findOne(['orderid' => $orderid]);
         $question = new Question();
         $question->userid = $userid;
-        $question->childid = $childid;
-        $question->orderid = $order->id;
         if ($question->save()) {
             $quesInfo = new QuestionInfo();
             $quesInfo->content = $content;
             $quesInfo->qid = $question->id;
             $quesInfo->save();
 
-            $quesTag = new QuestionTag();
-            foreach ($tag as $k => $v) {
-                $quesTag->qid = $question->id;
-                $quesTag->tagid = $v;
-                $quesTag->save();
-            }
-
-            $order = Order::findOne(['orderid' => $orderid]);
-            if ($order) {
-                $order->status = 2;
-                $order->save();
-            }
-            AskChatRoom::createRoom($order->id,$order->userid);
+//            $quesTag = new QuestionTag();
+//            foreach ($tag as $k => $v) {
+//                $quesTag->qid = $question->id;
+//                $quesTag->tagid = $v;
+//                $quesTag->save();
+//            }
+//
+//            $order = Order::findOne(['orderid' => $orderid]);
+//            if ($order) {
+//                $order->status = 2;
+//                $order->save();
+//            }
+//            AskChatRoom::createRoom($order->id,$order->userid);
 
             return $question->id;
         }

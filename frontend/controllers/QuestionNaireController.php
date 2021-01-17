@@ -9,10 +9,13 @@
 namespace frontend\controllers;
 
 
+use common\components\UploadForm;
 use common\models\QuestionNaire;
 use common\models\QuestionNaireAnswer;
 use common\models\QuestionNaireAsk;
 use common\models\QuestionNaireField;
+use OSS\OssClient;
+use yii\web\Response;
 
 class QuestionNaireController extends QnController
 {
@@ -49,7 +52,7 @@ class QuestionNaireController extends QnController
                     }
                 }
             }
-            return $this->redirect(['question-naire/healthy','id'=>$id]);
+            return $this->redirect(['question-naire/sign','id'=>$qnf->id]);
 
         }
         return $this->render('form', [
@@ -100,5 +103,41 @@ class QuestionNaireController extends QnController
             'qna' => $qna,
             'qnaa' => $qnaa
         ]);
+    }
+
+    public function actionSign($id){
+        $qnf=QuestionNaireField::findOne($id);
+        if($qnf){
+
+
+
+
+            return $this->render('sign',[
+                'id'=>$id,
+            ]);
+        }else{
+            return $this->redirect(['form']);
+        }
+    }
+    public function actionSave($id){
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $image_data = json_decode(file_get_contents('php://input'), true);
+        if($image_data) {
+            $qnf=QuestionNaireField::findOne($id);
+            if ($qnf && $image_data) {
+                $baseimage = base64_decode(rawurldecode($image_data['image_data']));
+                $time = time();
+                $filen = substr(md5($time . rand(10, 100)), 4, 14);
+                $images = \Yii::$app->params['imageUrl'] . $filen . '.' . UploadForm::filetype2($baseimage);
+                $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
+                $ossClient->putObject('childimage', 'upload/' . $filen . '.' . UploadForm::filetype2($baseimage), $baseimage);
+                $qnf->sign = $images;
+                $qnf->save();
+            }
+        }
+
+
+        return ['code'=>10000,'msg'=>'成功','data'=>$qnf->qnid];
     }
 }

@@ -29,6 +29,7 @@ class QuestionNaireField extends \yii\db\ActiveRecord
     {
         return [
             [['qnid', 'userid', 'createtime'], 'integer'],
+            [['sign'],'string']
         ];
     }
 
