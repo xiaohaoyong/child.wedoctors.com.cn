@@ -1,6 +1,7 @@
 <?php
 namespace console\controllers;
 use common\models\ArticlePushVaccine;
+use common\models\Notice;
 use yii\console\Controller;
 
 /**
@@ -67,11 +68,17 @@ class ArticlePushController extends Controller
                 "appid" => \Yii::$app->params['wxXAppId'],
                 "pagepath" => "pages/article/view/index?id=$aid",
             ];
+            foreach($childs as $k=>$v){
+                //小程序首页通知
+                Notice::setList($v, 3, ['title' =>  $article->title, 'ftitle' => '一，二月龄宝宝家长', 'id' => "/article/view/index?id=$aid"]);
+
+            }
             foreach($openids as $k=>$v){
 
                 $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$v,'aid'=>$aid]);
                 if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
                     $pushReturn = \common\helpers\WechatSendTmp::send($data, $v, \Yii::$app->params['zhidao'], $url, $miniprogram);
+
                     $articlePushVaccine = new ArticlePushVaccine();
                     $articlePushVaccine->aid = $aid;
                     $articlePushVaccine->openid = $v;

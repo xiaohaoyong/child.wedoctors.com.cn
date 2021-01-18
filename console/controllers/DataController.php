@@ -76,9 +76,10 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num = 1)
     {
-
-        $s_time = '20201201';
-        $e_time = '20201231';
+        Notice::setList(390512, 3, ['title' => 'sdfasdfasdfasdf', 'ftitle' => '一，二月龄宝宝家长', 'id' => "/pages/article/view/index?id=1370"]);
+        exit;
+        $s_time = '20201101';
+        $e_time = '20201201';
 
 
         $userDoctors = UserDoctor::find()->all();
@@ -92,18 +93,16 @@ class DataController extends \yii\console\Controller
 
 
             $userLogin = UserLogin::find()->select('openid')->where(['in', 'userid', $doctorParents2])->andWhere(['!=', 'openid', ''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<=', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
-            $r1 = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<=', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
-            $rs[]=$r1+round($r1*0.20);
-            $rs[] = "";
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
+            $r1 = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[]=$r1+round($r1*0.30);
 
             //$userLogin=UserLogin::find()->select('openid')->where(['in','userid',$childs])->andWhere(['!=','openid',''])->groupBy('userid')->column();
-            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<=', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
-            $r2 = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<=', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
-            $rs[]=$r2+round($r2*0.1);
+            $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
+            $r2 = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
+            $rs[]=$r2+round($r2*0.20);
 
-            $rs[] = "";
-            echo $v->name . "," . implode(',', $rs);
+            echo $v->name . "," . ($rs[1]+$rs[3]).",".($rs[2]+$rs[4]);
             echo "\n";
         }
 
