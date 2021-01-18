@@ -16,6 +16,12 @@ frontend\assets\SignAsset::register($this);
             width: 100vw;
             height: 100vh;
         }
+        .health-records-sign .left-title {
+            position: absolute;
+            right: -60px;
+            top: 120px;
+            transform: rotate(90deg);
+        }
     </style>
     <div class="health-records-sign">
         <div id="signature" style="padding: 10px 10px;"></div>
