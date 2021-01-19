@@ -42,14 +42,14 @@ class AppointController extends Controller
                 if ($openid) {
                     $temp = 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE';
 
-                    if (in_array($v->doctorid, [192821, 206260, 257888, 184793, 160226])) {
+                    if (in_array($v->doctorid, [192821, 206260, 257888, 184793, 160226,206262])) {
                         $data = [
                             'first' => array('value' => "宝宝家长您好",),
                             'keyword1' => ARRAY('value' => date('Y年m月d'),),
                             'keyword2' => ARRAY('value' => '您预约了' . date('Y年m月d', $day) . '的' . Appoint::$typeText[$v->type] . '，请按照预约时间到达社区'),
                             'remark' => ARRAY('value' => "点击此处填写流行病学调查表，请酌情填写流行病学调查表，根据不同社区工作安排可能需要您出示调查结果，调查结果可以在公众号底部菜单我的->流行病学调查表中查看", 'color' => '#221d95'),
                         ];
-                        $rs = WechatSendTmp::send($data, $openid, $temp, 'http://web.child.wedoctors.com.cn/question-naire/form?id=2&doctorid=' . $v->doctorid);
+                        $rs = WechatSendTmp::send($data, $openid, $temp, 'http://web.child.wedoctors.com.cn/question-naire/form?id=1&doctorid=' . $v->doctorid);
                     } else {
                         $data = [
                             'first' => array('value' => "宝宝家长您好",),
