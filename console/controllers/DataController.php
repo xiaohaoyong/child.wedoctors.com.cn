@@ -76,6 +76,28 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num = 1)
     {
+        $totle = 315429;
+        $limit = ceil($totle / 50);
+        $snum = $num * $limit;
+
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+            $data = [
+                'first' => ['value' => '孩子从出生到长大成人，会不断受到各种疾病的侵扰，其中有一些是非常可怕的病毒，在这种时候我们就得依靠疫苗的帮助来战胜它们。孩子注射了疫苗之后，身体就能产生战胜细菌或者病毒的抗体，抵御细菌或者病毒的入侵。'],
+                'keyword1' => ARRAY('value' => '新冠疫情防控期间，宝宝疫苗怎么打？第二十期健康直播即将开始'),
+                'keyword2' => ARRAY('value' => '2021年01月20日 19点30分'),
+                'remark' => ARRAY('value' => ""),
+            ];
+            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_60065927e4b0ab9a2549d642?type=2');
+            sleep(1);
+            exit;
+        }
+        var_dump($login);
+        exit;
+
+
+
+
         Notice::setList(390512, 3, ['title' => 'sdfasdfasdfasdf', 'ftitle' => '一，二月龄宝宝家长', 'id' => "/pages/article/view/index?id=1370"]);
         exit;
         $s_time = '20201101';
