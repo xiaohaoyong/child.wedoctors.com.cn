@@ -14,7 +14,7 @@ $this->title=$qn->title;
 <?php $form = ActiveForm::begin(); ?>
 <fieldset disabled>
 
-<div style="text-align: center;line-height: 100px;font-size: 20px;"><?=$qn->title?></div>
+    <div style="text-align: center;line-height:50 px;font-size: 16px;height: 100px;padding: 20px;"><?=$qn->title?></div>
 <?php foreach ($qna as $k=>$v){
 
     $field=\common\models\QuestionNaireAsk::$fieldText[$v->field];

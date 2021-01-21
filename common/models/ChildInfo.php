@@ -55,7 +55,7 @@ use Yii;
  */
 class ChildInfo extends \yii\db\ActiveRecord
 {
-    public static $genderText=[1=>"男",2=>"女"];
+    public static $genderText=[0=>'未设置',1=>"男",2=>"女"];
     /**
      * @inheritdoc
      */

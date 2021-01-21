@@ -120,7 +120,7 @@ class UserParent extends \yii\db\ActiveRecord {
     }
 
     public function getPhone(){
-        $userLogin=UserLogin::find()->andWhere(['userid'=>$this->userid])->andWhere(['!=','phone',0])->one();
+        $userLogin=UserLogin::find()->andWhere(['userid'=>$this->userid])->andWhere(['!=','phone',0])->andWhere(['>','phone',10000000000])->one();
         if($userLogin && $userLogin->phone){
             return $userLogin->phone;
         }else{
