@@ -76,6 +76,41 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num = 1)
     {
+
+//        $file = fopen('110588.csv', 'r');
+//        while (($line = fgets($file)) !== false) {
+//            $row = explode(',', trim($line));
+//
+//            $name = $row[0];
+//            $birthday = $row[1];
+//            $child = ChildInfo::findOne(['name' => $name, 'birthday' => strtotime($birthday), 'doctorid' => 110595]);
+//            if ($child) {
+//                $auto = Autograph::findOne(['userid' => $child->userid]);
+//                if ($auto) {
+//                    $auto->doctorid = 192821;
+//                    $auto->save();
+//                }
+//                $doctorParent = DoctorParent::findOne(['parentid' => $child->userid]);
+//                if ($doctorParent) {
+//                    $doctorParent->createtime=time();
+//                    $doctorParent->doctorid = 192821;
+//                    $doctorParent->save();
+//                }
+//                $child->doctorid = 110595;
+//                if ($child->admin){
+//                    $child->admin = 110595;
+//                }
+//                $child->save();
+//                var_dump($name);
+//
+//            } else {
+//                var_dump("");
+//            }
+//        }
+//        exit;
+
+
+
         $totle = 315429;
         $limit = ceil($totle / 50);
         $snum = $num * $limit;
@@ -83,12 +118,12 @@ class DataController extends \yii\console\Controller
         $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
         foreach ($login as $k => $v) {
             $data = [
-                'first' => ['value' => '孩子从出生到长大成人，会不断受到各种疾病的侵扰，其中有一些是非常可怕的病毒，在这种时候我们就得依靠疫苗的帮助来战胜它们。孩子注射了疫苗之后，身体就能产生战胜细菌或者病毒的抗体，抵御细菌或者病毒的入侵。'],
-                'keyword1' => ARRAY('value' => '新冠疫情防控期间，宝宝疫苗怎么打？第二十期健康直播即将开始'),
-                'keyword2' => ARRAY('value' => '2021年01月20日 19点30分'),
+                'first' => ['value' => "1、家长如何检测学龄前儿童生长发育呢\n2、孩子身高达标么？需要如何判断？\n3、家有'神兽'冬季䄦长高不长胖"],
+                'keyword1' => ARRAY('value' => '谷奕主任为您科普冬季科学管理身高'),
+                'keyword2' => ARRAY('value' => '2021年01月25日 17点'),
                 'remark' => ARRAY('value' => ""),
             ];
-            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_60065927e4b0ab9a2549d642?type=2');
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_600e62ffe4b0f176aeca3b2b?type=2');
             sleep(1);
         }
         var_dump($login);
