@@ -123,10 +123,9 @@ class DataController extends \yii\console\Controller
                 'keyword2' => ARRAY('value' => '2021年01月31日 15点'),
                 'remark' => ARRAY('value' => ""),
             ];
-            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_601607e0e4b0f176aece749d?type=2');
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_601607e0e4b0f176aece749d?type=2');
             var_dump($rs);
             sleep(1);
-            exit;
         }
         var_dump($login);
         exit;
