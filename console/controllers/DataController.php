@@ -112,18 +112,19 @@ class DataController extends \yii\console\Controller
 
 
         $totle = 315429;
-        $limit = ceil($totle / 50);
+        $limit = ceil($totle / 100);
         $snum = $num * $limit;
 
         $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
         foreach ($login as $k => $v) {
             $data = [
-                'first' => ['value' => "1、家长如何检测学龄前儿童生长发育呢\n2、孩子身高达标么？需要如何判断？\n3、家有'神兽'冬季䄦长高不长胖"],
-                'keyword1' => ARRAY('value' => '谷奕主任为您科普冬季科学管理身高'),
-                'keyword2' => ARRAY('value' => '2021年01月25日 17点'),
+                'first' => ['value' => "宝宝经常生病，很可能是免疫力跟不上，轻微免疫力低下常出现感冒、闹肚子、扁桃体发炎等病症；严重免疫力低主要表现为感染会反复发生、自身发病、易患重病。\n影响宝宝免疫力的因素有很多，这里主要聊一聊免疫力和抵抗力的关系为此我们邀请到了马扬副主任来和我们聊一聊“宝宝免疫力与抵抗力的问题”。"],
+                'keyword1' => ARRAY('value' => '如何增强宝宝免疫力和抵抗力，第二十二期健康直播即将开始'),
+                'keyword2' => ARRAY('value' => '2021年01月31日 15点'),
                 'remark' => ARRAY('value' => ""),
             ];
-            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_600e62ffe4b0f176aeca3b2b?type=2');
+            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_601607e0e4b0f176aece749d?type=2');
+            var_dump($rs);
             sleep(1);
         }
         var_dump($login);
