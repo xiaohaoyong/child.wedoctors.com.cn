@@ -265,4 +265,18 @@ class AppointCallingController extends BaseController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionList($type){
+        $doctorid=Yii::$app->user->identity->doctorid;
+        $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+        $queue = new Queue($doctorid, $type, $timeType);
+        $list[] = $queue->lrange();
+
+        foreach(Appoint::$timeText as $k=>$v){
+            $queue = new Queue($doctorid, $type, $k);
+            $list[] = $queue->lrange();
+        }
+        var_dump($list);exit;
+    }
 }
