@@ -22,6 +22,18 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'doctorid') ?>
 
+    <?= $form->field($model, 'appoint_dates')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'appoint_dates_end')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
+    <?php echo $form->field($model, 'vaccine')->dropDownList(\common\models\Vaccine::find()->select('name')->indexBy('id')->column(), ['prompt' => '请选择']) ?>
+
 
     <?= $form->field($model, 'appoint_time') ?>
 
