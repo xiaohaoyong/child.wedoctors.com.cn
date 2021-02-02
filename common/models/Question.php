@@ -16,6 +16,7 @@ use Yii;
  */
 class Question extends \yii\db\ActiveRecord
 {
+    public static $stateText=[0=>'未回复',1=>'已回复'];
     /**
      * {@inheritdoc}
      */

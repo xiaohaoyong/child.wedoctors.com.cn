@@ -13,6 +13,8 @@ use api\controllers\Controller;
 use common\components\Code;
 use common\models\Question;
 use common\models\QuestionImg;
+use common\models\QuestionInfo;
+use yii\data\Pagination;
 use yii\web\UploadedFile;
 
 class QuestionController extends Controller
@@ -45,5 +47,32 @@ class QuestionController extends Controller
             }
         }
 
+    }
+    public function actionList(){
+        $question=Question::find()->where(['level'=>1]);
+        $pages = new Pagination(['totalCount' => $question->count(), 'pageSize' => 10]);
+        $list = $question->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
+        foreach($list as $k=>$v){
+            $rs=$v->toArray();
+            $rs['state']=Question::$stateText[$v->state];
+            $rs['createtime']=date('m-d',$v->createtime);
+            $rs['imgs']=QuestionImg::findAll(['qid'=>$v->id]);
+            $rs['info']=QuestionInfo::findOne(['qid'=>$v->id]);
+            $data['list'][]=$rs;
+        }
+        $data['pageTotal']=ceil($question->count()/10);
+
+        return $data;
+    }
+
+    public function actionView($id){
+        $question=Question::findOne($id);
+        $rs=$question->toArray();
+        $rs['state']=Question::$stateText[$question->state];
+        $rs['createtime']=date('m-d',$question->createtime);
+        $rs['imgs']=QuestionImg::find()->where(['qid'=>$question->id])->select('image')->column();
+        $rs['info']=QuestionInfo::findOne(['qid'=>$question->id]);
+
+        return ['question'=>$rs];
     }
 }
