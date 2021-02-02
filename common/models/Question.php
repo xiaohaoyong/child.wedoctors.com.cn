@@ -11,7 +11,7 @@ use Yii;
  * @property int $userid
  * @property int $createtime
  * @property int $childid
- * @property int $doctirid
+ * @property int $doctorid
  * @property int $orderid
  */
 class Question extends \yii\db\ActiveRecord
@@ -31,7 +31,7 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'createtime', 'childid', 'doctirid', 'orderid'], 'integer'],
+            [['userid', 'createtime', 'childid', 'doctorid', 'orderid'], 'integer'],
         ];
     }
 
@@ -46,7 +46,7 @@ class Question extends \yii\db\ActiveRecord
             'createtime' => '创建时间',
             'childid' => '儿童id',
             'orderid' => '订单ID',
-            'doctirid' => '医生ID（儿宝团队/专家）',
+            'doctorid' => '医生ID（儿宝团队/专家）',
         ];
     }
 
@@ -67,10 +67,12 @@ class Question extends \yii\db\ActiveRecord
      * @param $tag
      * @return int
      */
-    public static function Create($userid, $content)
+    public static function Create($userid, $content,$doctorid)
     {
         $question = new Question();
         $question->userid = $userid;
+        $question->doctorid=$doctorid;
+
         if ($question->save()) {
             $quesInfo = new QuestionInfo();
             $quesInfo->content = $content;

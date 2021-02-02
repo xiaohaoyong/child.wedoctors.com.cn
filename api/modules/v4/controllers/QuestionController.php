@@ -14,6 +14,8 @@ use common\components\Code;
 use common\models\Question;
 use common\models\QuestionImg;
 use common\models\QuestionInfo;
+use common\models\QuestionReply;
+use common\models\UserDoctor;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
 
@@ -73,6 +75,51 @@ class QuestionController extends Controller
         $rs['imgs']=QuestionImg::find()->where(['qid'=>$question->id])->select('image')->column();
         $rs['info']=QuestionInfo::findOne(['qid'=>$question->id]);
 
-        return ['question'=>$rs];
+        $reply=QuestionReply::find()->where(['qid'=>$id])->limit(10)->all();
+        foreach($reply as $k=>$v){
+            $row=$v->toArray();
+            if($v->is_doctor){
+                $doctor=UserDoctor::findOne(['userid'=>$v->userid]);
+                $row['user']=$doctor->name;
+            }else{
+                $row['user']="用户".$v->userid;
+            }
+            $row['createtime']=date('m-d',$v->createtime);
+            $replys[]=$row;
+        }
+        $query=QuestionReply::find()->where(['level'=>1,'qid'=>$id]);
+        $data['pageTotal']=ceil($query->count()/10);
+
+        return ['question'=>$rs,'replys'=>$replys];
+    }
+
+    public function actionReplys($id){
+        $replys=QuestionReply::find()->where(['level'=>1,'qid'=>$id]);
+        $pages = new Pagination(['totalCount' => $replys->count(), 'pageSize' => 10]);
+        $list = $replys->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
+        foreach($list as $k=>$v){
+            $row=$v->toArray();
+            if($v->is_doctor){
+                $doctor=UserDoctor::findOne(['userid'=>$v->userid]);
+                $row['user']=$doctor->name;
+            }else{
+                $row['user']="用户".$v->userid;
+            }
+            $row['createtime']=date('m-d',$v->createtime);
+            $replys[]=$row;
+        }
+
+        return $replys;
+    }
+
+    public function actionReply($id){
+
+        $content=\Yii::$app->request->post('content');
+        $question_reply=new QuestionReply();
+        $question_reply->content=$content;
+        $question_reply->userid=$this->userid;
+        $question_reply->qid=$id;
+        $question_reply->save();
+        return ;
     }
 }
