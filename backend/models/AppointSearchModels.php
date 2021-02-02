@@ -122,7 +122,7 @@ class AppointSearchModels extends Appoint
 
         ]);
         $query->orderBy(['createtime' => SORT_DESC]);
-        //echo $query->createCommand()->getRawSql();exit;
+        echo $query->createCommand()->getRawSql();exit;
         return $dataProvider;
     }
 }
