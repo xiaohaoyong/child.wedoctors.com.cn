@@ -77,7 +77,6 @@ class AppointSearchModels extends Appoint
         $this->load($params);
 
         if($this->appoint_dates){
-            $this->appoint_date=strtotime($this->appoint_dates);
             $query->andFilterWhere(['>=', 'appoint_date', strtotime($this->appoint_dates)]);
         }
         if($this->appoint_dates_end){
@@ -122,7 +121,7 @@ class AppointSearchModels extends Appoint
 
         ]);
         $query->orderBy(['createtime' => SORT_DESC]);
-        echo $query->createCommand()->getRawSql();exit;
+        //echo $query->createCommand()->getRawSql();exit;
         return $dataProvider;
     }
 }
