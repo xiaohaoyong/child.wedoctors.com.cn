@@ -15,6 +15,8 @@ class AppointSearchModels extends Appoint
 {
     public $child_name;
     public $appoint_dates = '';
+    public $appoint_dates_end = '';
+
     public $ids;
 
     public $county;
@@ -24,8 +26,8 @@ class AppointSearchModels extends Appoint
     public function rules()
     {
         return [
-            [['county','state','cancel_type','id', 'userid','loginid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
-            [['child_name', 'appoint_dates','ids'], 'string']
+            [['vaccine','county','state','cancel_type','id', 'userid','loginid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
+            [['child_name', 'appoint_dates','appoint_dates_end','ids'], 'string']
         ];
     }
     /**
@@ -75,7 +77,10 @@ class AppointSearchModels extends Appoint
         $this->load($params);
 
         if($this->appoint_dates){
-            $this->appoint_date=strtotime($this->appoint_dates);
+            $query->andFilterWhere(['>=', 'appoint_date', strtotime($this->appoint_dates)]);
+        }
+        if($this->appoint_dates_end){
+            $query->andFilterWhere(['<=', 'appoint_date', strtotime($this->appoint_dates_end)]);
         }
 
         if (!$this->validate()) {
@@ -112,6 +117,8 @@ class AppointSearchModels extends Appoint
             'phone' => $this->phone,
             'cancel_type'=>$this->cancel_type,
             'state'=>$this->state,
+            'vaccine'=>$this->vaccine,
+
         ]);
         $query->orderBy(['createtime' => SORT_DESC]);
         //echo $query->createCommand()->getRawSql();exit;
