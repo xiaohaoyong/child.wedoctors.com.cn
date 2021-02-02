@@ -118,6 +118,8 @@ class AppointSearchModels extends Appoint
             'phone' => $this->phone,
             'cancel_type'=>$this->cancel_type,
             'state'=>$this->state,
+            'vaccine'=>$this->vaccine,
+
         ]);
         $query->orderBy(['createtime' => SORT_DESC]);
         //echo $query->createCommand()->getRawSql();exit;
