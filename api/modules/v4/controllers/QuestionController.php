@@ -21,11 +21,11 @@ use yii\web\UploadedFile;
 
 class QuestionController extends Controller
 {
-    public function actionPut()
+    public function actionPut($id)
     {
         $post = \Yii::$app->request->post();
         $content = $post['content'];
-        $questionid = Question::Create($this->userid,  $content);
+        $questionid = Question::Create($this->userid,  $content,$id);
 
         return $questionid;
     }
@@ -50,8 +50,11 @@ class QuestionController extends Controller
         }
 
     }
-    public function actionList(){
+    public function actionList($type){
         $question=Question::find()->where(['level'=>1]);
+        if($type){
+            $question->andWhere(['userid'=>$this->userid]);
+        }
         $pages = new Pagination(['totalCount' => $question->count(), 'pageSize' => 10]);
         $list = $question->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
         foreach($list as $k=>$v){
@@ -90,7 +93,13 @@ class QuestionController extends Controller
         $query=QuestionReply::find()->where(['level'=>1,'qid'=>$id]);
         $data['pageTotal']=ceil($query->count()/10);
 
-        return ['question'=>$rs,'replys'=>$replys];
+        if($question->userid==$this->userid){
+            $is_my=1;
+        }else{
+            $is_my=0;
+        }
+
+        return ['question'=>$rs,'replys'=>$replys,'is_my'=>$is_my];
     }
 
     public function actionReplys($id){
@@ -114,12 +123,15 @@ class QuestionController extends Controller
 
     public function actionReply($id){
 
-        $content=\Yii::$app->request->post('content');
-        $question_reply=new QuestionReply();
-        $question_reply->content=$content;
-        $question_reply->userid=$this->userid;
-        $question_reply->qid=$id;
-        $question_reply->save();
+        $question=Question::findOne($id);
+        if($question->userid==$this->userid) {
+            $content = \Yii::$app->request->post('content');
+            $question_reply = new QuestionReply();
+            $question_reply->content = $content;
+            $question_reply->userid = $this->userid;
+            $question_reply->qid = $id;
+            $question_reply->save();
+        }
         return ;
     }
 }

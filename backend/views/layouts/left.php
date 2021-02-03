@@ -5,7 +5,7 @@
 
         <?= dmstr\widgets\Menu::widget(
             [
-                'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
+                'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items' => [
                     ['label' => '管理目录', 'options' => ['class' => 'header']],
                     [
@@ -18,6 +18,14 @@
                             ['label' => '扫码记录', 'icon' => 'wechat', 'url' => ['/we-openid'],],
 
 
+                        ],
+                    ],
+                    [
+                        'label' => '留言板',
+                        'icon' => 'user',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '问题了列表', 'icon' => 'user', 'url' => ['/question'],],
                         ],
                     ],
                     [
@@ -45,15 +53,15 @@
                             ['label' => '预约列表', 'icon' => 'list', 'url' => ['/appoint/index'],],
 
 
-                            ['label' => '孕产管理', 'icon' => 'comments','url' => '#',
-                                'items'=>[
+                            ['label' => '孕产管理', 'icon' => 'comments', 'url' => '#',
+                                'items' => [
                                     ['label' => '孕产数据', 'icon' => 'hospital-o', 'url' => ['/pregnancy'],],
                                     ['label' => '追访记录', 'icon' => 'hospital-o', 'url' => ['/interview'],],
 
                                 ],],
 
-                            ['label' => '育儿指南', 'icon' => 'comments','url' => '#',
-                                'items'=>[
+                            ['label' => '育儿指南', 'icon' => 'comments', 'url' => '#',
+                                'items' => [
                                     ['label' => '指南类别', 'icon' => 'hospital-o', 'url' => ['/baby-tool-tag'],],
                                     ['label' => '指南内容', 'icon' => 'hospital-o', 'url' => ['/baby-tool'],],
                                     ['label' => '指南内容', 'icon' => 'hospital-o', 'url' => ['/baby-guide'],],
@@ -99,7 +107,7 @@
                         'url' => '#',
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
-                            ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],                        ],
+                            ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],],
                     ],
                 ],
             ]

@@ -46,7 +46,7 @@ class Question extends \yii\db\ActiveRecord
             'createtime' => '创建时间',
             'childid' => '儿童id',
             'orderid' => '订单ID',
-            'doctorid' => '医生ID（儿宝团队/专家）',
+            'doctorid' => '指定社区',
         ];
     }
 
