@@ -105,7 +105,7 @@ class QuestionController extends Controller
     public function actionReplys($id){
         $replys=QuestionReply::find()->where(['level'=>1,'qid'=>$id]);
         $pages = new Pagination(['totalCount' => $replys->count(), 'pageSize' => 10]);
-        $list = $replys->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
+        $list = $replys->offset($pages->offset)->limit($pages->limit)->all();
         foreach($list as $k=>$v){
             $row=$v->toArray();
             if($v->is_doctor){

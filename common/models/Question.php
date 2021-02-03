@@ -31,7 +31,7 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'createtime', 'childid', 'doctorid', 'orderid'], 'integer'],
+            [['userid', 'createtime', 'childid', 'doctorid', 'orderid','state'], 'integer'],
         ];
     }
 
@@ -47,6 +47,7 @@ class Question extends \yii\db\ActiveRecord
             'childid' => '儿童id',
             'orderid' => '订单ID',
             'doctorid' => '指定社区',
+            'state'=>'回复状态',
         ];
     }
 

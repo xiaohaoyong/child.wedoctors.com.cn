@@ -25,7 +25,7 @@
                         'icon' => 'user',
                         'url' => '#',
                         'items' => [
-                            ['label' => '问题了列表', 'icon' => 'user', 'url' => ['/question'],],
+                            ['label' => '问题列表', 'icon' => 'user', 'url' => ['/question'],],
                         ],
                     ],
                     [
