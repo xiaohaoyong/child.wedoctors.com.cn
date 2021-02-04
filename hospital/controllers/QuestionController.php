@@ -59,6 +59,8 @@ class QuestionController extends Controller
 
         if( $reply->load(Yii::$app->request->post())){
             if($reply->save()){
+                $model->state=1;
+                $model->save();
                 $doctor=UserDoctor::findOne(['userid'=>\Yii::$app->user->identity->doctorid]);
                 $data = [
                     'name1' => ARRAY('value' => $doctor->name),
