@@ -62,5 +62,19 @@ class WechatSendTmp
         ]);
         return $mpWechat->sendTemplateMessage($push_data);
     }
+    public static function sendSubscribe($data,$touser,$tmpid,$url=""){
+        $push_data['data'] = $data;
+        $push_data['touser'] = $touser;
+        $push_data['template_id'] = $tmpid;
+        $push_data['page'] = $url;
+        $push_data['miniprogram_state']='trial';
 
+        $mpWechat = new \common\vendor\MpWechat([
+            'token' => \Yii::$app->params['WeToken'],
+            'appId' => \Yii::$app->params['wxXAppId'],
+            'appSecret' => \Yii::$app->params['wxXAppSecret'],
+            'encodingAesKey' => \Yii::$app->params['encodingAesKey'],
+        ]);
+        return $mpWechat->sendSubscribeMessage($push_data);
+    }
 }

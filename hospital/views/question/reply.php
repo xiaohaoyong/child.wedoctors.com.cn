@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php $form = \yii\widgets\ActiveForm::begin(); ?>
 
                 <?= $form->field($reply, 'content')->textarea()->label('回复') ?>
-                <?= $form->field($reply, 'userid')->hiddenInput(['value'=>47156])->label(false) ?>
+                <?= $form->field($reply, 'userid')->hiddenInput(['value'=>\Yii::$app->user->identity->doctorid])->label(false) ?>
                 <?= $form->field($reply, 'is_doctor')->hiddenInput(['value'=>1])->label(false) ?>
                 <?= $form->field($reply, 'qid')->hiddenInput(['value'=>$model->id])->label(false) ?>
 

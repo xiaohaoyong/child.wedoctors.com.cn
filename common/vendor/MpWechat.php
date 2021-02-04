@@ -33,6 +33,22 @@ class MpWechat extends \callmez\wechat\sdk\MpWechat
         ]);
         return isset($result['msgid']) ? $result['msgid'] : false;
     }
+    const WECHAT_SUBSCRIBE_MESSAGE_WXOPEN_SEND_PREFIX = '/cgi-bin/message/subscribe/send';
+
+    /**
+     * 发送小程序订阅消息
+     * @param array $data 模板需要的数据
+     * @return int|bool
+     */
+    public function sendSubscribeMessage(array $data)
+    {
+        $result = $this->httpRaw(self::WECHAT_SUBSCRIBE_MESSAGE_WXOPEN_SEND_PREFIX, array_merge([
+
+        ], $data), [
+            'access_token' => $this->getAccessToken()
+        ]);
+        return isset($result['msgid']) ? $result['msgid'] : false;
+    }
     public function delCache($name){
         return \Yii::$app->cache->delete($this->getCacheKey($name));
     }

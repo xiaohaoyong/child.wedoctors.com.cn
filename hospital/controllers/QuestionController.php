@@ -2,7 +2,9 @@
 
 namespace hospital\controllers;
 
+use common\helpers\WechatSendTmp;
 use common\models\QuestionReply;
+use common\models\UserDoctor;
 use hospital\models\QuestionReplySearch;
 use Yii;
 use common\models\Question;
@@ -53,15 +55,23 @@ class QuestionController extends Controller
         $params['QuestionReplySearch']['qid']=$id;
         $dataProvider = $searchModel->search($params);
         $reply = new QuestionReply();
-
+        $model=$this->findModel($id);
 
         if( $reply->load(Yii::$app->request->post())){
-            $reply->save();
+            if($reply->save()){
+                $doctor=UserDoctor::findOne(['userid'=>\Yii::$app->user->identity->doctorid]);
+                $data = [
+                    'name1' => ARRAY('value' => $doctor->name),
+                    'time2' => ARRAY('value' => date('Y年m月d日 H:i',$reply->createtime)),
+                    'thing3' => ARRAY('value' => $reply->content),
+                ];
+                WechatSendTmp::sendSubscribe($data,$model->openid,'6bX1akpJdtHYW85-soUk-6c37wkqeu7RF7x02PSFuZ0','/pages/question/view?id='.$model->id);
+            }
             return $this->redirect(['reply', 'id' => $id]);
         }
 
         return $this->render('reply', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'dataProvider' => $dataProvider,
             'reply'=>$reply,
         ]);
