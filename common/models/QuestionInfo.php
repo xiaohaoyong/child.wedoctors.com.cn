@@ -9,6 +9,8 @@ use Yii;
  * 提问详情
  * @property int $qid
  * @property string $content
+ * @property int $sex
+ * @property int $birthday
  */
 class QuestionInfo extends \yii\db\ActiveRecord
 {
@@ -27,7 +29,7 @@ class QuestionInfo extends \yii\db\ActiveRecord
     {
         return [
             [['qid'], 'required'],
-            [['qid'], 'integer'],
+            [['qid','sex','birthday'], 'integer'],
             [['content'], 'string', 'max' => 200],
             [['qid'], 'unique'],
         ];
@@ -41,6 +43,8 @@ class QuestionInfo extends \yii\db\ActiveRecord
         return [
             'qid' => '问题ID',
             'content' => '内容',
+            'birthday'=>'生日',
+            'sex'=>'性别'
         ];
     }
 }
