@@ -70,7 +70,7 @@ class Question extends \yii\db\ActiveRecord
      * @param $tag
      * @return int
      */
-    public static function Create($userid, $content,$doctorid,$loginid)
+    public static function Create($userid,$doctorid,$post)
     {
         $question = new Question();
         $question->userid = $userid;
@@ -79,7 +79,7 @@ class Question extends \yii\db\ActiveRecord
 
         if ($question->save()) {
             $quesInfo = new QuestionInfo();
-            $quesInfo->content = $content;
+            $quesInfo->load($post);
             $quesInfo->qid = $question->id;
             $quesInfo->save();
 

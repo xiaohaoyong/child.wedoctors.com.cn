@@ -52,7 +52,7 @@ class QuestionController extends Controller
                     'time2' => ARRAY('value' => date('Y年m月d日 H:i',$reply->createtime)),
                     'thing3' => ARRAY('value' => $reply->content),
                 ];
-                WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'6bX1akpJdtHYW85-soUk-6c37wkqeu7RF7x02PSFuZ0','/pages/question/view?id='.$model->id);
+                $rs=WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'6bX1akpJdtHYW85-soUk-6c37wkqeu7RF7x02PSFuZ0','/pages/question/view?id='.$model->id);
             }
             return $this->redirect(['reply', 'id' => $id]);
         }

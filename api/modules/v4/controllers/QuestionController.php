@@ -24,10 +24,37 @@ class QuestionController extends Controller
     public function actionPut($id)
     {
         $post = \Yii::$app->request->post();
-        $content = $post['content'];
-        $questionid = Question::Create($this->userid,  $content,$id,$this->userLogin->id);
+        $question = new Question();
+        $question->userid = $this->userid;
+        $question->doctorid=$id;
+        $question->loginid=$this->userLogin->id;
 
-        return $questionid;
+        if ($question->save()) {
+            $quesInfo = new QuestionInfo();
+            $post['birthday']=strtotime($post['birthday']);
+            $quesInfo->load(['QuestionInfo'=>$post]);
+            $quesInfo->qid = $question->id;
+            $quesInfo->save();
+
+//            $quesTag = new QuestionTag();
+//            foreach ($tag as $k => $v) {
+//                $quesTag->qid = $question->id;
+//                $quesTag->tagid = $v;
+//                $quesTag->save();
+//            }
+//
+//            $order = Order::findOne(['orderid' => $orderid]);
+//            if ($order) {
+//                $order->status = 2;
+//                $order->save();
+//            }
+//            AskChatRoom::createRoom($order->id,$order->userid);
+
+            return $question->id;
+        }
+
+
+        return new Code(20000,'失败');
     }
 
     public function actionImg()
