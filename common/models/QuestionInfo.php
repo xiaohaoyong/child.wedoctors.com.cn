@@ -14,6 +14,8 @@ use Yii;
  */
 class QuestionInfo extends \yii\db\ActiveRecord
 {
+    public static $sexText=[0=>'男',1=>'女'];
+
     /**
      * {@inheritdoc}
      */

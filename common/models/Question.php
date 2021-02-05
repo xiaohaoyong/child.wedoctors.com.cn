@@ -13,10 +13,12 @@ use Yii;
  * @property int $childid
  * @property int $doctorid
  * @property int $orderid
+ * @property int $loginid
  */
 class Question extends \yii\db\ActiveRecord
 {
     public static $stateText=[0=>'未回复',1=>'已回复'];
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +33,7 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'createtime', 'childid', 'doctorid', 'orderid','state'], 'integer'],
+            [['userid', 'createtime', 'childid', 'doctorid', 'orderid','state','loginid'], 'integer'],
         ];
     }
 
@@ -68,11 +70,12 @@ class Question extends \yii\db\ActiveRecord
      * @param $tag
      * @return int
      */
-    public static function Create($userid, $content,$doctorid)
+    public static function Create($userid, $content,$doctorid,$loginid)
     {
         $question = new Question();
         $question->userid = $userid;
         $question->doctorid=$doctorid;
+        $question->loginid=$loginid;
 
         if ($question->save()) {
             $quesInfo = new QuestionInfo();

@@ -24,6 +24,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
                         'createtime:datetime',
                         [
+                            'attribute' => '生日',
+                            'value' => function ($e) {
+                                return date('Y-m-d', \common\models\QuestionInfo::findOne(['qid' => $e->id])->birthday);
+                            }
+                        ],
+                        [
+                            'attribute' => '性别',
+                            'value' => function ($e) {
+                                $info = \common\models\QuestionInfo::findOne(['qid' => $e->id]);
+                                return \common\models\QuestionInfo::$sexText[$info->sex];
+                            }
+                        ],
+                        [
                             'attribute' => '问题',
                             'value' => function ($e) {
                                 $info = \common\models\QuestionInfo::findOne(['qid' => $e->id]);
@@ -72,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ',
                                     'buttons' => [
                                         'update' => function ($url, $model, $key) {
-                                            return \yii\helpers\Html::a('<span class="glyphicon glyphicon-pencil"> 编辑</span>', '/question-reply/update?id='.$model->id);
+                                            return \yii\helpers\Html::a('<span class="glyphicon glyphicon-pencil"> 编辑</span>', '/question-reply/update?id=' . $model->id);
                                         }
                                     ]
                                 ],
@@ -85,13 +98,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php $form = \yii\widgets\ActiveForm::begin(); ?>
 
                 <?= $form->field($reply, 'content')->textarea()->label('回复') ?>
-                <?= $form->field($reply, 'userid')->hiddenInput(['value'=>\Yii::$app->user->identity->doctorid])->label(false) ?>
-                <?= $form->field($reply, 'is_doctor')->hiddenInput(['value'=>1])->label(false) ?>
-                <?= $form->field($reply, 'qid')->hiddenInput(['value'=>$model->id])->label(false) ?>
+                <?= $form->field($reply, 'userid')->hiddenInput(['value' => \Yii::$app->user->identity->doctorid])->label(false) ?>
+                <?= $form->field($reply, 'is_doctor')->hiddenInput(['value' => 1])->label(false) ?>
+                <?= $form->field($reply, 'qid')->hiddenInput(['value' => $model->id])->label(false) ?>
 
 
                 <div class="form-group">
-                    <?= Html::submitButton($reply->isNewRecord ? '提交'                    : '提交', ['class' => $reply->isNewRecord ? 'btn btn-success' :
+                    <?= Html::submitButton($reply->isNewRecord ? '提交' : '提交', ['class' => $reply->isNewRecord ? 'btn btn-success' :
                         'btn btn-primary']) ?>
                 </div>
 

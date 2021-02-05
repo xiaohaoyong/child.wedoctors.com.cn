@@ -25,7 +25,7 @@ class QuestionController extends Controller
     {
         $post = \Yii::$app->request->post();
         $content = $post['content'];
-        $questionid = Question::Create($this->userid,  $content,$id);
+        $questionid = Question::Create($this->userid,  $content,$id,$this->userLogin->id);
 
         return $questionid;
     }

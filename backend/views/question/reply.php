@@ -24,6 +24,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
                         'createtime:datetime',
                         [
+                            'attribute' => '生日',
+                            'value' => function ($e) {
+                                return date('Y-m-d', \common\models\QuestionInfo::findOne(['qid' => $e->id])->birthday);
+                            }
+                        ],
+                        [
+                            'attribute' => '性别',
+                            'value' => function ($e) {
+                                $info = \common\models\QuestionInfo::findOne(['qid' => $e->id]);
+                                return \common\models\QuestionInfo::$sexText[$info->sex];
+                            }
+                        ],
+                        [
                             'attribute' => '问题',
                             'value' => function ($e) {
                                 $info = \common\models\QuestionInfo::findOne(['qid' => $e->id]);
