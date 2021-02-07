@@ -76,6 +76,24 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num = 1)
     {
+//        $userDoctors = UserDoctor::find()->where(['city' => 11])->all();
+//        foreach ($userDoctors as $k => $v) {
+//
+//            $appoint = HospitalAppoint::findOne(['doctorid' => $v->userid, 'type' => 2]);
+//            $userDoctor = UserDoctor::findOne(['userid' => $v->userid]);
+//            if ($userDoctor->appoint) {
+//                $types = str_split((string)$userDoctor->appoint);
+//            }
+//            if ($appoint && in_array(2, $types)) {
+//                $t='已开通';
+//            }else{
+//                $t="未开通";
+//            }
+//
+//            echo $v->name.','.$v->hospital->name.",".Area::$all[$v->county].",".$t;
+//            echo "\n";
+//        }
+//        exit;
 
 //        $file = fopen('110588.csv', 'r');
 //        while (($line = fgets($file)) !== false) {
@@ -118,12 +136,12 @@ class DataController extends \yii\console\Controller
         $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
         foreach ($login as $k => $v) {
             $data = [
-                'first' => ['value' => "宝宝经常生病，很可能是免疫力跟不上，轻微免疫力低下常出现感冒、闹肚子、扁桃体发炎等病症；严重免疫力低主要表现为感染会反复发生、自身发病、易患重病。\n影响宝宝免疫力的因素有很多，这里主要聊一聊免疫力和抵抗力的关系为此我们邀请到了马扬副主任来和我们聊一聊“宝宝免疫力与抵抗力的问题”。"],
-                'keyword1' => ARRAY('value' => '如何增强宝宝免疫力和抵抗力，第二十二期健康直播即将开始'),
-                'keyword2' => ARRAY('value' => '2021年01月31日 15点'),
+                'first' => ['value' => "人类婴幼儿同样存在类似的关键时期现象，也就是很多能力必须在特定时期得到环境获得发展，错过了这个时期就会影响发展的水平，甚至失去发展的可能，就像大家曾经听说过的“狼孩儿’、“猪孩儿”的故事。宝宝0-3岁是儿童早期发展的重要时期，为此儿宝宝邀请了闫琦主任来和我们聊聊宝宝早期发展那些事。"],
+                'keyword1' => ARRAY('value' => '关注0-3岁儿童早期发展，第二十三期健康直播即将开始'),
+                'keyword2' => ARRAY('value' => '2021年02月07日 16点'),
                 'remark' => ARRAY('value' => ""),
             ];
-            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_601607e0e4b0f176aece749d?type=2');
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v1/course/alive/l_601e3014e4b0f176aed09db8?type=2');
             var_dump($rs);
             sleep(1);
         }
