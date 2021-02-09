@@ -14,6 +14,8 @@ use Yii;
  * @property int $createtime 添加时间
  * @property int $phone 联系电话
  * @property int $source 来源
+ * @property int $idcard 身份证
+ * @property int $place 身份证
  */
 class AppointAdult extends \yii\db\ActiveRecord
 {
@@ -28,6 +30,7 @@ class AppointAdult extends \yii\db\ActiveRecord
     public function scenarios()
     {
         return [
+            'naire'=>['userid', 'name', 'gender','phone','id_card','place','birthday'],
             'lisc' => ['userid', 'name', 'gender','phone','id_card','place'],
             'default'=>['userid', 'name', 'gender','phone'],
         ];
@@ -39,9 +42,11 @@ class AppointAdult extends \yii\db\ActiveRecord
     {
         return [
             [['userid', 'name', 'gender', 'phone'], 'required'],
-            [['userid', 'birthday', 'gender', 'createtime', 'phone','source'], 'integer'],
+            [['userid', 'gender', 'createtime', 'phone','source'], 'integer'],
+            [['birthday'],'date'],
             [['name','place'], 'string', 'max' => 20],
-            [['id_card','place'],'required','on'=>'lisc'],
+            [['place'], 'string', 'max' => 255],
+            [['id_card','place'],'required','on'=>['lisc','naire']],
             [['id_card'], 'validateid_card'],
             [['phone'], 'validatePhone'],
         ];

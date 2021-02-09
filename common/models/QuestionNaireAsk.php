@@ -15,10 +15,15 @@ use Yii;
  */
 class QuestionNaireAsk extends \yii\db\ActiveRecord
 {
+    public static $typeText=[1=>'填空',2=>'选择',3=>'日期',4=>'性别'];
+
     public static $fieldText=[
+        0=>'无',
         1=>'phone',
         2=>'idcode',
         3=>'value',
+        4=>'int',
+        5=>'date',
     ];
     /**
      * {@inheritdoc}
@@ -47,7 +52,8 @@ class QuestionNaireAsk extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'content' => 'Content',
-            'type' => 'Type',
+            'type' => '类型',
+            'field'=>'验证方式',
             'qnid' => 'Qnid',
         ];
     }

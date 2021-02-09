@@ -34,6 +34,8 @@ class QuestionNaireController extends QnController
             $qnf->userid=$this->login->userid;
             $qnf->createtime=time();
             $qnf->qnid=$id;
+            $transaction = \Yii::$app->db->beginTransaction();
+
             if($qnf->save()) {
                 foreach ($post as $k => $v) {
                     foreach ($post[$k] as $pk => $pv) {
@@ -48,7 +50,15 @@ class QuestionNaireController extends QnController
                         $qnaa->qnfid=$qnf->id;
                         $qnaa->userid = $this->login->userid;
                         $qnaa->createtime = time();
-                        $qnaa->save();
+                        if(!$qnaa->save()){
+                            $transaction->rollBack();
+                            return $this->render('form', [
+                                'qn' => $qn,
+                                'qna' => $qna,
+                                'qnaa' => $qnaa
+                            ]);
+                        }
+                        $transaction->commit();
                     }
                 }
             }
