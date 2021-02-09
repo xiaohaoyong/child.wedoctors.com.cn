@@ -35,11 +35,13 @@ use common\models\HospitalAppointVaccineTimeNum;
 use common\models\HospitalAppointWeek;
 use common\models\Vaccine;
 use EasyWeChat\Factory;
+use yii\widgets\ActiveForm;
 
 class NaireAppointController extends Controller
 {
     public function actionForm($id, $doctorid = 0)
     {
+
         $qnaa = QuestionNaireAnswer::find()->where(['qnid' => $id, 'userid' => $this->login->userid])->orderBy('id desc')->one();
         if ($qnaa && strtotime('+1 day', $qnaa->createtime) > time()) {
             return $this->redirect(['question-naire/healthy', 'id' => $id]);
@@ -48,7 +50,14 @@ class NaireAppointController extends Controller
         $qn = QuestionNaire::findOne($id);
         $qna = QuestionNaireAsk::findAll(['qnid' => $id]);
         $post = \Yii::$app->request->post()['QuestionNaireAnswer'];
-        if ($post) {
+        if (\Yii::$app->request->isAjax && $qnaa->load(\Yii::$app->request->post())) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            $reutnr= ActiveForm::validate($qnaa);
+            if($reutnr['questionnaireanswer-idcode']){
+                return ['questionnaireanswer-idcode-24'=>['请填写正确身份证/港澳台通行证']];
+            }
+        }
+        if ($post && !\Yii::$app->request->isAjax) {
             $qnf = new QuestionNaireField();
             $qnf->userid = $this->login->userid;
             $qnf->createtime = time();

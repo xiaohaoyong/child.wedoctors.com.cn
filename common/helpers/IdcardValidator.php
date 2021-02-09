@@ -15,13 +15,14 @@ class IdcardValidator extends Validator
 {
     public function validateAttribute($model, $attribute)
     {
-
-        if ($this->gapassport_verify($model->$attribute)
-            || $this->idCardVerify($model->$attribute)
-            || $this->taibaoVerify($model->$attribute)
-            || $this->twpassport_verify($model->$attribute)
-            || $this->junguanVerify($model->$attribute)) {
-        }else{
+        if(is_array($model->$attribute)){
+            $content=array_pop($model->$attribute);
+        }
+        if (!$this->gapassport_verify($content)
+            && !$this->idCardVerify($content)
+            && !$this->taibaoVerify($content)
+            && !$this->twpassport_verify($content)
+            && !$this->junguanVerify($content)) {
             $this->addError($model, $attribute,  '请填写正确身份证号/港澳台身份证');
         }
     }
