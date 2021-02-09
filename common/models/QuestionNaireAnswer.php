@@ -41,7 +41,7 @@ class QuestionNaireAnswer extends \yii\db\ActiveRecord
             [[ 'qnaid', 'userid','createtime','doctorid','qnfid','int'], 'integer'],
             [['value'], 'string'],
             [['phone'],'match','pattern'=>'/^1[23456789]\d{9}$/'],
-            ['idcode', 'common\helps\IdcardValidator'],
+            ['idcode', 'common\helpers\IdcardValidator'],
         ];
     }
 
