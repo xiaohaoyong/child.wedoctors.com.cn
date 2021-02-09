@@ -19,6 +19,9 @@ class QuestionNaireAnswer extends \yii\db\ActiveRecord
     public $value;
     public $int;
     public $date;
+    public $year;
+    public $month;
+    public $day;
 
     /**
      * {@inheritdoc}
@@ -34,11 +37,11 @@ class QuestionNaireAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['answer','phone','idcode','value'], 'required'],
+            [['answer','phone','idcode','value','date','int'], 'required'],
             [[ 'qnaid', 'userid','createtime','doctorid','qnfid','int'], 'integer'],
             [['value'], 'string'],
             [['phone'],'match','pattern'=>'/^1[23456789]\d{9}$/'],
-            [['idcode'],'match','pattern'=>'/^[1-9]\d{5}(19|20)\d{2}[01]\d[0123]\d\d{3}[xX\d]$/'],
+            ['idcode', 'common\helps\IdcardValidator'],
         ];
     }
 
@@ -54,6 +57,9 @@ class QuestionNaireAnswer extends \yii\db\ActiveRecord
             'value'=>'此题目',
             'int'=>'此题目',
             'date'=>'此题目',
+            'year'=>'年份',
+            'month'=>'月份',
+            'day'=>'日期',
 
         ];
     }

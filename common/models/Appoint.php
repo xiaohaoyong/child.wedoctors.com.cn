@@ -154,7 +154,7 @@ class Appoint extends \yii\db\ActiveRecord
         6 => '领取叶酸预约',
         3 => '微量元素',
         7 => '两癌筛查',
-
+        9 => '核酸检测',
     ];
 
     public static $typeText1 = [

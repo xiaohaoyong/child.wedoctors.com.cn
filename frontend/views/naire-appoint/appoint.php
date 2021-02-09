@@ -14,7 +14,7 @@ $this->title = $qn->title;
 $this->title='选择检测日期、时间';
 ?>
 <?php $form = ActiveForm::begin([
-        "action"=>"/naire-appoint/save"
+        "action"=>"/naire-appoint/save-appoint"
 ]); ?>
 <div class="appoint">
     <input type="hidden" class="appoint_input" value="<?= $doctor['userid'] ?>" name="doctorid">

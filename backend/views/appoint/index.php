@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => '姓名',
                                     'value' => function ($e) {
-                                        if($e->type==4){
+                                        if($e->type==4 || $e->type==7 || $e->type==9){
                                             return \common\models\AppointAdult::findOne(['userid' => $e->userid])->name;
 
                                         }elseif($e->type==5 || $e->type==6){
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             $class='label label-danger';
                                         }elseif ($e->type==5){
                                             $class='label label-warning';
-                                        }elseif ($e->type==6){
+                                        }else{
                                             $class='label label-info';
                                         }
                                         return '<span class="'.$class.'">'.\common\models\Appoint::$typeText[$e->type].'</span>';
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ],
                                     'header' => '预约人其他信息',
                                     'content' => function ($e, $key, $index, $column){
-                                        if($e->type==4 || $e->type==7){
+                                        if($e->type==4 || $e->type==7 || $e->type==9){
                                             $row=\common\models\AppointAdult::findOne(['userid' => $e->userid]);
                                             $html="姓名：".$row->name."<br>";
                                             $html.="性别：".\common\models\AppointAdult::$genderText[$row->gender]."<br>";

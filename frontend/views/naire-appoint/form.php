@@ -28,13 +28,62 @@ $this->title = $qn->title;
         } elseif ($v->type == 2) {
             echo $form->field($qnaa, 'answer[' . $v->id . ']')->radioList([0 => '否', 1 => '是'])->label(false);
         } elseif ($v->type == 4) {
-            echo $form->field($qnaa, $field.'[' . $v->id . ']')->radioList([1 => '男', 2 => '女'])->label(false);
+            echo $form->field($qnaa, $field . '[' . $v->id . ']')->radioList([1 => '男', 2 => '女'])->label(false);
         } elseif ($v->type == 3) {
-            echo $form->field($qnaa, $field.'[' . $v->id . ']')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
-                'format' => 'yyyy-mm-dd',
-                'autocomplete' => 'off',
-                'todayHighlight' => true
-            ]])->label(false);
+            for ($i = 0; $i <= 120; $i++) {
+                $year[date('Y', strtotime("-$i year"))] = date('Y', strtotime("-$i year"));
+            }
+            $month[] = '<option value="">--月--</option>';
+            foreach (range(1, 12) as $val) {
+                $month[] = '<option value="' . $val . '">' . $val . '</option>';
+            }
+            $dayNum = [29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            echo "<script> var days=Array;";
+            foreach ($dayNum as $k => $val) {
+                echo "days[" . ($k) . "]='<option value=\"\">--日--</option>';";
+                for ($i = 1; $i <= $val; $i++) {
+                    echo "days[" . ($k) . "]+=\"<option value='" . "$i" . "'>" . $i . '</option>";';
+                }
+            }
+            echo "</script>";
+
+
+            ?>
+            <div style="display: flex;">
+                <?= $form->field($qnaa, 'year')->dropDownList($year,
+                    [
+                        'prompt' => '--年--',
+                        'onchange' => "
+                            window.year= $(this).val();
+                            $('#questionnaireanswer-month').html('" . implode('', $month) . "');
+                            $('#questionnaireanswer-day').html('<option value=\"\">--日--</option>');
+
+                        ",
+                    ])->label(false) ?>
+                <?= $form->field($qnaa, 'month')->dropDownList([],
+                    [
+                        'prompt' => '--月--',
+                        'onchange' => "
+                            window.month= $(this).val();
+                            console.log(year);
+                            if (month==2 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)) {
+                                month = 0;
+                            }
+                            $('#questionnaireanswer-day').html(days[month]);
+
+                        ",
+                    ])->label(false) ?>
+                <?= $form->field($qnaa, 'day')->dropDownList([],
+                    [
+                        'prompt' => '--日--',
+                        'onchange' => "
+                            var day=$(this).val();
+                            $('#questionnaireanswer-date-34').val(year+'-'+month+'-'+day);
+                        "
+                    ])->label(false) ?>
+            </div>
+            <?php
+            echo $form->field($qnaa, $field . '[' . $v->id . ']')->hiddenInput()->label(false);
         }
         ?>
     </div>

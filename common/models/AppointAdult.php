@@ -14,7 +14,7 @@ use Yii;
  * @property int $createtime 添加时间
  * @property int $phone 联系电话
  * @property int $source 来源
- * @property int $idcard 身份证
+ * @property int $id_card 身份证
  * @property int $place 身份证
  */
 class AppointAdult extends \yii\db\ActiveRecord

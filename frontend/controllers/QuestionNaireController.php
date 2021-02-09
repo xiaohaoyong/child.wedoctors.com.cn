@@ -43,6 +43,9 @@ class QuestionNaireController extends QnController
                         $qnaa->phone = 15811078604;
                         $qnaa->value = 'ccc';
                         $qnaa->idcode = '230107198908232610';
+                        $qnaa->int = 1;
+                        $qnaa->date = '2020-02-02';
+
                         $qnaa->answer = $pv;
                         $qnaa->doctorid = $doctorid;
                         $qnaa->qnaid = $pk;

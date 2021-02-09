@@ -58,32 +58,37 @@ class NaireAppointController extends Controller
 
             if ($qnf->save()) {
                 foreach ($post as $k => $v) {
-                    foreach ($post[$k] as $pk => $pv) {
-                        $qnaa = new QuestionNaireAnswer();
-                        $qnaa->phone = 15811078604;
-                        $qnaa->value = 'ccc';
-                        $qnaa->idcode = '230107198908232610';
-                        $qnaa->answer = $pv;
-                        $qnaa->doctorid = $doctorid;
-                        $qnaa->qnaid = $pk;
-                        $qnaa->qnid = $id;
-                        $qnaa->qnfid = $qnf->id;
-                        $qnaa->userid = $this->login->userid;
-                        $qnaa->createtime = time();
-                        if (!$qnaa->save()) {
-                            \Yii::$app->getSession()->setFlash('error', array_values($qnaa->firstErrors)[0]);
-                            $transaction->rollBack();
-                            return $this->render('form', [
+                    if (is_array($post[$k])) {
+                        foreach ($post[$k] as $pk => $pv) {
+                            $qnaa = new QuestionNaireAnswer();
+                            $qnaa->phone = 15811078604;
+                            $qnaa->value = 'ccc';
+                            $qnaa->idcode = '230107198908232610';
+                            $qnaa->int = 1;
+                            $qnaa->date = '2020-02-02';
+
+                            $qnaa->answer = $pv;
+                            $qnaa->doctorid = $doctorid;
+                            $qnaa->qnaid = $pk;
+                            $qnaa->qnid = $id;
+                            $qnaa->qnfid = $qnf->id;
+                            $qnaa->userid = $this->login->userid;
+                            $qnaa->createtime = time();
+                            if (!$qnaa->save()) {
+                                \Yii::$app->getSession()->setFlash('error', array_values($qnaa->firstErrors)[0]);
+                                $transaction->rollBack();
+                                return $this->render('form', [
                                     'qn' => $qn,
                                     'qna' => $qna,
                                     'qnaa' => $qnaa,
                                 ]);
+                            }
                         }
                     }
                 }
                 $transaction->commit();
             }
-            return $this->redirect(['naire-appoint/appoint', 'doctorid' => $doctorid,'qid'=>$qnf->id]);
+            return $this->redirect(['naire-appoint/appoint', 'doctorid' => $doctorid, 'qid' => $qnf->id]);
         }
         return $this->render('form', [
             'qn' => $qn,
@@ -274,8 +279,9 @@ class NaireAppointController extends Controller
         return new Code(20020, '未设置');
     }
 
-    public function actionAppoint($doctorid,$qid,$vid=0,$sid=0){
-        $type=9;
+    public function actionAppoint($doctorid, $qid, $vid = 0, $sid = 0)
+    {
+        $type = 9;
         $dweek = ['日', '一', '二', '三', '四', '五', '六'];
         $dateMsg = ['不可约', '可约', '未放号'];
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
@@ -379,100 +385,105 @@ class NaireAppointController extends Controller
             $doctorRow['hospital'] = Hospital::findOne($doctor->hospitalid)->name;
         }
 
-        return $this->render('appoint', ['qid'=>$qid,'firstday' => $days[0]['date'], 'doctorRow' => $doctorRow,'days' => $days, 'doctor' => $doctorRow]);
+        return $this->render('appoint', ['qid' => $qid, 'firstday' => $days[0]['date'], 'doctorRow' => $doctorRow, 'days' => $days, 'doctor' => $doctorRow]);
     }
 
-    public function SaveAppoint($post){
-        $doctor=UserDoctor::findOne(['userid'=>$post['doctorid']]);
-        if($doctor){
-            if($doctor->appoint){
-                $types=str_split((string)$doctor->appoint);
+    public function actionSaveAppoint()
+    {
+        $post=\Yii::$app->request->post();
+        $post['type']=9;
+
+        $doctor = UserDoctor::findOne(['userid' => $post['doctorid']]);
+        if ($doctor) {
+            if ($doctor->appoint) {
+                $types = str_split((string)$doctor->appoint);
             }
         }
-        if(!$doctor || !$doctor->appoint || !in_array($post['type'],$types)){
-            \Yii::$app->getSession()->setFlash('error','社区未开通');
-            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        if (!$doctor || !$doctor->appoint || !in_array($post['type'], $types)) {
+            \Yii::$app->getSession()->setFlash('error', '社区未开通');
+            return $this->redirect(['wappoint/from', 'userid' => $post['doctorid']]);
         };
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
 
-        $w=date("w",$post['appoint_date']);
+        $w = date("w", $post['appoint_date']);
         $weeks = HospitalAppointWeek::find()
             ->andWhere(['week' => $w])
             ->andWhere(['haid' => $appoint->id])
-            ->andWhere(['time_type'=>$post['appoint_time']])->one();
+            ->andWhere(['time_type' => $post['appoint_time']])->one();
 
 
         $appointed = Appoint::find()
             ->andWhere(['type' => $post['type']])
             ->andWhere(['doctorid' => $post['doctorid']])
-            ->andWhere(['appoint_date' =>$post['appoint_date']])
+            ->andWhere(['appoint_date' => $post['appoint_date']])
             ->andWhere(['appoint_time' => $post['appoint_time']])
             ->andWhere(['mode' => 0])
-            ->andWhere(['<','state',3])
+            ->andWhere(['<', 'state', 3])
             ->count();
-        $question_naire_answer=QuestionNaireAnswer::find()->where(['qnfid'=>$post['qid']])->select('qnaid')->indexBy('answer')->column();
+        $question_naire_answer = QuestionNaireAnswer::find()->where(['qnfid' => $post['qid']])->select('answer')->indexBy('qnaid')->column();
 
-        $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid,'name'=>$question_naire_answer[22]]);
-        $appointAdult=$appointAdult?$appointAdult:new AppointAdult();
-        $appointAdult->scenario='naire';
-        $appointAdult->userid=$this->login->userid;
-        $appointAdult->name=$question_naire_answer[22];
-        $appointAdult->phone=$question_naire_answer[23];
-        $appointAdult->gender=$question_naire_answer[35];
-        $appointAdult->birthday=$question_naire_answer[34];
-        $appointAdult->idcard=$question_naire_answer[24];
-        $appointAdult->place=$question_naire_answer[25];
-        if(!$appointAdult->save()){
-            \Yii::$app->getSession()->setFlash('error','联系人信息保存失败');
-            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        $appointAdult = AppointAdult::findOne(['userid' => $this->login->userid, 'name' => $question_naire_answer[22]]);
+        $appointAdult = $appointAdult ? $appointAdult : new AppointAdult();
+        $appointAdult->scenario = 'naire';
+        $appointAdult->userid = $this->login->userid;
+        $appointAdult->name = $question_naire_answer[22];
+        $appointAdult->phone = $question_naire_answer[23];
+        $appointAdult->gender = $question_naire_answer[35];
+        $appointAdult->birthday = $question_naire_answer[34];
+        $appointAdult->id_card = $question_naire_answer[24];
+        $appointAdult->place = $question_naire_answer[25];
+        if (!$appointAdult->save()) {
+            \Yii::$app->getSession()->setFlash('error', '联系人信息保存失败');
+            return $this->redirect(['wappoint/from', 'userid' => $post['doctorid']]);
 
         }
 
-        if($post['vaccine']) {
+        if ($post['vaccine']) {
             $week = date('w', $post['appoint_date']);
 
             $vaccine_count = Appoint::find()->where(['doctorid' => $post['doctorid'], 'vaccine' => $post['vaccine'], 'appoint_date' => $post['appoint_date']])->andWhere(['<', 'state', 3])->count();
             $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $post['vaccine']]);
             if ($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num - $vaccine_count <= 0) {
                 \Yii::$app->getSession()->setFlash('此疫苗' . date('Y年m月d日', $post['appoint_date']) . "已约满，请选择其他日期");
-                return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+                return $this->redirect(['wappoint/from', 'userid' => $post['doctorid']]);
             }
         }
 
-        if(($weeks->num-$appointed)<=0){
-            \Yii::$app->getSession()->setFlash('error','该时间段已约满，请选择其他时间');
-            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        if (($weeks->num - $appointed) <= 0) {
+            \Yii::$app->getSession()->setFlash('error', '该时间段已约满，请选择其他时间');
+            return $this->redirect(['wappoint/from', 'userid' => $post['doctorid']]);
 
         }
 
 
+        $appoint = Appoint::findOne(['userid' => $appointAdult->userid, 'childid' => $appointAdult->id, 'type' => $post['type'], 'state' => 1]);
+        if ($appoint) {
+            \Yii::$app->getSession()->setFlash('error', '您有未完成的预约');
+            return $this->redirect(['wappoint/from', 'userid' => $post['doctorid']]);
 
-        $appoint=Appoint::findOne(['userid'=>$appointAdult->userid,'childid'=>$appointAdult->id,'type'=>$post['type'],'state'=>1]);
-        if($appoint){
-            \Yii::$app->getSession()->setFlash('error','您有未完成的预约');
-            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        } elseif (!$appointAdult->userid) {
+            \Yii::$app->getSession()->setFlash('error', '预约人联系信息保存失败');
+            return $this->redirect(['wappoint/from', 'userid' => $post['doctorid']]);
 
-        }elseif(!$appointAdult->userid){
-            \Yii::$app->getSession()->setFlash('error','预约人联系信息保存失败');
-            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
-
-        } else{
+        } else {
 
             $model = new Appoint();
             $post['state'] = 1;
             $post['userid'] = $this->login->userid;
-            $post['loginid']=$this->login->id;
-            $post['childid']=$appointAdult->id;
+            $post['loginid'] = $this->login->id;
+            $post['childid'] = $appointAdult->id;
+            $post['phone'] = $appointAdult->phone;
+
             $model->load(["Appoint" => $post]);
-            if(!$this->login->phone){
-                $this->login->phone=$post['phone'];
+            if (!$this->login->phone) {
+                $this->login->phone = $post['phone'];
                 $this->login->save();
             }
             if ($model->save()) {
-                return $this->redirect(['wappoint/view','id'=>$model->id]);
+                return $this->redirect(['question-naire/sign','id'=>$post['qid']]);
             } else {
-                \Yii::$app->getSession()->setFlash('error','提交失败');
-                return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+                \Yii::$app->getSession()->setFlash('error', '提交失败');
+                return $this->redirect(['wappoint/from', 'userid' => $post['doctorid']]);
             }
         }
     }
