@@ -17,6 +17,8 @@ class IdcardValidator extends Validator
     {
         if(is_array($model->$attribute)){
             $content=array_pop($model->$attribute);
+        }else{
+            $content=$model->$attribute;
         }
         if (!$this->gapassport_verify($content)
             && !$this->idCardVerify($content)

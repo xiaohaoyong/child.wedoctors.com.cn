@@ -61,9 +61,9 @@ class QuestionNaireController extends QnController
                                 'qnaa' => $qnaa
                             ]);
                         }
-                        $transaction->commit();
                     }
                 }
+                $transaction->commit();
             }
             return $this->redirect(['question-naire/sign','id'=>$qnf->id]);
 
