@@ -547,4 +547,77 @@ class NaireAppointController extends Controller
         }
     }
 
+    public function actionView($id){
+
+        $appoint=Appoint::findOne(['id'=>$id]);
+
+        $row=$appoint->toArray();
+        $doctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
+        if($doctor){
+            $hospital=Hospital::findOne($doctor->hospitalid);
+        }
+        $row['hospital']=$hospital->name;
+        $row['type']=Appoint::$typeText[$appoint->type];
+        $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
+        $row['child_name']=AppointAdult::findOne(['id'=>$appoint->childid])->name;
+        $row['duan']=$appoint->appoint_time;
+        if($appoint->vaccine==-2){
+            $row['vaccineStr']='两癌筛查';
+        }else {
+            $vaccine = Vaccine::findOne($appoint->vaccine);
+            $row['vaccineStr'] = $vaccine ? $vaccine->name : '';
+        }
+        $index=Appoint::find()
+            ->andWhere(['appoint_date'=>$appoint->appoint_date])
+            ->andWhere(['<','id',$id])
+            ->andWhere(['doctorid'=>$appoint->doctorid])
+            ->andWhere(['appoint_time'=>$appoint->appoint_time])
+            ->andWhere(['type' => $appoint->type])
+            ->count();
+        $row['index']=$index+1;
+
+        return $this->render('view',['row'=>$row]);
+
+    }
+
+    public function actionMy($type=1){
+        $appoints = Appoint::findAll(['userid' => $this->login->userid,'type'=>9,'state'=>$type]);
+        $list=[];
+        foreach($appoints as $k=>$v){
+            $row=$v->toArray();
+            $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+            if($doctor){
+                $hospital=Hospital::findOne($doctor->hospitalid);
+            }
+            $row['hospital']=$hospital->name;
+            $row['type']=Appoint::$typeText[$v->type];
+            $row['time']=date('Y.m.d',$v->appoint_date)."  ".Appoint::$timeText[$v->appoint_time];
+            $row['stateText']=Appoint::$stateText[$v->state];
+            $row['child_name']=AppointAdult::findOne(['id'=>$v->childid])->name;
+            $list[]=$row;
+        }
+
+        return $this->render('my',['list'=>$list,'type'=>$type]);
+    }
+
+    public function actionState($id,$type){
+        $model=Appoint::findOne(['id'=>$id,'userid'=>$this->login->userid]);
+        if(!$model){
+            \Yii::$app->getSession()->setFlash('error','失败');
+            return $this->redirect(['wappoint/my']);
+        }else{
+
+            if($type==1){
+                $model->state=3;
+            }elseif($type==2){
+                $model->state=1;
+            }
+
+            if(!$model->save()) {
+                \Yii::$app->getSession()->setFlash('error','失败');
+            }
+            return $this->redirect(['wappoint/my']);
+        }
+    }
+
 }

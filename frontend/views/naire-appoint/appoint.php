@@ -49,6 +49,7 @@ $this->title='选择检测日期、时间';
 </div>
 <hr>
 <?php ActiveForm::end(); ?>
+    <div class="appoint_my"><a href="/naire-appoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 
 <?php
 $date_day = date('Y-m-d', $firstday);

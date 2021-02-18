@@ -124,3 +124,5 @@ $form = ActiveForm::begin([
         </div>
     </div>
 <?php }?>
+<div class="appoint_my"><a href="/naire-appoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+

@@ -345,4 +345,5 @@ class QappointController extends Controller
 
         return $this->render('list');
     }
+
 }
