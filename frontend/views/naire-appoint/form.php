@@ -11,8 +11,8 @@ $this->title = $qn->title;
  * Date: 2020/6/19
  * Time: 下午3:57
  */
-?>
-<?php $form = ActiveForm::begin([
+if(date('H')<17){
+$form = ActiveForm::begin([
 ]); ?>
 
 <div style="text-align: center;line-height:50 px;font-size: 16px;height: 100px;padding: 20px;"><?= $qn->title ?></div>
@@ -103,4 +103,24 @@ $this->title = $qn->title;
     <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 </div>
 <hr>
-<?php ActiveForm::end(); ?>
+<?php ActiveForm::end();}else{?>
+
+
+    <style>
+        .content{padding-top: 30px;}
+        .header{display:flex;justify-content:center;align-items:center;margin:0 auto;height:90px;background: url("/img/touying.png") no-repeat center;background-size: 354px 97px;}
+
+        .zhuangtai{display: flex;flex-direction: column;justify-content: center;align-items: center; margin-top: 40px;}
+        body{background-color: #ffffff}
+        .view{background:url("/img/qn_view.png") no-repeat;background-size:232px 56px;width: 232px;height: 56px;line-height: 56px; text-align: center;font-size: 18px;color: #ffffff;margin-top: 80px;}
+    </style>
+    <div class="content" >
+
+        <div class="header">
+            <div class="img"><img src="/img/qn_header.png" width="44"></div>
+        </div>
+        <div class="zhuangtai">
+            <div class="value" style="font-size: 30px; margin-top: 10px;">请与每日17点前预约</div>
+        </div>
+    </div>
+<?php }?>
