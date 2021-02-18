@@ -39,6 +39,56 @@ use yii\widgets\ActiveForm;
 
 class NaireAppointController extends Controller
 {
+    public function actionIndex($search = '', $county = 0)
+    {
+
+        //$hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
+        $query = UserDoctor::find()->where(['like','appoint',9]);
+        if ($search) {
+            $query->andFilterWhere(['like', 'name', $search]);
+        }
+        if ($search || $county) {
+
+            if ($county) {
+                $query->andWhere(['county' => $county]);
+            }
+
+            $doctors = $query->orderBy('appoint desc')->all();
+        } else {
+            $doctors = $query->orderBy('appoint desc')->limit(50)->all();
+        }
+
+        $docs = [];
+        $doctorParent=DoctorParent::findOne(['parentid'=>$this->login->userid]);
+        if($doctorParent)
+        {
+            $doctorid=$doctorParent->doctorid;
+        }
+
+        foreach ($doctors as $k => $v) {
+            $rs = $v->toArray();
+            $rs['name'] = Hospital::findOne($v->hospitalid)->name;
+            $hospitalAppoint=HospitalAppoint::findOne(['doctorid'=>$v->userid,'type'=>9]);
+            if($hospitalAppoint) {
+                $week = str_replace([1, 2, 3, 4, 5, 6, 0], ['一', '二', '三', '四', '五', '六', '七'], $hospitalAppoint->weeks);
+                $rs['week']= preg_split('/(?<!^)(?!$)/u', $week );
+                $rs['phone']=$hospitalAppoint->phone;
+                $rs['appoint_intro']=$hospitalAppoint->info;
+                $rs['cycleDay'] = HospitalAppoint::$cycleNum[$hospitalAppoint->cycle];
+                $rs['release_time'] = HospitalAppoint::$rtText[$hospitalAppoint->release_time];
+
+            }
+            $docs[] = $rs;
+
+        }
+
+
+        return $this->render('list', [
+            'doctors' => $docs,
+            'county' => $county,
+            'doctorid'=>$doctorid
+        ]);
+    }
     public function actionForm($id, $doctorid = 0)
     {
 
