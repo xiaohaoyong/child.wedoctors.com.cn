@@ -9,6 +9,18 @@ $this->title="成人疫苗接种及两癌筛查预约"
             <div class="item" style="padding: 10px; border-radius: 20px; border: 1px solid #999999;">
                 <div class="item-content">
                     <div class="hospital">
+                        <div class="name">预约核酸检测</div>
+                        <div class="address">温馨提示：请预约前仔细查看各社区温馨提示</div>
+                    </div>
+                </div>
+                <div class="item-button">
+                    <div class="phone"></div>
+                    <?=\yii\helpers\Html::a('在线预约',['wappoint/index'],['class'=>'button'])?>
+                </div>
+            </div>
+            <div class="item" style="padding: 10px; border-radius: 20px; border: 1px solid #999999;">
+                <div class="item-content">
+                    <div class="hospital">
                         <div class="name">预约成人疫苗接种疫苗</div>
                         <div class="address">温馨提示：各社区接种方式不同，请预约前仔细查看各社区温馨提示或电话咨询预约社区是否可以进行接种</div>
                     </div>
