@@ -62,7 +62,7 @@ class AppointController extends BaseController
         $objPHPExcel->getActiveSheet()->getStyle('I')->getNumberFormat()
             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
         $key1 = 1;
-        if($searchModel->type!=7 and $searchModel->type!=4) {
+        if($searchModel->type!=7 and $searchModel->type!=4 and $searchModel->type!=9) {
             $fields = ['姓名', '性别', '生日', '儿童户籍', '母亲姓名', '户籍地', '预约日期', '预约时间', '手机号', '预约状态', '预约项目', '选择疫苗', '取消原因', '推送状态', '来源', '排号顺序'];
             $model=$objPHPExcel->setActiveSheetIndex(0);
             foreach($fields as $k=>$v){
@@ -93,7 +93,7 @@ class AppointController extends BaseController
         foreach ($dataProvider->query->all() as $k => $e) {
             $v = $e->toArray();
             $key1 = $k + 2;
-            if($searchModel->type!=7 and $searchModel->type!=4) {
+            if($searchModel->type!=7 and $searchModel->type!=4 and $searchModel->type!=9) {
                 $child = \common\models\ChildInfo::findOne(['id' => $v['childid']]);
                 $userParent = \common\models\UserParent::findOne(['userid' => $v['userid']]);
 
