@@ -12,6 +12,7 @@ use Yii;
  * @property int $userid
  * @property int $createtime
  * @property int $doctorid
+ * @property int $state
  */
 class QuestionNaireField extends \yii\db\ActiveRecord
 {
@@ -29,7 +30,7 @@ class QuestionNaireField extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['qnid', 'userid', 'createtime','doctorid'], 'integer'],
+            [['qnid', 'userid', 'createtime','doctorid','state'], 'integer'],
             [['sign'],'string']
         ];
     }

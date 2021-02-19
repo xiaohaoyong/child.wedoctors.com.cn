@@ -92,7 +92,7 @@ class NaireAppointController extends Controller
     public function actionForm($id, $doctorid = 0)
     {
 
-        $qnaa = QuestionNaireAnswer::find()->where(['qnid' => $id, 'userid' => $this->login->userid])->orderBy('id desc')->one();
+        $qnaa = QuestionNaireField::find()->where(['qnid' => $id, 'userid' => $this->login->userid,'state'=>1])->orderBy('id desc')->one();
         if ($qnaa && strtotime('+1 day', $qnaa->createtime) > time()) {
             return $this->redirect(['question-naire/healthy', 'id' => $id]);
         }
@@ -604,10 +604,17 @@ class NaireAppointController extends Controller
         $model=Appoint::findOne(['id'=>$id,'userid'=>$this->login->userid]);
         if(!$model){
             \Yii::$app->getSession()->setFlash('error','失败');
-            return $this->redirect(['wappoint/my']);
+            return $this->redirect(['naire-appoint/my']);
         }else{
 
             if($type==1){
+                $qnaa = QuestionNaireField::find()->where(['userid' => $this->login->userid,'state'=>1])->andWhere(['>','createtime',strtotime('-1 day')])->orderBy('id desc')->one();
+                $qnaa->state=0;
+                if(!$qnaa->save()){
+                    var_dump($qnaa->firstErrors);exit;
+                }
+
+
                 $model->state=3;
             }elseif($type==2){
                 $model->state=1;
@@ -616,7 +623,7 @@ class NaireAppointController extends Controller
             if(!$model->save()) {
                 \Yii::$app->getSession()->setFlash('error','失败');
             }
-            return $this->redirect(['wappoint/my']);
+            return $this->redirect(['naire-appoint/my']);
         }
     }
 

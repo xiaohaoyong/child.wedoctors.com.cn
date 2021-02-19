@@ -76,6 +76,25 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num = 1)
     {
+        $parentids = \common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`' => 156256])->andFilterWhere(['level' => 1])->column();
+
+        $query=ChildInfo::find();
+        $query->select('userid');
+        $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-6 year")]);
+        $query->andFilterWhere(['not in', '`child_info`.userid', $parentids]);
+        $query->andFilterWhere(['`child_info`.`admin`' => 110588]);
+        $list=$query->all();
+        foreach ($list as $k=>$v){
+            $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid]);
+            if($doctorParent){
+                $doctorParent->doctorid=156256;
+                $doctorParent->save();
+            }
+        }
+        exit;
+
+
+
 //        $userDoctors = UserDoctor::find()->where(['city' => 11])->all();
 //        foreach ($userDoctors as $k => $v) {
 //
