@@ -43,6 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                         }elseif($e->type==5 || $e->type==6){
                                             return \common\models\Pregnancy::findOne(['id' => $e->childid])->field1;
+                                        }elseif($e->type==10){
+                                            return $e->name;
                                         }else{
                                             return \common\models\ChildInfo::findOne(['id' => $e->childid])->name;
                                         }
@@ -93,6 +95,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                             $html.="孕妇户籍地：".\common\models\Area::$all[$preg->field7]."<br>";
                                             $html.="丈夫户籍地：".\common\models\Area::$all[$preg->field39]."<br>";
                                             $html.="现住址：".$preg->field10."<br>";
+                                        }elseif($e->type==10){
+                                            return "无";
                                         }else{
                                             $child= \common\models\ChildInfo::findOne(['id' => $e->childid]);
                                             $parent= \common\models\UserParent::findOne(['userid' => $e->userid]);

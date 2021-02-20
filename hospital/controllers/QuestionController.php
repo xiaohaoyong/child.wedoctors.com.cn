@@ -40,6 +40,15 @@ class QuestionController extends Controller
      */
     public function actionIndex()
     {
+        $userDoctor=UserDoctor::findOne(['userid'=>\Yii::$app->user->identity->doctorid]);
+        if(isset($_GET['is_question'])){
+            $userDoctor->is_question=$_GET['is_question'];
+            $userDoctor->save();
+            return ;
+        }
+
+
+
         $searchModel = new QuestionSearch();
         $params=Yii::$app->request->queryParams;
         $params['QuestionSearch']['doctorid']=\Yii::$app->user->identity->doctorid;
@@ -48,6 +57,7 @@ class QuestionController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'userDoctor' => $userDoctor,
         ]);
     }
     public function actionReply($id){

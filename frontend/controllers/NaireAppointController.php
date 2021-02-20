@@ -454,7 +454,9 @@ class NaireAppointController extends Controller
 
         $doctor = UserDoctor::findOne(['userid' => $post['doctorid']]);
         if ($doctor) {
-            if ($doctor->appoint) {
+            if(strpos($doctor->appoint,',')!==false){
+                $types = explode(',',$doctor->appoint);
+            }elseif ($doctor->appoint) {
                 $types = str_split((string)$doctor->appoint);
             }
         }

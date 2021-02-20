@@ -282,6 +282,8 @@ class AppointController extends Controller
         } else {
             if($appoint->type==4 && $appoint->childid) {
                 $row['child_name'] = AppointAdult::findOne($appoint->childid)->name;
+            }elseif($appoint->type==10) {
+                $row['child_name']=$appoint->name;
             }else{
                 $row['child_name'] = ChildInfo::findOne($appoint->childid)->name;
             }
@@ -313,7 +315,7 @@ class AppointController extends Controller
     public function actionMy($state = 1)
     {
         if ($state == 1) {
-            $appoints = Appoint::find()->andFilterWhere(['in', 'state', [1, 5]])->andWhere(['userid' => $this->userid])->andWhere(['>', 'childid', 0])->all();
+            $appoints = Appoint::find()->andFilterWhere(['in', 'state', [1, 5]])->andWhere(['userid' => $this->userid])->andFilterWhere(['in', 'state', [1, 2,8,3,10]])->all();
         } else {
             $appoints = Appoint::findAll(['userid' => $this->userid, 'state' => $state]);
         }
@@ -329,7 +331,9 @@ class AppointController extends Controller
             $row['stateText'] = Appoint::$stateText[$v->state];
             if ($v->type == 5 || $v->type == 6) {
                 $row['child_name'] = Pregnancy::findOne($v->childid)->field1;
-            } else {
+            } elseif($v->type==10){
+                $row['child_name']=$v->name;
+            }else{
                 if($v->type==4 && $v->childid) {
                     $row['child_name'] = AppointAdult::findOne($v->childid)->name;
                 }else{

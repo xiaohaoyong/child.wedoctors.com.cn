@@ -22,6 +22,7 @@ use Yii;
  * @property int $push_state
  * @property int $mode
  * @property int $vaccine
+ * @property string $name
  */
 
 class Appoint extends \yii\db\ActiveRecord
@@ -155,6 +156,8 @@ class Appoint extends \yii\db\ActiveRecord
         3 => '微量元素',
         7 => '两癌筛查',
         9 => '核酸检测',
+        10 => '骨盆筛查',
+
     ];
 
     public static $typeText1 = [
@@ -208,7 +211,7 @@ class Appoint extends \yii\db\ActiveRecord
 
             [['street','orderid','vaccine','push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
             [['remark'], 'string', 'max' => 100],
-            [['date'], 'string'],
+            [['date','name'], 'string'],
 
         ];
     }

@@ -45,8 +45,10 @@ class HospitalAppointController extends BaseController
         $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
 
         $types=[];
-        if($doctor->appoint){
-            $types=str_split((string)$doctor->appoint);
+        if(strpos($doctor->appoint,',')!==false){
+            $types = explode(',',$doctor->appoint);
+        }elseif ($doctor->appoint) {
+            $types = str_split((string)$doctor->appoint);
         }
         $userDoctorAppoint=HospitalAppoint::find()->select('type')
             ->andFilterWhere(['doctorid'=>$doctor->userid])

@@ -33,7 +33,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
     {
         $uda = UserDoctor::findOne(['userid' => $id]);
         $row = $uda->toArray();
-        if ($uda->appoint) {
+        if(strpos($uda->appoint,',')!==false){
+            $types = explode(',',$uda->appoint);
+        }elseif ($uda->appoint) {
             $types = str_split((string)$uda->appoint);
         }
         $hospital = Hospital::findOne($uda->hospitalid);
@@ -60,7 +62,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
 
         foreach (HospitalAppoint::$typeText as $k => $v) {
-            if ($k == 4 or $k==7) continue;
+            if ($k == 4 or $k==7 or $k==9) continue;
             $rs['id'] = $k;
             $rs['name'] = $v;
             $rs['info'] = $typeInfo[$k];
@@ -80,14 +82,16 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             if(!$gravida->field1 ||!$gravida->field4 ||!$gravida->field11 ||!$gravida->field90 || !$gravida->field7 || !$gravida->field39 || !$gravida->field10){
                 $gravida_is=1;
             }
-        }else{
+        }elseif($type!=10){
             $childs = ChildInfo::findAll(['userid' => $this->userid]);
         }
 
         //doctor
         $appoint = HospitalAppoint::findOne(['doctorid' => $id, 'type' => $type]);
         $userDoctor = UserDoctor::findOne(['userid' => $id]);
-        if ($userDoctor->appoint) {
+        if(strpos($userDoctor->appoint,',')!==false){
+            $types = explode(',',$userDoctor->appoint);
+        }elseif ($userDoctor->appoint) {
             $types = str_split((string)$userDoctor->appoint);
         }
         if ($appoint && in_array($type, $types)) {
@@ -422,7 +426,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $doctor = UserDoctor::findOne(['userid' => $post['doctorid']]);
         if ($doctor) {
             $hospital = Hospital::findOne($doctor->hospitalid);
-            if ($doctor->appoint) {
+            if(strpos($doctor->appoint,',')!==false){
+                $types = explode(',',$doctor->appoint);
+            }elseif ($doctor->appoint) {
                 $types = str_split((string)$doctor->appoint);
             }
         }
@@ -565,7 +571,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         $appoint = Appoint::findOne(['childid' => $post['childid'], 'type' => $post['type'], 'state' => 1]);
         if ($appoint) {
             return new Code(21000, '您有未完成的预约');
-        } elseif (!$post['childid']) {
+        } elseif (!$post['childid'] && $post['type']!=10) {
             return new Code(21000, '请选择宝宝');
         } else {
 

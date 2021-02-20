@@ -123,7 +123,7 @@ class UserDoctorController extends BaseController
 
                 $userInfo->load(Yii::$app->request->post());
                 if($userInfo->appoints){
-                    $userInfo->appoint=implode('',$userInfo->appoints);
+                    $userInfo->appoint=implode(',',$userInfo->appoints);
                     $userInfo->appoints=$userInfo->appoint;
                 }else{
                     $userInfo->appoint=0;
@@ -175,7 +175,7 @@ class UserDoctorController extends BaseController
             $userInfo->load(Yii::$app->request->post());
 
             if($userInfo->appoints){
-                $userInfo->appoint=implode('',$userInfo->appoints);
+                $userInfo->appoint=implode(',',$userInfo->appoints);
                 $userInfo->appoints=$userInfo->appoint;
             }else{
                 $userInfo->appoint=0;
@@ -201,8 +201,10 @@ class UserDoctorController extends BaseController
             }
             return $this->redirect(['update', 'id' => $model->id]);
         }else{
-            if($userInfo->appoint){
-                $userInfo->appoints=str_split((string)$userInfo->appoint);
+            if(strpos($userInfo->appoint,',')!==false){
+                $userInfo->appoints = explode(',',$userInfo->appoint);
+            }elseif ($userInfo->appoint) {
+                $userInfo->appoints = str_split((string)$userInfo->appoint);
             }
         }
 

@@ -491,9 +491,10 @@ class WappointController extends Controller
 
         $doctor=UserDoctor::findOne(['userid'=>$post['doctorid']]);
         if($doctor){
-            $hospital=Hospital::findOne($doctor->hospitalid);
-            if($doctor->appoint){
-                $types=str_split((string)$doctor->appoint);
+            if(strpos($doctor->appoint,',')!==false){
+                $types = explode(',',$doctor->appoint);
+            }elseif ($doctor->appoint) {
+                $types = str_split((string)$doctor->appoint);
             }
         }
         if(!$doctor || !$doctor->appoint || !in_array($post['type'],$types)){

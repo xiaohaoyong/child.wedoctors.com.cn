@@ -118,7 +118,9 @@ class QappointController extends Controller
                                $appoint->loginid = $this->login->id;
                                if ($appoint->load($post) && $appoint->validate()) {
                                    if ($doctor) {
-                                       if ($doctor->appoint) {
+                                       if(strpos($doctor->appoint,',')!==false){
+                                           $types = explode(',',$doctor->appoint);
+                                       }elseif ($doctor->appoint) {
                                            $types = str_split((string)$doctor->appoint);
                                        }
                                    }

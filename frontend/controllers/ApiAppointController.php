@@ -50,7 +50,9 @@ class ApiAppointController extends ApiController
     public function actionType($id){
         $uda = UserDoctor::find()->select('userid,name,phone,skilful,appoint_intro,hospitalid,appoint')->where(['userid' => $id])->one();
         $row = $uda->toArray();
-        if ($uda->appoint) {
+        if(strpos($uda->appoint,',')!==false){
+            $types = explode(',',$uda->appoint);
+        }elseif ($uda->appoint) {
             $types = str_split((string)$uda->appoint);
         }
         $hospital = Hospital::findOne($uda->hospitalid);
@@ -85,7 +87,9 @@ class ApiAppointController extends ApiController
         //doctor
         $appoint = HospitalAppoint::findOne(['doctorid' => $id, 'type' => $type]);
         $userDoctor = UserDoctor::findOne(['userid' => $id]);
-        if ($userDoctor->appoint) {
+        if(strpos($userDoctor->appoint,',')!==false){
+            $types = explode(',',$userDoctor->appoint);
+        }elseif ($userDoctor->appoint) {
             $types = str_split((string)$userDoctor->appoint);
         }
         if ($appoint && in_array($type, $types)) {
@@ -474,8 +478,9 @@ class ApiAppointController extends ApiController
 
         $doctor = UserDoctor::findOne(['userid' => $post['doctorid']]);
         if ($doctor) {
-            $hospital = Hospital::findOne($doctor->hospitalid);
-            if ($doctor->appoint) {
+            if(strpos($doctor->appoint,',')!==false){
+                $types = explode(',',$doctor->appoint);
+            }elseif ($doctor->appoint) {
                 $types = str_split((string)$doctor->appoint);
             }
         }
