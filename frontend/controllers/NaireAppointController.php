@@ -462,7 +462,7 @@ class NaireAppointController extends Controller
         }
         if (!$doctor || !$doctor->appoint || !in_array($post['type'], $types)) {
             \Yii::$app->getSession()->setFlash('error', '社区未开通');
-            return $this->redirect(['question-naire/from', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
+            return $this->redirect(['question-naire/appoint', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
         };
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
 
@@ -495,7 +495,7 @@ class NaireAppointController extends Controller
         $appointAdult->place = $question_naire_answer[25];
         if (!$appointAdult->save()) {
             \Yii::$app->getSession()->setFlash('error', '联系人信息保存失败');
-            return $this->redirect(['question-naire/from', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
+            return $this->redirect(['question-naire/appoint', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
         }
 
         if ($post['vaccine']) {
@@ -505,13 +505,13 @@ class NaireAppointController extends Controller
             $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $post['vaccine']]);
             if ($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num - $vaccine_count <= 0) {
                 \Yii::$app->getSession()->setFlash('此疫苗' . date('Y年m月d日', $post['appoint_date']) . "已约满，请选择其他日期");
-                return $this->redirect(['question-naire/from', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
+                return $this->redirect(['question-naire/appoint', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
             }
         }
 
         if (($weeks->num - $appointed) <= 0) {
             \Yii::$app->getSession()->setFlash('error', '该时间段已约满，请选择其他时间');
-            return $this->redirect(['question-naire/from', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
+            return $this->redirect(['question-naire/appoint', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
 
         }
 
@@ -519,11 +519,11 @@ class NaireAppointController extends Controller
         $appoint = Appoint::findOne(['userid' => $appointAdult->userid, 'childid' => $appointAdult->id, 'type' => $post['type'], 'state' => 1]);
         if ($appoint) {
             \Yii::$app->getSession()->setFlash('error', '您有未完成的预约');
-            return $this->redirect(['question-naire/from', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
+            return $this->redirect(['question-naire/appoint', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
 
         } elseif (!$appointAdult->userid) {
             \Yii::$app->getSession()->setFlash('error', '预约人联系信息保存失败');
-            return $this->redirect(['question-naire/from', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
+            return $this->redirect(['question-naire/appoint', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
 
         } else {
 
@@ -543,7 +543,7 @@ class NaireAppointController extends Controller
                 return $this->redirect(['question-naire/sign','id'=>$post['qid']]);
             } else {
                 \Yii::$app->getSession()->setFlash('error', '提交失败');
-                return $this->redirect(['question-naire/from', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
+                return $this->redirect(['question-naire/appoint', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
             }
         }
     }
