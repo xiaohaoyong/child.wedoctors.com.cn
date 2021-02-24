@@ -277,7 +277,7 @@ class SuiteController extends Controller
                         "content"=>"宝宝家长您好。\n请您务必添加医生小助手！长按自动识别医生小助手微信号（erbbxzs）。\n医生小助手会帮您解答：体检结果查看、疫苗预约、体检预约、健康指导、健康宣教、健康咨询等问题。"
                     ]
             ];
-            WechatSendTmp::sendMessage($data);
+            ///WechatSendTmp::sendMessage($data);
         }
         return;
 
