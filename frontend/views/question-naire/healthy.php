@@ -19,7 +19,7 @@
         ?>
             <div class="value" style="font-size: 30px; margin-top: 10px;">提交成功</div>
             <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;"><?=$name?"填表人姓名：".$name:''?></div>
-            <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;">有效日期截止至：<?=date('Y年m月d日 H:i',strtotime('+1 day',$qnaa->createtime))?></div>
+            <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;"><?=$appoint?"预约日期：".date('Y-m-d',$appoint->appoint_date)." ".\common\models\Appoint::$timeText[$appoint->appoint_time]:''?></div>
             <a href="/question-naire/view?id=<?=$id?>&fid=<?=$qnaa->qnfid?>" class="view">查看</a>
             <div class="info" style="text-align: center;padding: 0 50px;margin-top: 40px;margin-bottom:40px;color: #999999;font-size: 16px;">北京洛奇医学检验实验室报告查询二维码</div>
         <img src="/img/shiyanshi.jpeg" width="200">

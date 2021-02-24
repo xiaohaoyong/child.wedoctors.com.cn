@@ -120,7 +120,7 @@ $form = ActiveForm::begin([
             <div class="img"><img src="/img/qn_header.png" width="44"></div>
         </div>
         <div class="zhuangtai">
-            <div class="value" style="font-size: 30px; margin-top: 10px;">请与每日17点前预约</div>
+            <div class="value" style="font-size: 30px; margin-top: 10px;">请于每日17点前预约</div>
         </div>
     </div>
 <?php }?>

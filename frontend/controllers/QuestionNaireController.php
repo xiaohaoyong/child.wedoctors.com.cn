@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 
 use common\components\UploadForm;
+use common\models\Appoint;
 use common\models\QuestionNaire;
 use common\models\QuestionNaireAnswer;
 use common\models\QuestionNaireAsk;
@@ -77,10 +78,26 @@ class QuestionNaireController extends QnController
 
     public function actionHealthy($id){
 
+        if($id==3){
+
+            $appoint=Appoint::findOne(['loginid'=>$this->login->id,'state'=>1,'type'=>9]);
+
+        }
+
+
+
         $qnaa=QuestionNaireAnswer::find()->where(['qnid'=>$id,'userid'=>$this->login->userid])->orderBy('id desc')->one();
-        if(time()>strtotime('+1 day',$qnaa->createtime))
+        if($id!=3 && time()>strtotime('+1 day',$qnaa->createtime))
         {
             return $this->redirect(['question-naire/form','id'=>$id,'doctorid'=>$qnaa->doctorid]);
+        }
+        if($id==3){
+
+            $appoint=Appoint::findOne(['loginid'=>$this->login->id,'state'=>1,'type'=>9]);
+            if(!$appoint){
+                return $this->redirect(['naire-appoint/appoint','qid'=>$qnaa->qnfid,'doctorid'=>$qnaa->doctorid]);
+
+            }
         }
         $qnaa1=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid,'answer'=>1,'createtime'=>$qnaa->createtime]);
 
@@ -90,7 +107,7 @@ class QuestionNaireController extends QnController
             $qnaa1=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid,'createtime'=>$qnaa->createtime]);
             $is_healthy=true;
         }
-        $qnaa2=QuestionNaireAnswer::findOne(['qnid'=>$id,'qnaid'=>1,'userid'=>$this->login->userid,'qnfid'=>$qnaa->qnfid]);
+        $qnaa2=QuestionNaireAnswer::findOne(['qnid'=>$id,'qnaid'=>22,'userid'=>$this->login->userid,'qnfid'=>$qnaa->qnfid]);
         if($qnaa2){
             $name=$qnaa2->answer;
         }
@@ -99,7 +116,8 @@ class QuestionNaireController extends QnController
             'is_healthy'=>$is_healthy,
             'qnaa'=>$qnaa1,
             'name'=>$name,
-            'id'=>$id
+            'id'=>$id,
+            'appoint'=>$appoint,
         ]);
     }
     public function actionView($id,$fid){
