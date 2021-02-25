@@ -76,6 +76,29 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num = 1)
     {
+        $sdate='2020-01-01';
+
+        for($i=0;$i<12;$i++){
+            $date=strtotime("+$i month",strtotime($sdate));
+            $j=$i+1;
+            $edate=strtotime("+$j month",strtotime($sdate));
+
+            $pregLCount=ChildInfo::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                ->andWhere(['>=','doctor_parent.createtime',$date])
+                ->andWhere(['<','doctor_parent.createtime',$edate])
+                ->count();
+            $rs=[];
+            $rs[]=date('Y-m',$date);
+            $rs[]=$pregLCount;
+            echo implode(',',$rs);
+            echo "\n";
+        }
+        exit;
+
+
+
+
         $parentids = \common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`' => 156256])->andFilterWhere(['level' => 1])->column();
 
         $query=ChildInfo::find();

@@ -47,7 +47,7 @@ class AppointAdult extends \yii\db\ActiveRecord
             [['name','place'], 'string', 'max' => 20],
             [['place'], 'string', 'max' => 255],
             [['id_card','place'],'required','on'=>['lisc','naire']],
-            [['id_card'], 'validateid_card'],
+            [['id_card'], 'common\helpers\IdcardValidator','on'=>['naire']],
             [['phone'], 'validatePhone'],
         ];
     }
