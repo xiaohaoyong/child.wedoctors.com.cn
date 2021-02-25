@@ -494,7 +494,7 @@ class NaireAppointController extends Controller
         $appointAdult->id_card = $question_naire_answer[24];
         $appointAdult->place = $question_naire_answer[25];
         if (!$appointAdult->save()) {
-            \Yii::$app->getSession()->setFlash('error', '联系人信息保存失败');
+            \Yii::$app->getSession()->setFlash('error', json_encode($appointAdult->firstErrors));
             return $this->redirect(['question-naire/appoint', 'id'=>$post['qid'],'doctorid' => $post['doctorid']]);
         }
 
