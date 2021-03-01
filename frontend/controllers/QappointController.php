@@ -320,7 +320,7 @@ class QappointController extends Controller
             $list[]=$row;
         }
 
-        return $this->render('my',['list'=>$list,'type'=>$type]);
+        return $this->render('my',['list'=>$list,'type'=>$type,'userid'=>$this->login->userid]);
     }
 
     public function actionState($id,$type){
