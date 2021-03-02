@@ -11,6 +11,7 @@ $this->title="我的预约";
     </div>
 
     <div class="content">
+        <?=$userid?>
         <?php foreach ($list as $k=>$v){?>
         <div class="myrow">
             <div class="title">
@@ -32,7 +33,6 @@ $this->title="我的预约";
                 </div>
             </div>
             <div>
-                <?=$userid?>
                 <?php if($type==1){?><a href="/wappoint/view?id=<?=$v['id']?>"> <?php }?>
                 <div class="name"><?=$v['child_name']?></div>
                 <div class="mylist">
