@@ -71,11 +71,12 @@ $form = ActiveForm::begin([
                         'prompt' => '--月--',
                         'onchange' => "
                             window.month= $(this).val();
+                            var montha=month;
                             console.log(year);
                             if (month==2 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)) {
-                                month = 0;
+                                montha = 0;
                             }
-                            $('#questionnaireanswer-day').html(days[month]);
+                            $('#questionnaireanswer-day').html(days[montha]);
 
                         ",
                     ])->label(false) ?>
