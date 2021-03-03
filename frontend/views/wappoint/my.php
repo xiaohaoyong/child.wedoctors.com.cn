@@ -1,6 +1,6 @@
 <!--pages/appoint/my.wxml-->
 <?php
-$this->title="我的预约";
+$this->title="我的成人预约";
 ?>
 <div class="my">
     <div class="header">

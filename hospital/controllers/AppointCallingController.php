@@ -95,7 +95,7 @@ class AppointCallingController extends BaseController
 
         $model = AppointCalling::findOne(['userid' => Yii::$app->user->identity->userid, 'doctorid' => Yii::$app->user->identity->doctorid]);
         if (!$model) {
-            return $this->redirect('appoint-calling/create');
+            return $this->redirect('/appoint-calling/create');
         }
 
         $appointCallingList = AppointCallingList::find()->where(['acid' => $model->id])
