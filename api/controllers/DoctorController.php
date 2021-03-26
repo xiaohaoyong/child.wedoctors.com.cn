@@ -12,6 +12,7 @@ use api\controllers\Controller;
 
 use common\helpers\HuanxinUserHelper;
 use common\models\DoctorParent;
+use common\models\Street;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use databackend\models\article\Article;
@@ -44,6 +45,18 @@ class DoctorController extends Controller
 //        //$userlogin->hxusername=$huanxin;
 //        $userlogin->save();
         return ['doctor'=>$doctor,'list'=>$data,'username'=>$huanxin];
+    }
+    public function actionRow($doctorid)
+    {
+        if(!$doctorid){
+            $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
+            $doctorid=$doctorParent->doctorid;
+        }
+        $doctor='';
+        $doctor=UserDoctor::findOne(['userid'=>$doctorid]);
+        $street = Street::find()->select('title')->where(['doctorid'=>$doctorid])->column();
+
+        return ['doctor'=>$doctor,'street'=>$street];
     }
 
 }

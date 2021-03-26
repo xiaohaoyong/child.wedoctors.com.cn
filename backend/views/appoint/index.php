@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel hospital\models\AppointSearchModels */
@@ -16,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-header with-border">
                 <h3 class="box-title">检索：</h3>
                 <div>
+                    <?php  echo time();?>
                     <?php echo $this->render('_searcht', ['model' => $searchModel]); ?>
                 </div>
                 <!-- /.box-tools -->
@@ -24,6 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
+                        <?php Pjax::begin([
+                                'id' => 'countries',
+                        ]) ?>
                         <?= GridView::widget([
                             'options' => ['class' => 'col-sm-12'],
                             'dataProvider' => $dataProvider,
@@ -191,6 +197,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                             ],
                         ]); ?>
+
+                        <?php
+
+                        $this->registerJs(
+
+                            '
+    $("document").ready(function(){ 
+         var i=0;
+
+        setTimeout(function testFunction(){
+        console.log(i);
+                    i=i+1;
+                   $.pjax.reload({container:"#countries", async: false});
+        },"6000");
+    });'
+                        );
+                        ?>
+                        <?php Pjax::end(); ?>
+
                     </div>
                 </div>
             </div>

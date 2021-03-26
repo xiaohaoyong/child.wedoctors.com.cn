@@ -74,8 +74,20 @@ use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
-    public function actionTesta($num = 1)
+    public function actionTesta()
     {
+
+        $file = fopen('shengao.csv', 'r');
+        while (($line = fgets($file)) !== false) {
+            $rs=explode(',',trim($line));
+            $count=Examination::find()
+                ->where(['field2'=>$rs[2],'field3'=>$rs[3],'field32'=>ChildInfo::$genderText[$rs[1]]])
+                ->andWhere(['<','field40',$rs[4]])->count();
+            echo trim($line).",".$count."\n";
+        }
+        exit;
+
+
         $sdate='2020-01-01';
 
         for($i=0;$i<12;$i++){

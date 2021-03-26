@@ -36,7 +36,6 @@ class Queue
         return $key;
     }
     public function lrange(){
-        var_dump($this->_name);
         $list=$this->_redis->lrange($this->_name,0,-1);
         return $list;
     }
