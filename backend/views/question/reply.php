@@ -43,6 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return $info->content;
                             }
                         ],
+                        [
+                            'attribute' => '提问社区',
+                            'value' => function ($e) {
+                                $info = \common\models\UserDoctor::findOne(['userid' => $e->doctorid]);
+                                return $info->name;
+                            }
+                        ],
                     ],
                 ]) ?>
 
