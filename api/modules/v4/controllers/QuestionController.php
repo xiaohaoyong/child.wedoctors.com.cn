@@ -78,12 +78,11 @@ class QuestionController extends Controller
         }
 
     }
-    public function actionList($type){
+    public function actionList($type,$doctorid=0){
 
         $question=Question::find()->where(['level'=>1]);
-        if($this->userid) {
-            $doctorParent = DoctorParent::findOne(['parentid' => $this->userid]);
-            $question->andWhere(['doctorid'=>$doctorParent->doctorid]);
+        if($doctorid) {
+            $question->andWhere(['doctorid'=>$doctorid]);
         }
         if($type){
             $question->andWhere(['userid'=>$this->userid]);
