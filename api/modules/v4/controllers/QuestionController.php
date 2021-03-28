@@ -11,6 +11,7 @@ namespace api\modules\v4\controllers;
 
 use api\controllers\Controller;
 use common\components\Code;
+use common\models\DoctorParent;
 use common\models\Question;
 use common\models\QuestionImg;
 use common\models\QuestionInfo;
@@ -78,7 +79,12 @@ class QuestionController extends Controller
 
     }
     public function actionList($type){
+
         $question=Question::find()->where(['level'=>1]);
+        if($this->userid) {
+            $doctorParent = DoctorParent::findOne(['parentid' => $this->userid]);
+            $question->andWhere(['doctorid'=>$doctorParent->doctorid]);
+        }
         if($type){
             $question->andWhere(['userid'=>$this->userid]);
         }
