@@ -51,7 +51,7 @@ class QuestionController extends Controller
 
         $searchModel = new QuestionSearch();
         $params=Yii::$app->request->queryParams;
-        $params['QuestionSearch']['doctorid']=\Yii::$app->user->identity->hospitalid;
+        //$params['QuestionSearch']['doctorid']=\Yii::$app->user->identity->hospitalid;
         $dataProvider = $searchModel->search($params);
 
         return $this->render('index', [

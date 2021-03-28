@@ -18,29 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header with-border">
-                是否开通留言板：
-                <?= \dosamigos\switchinput\SwitchBox::widget([
-                    'name' => 'is_question',
-                    'checked' => $userDoctor['is_question'],
-                    'clientOptions' => [
-                        'size' => 'mini',
-                        'onColor' => 'success',
-                        'offColor' => 'danger'
-                    ],
-                    'clientEvents' => [
-                        'switchChange.bootstrapSwitch' => "function(e){
-                            ajax(e.currentTarget.checked);
-                        }"
-                    ],
-                ]);?>
-
-
-            </div>
-        </div>
-        </div>
-    <div class="col-xs-12">
-        <div class="box">
-            <div class="box-header with-border">
                 <h3 class="box-title">检索：</h3>
                 <div>
                     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -70,7 +47,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return \common\models\Question::$stateText[$e->state];
                                     }
                                 ],
-
+                                [
+                                    'attribute' => 'doctorid',
+                                    'value' => function ($e) {
+                                        $doctor=\common\models\UserDoctor::findOne(['userid'=>$e->doctorid]);
+                                        return $doctor->name;
+                                    }
+                                ],
                                 [
                                     'class' => 'common\components\grid\ActionColumn',
                                     'template' => '
