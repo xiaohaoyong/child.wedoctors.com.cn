@@ -94,7 +94,7 @@ class DataController extends \yii\console\Controller
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => 91722])->column();
 
         $array=$child+$pregLCount;
-        $array=[390512];
+        $array=[390512,175579];
         $data = [
             'first' => array('value' => "宝爸宝妈您好，为了给您提供更好的服务体验、就医指导、科学育儿、交流沟通等服务内容，提升大家的满意度，我们为您搭建了属地化社区妈妈交流群，请您扫码进群。",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
