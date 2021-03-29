@@ -76,6 +76,53 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta()
     {
+        //签约儿童总数
+        $child=ChildInfo::find()
+            ->select('userid')
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 91722])
+            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-1 year')])
+            ->column();
+
+        $pregLCount=Pregnancy::find()
+            ->select('familyid')
+
+            ->andWhere(['pregnancy.field49'=>0])
+            ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 91722])->column();
+
+        $array=$child+$pregLCount;
+        $array=[390512];
+        $data = [
+            'first' => array('value' => "宝爸宝妈您好，为了给您提供更好的服务体验、就医指导、科学育儿、交流沟通等服务内容，提升大家的满意度，我们为您搭建了属地化社区妈妈交流群，请您扫码进群。",),
+            'keyword1' => ARRAY('value' => "儿宝宝用户"),
+            'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
+            'keyword3' => ARRAY('value' =>'请您长按二维码或扫码进入妈妈交流群，并备注好宝宝出生年月，以便更好交流'),
+
+            'remark' => ARRAY('value' => "\n宝爸宝妈您好，在我们的社区交流群内，可以为您提供儿科医生的咨询服务、儿宝宝小助手回答预约、体检查看、签约社区等问题同时有宝妈们的育儿分享及交流等服务。）未能进群的家长可以添加儿宝宝小助手的微信号，小助手会拉您进群，请您备注宝宝出生年月，以便更好交流", 'color' => '#221d95'),
+        ];
+        $miniprogram=[
+            "appid"=>\Yii::$app->params['wxXAppId'],
+            "pagepath"=>"/pages/article/view/index?id=1",
+        ];
+        $temp='Pa_dWDnwfS5FYpQmB8wf5uWyge50tGpxfg47xfGLYrI';
+        foreach($array as $k=>$v){
+            $login = UserLogin::find()->where(['!=', 'openid', ''])->andWhere(['userid'=>$v])->one();
+            if($login) {
+                print_r($login->openid);
+                echo "\n";
+                $rs = WechatSendTmp::send($data, $login->openid, $temp, 'http://child.wedoctors.com.cn/hospital/91722.html');
+            }
+
+
+        }
+        exit;
+        var_dump(array_unique($array));exit;
+
+
+
 
         $file = fopen('shengao.csv', 'r');
         while (($line = fgets($file)) !== false) {
