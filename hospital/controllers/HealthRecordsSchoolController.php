@@ -38,7 +38,7 @@ class HealthRecordsSchoolController extends Controller
      */
     public function actionIndex()
     {
-        $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospitalid])->userid;
+        $doctorid = \Yii::$app->user->identity->doctorid;
 
         $searchModel = new HealthRecordsSchoolSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

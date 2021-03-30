@@ -94,14 +94,14 @@ class DataController extends \yii\console\Controller
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => 91722])->column();
 
         $array=$child+$pregLCount;
-        $array=[390512,175579];
+        //$array=[390512,175579];
         $data = [
-            'first' => array('value' => "宝爸宝妈您好，为了给您提供更好的服务体验、就医指导、科学育儿、交流沟通等服务内容，提升大家的满意度，我们为您搭建了属地化社区妈妈交流群，请您扫码进群。",),
+            'first' => array('value' => "欢迎大家加入儿宝宝回龙观社区妈妈交流社群，我们的宝宝同在回龙观社区医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
             'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-            'keyword3' => ARRAY('value' =>'请您长按二维码或扫码进入妈妈交流群，并备注好宝宝出生年月，以便更好交流'),
+            'keyword3' => ARRAY('value' =>'请您点击查看详情，并长按二维码进入回龙观社区妈妈交流群'),
 
-            'remark' => ARRAY('value' => "\n宝爸宝妈您好，在我们的社区交流群内，可以为您提供儿科医生的咨询服务、儿宝宝小助手回答预约、体检查看、签约社区等问题同时有宝妈们的育儿分享及交流等服务。）未能进群的家长可以添加儿宝宝小助手的微信号，小助手会拉您进群，请您备注宝宝出生年月，以便更好交流", 'color' => '#221d95'),
+            'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院通知、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
         ];
         $miniprogram=[
             "appid"=>\Yii::$app->params['wxXAppId'],
@@ -112,8 +112,13 @@ class DataController extends \yii\console\Controller
             $login = UserLogin::find()->where(['!=', 'openid', ''])->andWhere(['userid'=>$v])->one();
             if($login) {
                 print_r($login->openid);
-                echo "\n";
                 $rs = WechatSendTmp::send($data, $login->openid, $temp, 'http://child.wedoctors.com.cn/hospital/91722.html');
+                if($rs){
+                   echo "==true";
+                }else{
+                    echo "==false";
+                }
+                echo "\n";
             }
 
 
