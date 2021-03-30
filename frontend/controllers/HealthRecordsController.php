@@ -39,6 +39,7 @@ class HealthRecordsController extends Controller
                 return $this->redirect(['form1', 'doctorid' => $doctorid]);
             }
         }
+
         return $this->render('form', [
             'doctorid'=>$doctorid,
             'model' => $model,

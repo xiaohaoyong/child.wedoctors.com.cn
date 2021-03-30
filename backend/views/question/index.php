@@ -36,6 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'userid',
                                 'createtime:datetime',
                                 [
+                                    'attribute' => '问题',
+                                    'value' => function ($e) {
+                                        $info = \common\models\QuestionInfo::findOne(['qid' => $e->id]);
+                                        return $info->content;
+                                    }
+                                ],
+                                [
                                     'attribute' => 'doctorid',
                                     'value' => function ($e) {
                                         $doctor=\common\models\UserDoctor::findOne($e->doctorid);
@@ -68,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ',
                                     'buttons' => [
                                         'reply' => function ($url, $model, $key) {
-                                            return \yii\helpers\Html::a('<span class="fa fa-share"> 回复</span>', 'question/reply?id='.$model->id);
+                                            return \yii\helpers\Html::a('<span class="fa fa-share"> 回复</span>', '/question/reply?id='.$model->id);
                                         }
                                     ]
                                 ],
