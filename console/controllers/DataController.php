@@ -74,8 +74,33 @@ use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
-    public function actionTesta()
+    public function actionTesta($num=0)
     {
+
+
+        $totle = 338695;
+        $limit = ceil($totle / 100);
+        $snum = $num * $limit;
+
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+            $data = [
+                'first' => ['value' => "6岁以下的儿童处于快速生长发育阶段，特别是0~3岁的儿童生长发育得更快，营养与儿童的生长发育有着密不可分的关系，是评价儿童健康发育的一个重要指标，儿童生长发育越快，需要从膳食中摄取的营养也很越多，营养是保证正常生长发育，促进身心健康的重要因素。"],
+                'keyword1' => ARRAY('value' => '儿童营养健康和科学运动，第二十四期健康直播即将开始'),
+                'keyword2' => ARRAY('value' => '2021年02月07日 16点'),
+                'remark' => ARRAY('value' => ""),
+            ];
+            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8I8331.h5.xiaoeknow.com/v2/course/alive/l_6062d02de4b008d70f07b08a?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2');
+            var_dump($rs);
+            sleep(1);
+            exit;
+        }
+        var_dump($login);
+
+        exit;
+
+
+
         //签约儿童总数
         $child=ChildInfo::find()
             ->select('userid')
