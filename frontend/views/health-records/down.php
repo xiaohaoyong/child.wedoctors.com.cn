@@ -60,17 +60,17 @@
         <div style=" width: 450px;">
             <div>签约医生：</div>
             <div>团队服务电话：</div>
-            <div>医生签字：<image src="<?php
+            <div>医生签字：<image id="rotate"  src="<?php
                 if($healthRecordsSchool->sign2){
                     echo $healthRecordsSchool->sign2;
                 }
-                ?>" style="width: 200px;  "></image></div>
+                ?>" style="width: 100px;    "></image></div>
             <div>日期：<?=date('Y-m-d',$model->createtime)?></div>
         </div>
         <div style="width: 450px;">
             <div>儿童姓名：<?=$model->field29?></div>
             <div>身份证号：<?=$model->field15?></div>
-            <div>居民签字：<image src="<?php
+            <div>居民签字：<image id="jimg" src="<?php
                 if($model->field33){
                     echo $model->field33;
                 }
@@ -81,7 +81,7 @@
     <div style="text-indent: 2em; padding-top:40px; line-height: 60px;margin-bottom: 30px;">
         <div style="width: 450px;">
             <div>校医：</div>
-            <div>校医签字：<image src="<?php
+            <div>校医签字：<image id="simg" src="<?php
                 if($healthRecordsSchool->sign1){
                     echo $healthRecordsSchool->sign1;
                 }
@@ -91,5 +91,30 @@
     </div>
 </div>
 </div>
+<script>
+    window.onload = function(){
+
+        var kuan = document.getElementById("rotate").width;
+        var gao = document.getElementById("rotate").height;
+
+        if (kuan < gao) {
+            document.getElementById('rotate').style.transform = 'rotate(270deg)';
+        }
+
+        var kuan = document.getElementById("jimg").width;
+        var gao = document.getElementById("jimg").height;
+
+        if (kuan < gao) {
+            document.getElementById('jimg').style.transform = 'rotate(270deg)';
+        }
+        var kuan = document.getElementById("simg").width;
+        var gao = document.getElementById("simg").height;
+
+        if (kuan < gao) {
+            document.getElementById('simg').style.transform = 'rotate(270deg)';
+        }
+
+    };
+</script>
 </body>
 </html>
