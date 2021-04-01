@@ -77,25 +77,25 @@ class DataController extends \yii\console\Controller
     public function actionTesta($num=0)
     {
 
-
-        $totle = 338695;
-        $limit = ceil($totle / 100);
-        $snum = $num * $limit;
-
-        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
-        foreach ($login as $k => $v) {
-            $data = [
-                'first' => ['value' => "6岁以下的儿童处于快速生长发育阶段，特别是0~3岁的儿童生长发育得更快，营养与儿童的生长发育有着密不可分的关系，是评价儿童健康发育的一个重要指标，儿童生长发育越快，需要从膳食中摄取的营养也很越多，营养是保证正常生长发育，促进身心健康的重要因素。"],
-                'keyword1' => ARRAY('value' => '儿童营养健康和科学运动，第二十四期健康直播即将开始'),
-                'keyword2' => ARRAY('value' => '2021年02月07日 16点'),
-                'remark' => ARRAY('value' => ""),
-            ];
-            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8I8331.h5.xiaoeknow.com/v2/course/alive/l_6062d02de4b008d70f07b08a?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2');
-            var_dump($rs);
-            sleep(1);
-        }
-        var_dump($login);
-        exit;
+//
+//        $totle = 338695;
+//        $limit = ceil($totle / 100);
+//        $snum = $num * $limit;
+//
+//        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+//        foreach ($login as $k => $v) {
+//            $data = [
+//                'first' => ['value' => "6岁以下的儿童处于快速生长发育阶段，特别是0~3岁的儿童生长发育得更快，营养与儿童的生长发育有着密不可分的关系，是评价儿童健康发育的一个重要指标，儿童生长发育越快，需要从膳食中摄取的营养也很越多，营养是保证正常生长发育，促进身心健康的重要因素。"],
+//                'keyword1' => ARRAY('value' => '儿童营养健康和科学运动，第二十四期健康直播即将开始'),
+//                'keyword2' => ARRAY('value' => '2021年02月07日 16点'),
+//                'remark' => ARRAY('value' => ""),
+//            ];
+//            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8I8331.h5.xiaoeknow.com/v2/course/alive/l_6062d02de4b008d70f07b08a?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2');
+//            var_dump($rs);
+//            sleep(1);
+//        }
+//        var_dump($login);
+//        exit;
 
 
 
@@ -104,8 +104,7 @@ class DataController extends \yii\console\Controller
             ->select('userid')
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 91722])
-            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-1 year')])
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 386661])
             ->column();
 
         $pregLCount=Pregnancy::find()
@@ -114,15 +113,15 @@ class DataController extends \yii\console\Controller
             ->andWhere(['pregnancy.field49'=>0])
             ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 91722])->column();
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 386661])->column();
 
-        $array=$child+$pregLCount;
-        //$array=[390512,175579];
+        //$array=$child+$pregLCount;
+        $array=[390512,175579];
         $data = [
-            'first' => array('value' => "欢迎大家加入儿宝宝回龙观社区妈妈交流社群，我们的宝宝同在回龙观社区医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
+            'first' => array('value' => "欢迎大家加入【儿宝宝宛平社区妈妈交流群】，我们的宝宝同在宛平社区医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
             'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-            'keyword3' => ARRAY('value' =>'请您点击查看详情，并长按二维码进入回龙观社区妈妈交流群'),
+            'keyword3' => ARRAY('value' =>'请您点击查看详情，并长按二维码进入【宛平社区妈妈交流群】'),
 
             'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院通知、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
         ];
@@ -135,7 +134,7 @@ class DataController extends \yii\console\Controller
             $login = UserLogin::find()->where(['!=', 'openid', ''])->andWhere(['userid'=>$v])->one();
             if($login) {
                 print_r($login->openid);
-                $rs = WechatSendTmp::send($data, $login->openid, $temp, 'http://child.wedoctors.com.cn/hospital/91722.html');
+                $rs = WechatSendTmp::send($data, $login->openid, $temp, 'http://child.wedoctors.com.cn/hospital/386661.html');
                 if($rs){
                    echo "==true";
                 }else{
