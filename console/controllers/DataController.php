@@ -104,7 +104,7 @@ class DataController extends \yii\console\Controller
             ->select('userid')
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 386661])
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 219333])
             ->column();
 
         $pregLCount=Pregnancy::find()
@@ -113,15 +113,15 @@ class DataController extends \yii\console\Controller
             ->andWhere(['pregnancy.field49'=>0])
             ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 386661])->column();
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 219333])->column();
 
-        $array=$child+$pregLCount;
-        //$array=[390512,175579];
+        //$array=$child+$pregLCount;
+        $array=[390512,175579];
         $data = [
-            'first' => array('value' => "欢迎大家加入【儿宝宝宛平社区妈妈交流群】，我们的宝宝同在宛平社区医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
+            'first' => array('value' => "欢迎大家加入【儿宝宝二七北社区妈妈交流群】，我们的宝宝同在二七北社区医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
             'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-            'keyword3' => ARRAY('value' =>'请您点击查看详情，并长按二维码进入【宛平社区妈妈交流群】'),
+            'keyword3' => ARRAY('value' =>'请您点击查看详情，并长按二维码进入【二七北社区妈妈交流群】'),
 
             'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院通知、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
         ];
@@ -134,7 +134,7 @@ class DataController extends \yii\console\Controller
             $login = UserLogin::find()->where(['!=', 'openid', ''])->andWhere(['userid'=>$v])->one();
             if($login) {
                 print_r($login->openid);
-                $rs = WechatSendTmp::send($data, $login->openid, $temp, 'http://child.wedoctors.com.cn/hospital/386661.html');
+                $rs = WechatSendTmp::send($data, $login->openid, $temp, 'http://child.wedoctors.com.cn/hospital/219333.html');
                 if($rs){
                    echo "==true";
                 }else{
