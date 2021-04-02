@@ -119,10 +119,10 @@ class DataController extends \yii\console\Controller
         //$array=$child+$pregLCount;
         $array=[390512,175579];
         $data = [
-            'first' => array('value' => "欢迎大家加入【儿宝宝二七南社区妈妈交流群】，我们的宝宝同在二七南社区医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
+            'first' => array('value' => "欢迎大家加入【儿宝宝二七南、北社区社区妈妈交流群】，我们的宝宝同在二七南、北社区社区医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
             'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-            'keyword3' => ARRAY('value' =>'请您点击查看详情，并长按二维码进入【二七南社区妈妈交流群】'),
+            'keyword3' => ARRAY('value' =>'请您点击查看详情，并长按二维码进入【二七南、北社区社区妈妈交流群】'),
 
             'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院通知、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
         ];
