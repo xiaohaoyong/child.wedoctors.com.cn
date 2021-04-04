@@ -38,7 +38,8 @@ use common\models\HealthRecords;
     <?= $form->field($model, 'field29')->textInput(['maxlength' => true,'placeholder'=>'请填写学生姓名']) ?>
 
     <?= $form->field($model, 'field30')->dropDownList(\common\models\HealthRecordsSchool::find()->select('name')->indexBy('id')->where(['doctorid'=>$doctorid])->column(),['prompt'=>'请选择']) ?>
-    <?= $form->field($model, 'field34')->textInput(['maxlength' => true,'placeholder'=>'请填写学生班级']) ?>
+    <?= $form->field($model, 'field34')->textInput(['maxlength' => true,'placeholder'=>'请填写学生年级']) ?>
+    <?= $form->field($model, 'field40')->textInput(['maxlength' => true,'placeholder'=>'请填写学生班级']) ?>
 
     <div class="title">基本信息</div>
 

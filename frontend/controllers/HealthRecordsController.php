@@ -25,7 +25,7 @@ class HealthRecordsController extends Controller
             'model'=>$model,
         ]);
     }
-    public function actionForm($doctorid){
+    public function actionForm($doctorid,$type=1){
         $healthRecords=HealthRecords::findOne(['userid'=>$this->login->id]);
         if($healthRecords && $healthRecords->field33){
             return $this->redirect(['done']);
@@ -43,10 +43,12 @@ class HealthRecordsController extends Controller
         return $this->render('form', [
             'doctorid'=>$doctorid,
             'model' => $model,
+            'type'=>$type,
         ]);
     }
     public function actionForm1($doctorid){
         $model=HealthRecords::findOne(['userid'=>$this->login->id]);
+        $model=$model?$model:new HealthRecords();
 
         if ($model->load(\Yii::$app->request->post())) {
             $model->userid = $this->login->id;
@@ -56,6 +58,23 @@ class HealthRecordsController extends Controller
             }
         }
         return $this->render('form1', [
+            'doctorid'=>$doctorid,
+            'model' => $model,
+        ]);
+    }
+    public function actionForm2($doctorid){
+        $model=HealthRecords::findOne(['userid'=>$this->login->id]);
+        $model=$model?$model:new HealthRecords();
+        $model->scenario = 'form1';
+
+        if ($model->load(\Yii::$app->request->post())) {
+            $model->userid = $this->login->id;
+            $model->doctorid = $doctorid;
+            if ($model->save()) {
+                return $this->redirect(['sign', 'id' => $model->id]);
+            }
+        }
+        return $this->render('form2', [
             'doctorid'=>$doctorid,
             'model' => $model,
         ]);

@@ -58,26 +58,36 @@ use Yii;
  */
 class HealthRecords extends \yii\db\ActiveRecord
 {
-    public static $field1Txt=[1=>'内地',2=>'港澳台',3=>'国外'];
-    public static $field2Txt=[1=>'汉族',2=>'少数民族'];
-    public static $field5Txt=[1=>'北京',2=>'其他'];
-    public static $field7Txt=[1=>'A',2=>'B',3=>'AB',4=>'O',5=>'不详'];
-    public static $field8Txt=[1=>'医保',2=>'商业',3=>'自费',4=>'其他'];
-    public static $field16Txt=[1=>'无',2=>'有'];
-    public static $field17Txt=[1=>'无',2=>'有'];
-    public static $field18Txt=[1=>'无',2=>'有'];
-    public static $field19Txt=[1=>'无',2=>'有'];
-    public static $field20Txt=[1=>'无',2=>'有'];
-    public static $field21Txt=[1=>'辛辣',2=>'偏咸',3=>'偏甜',4=>'偏油',5=>'嗜热食',6=>'素食',7=>'正常'];
-    public static $field23Txt=[1=>'不锻炼',2=>'规律',3=>'偶尔'];
-    public static $field24Txt=[1=>'每天',2=>'>3次/周',3=>'1-2次/周'];
-    public static $field25Txt=[1=>'有氧',2=>'无氧'];
-    public static $field35Txt=[1=>''];
+    public static $field1Txt = [1 => '内地', 2 => '港澳台', 3 => '国外'];
+    public static $field2Txt = [1 => '汉族', 2 => '少数民族'];
+    public static $field5Txt = [1 => '北京', 2 => '其他'];
+    public static $field7Txt = [1 => 'A', 2 => 'B', 3 => 'AB', 4 => 'O', 5 => '不详'];
+    public static $field8Txt = [1 => '医保', 2 => '商业', 3 => '自费', 4 => '其他'];
+    public static $field16Txt = [1 => '无', 2 => '有'];
+    public static $field41Txt = [1 => '男', 2 => '女'];
 
-    public static $field26Txt=[1=>'小于30分钟',2=>'30-60分钟',3=>'1小时以上'];
-    public static $field27Txt=[1=>'睡眠困难',2=>'入睡困难',3=>'早睡',4=>'梦游',5=>'其他'];
-    public static $vfieldVal=['field5_text'=>2,'field8_text'=>4,'field16_text'=>2,'field17_text'=>2,'field18_text'=>2,'field19_text'=>2,'field20_text'=>2,];
-    public static $vfield=['field5_text'=>'field5','field8_text'=>'field8','field16_text'=>'field16','field17_text'=>'field17','field18_text'=>'field18','field19_text'=>'field19','field20_text'=>'field20',];
+    public static $field17Txt = [1 => '无', 2 => '有'];
+    public static $field18Txt = [1 => '无', 2 => '有'];
+    public static $field19Txt = [1 => '无', 2 => '有'];
+    public static $field20Txt = [1 => '无', 2 => '有'];
+    public static $field21Txt = [1 => '辛辣', 2 => '偏咸', 3 => '偏甜', 4 => '偏油', 5 => '嗜热食', 6 => '素食', 7 => '正常'];
+    public static $field23Txt = [1 => '不锻炼', 2 => '规律', 3 => '偶尔'];
+    public static $field24Txt = [1 => '每天', 2 => '>3次/周', 3 => '1-2次/周'];
+    public static $field25Txt = [1 => '有氧', 2 => '无氧'];
+    public static $field35Txt = [1 => ''];
+
+    public static $field26Txt = [1 => '小于30分钟', 2 => '30-60分钟', 3 => '1小时以上'];
+    public static $field27Txt = [1 => '睡眠困难', 2 => '入睡困难', 3 => '早睡', 4 => '梦游', 5 => '其他'];
+    public static $vfieldVal = ['field5_text' => 2, 'field8_text' => 4, 'field16_text' => 2, 'field17_text' => 2, 'field18_text' => 2, 'field19_text' => 2, 'field20_text' => 2,];
+    public static $vfield = ['field5_text' => 'field5', 'field8_text' => 'field8', 'field16_text' => 'field16', 'field17_text' => 'field17', 'field18_text' => 'field18', 'field19_text' => 'field19', 'field20_text' => 'field20',];
+
+    public function scenarios()
+    {
+        return [
+            'form1'=>['field29','field30','field34','field40','field41','field42','field3','field4','field6'],
+            'form2'=>['field29','field30','field34','field40','field1','field42','field3','field4','field6','field7','field8','field9','field10','field11','field12','field13','field14','field15','field16','field17','field16_text','field17_text','field18_text','field19_text','field20_text','field18','field19','field20','field21','field22','field23','field24','field25','field26','field27','field28'],
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -93,8 +103,10 @@ class HealthRecords extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['field1' ,'field2' ,'field3' ,'field4' ,'field5' ,'field6' ,'field7' ,'field8' ,'field9' ,'field10','field11','field12','field13','field14','field15','field16','field17','field18','field19','field20','field21','field22','field23','field24','field25','field26','field27','field28','field29','field30','field34'],'required'],
-            [['field1', 'field2', 'field4', 'field5', 'field7', 'field8', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'createtime', 'doctorid', 'field39', 'field35', 'field36', 'field37', 'field38'], 'integer'],
+            [['field1', 'field2', 'field3', 'field4', 'field5', 'field6', 'field7', 'field8', 'field9', 'field10', 'field11', 'field12', 'field13', 'field14', 'field15', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'field29', 'field30', 'field34'], 'required','on' => 'form2'],
+            [['field29','field30','field34','field40','field41','field42','field3','field4','field6'], 'required','on' => 'form1'],
+
+            [['field1', 'field2', 'field4', 'field5', 'field7', 'field8', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'createtime', 'doctorid', 'field39', 'field35', 'field36', 'field37', 'field38', 'field34', 'field40', 'field42'], 'integer'],
 
             [['field9', 'field10', 'field11', 'field12', 'field13', 'field14'], 'number'],
 
@@ -103,21 +115,26 @@ class HealthRecords extends \yii\db\ActiveRecord
 
             [['field3'], 'string', 'max' => 30],
             [['field5_text', 'field8_text', 'field15', 'field16_text', 'field17_text', 'field18_text', 'field19_text', 'field20_text'], 'string', 'max' => 50],
-            [['field6','field33'], 'string', 'max' => 100],
-            [['field29', 'field30','field34', 'field31', 'field32'], 'string', 'max' => 20],
-            [['field5_text','field8_text','field16_text','field17_text','field18_text','field19_text','field20_text'], 'validateField', 'skipOnEmpty' => false, 'skipOnError' => false],
-            ['field4','match','pattern'=>'/^[1][2345789][0-9]{9}$/'],
-            [['field15'],'match','pattern'=>'/^[1-9]\d{5}(19|20)\d{2}[01]\d[0123]\d\d{3}[xX\d]$|^([A-Z]\d{6,10}(\w1)?)$|^1[45][0-9]{7}$|([P|p|S|s]\d{7}$)|([S|s|G|g]\d{8}$)|([Gg|Tt|Ss|Ll|Qq|Dd|Aa|Ff]\d{8}$)|([H|h|M|m]\d{8,10})$/'],
+            [['field6', 'field33'], 'string', 'max' => 100],
+            [['field29', 'field30', 'field31', 'field32'], 'string', 'max' => 20],
+            [['field5_text', 'field8_text', 'field16_text', 'field17_text', 'field18_text', 'field19_text', 'field20_text'], 'validateField', 'skipOnEmpty' => false, 'skipOnError' => false],
+            ['field4', 'match', 'pattern' => '/^[1][2345789][0-9]{9}$/'],
+            [['field15', 'field41'], 'match', 'pattern' => '/^[1-9]\d{5}(19|20)\d{2}[01]\d[0123]\d\d{3}[xX\d]$|^([A-Z]\d{6,10}(\w1)?)$|^1[45][0-9]{7}$|([P|p|S|s]\d{7}$)|([S|s|G|g]\d{8}$)|([Gg|Tt|Ss|Ll|Qq|Dd|Aa|Ff]\d{8}$)|([H|h|M|m]\d{8,10})$/'],
+
+            [['field1', 'field2', 'field4', 'field5', 'field7', 'field8', 'field9', 'field10', 'field11', 'field12', 'field13', 'field14', 'field42', 'field16', 'field17', 'field18', 'field19', 'field20','field21','field22','field23','field24','field25','field26','field27','field28','field30','field40','field35','field36','field37','field38','field39'], 'default', 'value' => 0],
+            [['field3', 'field5_text', 'field6', 'field8_text', 'field15', 'field41', 'field16_text', 'field17_text', 'field18_text', 'field19_text', 'field20_text', 'field29', 'field34', 'field31', 'field32', 'field33'], 'default', 'value' => '']
+
         ];
     }
-    public function validateField($attribute, $params){
-        $field=self::$vfield[$attribute];
-        if($this->$field==self::$vfieldVal[$attribute] && !$this->$attribute){
-            $this->addError($attribute, "请填写".$this->getAttributeLabel($attribute));
+
+    public function validateField($attribute, $params)
+    {
+        $field = self::$vfield[$attribute];
+        if ($this->$field == self::$vfieldVal[$attribute] && !$this->$attribute) {
+            $this->addError($attribute, "请填写" . $this->getAttributeLabel($attribute));
         }
 
     }
-
 
 
     /**
@@ -144,6 +161,9 @@ class HealthRecords extends \yii\db\ActiveRecord
             'field13' => '视力左',
             'field14' => '视力右',
             'field15' => '身份证（护照/港澳台通行证）',
+            'field41' => '学生身份证（护照/港澳台通行证）',
+            'field42' => '学生性别',
+
             'field16' => '药物过敏史',
             'field16_text' => '名称',
             'field17' => '疾病史',
@@ -167,7 +187,8 @@ class HealthRecords extends \yii\db\ActiveRecord
             'field31' => '校医姓名',
             'field32' => '校医电话',
             'field33' => '家长签字',
-            'field34' => '班级年级',
+            'field34' => '年级',
+            'field40' => '班级',
             'field39' => '传染病疫情防控指导',
             'field35' => '儿童常见健康问题指导',
             'field36' => '龋齿预防',
@@ -177,10 +198,11 @@ class HealthRecords extends \yii\db\ActiveRecord
             'doctorid' => ' 社区',
         ];
     }
+
     public function beforeSave($insert)
     {
-        if($insert){
-            $this->createtime=time();
+        if ($insert) {
+            $this->createtime = time();
         }
         return parent::beforeSave($insert); // TODO: Change the autogenerated stub
     }
