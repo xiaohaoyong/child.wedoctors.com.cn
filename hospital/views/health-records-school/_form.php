@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'doctor_name')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'school_name')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'doctor_phone')->textInput(['maxlength' => true]) ?>
 
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :

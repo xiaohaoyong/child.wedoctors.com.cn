@@ -58,8 +58,8 @@
     ?>
     <div style="text-indent: 2em; padding-top:40px; line-height: 60px;display: flex;">
         <div style=" width: 450px;">
-            <div>签约医生：</div>
-            <div>团队服务电话：</div>
+            <div>签约医生：<?=$healthRecordsSchool->doctor_name?></div>
+            <div>团队服务电话：<?=$healthRecordsSchool->doctor_phone?></div>
             <div>医生签字：<image id="rotate"  src="<?php
                 if($healthRecordsSchool->sign2){
                     echo $healthRecordsSchool->sign2;
@@ -80,7 +80,7 @@
     </div>
     <div style="text-indent: 2em; padding-top:40px; line-height: 60px;margin-bottom: 30px;">
         <div style="width: 450px;">
-            <div>校医：</div>
+            <div>校医：<?=$healthRecordsSchool->school_name?></div>
             <div>校医签字：<image id="simg" src="<?php
                 if($healthRecordsSchool->sign1){
                     echo $healthRecordsSchool->sign1;
