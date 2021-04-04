@@ -49,6 +49,7 @@ class HealthRecordsController extends Controller
     public function actionForm1($doctorid){
         $model=HealthRecords::findOne(['userid'=>$this->login->id]);
         $model=$model?$model:new HealthRecords();
+        $model->scenario = 'form2';
 
         if ($model->load(\Yii::$app->request->post())) {
             $model->userid = $this->login->id;

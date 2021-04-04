@@ -85,7 +85,7 @@ class HealthRecords extends \yii\db\ActiveRecord
     {
         return [
             'form1'=>['field29','field30','field34','field40','field41','field42','field3','field4','field6'],
-            'default'=>['field29','field30','field34','field40','field1','field42','field3','field4','field6','field7','field8','field9','field10','field11','field12','field13','field14','field15','field16','field17','field16_text','field17_text','field18_text','field19_text','field20_text','field18','field19','field20','field21','field22','field23','field24','field25','field26','field27','field28'],
+            'form2'=>['field29','field30','field34','field40','field1','field42','field3','field4','field6','field7','field8','field9','field10','field11','field12','field13','field14','field15','field16','field17','field16_text','field17_text','field18_text','field19_text','field20_text','field18','field19','field20','field21','field22','field23','field24','field25','field26','field27','field28'],
         ];
     }
 
