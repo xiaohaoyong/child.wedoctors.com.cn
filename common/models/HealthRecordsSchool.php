@@ -46,8 +46,7 @@ class HealthRecordsSchool extends \yii\db\ActiveRecord
             [['id', 'doctorid'], 'integer'],
             [['name'], 'string', 'max' => 40],
             [['sign1', 'sign2'], 'string', 'max' => 100],
-            [[ 'doctor_name'], 'string', 'max' => 50],
-
+            [[ 'doctor_name','school_name','doctor_phone','school_phone'], 'string', 'max' => 50],
             [['id'], 'unique'],
         ];
     }
@@ -66,6 +65,8 @@ class HealthRecordsSchool extends \yii\db\ActiveRecord
             'doctor_name' => '医生团队名称',
             'school_name' => '校医姓名',
             'doctor_phone' => '医生电话',
+            'school_phone' => '校医姓名',
+
 
         ];
     }
