@@ -64,6 +64,9 @@ class HealthRecordsSchool extends \yii\db\ActiveRecord
             'sign1' => '校医签字',
             'sign2' => '医生签字',
             'doctor_name' => '医生团队名称',
+            'school_name' => '校医姓名',
+            'doctor_phone' => '医生电话',
+
         ];
     }
 }
