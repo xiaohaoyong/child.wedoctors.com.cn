@@ -22,4 +22,8 @@ class ImageController extends \yii\web\Controller
     public function actionDoctor($id){
         QrCode::png('http://web.child.wedoctors.com.cn/health-records/form?doctorid='.$id,false,Enum::QR_ECLEVEL_H,10);exit;
     }
+    public function actionDoctor2($id){
+        QrCode::png('http://web.child.wedoctors.com.cn/health-records/form2?doctorid='.$id,false,Enum::QR_ECLEVEL_H,10);exit;
+    }
+
 }
