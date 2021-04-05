@@ -108,7 +108,7 @@ class HealthRecords extends \yii\db\ActiveRecord
             [['field1', 'field2', 'field3', 'field4', 'field5', 'field6', 'field7', 'field8', 'field9', 'field10', 'field11', 'field12', 'field13', 'field14', 'field15', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'field29', 'field30', 'field34'], 'required','on' => 'form2'],
             [['field29','field30','field34','field40','field41','field42','field3','field4','field6'], 'required','on' => 'form1'],
 
-            [['field1', 'field2', 'field4', 'field5', 'field7', 'field8', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'createtime', 'doctorid', 'field39', 'field35', 'field36', 'field37', 'field38', 'field34', 'field40', 'field42'], 'integer'],
+            [['field1', 'field2', 'field4', 'field5', 'field7', 'field8', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'createtime', 'doctorid', 'field39', 'field35', 'field36', 'field37', 'field38', 'field34', 'field40', 'field42','field30'], 'integer'],
 
             [['field9', 'field10', 'field11', 'field12', 'field13', 'field14'], 'number'],
 
@@ -118,7 +118,7 @@ class HealthRecords extends \yii\db\ActiveRecord
             [['field3'], 'string', 'max' => 30],
             [['field5_text', 'field8_text', 'field15', 'field16_text', 'field17_text', 'field18_text', 'field19_text', 'field20_text'], 'string', 'max' => 50],
             [['field6', 'field33'], 'string', 'max' => 100],
-            [['field29', 'field30', 'field31', 'field32'], 'string', 'max' => 20],
+            [['field29', 'field31', 'field32'], 'string', 'max' => 20],
             [['field5_text', 'field8_text', 'field16_text', 'field17_text', 'field18_text', 'field19_text', 'field20_text'], 'validateField', 'skipOnEmpty' => false, 'skipOnError' => false],
             ['field4', 'match', 'pattern' => '/^[1][2345789][0-9]{9}$/'],
             [['field15', 'field41'], 'match', 'pattern' => '/^[1-9]\d{5}(19|20)\d{2}[01]\d[0123]\d\d{3}[xX\d]$|^([A-Z]\d{6,10}(\w1)?)$|^1[45][0-9]{7}$|([P|p|S|s]\d{7}$)|([S|s|G|g]\d{8}$)|([Gg|Tt|Ss|Ll|Qq|Dd|Aa|Ff]\d{8}$)|([H|h|M|m]\d{8,10})$/'],

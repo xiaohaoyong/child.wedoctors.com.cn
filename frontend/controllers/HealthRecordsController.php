@@ -106,7 +106,6 @@ class HealthRecordsController extends Controller
     }
 
     public function actionSave($type='',$id=0,$sign=''){
-
         if($type && $id && $sign){
             $sign1=md5($type.$id.HealthRecordsSchool::$typeSign[$type].date('Ymd'));
             if($sign1!=$sign){
