@@ -13,7 +13,7 @@ use common\models\HealthRecords;
 </style>
 <div class="health-records">
     <div class="header">
-        <div><img src="/img/health-records-header.png" width="190px"></div>
+        <h2>家庭医生服务签约</h2>
         <div class="info">
             家长您好！
             <p>
@@ -55,10 +55,13 @@ use common\models\HealthRecords;
 
     <?= $form->field($model, 'field4')->textInput(['placeholder'=>'请填写'.$model->getAttributeLabel('field4')]) ?>
     <?= $form->field($model, 'field6')->textInput(['placeholder'=>'请填写'.$model->getAttributeLabel('field6')]) ?>
+
+    <div style="margin-left: 20px; margin-top: 10px;">同意签约点击提交</div>
     <div class="form-group button">
         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
             'btn btn-primary']) ?>
     </div>
+
 
     <?php ActiveForm::end(); ?>
 </div>
