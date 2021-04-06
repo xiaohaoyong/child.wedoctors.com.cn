@@ -21,7 +21,7 @@ class HealthRecordsController extends Controller
     public function actionDown(){
         $model=HealthRecords::findOne(['userid'=>$this->login->id]);
 
-        return $this->renderPartial('down',[
+        return $this->render('down',[
             'model'=>$model,
         ]);
     }
