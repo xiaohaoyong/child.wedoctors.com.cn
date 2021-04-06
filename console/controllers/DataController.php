@@ -125,7 +125,7 @@ class DataController extends \yii\console\Controller
             'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
             'keyword3' => ARRAY('value' =>"请您点击查看详情，并长按二维码进入【{$dname}妈妈交流群】"),
 
-            'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院通知、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
+            'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院政策宣传、疫苗及体检咨询咨询、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
         ];
         $miniprogram=[
             "appid"=>\Yii::$app->params['wxXAppId'],
