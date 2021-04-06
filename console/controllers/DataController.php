@@ -98,8 +98,8 @@ class DataController extends \yii\console\Controller
 //        exit;
 
 
-        $doctorid=4127;
-        $dname='新街口社区';
+        $doctorid=213581;
+        $dname='方庄社区';
         //签约儿童总数
         $child=ChildInfo::find()
             ->select('userid')
@@ -117,8 +117,8 @@ class DataController extends \yii\console\Controller
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->column();
 
-        $array=$child+$pregLCount;
-        //$array=[390512,175579];
+        //$array=$child+$pregLCount;
+        $array=[390512,175579];
         $data = [
             'first' => array('value' => "欢迎大家加入【儿宝宝{$dname}妈妈交流群】，我们的宝宝同在{$dname}医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
