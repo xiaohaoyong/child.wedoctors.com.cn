@@ -98,14 +98,15 @@ class DataController extends \yii\console\Controller
 //        exit;
 
 
-
+        $doctorid=4127;
+        $dname='新街口社区';
         //签约儿童总数
         $child=ChildInfo::find()
             ->select('userid')
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['>','child_info.birthday',strtotime('-6 year')])
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 213579])
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
             ->column();
 
         $pregLCount=Pregnancy::find()
@@ -114,15 +115,15 @@ class DataController extends \yii\console\Controller
             ->andWhere(['pregnancy.field49'=>0])
             ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 213579])->column();
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->column();
 
-        $array=$child+$pregLCount;
-        //$array=[390512,175579];
+        //$array=$child+$pregLCount;
+        $array=[390512,175579];
         $data = [
-            'first' => array('value' => "欢迎大家加入【儿宝宝二七南、北社区社区妈妈交流群】，我们的宝宝同在二七南、北社区社区医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
+            'first' => array('value' => "欢迎大家加入【儿宝宝{$dname}妈妈交流群】，我们的宝宝同在{$dname}医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
             'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-            'keyword3' => ARRAY('value' =>'请您点击查看详情，并长按二维码进入【二七南、北社区社区妈妈交流群】'),
+            'keyword3' => ARRAY('value' =>'请您点击查看详情，并长按二维码进入【{$dname}妈妈交流群】'),
 
             'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院通知、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
         ];
