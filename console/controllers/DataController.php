@@ -98,8 +98,8 @@ class DataController extends \yii\console\Controller
 //        exit;
 
 
-        $doctorid=4127;
-        $dname='新街口社区';
+        $doctorid=213581;
+        $dname='方庄社区';
         //签约儿童总数
         $child=ChildInfo::find()
             ->select('userid')
