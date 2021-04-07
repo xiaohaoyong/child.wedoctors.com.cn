@@ -43,10 +43,10 @@ class HealthRecordsSchool extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'doctorid','nianji'], 'integer'],
+            [['id', 'doctorid'], 'integer'],
             [['name'], 'string', 'max' => 40],
             [['sign1', 'sign2'], 'string', 'max' => 100],
-            [[ 'doctor_name','school_name','doctor_phone','school_phone','family_name'], 'string', 'max' => 50],
+            [[ 'doctor_name','school_name','doctor_phone','school_phone','family_name','nianji'], 'string', 'max' => 50],
             [['id'], 'unique'],
         ];
     }
