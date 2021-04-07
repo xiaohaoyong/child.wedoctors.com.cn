@@ -33,11 +33,13 @@ class DoctorController extends Controller
         $data=[];
         foreach($articles as $k=>$v)
         {
-            $row=$v->info->toArray();
-            $row['title']=mb_substr($row['title'],0,19,'utf-8');
-            $row['createtime']=date('m/d',$v->createtime);
-            $row['source']=$row['source']?$row['source']:"儿宝宝";
-            $data[]=$row;
+            if($v->info) {
+                $row = $v->info->toArray();
+                $row['title'] = mb_substr($row['title'], 0, 19, 'utf-8');
+                $row['createtime'] = date('m/d', $v->createtime);
+                $row['source'] = $row['source'] ? $row['source'] : "儿宝宝";
+                $data[] = $row;
+            }
         }
 //        $huanxin = md5($doctorParent->doctorid.'7Z9WL3s2');
 //        HuanxinUserHelper::getUserInfo($huanxin);
