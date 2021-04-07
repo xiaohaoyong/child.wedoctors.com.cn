@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * HealthRecordsController implements the CRUD actions for HealthRecords model.
  */
-class HealthRecordsController extends Controller
+class HealthRecordsController extends BaseController
 {
     /**
      * @inheritdoc
@@ -36,6 +36,8 @@ class HealthRecordsController extends Controller
     public function actionIndex()
     {
         $searchModel = new HealthRecordsSearch();
+        $params=Yii::$app->request->queryParams;
+        $params['HealthRecordsSearch']['doctorid']=\Yii::$app->user->identity->doctorid;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

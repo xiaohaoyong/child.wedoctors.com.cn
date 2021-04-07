@@ -9,7 +9,9 @@ use yii\widgets\ActiveForm;
         font-size: 16px;
     }
 </style>
-
+<?php
+$healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field30);
+?>
 <div style="padding: 10px;">
     <h1>北京市朝阳区八里庄社区卫生服务中心</h1>
     <h1 style="padding-bottom: 20px;">家庭医生签约服务协议书</h1>
@@ -17,8 +19,7 @@ use yii\widgets\ActiveForm;
         <div style="font-weight: bolder;">尊敬的<?= $model->field29 ?>家长：</div>
         <div style="text-indent: 2em;">
             <p>
-                您好！感谢您为孩子选择朝阳区 八里庄社区卫生服务中心
-                团队签约，本着平等、尊重和自愿的原则，三方签订本协议书。为了更好提供传染病和儿童常见病防控、儿童健康管理等学校卫生服务，根据孩子健康需求选择基本服务包、学龄儿童服务包，团队成员将按照协议内容提供相应服务，内容详见附表。
+                您好！感谢您为孩子选择 <?=$healthRecordsSchool->doctor_name?>签约，本着平等、尊重和自愿的原则，三方签订本协议书。为了更好提供传染病和儿童常见病防控、儿童健康管理等学校卫生服务，根据孩子健康需求选择基本服务包<?=$model->field44?'、学龄儿童服务包':''?>，团队成员将按照协议内容提供相应服务，内容详见附表。
             </p>
             <p>
                 希望您遵守协议，保持诚信，将孩子的身体健康状况及变化情况如实、及时告知我们，并积极配合团队成员工作，遵从医嘱，做好健康自我管理。有任何健康服务需求，都可以联系您的家庭医生团队成员。
@@ -35,9 +36,7 @@ use yii\widgets\ActiveForm;
 
         </div>
     </div>
-    <?php
-    $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field30);
-    ?>
+
     <div style="font-size: 12px; padding-top:20px; line-height: 30px;display: flex;justify-content: space-between;flex-wrap: wrap;">
         <div style="width: 50%">
             <div>家庭医生：<?= $healthRecordsSchool->doctor_name ?></div>
