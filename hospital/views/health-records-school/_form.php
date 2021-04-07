@@ -19,9 +19,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'doctor_name')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'doctor_phone')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($model, 'doctor_name')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'family_name')->textInput(['maxlength' => true]) ?>
-
+                <?= $form->field($model, 'nianji')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'school_name')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'school_phone')->textInput(['maxlength' => true]) ?>
 
