@@ -84,7 +84,7 @@ class HealthRecords extends \yii\db\ActiveRecord
     public function scenarios()
     {
         return [
-            'form1'=>['field29','field30','field34','field40','field41','field42','field3','field4','field6','field38'],
+            'form1'=>['field29','field30','field34','field40','field41','field42','field3','field4','field6','field38','field43','field44'],
             'form2'=>['field29','field30','field34','field40','field1','field42','field3','field4','field6','field7','field8','field9','field10','field11','field12','field13','field14','field15','field16','field17','field16_text','field17_text','field18_text','field19_text','field20_text','field18','field19','field20','field21','field22','field23','field24','field25','field26','field27','field28'],
             'default'=>['field29','field30','field34','field40','field1','field42','field3','field4','field6','field7','field8','field9','field10','field11','field12','field13','field14','field15','field16','field17','field16_text','field17_text','field18_text','field19_text','field20_text','field18','field19','field20','field21','field22','field23','field24','field25','field26','field27','field28'],
 
@@ -106,9 +106,9 @@ class HealthRecords extends \yii\db\ActiveRecord
     {
         return [
             [['field1', 'field2', 'field3', 'field4', 'field5', 'field6', 'field7', 'field8', 'field9', 'field10', 'field11', 'field12', 'field13', 'field14', 'field15', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'field29', 'field30', 'field34'], 'required','on' => 'form2'],
-            [['field29','field30','field34','field40','field41','field42','field3','field4','field6'], 'required','on' => 'form1'],
+            [['field29','field30','field34','field40','field41','field42','field3','field4','field6','field43','field44'], 'required','on' => 'form1'],
 
-            [['field1', 'field2', 'field4', 'field5', 'field7', 'field8', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'createtime', 'doctorid', 'field39', 'field35', 'field36', 'field37', 'field38', 'field34', 'field40', 'field42','field30'], 'integer'],
+            [['field1', 'field2', 'field4', 'field5', 'field7', 'field8', 'field16', 'field17', 'field18', 'field19', 'field20', 'field21', 'field22', 'field23', 'field24', 'field25', 'field26', 'field27', 'field28', 'createtime', 'doctorid', 'field39', 'field35', 'field36', 'field37', 'field38', 'field34', 'field40', 'field42','field30','field43','field44'], 'integer'],
 
             [['field9', 'field10', 'field11', 'field12', 'field13', 'field14'], 'number'],
 
@@ -195,6 +195,8 @@ class HealthRecords extends \yii\db\ActiveRecord
             'field35' => '儿童常见健康问题指导',
             'field36' => '龋齿预防',
             'field37' => '预防接种',
+            'field43' => '基础服务包',
+            'field44' => '学龄儿童服务包',
             'field38' => '中医外治法防治青少年近视',
             'createtime' => '建档日期',
             'doctorid' => ' 社区',

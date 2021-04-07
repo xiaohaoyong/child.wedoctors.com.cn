@@ -36,7 +36,7 @@
         if(in_array(Yii::$app->user->identity->hospitalid,[110647,110565])){
             $health_records=['label' => '6岁以上学生签约', 'icon' => 'file-text-o', 'url' => "#",
                 'items' => [
-                    ['label' => '签约列表', 'url' => '#'],
+                    ['label' => '签约列表', 'url' => '/health-records'],
                     ['label' => '管辖学校管理', 'url' => ['/health-records-school']],
                     ['label' => '添加学校', 'url' => ['/health-records-school/create']],
                 ]

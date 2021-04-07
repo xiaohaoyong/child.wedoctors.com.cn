@@ -15,7 +15,7 @@ use dosamigos\qrcode\QrCode;
 /**
  * HealthRecordsSchoolController implements the CRUD actions for HealthRecordsSchool model.
  */
-class HealthRecordsSchoolController extends Controller
+class HealthRecordsSchoolController extends BaseController
 {
     /**
      * @inheritdoc

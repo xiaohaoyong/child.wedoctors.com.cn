@@ -174,7 +174,9 @@ use yii\widgets\ActiveForm;
         <div class="form-table-td2">登录朝阳区家医服务APP，享受查询、互动，获得科学、权威健康资讯</div>
         <div class="form-table-td3">免费</div>
     </div>
-
+    <?php
+    if($model->field44){
+    ?>
     <div class="title">学龄儿童服务包</div>
     <div class="form-group ">
         <div class="info-title">基础项目</div>
@@ -204,6 +206,7 @@ use yii\widgets\ActiveForm;
         <div class="form-table-td2">中医按摩、点穴、拔罐、耳穴压豆、梅花针等方法防治青少年近视（收费，按照医保收费标准执行。自愿选择。）</div>
         <div class="form-table-td3"><?=\yii\bootstrap\Html::checkbox('HealthRecords[field38]',$model->field38,['disabled'=>'true'])?></div>
     </div>
+    <?php }?>
     <?php ActiveForm::end(); ?>
 </div>
 

@@ -9,9 +9,8 @@
 namespace common\helpers;
 
 
-use yii\base\Object;
 
-class HeaderActionHelper extends Object
+class HeaderActionHelper
 {
     public static $action;
     public function setAction($action)

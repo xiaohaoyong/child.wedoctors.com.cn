@@ -49,7 +49,8 @@ use yii\bootstrap\Modal;
         <div class="form-group-info" style="margin: 20px; display: flex;justify-content: space-between;">
             <label for="healthrecords-field29">“家庭医生签约进校园”学龄儿童服务包</label>
             <div>
-                <?=Html::checkbox('fuwb',true)?>
+                <?=Html::checkbox('HealthRecords[field44]',isset($model->field44)?$model->field44:true)?>
+
                 <?php
                 echo Html::a('详情', '#', [
                     'data-target' => '#jt-modal' ,//关联模拟框(模拟框的ID)
@@ -102,7 +103,7 @@ use yii\bootstrap\Modal;
         <div class="form-group-info" style="margin: 20px; display: flex;justify-content: space-between;">
             <label for="healthrecords-field29">基本服务包</label>
             <div>
-                <?=Html::checkbox('fuwb',true,['disabled'=>'true'])?>
+                <?=Html::checkbox('HealthRecords[field43]',true,['disabled'=>'true'])?>
                 <?php
                 echo Html::a('详情', '#', [
                     'data-target' => '#jc-modal' ,//关联模拟框(模拟框的ID)
