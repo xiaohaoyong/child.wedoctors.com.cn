@@ -156,7 +156,7 @@ class Appoint extends \yii\db\ActiveRecord
         3 => '微量元素',
         7 => '两癌筛查',
         9 => '核酸检测',
-        10 => '盆底筛查',
+        10 => '盆底功能筛查及治疗',
 
     ];
 
