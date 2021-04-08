@@ -568,7 +568,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         }
 
 
-        $appoint = Appoint::findOne(['childid' => $post['childid'], 'type' => $post['type'], 'state' => 1]);
+        $appoint = Appoint::findOne(['childid' => $post['childid'],'userud'=>$this->userid, 'type' => $post['type'], 'state' => 1]);
         if ($appoint) {
             return new Code(21000, '您有未完成的预约');
         } elseif (!$post['childid'] && $post['type']!=10) {
