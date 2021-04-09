@@ -77,6 +77,8 @@ class SiteController extends Controller
         var_dump($search);
         var_dump($index);
         exit;
+
+
     }
 
 

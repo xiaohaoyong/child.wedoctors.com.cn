@@ -54,7 +54,8 @@
     "overtrue/wechat": "~4.0",
     "kop/yii2-scroll-pager": "dev-master",
     "jormin/baidu-speech": "^1.0",
-    "hightman/xunsearch": "dev-master"
+    "hightman/xunsearch": "dev-master",
+    "yiisoft/yii2-elasticsearch": "^2.1"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
