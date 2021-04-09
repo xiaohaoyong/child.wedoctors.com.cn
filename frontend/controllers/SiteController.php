@@ -72,7 +72,7 @@ class SiteController extends Controller
 
     public function actionForm(){
         $merge = new Merge();
-        $merge->delete();
+        Merge::deleteAll();
         $merge->title="本次使用的是哪种新冠疫苗？";
         $merge->content=1;
         $merge->save();
