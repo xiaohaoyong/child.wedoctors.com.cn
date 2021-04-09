@@ -72,7 +72,11 @@ class SiteController extends Controller
 
     public function actionForm(){
         $merge = new Merge();
+        $merge->title="金卡戴珊龙卷风了可视对讲";
+        $merge->content="第三方进口量时间段反馈了进";
+        $merge->save();
         $query = $merge::find()->all();  //这句话是查询所有的数据（但是es本身有限制，所以只会查出来10条，下面我会说怎么查更多数据）
+        var_dump($query);
 
     }
 
