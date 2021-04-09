@@ -73,20 +73,16 @@ class SiteController extends Controller
     public function actionForm(){
         $merge = new Merge();
         $query_f=[
-
-            "query"=>[
-
-                "match"=>[
-                    "title"=>[
-                        "query"=>"接种新冠疫苗",
-                    ]
+            "match"=>[
+                "title"=>[
+                    "query"=>"孩子发烧怎么办",
                 ]
             ]
-
         ];
 
 
         $query = $merge::find()->query($query_f)->all();  //这句话是查询所有的数据（但是es本身有限制，所以只会查出来10条，下面我会说怎么查更多数据）
+        var_dump($query[0]->score);
         var_dump($query);
 
     }
