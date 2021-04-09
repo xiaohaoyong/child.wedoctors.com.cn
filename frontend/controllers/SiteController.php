@@ -76,6 +76,8 @@ class SiteController extends Controller
         $index = $db->getIndex();
         var_dump($search);
         var_dump($index);
+
+
         exit;
     }
     public function actionDown($userid,$type=0)
