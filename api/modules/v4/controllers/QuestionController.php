@@ -47,7 +47,6 @@ class QuestionController extends Controller
                     ]
                 ];
                 $query = $merge::find()->query($query_f)->all();
-                var_dump($query);
                 if($query[0] && $query[0]->score>7){
                     $reply=Merge::$question[$query[0]->content];
                     if($reply){
@@ -57,11 +56,9 @@ class QuestionController extends Controller
                         $questionReply->userid=$id;
                         $questionReply->qid=$question->id;
                         $questionReply->save();
-                        var_dump($questionReply);
                     }
                 }
             }
-            exit;
 //            $quesTag = new QuestionTag();
 //            foreach ($tag as $k => $v) {
 //                $quesTag->qid = $question->id;
