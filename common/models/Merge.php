@@ -11,12 +11,12 @@ class Merge extends ActiveRecord
     //索引
     public static function index()
     {
-        return 'xinguan';
+        return 'question';
     }
     //文档类型
     public static function type()
     {
-        return 'wendaa';
+        return 'xinguan';
     }
     //这个就是第二步配置的组件的名字（key值）
     public static function getDb()
