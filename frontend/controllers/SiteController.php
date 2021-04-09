@@ -78,6 +78,8 @@ class SiteController extends Controller
         var_dump($index);
         exit;
     }
+
+
     public function actionDown($userid,$type=0)
     {
         $userParent = UserParent::findOne(['userid' => $userid]);
