@@ -1,10 +1,12 @@
 <?php
 namespace hospital\controllers;
 
+use app\models\Ausers;
 use common\components\Code;
 use common\helpers\SmsSend;
 use common\models\Article;
 use common\models\ArticleUser;
+use common\models\Auser;
 use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\DoctorHospital;

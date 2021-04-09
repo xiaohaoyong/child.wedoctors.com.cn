@@ -1,10 +1,10 @@
 {
-  "repositories": {
-    "packagist": {
+  "repositories": [
+    {
       "type": "composer",
-      "url": "https://packagist.phpcomposer.com"
+      "url": "https://asset-packagist.org"
     }
-  },
+  ],
   "name": "yiisoft/yii2-app-advanced",
   "description": "Yii 2 Advanced Project Template",
   "keywords": [
@@ -30,7 +30,6 @@
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0",
     "callmez/yii2-wechat-sdk": "dev-master",
-    "bower-asset/jquery": "1.12.1-patch1",
     "gmars/yii2-sms": "dev-master",
     "kucha/ueditor": "*",
     "moonlandsoft/yii2-phpexcel": "*",
@@ -55,7 +54,7 @@
     "overtrue/wechat": "~4.0",
     "kop/yii2-scroll-pager": "dev-master",
     "jormin/baidu-speech": "^1.0",
-    "2amigos/yii2-switch-widget": "~1.0"
+    "hightman/xunsearch": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
@@ -70,14 +69,8 @@
   },
   "config": {
     "process-timeout": 1800,
-    "github-oauth": {
-      "github.com": "465694c1142f03b524297b20e339617802ab7423"
-    },
     "fxp-asset": {
-      "installer-paths": {
-        "npm-asset-library": "vendor/npm",
-        "bower-asset-library": "vendor/bower"
-      }
+      "enabled": false
     }
   }
 }

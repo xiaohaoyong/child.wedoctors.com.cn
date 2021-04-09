@@ -70,11 +70,13 @@ class SiteController extends Controller
     }
 
     public function actionForm(){
-
-
-
-
-        return $this->renderPartial('form');
+        $db = \Yii::$app->xunsearch->getDatabase('demo');
+        $xs = $db->xs;
+        $search = $db->getSearch();
+        $index = $db->getIndex();
+        var_dump($search);
+        var_dump($index);
+        exit;
     }
     public function actionDown($userid,$type=0)
     {
