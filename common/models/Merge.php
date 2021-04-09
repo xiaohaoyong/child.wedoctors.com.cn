@@ -16,7 +16,7 @@ class Merge extends ActiveRecord
     //文档类型
     public static function type()
     {
-        return 'wenda';
+        return 'wendaa';
     }
     //这个就是第二步配置的组件的名字（key值）
     public static function getDb()
