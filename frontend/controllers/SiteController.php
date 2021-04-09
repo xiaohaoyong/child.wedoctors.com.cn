@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use comment\models\Merge;
 use common\models\UserParent;
 use Yii;
 use yii\base\InvalidParamException;
@@ -70,14 +71,8 @@ class SiteController extends Controller
     }
 
     public function actionForm(){
-        $db = \Yii::$app->xunsearch->getDatabase('demo');
-        $xs = $db->xs;
-        $search = $db->getSearch();
-        $index = $db->getIndex();
-        var_dump($search);
-        var_dump($index);
-        exit;
-
+        $merge = new Merge();
+        $query = $merge::find()->all();  //这句话是查询所有的数据（但是es本身有限制，所以只会查出来10条，下面我会说怎么查更多数据）
 
     }
 

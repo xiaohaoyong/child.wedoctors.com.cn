@@ -22,8 +22,14 @@ $config= [
             'connectTimeout' => 1,
             'sleep' => false, // or int for usleep after every job
         ],
-
+        'elasticsearch' => [
+            'class' => 'yii\elasticsearch\Connection',
+            'nodes' => [
+                ['http_address' => '127.0.0.1:9200'],
+            ],
+        ],
     ],
+
     'modules' => [
         'redactor' => [
             'class' => 'common\components\redactor\RedactorModule',
