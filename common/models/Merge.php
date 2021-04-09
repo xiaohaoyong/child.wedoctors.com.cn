@@ -1,5 +1,5 @@
 <?php
-namespace comment\models;
+namespace common\models;
 use yii\elasticsearch\ActiveRecord;
 class Merge extends ActiveRecord
 {

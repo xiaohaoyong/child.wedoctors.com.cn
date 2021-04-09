@@ -1,7 +1,7 @@
 <?php
 namespace frontend\controllers;
 
-use comment\models\Merge;
+use common\models\Merge;
 use common\models\UserParent;
 use Yii;
 use yii\base\InvalidParamException;
