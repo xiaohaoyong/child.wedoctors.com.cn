@@ -1,10 +1,10 @@
 {
-  "repositories": [
-    {
+  "repositories": {
+    "packagist": {
       "type": "composer",
-      "url": "https://asset-packagist.org"
+      "url": "https://packagist.phpcomposer.com"
     }
-  ],
+  },
   "name": "yiisoft/yii2-app-advanced",
   "description": "Yii 2 Advanced Project Template",
   "keywords": [
@@ -70,8 +70,14 @@
   },
   "config": {
     "process-timeout": 1800,
+    "github-oauth": {
+      "github.com": "465694c1142f03b524297b20e339617802ab7423"
+    },
     "fxp-asset": {
-      "enabled": false
+      "installer-paths": {
+        "npm-asset-library": "vendor/npm",
+        "bower-asset-library": "vendor/bower"
+      }
     }
   }
 }
