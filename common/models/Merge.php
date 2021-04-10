@@ -113,8 +113,6 @@ class Merge extends ActiveRecord
 160mmHg 且舒张压＜100mmHg 时，可以进行接种',
 
     ];
-
-
     //需要返回的字段
     public function attributes()
     {
