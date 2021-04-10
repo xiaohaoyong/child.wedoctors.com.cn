@@ -72,18 +72,49 @@ class SiteController extends Controller
 
     public function actionForm(){
         $merge = new Merge();
-        $query_f=[
-            "match"=>[
-                "title"=>[
-                    "query"=>"孩子发烧怎么办",
-                ]
-            ]
-        ];
+        $merge->title="60 岁及以上人群老年人可以接种新冠疫苗么？";
+        $merge->content=1;
+        $merge->save();
+        $merge = new Merge();
 
+        $merge->title="18 岁以下人群青少年可以接种新冠疫苗么？";
+        $merge->content=2;
+        $merge->save();
+        $merge = new Merge();
 
-        $query = $merge::find()->query($query_f)->all();  //这句话是查询所有的数据（但是es本身有限制，所以只会查出来10条，下面我会说怎么查更多数据）
-        var_dump($query[0]->score);
-        var_dump($query);
+        $merge->title="慢性病人群可以接种新冠疫苗么？";
+        $merge->content=3;
+        $merge->save();
+        $merge = new Merge();
+
+        $merge->title="育龄期和哺乳期怀孕女性可以接种新冠疫苗么？";
+        $merge->content=4;
+        $merge->save();
+        $merge = new Merge();
+
+        $merge->title="免疫功能受损人群可以接种新冠疫苗么？";
+        $merge->content=5;
+        $merge->save();
+        $merge = new Merge();
+
+        $merge->title="既往新冠患者或感染者可以接种新冠疫苗么？";
+        $merge->content=6;
+        $merge->save();
+        $merge = new Merge();
+
+        $merge->title="糖尿病患者新冠疫苗预防接种指引";
+        $merge->content=7;
+        $merge->save();
+        $merge = new Merge();
+
+        $merge->title="甲状腺疾病患者新冠疫苗预防接种指引？";
+        $merge->content=8;
+        $merge->save();
+        $merge = new Merge();
+
+        $merge->title="高血压患者新冠疫苗预防接种指引？";
+        $merge->content="9";
+        $merge->save();
 
     }
 
