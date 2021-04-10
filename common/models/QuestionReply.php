@@ -31,7 +31,7 @@ class QuestionReply extends \yii\db\ActiveRecord
         return [
             [['content','userid'], 'required'],
             [['id', 'createtime', 'userid', 'is_doctor','qid'], 'integer'],
-            [['content'], 'string', 'max' => 225],
+            [['content'], 'string', 'max' => 500],
         ];
     }
 
