@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
-                        <?php Pjax::begin(['id' => 'countries']) ?>
 
                         <?= GridView::widget([
                             'options' => ['class' => 'col-sm-12'],
@@ -201,7 +200,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                             ],
                         ]); ?>
-                        <?php Pjax::end(); ?>
 
                     </div>
                 </div>
@@ -209,17 +207,3 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-<?php
-
-$this->registerJs(
-
-    '
-     
-    $("document").ready(function(){ 
-        setTimeout(function testFunction(){
-        console.log(123);
-                 $.pjax.reload({container:"#countries"});  //Reload GridView
-     },"6000");
-    });'
-);
-?>
