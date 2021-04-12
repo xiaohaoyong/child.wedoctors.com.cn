@@ -12,6 +12,7 @@ use api\controllers\Controller;
 
 use common\helpers\HuanxinUserHelper;
 use common\models\DoctorParent;
+use common\models\DoctorTeam;
 use common\models\Street;
 use common\models\UserDoctor;
 use common\models\UserLogin;
@@ -28,6 +29,10 @@ class DoctorController extends Controller
             $doctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
 
         }
+        if($doctorParent->teamid){
+            $doctorTeam=DoctorTeam::findOne($doctorParent->teamid);
+        }
+
 
         $articles=Article::find()->where(['datauserid'=>$doctor->hospitalid])->orderBy('id desc')->all();
         $data=[];
@@ -46,7 +51,7 @@ class DoctorController extends Controller
 //        $userlogin=UserLogin::findOne(['userid'=>$doctorParent->doctorid]);
 //        //$userlogin->hxusername=$huanxin;
 //        $userlogin->save();
-        return ['doctor'=>$doctor,'list'=>$data,'username'=>$huanxin];
+        return ['doctor'=>$doctor,'list'=>$data,'username'=>$huanxin,'team'=>$doctorTeam];
     }
     public function actionRow($doctorid)
     {
