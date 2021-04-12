@@ -177,7 +177,7 @@ use yii\bootstrap\Modal;
     </div>
     <div class="title">个人信息</div>
     <?php
-    $name=\common\models\HealthRecordsSchool::find()->select(["group_concat(`name`,`nianji`)"])->indexBy('id')->where(['doctorid' => $doctorid])->column();
+    $name=\common\models\HealthRecordsSchool::find()->select(["concat(`name`,`nianji`)"])->indexBy('id')->where(['doctorid' => $doctorid])->column();
     var_dump($name);exit;
     $names=explode(',',$name[0]);
     ?>
