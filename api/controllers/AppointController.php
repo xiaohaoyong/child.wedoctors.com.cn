@@ -316,7 +316,7 @@ class AppointController extends Controller
     public function actionMy($state = 1)
     {
         if ($state == 1) {
-            $appoints = Appoint::find()->andFilterWhere(['in', 'state', [1, 5]])->andWhere(['userid' => $this->userid])->andFilterWhere(['in', 'type', [1, 2,8,3,10]])->all();
+            $appoints = Appoint::find()->andFilterWhere(['in', 'state', [1, 5]])->andWhere(['userid' => $this->userid])->andFilterWhere(['in', 'type', [1,5,6, 2,8,3,10]])->all();
         } else {
             $appoints = Appoint::findAll(['userid' => $this->userid, 'state' => $state]);
         }
