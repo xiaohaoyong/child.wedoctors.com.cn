@@ -178,7 +178,7 @@ use yii\bootstrap\Modal;
     <div class="title">个人信息</div>
     <?= $form->field($model, 'field29')->textInput(['maxlength' => true, 'placeholder' => '请填写学生姓名']) ?>
 
-    <?= $form->field($model, 'field30')->dropDownList(\common\models\HealthRecordsSchool::find()->select(["group_concat(`name`,'，年级：',`nianji`)"])->indexBy('id')->where(['doctorid' => $doctorid])->column(), ['prompt' => '请选择']) ?>
+    <?= $form->field($model, 'field30')->dropDownList(\common\models\HealthRecordsSchool::find()->select(["group_concat(`name`,`nianji`)"])->indexBy('id')->where(['doctorid' => $doctorid])->column(), ['prompt' => '请选择']) ?>
     <?= $form->field($model, 'field34')->textInput(['maxlength' => true, 'placeholder' => '请填写学生年级']) ?>
     <?= $form->field($model, 'field40')->textInput(['maxlength' => true, 'placeholder' => '请填写学生班级']) ?>
     <?= $form->field($model, 'field41')->textInput(['placeholder' => '请填写' . $model->getAttributeLabel('field41')]) ?>
