@@ -31,7 +31,7 @@ class DoctorParent extends \yii\db\ActiveRecord
     {
         return [
             [['doctorid'], 'required'],
-            [['doctorid', 'parentid', 'createtime', 'level'], 'integer'],
+            [['doctorid', 'parentid', 'createtime', 'level','teamid'], 'integer'],
         ];
     }
 

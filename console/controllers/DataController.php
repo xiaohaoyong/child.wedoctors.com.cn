@@ -76,7 +76,11 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
-
+        $doctorParent=DoctorParent::findAll(['doctorid'=>206262]);
+        foreach($doctorParent as $k=>$v){
+          var_dump($v->teamid);
+        }
+        exit;
 //
 //        $totle = 338695;
 //        $limit = ceil($totle / 100);

@@ -77,7 +77,7 @@ class UserDoctor extends \yii\db\ActiveRecord
         return [
             [['userid'], 'required'],
             [['longitude', 'latitude'], 'number'],
-            [['is_calling','userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype','is_question'], 'integer'],
+            [['is_team','is_calling','userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype','is_question'], 'integer'],
             [['name'], 'string', 'max' => 25],
             [['intro', 'avatar', 'skilful','appoint_intro'], 'string', 'max' => 150],
             [['idnum'], 'string', 'max' => 18],
