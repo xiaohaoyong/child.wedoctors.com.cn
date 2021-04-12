@@ -178,7 +178,7 @@ use yii\bootstrap\Modal;
     <div class="title">个人信息</div>
     <?php
     $name=\common\models\HealthRecordsSchool::find()->select(["group_concat(`name`,'，年级：',`nianji`)"])->indexBy('id')->where(['doctorid' => $doctorid])->column();
-    $names=implode($name,$name[0]);
+    $names=implode(',',$name[0]);
     ?>
     <?= $form->field($model, 'field29')->textInput(['maxlength' => true, 'placeholder' => '请填写学生姓名']) ?>
 
