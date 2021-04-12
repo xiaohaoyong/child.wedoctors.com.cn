@@ -10,12 +10,16 @@ use common\models\UserDoctor;
 use common\models\UserLogin;
 use docapi\models\AppointSearch;
 use hospital\models\user\Hospital;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yii;
 use common\models\Appoint;
 use hospital\models\AppointSearchModels;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 /**
  * AppointController implements the CRUD actions for Appoint model.
  */
@@ -48,8 +52,7 @@ class AppointController extends BaseController
         $dataProvider = $searchModel->search($params);
         //require('/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/vendor/phpoffice/phpexcel/Classes/PHPExcel.php');
 
-
-        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel = new Spreadsheet();
         $objPHPExcel->getProperties();
 
         //设置A3单元格为文本
@@ -153,7 +156,8 @@ class AppointController extends BaseController
 
         header('Content-Type : application/vnd.ms-excel');
         header('Content-Disposition:attachment;filename="预约列表-' . date("Y年m月j日") . '.xls"');
-        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter = IOFactory::createWriter($objPHPExcel, 'Xlsx');
+
         $objWriter->save('php://output');
     }
 
