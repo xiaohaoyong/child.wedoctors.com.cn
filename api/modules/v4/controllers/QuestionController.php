@@ -38,24 +38,26 @@ class QuestionController extends Controller
             $quesInfo->qid = $question->id;
             $quesInfo->save();
             if($quesInfo){
-                $merge = new Merge();
-                $query_f=[
-                    "match"=>[
-                        "title"=>[
-                            "query"=>$post['content'],
+                if(strpos($post['content'],'新冠') !== false) {
+                    $merge = new Merge();
+                    $query_f = [
+                        "match" => [
+                            "title" => [
+                                "query" => $post['content'],
+                            ]
                         ]
-                    ]
-                ];
-                $query = $merge::find()->query($query_f)->all();
-                if($query[0] && $query[0]->score>7){
-                    $reply=Merge::$question[$query[0]->content];
-                    if($reply){
-                        $questionReply=new QuestionReply();
-                        $questionReply->content=$reply;
-                        $questionReply->is_doctor=1;
-                        $questionReply->userid=$id;
-                        $questionReply->qid=$question->id;
-                        $questionReply->save();
+                    ];
+                    $query = $merge::find()->query($query_f)->all();
+                    if ($query[0] && $query[0]->score > 4) {
+                        $reply = Merge::$question[$query[0]->content];
+                        if ($reply) {
+                            $questionReply = new QuestionReply();
+                            $questionReply->content = $reply;
+                            $questionReply->is_doctor = 1;
+                            $questionReply->userid = $id;
+                            $questionReply->qid = $question->id;
+                            $questionReply->save();
+                        }
                     }
                 }
             }
