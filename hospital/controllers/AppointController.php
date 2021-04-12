@@ -57,13 +57,13 @@ class AppointController extends BaseController
 
         //设置A3单元格为文本
         $objPHPExcel->getActiveSheet()->getStyle('B')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('I')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $key1 = 1;
         if($searchModel->type!=7 and $searchModel->type!=4 and $searchModel->type!=9) {
             $fields = ['姓名', '性别', '生日', '儿童户籍', '母亲姓名', '户籍地', '预约日期', '预约时间', '手机号', '预约状态', '预约项目', '选择疫苗', '取消原因', '推送状态', '来源', '排号顺序'];
@@ -80,9 +80,9 @@ class AppointController extends BaseController
                 $model->setCellValue(chr($key) . $key1, $v);
             }
             $objPHPExcel->getActiveSheet()->getStyle('C')->getNumberFormat()
-                ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
             $objPHPExcel->getActiveSheet()->getStyle('D')->getNumberFormat()
-                ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         }
 
 //        $objPHPExcel=$objPHPExcel->setActiveSheetIndex(0);
