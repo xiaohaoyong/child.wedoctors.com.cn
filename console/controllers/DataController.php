@@ -76,6 +76,9 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $doctorParent=DoctorParent::find()->select('count(*) as a,teamid')->where(['doctorid'=>206262])->groupBy('teamid')->orderBy('a desc');
+
+        var_dump($doctorParent->createCommand()->getSql());exit;
         $doctorParent=DoctorParent::findAll(['doctorid'=>206262]);
         foreach($doctorParent as $k=>$v){
           var_dump($v->teamid);

@@ -40,6 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'parentid',
             'createtime:datetime',
             'level',
+                    'teamid',
+
                 ],
                 ]) ?>
 
