@@ -100,9 +100,11 @@ use yii\bootstrap\Modal;
         <?php
         \yii\bootstrap\Modal::end();
         ?>
-        <div class="form-group-info" style="margin: 20px;">
+        <div class="form-group-info" style="margin: 20px; display: flex;justify-content: space-between;">
+            <label for="healthrecords-field29">基本服务包</label>
             <div>
                 <?=Html::activeCheckbox($model,'field43',['disabled'=>'true','checkend'=>true])?>
+
                 <?php
                 echo Html::a('详情', '#', [
                     'data-target' => '#jc-modal' ,//关联模拟框(模拟框的ID)
