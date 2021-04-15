@@ -41,10 +41,7 @@ class FileInput extends \kartik\file\FileInput
         if ($this->sortThumbs) {
             SortableAsset::register($view);
         }
-        if ($this->purifyHtml) {
-            DomPurifyAsset::register($view);
-            $this->pluginOptions['purifyHtml'] = true;
-        }
+
         \common\assets\FileInputAsset::register($view)->addLanguage($this->language, '', 'js/locales');
     }
 }
