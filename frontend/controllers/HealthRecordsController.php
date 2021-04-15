@@ -75,6 +75,7 @@ class HealthRecordsController extends Controller
             if ($model->save()) {
                 return $this->redirect(['sign', 'id' => $model->id]);
             }
+            var_dump($model->firstErrors);exit;
         }
         return $this->render('form2', [
             'doctorid'=>$doctorid,
