@@ -105,6 +105,7 @@ $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field
     .health-records .w120 {
         width: 120px;
     }
+    .form-table{display: flex;justify-content: space-between;}
 </style>
 <div class="health-records health-records-form1" style="margin-bottom: 50px;">
     <div class="header">
