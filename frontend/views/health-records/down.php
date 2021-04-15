@@ -39,7 +39,7 @@ $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field
 
     <div style="font-size: 12px; padding-top:20px; line-height: 30px;display: flex;justify-content: space-between;flex-wrap: wrap;">
         <div style="width: 50%">
-            <div>家庭医生：<?= $healthRecordsSchool->doctor_name ?></div>
+            <div>家庭医生：<?= $healthRecordsSchool->family_name ?></div>
             <div>团队服务电话：<?= $healthRecordsSchool->doctor_phone ?></div>
             <div style="display: flex;align-items: center; height: 50px;">
                 <div>
