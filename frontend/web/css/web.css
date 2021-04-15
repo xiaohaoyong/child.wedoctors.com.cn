@@ -365,7 +365,7 @@ button{    border: none;}
 }
 .health-records .form-table{display: flex;border-bottom: 1px solid rgba(0, 0, 0, 0.1); line-height: 30px;}
 .health-records .form-table-td1{width: 110px;flex-shrink: 0;display: flex;align-items: center;padding-left: 10px;padding-right:10px;font-weight: bold;}
-.health-records .form-table-td3{width: 50px;flex-shrink: 0;display: flex;align-items: center;padding-left: 10px;}
+.health-records .form-table-td3{width: 55px;flex-shrink: 0;display: flex;align-items: center;padding-left: 10px;}
 
 @media all and (orientation : landscape) {
 
