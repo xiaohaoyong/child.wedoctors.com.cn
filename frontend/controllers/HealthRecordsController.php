@@ -68,6 +68,7 @@ class HealthRecordsController extends Controller
         $model=HealthRecords::findOne(['userid'=>$this->login->id]);
         $model=$model?$model:new HealthRecords();
         $model->scenario = 'form1';
+        $model->field43=1;
 
         if ($model->load(\Yii::$app->request->post())) {
             $model->userid = $this->login->id;
@@ -75,7 +76,6 @@ class HealthRecordsController extends Controller
             if ($model->save()) {
                 return $this->redirect(['sign', 'id' => $model->id]);
             }
-            var_dump($model->firstErrors);exit;
         }
         return $this->render('form2', [
             'doctorid'=>$doctorid,
