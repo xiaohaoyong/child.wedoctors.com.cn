@@ -47,9 +47,9 @@ use yii\bootstrap\Modal;
     <div class="title">请选择服务包</div>
     <div class="form-group ">
         <div class="form-group-info" style="margin: 20px; display: flex;justify-content: space-between;">
-            <label for="healthrecords-field29">“家庭医生签约进校园”学龄儿童服务包</label>
+            <label for="healthrecords-field29">“家庭医生签约进校园”<br>学龄儿童服务包</label>
             <div>
-                <?=Html::checkbox('HealthRecords[field44]',isset($model->field44)?$model->field44:true)?>
+                <?=Html::activeCheckbox($model,'field44',['checkend'=>true,'label'=>false])?>
 
                 <?php
                 echo Html::a('详情', '#', [
