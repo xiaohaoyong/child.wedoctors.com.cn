@@ -94,7 +94,7 @@ use yii\bootstrap\Modal;
         <div class="form-table ">
             <div class="form-table-td1">中医外治法防治青少年近视（自愿选择，非强制）</div>
             <div class="form-table-td2">中医按摩、点穴、拔罐、耳穴压豆、梅花针等方法防治青少年近视（收费，按照医保收费标准执行。自愿选择。）</div>
-            <div class="form-table-td3"><?=Html::checkbox('HealthRecords[field38]',$model->field38)?></div>
+            <div class="form-table-td3"><?=Html::activeCheckbox($model,'field38',['label'=>false])?></div>
         </div>
 
         <?php
