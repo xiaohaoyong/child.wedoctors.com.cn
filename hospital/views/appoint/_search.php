@@ -21,6 +21,11 @@ use yii\widgets\ActiveForm;
         'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
+    <?= $form->field($model, 'appoint_dates_end')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
 
     <?php echo $form->field($model, 'appoint_time')->dropDownList(\common\models\Appoint::$timeText, ['prompt' => '请选择']) ?>
 

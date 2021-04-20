@@ -15,6 +15,7 @@ class AppointSearchModels extends Appoint
 {
     public $child_name;
     public $appoint_dates = '';
+    public $appoint_dates_end = '';
 
     /**
      * @inheritdoc
@@ -23,7 +24,7 @@ class AppointSearchModels extends Appoint
     {
         return [
             [['mode','vaccine','state','cancel_type','id', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
-            [['child_name', 'appoint_dates'], 'string']
+            [['appoint_dates_end','child_name', 'appoint_dates'], 'string']
         ];
     }
     /**
@@ -43,6 +44,7 @@ class AppointSearchModels extends Appoint
         $return = parent::attributeLabels();
         $return ['child_name'] = '儿童姓名';
         $return ['appoint_dates'] = '预约日期';
+        $return ['appoint_dates_end'] = '~';
 
         return $return;
     }
@@ -69,9 +71,6 @@ class AppointSearchModels extends Appoint
 
         $this->load($params);
 
-        if($this->appoint_dates){
-            $this->appoint_date=strtotime($this->appoint_dates);
-        }
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -90,7 +89,12 @@ class AppointSearchModels extends Appoint
             }
         }
 
-
+        if($this->appoint_dates){
+            $query->andFilterWhere(['>=', 'appoint_date', strtotime($this->appoint_dates)]);
+        }
+        if($this->appoint_dates_end){
+            $query->andFilterWhere(['<=', 'appoint_date', strtotime($this->appoint_dates_end)]);
+        }
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -98,7 +102,6 @@ class AppointSearchModels extends Appoint
             'doctorid' => $doctorid->userid,
             'createtime' => $this->createtime,
             'appoint_time' => $this->appoint_time,
-            'appoint_date' => $this->appoint_date,
             'type' => $this->type,
             'phone' => $this->phone,
             'cancel_type'=>$this->cancel_type,
