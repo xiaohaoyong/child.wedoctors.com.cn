@@ -76,6 +76,31 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        //        exit;
+
+
+
+        $totle = 315429;
+        $limit = ceil($totle / 100);
+        $snum = $num * $limit;
+
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+            $data = [
+                'first' => ['value' => "宝宝新陈代谢旺盛，皮肤发育不成熟，需要家长精心呵护。作为妈妈，你知道宝宝的皮肤有哪些特点吗？一年四季，该如何护理宝宝的皮肤？需要注意哪些关键点？宝宝皮肤护理有哪些误区？怎么样预防常见的皮肤疾病呢？儿宝宝特意为已经到来的春季邀请到了梁源博士，来为家长讲讲宝宝娇嫩的皮肤该如何护理"],
+                'keyword1' => ARRAY('value' => '儿童医院梁主任教大家正确护理宝宝皮肤，预防常见皮肤疾病 第二十五期健康直播'),
+                'keyword2' => ARRAY('value' => '2021年04月21日 20点'),
+                'remark' => ARRAY('value' => ""),
+            ];
+            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8I8331.h5.xiaoeknow.com/v2/course/alive/l_607ecea8e4b09134c98a15ec?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2');
+            var_dump($rs);
+            sleep(1);
+            exit;
+        }
+        var_dump($login);
+        exit;
+
+
         $doctorParent=DoctorParent::find()->select('count(*) as a,teamid')->where(['doctorid'=>206262])->groupBy('teamid')->orderBy('a desc');
 
         var_dump($doctorParent->createCommand()->getSql());exit;
