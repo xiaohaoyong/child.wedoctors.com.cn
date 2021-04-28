@@ -76,7 +76,6 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
-        //        exit;
 
 
 

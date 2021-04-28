@@ -40,27 +40,29 @@ class AppointController extends Controller
                 $openid = UserLogin::getOpenid($v->userid);
 
                 if ($openid) {
-                    $temp = 'AisY28B8z8_UDjX7xi6pay7Hh6kw420rAQwc6I1BBtE';
+                    $temp = '425dIznjAzVkXGMf68801IXJKpgDlO4AKpcEiBkJpZQ';
 
                     if (in_array($v->doctorid, [192821, 206260, 257888, 184793, 160226,206262])) {
-                        $data = [
-                            'first' => array('value' => "宝宝家长您好",),
-                            'keyword1' => ARRAY('value' => date('Y年m月d'),),
-                            'keyword2' => ARRAY('value' => '您预约了' . date('Y年m月d', $day) . '的' . Appoint::$typeText[$v->type] . '，请按照预约时间到达社区'),
-                            'remark' => ARRAY('value' => "点击此处填写流行病学调查表，请酌情填写流行病学调查表，根据不同社区工作安排可能需要您出示调查结果，调查结果可以在公众号底部菜单我的->流行病学调查表中查看", 'color' => '#221d95'),
-                        ];
-                        $rs = WechatSendTmp::send($data, $openid, $temp, 'http://web.child.wedoctors.com.cn/question-naire/form?id=1&doctorid=' . $v->doctorid);
+//                        $data = [
+//                            'first' => array('value' => "宝宝家长您好",),
+//                            'keyword1' => ARRAY('value' => date('Y年m月d'),),
+//                            'keyword2' => ARRAY('value' => '您预约了' . date('Y年m月d', $day) . '的' . Appoint::$typeText[$v->type] . '，请按照预约时间到达社区'),
+//                            'remark' => ARRAY('value' => "点击此处填写流行病学调查表，请酌情填写流行病学调查表，根据不同社区工作安排可能需要您出示调查结果，调查结果可以在公众号底部菜单我的->流行病学调查表中查看", 'color' => '#221d95'),
+//                        ];
+//                        $rs = WechatSendTmp::send($data, $openid, $temp, 'http://web.child.wedoctors.com.cn/question-naire/form?id=1&doctorid=' . $v->doctorid);
                     } else {
                         $data = [
-                            'first' => array('value' => "宝宝家长您好",),
+                            'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
                             'keyword1' => ARRAY('value' => date('Y年m月d'),),
-                            'keyword2' => ARRAY('value' => '您预约了' . date('Y年m月d', $day) . '的' . Appoint::$typeText[$v->type] . '，请按照预约时间到达社区'),
+                            'keyword2' => ARRAY('value' => '现场确认',),
+                            'keyword3' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText[$v->appoint_time]),
+                            'keyword4' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText2[$v->appoint_time]),
                             'remark' => ARRAY('value' => "再次温馨提醒，宫颈癌疫苗仅限本辖区居民预约，接种时务必携带本人本辖区的身份证或房产证或居住证(有效期内)，非本辖区居民预约后不予以接种。", 'color' => '#221d95'),
                         ];
                         if($v->type!=4) {
                             $data['remark'] = '此消息为系统自动推送，如已取消请忽略。';
                         }
-                        $rs = WechatSendTmp::send($data, $openid, $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,]);
+                        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,]);
                     }
                 }
             }
