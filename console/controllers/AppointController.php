@@ -67,6 +67,7 @@ class AppointController extends Controller
                             $data['remark'] = '此消息为系统自动推送，如已取消请忽略。';
                         }
                         $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,]);
+                    exit;
                     }
                 }
             }
