@@ -14,6 +14,7 @@ use common\components\Log;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
 use common\models\AppointOrder1;
+use common\models\Hospital;
 use common\models\HospitalForm;
 use common\models\UserDoctor;
 use common\models\UserLogin;
@@ -38,6 +39,8 @@ class AppointController extends Controller
             foreach ($appoint as $k => $v) {
 
                 $openid = UserLogin::getOpenid($v->userid);
+                $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+                $hospital=Hospital::findOne($doctor->hospitalid);
 
                 if ($openid) {
                     $temp = '425dIznjAzVkXGMf68801IXJKpgDlO4AKpcEiBkJpZQ';
@@ -53,10 +56,11 @@ class AppointController extends Controller
                     } else {
                         $data = [
                             'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
-                            'keyword1' => ARRAY('value' => date('Y年m月d'),),
-                            'keyword2' => ARRAY('value' => '现场确认',),
-                            'keyword3' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText[$v->appoint_time]),
-                            'keyword4' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText2[$v->appoint_time]),
+                            'keyword1' => ARRAY('value' => $v->name(),),
+                            'keyword2' => ARRAY('value' => $hospital->name,),
+                            'keyword3' => ARRAY('value' => '现场确认',),
+                            'keyword4' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText[$v->appoint_time]),
+                            'keyword5' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText2[$v->appoint_time]),
                             'remark' => ARRAY('value' => "再次温馨提醒，宫颈癌疫苗仅限本辖区居民预约，接种时务必携带本人本辖区的身份证或房产证或居住证(有效期内)，非本辖区居民预约后不予以接种。", 'color' => '#221d95'),
                         ];
                         if($v->type!=4) {

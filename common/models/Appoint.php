@@ -264,6 +264,23 @@ class Appoint extends \yii\db\ActiveRecord
         ];
     }
 
+    public function name(){
+        if($this->type==4 || $this->type==7 || $this->type==9){
+            if($this->childid){
+                return \common\models\AppointAdult::findOne(['id' => $this->childid])->name;
+            }else {
+                return \common\models\AppointAdult::findOne(['userid' => $this->userid])->name;
+            }
+
+        }elseif($this->type==5 || $this->type==6){
+            return \common\models\Pregnancy::findOne(['id' => $this->childid])->field1;
+        }elseif($this->type==10){
+            return $this->name;
+        }else{
+            return \common\models\ChildInfo::findOne(['id' => $this->childid])->name;
+        }
+    }
+
     public function beforeSave($insert)
     {
         if ($insert) {
