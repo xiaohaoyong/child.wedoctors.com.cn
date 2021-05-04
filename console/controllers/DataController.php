@@ -39,6 +39,8 @@ use common\models\DoctorHospital;
 use common\models\DoctorParent;
 use common\models\Doctors;
 use common\models\Examination;
+use common\models\HealthRecords;
+use common\models\HealthRecordsSchool;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointVaccine;
@@ -76,6 +78,41 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $HealthRecords=HealthRecordsSchool::find()->where(['doctorid'=>400564])->all();
+        foreach($HealthRecords as $k=>$v){
+            $hr=HealthRecords::find()->where(['field30'=>$v->id])->all();
+            foreach($hr as $hk=>$kv){
+                echo "wkhtmltopdf http://child.wedoctors.com.cn/health-records/down?userid={$kv->userid} {$v->id}/{$kv->field29}.pdf";
+                echo "\n";
+            }
+        }
+        exit;
+
+
+        $userDoctor=UserDoctor::findAll(['county'=>1106]);
+        $dates=[
+            10=>['s'=>'2020-10-01','e'=>'2020-10-31'],
+            11=>['s'=>'2020-11-01','e'=>'2020-11-30'],
+            12=>['s'=>'2020-12-01','e'=>'2020-12-31'],
+            1=>['s'=>'2021-01-01','e'=>'2021-01-31'],
+            2=>['s'=>'2021-02-01','e'=>'2021-02-29'],
+            3=>['s'=>'2021-03-01','e'=>'2021-03-31'],
+
+
+        ];
+        foreach($userDoctor as $k=>$v){
+            $rs=[];
+            $rs[]=$v->name;
+            foreach ($dates as $dk=>$dv){
+                $s=strtotime($dv['s']);
+                $e=strtotime($dv['e']);
+                $num=ArticleUser::find()->where(['>=','createtime',$s])->andWhere(['<=','createtime',$e])->andWhere(['userid'=>$v->userid])->count();
+                $rs[]=$num;
+            }
+            echo implode(',',$rs);
+            echo "\n";
+        }
+        exit;
 
 
 

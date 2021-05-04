@@ -66,6 +66,8 @@
                     ],
                     ['label' => '工具', 'icon' => 'send', 'url' => "#",
                         'items' => [
+                            ['label' => '留言板', 'url' => ['question']],
+
                             ['label' => '提醒体检通知设置', 'url' => ['examination/automatic']],
                             ['label' => '未体检用户查询', 'url' => ['examination/undone']],
                             ['label' => '通知列表', 'url' => ['article/tindex?ArticleSearchModel[type]=2']],
@@ -92,6 +94,7 @@
                     $health_records,
                     ['label' => '医生管理', 'icon' => 'file-text-o', 'url' => "#",
                         'items' => [
+                            ['label' => '家医团队管理', 'url' => ['doctor-team/index']],
                             ['label' => '医生管理', 'url' => ['doctors/index']],
                             ['label' => '添加医生', 'url' => ['doctors/create']],
                         ]
