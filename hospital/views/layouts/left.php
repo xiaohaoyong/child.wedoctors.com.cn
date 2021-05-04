@@ -66,7 +66,7 @@
                     ],
                     ['label' => '工具', 'icon' => 'send', 'url' => "#",
                         'items' => [
-                            ['label' => '留言板', 'url' => ['question']],
+                            ['label' => '留言板', 'url' => ['/question']],
 
                             ['label' => '提醒体检通知设置', 'url' => ['examination/automatic']],
                             ['label' => '未体检用户查询', 'url' => ['examination/undone']],
