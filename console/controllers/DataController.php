@@ -78,6 +78,34 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $data = [
+            'first' => array('value' => "尊敬的用户您好，由于因中心停电整修，请5月7日上午疫苗接种的用户于9:30-11:00来本中心预防保健科进行接种，给您带来不便请谅解，感谢您的理解和支持。\n",),
+            'keyword1' => ARRAY('value' => "儿宝宝用户"),
+            'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
+            'keyword3' => ARRAY('value' => '请您于9:30-11:00前往社区接种'),
+
+            'remark' => ARRAY('value' => " ", 'color' => '#221d95'),
+        ];
+
+        $temp='Pa_dWDnwfS5FYpQmB8wf5uWyge50tGpxfg47xfGLYrI';
+
+
+        $appoint=Appoint::find()->where(['doctorid'=>160226])->andWhere(['appoint_date'=>1620316800])->andWhere(['in','appoint_time',[1,2,3,7,8,9,10,11,12,19,20]])->all();
+        foreach($appoint as $K=>$v){
+            $userLogin=UserLogin::findAll(['userid'=>$v->userid]);
+            if($userLogin) {
+                foreach ($userLogin as $ulk => $ulv) {
+                    if ($ulv->openid) {
+                        $rs = WechatSendTmp::send($data, $ulv->openid, $temp);
+                        echo $rs?'true':'false';
+                        echo "\n";
+                    }
+                }
+            }
+        }
+        exit;
+
+
 
         ini_set('memory_limit', '4000M');
 
