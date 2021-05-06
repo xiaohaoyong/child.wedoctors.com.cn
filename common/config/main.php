@@ -25,7 +25,7 @@ $config= [
         'elasticsearch' => [
             'class' => 'yii\elasticsearch\Connection',
             'nodes' => [
-                ['http_address' => 'localhost:9200'],
+                ['http_address' => '139.129.230.99:9200'],
             ],
         ],
     ],
