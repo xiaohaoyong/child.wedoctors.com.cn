@@ -78,6 +78,41 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+
+        ini_set('memory_limit', '4000M');
+
+        $s_time = '20201001';
+        $e_time = '20210101';
+
+
+
+        foreach (Area::$county[11] as $k => $v) {
+            $rs = [];
+            $userDoctors = UserDoctor::find()->where(['county'=>$k])->select('userid')->column();
+
+            if($userDoctors) {
+                $doctorParents2 = DoctorParent::find()->where(['in', 'doctorid', $userDoctors])
+                    ->select('parentid')
+                    ->column();
+
+
+                $userLogin = UserLogin::find()->select('openid')->where(['in', 'userid', $doctorParents2])->andWhere(['!=', 'openid', ''])->groupBy('userid')->column();
+                $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
+                $r1 = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
+                $rs[] = $r1 + round($r1 * 0.30);
+
+                //$userLogin=UserLogin::find()->select('openid')->where(['in','userid',$childs])->andWhere(['!=','openid',''])->groupBy('userid')->column();
+                $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
+                $r2 = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
+                $rs[] = $r2 + round($r2 * 0.20);
+
+                echo $v . "," . $rs[0]  . "," .  $rs[1] ."," . $rs[2]  . "," .  $rs[3];
+                echo "\n";
+            }
+        }
+
+        exit;
+
         $HealthRecords=HealthRecordsSchool::find()->where(['doctorid'=>400564])->all();
         foreach($HealthRecords as $k=>$v){
             $hr=HealthRecords::find()->where(['field30'=>$v->id])->all();
