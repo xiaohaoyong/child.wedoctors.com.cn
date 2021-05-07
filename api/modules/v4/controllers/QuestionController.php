@@ -56,7 +56,11 @@ class QuestionController extends Controller
                             $questionReply->is_doctor = 1;
                             $questionReply->userid = $id;
                             $questionReply->qid = $question->id;
-                            $questionReply->save();
+                            if($questionReply->save()){
+                                $question->state=1;
+                                $question->save();
+                            }
+
                         }
                     }
                 }
