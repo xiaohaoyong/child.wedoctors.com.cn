@@ -48,7 +48,7 @@ class QuestionController extends Controller
                         ]
                     ];
                     $query = $merge::find()->query($query_f)->all();
-                    if ($query[0] && $query[0]->score > 4) {
+                    if ($query[0] && $query[0]->score > 2) {
                         $reply = Merge::$question[$query[0]->content];
                         if ($reply) {
                             $questionReply = new QuestionReply();
