@@ -78,6 +78,28 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+
+        $totle = 358676;
+        $limit = ceil($totle / 50);
+        $snum = $num * $limit;
+
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+            $data = [
+                'first' => ['value' => "从前几期“母乳喂养那些事”我们也帮助很多宝妈们了解到了母乳喂养的困难以及如何解决的办法，但是为了让家长更好的了解到母乳喂养以及如何护理乳房保健，我们邀请到了海淀区妇幼保健院妇产科主管护师龙凤君来给我们宝宝妈妈们进行讲解。"],
+                'keyword1' => ARRAY('value' => '母乳喂养与乳房保健，第二十六期健康直播即将开始'),
+                'keyword2' => ARRAY('value' => '2021年05月23日 15点'),
+                'remark' => ARRAY('value' => ""),
+            ];
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8I8331.h5.xiaoeknow.com/v2/course/alive/l_60a8b5c2e4b0c726421804e2?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2');
+            var_dump($rs);
+            sleep(1);
+        }
+        var_dump($login);
+        exit;
+
+
+
         $data = [
             'first' => array('value' => "尊敬的用户您好，由于因中心停电整修，请5月7日上午疫苗接种的用户于9:30-11:00来本中心预防保健科进行接种，给您带来不便请谅解，感谢您的理解和支持。\n",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
