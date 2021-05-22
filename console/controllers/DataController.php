@@ -94,7 +94,6 @@ class DataController extends \yii\console\Controller
             $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8I8331.h5.xiaoeknow.com/v2/course/alive/l_60a8b5c2e4b0c726421804e2?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2');
             var_dump($rs);
             sleep(1);
-            exit;
         }
         var_dump($login);
         exit;

@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 <?php
 $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field30);
 ?>
-<div style="padding: 10px;">
+<div style="padding: 10px; max-width: 900px; margin: 0 auto;">
     <h1>北京市朝阳区八里庄社区卫生服务中心</h1>
     <h1 style="padding-bottom: 20px;">家庭医生签约服务协议书</h1>
     <div class="content1" style="line-height: 25px;">
@@ -37,54 +37,66 @@ $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field
         </div>
     </div>
 
-    <div style="font-size: 12px; padding-top:20px; line-height: 30px;display: flex;justify-content: space-between;flex-wrap: wrap;">
+    <div style="font-size: 12px; padding-top:20px; line-height: 30px;">
         <div style="width: 50%">
             <div>家庭医生：<?= $healthRecordsSchool->family_name ?></div>
             <div>团队服务电话：<?= $healthRecordsSchool->doctor_phone ?></div>
-            <div style="display: flex;align-items: center; height: 50px;">
-                <div>
+            <div>日期：<?= date('Y-m-d', $model->createtime) ?></div>
+
+            <div>
+
+
+                <div style="float: left; height: 100px; line-height: 100px;">
                     医生签字：
                 </div>
-                <div>
+                <div style="float: left; height: 100px;">
                     <image id="rotate" src="<?php
                     if ($healthRecordsSchool->sign2) {
                         echo $healthRecordsSchool->sign2;
                     }
-                    ?>" style="width: 50px;    "></image>
+                    ?>" style="width: 50px; "></image>
                 </div>
+                <div style=" clear:both;"></div>
             </div>
-            <div>日期：<?= date('Y-m-d', $model->createtime) ?></div>
         </div>
         <div style="width: 50%;">
             <div>学生姓名：<?= $model->field29 ?></div>
             <div>身份证号：<?= $model->field41 ?></div>
-            <div style="display: flex;align-items: center; height: 50px;">
-                <div>家长签字：</div>
-                <div>
+            <div>日期：<?= date('Y-m-d', $model->createtime) ?></div>
+
+            <div>
+                <div style="float: left; height: 100px; line-height: 100px;">
+                    家长签字：</div>
+                <div style="float: left; height: 100px;">
                     <image id="jimg" src="<?php
                     if ($model->field33) {
                         echo $model->field33;
                     }
                     ?>" style="width: 50px;  "></image>
                 </div>
+                <div style=" clear:both;"></div>
+
             </div>
-            <div>日期：<?= date('Y-m-d', $model->createtime) ?></div>
         </div>
         <div style="margin-top: 20px;">
             <div>学校名称：<?= $healthRecordsSchool->name ?></div>
             <div>校医姓名：<?= $healthRecordsSchool->school_name ?></div>
-            <div style="display: flex;align-items: center; height: 50px;">
+            <div>日期：<?= date('Y-m-d', $model->createtime) ?></div>
 
-                <div>校医签字：</div>
-                <div>
+            <div>
+
+                <div style="float: left; height: 100px; line-height: 100px;">
+                    校医签字：</div>
+                <div style="float: left; height: 100px;">
                     <image id="simg" src="<?php
                     if ($healthRecordsSchool->sign1) {
                         echo $healthRecordsSchool->sign1;
                     }
                     ?>" style="width: 50px;  "></image>
                 </div>
+                <div style=" clear:both;"></div>
+
             </div>
-            <div>日期：<?= date('Y-m-d', $model->createtime) ?></div>
 
         </div>
     </div>
@@ -105,9 +117,21 @@ $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field
     .health-records .w120 {
         width: 120px;
     }
-    .form-table{display: flex;justify-content: space-between;}
+    .form-table{ display: -webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+        display: -moz-box; /* 老版本语法: Firefox (buggy) */
+        display: -ms-flexbox; /* 混合版本语法: IE 10 */
+        display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+        display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+        -webkit-flex-wrap: nowrap;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        -webkit-box-pack: justify;
+        -moz-justify-content: space-between;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+    }
 </style>
-<div class="health-records health-records-form1" style="margin-bottom: 50px;">
+<div class="health-records health-records-form1" style="margin: 0 auto;margin-bottom: 50px;margin-top:200px;max-width: 900px;">
     <div class="header">
         <div class="info">
             附件：社区定制服务包
@@ -217,20 +241,23 @@ $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field
         var gao = document.getElementById("rotate").height;
 
         if (kuan < gao) {
-            document.getElementById('rotate').style.transform = 'rotate(270deg)';
+            document.getElementById('rotate').style.setProperty('-webkit-transform','rotate(270deg)');
+
         }
 
         var kuan = document.getElementById("jimg").width;
         var gao = document.getElementById("jimg").height;
 
         if (kuan < gao) {
-            document.getElementById('jimg').style.transform = 'rotate(270deg)';
+            document.getElementById('jimg').style.setProperty('-webkit-transform','rotate(270deg)');
+
         }
         var kuan = document.getElementById("simg").width;
         var gao = document.getElementById("simg").height;
 
         if (kuan < gao) {
-            document.getElementById('simg').style.transform = 'rotate(270deg)';
+            document.getElementById('simg').style.setProperty('-webkit-transform','rotate(270deg)');
+
         }
 
     };
