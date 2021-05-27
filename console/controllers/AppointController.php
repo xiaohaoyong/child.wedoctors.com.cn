@@ -70,6 +70,9 @@ class AppointController extends Controller
                         if($v->type!=4) {
                             $data['remark'] = '此消息为系统自动推送，如已取消请忽略。';
                         }
+                        if($v->doctorid == 4154){
+                            $data['remark'] = '此消息为系统自动推送，如已取消请忽略。如不能赴约请及时取消！';
+                        }
                         $rs = WechatSendTmp::send($data, $openid, $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,]);
                     }
                 }
