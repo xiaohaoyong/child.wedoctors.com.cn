@@ -17,18 +17,15 @@
 
  <button id="kaiqi" onclick="f()">开启</button>
 <script>
-    function f(){
-        vMP3 = document.getElementById("myAudio");
-        vMP3.play();
-    }
 </script>
  <?php
 
  $updateJs = <<<JS
    $.get('http://hospital.child.wedoctors.com.cn/appoint-calling/ttl?text=是点击老师点击',function (e) {
        $('#myAu').attr('src',e.src);
-       f();
-})
+       vMP3 = document.getElementById("myAudio");
+        vMP3.play();
+    })
 JS;
  $this->registerJs($updateJs);
 
