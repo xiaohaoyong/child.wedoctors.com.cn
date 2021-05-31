@@ -269,19 +269,19 @@ class AppointCallingController extends BaseController
     }
 
     public function actionList($type){
-//        $doctorid=Yii::$app->user->identity->doctorid;
-//        $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
-//        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
-//        $queue = new Queue($doctorid, $type, $timeType);
-//        $list[] = $queue->lrange();
-//
-//        foreach(Appoint::$timeText as $k=>$v){
-//            $queue = new Queue($doctorid, $type, $k);
-//            $list[] = $queue->lrange();
-//        }
+        $doctorid=Yii::$app->user->identity->doctorid;
+        $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+        $queue = new Queue($doctorid, $type, $timeType);
+        $list[] = $queue->lrange();
+
+        foreach(Appoint::$timeText as $k=>$v){
+            $queue = new Queue($doctorid, $type, $k);
+            $list[] = $queue->lrange();
+        }
         $this->layout = "@hospital/views/layouts/main-login.php";
 
-        return $this->render('list');
+        return $this->render('list',['list'=>$list]);
     }
     public function actionTtl($text){
         \Yii::$app->response->format=Response::FORMAT_JSON;

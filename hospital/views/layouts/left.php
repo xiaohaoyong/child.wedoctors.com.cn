@@ -53,7 +53,6 @@
                 'items' => [
                     ['label' => '管理目录', 'options' => ['class' => 'header']],
                     ['label' => '仪表盘', 'icon' => 'dashboard', 'url' => \yii\helpers\Url::to(['site/index']),],
-                    ['label' => '叫号', 'icon' => 'dashboard', 'url' => '/appoint-calling/list?type=2',],
 
                     ['label' => '管辖儿童', 'icon' => 'archive', 'url' => \yii\helpers\Url::to(['child-info/index']),],
                     $a,
