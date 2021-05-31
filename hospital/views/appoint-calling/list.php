@@ -19,7 +19,6 @@
 <script>
 </script>
  <?php
-
  $updateJs = <<<JS
    $.get('http://hospital.child.wedoctors.com.cn/appoint-calling/ttl?text=是点击老师点击',function (e) {
        $('#myAu').attr('src',e.src);
