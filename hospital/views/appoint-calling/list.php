@@ -6,24 +6,30 @@
  * Time: 下午12:06
  */
 ?>
- <div class="login-box">
+ <div data="汪振请到第一诊室"></div>
+ <div data="CCC请到第一诊室"></div>
+ <div data="BBBB请到第一诊室"></div>
 
-     <div class="appoint-calling-form">
-         <div class="login-logo">
-             <a href="#">诊室操作</a>
-         </div>
-         <div class="col-xs-12">
-             <div class="box">
-                 <div class="box-title">
-                 </div>
-                 <!-- /.box-header -->
-                 <div class="box-body">
-                     <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                         <div class="row">
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
- </div>
+ <audio id="myAudio" controls style="display: none">
+     <source src="" id="myAu" type="audio/mpeg">
+     您的浏览器不支持 audio 元素。
+ </audio>
+
+ <button id="kaiqi" onclick="f()">开启</button>
+<script>
+    function f(){
+        vMP3 = document.getElementById("myAudio");
+        vMP3.play();
+    }
+</script>
+ <?php
+
+ $updateJs = <<<JS
+   $.get('http://hospital.child.wedoctors.com.cn/appoint-calling/ttl?text=是点击老师点击',function (e) {
+       $('#myAu').attr('src',e.src);
+       f();
+})
+JS;
+ $this->registerJs($updateJs);
+
+ ?>

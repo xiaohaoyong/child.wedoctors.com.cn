@@ -2,6 +2,7 @@
 
 namespace hospital\controllers;
 
+use common\helpers\baidu_tts\AipSpeech;
 use common\models\Appoint;
 use common\models\AppointCallingList;
 use common\models\HospitalAppoint;
@@ -14,6 +15,7 @@ use hospital\models\AppointCallingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * AppointCallingController implements the CRUD actions for AppointCalling model.
@@ -267,16 +269,28 @@ class AppointCallingController extends BaseController
     }
 
     public function actionList($type){
-        $doctorid=Yii::$app->user->identity->doctorid;
-        $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
-        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
-        $queue = new Queue($doctorid, $type, $timeType);
-        $list[] = $queue->lrange();
+//        $doctorid=Yii::$app->user->identity->doctorid;
+//        $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+//        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+//        $queue = new Queue($doctorid, $type, $timeType);
+//        $list[] = $queue->lrange();
+//
+//        foreach(Appoint::$timeText as $k=>$v){
+//            $queue = new Queue($doctorid, $type, $k);
+//            $list[] = $queue->lrange();
+//        }
+        $this->layout = "@hospital/views/layouts/main-login.php";
 
-        foreach(Appoint::$timeText as $k=>$v){
-            $queue = new Queue($doctorid, $type, $k);
-            $list[] = $queue->lrange();
-        }
-        var_dump($list);exit;
+        return $this->render('list');
+    }
+    public function actionTtl($text){
+        \Yii::$app->response->format=Response::FORMAT_JSON;
+        $client=new AipSpeech('24276375','U5h1fVBmtuBU6AeQucIzDWxi','OGYO3jmYoGs1kBtpgb8nLb0mSnud64eE');
+        $result = $client->synthesis($text, 'zh', 1, array(
+            'vol' => 5,
+        ));
+        $b64='data:audio/x-mpeg;base64,'.base64_encode($result);
+
+        return ['src'=>$b64];
     }
 }
