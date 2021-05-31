@@ -36,7 +36,7 @@ setInterval(function(){
             })
         }
     });
-},10000)
+},9000)
 JS;
 $this->registerJs($updateJs);
 
