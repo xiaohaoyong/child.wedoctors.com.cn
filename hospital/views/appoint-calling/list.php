@@ -32,10 +32,12 @@ setInterval(function(){
                 $('#test').html(audio);
                 vMP3 = document.getElementById("myAudio");
                 vMP3.play();
+                vMP3.play();
+                vMP3.play();
             })
         }
     });
-},5000)
+},10000)
 JS;
 $this->registerJs($updateJs);
 
