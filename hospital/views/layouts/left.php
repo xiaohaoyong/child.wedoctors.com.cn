@@ -53,6 +53,8 @@
                 'items' => [
                     ['label' => '管理目录', 'options' => ['class' => 'header']],
                     ['label' => '仪表盘', 'icon' => 'dashboard', 'url' => \yii\helpers\Url::to(['site/index']),],
+                    ['label' => '叫号', 'icon' => 'dashboard', 'url' => '/appoint-calling/list?type=2',],
+
                     ['label' => '管辖儿童', 'icon' => 'archive', 'url' => \yii\helpers\Url::to(['child-info/index']),],
                     $a,
                     $b,
@@ -76,6 +78,7 @@
                             ['label' => '同步已签约数据', 'url' => ['/synchronization']],
                             $c,
                             ['label' => '疫情调查表下载', 'url' => ['/yiqing/down']],
+                            ['label' => '叫号（测试）', 'icon' => 'dashboard', 'url' => '/appoint-calling/list?type=2',],
 
 
                         ]
