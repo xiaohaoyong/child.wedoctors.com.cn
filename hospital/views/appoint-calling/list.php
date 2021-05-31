@@ -32,12 +32,11 @@ setInterval(function(){
                 $('#test').html(audio);
                 vMP3 = document.getElementById("myAudio");
                 vMP3.play();
-                vMP3.play();
-                vMP3.play();
+                setTimeout('vMP3.play()',3500);
             })
         }
     });
-},10000)
+},8000)
 JS;
 $this->registerJs($updateJs);
 
