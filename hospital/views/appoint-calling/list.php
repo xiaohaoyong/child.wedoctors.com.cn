@@ -7,7 +7,7 @@
  */
 ?>
  <div class="item" data-level="0" data="汪振请到第一诊室"></div>
- <div class="item" data-level="0" data="CCC请到第一诊室"></div>
+ <div class="item" data-level="1" data="CCC请到第一诊室"></div>
  <div class="item" data-level="0" data="BBBB请到第一诊室"></div>
 <div id="test" style="display: none;"></div>
  <button id="kaiqi" onclick="f()">开启</button>
