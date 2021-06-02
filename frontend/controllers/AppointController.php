@@ -23,7 +23,9 @@ use yii\base\Application;
 use yii\base\Model;
 use yii\web\Controller;
 use yii\web\Response;
-
+use common\models\AppointCalling;
+use common\models\AppointCallingList;
+use common\models\queuing\Queue;
 
 class AppointController extends Controller
 {
@@ -196,4 +198,44 @@ class AppointController extends Controller
         return ['code' => 20000, 'msg' => '请求失败','data'=>$post];
     }
 
+    public function actionCalling($h, $d, $s,$id){
+        $doctorid=$this->hs[$h];
+        $appoint = Appoint::findOne(['doctorid'=>$this->hs[$h],'id'=>$id]);
+        if (!$appoint) {
+            return ['code' => 20000, 'msg' => '未查询到预约信息'];
+        } else {
+            $appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
+            //判断用户是否已经排队
+            if ($appointCallingListModel) {
+                if ($appointCallingListModel->state == 1) {
+                    return ['code' => 20000, 'msg' => '已成功排队'];
+                } elseif ($appointCallingListModel->state == 3) {
+                    return ['code' => 20000, 'msg' => '预约已完成'];
+                } elseif ($appointCallingListModel->state == 2) {
+                    //过期重排
+                    $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $appoint->type]);
+                    $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+                    $appointCallingListModel->time = $timeType;
+                    if ($appointCallingListModel->save()) {
+                        $queue = new Queue($doctorid, $appoint->type, $appoint->appoint_time);
+                        $queueNum = $queue->lpush($appointCallingListModel->id);
+                        return ['code' => 10000, 'msg' => '您的排队已过期，已为您重新排号'];
+                    }
+                }
+            } else {
+                //排队
+                $appointCallingListModel = new AppointCallingList();
+                $appointCallingListModel->aid = $appoint->id;
+                $appointCallingListModel->openid = '';
+                $appointCallingListModel->doctorid = $doctorid;
+                $appointCallingListModel->time = $appoint->appoint_time;
+                $appointCallingListModel->type = $appoint->type;
+                if ($appointCallingListModel->save()) {
+                    $queue = new Queue($doctorid, $appoint->type, $appoint->appoint_time);
+                    $queueNum = $queue->lpush($appointCallingListModel->id);
+                    return ['code' => 10000, 'msg' => '成功'];
+                }
+            }
+        }
+    }
 }
