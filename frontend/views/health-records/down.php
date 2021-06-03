@@ -11,9 +11,11 @@ use yii\widgets\ActiveForm;
 </style>
 <?php
 $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field30);
+$doctor=\common\models\UserDoctor::findOne(['userid'=>$healthRecordsSchool->doctorid]);
+$hospital=\common\models\Hospital::findOne($doctor->hospitalid);
 ?>
 <div style="padding: 10px; max-width: 900px; margin: 0 auto;">
-    <h1>北京市朝阳区八里庄社区卫生服务中心</h1>
+    <h1>北京市<?=\common\models\Area::$all[$doctor->county]?><?=$hospital->name?></h1>
     <h1 style="padding-bottom: 20px;">家庭医生签约服务协议书</h1>
     <div class="content1" style="line-height: 25px;">
         <div style="font-weight: bolder;">尊敬的<?= $model->field29 ?>家长：</div>

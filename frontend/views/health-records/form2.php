@@ -13,6 +13,10 @@ use yii\bootstrap\Modal;
         background: #ffffff;
     }
 </style>
+<?php
+$doctor=\common\models\UserDoctor::findOne(['userid'=>$doctorid]);
+$hospital=\common\models\Hospital::findOne($doctor->hospitalid);
+?>
 <div class="health-records">
     <div class="header">
         <h2>家庭医生服务签约</h2>
@@ -22,7 +26,7 @@ use yii\bootstrap\Modal;
                 儿童健康关乎社会未来，每个人是自己健康第一责任人。从小养成健康生活方式和习惯，对于维护健康和疾病预防具有重要意义。
             </p>
             <p>
-                为了更好提供新冠等传染病以及儿童常见病预防服务，做好在校学龄儿童健康管理等学校卫生服务，我校联合朝阳区八里庄社区卫生服务中心开展“家庭医生进校园”签约服务。
+                为了更好提供新冠等传染病以及儿童常见病预防服务，做好在校学龄儿童健康管理等学校卫生服务，我校联合<?=\common\models\Area::$all[$doctor->county]?><?=$hospital->name?>开展“家庭医生进校园”签约服务。
             </p>
             <p>
                 疫情常态化防控期间，让我们共同做好学校卫生安全保障、做好学生健康维护工作，感谢各位家长的支持配合！
