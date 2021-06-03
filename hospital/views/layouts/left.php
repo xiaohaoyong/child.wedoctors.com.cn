@@ -33,7 +33,7 @@
             $e = ['label' => '同步已签约数据', 'url' => ['/synchronization']];
         }
 
-        if(in_array(Yii::$app->user->identity->hospitalid,[110647,110565])){
+        if(in_array(Yii::$app->user->identity->hospitalid,[110647,110565,110598])){
             $health_records=['label' => '6岁以上学生签约', 'icon' => 'file-text-o', 'url' => "#",
                 'items' => [
                     ['label' => '签约列表', 'url' => '/health-records'],
