@@ -85,16 +85,33 @@ $hospital=\common\models\Hospital::findOne($doctor->hospitalid);
             <div class="form-table-td2">针对儿童心理、肥胖、口腔和近视等常见健康问题，通过微信小程序给予相关健康知识推送指导</div>
             <div class="form-table-td3">免费</div>
         </div>
-        <div class="form-table ">
-            <div class="form-table-td1">龋齿预防</div>
-            <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导</div>
-            <div class="form-table-td3">免费</div>
-        </div>
+        <?php
+        if($doctorid!=206262) {
+            ?>
+            <div class="form-table ">
+                <div class="form-table-td1">龋齿预防</div>
+                <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导</div>
+                <div class="form-table-td3">免费</div>
+            </div>
+            <?php
+        }
+        ?>
         <div class="form-table ">
             <div class="form-table-td1">预防接种</div>
             <div class="form-table-td2">疫苗接种提醒、咨询、流感疫苗接种指导以及计划内免疫接种</div>
             <div class="form-table-td3">免费</div>
         </div>
+        <?php
+        if($doctorid==206262) {
+            ?>
+            <div class="form-table ">
+                <div class="form-table-td1">龋齿预防</div>
+                <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导</div>
+                <div class="form-table-td3"><?=Html::activeCheckbox($model,'field45',['label'=>false])?></div>
+            </div>
+            <?php
+        }
+        ?>
         <div class="form-table ">
             <div class="form-table-td1">中医外治法防治青少年近视（自愿选择，非强制）</div>
             <div class="form-table-td2">中医按摩、点穴、拔罐、耳穴压豆、梅花针等方法防治青少年近视（收费，按照医保收费标准执行。自愿选择。）</div>
