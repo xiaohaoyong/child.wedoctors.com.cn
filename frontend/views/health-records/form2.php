@@ -105,6 +105,11 @@ $hospital=\common\models\Hospital::findOne($doctor->hospitalid);
         if($doctorid==206262) {
             ?>
             <div class="form-table ">
+                <div class="form-table-td1">口腔筛查</div>
+                <div class="form-table-td2">免费（需持卡挂号）口腔科检查，指导儿童正确刷牙方法，每年提供一次氟化泡沫预防龋齿</div>
+                <div class="form-table-td3">免费</div>
+            </div>
+            <div class="form-table ">
                 <div class="form-table-td1">龋齿预防</div>
                 <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导（收费，按照医保收费标准执行。自愿选择。）</div>
                 <div class="form-table-td3"><?=Html::activeCheckbox($model,'field45',['label'=>false])?></div>
@@ -152,7 +157,7 @@ $hospital=\common\models\Hospital::findOne($doctor->hospitalid);
         </div>
         <div class="form-table ">
             <div class="form-table-td1">预约转诊</div>
-            <div class="form-table-td2">根据病情需要，为签约患者提供上级大医院预约挂号及转诊等服务</div>
+            <div class="form-table-td2">根据病情需要，为签约患者提供<?=$doctorid!=206262?'上级大医院':'医联体天坛医院、南苑医院、丰台区妇幼保健院'?>预约挂号及转诊等服务</div>
             <div class="form-table-td3">免费</div>
         </div>
         <div class="form-table ">
