@@ -187,8 +187,8 @@ $hospital=\common\models\Hospital::findOne($doctor->hospitalid);
             <div class="info-title">特色服务项目</div>
         </div>
         <div class="form-table ">
-            <div class="form-table-td1">朝阳区家医服务APP</div>
-            <div class="form-table-td2">登录朝阳区家医服务APP，享受查询、互动，获得科学、权威健康资讯</div>
+            <div class="form-table-td1"><?=\common\models\Area::$all[$doctor->county]?>家医服务APP</div>
+            <div class="form-table-td2">登录<?=\common\models\Area::$all[$doctor->county]?>家医服务APP，享受查询、互动，获得科学、权威健康资讯</div>
             <div class="form-table-td3">免费</div>
         </div>
 
