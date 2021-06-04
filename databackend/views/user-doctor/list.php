@@ -140,13 +140,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     </td>
                                                     <td><?php
                                                         echo \common\models\Pregnancy::find()
-                                                            ->andWhere(['field49'=>0])->andWhere(['>','field16',strtotime('-11 month')])->andWhere(['doctorid'=>$v->hospitalid])->count();
+                                                            ->andWhere(['field49'=>0])->andWhere(['>','field11',strtotime('-11 month')])->andWhere(['doctorid'=>$v->hospitalid])->count();
                                                         ?></td>
                                                     <td><?php
 
                                                         $query= \common\models\Pregnancy::find()
                                                             ->andWhere(['pregnancy.field49'=>0])
-                                                            ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
+                                                            ->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
                                                             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
                                                             ->andWhere(['pregnancy.doctorid'=>$v->hospitalid])
                                                             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $v->userid]);
