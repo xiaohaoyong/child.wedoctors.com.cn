@@ -236,7 +236,7 @@ $hospital=\common\models\Hospital::findOne($doctor->hospitalid);
             ?>
             <div class="form-table ">
                 <div class="form-table-td1">龋齿预防</div>
-                <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导</div>
+                <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导（收费，按照医保收费标准执行。自愿选择。）</div>
                 <div class="form-table-td3"><?=\yii\bootstrap\Html::checkbox('HealthRecords[field36]',$model->field38,['disabled'=>'true'])?></div>
             </div>
         <?php }?>
