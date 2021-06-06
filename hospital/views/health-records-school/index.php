@@ -18,10 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box">
             <!-- /.box-header -->
             <div class="box-header with-border">
-                <h3 class="box-title">学生签约填表二维码(建档表单)：</h3>
-                <div>
-                    <img src="https://api.child.wedoctors.com.cn/image/doctor?id=<?=$doctorid?>" width="200" height="200">
-                </div>
+<!--                <h3 class="box-title">学生签约填表二维码(建档表单)：</h3>-->
+<!--                <div>-->
+<!--                    <img src="https://api.child.wedoctors.com.cn/image/doctor?id=--><?//=$doctorid?><!--" width="200" height="200">-->
+<!--                </div>-->
                 <!-- /.box-tools -->
                 <h3 class="box-title">学生签约填表二维码(基本信息表单)：</h3>
                 <div>

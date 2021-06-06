@@ -118,7 +118,7 @@ class HealthRecordsSearch extends HealthRecords
             ->andFilterWhere(['like', 'field32', $this->field32])
             ->andFilterWhere(['like', 'field33', $this->field33]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
-
+        //echo $query->createCommand()->getRawSql();exit;
         return $dataProvider;
     }
 }

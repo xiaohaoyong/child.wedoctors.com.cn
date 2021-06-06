@@ -13,6 +13,10 @@ use yii\bootstrap\Modal;
         background: #ffffff;
     }
 </style>
+<?php
+$doctor=\common\models\UserDoctor::findOne(['userid'=>$doctorid]);
+$hospital=\common\models\Hospital::findOne($doctor->hospitalid);
+?>
 <div class="health-records">
     <div class="header">
         <h2>家庭医生服务签约</h2>
@@ -22,7 +26,7 @@ use yii\bootstrap\Modal;
                 儿童健康关乎社会未来，每个人是自己健康第一责任人。从小养成健康生活方式和习惯，对于维护健康和疾病预防具有重要意义。
             </p>
             <p>
-                为了更好提供新冠等传染病以及儿童常见病预防服务，做好在校学龄儿童健康管理等学校卫生服务，我校联合朝阳区八里庄社区卫生服务中心开展“家庭医生进校园”签约服务。
+                为了更好提供新冠等传染病以及儿童常见病预防服务，做好在校学龄儿童健康管理等学校卫生服务，我校联合<?=\common\models\Area::$all[$doctor->county]?><?=$hospital->name?>开展“家庭医生进校园”签约服务。
             </p>
             <p>
                 疫情常态化防控期间，让我们共同做好学校卫生安全保障、做好学生健康维护工作，感谢各位家长的支持配合！
@@ -81,16 +85,38 @@ use yii\bootstrap\Modal;
             <div class="form-table-td2">针对儿童心理、肥胖、口腔和近视等常见健康问题，通过微信小程序给予相关健康知识推送指导</div>
             <div class="form-table-td3">免费</div>
         </div>
-        <div class="form-table ">
-            <div class="form-table-td1">龋齿预防</div>
-            <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导</div>
-            <div class="form-table-td3">免费</div>
-        </div>
+        <?php
+        if($doctorid!=206262) {
+            ?>
+            <div class="form-table ">
+                <div class="form-table-td1">龋齿预防</div>
+                <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导</div>
+                <div class="form-table-td3">免费</div>
+            </div>
+            <?php
+        }
+        ?>
         <div class="form-table ">
             <div class="form-table-td1">预防接种</div>
             <div class="form-table-td2">疫苗接种提醒、咨询、流感疫苗接种指导以及计划内免疫接种</div>
             <div class="form-table-td3">免费</div>
         </div>
+        <?php
+        if($doctorid==206262) {
+            ?>
+            <div class="form-table ">
+                <div class="form-table-td1">口腔筛查</div>
+                <div class="form-table-td2">免费（需持卡挂号）口腔科检查，指导儿童正确刷牙方法，每年提供一次氟化泡沫预防龋齿</div>
+                <div class="form-table-td3">免费</div>
+            </div>
+            <div class="form-table ">
+                <div class="form-table-td1">龋齿预防</div>
+                <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导（收费，按照医保收费标准执行。自愿选择。）</div>
+                <div class="form-table-td3"><?=Html::activeCheckbox($model,'field45',['label'=>false])?></div>
+            </div>
+            <?php
+        }
+        ?>
         <div class="form-table ">
             <div class="form-table-td1">中医外治法防治青少年近视（自愿选择，非强制）</div>
             <div class="form-table-td2">中医按摩、点穴、拔罐、耳穴压豆、梅花针等方法防治青少年近视（收费，按照医保收费标准执行。自愿选择。）</div>
@@ -131,7 +157,7 @@ use yii\bootstrap\Modal;
         </div>
         <div class="form-table ">
             <div class="form-table-td1">预约转诊</div>
-            <div class="form-table-td2">根据病情需要，为签约患者提供上级大医院预约挂号及转诊等服务</div>
+            <div class="form-table-td2">根据病情需要，为签约患者提供<?=$doctorid!=206262?'上级大医院':'医联体天坛医院、南苑医院、丰台区妇幼保健院'?>预约挂号及转诊等服务</div>
             <div class="form-table-td3">免费</div>
         </div>
         <div class="form-table ">
@@ -166,8 +192,8 @@ use yii\bootstrap\Modal;
             <div class="info-title">特色服务项目</div>
         </div>
         <div class="form-table ">
-            <div class="form-table-td1">朝阳区家医服务APP</div>
-            <div class="form-table-td2">登录朝阳区家医服务APP，享受查询、互动，获得科学、权威健康资讯</div>
+            <div class="form-table-td1"><?=\common\models\Area::$all[$doctor->county]?>家医服务APP</div>
+            <div class="form-table-td2">登录<?=\common\models\Area::$all[$doctor->county]?>家医服务APP，享受查询、互动，获得科学、权威健康资讯</div>
             <div class="form-table-td3">免费</div>
         </div>
 

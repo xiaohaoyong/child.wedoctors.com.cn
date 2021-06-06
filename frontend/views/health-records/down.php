@@ -11,15 +11,17 @@ use yii\widgets\ActiveForm;
 </style>
 <?php
 $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field30);
+$doctor=\common\models\UserDoctor::findOne(['userid'=>$healthRecordsSchool->doctorid]);
+$hospital=\common\models\Hospital::findOne($doctor->hospitalid);
 ?>
 <div style="padding: 10px; max-width: 900px; margin: 0 auto;">
-    <h1>北京市朝阳区八里庄社区卫生服务中心</h1>
+    <h1>北京市<?=\common\models\Area::$all[$doctor->county]?><?=$hospital->name?></h1>
     <h1 style="padding-bottom: 20px;">家庭医生签约服务协议书</h1>
     <div class="content1" style="line-height: 25px;">
         <div style="font-weight: bolder;">尊敬的<?= $model->field29 ?>家长：</div>
         <div style="text-indent: 2em;">
             <p>
-                您好！感谢您为孩子选择 <?=$healthRecordsSchool->doctor_name?>签约，本着平等、尊重和自愿的原则，三方签订本协议书。为了更好提供传染病和儿童常见病防控、儿童健康管理等学校卫生服务，根据孩子健康需求选择基本服务包<?=$model->field44?'、学龄儿童服务包':''?>，团队成员将按照协议内容提供相应服务，内容详见附表。
+                您好！感谢您为孩子选择 <?=$healthRecordsSchool->doctor_name?>签约，本着平等、尊重和自愿的原则，三方签订本协议书。为了更好提供传染病和儿童常见病防控、儿童健康管理等学校卫生服务，根据孩子健康需求选择家庭医生签约基本服务包<?=$model->field44?'、学龄儿童服务包':''?>，团队成员将按照协议内容提供相应服务，内容详见附表。
             </p>
             <p>
                 希望您遵守协议，保持诚信，将孩子的身体健康状况及变化情况如实、及时告知我们，并积极配合团队成员工作，遵从医嘱，做好健康自我管理。有任何健康服务需求，都可以联系您的家庭医生团队成员。
@@ -159,7 +161,7 @@ $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field
     </div>
     <div class="form-table ">
         <div class="form-table-td1">预约转诊</div>
-        <div class="form-table-td2">根据病情需要，为签约患者提供上级大医院预约挂号及转诊等服务</div>
+        <div class="form-table-td2">根据病情需要，为签约患者提供<?=$healthRecordsSchool->doctorid!=206262?'上级大医院':'医联体天坛医院、南苑医院、丰台区妇幼保健院'?>预约挂号及转诊等服务</div>
         <div class="form-table-td3">免费</div>
     </div>
     <div class="form-table ">
@@ -194,8 +196,8 @@ $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field
         <div class="info-title">特色服务项目</div>
     </div>
     <div class="form-table ">
-        <div class="form-table-td1">朝阳区家医服务APP</div>
-        <div class="form-table-td2">登录朝阳区家医服务APP，享受查询、互动，获得科学、权威健康资讯</div>
+        <div class="form-table-td1"><?=\common\models\Area::$all[$doctor->county]?>家医服务APP</div>
+        <div class="form-table-td2">登录<?=\common\models\Area::$all[$doctor->county]?>家医服务APP，享受查询、互动，获得科学、权威健康资讯</div>
         <div class="form-table-td3">免费</div>
     </div>
     <?php
@@ -215,16 +217,34 @@ $healthRecordsSchool = \common\models\HealthRecordsSchool::findOne($model->field
         <div class="form-table-td2">针对儿童心理、肥胖、口腔和近视等常见健康问题，通过微信小程序给予相关健康知识推送指导</div>
         <div class="form-table-td3">免费</div>
     </div>
+    <?php
+    if($healthRecordsSchool->doctorid!=206262) {
+        ?>
     <div class="form-table ">
         <div class="form-table-td1">龋齿预防</div>
         <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导</div>
         <div class="form-table-td3">免费</div>
     </div>
+        <?php }?>
     <div class="form-table ">
         <div class="form-table-td1">预防接种</div>
         <div class="form-table-td2">疫苗接种提醒、咨询、流感疫苗接种指导以及计划内免疫接种</div>
         <div class="form-table-td3">免费</div>
     </div>
+        <?php
+        if($healthRecordsSchool->doctorid==206262) {
+            ?>
+            <div class="form-table ">
+                <div class="form-table-td1">口腔筛查</div>
+                <div class="form-table-td2">免费（需持卡挂号）口腔科检查，指导儿童正确刷牙方法，每年提供一次氟化泡沫预防龋齿</div>
+                <div class="form-table-td3">免费</div>
+            </div>
+            <div class="form-table ">
+                <div class="form-table-td1">龋齿预防</div>
+                <div class="form-table-td2">一到三年级儿童（7-9岁）每年一次窝沟封闭，同时进行龋齿检查、防龋指导（收费，按照医保收费标准执行。自愿选择。）</div>
+                <div class="form-table-td3"><?=\yii\bootstrap\Html::checkbox('HealthRecords[field36]',$model->field38,['disabled'=>'true'])?></div>
+            </div>
+        <?php }?>
     <div class="form-table ">
         <div class="form-table-td1">中医外治法防治青少年近视（自愿选择，非强制）</div>
         <div class="form-table-td2">中医按摩、点穴、拔罐、耳穴压豆、梅花针等方法防治青少年近视（收费，按照医保收费标准执行。自愿选择。）</div>

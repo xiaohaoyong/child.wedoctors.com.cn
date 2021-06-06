@@ -38,7 +38,7 @@ class HealthRecordsController extends BaseController
         $searchModel = new HealthRecordsSearch();
         $params=Yii::$app->request->queryParams;
         $params['HealthRecordsSearch']['doctorid']=\Yii::$app->user->identity->doctorid;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search($params);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

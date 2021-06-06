@@ -41,7 +41,9 @@ class HealthRecordsSchoolController extends BaseController
         $doctorid = \Yii::$app->user->identity->doctorid;
 
         $searchModel = new HealthRecordsSchoolSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $params=Yii::$app->request->queryParams;
+        $params['HealthRecordsSchoolSearch']['doctorid']=\Yii::$app->user->identity->doctorid;
+        $dataProvider = $searchModel->search($params);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
