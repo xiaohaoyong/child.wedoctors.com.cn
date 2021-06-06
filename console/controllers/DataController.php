@@ -79,6 +79,57 @@ class DataController extends \yii\console\Controller
     public function actionTesta($num=0)
     {
 
+        $doctorid=206260;
+        $dname='新村社区';
+        //签约儿童总数
+        $child=ChildInfo::find()
+            ->select('userid')
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->andFilterWhere(['>','child_info.birthday',strtotime('-6 year')])
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+            ->column();
+
+        $pregLCount=Pregnancy::find()
+            ->select('familyid')
+
+            ->andWhere(['pregnancy.field49'=>0])
+            ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->column();
+
+        //$array=$child+$pregLCount;
+        $array=[390512,175579];
+        $data = [
+            'first' => array('value' => "欢迎大家加入【儿宝宝{$dname}妈妈交流群】，我们的宝宝同在{$dname}医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
+            'keyword1' => ARRAY('value' => "儿宝宝用户"),
+            'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
+            'keyword3' => ARRAY('value' =>"请您点击查看详情，并长按二维码进入【{$dname}妈妈交流群】"),
+
+            'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院政策宣传、疫苗及体检咨询、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
+        ];
+        $miniprogram=[
+            "appid"=>\Yii::$app->params['wxXAppId'],
+            "pagepath"=>"/pages/article/view/index?id=1",
+        ];
+        $temp='Pa_dWDnwfS5FYpQmB8wf5uWyge50tGpxfg47xfGLYrI';
+        foreach($array as $k=>$v){
+            $login = UserLogin::find()->where(['!=', 'openid', ''])->andWhere(['userid'=>$v])->one();
+            if($login) {
+                print_r($login->openid);
+                $rs = WechatSendTmp::send($data, $login->openid, $temp, "http://child.wedoctors.com.cn/hospital/{$doctorid}.html");
+                if($rs){
+                    echo "==true";
+                }else{
+                    echo "==false";
+                }
+                echo "\n";
+            }
+
+
+        }
+        exit;
+
         $totle = 358676;
         $limit = ceil($totle / 50);
         $snum = $num * $limit;
@@ -250,56 +301,7 @@ class DataController extends \yii\console\Controller
 //        exit;
 
 
-        $doctorid=213581;
-        $dname='方庄社区';
-        //签约儿童总数
-        $child=ChildInfo::find()
-            ->select('userid')
-            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andFilterWhere(['>','child_info.birthday',strtotime('-6 year')])
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-            ->column();
 
-        $pregLCount=Pregnancy::find()
-            ->select('familyid')
-
-            ->andWhere(['pregnancy.field49'=>0])
-            ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
-            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->column();
-
-        //$array=$child+$pregLCount;
-        $array=[390512,175579];
-        $data = [
-            'first' => array('value' => "欢迎大家加入【儿宝宝{$dname}妈妈交流群】，我们的宝宝同在{$dname}医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
-            'keyword1' => ARRAY('value' => "儿宝宝用户"),
-            'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-            'keyword3' => ARRAY('value' =>"请您点击查看详情，并长按二维码进入【{$dname}妈妈交流群】"),
-
-            'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院政策宣传、疫苗及体检咨询、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
-        ];
-        $miniprogram=[
-            "appid"=>\Yii::$app->params['wxXAppId'],
-            "pagepath"=>"/pages/article/view/index?id=1",
-        ];
-        $temp='Pa_dWDnwfS5FYpQmB8wf5uWyge50tGpxfg47xfGLYrI';
-        foreach($array as $k=>$v){
-            $login = UserLogin::find()->where(['!=', 'openid', ''])->andWhere(['userid'=>$v])->one();
-            if($login) {
-                print_r($login->openid);
-                $rs = WechatSendTmp::send($data, $login->openid, $temp, "http://child.wedoctors.com.cn/hospital/{$doctorid}.html");
-                if($rs){
-                   echo "==true";
-                }else{
-                    echo "==false";
-                }
-                echo "\n";
-            }
-
-
-        }
-        exit;
         var_dump(array_unique($array));exit;
 
 
