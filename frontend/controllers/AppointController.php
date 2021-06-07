@@ -199,6 +199,8 @@ class AppointController extends Controller
     }
 
     public function actionCalling($h, $d, $s,$id){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
         return ['code' => 10000, 'msg' => '成功'];
         $doctorid=$this->hs[$h];
         $appoint = Appoint::findOne(['doctorid'=>$this->hs[$h],'id'=>$id]);
