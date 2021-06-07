@@ -199,6 +199,7 @@ class AppointController extends Controller
     }
 
     public function actionCalling($h, $d, $s,$id){
+        return ['code' => 10000, 'msg' => '成功'];
         $doctorid=$this->hs[$h];
         $appoint = Appoint::findOne(['doctorid'=>$this->hs[$h],'id'=>$id]);
         if (!$appoint) {
