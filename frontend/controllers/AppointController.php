@@ -201,7 +201,7 @@ class AppointController extends Controller
     public function actionCalling($h, $d, $s,$id){
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
-        return ['code' => 10000, 'msg' => '成功','data'=>['name'=>'测试','type'=>'疫苗接种','hospital'=>'儿宝宝社区服务中心','num'=>'1','deng'=>'前方等待人数0','date'=>'2021年1月1日 10:00-11:00']];
+        return ['code' => 20000, 'msg' => '预约已完成','data'=>['name'=>'测试','type'=>'疫苗接种','hospital'=>'儿宝宝社区服务中心','num'=>'1','deng'=>'前方等待人数0','date'=>'2021年1月1日 10:00-11:00']];
         $doctorid=$this->hs[$h];
         $appoint = Appoint::findOne(['doctorid'=>$this->hs[$h],'id'=>$id]);
         if (!$appoint) {
