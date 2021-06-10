@@ -198,10 +198,13 @@ class AppointController extends Controller
         return ['code' => 20000, 'msg' => '请求失败','data'=>$post];
     }
 
-    public function actionCalling($h, $d, $s,$id){
+    public function actionCalling($h, $d, $s,$aString){
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
-        return ['code' => 10000, 'msg' => '成功','data'=>['name'=>'测试','type'=>'疫苗接种','hospital'=>'儿宝宝社区服务中心','num'=>'1','deng'=>'前方等待人数0','date'=>'2021年1月1日 10:00-11:00']];
+        $appointArray=explode(',',$aString);
+        $id=$appointArray[1];
+
+        //return ['code' => 10000, 'msg' => '成功',];
         $doctorid=$this->hs[$h];
         $appoint = Appoint::findOne(['doctorid'=>$this->hs[$h],'id'=>$id]);
         if (!$appoint) {
@@ -222,9 +225,16 @@ class AppointController extends Controller
                     if ($appointCallingListModel->save()) {
                         $queue = new Queue($doctorid, $appoint->type, $appoint->appoint_time);
                         $queueNum = $queue->lpush($appointCallingListModel->id);
-                        return ['code' => 10000, 'msg' => '您的排队已过期，已为您重新排号'];
+                        $userDoctor=UserDoctor::findOne(['doctorid'=>$appoint->doctorid]);
+                        $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
+                        return ['code' => 10000, 'msg' => '您的排队已过期，重新出号',
+                            'data'=>[
+                                'name'=>'测试',
+                                'type'=>Appoint::$typeText[$appoint->type],
+                                'hospital'=>$hospital->name,'num'=> AppointCallingList::listName($appointCallingListModel->id,$doctorid, $appoint->type),'deng'=>($queueNum - 1),'date'=>date('Y年m月d日')." ".Appoint::$timeText[$appoint->appoint_time]]];
                     }
                 }
+
             } else {
                 //排队
                 $appointCallingListModel = new AppointCallingList();
@@ -236,7 +246,13 @@ class AppointController extends Controller
                 if ($appointCallingListModel->save()) {
                     $queue = new Queue($doctorid, $appoint->type, $appoint->appoint_time);
                     $queueNum = $queue->lpush($appointCallingListModel->id);
-                    return ['code' => 10000, 'msg' => '成功'];
+                    $userDoctor=UserDoctor::findOne(['doctorid'=>$appoint->doctorid]);
+                    $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
+                    return ['code' => 10000, 'msg' => '成功',
+                        'data'=>[
+                            'name'=>'测试',
+                            'type'=>Appoint::$typeText[$appoint->type],
+                            'hospital'=>$hospital->name,'num'=> AppointCallingList::listName($appointCallingListModel->id,$doctorid, $appoint->type),'deng'=>($queueNum - 1),'date'=>date('Y年m月d日')." ".Appoint::$timeText[$appoint->appoint_time]]];
                 }
             }
         }
