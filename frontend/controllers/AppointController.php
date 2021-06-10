@@ -201,7 +201,7 @@ class AppointController extends Controller
     public function actionCalling($h, $d, $s,$aString){
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $appointArray=explode(',',$aString);
+        $appointArray=explode(':',$aString);
         $id=$appointArray[1];
 
         //return ['code' => 10000, 'msg' => '成功',];
