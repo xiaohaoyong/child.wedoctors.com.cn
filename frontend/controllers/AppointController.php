@@ -40,7 +40,7 @@ class AppointController extends Controller
         'E1mUGz95' => [192821],
         'ER8GOz85'=>[257888],
         'y479PewU'=>[314896],
-
+                  'YPYGI9lE'  =>[47156],
     ];
 
 
@@ -214,7 +214,7 @@ class AppointController extends Controller
             //判断用户是否已经排队
             if ($appointCallingListModel) {
                 if ($appointCallingListModel->state == 1) {
-                    return ['code' => 20000, 'msg' => '已成功排队'];
+                    return ['code' => 20000, 'msg' => '已排队'];
                 } elseif ($appointCallingListModel->state == 3) {
                     return ['code' => 20000, 'msg' => '预约已完成'];
                 } elseif ($appointCallingListModel->state == 2) {
