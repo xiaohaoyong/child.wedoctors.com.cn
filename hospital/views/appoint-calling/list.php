@@ -8,6 +8,7 @@
 use yii\widgets\Pjax;
 $userDoctor=\common\models\UserDoctor::findOne(['userid'=>Yii::$app->user->identity->doctorid]);
 $hospital=\common\models\Hospital::findOne($userDoctor->hospitalid);
+$this->title="就诊列表";
 ?>
 <style>
     .item{text-align:center;display: flex;justify-content: space-between;margin: 15px;height: 150px;line-height: 150px;font-size: 40px;background: #039A85;padding-left: 64px;padding-right:42px; }
@@ -22,8 +23,8 @@ $hospital=\common\models\Hospital::findOne($userDoctor->hospitalid);
     <?php Pjax::begin([
         'id' => 'countries',
     ]) ?>
-    <div class="item" data-level="0" data="汪振请到第一诊室" style="height: 100px; line-height: 100px; font-size: 30px;">
-        <div class="num text">序号<?=$time?></div>
+    <div class="item" data-level="0" data="" style="height: 100px; line-height: 100px; font-size: 30px;">
+        <div class="num text">序号</div>
         <div class="text">姓名</div>
         <div class="text">诊室</div>
         <div class="text">时间段</div>

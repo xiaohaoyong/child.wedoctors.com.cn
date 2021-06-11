@@ -188,9 +188,11 @@ class AppointCallingController extends BaseController
         $aclid=$this->queue($AppointCalling->type,$timeType,$hospitalAppoint);
         if ($aclid) {
             $appointCallingList = AppointCallingList::findOne($aclid);
-            $appointCallingList->acid = $AppointCalling->id;
-            $appointCallingList->calling = 1;
-            $appointCallingList->save();
+            if($appointCallingList) {
+                $appointCallingList->acid = $AppointCalling->id;
+                $appointCallingList->calling = 1;
+                $appointCallingList->save();
+            }
         }
         return $appointCallingList;
     }
@@ -283,12 +285,12 @@ class AppointCallingController extends BaseController
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
         $queue = new Queue($doctorid, $type, $timeType);
-        $list[] = $queue->lrange();
+        $list[] = $queue->lrange(3);
 
         foreach(Appoint::$timeText as $k=>$v){
             if($k!=$timeType) {
                 $queue = new Queue($doctorid, $type, $k);
-                $list[] = $queue->lrange();
+                $list[] = $queue->lrange(3);
             }
         }
         $this->layout = "@hospital/views/layouts/main-login.php";
