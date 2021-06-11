@@ -77,8 +77,6 @@
                             ['label' => '同步已签约数据', 'url' => ['/synchronization']],
                             $c,
                             ['label' => '疫情调查表下载', 'url' => ['/yiqing/down']],
-                            ['label' => '叫号（测试）', 'icon' => 'dashboard', 'url' => '/appoint-calling/list?type=2',],
-
 
                         ]
                     ],
@@ -89,7 +87,7 @@
                             ['label' => '街道管理', 'url' => ['street/index']],
                             ['label' => '添加街道', 'url' => ['street/create']],
                             ['label' => '加号', 'url' => ['child/signed']],
-                            //['label' => '线上叫号', 'url' => ['appoint-calling/create']],
+                            ['label' => '线上叫号', 'url' => ['appoint-calling/index']],
 
                         ]
                     ],

@@ -16,49 +16,21 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="appoint-calling-index">
     <div class="col-xs-12">
         <div class="box">
-            <div class="box-header with-border">
-                <h3 class="box-title">检索：</h3>
-                <div>
-                                                <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-                                    </div>
-                <!-- /.box-tools -->
-            </div>
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                     <div class="row">
-                                                                            <?= GridView::widget([
-                            'options'=>['class' => 'col-sm-12'],
-                            'dataProvider' => $dataProvider,
-                            
-     'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-
-                                        'id',
-            'doctorid',
-            'userid',
-            'name',
-            'type',
-
-                            [
-                            'class' => 'common\components\grid\ActionColumn',
-                            'template'=>'
-                            <div class="btn-group dropup">
-                                <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li>{update}</li>
-                                    <li>{delete}</li>
-                                </ul>
-                            </div>
-                            ',
-                            ],
-                            ],
-                            ]); ?>
-                                                                    </div>
+                        <div id="w1" class="col-sm-12"><div class="summary">第<b>1-4</b>条，共<b>4</b>条数据.</div>
+                            <table class="table table-striped table-bordered"><thead>
+                                <tr><th>#</th><th>#</th></thead>
+                                <tbody>
+                                <?php foreach(\common\models\HospitalAppoint::$typeText as $k=>$v){?>
+                                    <tr data-key="<?=$k?>"><td><?=$v?>排队列表</td><td><a href="/appoint-calling/list?type=<?=$k?>" title="更新" aria-label="更新" data-pjax="0"><span class="glyphicon glyphicon-pencil"></span> 跳转</a></td></tr>
+                                <?php }?>
+                                <tr data-key="<?=$k+1?>"><td>我的诊室</td><td><a href="/appoint-calling/room" title="更新" aria-label="更新" data-pjax="0"><span class="glyphicon glyphicon-pencil"></span> 跳转</a></td></tr>
+                                </tbody></table>
+                        </div>                                                                    </div>
                 </div>
-            </div>
-        </div>
+            </div>        </div>
     </div>
 </div>
