@@ -241,7 +241,7 @@ class SiteController extends BaseController
             $cookies->add(new \yii\web\Cookie([
                 'name' => 'hospital',
                 'value' => $hospitalid,
-                'expire'=>time()+3600
+                'expire'=>time()+3600000
             ]));
             return $this->redirect(['site/index']);
 

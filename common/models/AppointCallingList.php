@@ -14,6 +14,7 @@ use Yii;
  * @property int $createtime
  * @property int $state
  * @property int $doctorid
+ * @property int $calling
  * @property int $type
  */
 class AppointCallingList extends \yii\db\ActiveRecord
@@ -32,7 +33,7 @@ class AppointCallingList extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['aid', 'acid', 'createtime', 'state','type','doctorid'], 'integer'],
+            [['aid', 'acid', 'createtime', 'state','type','doctorid','calling'], 'integer'],
             [['openid'], 'string', 'max' => 50],
         ];
     }
@@ -48,6 +49,7 @@ class AppointCallingList extends \yii\db\ActiveRecord
             'acid' => 'Acid',
             'openid' => 'Openid',
             'createtime' => 'Createtime',
+            'calling'=>'是否叫号',
             'state' => 'State',
         ];
     }

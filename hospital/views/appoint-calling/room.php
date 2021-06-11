@@ -48,17 +48,7 @@ $this->title = "诊室操作";
                         <tbody>
                         <tr>
                             <th>姓名</th>
-                            <td><?php
-                                if($appoint->type==4 ||$appoint->type==7){
-                                    echo  \common\models\AppointAdult::findOne(['userid' => $appoint->userid])->name;
-
-                                }elseif($appoint->type==5 || $appoint->type==6){
-                                    echo \common\models\Pregnancy::findOne(['id' => $appoint->childid])->field1;
-                                }else{
-                                    echo \common\models\ChildInfo::findOne(['id' => $appoint->childid])->name;
-                                }
-
-                                ?></td>
+                            <td><?=$appoint->name()?></td>
                         </tr>
                         <tr>
                             <th>预约人其他信息</th>
@@ -110,6 +100,24 @@ $this->title = "诊室操作";
 
                         </tbody>
                     </table>
+                    <?php }elseif($appointCallingList->aid==0){?>
+                        <table class="table table-striped table-bordered detail-view">
+                            <tbody>
+                            <tr>
+                                <th>姓名</th>
+                                <td>临时</td>
+                            </tr>
+                            <tr>
+                                <th>预约日期</th>
+                                <td><?=date('Y-m-d')?></td>
+                            </tr>
+                            <tr>
+                                <th>预约时间</th>
+                                <td><?=\common\models\Appoint::$timeText[$appointCallingList->time]?></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
                     <?php }?>
                 </div>
             </div>

@@ -107,7 +107,6 @@ class AppointCallingController extends BaseController
             ->one();
         if($appointCallingList){
             $appoint=Appoint::findOne($appointCallingList->aid);
-
         }
         return $this->render('room', [
             'appointCallingList'=>$appointCallingList,
@@ -122,9 +121,6 @@ class AppointCallingController extends BaseController
             return $this->redirect('appoint-calling/create');
         }
 
-        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-
-
         if($id){
             $ord_appointCallingList = AppointCallingList::findOne($id);
             if ($state != 4) {
@@ -136,22 +132,32 @@ class AppointCallingController extends BaseController
         if($state==3) {
             $appointCallingList=$this->calling($model);
             if($appointCallingList){
-                $app->customer_service->message("您好，请前往" . $model->name . "就诊")->to($appointCallingList->openid)->send();
                 //上一个预约标记为完成
-                if ($ord_appointCallingList && $ord_appointCallingList->aid) {
-                    $appoint = Appoint::findOne($ord_appointCallingList->aid);
-                    $appoint->state = 2;
-                    $appoint->save();
+                if ($ord_appointCallingList) {
+                    if($ord_appointCallingList->aid) {
+                        $appoint = Appoint::findOne($ord_appointCallingList->aid);
+                        $appoint->state = 2;
+                        $appoint->save();
+                    }
+                    $queue = new Queue(Yii::$app->user->identity->doctorid,$ord_appointCallingList->type, $ord_appointCallingList->time);
+                    $queue->lrem($ord_appointCallingList->id);
                 }
             }else{
                 \Yii::$app->getSession()->setFlash('error', '暂无患者排队！');
             }
         }elseif ($state==2){
             if($id) {
-                $app->customer_service->message("您的排号已失效，请重新扫码排号！")->to($ord_appointCallingList->openid)->send();
                 $appointCallingList=$this->calling($model);
                 if($appointCallingList){
-                    $app->customer_service->message("您好，请前往" . $model->name . "就诊")->to($appointCallingList->openid)->send();
+                    if ($ord_appointCallingList) {
+                        if($ord_appointCallingList->aid) {
+                            $appoint = Appoint::findOne($ord_appointCallingList->aid);
+                            $appoint->state = 2;
+                            $appoint->save();
+                        }
+                        $queue = new Queue(Yii::$app->user->identity->doctorid,$ord_appointCallingList->type, $ord_appointCallingList->time);
+                        $queue->lrem($ord_appointCallingList->id);
+                    }
                 }else{
                     \Yii::$app->getSession()->setFlash('error', '暂无患者排队！');
                 }
@@ -160,11 +166,13 @@ class AppointCallingController extends BaseController
             }
         }elseif ($state == 4) {
             if($ord_appointCallingList) {
-                $app->customer_service->message("您好，请前往" . $model->name . "就诊")->to($ord_appointCallingList->openid)->send();
+                $ord_appointCallingList->calling=1;
+                $ord_appointCallingList->save();
                 \Yii::$app->getSession()->setFlash('success', '已发送！');
             }else{
                 \Yii::$app->getSession()->setFlash('error', '暂无患者需要提醒！');
             }
+
         }
         return $this->redirect(['room']);
     }
@@ -181,6 +189,7 @@ class AppointCallingController extends BaseController
         if ($aclid) {
             $appointCallingList = AppointCallingList::findOne($aclid);
             $appointCallingList->acid = $AppointCalling->id;
+            $appointCallingList->calling = 1;
             $appointCallingList->save();
         }
         return $appointCallingList;
@@ -195,12 +204,13 @@ class AppointCallingController extends BaseController
     public function queue($type,$timeType,$hospitalAppoint){
         $queue = new Queue(Yii::$app->user->identity->doctorid,$type, $timeType);
         $aclid = $queue->rpop();
-        $key=date('H:i')<'12:00'?1:2;
         if (!$aclid) {
-            while ($mode = next(Appoint::$timeTextRow[$hospitalAppoint->interval][$key]) !== false && !$aclid) {
-                $timeType = array_search($mode, Appoint::$timeText1);
-                $queue = new Queue(Yii::$app->user->identity->doctorid,$type, $timeType);
+            foreach(Appoint::$timeText1 as $k=>$v){
+                $queue = new Queue(Yii::$app->user->identity->doctorid,$type, $k);
                 $aclid = $queue->rpop();
+                if($aclid){
+                    break;
+                }
             }
         }
         return $aclid;
@@ -276,21 +286,24 @@ class AppointCallingController extends BaseController
         $list[] = $queue->lrange();
 
         foreach(Appoint::$timeText as $k=>$v){
-            $queue = new Queue($doctorid, $type, $k);
-            $list[] = $queue->lrange();
+            if($k!=$timeType) {
+                $queue = new Queue($doctorid, $type, $k);
+                $list[] = $queue->lrange();
+            }
         }
         $this->layout = "@hospital/views/layouts/main-login.php";
-
-        return $this->render('list',['list'=>$list]);
+        return $this->render('list',['list'=>$list,'time'=>date("h:i:s")]);
     }
-    public function actionTtl($text){
+    public function actionTtl($text,$id){
         \Yii::$app->response->format=Response::FORMAT_JSON;
         $client=new AipSpeech('24276375','U5h1fVBmtuBU6AeQucIzDWxi','OGYO3jmYoGs1kBtpgb8nLb0mSnud64eE');
         $result = $client->synthesis($text, 'zh', 1, array(
             'vol' => 5,
         ));
         $b64='data:audio/x-mpeg;base64,'.base64_encode($result);
-
+        $appointCallingList=AppointCallingList::findOne($id);
+        $appointCallingList->calling=0;
+        $appointCallingList->save();
         return ['src'=>$b64];
     }
 }

@@ -23,13 +23,18 @@ class Queue
 
     public function lpush($id){
         $return=$this->_redis->lpush($this->_name,$id);
+        $this->_redis->lpush($this->_name."s",$id);
         return $return;
     }
     public function rpop(){
-        $return=$this->_redis->rpop($this->_name);
+        $return=$this->_redis->rpop($this->_name."s");
         return $return;
     }
+    public function lrem($id){
+        $return=$this->_redis->lrem($this->_name,0,$id);
 
+        return $return;
+    }
     public function search($id){
         $list=$this->_redis->lrange($this->_name,0,-1);
         $key=array_search($id,$list);
