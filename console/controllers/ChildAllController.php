@@ -23,6 +23,8 @@ use common\models\WeOpenid;
 use console\models\ChildInfoInput;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 use yii\base\Controller;
 use yii\helpers\ArrayHelper;
 
@@ -45,18 +47,18 @@ class ChildAllController extends \yii\console\Controller
     public function setDownExcel($doctorid){
 
         echo $doctorid;
-        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel = new Spreadsheet();
         $objPHPExcel->getProperties();
 
         //设置A3单元格为文本
         $objPHPExcel->getActiveSheet()->getStyle('B')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('I')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $key1 = 1;
         $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A'.$key1, '姓名')
@@ -82,9 +84,9 @@ class ChildAllController extends \yii\console\Controller
             ->setCellValue('U'.$key1, '宣教内容')
             ->setCellValue('V'.$key1, '宣教时间');
         $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
         $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
@@ -184,8 +186,7 @@ class ChildAllController extends \yii\console\Controller
             }
             // $objPHPExcel->setActiveSheetIndex(0);
 
-
-            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
             $objWriter->save(dirname(__ROOT__) . "/static/" . $userDoctor->hospitalid . "-all.xlsx");
             echo "true";
         }
