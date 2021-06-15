@@ -186,7 +186,7 @@ class ChildAllController extends \yii\console\Controller
             }
             // $objPHPExcel->setActiveSheetIndex(0);
 
-            $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter = IOFactory::createWriter($objPHPExcel, 'Xlsx');
             $objWriter->save(dirname(__ROOT__) . "/static/" . $userDoctor->hospitalid . "-all.xlsx");
             echo "true";
         }
