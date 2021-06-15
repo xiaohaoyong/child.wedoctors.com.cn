@@ -166,7 +166,7 @@ class ChildAllController extends \yii\console\Controller
                     ->setCellValue('D' . $key1, $age)
                     ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
                     ->setCellValueExplicit('F' . $key1, $v['field6']?$v['field6']:$idcard,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2)
-                    ->setCellValueExplicit('G' . $key1, $idcard,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2)
+                    ->setCellValueExplicit('G' . $key1, $idcard?$idcard:$v['field6'],\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2)
                     ->setCellValue('H' . $key1, $userParent->mother || $userParent->father ? $userParent->mother . "/" . $userParent->father : "无")
                     ->setCellValue('I' . $key1, $phone ? " " . $phone : "无")
                     ->setCellValue('J' . $key1, $userParent->father_phone ? " " . $userParent->father_phone : "无")
