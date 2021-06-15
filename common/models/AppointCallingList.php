@@ -54,11 +54,12 @@ class AppointCallingList extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function listName($id,$doctorid,$type){
+    public static function listName($id,$doctorid,$type,$time){
         $num = AppointCallingList::find()->where(['doctorid' =>$doctorid])
             ->andWhere(['>', 'createtime', strtotime('today')])
             ->andWhere(['<', 'createtime', strtotime('+1 day')])
             ->andWhere(['<=', 'id', $id])
+            ->andWhere(['time'=>$time])
             ->andWhere(['type'=>$type])
             ->orderBy('id asc')
             ->count();

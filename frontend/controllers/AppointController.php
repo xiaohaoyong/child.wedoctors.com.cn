@@ -204,22 +204,12 @@ class AppointController extends Controller
         $appointArray=explode(':',$aString);
         $id=$appointArray[1];
         $doctorid=$this->hs[$h];
-        $appoint = Appoint::findOne(['doctorid'=>$doctorid,'id'=>$id,'appoint_date'=>strtotime(date('Y-m-d 00:00:00'))]);
+        $appoint = Appoint::findOne(['state'=>1,'doctorid'=>$doctorid,'id'=>$id,'appoint_date'=>strtotime(date('Y-m-d 00:00:00'))]);
         if($aString=='tmp'){
-            //排队
-            $key=date('H:i')<'12:00'?1:2;
-            $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
-            $array=array_reverse(Appoint::$timeTextRow[$hospitalAppoint->interval][$key],true);
 
-            while (($mode = next($array)) !== false) {
-                $timeType = array_search($mode, Appoint::$timeText1);
-
-                $appoint_time=$timeType;
-                $queue = new Queue($doctorid,$type, $timeType);
-                $list = $queue->lrange();
-                if($list){
-                    break;
-                }
+            $appoint_time=Appoint::getTimeTypeTmp($doctorid,$type);
+            if(!$appoint_time){
+                return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
             }
             $appointCallingListModel = new AppointCallingList();
             $appointCallingListModel->aid = 0;
@@ -236,7 +226,10 @@ class AppointController extends Controller
                     'data'=>[
                         'name'=>'临时',
                         'type'=>Appoint::$typeText[$type],
-                        'hospital'=>$hospital->name,'num'=> AppointCallingList::listName($appointCallingListModel->id,$doctorid, $type),'deng'=>($queueNum - 1),'date'=>date('Y年m月d日')." ".Appoint::$timeText[$appoint_time]]];
+                        'hospital'=>$hospital->name,
+                        'num'=> $appoint_time.AppointCallingList::listName($appointCallingListModel->id,$doctorid, $type,$appoint_time),
+                        'deng'=>($queueNum - 1),
+                        'date'=>date('Y年m月d日')." ".Appoint::$timeText[$appoint_time]]];
             }else{
                 return ['code'=>30000,'msg'=>'失败',$doctorid,$appointCallingListModel->firstErrors];
             }
@@ -244,8 +237,9 @@ class AppointController extends Controller
 
 
         }elseif(!$appoint) {
-            return ['code' => 20000, 'msg' => '未查询到预约信息'];
+            return ['code' => 20000, 'msg' => '未查询到预约信息,或预约已完成'];
         } else {
+            $type=$appoint->type;
             $appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
             //判断用户是否已经排队
             if ($appointCallingListModel) {
@@ -255,11 +249,14 @@ class AppointController extends Controller
                     return ['code' => 20000, 'msg' => '预约已完成'];
                 } elseif ($appointCallingListModel->state == 2) {
                     //过期重排
-                    $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $appoint->type]);
-                    $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+                    $timeType = Appoint::getTimeTypeTmp($doctorid,$type);
+                    if(!$timeType){
+                        return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
+                    }
+
                     $appointCallingListModel->time = $timeType;
                     if ($appointCallingListModel->save()) {
-                        $queue = new Queue($doctorid, $appoint->type, $appoint->appoint_time);
+                        $queue = new Queue($doctorid, $appoint->type, $timeType);
                         $queueNum = $queue->lpush($appointCallingListModel->id);
                         $userDoctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
                         $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
@@ -267,20 +264,35 @@ class AppointController extends Controller
                             'data'=>[
                                 'name'=>$appoint->name(),
                                 'type'=>Appoint::$typeText[$appoint->type],
-                                'hospital'=>$hospital->name,'num'=> AppointCallingList::listName($appointCallingListModel->id,$doctorid, $appoint->type),'deng'=>($queueNum - 1),'date'=>date('Y年m月d日')." ".Appoint::$timeText[$appoint->appoint_time]]];
+                                'hospital'=>$hospital->name,
+                                'num'=> $timeType.AppointCallingList::listName($appointCallingListModel->id,$doctorid, $appoint->type,$timeType),
+                                'deng'=>($queueNum - 1),
+                                'date'=>date('Y年m月d日')." ".Appoint::$timeText[$timeType]]];
                     }
                 }
 
             } else {
+                $type=$appoint->type;
+                $times=explode('-',Appoint::$timeText1[$appoint->appoint_time]);
+                $t=date('H:i');
+                if($t>$times[0] && $t<$times[1]){
+                    $timeType=$appoint->appoint_time;
+                }else{
+                    $timeType=Appoint::getTimeTypeTmp($doctorid,$type);
+                    if(!$timeType){
+                        return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
+                    }
+                }
+
                 //排队
                 $appointCallingListModel = new AppointCallingList();
                 $appointCallingListModel->aid = $appoint->id;
                 $appointCallingListModel->openid = '';
                 $appointCallingListModel->doctorid = $doctorid;
-                $appointCallingListModel->time = $appoint->appoint_time;
+                $appointCallingListModel->time = $timeType;
                 $appointCallingListModel->type = $appoint->type;
                 if ($appointCallingListModel->save()) {
-                    $queue = new Queue($doctorid, $appoint->type, $appoint->appoint_time);
+                    $queue = new Queue($doctorid, $appoint->type, $timeType);
                     $queueNum = $queue->lpush($appointCallingListModel->id);
                     $userDoctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
                     $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
@@ -288,7 +300,10 @@ class AppointController extends Controller
                         'data'=>[
                             'name'=>$appoint->name(),
                             'type'=>Appoint::$typeText[$appoint->type],
-                            'hospital'=>$hospital->name,'num'=> AppointCallingList::listName($appointCallingListModel->id,$doctorid, $appoint->type),'deng'=>($queueNum - 1),'date'=>date('Y年m月d日')." ".Appoint::$timeText[$appoint->appoint_time]]];
+                            'hospital'=>$hospital->name,
+                            'num'=> $timeType.AppointCallingList::listName($appointCallingListModel->id,$doctorid, $appoint->type,$timeType),
+                            'deng'=>($queueNum - 1),
+                            'date'=>date('Y年m月d日')." ".Appoint::$timeText[$timeType]]];
                 }else{
                     return ['code'=>30000,'msg'=>'失败',$doctorid,$appointCallingListModel->firstErrors];
                 }

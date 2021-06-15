@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\models\queuing\Queue;
 use Yii;
 
 /**
@@ -158,6 +159,31 @@ class Appoint extends \yii\db\ActiveRecord
             }
         }
         return 0;
+    }
+
+    public static function getTimeTypeTmp($doctorid,$type){
+        //排队
+        $t="09:31";
+        $key=$t<'12:00'?1:2;
+        if($t>'16:00' || $t<'07:00'){
+            return false;
+        }
+        $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+        $array=array_reverse(Appoint::$timeTextRow[$hospitalAppoint->interval][$key],true);
+
+        $i=0;
+        while (($i==0 && $mode = reset($array)) || (($i>0 &&$mode = next($array)) !== false)) {
+            $i++;
+            $timeType = array_search($mode, Appoint::$timeText1);
+            $appoint_time=$timeType;
+            $queue = new Queue($doctorid,$type, $timeType);
+            $list = $queue->lrange();
+            $times=explode('-',$mode);
+            if($list || ($t>$times[0] && $t<$times[1])){
+                break;
+            }
+        }
+        return $appoint_time;
     }
 
 

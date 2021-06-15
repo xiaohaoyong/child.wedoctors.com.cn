@@ -48,7 +48,7 @@ $this->title="就诊列表";
                 }else{
                     $zname= "待定";
                 }
-                $num=\common\models\AppointCallingList::listName($appointCallingListModel->id,$appointCallingListModel->doctorid, $appointCallingListModel->type);
+                $num=$appointCallingListModel->time.\common\models\AppointCallingList::listName($appointCallingListModel->id,$appointCallingListModel->doctorid, $appointCallingListModel->type,$appointCallingListModel->time);
     ?>
                 <div class="item" data-level="<?=$appointCallingListModel->acid&&$appointCallingListModel->calling?1:0?>" data-id="<?=$appointCallingListModel->id?>" data="请<?=$num?>号 <?=$name?> 到<?=$zname?>就诊___请<?=$num?>号 <?=$name?> 到<?=$zname?>就诊">
                     <div class="num text"><?=$num?>号</div>
