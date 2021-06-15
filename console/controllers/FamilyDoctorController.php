@@ -31,7 +31,7 @@ class FamilyDoctorController extends Controller
 //            $this->setDownExcel($v->userid);
 //            echo "\n";
 //        }
-        $this->setDownExcel(400564);
+        $this->setDownExcel(221895);
     }
 
     public function setDownExcel($doctorid)
