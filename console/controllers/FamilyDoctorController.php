@@ -188,7 +188,7 @@ class FamilyDoctorController extends Controller
             }
             $preg=\common\models\Pregnancy::find()
                 ->andWhere(['pregnancy.field49'=>0])
-                ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
+                ->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
                 ->andWhere(['in','familyid',$auto])
                 ->all();
 
