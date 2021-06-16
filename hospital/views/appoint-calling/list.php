@@ -125,3 +125,9 @@ $this->title="就诊列表";
     }
     getList();
 </script>
+<?php
+$updateJs = <<<JS
+     getList();
+JS;
+$this->registerJs($updateJs);
+?>
