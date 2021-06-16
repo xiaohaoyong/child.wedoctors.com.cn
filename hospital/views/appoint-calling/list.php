@@ -123,4 +123,5 @@ $this->title="就诊列表";
             getList();
         }
     }
+    getList();
 </script>
