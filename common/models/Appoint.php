@@ -163,7 +163,7 @@ class Appoint extends \yii\db\ActiveRecord
 
     public static function getTimeTypeTmp($doctorid,$type){
         //排队
-        $t="09:31";
+        $t=date('H:i');
         $key=$t<'12:00'?1:2;
         if($t>'16:00' || $t<'07:00'){
             return false;
