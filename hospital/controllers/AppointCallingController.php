@@ -280,7 +280,7 @@ class AppointCallingController extends BaseController
         }
     }
 
-    public function actionList($doctorid,$type){
+    public function actionList($doctorid=590848,$type){
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
         $queue = new Queue($doctorid, $type, $timeType);
