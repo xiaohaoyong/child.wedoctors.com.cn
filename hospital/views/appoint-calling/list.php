@@ -85,7 +85,7 @@ $this->title="就诊列表";
         list=[];
         var eachcount= 0;
         var issa=0;
-        $(".item").each(function(){
+        jQuery(".item").each(function(){
             var level=$(this).attr('data-level');
             if(level==1){
                 issa=1;
