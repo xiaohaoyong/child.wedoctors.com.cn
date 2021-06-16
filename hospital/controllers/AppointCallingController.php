@@ -280,8 +280,7 @@ class AppointCallingController extends BaseController
         }
     }
 
-    public function actionList($type){
-        $doctorid=Yii::$app->user->identity->doctorid;
+    public function actionList($doctorid,$type){
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
         $queue = new Queue($doctorid, $type, $timeType);
