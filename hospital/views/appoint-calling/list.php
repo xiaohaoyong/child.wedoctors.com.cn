@@ -91,7 +91,7 @@ $this->title="就诊列表";
                 issa=1;
                 var text=$(this).attr('data');
                 var id=$(this).attr('data-id');
-                $.get('http://hospital.child.wedoctors.com.cn/appoint-calling/ttl?text='+text+'&id='+id,function (e) {
+                jQuery.get('http://hospital.child.wedoctors.com.cn/appoint-calling/ttl?text='+text+'&id='+id,function (e) {
                     eachcount++
                     list.push(e.src);
                     if(eachcount>=$(".item").length){
