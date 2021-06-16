@@ -6,7 +6,7 @@
  * Time: 下午12:06
  */
 use yii\widgets\Pjax;
-$userDoctor=\common\models\UserDoctor::findOne(['userid'=>Yii::$app->user->identity->doctorid]);
+$userDoctor=\common\models\UserDoctor::findOne(['userid'=>$doctorid]);
 $hospital=\common\models\Hospital::findOne($userDoctor->hospitalid);
 $this->title="就诊列表";
 ?>

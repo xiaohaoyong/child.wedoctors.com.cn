@@ -293,7 +293,8 @@ class AppointCallingController extends BaseController
             }
         }
         $this->layout = "@hospital/views/layouts/main-login.php";
-        return $this->render('list',['list'=>$list,'time'=>date("h:i:s")]);
+
+        return $this->render('list',['doctorid'=>$doctorid,'list'=>$list,'time'=>date("h:i:s")]);
     }
     public function actionTtl($text,$id){
         \Yii::$app->response->format=Response::FORMAT_JSON;
