@@ -150,11 +150,6 @@ class AppointCallingController extends BaseController
                 $appointCallingList=$this->calling($model);
                 if($appointCallingList){
                     if ($ord_appointCallingList) {
-                        if($ord_appointCallingList->aid) {
-                            $appoint = Appoint::findOne($ord_appointCallingList->aid);
-                            $appoint->state = 2;
-                            $appoint->save();
-                        }
                         $queue = new Queue(Yii::$app->user->identity->doctorid,$ord_appointCallingList->type, $ord_appointCallingList->time);
                         $queue->lrem($ord_appointCallingList->id);
                     }
