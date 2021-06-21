@@ -130,11 +130,7 @@ class Appoint extends \yii\db\ActiveRecord
         ],
     ];
     public static function getTimeType($interval){
-        //排队
-        $time=date('H:i');
-        if($time>'16:00' || $time<'07:00'){
-            return false;
-        }
+
         if($interval==1){
             if($time<"08:00") {
                 return 1;
