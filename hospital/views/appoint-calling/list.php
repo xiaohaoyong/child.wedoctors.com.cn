@@ -30,9 +30,12 @@ $this->title="就诊列表";
         <div class="text">时间段</div>
     </div>
     <?php
+    $i=0;
         foreach($list as $k=>$v){
             if($v){
             foreach($v as $vk=>$vv){
+                $i++;
+                if($i>3){ $i=0; break;}
                 $appointCallingListModel = \common\models\AppointCallingList::findOne($vv);
                 if(!$appointCallingListModel) continue;
                 if(!$appointCallingListModel->aid) {
@@ -50,11 +53,11 @@ $this->title="就诊列表";
                 }
                 $num=$appointCallingListModel->time.\common\models\AppointCallingList::listName($appointCallingListModel->id,$appointCallingListModel->doctorid, $appointCallingListModel->type,$appointCallingListModel->time);
     ?>
-                <div class="item" data-level="<?=$appointCallingListModel->acid&&$appointCallingListModel->calling?1:0?>" data-id="<?=$appointCallingListModel->id?>" data="请<?=$num?>号 <?=$name?> 到<?=$zname?>就诊___请<?=$num?>号 <?=$name?> 到<?=$zname?>就诊">
+                <div class="item" data-level="<?=$appointCallingListModel->acid&&$appointCallingListModel->calling?1:0?>" data-id="<?=$appointCallingListModel->id?>" data="请<?=$num?>号 <?=!$appointCallingListModel->aid?'':$name?> 到<?=$zname?>就诊___请<?=$num?>号 <?=$name?> 到<?=$zname?>就诊">
                     <div class="num text"><?=$num?>号</div>
                     <div class="text"><?=$name?></div>
                     <div class="text"><?=$zname?></div>
-                    <div class="text"><?=\common\models\Appoint::$timeText[$appointCallingListModel->time]?></div>
+                    <div class="text"><?=$appointCallingListModel->time?\common\models\Appoint::$timeText[$appointCallingListModel->time]:'临时'?></div>
                 </div>
             <?php }}}?>
 

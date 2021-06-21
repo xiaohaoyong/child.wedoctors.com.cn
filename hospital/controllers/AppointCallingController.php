@@ -281,14 +281,17 @@ class AppointCallingController extends BaseController
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
         $queue = new Queue($doctorid, $type, $timeType);
-        $list[] = $queue->lrange(3);
+        $list[] = $queue->lrange();
 
         foreach(Appoint::$timeText as $k=>$v){
             if($k!=$timeType) {
                 $queue = new Queue($doctorid, $type, $k);
-                $list[] = $queue->lrange(3);
+                $list[] = $queue->lrange();
             }
         }
+        $queue = new Queue($doctorid, $type, 0);
+        $list[] = $queue->lrange();
+
         $this->layout = "@hospital/views/layouts/main-login.php";
 
         return $this->render('list',['doctorid'=>$doctorid,'list'=>$list,'time'=>date("h:i:s")]);

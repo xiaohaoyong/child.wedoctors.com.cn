@@ -129,7 +129,12 @@ class Appoint extends \yii\db\ActiveRecord
             ],
         ],
     ];
-    public static function getTimeType($interval,$time){
+    public static function getTimeType($interval){
+        //排队
+        $time=date('H:i');
+        if($time>'16:00' || $time<'07:00'){
+            return false;
+        }
         if($interval==1){
             if($time<"08:00") {
                 return 1;
@@ -176,10 +181,10 @@ class Appoint extends \yii\db\ActiveRecord
             $i++;
             $timeType = array_search($mode, Appoint::$timeText1);
             $appoint_time=$timeType;
-            $queue = new Queue($doctorid,$type, $timeType);
-            $list = $queue->lrange();
+//            $queue = new Queue($doctorid,$type, $timeType);
+//            $list = $queue->lrange();
             $times=explode('-',$mode);
-            if($list || ($t>$times[0] && $t<$times[1])){
+            if($t>$times[0] && $t<$times[1]){
                 break;
             }
         }

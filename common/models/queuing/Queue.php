@@ -40,13 +40,8 @@ class Queue
         $key=array_search($id,$list);
         return $key;
     }
-    public function lrange($num=0){
-        if($num) {
-            $list = $this->_redis->lrange($this->_name, -5, -1);
-        }else{
-            $list = $this->_redis->lrange($this->_name, 0, -1);
-        }
-
+    public function lrange(){
+        $list = $this->_redis->lrange($this->_name, 0, -1);
         return array_reverse($list);
     }
 
