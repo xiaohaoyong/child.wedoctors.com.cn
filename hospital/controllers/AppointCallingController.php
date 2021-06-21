@@ -281,6 +281,8 @@ class AppointCallingController extends BaseController
     }
 
     public function actionList($doctorid=590848,$type){
+        error_reporting(E_ALL ^ E_NOTICE);
+
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
         $queue = new Queue($doctorid, $type, $timeType);
