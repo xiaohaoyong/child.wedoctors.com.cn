@@ -280,15 +280,18 @@ class AppointCallingController extends BaseController
 
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+        //当前时间段排队
         $queue = new Queue($doctorid, $type, $timeType);
         $list[] = $queue->lrange();
 
+        //其他时间段排队
         foreach(Appoint::$timeText as $k=>$v){
             if($k!=$timeType) {
                 $queue = new Queue($doctorid, $type, $k);
                 $list[] = $queue->lrange();
             }
         }
+        //临时号排队
         $queue = new Queue($doctorid, $type, 0);
         $list[] = $queue->lrange();
 

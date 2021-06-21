@@ -129,7 +129,7 @@ class Appoint extends \yii\db\ActiveRecord
             ],
         ],
     ];
-    public static function getTimeType($interval){
+    public static function getTimeType($interval,$time){
 
         if($interval==1){
             if($time<"08:00") {
