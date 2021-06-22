@@ -152,6 +152,15 @@ class AppointCallingController extends BaseController
                     if ($ord_appointCallingList) {
                         $queue = new Queue(Yii::$app->user->identity->doctorid,$ord_appointCallingList->type, $ord_appointCallingList->time);
                         $queue->lrem($ord_appointCallingList->id);
+
+                        $timeType=Appoint::getTimeTypeTmp($ord_appointCallingList->doctorid,$ord_appointCallingList->type);
+                        $ord_appointCallingList->state=1;
+                        $ord_appointCallingList->time=Appoint::getTimeTypeTmp($ord_appointCallingList->doctorid,$ord_appointCallingList->type);
+                        if($ord_appointCallingList->save())
+                        {
+                            $queue = new Queue($ord_appointCallingList->doctorid, $ord_appointCallingList->type, $timeType);
+                            $queue->lpush($ord_appointCallingList->id);
+                        }
                     }
                 }else{
                     \Yii::$app->getSession()->setFlash('error', '暂无患者排队！');
