@@ -193,7 +193,17 @@ class AppointController extends BaseController
         $dataProvider = $searchModel->search($params);
         foreach($dataProvider->query->all() as $k=>$v){
             $v->state=2;
-            $v->save();
+            if($v->save()){
+                $openid=UserLogin::getOpenid($v->userid);
+                $data = [
+                    'first' => ['value' => '服务已完成'],
+                    'keyword1' => ARRAY('value' => Appoint::$typeText[$v->type]),
+                    'keyword2' => ARRAY('value' => date('Y年m月d日 H:i:00')),
+                    'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
+
+                ];
+                $rs = WechatSendTmp::send($data, $openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
+            }
         }
         return $this->redirect(Yii::$app->request->referrer);
     }
