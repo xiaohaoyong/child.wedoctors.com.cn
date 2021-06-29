@@ -42,6 +42,7 @@ use yii\widgets\ActiveForm;
         <?= Html::submitButton('搜索', ['id' => 'search', 'class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
         <?= Html::button('下载', ['id' => 'down', 'class' => 'btn btn-primary']) ?>
+        <?= Html::button('批量完成（根据搜索条件）', ['id' => 'done', 'class' => 'btn btn-primary']) ?>
 
         <div class="help-block"></div>
     </div>
@@ -58,7 +59,13 @@ jQuery("#down").click(function () {
             jQuery("#appoint").submit();    //提交ID为myform的表单
         }
     });
-
+jQuery("#done").click(function () {
+        //过jquery为action属性赋值
+        if(confirm("将根据搜索条件批量完成，如未选择日期则日期默认为本日")){
+            jQuery("#appoint").attr('action',"/appoint/done-all");    //通
+            jQuery("#appoint").submit();    //提交ID为myform的表单
+        }
+    });
 jQuery("#search").click(function () {
         jQuery("#appoint").attr('action',"");    //通
             jQuery("#appoint").submit();    //提交ID为myform的表单

@@ -181,6 +181,22 @@ class AppointController extends BaseController
         }
         return $this->redirect(Yii::$app->request->referrer);
     }
+    public function actionDoneAll()
+    {
+        $params = \Yii::$app->request->queryParams;
+        if(!$params['AppointSearchModels']['appoint_dates'] || !$params['AppointSearchModels']['appoint_dates_end'])
+        {
+            $params['AppointSearchModels']['appoint_date']=strtotime(date('Ymd'));
+        }
+        $params['AppointSearchModels']['state']=1;
+        $searchModel = new AppointSearchModels();
+        $dataProvider = $searchModel->search($params);
+        foreach($dataProvider->query->all() as $k=>$v){
+            $v->state=2;
+            $v->save();
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
 
     public function actionPush($childid)
     {

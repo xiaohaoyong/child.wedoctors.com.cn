@@ -95,6 +95,9 @@ class AppointSearchModels extends Appoint
         if($this->appoint_dates_end){
             $query->andFilterWhere(['<=', 'appoint_date', strtotime($this->appoint_dates_end)]);
         }
+        if($this->appoint_date){
+            $query->andWhere(['appoint_date'=>$this->appoint_date]);
+        }
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
