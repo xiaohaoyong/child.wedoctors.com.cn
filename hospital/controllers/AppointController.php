@@ -188,7 +188,9 @@ class AppointController extends BaseController
         {
             $params['AppointSearchModels']['appoint_date']=strtotime(date('Ymd'));
         }
-        $params['AppointSearchModels']['state']=1;
+        if(!$params['AppointSearchModels']['state']){
+            return $this->redirect(Yii::$app->request->referrer);
+        }
         $searchModel = new AppointSearchModels();
         $dataProvider = $searchModel->search($params);
         foreach($dataProvider->query->all() as $k=>$v){

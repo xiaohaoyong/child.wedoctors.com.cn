@@ -61,7 +61,7 @@ jQuery("#down").click(function () {
     });
 jQuery("#done").click(function () {
         //过jquery为action属性赋值
-        if(confirm("将根据搜索条件批量完成，如未选择日期则日期默认为本日")){
+        if(confirm("将根据搜索条件批量完成,预约状态必选,如未选择日期则日期默认为本日")){
             jQuery("#appoint").attr('action',"/appoint/done-all");    //通
             jQuery("#appoint").submit();    //提交ID为myform的表单
         }
