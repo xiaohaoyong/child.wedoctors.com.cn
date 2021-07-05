@@ -69,6 +69,7 @@ class QuestionController extends Controller
         $model=$this->findModel($id);
 
         if( $reply->load(Yii::$app->request->post())){
+            $reply->userid=\Yii::$app->user->identity->doctorid;
             if($reply->save()){
                 $model->state=1;
                 $model->save();
