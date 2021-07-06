@@ -41,9 +41,12 @@ class AppointOrder2 extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'zhenduan', 'bingcheng', 'field1', 'field2', 'field3', 'field4', 'field5', 'field6', 'aoid'], 'integer'],
+            [['type', 'zhenduan', 'bingcheng', 'field1', 'field2', 'field3', 'field4', 'field5', 'aoid'], 'integer'],
             [['type', 'zhenduan', 'bingcheng','jiazushu' ,'field1', 'field2', 'field3', 'field4', 'field5', 'field6', 'field7', 'aoid'], 'required'],
 
+            ['field6', 'required', 'when' => function($model) {
+                return $model->field1?true:false;
+            }, 'message' => 'fieldA or fieldB is required'],
             [['jiazushu','field7'], 'string', 'max' => 100],
         ];
     }
@@ -60,10 +63,10 @@ class AppointOrder2 extends \yii\db\ActiveRecord
             'bingcheng' => '病程（年）',
             'jiazushu' => '家族史',
             'field1' => '已贴敷年数',
-            'field2' => '去年发病次数',
-            'field3' => '去年门诊和急诊次数',
+            'field2' => '去年此病发病次数',
+            'field3' => '去年因此病门诊和急诊次数',
             'field4' => '去年住院次数',
-            'field5' => '去年发病总天数',
+            'field5' => '去年此病发病总天数',
             'field6' => '医疗效评价',
             'field7' => '不良反应',
             'aoid' => '关联id',
