@@ -293,7 +293,7 @@ class Appoint extends \yii\db\ActiveRecord
     }
 
     public function name(){
-        if($this->type==4 || $this->type==7 || $this->type==9){
+        if($this->type==4 || $this->type==7 || $this->type==9 || $this->type==11){
             if($this->childid){
                 return \common\models\AppointAdult::findOne(['id' => $this->childid])->name;
             }else {

@@ -41,14 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => '姓名',
                                     'value' => function ($e) {
-                                        if($e->type==4 || $e->type==7 || $e->type==9){
-                                            return \common\models\AppointAdult::findOne(['userid' => $e->userid])->name;
-
-                                        }elseif($e->type==5 || $e->type==6){
-                                            return \common\models\Pregnancy::findOne(['id' => $e->childid])->field1;
-                                        }else{
-                                            return \common\models\ChildInfo::findOne(['id' => $e->childid])->name;
-                                        }
+                                        return $e->name();
                                     }
                                 ],
                                 'phone',

@@ -32,6 +32,8 @@ class AppointAdult extends \yii\db\ActiveRecord
         return [
             'naire'=>['userid', 'name', 'gender','phone','id_card','place','birthday'],
             'lisc' => ['userid', 'name', 'gender','phone','id_card','place'],
+            's' => ['userid', 'name', 'gender','phone','id_card'],
+
             'default'=>['userid', 'name', 'gender','phone'],
         ];
     }
