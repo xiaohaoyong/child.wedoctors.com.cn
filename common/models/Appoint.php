@@ -206,6 +206,7 @@ class Appoint extends \yii\db\ActiveRecord
         7 => '两癌筛查',
         9 => '核酸检测',
         10 => '盆底功能筛查及治疗',
+        11 => '冬病夏治三伏贴',
 
     ];
 

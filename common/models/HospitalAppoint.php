@@ -27,7 +27,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
     public $week;
     public static $cycleText = [1 => '1周', 2 => '2周', 3 => '1个月',4=>'1天',5=>'2天',6=>'3天',7=>'4天',8=>'5天'];
     public static $cycleNum = [1 => 7, 2 => 14, 3 => 30,4=>1,5=>2,6=>3,7=>4,8=>5];
-    public static $typeText = [1 => '体检预约', 2 => '疫苗预约', 8 => '入托体检', 4 => '成人疫苗', 5 => '建册预约', 6 => '领取叶酸预约', 3 => '微量元素',7=>'两癌筛查',9=>'核酸检测',10=>'盆底功能筛查及治疗'];
+    public static $typeText = [1 => '体检预约', 2 => '疫苗预约', 8 => '入托体检', 4 => '成人疫苗', 5 => '建册预约', 6 => '领取叶酸预约', 3 => '微量元素',7=>'两癌筛查',9=>'核酸检测',10=>'盆底功能筛查及治疗',11=>'冬病夏治三伏贴'];
     public static $intervalText = [1 => '一小时', 2 => '半小时'];
     public static $rtText=[
         0=>'00:00',
