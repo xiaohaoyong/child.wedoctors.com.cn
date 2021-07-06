@@ -65,7 +65,7 @@ class AppointOrder2 extends \yii\db\ActiveRecord
             'field1' => '已贴敷年数',
             'field2' => '去年此病发病次数',
             'field3' => '去年因此病门诊和急诊次数',
-            'field4' => '去年住院次数',
+            'field4' => '去年因此病住院次数',
             'field5' => '去年此病发病总天数',
             'field6' => '医疗效评价',
             'field7' => '不良反应',
