@@ -17,7 +17,7 @@ $this->title="我的预约";
                 <div class="tag on<?=$v['state']?>"><?=$v['stateText']?></div>
                 <div class="button">
                     <?php if($v['state']==1 || $v['state']==5){?>
-                        <a href="/qappoint/state?id=<?=$v['id']?>&type=1" class="cancel">取消预约</a>
+                        <a href="/sappoint/state?id=<?=$v['id']?>&type=1" class="cancel">取消预约</a>
 
                     <?php } if($v['state']==5){?>
                     <div class="confirm">
@@ -32,7 +32,7 @@ $this->title="我的预约";
                 </div>
             </div>
             <div>
-                <?php if($type==1){?><a href="/qappoint/view?id=<?=$v['id']?>"> <?php }?>
+                <?php if($type==1){?><a href="/sappoint/view?id=<?=$v['id']?>"> <?php }?>
                 <div class="name"><?=$v['child_name']?></div>
                 <div class="mylist">
                     <div class="item">

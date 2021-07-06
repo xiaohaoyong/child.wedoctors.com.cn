@@ -61,7 +61,7 @@ $this->title='冬病夏治三伏贴';
 
    <?php \yii\widgets\ActiveForm::end()?>
 </div>
-<div class="appoint_my"><a href="/qappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+<div class="appoint_my"><a href="/sappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 
 <?php
 $date_day = date('Y-m-d', $firstday);
