@@ -46,7 +46,7 @@ $this->title="成人疫苗接种及两癌筛查预约"
                 <div class="item-content">
                     <div class="hospital">
                         <div class="name">"冬病夏治三伏贴"在线预约</div>
-                        <div class="address">温馨提示：筛查人群为北京市户籍年满35-64岁妇女，三年筛查一次（如2019年已筛查，下次筛查时间为2022年），必须携带身份证。注：请务必按照自己的预约时间段前来筛查现场，如有疑问请咨询预约社区或联系在线客服</div>
+                        <div class="address">温馨提示：</div>
                     </div>
                 </div>
                 <div class="item-button">
