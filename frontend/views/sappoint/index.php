@@ -38,7 +38,7 @@
                         <div class="hospital">
                             <div class="name"><?= $v['name'] ?></div>
                             <?php if ($v['week']) { ?>
-                                <div class="address">接种时间：每周工作日 <?= implode('，', $v['week']) ?></div>
+                                <div class="address">贴敷预约时间：每周工作日 <?= implode('，', $v['week']) ?></div>
                             <?php } ?>
                         </div>
                     </div>
