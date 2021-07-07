@@ -91,6 +91,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                             $html.="现住址：".$preg->field10."<br>";
                                         }elseif($e->type==10){
                                             return "无";
+                                        }elseif($e->type==11){
+                                            $row = \common\models\AppointAdult::findOne(['userid' => $e->userid]);
+                                            $appoinOrder=\common\models\AppointOrder2::findOne(['aoid' => $row->id]);
+                                            $html="";
+                                            foreach($appoinOrder->attributeLabels() as $k=>$v){
+                                                if($k=='type'){
+                                                    $text=\common\models\AppointOrder2::$typeText[$appoinOrder->$k];
+                                                }elseif($k=='zhenduanText'){
+                                                    $text=\common\models\AppointOrder2::$zhenduanText[$appoinOrder->$k];
+                                                }elseif ($k=='field6'){
+                                                    $text=\common\models\AppointOrder2::$field6Text[$appoinOrder->$k];
+                                                }elseif($k=='id' || $k=='aoid'){
+                                                    continue;
+                                                }else{
+                                                    $text=$appoinOrder->$k;
+                                                }
+                                                $html.=$v.": ".$text."<br>";
+                                            }
                                         }else{
                                             $child= \common\models\ChildInfo::findOne(['id' => $e->childid]);
                                             $parent= \common\models\UserParent::findOne(['userid' => $e->userid]);
