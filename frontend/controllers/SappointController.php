@@ -116,6 +116,8 @@ class SappointController extends Controller
                     if($appointOrder->load($post)  && $appointOrder->save()){
                         $appoint->state = 1;
                         $appoint->userid = $this->login->userid;
+                        $appoint->phone =$appointAdult->phone;
+
                         $appoint->loginid = $this->login->id;
                         if ($appoint->load($post) && $appoint->validate()) {
                             if ($doctor) {
