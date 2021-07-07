@@ -85,11 +85,17 @@ class SappointController extends Controller
 
     public function actionFrom($userid, $vid = 0)
     {
+        $post = \Yii::$app->request->post();
         $dateMsg = ['不可约', '可约', '未放号'];
 
         $appoint = new Appoint();
+
         $appointAdult = AppointAdult::findOne(['userid' => $this->login->userid]);
-        $appointAdult = $appointAdult ? $appointAdult : new AppointAdult();
+        if($appointAdult && $appointAdult->name!=$post['AppointAdult']['name'] && $post['AppointAdult']['name']){
+            $appointAdult = new AppointAdult();
+        }else{
+            $appointAdult = $appointAdult ? $appointAdult : new AppointAdult();
+        }
         $appointAdult->scenario = 's';
         $appointAdult->userid = $this->login->userid;
         $doctor = UserDoctor::findOne(['userid' => $userid]);
@@ -103,9 +109,11 @@ class SappointController extends Controller
         }
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $userid, 'type' => $this->type]);
 
-        if ($post = \Yii::$app->request->post()) {
+        if ($post) {
 
-            $appoint_log = Appoint::find()->where(['userid' => $this->login->userid, 'type' => $this->type])->andWhere(['<', 'state', 3])->one();
+            if ($appointAdult){
+                $appoint_log = Appoint::find()->where(['childid' => $appointAdult->id, 'userid' => $this->login->userid, 'type' => $this->type])->andWhere(['<', 'state', 3])->one();
+            }
             if ($appoint_log) {
                 \Yii::$app->getSession()->setFlash('error', '您有未完成的预约！');
             } else {
@@ -117,6 +125,7 @@ class SappointController extends Controller
                         $appoint->state = 1;
                         $appoint->userid = $this->login->userid;
                         $appoint->phone =$appointAdult->phone;
+                        $appoint->childid=$appointAdult->id;
 
                         $appoint->loginid = $this->login->id;
                         if ($appoint->load($post) && $appoint->validate()) {
@@ -156,7 +165,7 @@ class SappointController extends Controller
                             }
 
 
-                            $appointb = Appoint::find()->where(['userid' => $appointAdult->userid, 'type' => $appoint->type])->andWhere(['state' => 2])->orderBy('id desc')->one();
+                            $appointb = Appoint::find()->where(['childid'=>$appointAdult->id,'userid' => $appointAdult->userid, 'type' => $this->type])->andWhere(['state' => 2])->orderBy('id desc')->one();
                             if ($appointb->state == 1) {
                                 \Yii::$app->getSession()->setFlash('error', '您有未完成的预约');
                                 return $this->redirect(['sappoint/from', 'userid' => $appoint->doctorid]);

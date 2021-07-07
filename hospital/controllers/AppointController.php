@@ -4,6 +4,7 @@ namespace hospital\controllers;
 
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
+use common\models\AppointOrder2;
 use common\models\ChildInfo;
 use common\models\Log;
 use common\models\UserDoctor;
@@ -65,7 +66,16 @@ class AppointController extends BaseController
         $objPHPExcel->getActiveSheet()->getStyle('I')->getNumberFormat()
             ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $key1 = 1;
-        if($searchModel->type!=7 and $searchModel->type!=4 and $searchModel->type!=9) {
+        if($searchModel->type==11){
+            $fields = ['患者姓名', '身份证号', '性别', '医保类型', '诊断名称', '病程（年）', '家族史', '联系电话', '已贴敷年数', '去年发病次数', '去年门诊和急诊次数', '去年住院次数', '去年发病总天数', '疗效评价', '不良反应'];
+            $model=$objPHPExcel->setActiveSheetIndex(0);
+            foreach($fields as $k=>$v){
+                $key=65+$k;
+                $model->setCellValue(chr($key) . $key1, $v);
+            }
+
+
+        }elseif($searchModel->type!=7 and $searchModel->type!=4 and $searchModel->type!=9) {
             $fields = ['姓名', '性别', '生日', '儿童户籍', '母亲姓名', '户籍地', '预约日期', '预约时间', '手机号', '预约状态', '预约项目', '选择疫苗', '取消原因', '推送状态', '来源', '排号顺序'];
             $model=$objPHPExcel->setActiveSheetIndex(0);
             foreach($fields as $k=>$v){
@@ -96,7 +106,31 @@ class AppointController extends BaseController
         foreach ($dataProvider->query->all() as $k => $e) {
             $v = $e->toArray();
             $key1 = $k + 2;
-            if($searchModel->type!=7 and $searchModel->type!=4 and $searchModel->type!=9) {
+            if($searchModel->type==11){
+                if($e->childid){
+                    $row= \common\models\AppointAdult::findOne(['id' => $v['childid']]);
+                }else {
+                    $row= \common\models\AppointAdult::findOne(['userid' => $v['userid']]);
+                }
+                $appointOrder=AppointOrder2::findOne(['aoid'=>$row->id]);
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $key1, $row->name)
+                    ->setCellValue('B' . $key1, $row->id_card."  ")
+                    ->setCellValue('C' . $key1, \common\models\AppointAdult::$genderText[$row->gender])
+                    ->setCellValue('D' . $key1, AppointOrder2::$typeText[$appointOrder->type])
+                    ->setCellValue('E' . $key1, AppointOrder2::$zhenduanText[$appointOrder->zhenduan])
+                    ->setCellValue('F' . $key1, $appointOrder->jiazushu)
+                    ->setCellValue('G' . $key1, $e->phone)
+                    ->setCellValue('H' . $key1, $appointOrder->field1)
+                    ->setCellValue('I' . $key1, $appointOrder->field2)
+                    ->setCellValue('J' . $key1, $appointOrder->field3)
+                    ->setCellValue('K' . $key1, $appointOrder->field4)
+                    ->setCellValue('L' . $key1, $appointOrder->field5)
+                    ->setCellValue('M' . $key1, AppointOrder2::$field6Text[$appointOrder->field6])
+                    ->setCellValue('N' . $key1, $appointOrder->field7)
+                ;
+
+            }elseif($searchModel->type!=7 and $searchModel->type!=4 and $searchModel->type!=9) {
                 $child = \common\models\ChildInfo::findOne(['id' => $v['childid']]);
                 $userParent = \common\models\UserParent::findOne(['userid' => $v['userid']]);
 

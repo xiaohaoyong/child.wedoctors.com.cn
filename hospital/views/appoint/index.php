@@ -92,7 +92,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                         }elseif($e->type==10){
                                             return "无";
                                         }elseif($e->type==11){
-                                            $row = \common\models\AppointAdult::findOne(['userid' => $e->userid]);
+                                            if($e->childid){
+                                                $row =  \common\models\AppointAdult::findOne(['id' => $e->childid]);
+                                            }else {
+                                                $row =  \common\models\AppointAdult::findOne(['userid' => $e->userid]);
+                                            }
                                             $appoinOrder=\common\models\AppointOrder2::findOne(['aoid' => $row->id]);
                                             $html="";
                                             foreach($appoinOrder->attributeLabels() as $k=>$v){

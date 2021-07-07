@@ -50,4 +50,4 @@ $this->title='我的预约';
     </div>
     <div class="myAppoint"><?=\yii\helpers\Html::a('我的预约',['qappoint/my'])?></div>
 </div>
-<div class="appoint_my"><a href="/qappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+<div class="appoint_my"><a href="/sappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
