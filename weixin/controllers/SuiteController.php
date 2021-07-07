@@ -292,6 +292,29 @@ class SuiteController extends Controller
         $buttons = [
             ['type' => 'miniprogram', 'name' => '育儿服务', 'url' => 'pages/index/index', 'appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',],
             ['type' => 'view', 'name' => '问医生', 'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1147c2e491dfdf1d&redirect_uri=http://web.child.wedoctors.com.cn/haodf&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect',],
+            ['type' => 'view', 'name' => '成人预约', 'sub_button' => [
+                [
+                    'type' => 'view',
+                    'name' => '预约核酸检测',
+                    'url' => 'http://web.child.wedoctors.com.cn/naire-appoint/index',
+                ],
+                [
+                    'type' => 'view',
+                    'name' => '预约成人疫苗接种疫苗',
+                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index',
+                ],
+                [
+                    'type' => 'view',
+                    'name' => '预约两癌筛查',
+                    'url' => 'http://web.child.wedoctors.com.cn/qappoint/index',
+                ],
+                [
+                    'type' => 'view',
+                    'name' => '"冬病夏治三伏贴"在线预约',
+                    'url' => 'http://web.child.wedoctors.com.cn/sappoint/index',
+                ],
+
+            ]],
             ['type' => 'view', 'name' => '我的', 'sub_button' => [
                 [
                     'type' => 'view',
@@ -300,8 +323,8 @@ class SuiteController extends Controller
                 ],
                 [
                     'type' => 'view',
-                    'name' => '预约项目',
-                    'url' => 'http://web.child.wedoctors.com.cn/qappoint/list',
+                    'name' => '问医生',
+                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1147c2e491dfdf1d&redirect_uri=http://web.child.wedoctors.com.cn/haodf&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect',
                 ],
 
                 [
