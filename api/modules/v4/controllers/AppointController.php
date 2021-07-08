@@ -62,7 +62,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
 
         foreach (HospitalAppoint::$typeText as $k => $v) {
-            if ($k == 4 or $k==7 or $k==9) continue;
+            if ($k == 4 or $k==7 or $k==9 or $k==11) continue;
             $rs['id'] = $k;
             $rs['name'] = $v;
             $rs['info'] = $typeInfo[$k];
