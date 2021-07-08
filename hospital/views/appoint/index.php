@@ -99,19 +99,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                             }
                                             $appoinOrder=\common\models\AppointOrder2::findOne(['aoid' => $row->id]);
                                             $html="";
-                                            foreach($appoinOrder->attributeLabels() as $k=>$v){
-                                                if($k=='type'){
-                                                    $text=\common\models\AppointOrder2::$typeText[$appoinOrder->$k];
-                                                }elseif($k=='zhenduanText'){
-                                                    $text=\common\models\AppointOrder2::$zhenduanText[$appoinOrder->$k];
-                                                }elseif ($k=='field6'){
-                                                    $text=\common\models\AppointOrder2::$field6Text[$appoinOrder->$k];
-                                                }elseif($k=='id' || $k=='aoid'){
-                                                    continue;
-                                                }else{
-                                                    $text=$appoinOrder->$k;
+                                            if($appoinOrder) {
+                                                foreach ($appoinOrder->attributeLabels() as $k => $v) {
+                                                    if ($k == 'type') {
+                                                        $text = \common\models\AppointOrder2::$typeText[$appoinOrder->$k];
+                                                    } elseif ($k == 'zhenduanText') {
+                                                        $text = \common\models\AppointOrder2::$zhenduanText[$appoinOrder->$k];
+                                                    } elseif ($k == 'field6') {
+                                                        $text = \common\models\AppointOrder2::$field6Text[$appoinOrder->$k];
+                                                    } elseif ($k == 'id' || $k == 'aoid') {
+                                                        continue;
+                                                    } else {
+                                                        $text = $appoinOrder->$k;
+                                                    }
+                                                    $html .= $v . ": " . $text . "<br>";
                                                 }
-                                                $html.=$v.": ".$text."<br>";
                                             }
                                         }else{
                                             $child= \common\models\ChildInfo::findOne(['id' => $e->childid]);
