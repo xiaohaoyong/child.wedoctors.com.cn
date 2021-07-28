@@ -17,13 +17,17 @@ use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\UserDoctor;
+use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\WeOpenid;
 use console\models\ChildInfoInput;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 use yii\base\Controller;
 use yii\helpers\ArrayHelper;
+
 
 class ChildSignController extends \yii\console\Controller
 {
@@ -45,18 +49,18 @@ class ChildSignController extends \yii\console\Controller
     public function setDownExcel($doctorid){
 
         echo $doctorid;
-        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel = new Spreadsheet();
         $objPHPExcel->getProperties();
 
         //设置A3单元格为文本
         $objPHPExcel->getActiveSheet()->getStyle('B')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('I')->getNumberFormat()
-            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $key1 = 1;
         $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A'.$key1, '姓名')
@@ -81,6 +85,11 @@ class ChildSignController extends \yii\console\Controller
             ->setCellValue('T'.$key1, '宣教月龄')
             ->setCellValue('U'.$key1, '宣教内容')
             ->setCellValue('V'.$key1, '宣教时间');
+        $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
+        $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
+
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
         $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
@@ -143,6 +152,11 @@ class ChildSignController extends \yii\console\Controller
                     $is_article = "否";
                 }
                 echo "\n";
+                $idcard=$v['field27']?$v['field27']:$v['idcard'];
+                if($v['birthday']>strtotime('-6 month'))
+                {
+                    $idcard=$idcard?$idcard:$v['field6'];
+                }
 
                 $key1 = $k + 2;
                 $objPHPExcel->setActiveSheetIndex(0)
@@ -151,8 +165,8 @@ class ChildSignController extends \yii\console\Controller
                     ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                     ->setCellValue('D' . $key1, $age)
                     ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
-                    ->setCellValue('F' . $key1, $v['field6'])
-                    ->setCellValue('G' . $key1, " " . $v['field27'])
+                    ->setCellValueExplicit('F' . $key1, $v['field6']?$v['field6']:$idcard,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2)
+                    ->setCellValueExplicit('G' . $key1, $idcard?$idcard:$v['field6'],\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2)
                     ->setCellValue('H' . $key1, $userParent->mother || $userParent->father ? $userParent->mother . "/" . $userParent->father : "无")
                     ->setCellValue('I' . $key1, $userParent->mother_phone ? " " . $userParent->mother_phone : "无")
                     ->setCellValue('J' . $key1, $userParent->father_phone ? " " . $userParent->father_phone : "无")
@@ -171,9 +185,7 @@ class ChildSignController extends \yii\console\Controller
 
             }
             // $objPHPExcel->setActiveSheetIndex(0);
-
-
-            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter = IOFactory::createWriter($objPHPExcel, 'Xlsx');
             $objWriter->save(dirname(__ROOT__) . "/static/" . $userDoctor->hospitalid . "-0-6.xlsx");
             echo "true";
         }
