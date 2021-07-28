@@ -25,17 +25,20 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use yii\base\Controller;
 use yii\helpers\ArrayHelper;
 
-class ChildSignController extends Controller
+class ChildSignController extends \yii\console\Controller
 {
-    public function actionDown(){
+    public function actionDown($doctorid=0){
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
         set_time_limit(0);
-        $doctor=UserDoctor::find()->all();
-        foreach($doctor as $v)
-        {
-            $this->setDownExcel($v->userid);
-            echo "\n";
+        if($doctorid){
+            $this->setDownExcel($doctorid);
+        }else {
+            $doctor = UserDoctor::find()->all();
+            foreach ($doctor as $v) {
+                $this->setDownExcel($v->userid);
+                echo "\n";
+            }
         }
        // $this->setDownExcel(206260);
     }

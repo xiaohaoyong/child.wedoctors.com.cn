@@ -16,10 +16,12 @@ class FamilyDoctorServices
                 [
                     'name'=>'满月中医指导',
                     'type'=>1,
+                    'id'=>19,
                 ],
                 [
-                    'name'=>'乙肝疫苗接种',
+                    'name'=>'乙肝疫苗(第2剂)',
                     'type'=>2,
+                    'id'=>1,
                 ],
             ],
         ],
@@ -27,8 +29,9 @@ class FamilyDoctorServices
             'title'=>'2月',
             'services'=>[
                 [
-                    'name'=>'脊灰疫苗',
+                    'name'=>'脊灰疫苗(IPV)(第1剂)',
                     'type'=>2,
+                    'id'=>4,
                 ],
             ],
         ],
@@ -38,18 +41,22 @@ class FamilyDoctorServices
                 [
                     'name'=>'3月龄中医指导',
                     'type'=>1,
+                    'id'=>220,
                 ],
                 [
                     'name'=>'3月龄体检',
                     'type'=>3,
+                    'id'=>1,
                 ],
                 [
-                    'name'=>'百白破疫苗',
+                    'name'=>'无细胞百白破疫苗(第1剂)',
                     'type'=>2,
+                    'id'=>6,
                 ],
                 [
-                    'name'=>'脊灰疫苗',
+                    'name'=>'脊灰疫苗(IPV)(第2剂)',
                     'type'=>2,
+                    'id'=>5
                 ],
             ],
         ],
@@ -57,12 +64,14 @@ class FamilyDoctorServices
             'title'=>'4月',
             'services'=>[
                 [
-                    'name'=>'百白破第二剂',
+                    'name'=>'无细胞百白破疫苗(第2剂)',
                     'type'=>2,
+                    'id'=>8
                 ],
                 [
-                    'name'=>'脊灰疫苗opv',
+                    'name'=>'脊灰疫苗(OPV)(第3剂)',
                     'type'=>2,
+                    'id'=>7,
                 ],
             ],
         ],
@@ -70,8 +79,9 @@ class FamilyDoctorServices
             'title'=>'5月',
             'services'=>[
                 [
-                    'name'=>'百白破第三剂',
+                    'name'=>'无细胞百白破疫苗(第3剂)',
                     'type'=>2,
+                    'id'=>9,
                 ],
             ],
         ],
@@ -81,18 +91,22 @@ class FamilyDoctorServices
                 [
                     'name'=>'6月龄中医指导',
                     'type'=>1,
+                    'id'=>53,
                 ],
                 [
                     'name'=>'6月龄体检',
                     'type'=>3,
+                    'id'=>2,
                 ],
                 [
-                    'name'=>'A群流脑疫苗',
+                    'name'=>'A群流脑疫苗(第1剂)',
                     'type'=>2,
+                    'id'=>11,
                 ],
                 [
-                    'name'=>'乙肝第三剂',
+                    'name'=>'乙肝疫苗(第3剂)',
                     'type'=>2,
+                    'id'=>10,
                 ],
             ],
         ],
@@ -100,16 +114,14 @@ class FamilyDoctorServices
             'title'=>'8月',
             'services'=>[
                 [
-                    'name'=>'8月龄中医指导',
-                    'type'=>1,
-                ],
-                [
                     'name'=>'8月龄体检',
                     'type'=>3,
+                    'id'=>3,
                 ],
                 [
-                    'name'=>'麻风腮疫苗',
+                    'name'=>'麻风二联疫苗(第1剂)',
                     'type'=>2,
+                    'id'=>12,
                 ],
             ],
         ],
@@ -117,8 +129,9 @@ class FamilyDoctorServices
             'title'=>'9月',
             'services'=>[
                 [
-                    'name'=>'A群流脑疫苗',
+                    'name'=>'A群流脑疫苗(第2剂)',
                     'type'=>2,
+                    'id'=>14
                 ],
             ],
         ],
@@ -128,14 +141,16 @@ class FamilyDoctorServices
                 [
                     'name'=>'1岁中医指导',
                     'type'=>1,
+                    'id'=>54
                 ],
                 [
                     'name'=>'1周岁体检',
                     'type'=>3,
                 ],
                 [
-                    'name'=>'乙脑减毒疫苗',
+                    'name'=>'乙脑减毒疫苗(第1剂)',
                     'type'=>2,
+                    'id'=>13
                 ],
             ],
         ],
@@ -145,22 +160,26 @@ class FamilyDoctorServices
                 [
                     'name'=>'一半岁中医指导',
                     'type'=>1,
+                    'id'=>55
                 ],
                 [
                     'name'=>'一岁半体检',
                     'type'=>3,
                 ],
                 [
-                    'name'=>'麻腮风疫苗',
+                    'name'=>'麻腮风疫苗（第2剂）',
                     'type'=>2,
+                    'id'=>21
                 ],
                 [
-                    'name'=>'百白破第四剂',
+                    'name'=>'无细胞百白破疫苗(第4剂)',
                     'type'=>2,
+                    'id'=>15,
                 ],
                 [
-                    'name'=>'甲肝疫苗',
+                    'name'=>'甲肝疫苗(第1剂)',
                     'type'=>2,
+                    'id'=>17,
                 ],
             ],
         ],
@@ -170,18 +189,22 @@ class FamilyDoctorServices
                 [
                     'name'=>'两岁中医指导',
                     'type'=>1,
+                    'id'=>56
+
                 ],
                 [
                     'name'=>'两岁体检',
                     'type'=>3,
                 ],
                 [
-                    'name'=>'乙脑减毒疫苗',
+                    'name'=>'乙脑减毒疫苗(第2剂)',
                     'type'=>2,
+                    'id'=>18
                 ],
                 [
-                    'name'=>'甲肝第二剂',
+                    'name'=>'甲肝疫苗(第2剂)',
                     'type'=>2,
+                    'id'=>17
                 ],
 
             ],
@@ -192,6 +215,7 @@ class FamilyDoctorServices
                 [
                     'name'=>'两岁半中医指导',
                     'type'=>1,
+                    'id'=>57
                 ],
                 [
                     'name'=>'两岁半体检',
@@ -209,14 +233,17 @@ class FamilyDoctorServices
                 [
                     'name'=>'三岁中医指导',
                     'type'=>1,
+                    'id'=>58
+
                 ],
                 [
                     'name'=>'三岁体检',
                     'type'=>2,
                 ],
                 [
-                    'name'=>'A+C流脑疫苗',
+                    'name'=>'A+C群流脑疫苗(第1剂)',
                     'type'=>2,
+                    'id'=>19,
                 ],
             ],
         ],
@@ -226,14 +253,17 @@ class FamilyDoctorServices
                 [
                     'name'=>'四岁中医指导',
                     'type'=>1,
+                    'id'=>122
                 ],
                 [
-                    'name'=>'脊灰疫苗IPV',
+                    'name'=>'脊灰疫苗(IPV)(第4剂)',
                     'type'=>2,
+                    'id'=>61
                 ],
                 [
-                    'name'=>'脊灰疫苗OPV',
+                    'name'=>'脊灰疫苗(OPV)(第4剂)',
                     'type'=>2,
+                    'id'=>20,
                 ],
             ],
         ],
@@ -243,6 +273,8 @@ class FamilyDoctorServices
                 [
                     'name'=>'五岁中医指导',
                     'type'=>1,
+                    'id'=>46
+
                 ],
             ],
         ],
@@ -252,14 +284,17 @@ class FamilyDoctorServices
                 [
                     'name'=>'六岁中医指导',
                     'type'=>1,
+                    'id'=>196,
                 ],
                 [
-                    'name'=>'麻腮风第三剂',
+                    'name'=>'麻腮风疫苗(第3剂)',
                     'type'=>2,
+                    'id'=>60,
                 ],
                 [
-                    'name'=>'白破疫苗',
+                    'name'=>'白破疫苗(DT)	',
                     'type'=>2,
+                    'id'=>22,
                 ],
             ],
         ],
