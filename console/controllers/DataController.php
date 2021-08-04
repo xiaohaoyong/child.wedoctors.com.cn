@@ -78,6 +78,28 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+//        $child=DoctorParent::find()
+//            ->leftJoin('child_info', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+//            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+//            //->andFilterWhere(['>','child_info.birthday',strtotime('-6 year')])
+//            ->andFilterWhere(['!=','`doctor_parent`.`doctorid`', 213579])
+//            ->andFilterWhere(['child_info.source'=>110602])
+//            ->count();
+
+        $child=DoctorParent::find()
+            ->leftJoin('child_info', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            ->andFilterWhere(['>','child_info.birthday',strtotime('-6 year')])
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => 47156])
+            ->andFilterWhere(['child_info.source'=>110602])
+            ->all();
+        foreach($child as $k=>$v){
+            $v->doctorid=213579;
+            $v->save();
+        }
+
+        var_dump($child);exit;
+
 
         $data = [
             'first' => array('value' => "您好家长，您的宝宝如果还没有进行常规体检，请您在一周之内带孩子到保健科体检"),

@@ -610,9 +610,12 @@ class NaireAppointController extends Controller
 
             if($type==1){
                 $qnaa = QuestionNaireField::find()->where(['userid' => $this->login->userid,'state'=>1])->andWhere(['>','createtime',strtotime('-1 day')])->orderBy('id desc')->one();
-                $qnaa->state=0;
-                if(!$qnaa->save()){
-                    var_dump($qnaa->firstErrors);exit;
+                if($qnaa) {
+                    $qnaa->state = 0;
+                    if (!$qnaa->save()) {
+                        var_dump($qnaa->firstErrors);
+                        exit;
+                    }
                 }
 
 
