@@ -76,8 +76,30 @@ use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
-    public function actionTesta($num=0)
+    public function actionTesta($num = 0)
     {
+        $totle = 391347;
+        $limit = ceil($totle / 50);
+        $snum = $num * $limit;
+
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+            $data = [
+                'first' => ['value' => "2021年8月1日至7日是全球第30个“世界母乳喂养周”，其主题是“保护母乳喂养，共同承担责任”。为此儿宝宝邀请了海淀妇幼李海苗主任来为我们答疑解惑。"],
+                'keyword1' => ARRAY('value' => '哺乳期常见乳房问题及应对措施，第二十七期健康直播课即将开始'),
+                'keyword2' => ARRAY('value' => '2021年08月08日 15点'),
+                'remark' => ARRAY('value' => ""),
+            ];
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v2/course/alive/l_610e0830e4b054ed7c4b0ac6?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2');
+            var_dump($rs);
+            sleep(1);
+        }
+        var_dump($login);
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', 'https://appsx0v9q8i8331.h5.xiaoeknow.com/v2/course/alive/l_610e0830e4b054ed7c4b0ac6?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2');
+        exit;
+
+//        $child=ChildInfo::find()->where(['>','birthday',strtotime('-1 year')])->count();
+//        var_dump($child);exit;
 //        $child=DoctorParent::find()
 //            ->leftJoin('child_info', '`doctor_parent`.`parentid` = `child_info`.`userid`')
 //            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
@@ -85,20 +107,30 @@ class DataController extends \yii\console\Controller
 //            ->andFilterWhere(['!=','`doctor_parent`.`doctorid`', 213579])
 //            ->andFilterWhere(['child_info.source'=>110602])
 //            ->count();
+        $child = ChildInfo::find()
+            ->select('userid')
+            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+            //->andFilterWhere(['>','child_info.birthday',strtotime('-10 year')])
+            //->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+            ->count();
+        var_dump($child);
+        exit;
 
-        $child=DoctorParent::find()
+        $child = DoctorParent::find()
             ->leftJoin('child_info', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andFilterWhere(['>','child_info.birthday',strtotime('-6 year')])
+            ->andFilterWhere(['>', 'child_info.birthday', strtotime('-1 year')])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => 47156])
-            ->andFilterWhere(['child_info.source'=>110602])
+            ->andFilterWhere(['child_info.source' => 110602])
             ->all();
-        foreach($child as $k=>$v){
-            $v->doctorid=213579;
+        foreach ($child as $k => $v) {
+            $v->doctorid = 213579;
             $v->save();
         }
 
-        var_dump($child);exit;
+        var_dump($child);
+        exit;
 
 
         $data = [
@@ -113,48 +145,47 @@ class DataController extends \yii\console\Controller
         ];
         WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);
         exit;
-        $doctorid=206260;
-        $dname='新村社区';
+        $doctorid = 206260;
+        $dname = '新村社区';
         //签约儿童总数
-        $child=ChildInfo::find()
+        $child = ChildInfo::find()
             ->select('userid')
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andFilterWhere(['>','child_info.birthday',strtotime('-6 year')])
+            ->andFilterWhere(['>', 'child_info.birthday', strtotime('-6 year')])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
             ->column();
 
-        $pregLCount=Pregnancy::find()
+        $pregLCount = Pregnancy::find()
             ->select('familyid')
-
-            ->andWhere(['pregnancy.field49'=>0])
-            ->andWhere(['>','pregnancy.field16',strtotime('-43 week')])
+            ->andWhere(['pregnancy.field49' => 0])
+            ->andWhere(['>', 'pregnancy.field16', strtotime('-43 week')])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->column();
 
-        $array=$child+$pregLCount+[390512,175579];
+        $array = $child + $pregLCount + [390512, 175579];
         //$array=[390512,175579];
         $data = [
             'first' => array('value' => "欢迎大家加入【儿宝宝{$dname}妈妈交流群】，我们的宝宝同在{$dname}医院接种疫苗和体检，所以看到老相识不要太惊喜哟",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
             'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-            'keyword3' => ARRAY('value' =>"请您点击查看详情，并长按二维码进入【{$dname}妈妈交流群】"),
+            'keyword3' => ARRAY('value' => "请您点击查看详情，并长按二维码进入【{$dname}妈妈交流群】"),
 
             'remark' => ARRAY('value' => "基于线下的真实社群，为您打造社区医院的助手服务及全方位综合母婴服务，力求提高您的满意度。群内服务包括：社区医院政策宣传、疫苗及体检咨询、儿科医生咨询、科学育儿指导、孕育知识分享、妈妈经验交流、社区亲子活动等等。", 'color' => '#221d95'),
         ];
-        $miniprogram=[
-            "appid"=>\Yii::$app->params['wxXAppId'],
-            "pagepath"=>"/pages/article/view/index?id=1",
+        $miniprogram = [
+            "appid" => \Yii::$app->params['wxXAppId'],
+            "pagepath" => "/pages/article/view/index?id=1",
         ];
-        $temp='Pa_dWDnwfS5FYpQmB8wf5uWyge50tGpxfg47xfGLYrI';
-        foreach($array as $k=>$v){
-            $login = UserLogin::find()->where(['!=', 'openid', ''])->andWhere(['userid'=>$v])->one();
-            if($login) {
+        $temp = 'Pa_dWDnwfS5FYpQmB8wf5uWyge50tGpxfg47xfGLYrI';
+        foreach ($array as $k => $v) {
+            $login = UserLogin::find()->where(['!=', 'openid', ''])->andWhere(['userid' => $v])->one();
+            if ($login) {
                 print_r($login->openid);
                 $rs = WechatSendTmp::send($data, $login->openid, $temp, "http://child.wedoctors.com.cn/hospital/{$doctorid}.html");
-                if($rs){
+                if ($rs) {
                     echo "==true";
-                }else{
+                } else {
                     echo "==false";
                 }
                 echo "\n";
@@ -184,7 +215,6 @@ class DataController extends \yii\console\Controller
         exit;
 
 
-
         $data = [
             'first' => array('value' => "尊敬的用户您好，由于因中心停电整修，请5月7日上午疫苗接种的用户于9:30-11:00来本中心预防保健科进行接种，给您带来不便请谅解，感谢您的理解和支持。\n",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
@@ -194,17 +224,17 @@ class DataController extends \yii\console\Controller
             'remark' => ARRAY('value' => " ", 'color' => '#221d95'),
         ];
 
-        $temp='Pa_dWDnwfS5FYpQmB8wf5uWyge50tGpxfg47xfGLYrI';
+        $temp = 'Pa_dWDnwfS5FYpQmB8wf5uWyge50tGpxfg47xfGLYrI';
 
 
-        $appoint=Appoint::find()->where(['doctorid'=>160226])->andWhere(['appoint_date'=>1620316800])->andWhere(['in','appoint_time',[1,2,3,7,8,9,10,11,12,19,20]])->all();
-        foreach($appoint as $K=>$v){
-            $userLogin=UserLogin::findAll(['userid'=>$v->userid]);
-            if($userLogin) {
+        $appoint = Appoint::find()->where(['doctorid' => 160226])->andWhere(['appoint_date' => 1620316800])->andWhere(['in', 'appoint_time', [1, 2, 3, 7, 8, 9, 10, 11, 12, 19, 20]])->all();
+        foreach ($appoint as $K => $v) {
+            $userLogin = UserLogin::findAll(['userid' => $v->userid]);
+            if ($userLogin) {
                 foreach ($userLogin as $ulk => $ulv) {
                     if ($ulv->openid) {
                         $rs = WechatSendTmp::send($data, $ulv->openid, $temp);
-                        echo $rs?'true':'false';
+                        echo $rs ? 'true' : 'false';
                         echo "\n";
                     }
                 }
@@ -213,19 +243,17 @@ class DataController extends \yii\console\Controller
         exit;
 
 
-
         ini_set('memory_limit', '4000M');
 
         $s_time = '20201001';
         $e_time = '20210101';
 
 
-
         foreach (Area::$county[11] as $k => $v) {
             $rs = [];
-            $userDoctors = UserDoctor::find()->where(['county'=>$k])->select('userid')->column();
+            $userDoctors = UserDoctor::find()->where(['county' => $k])->select('userid')->column();
 
-            if($userDoctors) {
+            if ($userDoctors) {
                 $doctorParents2 = DoctorParent::find()->where(['in', 'doctorid', $userDoctors])
                     ->select('parentid')
                     ->column();
@@ -241,17 +269,17 @@ class DataController extends \yii\console\Controller
                 $r2 = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
                 $rs[] = $r2 + round($r2 * 0.20);
 
-                echo $v . "," . $rs[0]  . "," .  $rs[1] ."," . $rs[2]  . "," .  $rs[3];
+                echo $v . "," . $rs[0] . "," . $rs[1] . "," . $rs[2] . "," . $rs[3];
                 echo "\n";
             }
         }
 
         exit;
 
-        $HealthRecords=HealthRecordsSchool::find()->where(['doctorid'=>400564])->all();
-        foreach($HealthRecords as $k=>$v){
-            $hr=HealthRecords::find()->where(['field30'=>$v->id])->all();
-            foreach($hr as $hk=>$kv){
+        $HealthRecords = HealthRecordsSchool::find()->where(['doctorid' => 400564])->all();
+        foreach ($HealthRecords as $k => $v) {
+            $hr = HealthRecords::find()->where(['field30' => $v->id])->all();
+            foreach ($hr as $hk => $kv) {
                 echo "wkhtmltopdf http://child.wedoctors.com.cn/health-records/down?userid={$kv->userid} {$v->id}/{$kv->field29}.pdf";
                 echo "\n";
             }
@@ -259,31 +287,30 @@ class DataController extends \yii\console\Controller
         exit;
 
 
-        $userDoctor=UserDoctor::findAll(['county'=>1106]);
-        $dates=[
-            10=>['s'=>'2020-10-01','e'=>'2020-10-31'],
-            11=>['s'=>'2020-11-01','e'=>'2020-11-30'],
-            12=>['s'=>'2020-12-01','e'=>'2020-12-31'],
-            1=>['s'=>'2021-01-01','e'=>'2021-01-31'],
-            2=>['s'=>'2021-02-01','e'=>'2021-02-29'],
-            3=>['s'=>'2021-03-01','e'=>'2021-03-31'],
+        $userDoctor = UserDoctor::findAll(['county' => 1106]);
+        $dates = [
+            10 => ['s' => '2020-10-01', 'e' => '2020-10-31'],
+            11 => ['s' => '2020-11-01', 'e' => '2020-11-30'],
+            12 => ['s' => '2020-12-01', 'e' => '2020-12-31'],
+            1 => ['s' => '2021-01-01', 'e' => '2021-01-31'],
+            2 => ['s' => '2021-02-01', 'e' => '2021-02-29'],
+            3 => ['s' => '2021-03-01', 'e' => '2021-03-31'],
 
 
         ];
-        foreach($userDoctor as $k=>$v){
-            $rs=[];
-            $rs[]=$v->name;
-            foreach ($dates as $dk=>$dv){
-                $s=strtotime($dv['s']);
-                $e=strtotime($dv['e']);
-                $num=ArticleUser::find()->where(['>=','createtime',$s])->andWhere(['<=','createtime',$e])->andWhere(['userid'=>$v->userid])->count();
-                $rs[]=$num;
+        foreach ($userDoctor as $k => $v) {
+            $rs = [];
+            $rs[] = $v->name;
+            foreach ($dates as $dk => $dv) {
+                $s = strtotime($dv['s']);
+                $e = strtotime($dv['e']);
+                $num = ArticleUser::find()->where(['>=', 'createtime', $s])->andWhere(['<=', 'createtime', $e])->andWhere(['userid' => $v->userid])->count();
+                $rs[] = $num;
             }
-            echo implode(',',$rs);
+            echo implode(',', $rs);
             echo "\n";
         }
         exit;
-
 
 
         $totle = 315429;
@@ -306,12 +333,13 @@ class DataController extends \yii\console\Controller
         exit;
 
 
-        $doctorParent=DoctorParent::find()->select('count(*) as a,teamid')->where(['doctorid'=>206262])->groupBy('teamid')->orderBy('a desc');
+        $doctorParent = DoctorParent::find()->select('count(*) as a,teamid')->where(['doctorid' => 206262])->groupBy('teamid')->orderBy('a desc');
 
-        var_dump($doctorParent->createCommand()->getSql());exit;
-        $doctorParent=DoctorParent::findAll(['doctorid'=>206262]);
-        foreach($doctorParent as $k=>$v){
-          var_dump($v->teamid);
+        var_dump($doctorParent->createCommand()->getSql());
+        exit;
+        $doctorParent = DoctorParent::findAll(['doctorid' => 206262]);
+        foreach ($doctorParent as $k => $v) {
+            var_dump($v->teamid);
         }
         exit;
 //
@@ -335,63 +363,58 @@ class DataController extends \yii\console\Controller
 //        exit;
 
 
-
-        var_dump(array_unique($array));exit;
-
-
+        var_dump(array_unique($array));
+        exit;
 
 
         $file = fopen('shengao.csv', 'r');
         while (($line = fgets($file)) !== false) {
-            $rs=explode(',',trim($line));
-            $count=Examination::find()
-                ->where(['field2'=>$rs[2],'field3'=>$rs[3],'field32'=>ChildInfo::$genderText[$rs[1]]])
-                ->andWhere(['<','field40',$rs[4]])->count();
-            echo trim($line).",".$count."\n";
+            $rs = explode(',', trim($line));
+            $count = Examination::find()
+                ->where(['field2' => $rs[2], 'field3' => $rs[3], 'field32' => ChildInfo::$genderText[$rs[1]]])
+                ->andWhere(['<', 'field40', $rs[4]])->count();
+            echo trim($line) . "," . $count . "\n";
         }
         exit;
 
 
-        $sdate='2020-01-01';
+        $sdate = '2020-01-01';
 
-        for($i=0;$i<12;$i++){
-            $date=strtotime("+$i month",strtotime($sdate));
-            $j=$i+1;
-            $edate=strtotime("+$j month",strtotime($sdate));
+        for ($i = 0; $i < 12; $i++) {
+            $date = strtotime("+$i month", strtotime($sdate));
+            $j = $i + 1;
+            $edate = strtotime("+$j month", strtotime($sdate));
 
-            $pregLCount=ChildInfo::find()
+            $pregLCount = ChildInfo::find()
                 ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                ->andWhere(['>=','doctor_parent.createtime',$date])
-                ->andWhere(['<','doctor_parent.createtime',$edate])
+                ->andWhere(['>=', 'doctor_parent.createtime', $date])
+                ->andWhere(['<', 'doctor_parent.createtime', $edate])
                 ->count();
-            $rs=[];
-            $rs[]=date('Y-m',$date);
-            $rs[]=$pregLCount;
-            echo implode(',',$rs);
+            $rs = [];
+            $rs[] = date('Y-m', $date);
+            $rs[] = $pregLCount;
+            echo implode(',', $rs);
             echo "\n";
         }
         exit;
 
 
-
-
         $parentids = \common\models\DoctorParent::find()->select('parentid')->andFilterWhere(['`doctor_parent`.`doctorid`' => 156256])->andFilterWhere(['level' => 1])->column();
 
-        $query=ChildInfo::find();
+        $query = ChildInfo::find();
         $query->select('userid');
         $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-6 year")]);
         $query->andFilterWhere(['not in', '`child_info`.userid', $parentids]);
         $query->andFilterWhere(['`child_info`.`admin`' => 110588]);
-        $list=$query->all();
-        foreach ($list as $k=>$v){
-            $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid]);
-            if($doctorParent){
-                $doctorParent->doctorid=156256;
+        $list = $query->all();
+        foreach ($list as $k => $v) {
+            $doctorParent = DoctorParent::findOne(['parentid' => $v->userid]);
+            if ($doctorParent) {
+                $doctorParent->doctorid = 156256;
                 $doctorParent->save();
             }
         }
         exit;
-
 
 
 //        $userDoctors = UserDoctor::find()->where(['city' => 11])->all();
@@ -446,7 +469,6 @@ class DataController extends \yii\console\Controller
 //        exit;
 
 
-
         $totle = 315429;
         $limit = ceil($totle / 100);
         $snum = $num * $limit;
@@ -465,8 +487,6 @@ class DataController extends \yii\console\Controller
         }
         var_dump($login);
         exit;
-
-
 
 
         Notice::setList(390512, 3, ['title' => 'sdfasdfasdfasdf', 'ftitle' => '一，二月龄宝宝家长', 'id' => "/pages/article/view/index?id=1370"]);
@@ -488,14 +508,14 @@ class DataController extends \yii\console\Controller
             $userLogin = UserLogin::find()->select('openid')->where(['in', 'userid', $doctorParents2])->andWhere(['!=', 'openid', ''])->groupBy('userid')->column();
             $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->count();
             $r1 = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1369])->groupBy('openid')->andWhere(['level' => 1])->count();
-            $rs[]=$r1+round($r1*0.30);
+            $rs[] = $r1 + round($r1 * 0.30);
 
             //$userLogin=UserLogin::find()->select('openid')->where(['in','userid',$childs])->andWhere(['!=','openid',''])->groupBy('userid')->column();
             $rs[] = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->count();
             $r2 = ArticlePushVaccine::find()->where(['in', 'openid', $userLogin])->andWhere(['>=', 'createtime', strtotime($s_time)])->andWhere(['<', 'createtime', strtotime($e_time)])->andWhere(['aid' => 1370])->groupBy('openid')->andWhere(['level' => 1])->count();
-            $rs[]=$r2+round($r2*0.20);
+            $rs[] = $r2 + round($r2 * 0.20);
 
-            echo $v->name . "," . ($rs[1]+$rs[3]).",".($rs[2]+$rs[4]);
+            echo $v->name . "," . ($rs[1] + $rs[3]) . "," . ($rs[2] + $rs[4]);
             echo "\n";
         }
 
@@ -509,39 +529,39 @@ class DataController extends \yii\console\Controller
             $birthday = $row[1];
             $child = ChildInfo::findOne(['name' => $name, 'birthday' => strtotime($birthday), 'doctorid' => 110595]);
             if ($child) {
-                $row[2]="已查询";
+                $row[2] = "已查询";
                 $auto = Autograph::findOne(['userid' => $child->userid]);
                 if ($auto) {
-                    $row[3]="已签字";
-                }else{
-                    $row[3]="未查询到签字";
+                    $row[3] = "已签字";
+                } else {
+                    $row[3] = "未查询到签字";
                 }
                 $doctorParent = DoctorParent::findOne(['parentid' => $child->userid]);
                 if ($doctorParent) {
-                    $row[4]="已签约";
-                }else{
-                    $row[4]="未查询到签约";
+                    $row[4] = "已签约";
+                } else {
+                    $row[4] = "未查询到签约";
                 }
             } else {
-                $row[2]="未查询到";
+                $row[2] = "未查询到";
             }
-            echo implode(',',$row);
+            echo implode(',', $row);
             echo "\n";
         }
         exit;
         $list = FileHelper::findFiles('data/qingta');
         foreach ($list as $k => $v) {
-            if($v=='data/qingta/.DS_Store') continue;
+            if ($v == 'data/qingta/.DS_Store') continue;
 
         }
         exit;
 
 
-        $a=0;
-        for ($i = 1; $i<8; $i++) {
-            $file = file_get_contents('data/'.$i.'.txt');
+        $a = 0;
+        for ($i = 1; $i < 8; $i++) {
+            $file = file_get_contents('data/' . $i . '.txt');
             $data = json_decode($file, true);
-            if($data) {
+            if ($data) {
                 foreach ($data['words_result'] as $k => $v) {
 
                     if ($k % 2 == 0) {
@@ -557,7 +577,7 @@ class DataController extends \yii\console\Controller
 
         foreach ($row as $k => $v) {
             $child = ChildInfo::find()->where(['name' => $v['name'], 'birthday' => strtotime($v['time'])])
-            ->andWhere(['or','doctorid=110595','source=110595'])->one();
+                ->andWhere(['or', 'doctorid=110595', 'source=110595'])->one();
             if ($child) {
                 $a++;
             }
@@ -583,7 +603,6 @@ class DataController extends \yii\console\Controller
         }
         var_dump($login);
         exit;
-
 
 
         $totle = 282750;
@@ -628,8 +647,6 @@ class DataController extends \yii\console\Controller
             }
         }
         exit;
-
-
 
 
         $doctorParent = DoctorParent::findAll(['doctorid' => 400564]);
