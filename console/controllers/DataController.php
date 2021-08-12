@@ -49,6 +49,7 @@ use common\models\HospitalForm;
 use common\models\Interview;
 use common\models\Log;
 use common\models\Notice;
+use common\models\Points;
 use common\models\Pregnancy;
 use common\models\Test;
 use common\models\Test1;
@@ -78,6 +79,14 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num = 0)
     {
+        $count=ArticleUser::find()->where(['userid'=>206260])->andWhere(['>','createtime','1609430400'])->andWhere(['<','createtime','1627660800'])->count();
+        var_dump($count);exit;
+
+        $doctorParent=DoctorParent::find()->where(['doctorid'=>206260])->select('parentid')->column();
+        $count=Points::find()->where(['in','userid',$doctorParent])->andWhere(['source'=>3])->andWhere(['>','createtime','1609430400'])->andWhere(['<','createtime','1627660800'])->count();
+
+        var_dump($count);exit;
+
         $totle = 391347;
         $limit = ceil($totle / 50);
         $snum = $num * $limit;

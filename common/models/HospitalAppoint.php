@@ -192,4 +192,149 @@ class HospitalAppoint extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * 获取日期时间段预约数
+     * @param $day
+     */
+    public function getDateNum($day){
+        $type=$this->type;
+        $doctorid=$this->doctorid;
+        $week = date('w', strtotime($day));
+        if($this->dateNum[$day]){
+            return $this->dateNum;
+        }
+        //判断预约时间段类型
+        $firstAppoint = Appoint::find()
+            ->andWhere(['type' => $type])
+            ->andWhere(['doctorid' => $doctorid])
+            ->andWhere(['appoint_date' => strtotime($day)])
+            ->andWhere(['!=', 'state', 3])
+            ->andWhere(['mode' => 0])
+            ->orderBy('createtime desc')
+            ->one();
+        $wquery = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $this->id]);
+
+        if($firstAppoint) {
+            if ($firstAppoint->appoint_time < 7) {
+                $wquery->andWhere(['<', 'time_type', 7]);
+            }
+            if ($firstAppoint->appoint_time > 6) {
+                $wquery->andWhere(['>', 'time_type', 6]);
+            }
+        }else{
+            if($this->interval==1){
+                $wquery->andWhere(['<', 'time_type', 7]);
+
+            }
+            if($this->interval==2){
+                $wquery->andWhere(['>', 'time_type', 6]);
+            }
+        }
+
+        $weeks=$wquery->all();
+        if ($weeks) {
+            $appoints = Appoint::find()
+                ->select('count(*)')
+                ->andWhere(['type' => $type])
+                ->andWhere(['doctorid' => $doctorid])
+                ->andWhere(['appoint_date' => strtotime($day)])
+                ->andWhere(['!=', 'state', 3])
+                ->andWhere(['mode' => 0])
+                ->indexBy('appoint_time')
+                ->groupBy('appoint_time')
+                ->column();
+            foreach ($weeks as $k => $v) {
+
+                if ($appoints) {
+                    $num = $v->num - $appoints[$v->time_type];
+                    $rs[$v->time_type] = $num > 0 ? $num : 0;
+                }else{
+                    $rs[$v->time_type] = $v->num;
+                }
+            }
+
+            if ($doctorid != 176156) {
+                unset($rs[19]);
+                unset($rs[20]);
+            }
+        }
+        $this->dateNum[$day]=$rs;
+        return $rs;
+    }
+
+    /**
+     * 设置疫苗预约数量
+     *
+     */
+    public function getVaccineNum($vid,$day){
+
+        $type=$this->type;
+        $doctorid=$this->doctorid;
+        $week = date('w', strtotime($day));
+        $vWeek=[];
+        $vTypes=[];
+        //获取疫苗预约时间（上午/下午）
+        if($vid) {
+            $vaccine = Vaccine::findOne($vid);
+            $query = HospitalAppointVaccine::find()
+                ->where(['haid' => $this->id,'week' => $week]);
+
+            if ($vaccine->type == 0) {
+                $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0]]);
+            } else {
+                $query->andWhere(['or', ['vaccine' => $vid], ['vaccine' => -1]]);
+            }
+            $vWeek = $query->select('type')->column();
+
+            //如果该日期只设置了上午则代表设置的上午疫苗全天可约
+            $vTypes = HospitalAppointVaccine::find()->select('type')
+                ->where(['haid' => $this->id,'week' => $week])->column();
+
+        //判断所选疫苗是否按照时间段分配
+            $hospitalAppointVaccineTimeNum=HospitalAppointVaccineTimeNum::find()
+                ->where(['vaccine'=>$vid,'week'=>$week,'type'=>$type,'doctorid'=>$doctorid])
+                ->select('num')
+                ->indexBy('appoint_time')
+                ->column();
+            if($hospitalAppointVaccineTimeNum) {
+                //获取当前时间段该疫苗已预约数量
+                $appointVaccineNum = Appoint::find()
+                    ->select('count(*)')
+                    ->andWhere(['type' => $type])
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->andWhere(['appoint_date' => strtotime($day)])
+                    ->andWhere(['vaccine' => $vid])
+                    ->andWhere(['!=', 'state', 3])
+                    ->andWhere(['mode' => 0])
+                    ->indexBy('appoint_time')
+                    ->groupBy('appoint_time')
+                    ->column();
+            }
+        }
+
+        foreach ($this->getDateNum($day) as $k => $v) {
+            if(in_array($k,[1,2,3,7,8,9,10,11,12,19,20]) && !in_array(1,$vWeek) && $vWeek){
+                $v=0;
+            }elseif(in_array($k,[4,5,6,13,14,15,16,17,18]) && !in_array(2,$vWeek) && in_array(2,$vTypes)&& $vWeek){
+                $v=0;
+            }
+            $num=$v;
+
+            if($hospitalAppointVaccineTimeNum){
+                if($hospitalAppointVaccineTimeNum[$k]) {
+                    if($v>=($hospitalAppointVaccineTimeNum[$k]-$appointVaccineNum[$k])) {
+                        $num = ($hospitalAppointVaccineTimeNum[$k]-$appointVaccineNum[$k]);
+                    }
+                }else{
+                    $num = 0;
+                }
+            }
+            $rows['time'] = Appoint::$timeText[$k];
+            $rows['appoint_time'] = $k;
+            $rows['num'] = $num;
+            $times[] = $rows;
+        }
+        return $times;
+    }
+
 }
