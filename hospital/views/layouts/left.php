@@ -95,7 +95,7 @@
                     ['label' => '医生管理', 'icon' => 'file-text-o', 'url' => "#",
                         'items' => [
                             ['label' => '家医团队管理', 'url' => ['doctor-team/index']],
-                            ['label' => '添加家医团队', 'url' => ['doctor-team/createtime']],
+                            ['label' => '添加家医团队', 'url' => ['doctor-team/create']],
 
                             ['label' => '医生管理', 'url' => ['doctors/index']],
                             ['label' => '添加医生', 'url' => ['doctors/create']],
