@@ -111,6 +111,11 @@ class QuestionNaireController extends QnController
         if($qnaa2){
             $name=$qnaa2->answer;
         }
+        if($id==1){
+            $qnaa2=QuestionNaireAnswer::findOne(['qnid'=>$id,'qnaid'=>1,'userid'=>$this->login->userid,'qnfid'=>$qnaa->qnfid]);
+
+            $name=$qnaa2->answer;
+        }
 
         return $this->render('healthy',[
             'is_healthy'=>$is_healthy,
