@@ -48,7 +48,7 @@ databackend\assets\DatabasesAsset::register($this);
                         <td><?=\common\models\Hospital::findOne($v->hospitalid)->name?></td>
 
                         <td><?=$createtime?date('Y-m-d',$createtime):""?></td>
-
+                        <td><?=Area::$all[$v->county]?></td>
                         <td><?=$v->phone?></td>
 
                         <td><?=$total=\common\models\ChildInfo::find()
