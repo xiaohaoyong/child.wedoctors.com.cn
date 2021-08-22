@@ -46,6 +46,12 @@ $this->title='我的预约';
                     <div><?=$row['vaccineStr']?></div>
                 </div>
             <?php }?>
+            <?php if($row['sStr']){?>
+                <div class="item">
+                    <div>街道/社区</div>
+                    <div><?=$row['sStr']?></div>
+                </div>
+            <?php }?>
             <div class="item">
                 <div>排队序号</div>
                 <div><?=$row['duan']?>-<?=$row['index']?>号</div>

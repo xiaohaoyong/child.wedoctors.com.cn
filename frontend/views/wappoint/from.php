@@ -41,6 +41,20 @@ $this->title = '成人疫苗接种预约';
                 </div>
             </div>
         <?php } ?>
+        <?php if ($streets) { ?>
+            <div class="item">
+                <div class="title">选择街道/社区</div>
+                <div class="input">
+                    <select name="street" class="appoint_input" id="street">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach ($streets as $k => $v) { ?>
+                            <option value="<?= $v['id'] ?>" <?= $v['id'] == Yii::$app->request->get('sid') ? "selected" : "" ?>><?= $v['name'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+        <?php } ?>
         <div class="item">
             <div class="title">预约人姓名</div>
             <div class="input">
@@ -110,12 +124,27 @@ $this->title = '成人疫苗接种预约';
 <?php
 $date_day = date('Y-m-d', $firstday);
 $vid = Yii::$app->request->get('vid');
+$sid = Yii::$app->request->get('sid');
+
 $updateJs = <<<JS
 
 
 jQuery("#vaccine").change(function(e){
-    var a=jQuery("#vaccine").val();
-    window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+a);
+    var vid=jQuery("#vaccine").val();
+    var sid=jQuery("#street").val();
+    if(vid && sid){
+        window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+    }
+})
+
+
+
+jQuery("#street").change(function(e){
+    var vid=jQuery("#vaccine").val();
+    var sid=jQuery("#street").val();
+    if(vid && sid){
+        window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+    }
 })
 
 var type=[
@@ -125,7 +154,7 @@ var type=[
     ];
 
 function select_time(day){
-    jQuery.get('/wappoint/day-num?doctorid={$doctor['userid']}&day='+day+'&vid={$vid}',function(e) {
+    jQuery.get('/wappoint/day-num?doctorid={$doctor['userid']}&day='+day+'&vid={$vid}'+'&sid={$sid}',function(e) {
       var times=e.list;
       
       if(times.length<1){
@@ -163,7 +192,7 @@ jQuery(".days .rs").bind("click",function(){
   jQuery('#appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
 });
-var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写预约人电话!',sex:'请选择预约人性别！',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！'};
+var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写预约人电话!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！'};
 jQuery("#appoint_form").submit(data,function(e){
     var labelMap = e.data;
     	var label = '';

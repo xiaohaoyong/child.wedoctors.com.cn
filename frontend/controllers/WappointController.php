@@ -48,7 +48,7 @@ class WappointController extends Controller
 
             $doctors = $query->orderBy('appoint desc')->all();
         } else {
-            $doctors = $query->orderBy('appoint desc')->limit(50)->all();
+            $doctors = $query->andWhere(['!=','userid',47156])->orderBy('appoint desc')->limit(50)->all();
         }
 
         $docs = [];
@@ -189,9 +189,27 @@ class WappointController extends Controller
             $doctorRow['hospital']=Hospital::findOne($doctor->hospitalid)->name;
         }
 
+        //判断街道
+        $hospitalS=HospitalAppointStreet::find()->select('street')
+            ->where(['haid'=>$hospitalA->id])->groupBy('street')->column();
+        if ($hospitalS) {
+            $vQuery = Street::find()->select('id,title');
+            if (!in_array(0, $hospitalS) && $hospitalS) {
+                $vQuery->andWhere(['in', 'id', $hospitalS]);
+            }
+            $street = $vQuery->asArray()->all();
+            foreach ($street as $k => $v) {
+                $rs = $v;
+                $rs['name'] = $rs['title'] ;
+                $streetRows[] = $rs;
+            }
+            $streets = $streetRows;
+        } else {
+            $streets = [];
+        }
         $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
 
-        return $this->render('from', [ 'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
+        return $this->render('from', [ 'streets'=>$streets,'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
     }
     public function actionDayNum($doctorid, $week = 0, $type=4, $day, $vid = 0,$sid=0)
     {
@@ -426,6 +444,10 @@ class WappointController extends Controller
         }else {
             $vaccine = Vaccine::findOne($appoint->vaccine);
             $row['vaccineStr'] = $vaccine ? $vaccine->name : '';
+        }
+        if($appoint->street){
+            $street = Street::findOne($appoint->street);
+            $row['sStr'] = $street ? $street->title : '';
         }
         $index=Appoint::find()
             ->andWhere(['appoint_date'=>$appoint->appoint_date])
