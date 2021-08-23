@@ -313,6 +313,11 @@ class SuiteController extends Controller
                     'url' => 'http://web.child.wedoctors.com.cn/sappoint/index',
                 ],
 
+                [
+                    'type' => 'view',
+                    'name' => 'HPV二价疫苗在线预约',
+                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index?search=%E5%84%BF%E5%AE%9D%E5%AE%9D',
+                ],
             ]],
             ['type' => 'view', 'name' => '我的', 'sub_button' => [
                 [
