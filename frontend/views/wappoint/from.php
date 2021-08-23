@@ -132,8 +132,10 @@ $updateJs = <<<JS
 jQuery("#vaccine").change(function(e){
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
-    if(vid && sid){
+    if(vid && sid && jQuery("#street").length < 1){
         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+    }else{
+        window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
     }
 })
 
