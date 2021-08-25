@@ -45,7 +45,7 @@ class AppointController extends Controller
                 if ($openid) {
                     $temp = '425dIznjAzVkXGMf68801IXJKpgDlO4AKpcEiBkJpZQ';
 
-                    if (in_array($v->doctorid, [192821, 206260, 257888, 184793, 160226,206262])) {
+                    if (in_array($v->doctorid, [192821, 206260, 257888, 184793, 160226,206262,213581])) {
                         $data = [
                             'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
                             'keyword1' => ARRAY('value' => $v->name(),),
