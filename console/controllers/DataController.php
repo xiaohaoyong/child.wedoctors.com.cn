@@ -20,6 +20,7 @@ use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
 use common\models\AppointAdult;
+use common\models\AppointList;
 use common\models\AppointOrder;
 use common\models\AppointOrder1;
 use common\models\Area;
@@ -79,6 +80,135 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num = 0)
     {
+        $totle = 412976;
+        $limit = ceil($totle / 50);
+        $snum = $num * $limit;
+        $data = [
+            'first' => ['value' => "北京市医保局，银保监，金融监管局共同推出的北京普惠保直播讲解与答疑，带你深入了解什么是普惠保，适合什么人群，怎么申请赔付等，您也可以就您关心的问题进行提问，讲解专家会为您详细答疑。"],
+            'keyword1' => ARRAY('value' => '北京市医保局，银保监，金融监管局共同推出的北京普惠保直播讲解与问答'),
+            'keyword2' => ARRAY('value' => '2021年09月08日 15点'),
+            'remark' => ARRAY('value' => ""),
+        ];
+        $url='https://appsx0v9q8i8331.h5.xiaoeknow.com/v2/course/alive/l_61382a33e4b04518c611b13e?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2';
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+            var_dump($rs);
+            sleep(1);
+        }
+        var_dump($login);
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+        exit;
+
+        $childs=[5101
+            ,5459
+            ,5891
+            ,6182
+            ,8800
+            ,13552
+            ,13557
+            ,13708
+            ,13781
+            ,14051
+            ,14218
+            ,14267
+            ,14270
+            ,14278
+            ,16174
+            ,16176
+            ,16214
+            ,16498
+            ,16499
+            ,16573
+            ,16806
+            ,17154
+            ,20715
+            ,20728
+            ,25881
+            ,28425
+            ,29490
+            ,30258
+            ,30260
+            ,30261
+            ,31104
+            ,31188
+            ,31211
+            ,31660
+            ,31663
+            ,32025
+            ,32032
+            ,32362
+            ,32364
+            ,32367
+            ,33164];
+        $child=AppointAdult::find()->where(['in','id',$childs])->all();
+        foreach($child as $k=>$v){
+            echo $v->id;
+            echo $v->name;
+            echo "\n";
+        }
+        exit;
+        $appoint=Appoint::find()->select('count(*) as a')->where(['doctorid'=>175877])->andWhere(['in','vaccine',[57,58,59]])->andWhere(['!=','state',3])->groupBy('childid')->createCommand()->getRawSql();
+        var_dump($appoint);exit;
+        foreach($appoint as $k=>$v){
+            var_dump($v);
+        }
+        exit;
+        $userDoctor=UserDoctor::find()->all();
+        foreach($userDoctor as $k=>$v){
+            $hospital=Hospital::findOne(['id'=>$v->hospitalid]);
+            $rs=[];
+            $rs[]=$hospital->name;
+            $rs[]=Area::$all[$hospital->county];
+            echo implode(',',$rs);
+            echo "\n";
+        }
+        exit;
+
+
+        $appoint = HospitalAppoint::findOne(['doctorid' => 400564, 'type' => 2]);
+
+        $hospitalV = HospitalAppointVaccine::find()
+            ->select('vaccine')
+            ->where(['haid' => $appoint->id])->groupBy('vaccine')->column();
+        if ($hospitalV) {
+
+            if (in_array(0, $hospitalV) && in_array(-1, $hospitalV)) {
+                $vQuery = Vaccine::find()->select('id,name,type');
+            } else {
+                $vQuery = Vaccine::find()->select('id,name,type')->andWhere(['in', 'id', $hospitalV]);
+                if (in_array(-1, $hospitalV)) {
+                    //查询所有二类疫苗
+                    $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 1]);
+                }
+                if (in_array(0, $hospitalV)) {
+                    //查询所有一类类疫苗
+                    $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0]);
+                }
+                if ($Va) {
+                    $vQuery->union($Va);
+                }
+            }
+            $appointList=new AppointList(400564,2);
+
+            $vaccines = $vQuery->asArray()->all();
+            $delay = $appoint->delay;
+            foreach ($vaccines as $k => $v) {
+                $rs = $v;
+                $rs['name'] = $rs['name'] . "【" . Vaccine::$typeText[$rs['type']] . "】";
+                $rows[] = $rs;
+                $day = strtotime(date('Y-m-d', strtotime('+' . $delay . " day")));
+                for ($i = 1; $i <= 60; $i++) {
+                    $day = $day + 86400;
+
+                    $appointList->setVaccineNum($v['id'],date('Y-m-d',$day));
+                }
+
+            }
+        }
+        exit;
+
         $count=ArticleUser::find()->where(['userid'=>206260])->andWhere(['>','createtime','1609430400'])->andWhere(['<','createtime','1627660800'])->count();
         var_dump($count);exit;
 
