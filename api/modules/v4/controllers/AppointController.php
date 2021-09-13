@@ -178,7 +178,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                     }
                     if (in_array(0, $hospitalV)) {
                         //查询所有一类类疫苗
-                        $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0]);
+                        $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0])->andwhere(['adult' => 0]);
                     }
                     if ($Va) {
                         $vQuery->union($Va);
