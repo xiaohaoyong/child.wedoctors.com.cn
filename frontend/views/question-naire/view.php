@@ -12,7 +12,6 @@ $this->title=$qn->title;
  */
 ?>
 <?php $form = ActiveForm::begin(); ?>
-<fieldset disabled>
 
     <div style="text-align: center;line-height:50 px;font-size: 16px;height: 100px;padding: 20px;"><?=$qn->title?></div>
 <?php foreach ($qna as $k=>$v){
@@ -39,7 +38,9 @@ $this->title=$qn->title;
     请您如实填写此表，鉴于目前疫情特殊期间，如果不能按时就诊，请及时取消号源，感谢您的理解与配合。
 </div>
 <hr>
-</fieldset>
+<div style="padding: 0 20px;">
+    <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+</div>
 <hr>
 <?php ActiveForm::end(); ?>
 

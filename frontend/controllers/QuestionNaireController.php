@@ -99,7 +99,8 @@ class QuestionNaireController extends QnController
 
             }
         }
-        $qnaa1=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid,'answer'=>1,'createtime'=>$qnaa->createtime]);
+        $qnvis=QuestionNaireAsk::find()->where(['qnid'=>$id,'isv'=>1])->column();
+        $qnaa1=QuestionNaireAnswer::findOne(['qnid'=>$id,'userid'=>$this->login->userid,'answer'=>1,'createtime'=>$qnaa->createtime,'qnaid'=>$qnvis]);
 
         if($qnaa1){
             $is_healthy=false;
@@ -130,16 +131,34 @@ class QuestionNaireController extends QnController
       //  var_dump($qnaa);exit;
         $qn = QuestionNaire::findOne($id);
         $qna = QuestionNaireAsk::findAll(['qnid' => $id]);
+        if($post=\Yii::$app->request->post()){
+            //var_dump($post);exit;
+           foreach($qna as $k=>$v){
+               $field=\common\models\QuestionNaireAsk::$fieldText[$v->field];
+               $field=$field && $v->field?$field:'answer';
+               $qnaa[$v->id]->phone = 15811078604;
+               $qnaa[$v->id]->value = 'ccc';
+               $qnaa[$v->id]->idcode = '230107198908232610';
+               $qnaa[$v->id]->int = 1;
+               $qnaa[$v->id]->date = '2020-02-02';
+               $qnaa[$v->id]->answer=$post['QuestionNaireAnswer'][$field][$v->id];
+               $qnaa[$v->id]->save();
+           }
+            return $this->redirect(['question-naire/sign','id'=>reset($qnaa)->qnfid]);
+        }
         return $this->render('view', [
             'qn' => $qn,
             'qna' => $qna,
-            'qnaa' => $qnaa
+            'qnaa' => $qnaa,
+            'id'=>$id
         ]);
     }
     public function actionNewView($id,$time,$userid){
         $qnaa=QuestionNaireAnswer::find()->where(['qnid'=>$id,'userid'=>$userid,'createtime'=>$time])->indexBy('qnaid')->all();
         $qn = QuestionNaire::findOne($id);
         $qna = QuestionNaireAsk::findAll(['qnid' => $id]);
+
+
         return $this->render('view1', [
             'qn' => $qn,
             'qna' => $qna,

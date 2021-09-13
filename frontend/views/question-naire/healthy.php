@@ -4,7 +4,7 @@
 
     .zhuangtai{display: flex;flex-direction: column;justify-content: center;align-items: center; margin-top: 40px;}
     body{background-color: #ffffff}
-    .view{background:url("/img/qn_view.png") no-repeat;background-size:232px 56px;width: 232px;height: 56px;line-height: 56px; text-align: center;font-size: 18px;color: #ffffff;margin-top: 80px;}
+    .view{background:url("/img/qn_view.png") no-repeat;background-size:232px 56px;width: 232px;height: 56px;line-height: 56px; text-align: center;font-size: 18px;color: #ffffff;margin-top: 30px;}
 </style>
 <div class="content" >
 
@@ -28,14 +28,21 @@
             <?php
         }else{
             ?>
-            <img src="/img/zhuangtai_true.png" width="65">
-            <div class="value" style="font-size: 30px; margin-top: 10px;">提交成功</div>
+            <img src="/img/zhuangtai_<?=$is_healthy?'true':'false'?>.png" width="65">
+            <div class="value" style="font-size: 30px; margin-top: 10px;"><?=$is_healthy?'筛查成功':'筛查异常'?></div>
             <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;"><?=$name?"填表人姓名：".$name:''?></div>
             <div class="info" style="text-align: center;padding: 0 50px;margin-top: 20px;color: #999999;font-size: 16px;">有效日期截止至：<?=date('Y年m月d日 H:i',strtotime('+1 day',$qnaa->createtime))?></div>
+            <?php if($is_healthy){?>
             <a href="/question-naire/view?id=<?=$id?>&fid=<?=$qnaa->qnfid?>" class="view">查看</a>
+            <?php }else {?>
+                <a href="/question-naire/view?id=<?=$id?>&fid=<?=$qnaa->qnfid?>" class="view">查看/修改</a>
+            <?php }?>
         <?php
         }
         ?>
+        <?php if($id!=4){?>
+        <a href="/question-naire/form?id=4&doctorid=<?=$qnaa->doctorid?>" style="font-size: 16px;line-height: 60px;">为宝宝填写的登记表</a>
+        <?php }?>
     </div>
 
 
