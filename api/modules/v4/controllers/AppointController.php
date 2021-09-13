@@ -174,11 +174,11 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                     $vQuery = Vaccine::find()->select('id,name,type')->andWhere(['in', 'id', $hospitalV]);
                     if (in_array(-1, $hospitalV)) {
                         //查询所有二类疫苗
-                        $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 1]);
+                        $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 1])->andwhere(['adult' => 0]);
                     }
                     if (in_array(0, $hospitalV)) {
                         //查询所有一类类疫苗
-                        $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0])->andwhere(['adult' => 0]);
+                        $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0]);
                     }
                     if ($Va) {
                         $vQuery->union($Va);
@@ -478,7 +478,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 if ($vaccine->type == 0) {
                     $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => 0]]);
                 } else {
-                    $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => -1]])->where(['adult' => 0]);
+                    $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => -1]]);
                 }
                 $vaccineWeek = $query->groupBy('week')->column();
                 //如该疫苗无法获取周几可约则视为非法访问
