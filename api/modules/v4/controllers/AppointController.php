@@ -478,7 +478,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 if ($vaccine->type == 0) {
                     $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => 0]]);
                 } else {
-                    $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => -1]]);
+                    $query->andWhere(['or', ['vaccine' => $post['vaccine']], ['vaccine' => -1]])->where(['adult' => 0]);
                 }
                 $vaccineWeek = $query->groupBy('week')->column();
                 //如该疫苗无法获取周几可约则视为非法访问
