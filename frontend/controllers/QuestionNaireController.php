@@ -33,6 +33,8 @@ class QuestionNaireController extends QnController
         if ($post) {
             $qnf=new QuestionNaireField();
             $qnf->userid=$this->login->userid;
+            $qnf->doctorid=$doctorid;
+
             $qnf->createtime=time();
             $qnf->qnid=$id;
             $transaction = \Yii::$app->db->beginTransaction();
