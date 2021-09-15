@@ -33,14 +33,16 @@ class QuestionNaireFieldController extends Controller
      * Lists all QuestionNaireField models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($qnid=4)
     {
         $searchModel = new QuestionNaireFieldSearch();
+        $searchModel->qnid=$qnid;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'qnid'=>$qnid,
         ]);
     }
     public function actionDown(){

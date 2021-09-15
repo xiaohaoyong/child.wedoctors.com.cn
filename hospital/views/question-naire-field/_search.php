@@ -11,24 +11,27 @@ use yii\widgets\ActiveForm;
 <div class="question-naire-field-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
+    <?= $form->field($model, 'qnid')->hiddenInput(['value'=>$qnid])->label(false) ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'qnid') ?>
+    <?= $form->field($model, 'phone') ?>
 
-    <?= $form->field($model, 'userid') ?>
+    <?= $form->field($model, 'value') ?>
 
-    <?= $form->field($model, 'createtime') ?>
-
-    <?= $form->field($model, 'sign') ?>
-
-    <?php // echo $form->field($model, 'doctorid') ?>
-
-    <?php // echo $form->field($model, 'state') ?>
+    <?= $form->field($model, 'createtime_e')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'createtime_s')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
@@ -44,7 +47,7 @@ use yii\widgets\ActiveForm;
 $updateJs = <<<JS
 jQuery("#down").click(function () {
         //过jquery为action属性赋值
-            jQuery("#w0").attr('action',"/question-naire-field/down");    //通
+            jQuery("#w0").attr('action',"/question-naire-field/down?qnid={$qnid}");    //通
             jQuery("#w0").submit();    //提交ID为myform的表单
     });
 JS;

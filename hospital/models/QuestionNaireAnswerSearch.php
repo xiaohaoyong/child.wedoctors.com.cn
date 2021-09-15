@@ -12,6 +12,12 @@ use common\models\QuestionNaireAnswer;
  */
 class QuestionNaireAnswerSearch extends QuestionNaireAnswer
 {
+    public $birthday_e;
+    public $birthday_s;
+    public $createtime_e;
+    public $createtime_s;
+    public $name;
+    public $phone;
     /**
      * @inheritdoc
      */
@@ -20,6 +26,9 @@ class QuestionNaireAnswerSearch extends QuestionNaireAnswer
         return [
             [['id', 'qnaid', 'userid', 'createtime', 'qnid', 'doctorid', 'qnfid', 'isv'], 'integer'],
             [['answer'], 'safe'],
+            [['birthday_e', 'birthday_s','name'], 'string'],
+            [['phone'],'number']
+
         ];
     }
 
@@ -59,19 +68,18 @@ class QuestionNaireAnswerSearch extends QuestionNaireAnswer
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'qnaid' => $this->qnaid,
-            'userid' => $this->userid,
-            'createtime' => $this->createtime,
-            'qnid' => $this->qnid,
-            'doctorid' => $this->doctorid,
-            'qnfid' => $this->qnfid,
-            'isv' => $this->isv,
+            'doctorid' => \Yii::$app->user->identity->doctorid,
+            'qnid'=>$this->qnid,
         ]);
-
         $query->andFilterWhere(['like', 'answer', $this->answer]);
-        $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+        $query->groupBy('qnid');
+        $query->select('qnfid');
+        $data=$query->column();
 
-        return $dataProvider;
+        $qna=QuestionNaireAnswer::find()->where(['qnfid'=>$data]);
+
+
+
+        return $data;
     }
 }
