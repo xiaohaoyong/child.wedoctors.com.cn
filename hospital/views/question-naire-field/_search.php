@@ -44,8 +44,8 @@ use yii\widgets\ActiveForm;
 $updateJs = <<<JS
 jQuery("#down").click(function () {
         //过jquery为action属性赋值
-            jQuery("#appoint").attr('action',"/question-naire-field/down");    //通
-            jQuery("#appoint").submit();    //提交ID为myform的表单
+            jQuery("#w0").attr('action',"/question-naire-field/down");    //通
+            jQuery("#w0").submit();    //提交ID为myform的表单
     });
 JS;
 $this->registerJs($updateJs);
