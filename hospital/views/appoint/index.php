@@ -178,6 +178,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
+
+                                    'attribute' => 'street',
+                                    'value' => function ($e) {
+                                        return \common\models\Street::findOne([$e->street])->title;
+                                    }
+                                ],
+                                [
                                     'attribute' => '排号顺序',
                                     'value' => function ($e) {
 

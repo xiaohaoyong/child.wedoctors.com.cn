@@ -24,6 +24,7 @@ use Yii;
  */
 class HospitalAppoint extends \yii\db\ActiveRecord
 {
+    public $dateNum;
     public $week;
     public static $cycleText = [1 => '1周', 2 => '2周', 3 => '1个月',4=>'1天',5=>'2天',6=>'3天',7=>'4天',8=>'5天'];
     public static $cycleNum = [1 => 7, 2 => 14, 3 => 30,4=>1,5=>2,6=>3,7=>4,8=>5];

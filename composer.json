@@ -56,7 +56,8 @@
     "jormin/baidu-speech": "^1.0",
     "hightman/xunsearch": "dev-master",
     "yiisoft/yii2-elasticsearch": "^2.1",
-    "2amigos/yii2-switch-widget": "~1.0"
+    "2amigos/yii2-switch-widget": "~1.0",
+    "illusion/yii2-excel": "^1.2"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

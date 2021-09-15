@@ -17,6 +17,7 @@ class AppointList
     private $name;
     private $_redis;
     private $dateNum;
+    public $hospitalAppoint;
     public function __construct($doctorid,$type)
     {
         $this->_redis = \Yii::$app->rd;
@@ -58,8 +59,12 @@ class AppointList
             $this->setDateNum($day);
         }
         $vaccineNum=$this->hospitalAppoint->getVaccineNum($vid,$day);
+        var_dump($vaccineNum);exit;
         foreach ($vaccineNum as $k=>$v){
-            $this->save($day,$v['appoint_time'],$vid,$v['num']);
+            var_dump($v['num']);exit;
+            foreach($v['num'] as $vk=>$vv) {
+                $this->save($day, $vk, $vid, $vv);
+            }
         }
     }
 }
