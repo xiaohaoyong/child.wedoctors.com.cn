@@ -76,7 +76,6 @@
                             ['label' => '平台召回用户统计', 'url' => ['/push-log']],
                             ['label' => '同步已签约数据', 'url' => ['/synchronization']],
                             $c,
-                            ['label' => '疫情调查表下载', 'url' => ['/yiqing/down']],
 
                         ]
                     ],
@@ -88,6 +87,13 @@
                             ['label' => '添加街道', 'url' => ['street/create']],
                             ['label' => '加号', 'url' => ['child/signed']],
                             ['label' => '线上叫号', 'url' => ['appoint-calling/index']],
+
+                        ]
+                    ],
+                    ['label' => '登记表', 'icon' => 'file-text-o', 'url' => "#",
+                        'items' => [
+                            ['label' => '新冠筛查表', 'url' => ['question-naire-field/index?qnid=1']],
+                            ['label' => '儿童登记表', 'url' => ['question-naire-field/index?qnid=4']],
 
                         ]
                     ],
