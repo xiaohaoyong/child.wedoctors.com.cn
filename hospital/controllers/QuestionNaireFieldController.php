@@ -47,6 +47,10 @@ class QuestionNaireFieldController extends Controller
         ]);
     }
     public function actionDown($qnid=4){
+        ini_set('memory_limit', '2048M');
+        ini_set("max_execution_time", "0");
+        set_time_limit(0);
+
         $searchModel = new QuestionNaireFieldSearch();
         $searchModel->qnid=$qnid;
 
@@ -64,8 +68,8 @@ class QuestionNaireFieldController extends Controller
             'class' => 'codemix\excelexport\ExcelFile',
             'sheets' => [
                 'Users' => [
-                    'class' => 'codemix\excelexport\ActiveExcelSheet',
-                    'query' => $dataProvider->query,
+                    'data' => $rs,
+                    'titles' => $keys,
                 ]
             ]
         ]);
