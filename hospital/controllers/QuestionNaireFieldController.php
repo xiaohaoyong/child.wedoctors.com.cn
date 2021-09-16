@@ -49,6 +49,7 @@ class QuestionNaireFieldController extends Controller
     public function actionDown($qnid=4){
         $searchModel = new QuestionNaireFieldSearch();
         $searchModel->qnid=$qnid;
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination=false;
         $data=$dataProvider->query->all();
@@ -63,12 +64,12 @@ class QuestionNaireFieldController extends Controller
             'class' => 'codemix\excelexport\ExcelFile',
             'sheets' => [
                 'Users' => [
-                    'data' => $rs,
-                    'titles' => $keys,
+                    'class' => 'codemix\excelexport\ActiveExcelSheet',
+                    'query' => $dataProvider->query,
                 ]
             ]
         ]);
-        $file->send('筛查表.xlsx');
+        $file->send('user.xlsx');
     }
 
     /**
