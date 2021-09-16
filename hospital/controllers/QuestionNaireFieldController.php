@@ -2,6 +2,7 @@
 
 namespace hospital\controllers;
 
+use common\models\QuestionNaireAsk;
 use Yii;
 use common\models\QuestionNaireField;
 use hospital\models\QuestionNaireFieldSearch;
@@ -45,19 +46,29 @@ class QuestionNaireFieldController extends Controller
             'qnid'=>$qnid,
         ]);
     }
-    public function actionDown(){
+    public function actionDown($qnid=4){
         $searchModel = new QuestionNaireFieldSearch();
+        $searchModel->qnid=$qnid;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination=false;
+        $data=$dataProvider->query->all();
+        foreach ($data as $k=>$v){
+            $qna=\common\models\QuestionNaireAnswer::find()->where(['qnfid'=>$v->id])->select('answer')->indexBy('qnaid')->column();
+            if(!$k) {
+                $keys = QuestionNaireAsk::find()->where(['id' => array_keys($qna)])->select('content')->orderBy(["FIELD(id, " . join(',', array_keys($qna)) . ")" => true])->column();
+            }
+            $rs[]=$qna;
+        }
         $file = \Yii::createObject([
             'class' => 'codemix\excelexport\ExcelFile',
             'sheets' => [
                 'Users' => [
-                    'class' => 'codemix\excelexport\ActiveExcelSheet',
-                    'query' => $dataProvider->query,
+                    'data' => $rs,
+                    'titles' => $keys,
                 ]
             ]
         ]);
-        $file->send('user.xlsx');
+        $file->send('筛查表.xlsx');
     }
 
     /**
