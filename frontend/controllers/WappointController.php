@@ -172,9 +172,11 @@ class WappointController extends Controller
                     $vQuery->union($Va);
                 }
             }
+            $vco=Vaccine::find()->select('id')->column();
+            $diff=array_diff($vco,[64,66,65,63,70,69]);
 
-            $vaccines = $vQuery->orderBy([new \yii\db\Expression('FIELD (id, 64,66,65,63,70,69)')])->asArray()->all();
 
+            $vaccines = $vQuery->orderBy(['FIELD (id, 64,66,65,63,70,69,'.implode(',',$diff).')'=>true])->createCommand()->getRawSql();
             foreach ($vaccines as $k => $v) {
                 $rs = $v;
                 $rows[] = $rs;
