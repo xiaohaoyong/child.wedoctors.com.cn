@@ -173,7 +173,7 @@ class WappointController extends Controller
                 }
             }
 
-            $vaccines = $vQuery->asArray()->all();
+            $vaccines = $vQuery->orderBy([new \yii\db\Expression('FIELD (id, 64,66,65,63,70,69)')])->asArray()->all();
 
             foreach ($vaccines as $k => $v) {
                 $rs = $v;
