@@ -141,7 +141,7 @@ class UserController extends Controller
                 if ($user['xopenid'] != '') {
                     $login->orWhere(['and', ['xopenid' => $user['openid']]]);
                 }
-                if ($user['unionid'] != '') {
+                if ($user['unionid'] != '' && !$user['xopenid']) {
                     $login->orWhere(['and', ['unionid' => $user['unionid']]]);
                 }
                 if ($user['unionid'] || $user['xopenid']) {
