@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * QuestionNaireFieldController implements the CRUD actions for QuestionNaireField model.
  */
-class QuestionNaireFieldController extends Controller
+class QuestionNaireFieldController extends BaseController
 {
     /**
      * @inheritdoc
@@ -73,7 +73,7 @@ class QuestionNaireFieldController extends Controller
                 ]
             ]
         ]);
-        $file->send('user.xlsx');
+        $file->send('筛查表.xlsx');
     }
 
     /**
