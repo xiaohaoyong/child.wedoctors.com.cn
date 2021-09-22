@@ -132,6 +132,12 @@ $updateJs = <<<JS
 jQuery("#vaccine").change(function(e){
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
+    
+    if(vid==64){
+        if(!confirm("老年人疫苗为65岁以上老人免费接种，未到65岁请选择成人自费疫苗")){
+            return false;
+        }
+    }
     console.log( jQuery("#street").length);
     if(vid && sid && jQuery("#street").length  > 0){
         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
