@@ -50,4 +50,6 @@ $this->title = 'HPV疫苗接种申请';
 
 
 </div>
+<div class="appoint_my"><a href="/appoint-hpv/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+
 

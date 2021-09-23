@@ -55,6 +55,13 @@ class AppointHpvController extends Controller
             'doctorid'=>$doctorid,
         ]);
     }
+    public function actionMy(){
+        $model=AppointHpv::findAll(['userid'=>$this->login->userid]);
+        return $this->render('my', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Lists all Appoint models.
      * @return mixed

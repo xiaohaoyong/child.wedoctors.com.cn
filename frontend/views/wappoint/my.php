@@ -11,7 +11,6 @@ $this->title="我的成人预约";
     </div>
 
     <div class="content">
-        <?=$userid?>
         <?php foreach ($list as $k=>$v){?>
         <div class="myrow">
             <div class="title">
