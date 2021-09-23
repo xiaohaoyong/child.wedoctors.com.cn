@@ -223,9 +223,7 @@ class UserController extends Controller
             $login = UserLogin::find();
             $login->andwhere(['type'=>0]);
 
-            if($openid!=='' and $unionid!=''){
-                $login->andWhere(['or',['xopenid' => $openid],['unionid' => $unionid]]);
-            }elseif ($openid != '') {
+            if ($openid != '') {
                 $login->andWhere(['xopenid' => $openid]);
             }elseif ($unionid != '') {
                 $login->andWhere(['unionid' => $unionid]);
