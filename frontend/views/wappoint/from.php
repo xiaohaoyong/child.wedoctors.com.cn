@@ -138,6 +138,16 @@ jQuery("#vaccine").change(function(e){
             return false;
         }
     }
+    if(vid==73){
+        if(!confirm("此预约通道为本市户籍65岁以上老年人免费流感疫苗与23价肺炎疫苗（出生日期需在1956年12月31日前）预约通道，请确认")){
+            return false;
+        }
+    }
+    if(vid==67){
+        if(!confirm("此预约通道为本市户籍65岁以上老年人免费23价肺炎疫苗（出生日期需在1956年12月31日前）预约通道，请确认")){
+            return false;
+        }
+    }
     console.log( jQuery("#street").length);
     if(vid && sid && jQuery("#street").length  > 0){
         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
