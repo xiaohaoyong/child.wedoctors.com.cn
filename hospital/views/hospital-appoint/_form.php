@@ -306,7 +306,7 @@ use common\models\Vaccine;
                                                                 ]) ?>
                                                             </td>
                                                         </tr>
-                                                        <?php if ($type == 2) { ?>
+                                                        <?php if ($type == 2 or $type == 4) { ?>
                                                             <tr>
                                                                 <td colspan="3" style="font-weight: bold;">选择下午疫苗:</td>
                                                             </tr>
