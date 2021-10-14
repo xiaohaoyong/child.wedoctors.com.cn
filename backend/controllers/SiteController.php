@@ -75,33 +75,33 @@ class SiteController extends BaseController
 
 
 
-        //今日签约数
-        $data['todayNum']=ChildInfo::find()
-            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andFilterWhere([">",'`doctor_parent`.createtime',$today])
-            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-            ->andWhere(['>','child_info.admin',0])
-            ->count();
-        //签约儿童总数
-        $data['todayNumTotal']=ChildInfo::find()
-            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-            ->andWhere(['>','child_info.admin',0])
-            ->count();
-
-        //管辖儿童数
-        $data['childNum']=ChildInfo::find()
-            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
-            ->andFilterWhere(['>','child_info.source',0])
-            ->count();
-        //签约率
-        if($data['childNum']) {
-            $data['baifen'] = round(($data['todayNumTotal'] / $data['childNum']) * 100,1);
-        }else{
-            $data['baifen'] = 0;
-        }
+//        //今日签约数
+//        $data['todayNum']=ChildInfo::find()
+//            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+//            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+//            ->andFilterWhere([">",'`doctor_parent`.createtime',$today])
+//            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+//            ->andWhere(['>','child_info.admin',0])
+//            ->count();
+//        //签约儿童总数
+//        $data['todayNumTotal']=ChildInfo::find()
+//            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+//            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
+//            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+//            ->andWhere(['>','child_info.admin',0])
+//            ->count();
+//
+//        //管辖儿童数
+//        $data['childNum']=ChildInfo::find()
+//            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+//            ->andFilterWhere(['>','child_info.source',0])
+//            ->count();
+//        //签约率
+//        if($data['childNum']) {
+//            $data['baifen'] = round(($data['todayNumTotal'] / $data['childNum']) * 100,1);
+//        }else{
+//            $data['baifen'] = 0;
+//        }
 
         //宣教总次数
         $data['articleNum']=ArticleUser::find()
