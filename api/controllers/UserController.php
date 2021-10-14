@@ -280,9 +280,18 @@ class UserController extends Controller
                         $type = 3;
                         $user = User::findOne(['phone' => $wephone]);
                         if (!$user) {
-                            $userParent = UserParent::find()->where(['mother_phone' => $wephone])->orFilterWhere(['father_phone' => $wephone])->orFilterWhere(['field12' => $wephone])->one();
-                            if ($userParent) {
-                                $userid = $userParent->userid;
+                            $userParent1 = UserParent::find()->where(['mother_phone' => $wephone])->one();
+                            $userParent2 = UserParent::find()->where(['father_phone' => $wephone])->one();
+                            $userParent3 = UserParent::find()->where(['field12' => $wephone])->one();
+
+                            if ($userParent1) {
+                                $userid = $userParent1->userid;
+                            }elseif($userParent2){
+                                $userid = $userParent2->userid;
+
+                            }elseif($userParent3){
+                                $userid = $userParent3->userid;
+
                             }
                         } else {
                             $userid = $user->id;
