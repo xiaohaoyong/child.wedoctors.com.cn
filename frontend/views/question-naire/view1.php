@@ -15,7 +15,9 @@ $this->title=$qn->title;
 <fieldset disabled>
 
     <div style="text-align: center;line-height:50 px;font-size: 16px;height: 100px;padding: 20px;"><?=$qn->title?></div>
-<?php foreach ($qna as $k=>$v){
+    <div style="text-align: center;line-height:50 px;font-size: 14px;height: 100px;padding: 20px;color: red">家长陪同儿童接种时必须携带本人身份证原件！</div>
+
+    <?php foreach ($qna as $k=>$v){
 
     $field=\common\models\QuestionNaireAsk::$fieldText[$v->field];
     $field=$field?$field:'answer';

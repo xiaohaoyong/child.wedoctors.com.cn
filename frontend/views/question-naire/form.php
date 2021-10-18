@@ -14,6 +14,8 @@ $this->title=$qn->title;
 <?php $form = ActiveForm::begin(); ?>
 
 <div style="text-align: center;line-height:50 px;font-size: 16px;height: 100px;padding: 20px;"><?=$qn->title?></div>
+<div style="text-align: center;font-size: 13px;height: 100px;padding: 20px;color: red">家长陪同儿童接种时必须携带本人身份证原件！</div>
+
 <?php foreach ($qna as $k=>$v){
 
     $field=\common\models\QuestionNaireAsk::$fieldText[$v->field];
