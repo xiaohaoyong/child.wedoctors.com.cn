@@ -87,7 +87,8 @@
                             ['label' => '添加街道', 'url' => ['street/create']],
                             ['label' => '加号', 'url' => ['child/signed']],
                             ['label' => '线上叫号', 'url' => ['appoint-calling/index']],
-
+                            ['label' => 'HPV专用预约列表', 'url' => ['appoint-hpv/index']],
+                            ['label' => 'HPV专用号源设置', 'url' => ['appoint-hpv-setting/update']],
                         ]
                     ],
                     ['label' => '登记表', 'icon' => 'file-text-o', 'url' => "#",
