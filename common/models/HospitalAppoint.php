@@ -156,39 +156,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
         $week = date('w', $date);
         $weeks =str_split((string)$this->weeks);
         $weeks = $weekr?array_intersect($weekr, $weeks):$weeks;
-        $holiday = [
-            '2021-01-01',
-            '2021-01-02',
-            '2021-01-03',
-            '2021-02-11',
-            '2021-02-12',
-            '2021-02-13',
-            '2021-02-14',
-            '2021-02-15',
-            '2021-02-16',
-            '2021-02-17',
-            '2021-04-03',
-            '2021-04-04',
-            '2021-04-05',
-            '2021-05-01',
-            '2021-05-02',
-            '2021-05-03',
-            '2021-05-04',
-            '2021-05-05',
-            '2021-06-12',
-            '2021-06-13',
-            '2021-06-14',
-            '2021-09-19',
-            '2021-09-20',
-            '2021-09-21',
-            '2021-10-01',
-            '2021-10-02',
-            '2021-10-03',
-            '2021-10-04',
-            '2021-10-05',
-            '2021-10-06',
-            '2021-10-07',
-        ];
+        $holiday = HospitalAppoint::$holiday;
         if($this->non_date) {
             $non_date =explode(',',$this->non_date);
             $holiday=array_merge($holiday,$non_date);
