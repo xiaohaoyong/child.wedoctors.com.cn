@@ -73,17 +73,15 @@ class AutographController extends BaseController
 
         $doctorParent=DoctorParent::findOne(['parentid'=>$userid]);
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
-        $child=ChildInfo::find()->select('name')->where(['userid'=>$userid])->column();
-        $childid=ChildInfo::find()->select('idcard')->where(['userid'=>$userid])->column();
+        $child=ChildInfo::find()->where(['userid'=>$userid])->all();
 
 
         $view=Yii::$app->user->identity->hospitalid==110647?'down1':'down';
-        return $this->renderPartial('down1',[
+        return $this->renderPartial($view,[
             'userParent'=>$userParent,
             'userid'=>$userid,
             'userDoctor'=>$userDoctor,
             'child'=>$child,
-            'childid'=>$childid
         ]);
     }
 

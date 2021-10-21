@@ -207,6 +207,16 @@ class ChildInfo extends \yii\db\ActiveRecord
     public static function getChildTypeDay($childType){
         return Article::$childMonth[$childType]?strtotime(date('Y-m-d',strtotime('-'.Article::$childMonth[$childType]." month -1 day"))):0;
     }
+    public function getChildid(){
+
+        if($this->idcard){
+            return $this->idcard;
+        }elseif($this->field27){
+            return $this->field27;
+        }else{
+            return $this->field6;
+        }
+    }
 
     /**
      * @param int $type 区分判断儿童月龄方式

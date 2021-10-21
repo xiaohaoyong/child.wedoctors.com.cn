@@ -15,19 +15,19 @@
 
     h1 {
         text-align: center;
-        line-height: 65px;
+        line-height: 45px;
     }
 </style>
 <body>
 <div style="padding: 50px;">
-    <h1 style="padding-bottom: 50px;font-size: 34px;">朝阳区社区卫生服务机构家庭医生服务协议书 </h1>
+    <h1 style="padding-bottom: 40px;font-size: 34px;">朝阳区社区卫生服务机构家庭医生服务协议书 </h1>
     <div class="content1" style="line-height: 50px;">
         <div style="font-weight: bolder;">尊敬的居民朋友:</div>
         <div class="content2" style="text-indent: 2em;">
             您好！感谢您选择<?=\common\models\Area::$all[Yii::$app->user->identity->county]?><?=$userDoctor['name']?>签约，本着平等、尊重和自愿的原则，双方签订本协议书。您根据自身需要选择 <span style="text-decoration:underline">基本服务包、0-6岁儿童签约服务包</span> ，团队成员将按照协议内容提供相应服务，内容详见附表。
         </div>
     </div>
-    <div style="line-height: 70px;text-indent: 2em;">
+    <div style="line-height: 60px;text-indent: 2em;">
         <div>希望您遵守协议，保持诚信，将自己的身体健康状况及变化情况如实、及时告知团队成员，并积极配合团队成员工作，遵从医嘱，做好健康自我管理。有任何健康服务需求，都可以联系您的家庭医生团队成员。</div>
         <div>您已签约，即代表您已授权签约团队成员可调阅您的电子健康档案和您在其他医疗机构的诊疗记录信息。团队成员有义务对您的电子健康档案、诊疗记录信息予以保密，未经您的允许，不得提供给第三方。 </div>
 
@@ -38,16 +38,32 @@
         <div>首次签约日期： <?=date('Y年m月d日',$autograph->createtime)?></div>
 
     </div>
-    <div style="text-indent: 2em; padding-top:40px; height: 200px; line-height: 60px;">
-        <div style="float: left; width: 450px;">
+    <div style="text-indent: 2em;padding-top: 20px; height: 400px; line-height: 60px;">
+        <div style="float: left; width: 450px; height:350px;">
+            <div style="position:relative;"><image src="http://static.i.wedoctors.com.cn/child/seal/110647.png" style="width: 300px; position: absolute; top: -30px; "></image></div>
             <div>签约医生：<?=$userDoctor['name']?></div>
             <div>团队服务电话：<?=$userDoctor['phone']?></div>
-            <div>医生签字：<?=$userDoctor['name']?></div>
+            <div style="position:relative;">医生签字：<image src="http://static.i.wedoctors.com.cn/child/seal/110647-sign1.png" style="width: 200px; position: absolute; top: -30px; "></image></div>
             <div>日期：<?=date('Y年m月d日',strtotime($autograph->starttime))?></div>
         </div>
         <div style="float: left;">
-            <div>签约儿童姓名：<?=$child?implode(',',$child):''?></div>
-            <div>儿童身份证号：<?=$childid?implode(',',$childid):''?></div>
+            <div>签约儿童姓名：<?php
+                foreach ($child as $k=>$v){
+                    echo $v->name.",";
+                }
+                ?></div>
+            <div>儿童身份证号/医学编码：<?php
+                foreach ($child as $k=>$v){
+                    if($v->childid) {
+                        echo $v->childid . ",";
+                    }
+                }
+                ?></div>
+            <div>儿童生日:<?php
+                foreach ($child as $k=>$v){
+                    echo date('Y-m-d',$v->birthday).",";
+                }
+                ?></div>
             <div style="    position:relative;">家长签字：<image src="<?php
                 if($autograph){
                     echo $autograph->img;
