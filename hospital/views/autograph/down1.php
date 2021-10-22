@@ -43,7 +43,7 @@
             <div style="position:relative;"><image src="http://static.i.wedoctors.com.cn/child/seal/110647.png" style="width: 300px; position: absolute; top: -30px; "></image></div>
             <div>签约医生：<?=$userDoctor['name']?></div>
             <div>团队服务电话：<?=$userDoctor['phone']?></div>
-            <div style="position:relative;">医生签字：<image src="http://static.i.wedoctors.com.cn/child/seal/110647-sign1.png" style="width: 200px; position: absolute; top: -30px; "></image></div>
+            <div style="position:relative;">医生签字：<image src="http://static.i.wedoctors.com.cn/child/seal/110647-sign<?=$userid%2==0?1:2?>.png" style="width: 200px; position: absolute; top: -30px; "></image></div>
             <div>日期：<?=date('Y年m月d日',strtotime($autograph->starttime))?></div>
         </div>
         <div style="float: left;">
