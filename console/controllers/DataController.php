@@ -90,14 +90,14 @@ class DataController extends \yii\console\Controller
             'remark' => ARRAY('value' => ""),
         ];
         $url='https://appsx0v9q8i8331.h5.xiaoeknow.com/v2/course/alive/l_617219e5e4b071201fdca584?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2';
-//        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
-//        foreach ($login as $k => $v) {
-//
-//            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
-//            var_dump($rs);
-//            sleep(1);
-//        }
-       // var_dump($login);
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+            var_dump($rs);
+            sleep(1);
+        }
+        var_dump($login);
         $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
         exit;
 
