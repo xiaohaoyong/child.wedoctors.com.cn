@@ -176,7 +176,7 @@ class WappointController extends Controller
             $diff=array_diff($vco,[64,73,67,66,65,63,70,69]);
 
 
-            $vaccines = $vQuery->orderBy(['FIELD (id, 64,66,65,63,70,69,'.implode(',',$diff).')'=>true])->asArray()->all();
+            $vaccines = $vQuery->orderBy(['FIELD (id, 64,73,67,66,65,63,70,69,'.implode(',',$diff).')'=>true])->asArray()->all();
             foreach ($vaccines as $k => $v) {
                 $rs = $v;
                 $rows[] = $rs;
