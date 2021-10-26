@@ -134,7 +134,6 @@ class NappointController extends Controller
                                 ->andWhere(['mode' => 0])
                                 ->andWhere(['<', 'state', 3])
                                 ->count();
-
                             if (($weeks->num - $appointed) <= 0) {
                                 \Yii::$app->getSession()->setFlash('error', '该时间段已约满，请选择其他时间');
                                 return $this->redirect(['nappoint/from', 'userid' => $appoint->doctorid]);
@@ -266,7 +265,7 @@ class NappointController extends Controller
         $row['hospital'] = $hospital->name;
         $row['type'] = Appoint::$typeText[$appoint->type];
         $row['time'] = date('Y.m.d', $appoint->appoint_date) . "  " . Appoint::$timeText[$appoint->appoint_time];
-        $row['child_name'] = AppointAdult::findOne($appoint->userid)->name;
+        $row['child_name'] = $appoint->name();
         $row['duan'] = $appoint->appoint_time;
         if ($appoint->vaccine == -2) {
             $row['vaccineStr'] = '两癌筛查';

@@ -4,7 +4,7 @@ $this->title='两癌筛查预约';
 ?>
 <div class="appoint">
     <?php $form = \yii\widgets\ActiveForm::begin(['action'=>['userid'=>$doctor['userid']]]); ?>
-    <?=$form->field($appoint,'type')->hiddenInput(['value'=>7])->label(false)?>
+    <?=$form->field($appoint,'type')->hiddenInput(['value'=>12])->label(false)?>
     <?=$form->field($appoint,'doctorid')->hiddenInput(['value'=>$doctor['userid']])->label(false)?>
 
     <?= $form->field($user, 'name')->textInput(['maxlength' => true]) ?>
@@ -76,7 +76,7 @@ jQuery(".days .rs").bind("click",function(){
   jQuery(".days .rs").removeClass('on');
   jQuery(this).addClass('on');
   var day= jQuery(this).attr('date');
-  jQuery('#appoint_date').val(jQuery(this).attr('time'));
+  jQuery('#appoint-appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
 });
 var data={appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！'};

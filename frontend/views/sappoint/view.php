@@ -8,7 +8,7 @@ $this->title='我的预约';
         </div>
         <div class="title">
             <div class="title1">预约成功</div>
-            <div class="title2">凭此二维码到社区体检</div>
+            <div class="title2">请在社区出示此二维码</div>
         </div>
     </div>
 
