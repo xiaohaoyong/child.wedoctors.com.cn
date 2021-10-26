@@ -39,7 +39,7 @@ $this->title='两癌筛查预约';
 
    <?php \yii\widgets\ActiveForm::end()?>
 </div>
-<div class="appoint_my"><a href="/qappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+<div class="appoint_my"><a href="/nappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 
 <?php
 $date_day = date('Y-m-d', $day);

@@ -33,7 +33,7 @@ class NappointController extends Controller
     {
 
         //$hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
-        $query = UserDoctor::find()->where(['like', 'appoint', 12]);
+        $query = UserDoctor::find()->where(['like', 'appoint', ',12']);
         if ($search) {
             $query->andFilterWhere(['like', 'name', $search]);
         }

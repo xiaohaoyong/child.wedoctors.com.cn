@@ -55,7 +55,7 @@
                 ?>
                 <?=$v['appoint_intro']?>
                 <?php if ($v['week']) { ?>
-                    <?= \yii\bootstrap\Html::a('去预约', ['qappoint/from', 'userid' => $v['userid']],['class'=>'button']) ?>
+                    <?= \yii\bootstrap\Html::a('去预约', ['nappoint/from', 'userid' => $v['userid']],['class'=>'button']) ?>
                 <?php }else{ ?>
                     <div class="button on">暂未开通</div>
                 <?php }?>
@@ -73,7 +73,7 @@
         </div>
     </div>
 </div>
-<div class="appoint_my"><a href="/qappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+<div class="appoint_my"><a href="/nappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 
 <?php
 \yii\bootstrap\Modal::begin([

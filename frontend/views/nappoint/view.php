@@ -48,6 +48,6 @@ $this->title='我的预约';
             <?php }?>
         </div>
     </div>
-    <div class="myAppoint"><?=\yii\helpers\Html::a('我的预约',['qappoint/my'])?></div>
+    <div class="myAppoint"><?=\yii\helpers\Html::a('我的预约',['nappoint/my'])?></div>
 </div>
-<div class="appoint_my"><a href="/qappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+<div class="appoint_my"><a href="/nappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
