@@ -123,7 +123,7 @@ class UserDoctorController extends BaseController
 
                 $userInfo->load(Yii::$app->request->post());
                 if($userInfo->appoints){
-                    $userInfo->appoint=implode(',',$userInfo->appoints);
+                    $userInfo->appoint="|,".implode(',',$userInfo->appoints);
                     $userInfo->appoints=$userInfo->appoint;
                 }else{
                     $userInfo->appoint=0;
