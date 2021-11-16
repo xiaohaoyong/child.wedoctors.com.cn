@@ -84,12 +84,12 @@ class DataController extends \yii\console\Controller
         $limit = ceil($totle / 50);
         $snum = $num * $limit;
         $data = [
-            'first' => ['value' => "咳嗽虽然是孩子最常见的症状，但是如果你的孩子经常咳嗽、反复咳嗽、咳嗽老不好，那很可能是“肺热”惹的祸!儿宝宝邀请到了我们的老朋友“李扬”右安门儿科主任来给我们讲解，怎么用推拿的方式来治疗孩子的咳嗽。"],
-            'keyword1' => ARRAY('value' => '秋冬季节婴幼儿咳嗽推拿治疗手法指导，第二十八期健康直播课即将开始'),
+            'first' => ['value' => "妇科炎症是女性的常见疾病，主要是指女性生殖器官的炎症（外阴炎、阴道炎、宫颈炎、子宫炎、盆腔炎、附件炎、性传播疾病等），女性的生殖器官通常发生不同的急性和慢性炎症，在受到各种致病菌侵袭感染后发生。我们该如何进行产后妇科炎症预防及处理呢？为此儿宝宝特邀，北京市右安门医院李小萍妇科主任来和我们聊聊，“产后妇科炎症的预防及处理”。"],
+            'keyword1' => ARRAY('value' => '产后妇科炎症的预防及处理，第二十九期健康直播课即将开始'),
             'keyword2' => ARRAY('value' => '2021年10月22日 16点'),
             'remark' => ARRAY('value' => ""),
         ];
-        $url='https://appsx0v9q8i8331.h5.xiaoeknow.com/v2/course/alive/l_617219e5e4b071201fdca584?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2';
+        $url='https://appsx0v9q8i8331.h5.xiaoeknow.com/v2/course/alive/l_6193d856e4b07ededa9e40b2?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2';
         $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
         foreach ($login as $k => $v) {
 
