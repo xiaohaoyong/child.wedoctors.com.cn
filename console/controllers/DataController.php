@@ -83,6 +83,7 @@ class DataController extends \yii\console\Controller
         $totle = 412976;
         $limit = ceil($totle / 50);
         $snum = $num * $limit;
+
         $data = [
             'first' => ['value' => "妇科炎症是女性的常见疾病，主要是指女性生殖器官的炎症（外阴炎、阴道炎、宫颈炎、子宫炎、盆腔炎、附件炎、性传播疾病等），女性的生殖器官通常发生不同的急性和慢性炎症，在受到各种致病菌侵袭感染后发生。我们该如何进行产后妇科炎症预防及处理呢？为此儿宝宝特邀，北京市右安门医院李小萍妇科主任来和我们聊聊，“产后妇科炎症的预防及处理”。"],
             'keyword1' => ARRAY('value' => '产后妇科炎症的预防及处理，第二十九期健康直播课即将开始'),
@@ -90,12 +91,13 @@ class DataController extends \yii\console\Controller
             'remark' => ARRAY('value' => ""),
         ];
         $url='https://appsx0v9q8i8331.h5.xiaoeknow.com/v2/course/alive/l_6193d856e4b07ededa9e40b2?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2';
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
         $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
         foreach ($login as $k => $v) {
 
             $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
             var_dump($rs);
-            sleep(1);
+            usleep(250000);
         }
         var_dump($login);
         $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
