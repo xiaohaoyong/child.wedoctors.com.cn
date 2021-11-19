@@ -126,7 +126,7 @@ $this->title="信息提交";
     <?= $form->field($model, 'userid')->hiddenInput(['value'=>$userid])->label(false) ?>
 
     <?= $form->field($model, 'idimg')->textInput(['maxlength' => true])->label(false) ?>
-    <?= $form->field($model, 'img')->fileInput() ?>
+    <?= $form->field($model, 'img')->fileInput()->label(false) ?>
 
     <?= \yii\bootstrap\Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-block btn-danger btn-lg' : 'btn btn-primary']) ?>
 
