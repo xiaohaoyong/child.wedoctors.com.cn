@@ -31,6 +31,8 @@ databackend\assets\DatabasesAsset::register($this);
                     <th>辖区内管理儿童数</th>
                     <th>今日签约 </th>
                     <th>签约总数</th>
+                    <th>预约开通情况</th>
+
                     <th>已宣教数</th>
                     <th>数据</th>
                     <th>操作</th>
@@ -75,6 +77,7 @@ databackend\assets\DatabasesAsset::register($this);
                                 ->andFilterWhere(['`doctor_parent`.level'=>1])->count();
                             ?>
                         </td>
+                        <td><?=$v->appoint?></td>
                         <td><?php
                             //已宣教
                             echo  \common\models\ArticleUser::find()

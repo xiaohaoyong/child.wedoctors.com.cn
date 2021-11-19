@@ -148,15 +148,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '排号顺序',
                                     'value' => function ($e) {
-
-                                        $index = \common\models\Appoint::find()
-                                            ->andWhere(['appoint_date' => $e->appoint_date])
-                                            ->andWhere(['<', 'id', $e->id])
-                                            ->andWhere(['doctorid' => $e->doctorid])
-                                            ->andWhere(['appoint_time' => $e->appoint_time])
-                                            ->andWhere(['type' => $e->type])
-                                            ->count();
-                                        return $e->appoint_time . "-" . ($index + 1);
+//
+//                                        $index = \common\models\Appoint::find()
+//                                            ->andWhere(['appoint_date' => $e->appoint_date])
+//                                            ->andWhere(['<', 'id', $e->id])
+//                                            ->andWhere(['doctorid' => $e->doctorid])
+//                                            ->andWhere(['appoint_time' => $e->appoint_time])
+//                                            ->andWhere(['type' => $e->type])
+//                                            ->count();
+//                                        return $e->appoint_time . "-" . ($index + 1);
                                     }
                                 ],
                                 [
