@@ -46,6 +46,14 @@ class MotherFormController extends Controller
             'id'=>$id,
         ]);
     }
+    public function actionView($id){
+        //$model=MotherForm::findOne(['id'=>$id,'userid'=>$this->login->userid]);
+
+        return $this->render('view',[
+            'model' => $model,
+            'id'=>$id,
+        ]);
+    }
     public function actionForm($id=1){
 
         $model=MotherForm::findOne(['userid'=>$this->login->userid]);
