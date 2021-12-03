@@ -208,9 +208,9 @@ class AppointController extends Controller
         if($aString=='tmp'){
 
             $appoint_time=Appoint::getTimeTypeTmp($doctorid,$type);
-            if(!$appoint_time){
-                return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
-            }
+//            if(!$appoint_time){
+//                return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
+//            }
             $appointCallingListModel = new AppointCallingList();
             $appointCallingListModel->aid = 0;
             $appointCallingListModel->openid = '';
