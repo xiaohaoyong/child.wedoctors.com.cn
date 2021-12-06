@@ -65,10 +65,11 @@ class AppointHpvSearch extends AppointHpv
             'state' => $this->state,
             'cratettime' => $this->cratettime,
             'userid' => $this->userid,
-            'doctorid' => $this->doctorid,
             'vid' => $this->vid,
         ]);
+        $doctorid = \common\models\UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital]);
 
+        $query->andWhere(['doctorid'=>$doctorid]);
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'img', $this->img]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);

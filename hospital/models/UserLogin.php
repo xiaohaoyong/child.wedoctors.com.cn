@@ -49,5 +49,3 @@ class UserLogin extends \common\models\UserLogin implements \yii\web\IdentityInt
     }
 }
 
-?>
-

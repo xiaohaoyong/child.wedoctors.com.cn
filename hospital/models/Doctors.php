@@ -49,5 +49,3 @@ class Doctors extends \common\models\Doctors implements \yii\web\IdentityInterfa
     }
 }
 
-?>
-

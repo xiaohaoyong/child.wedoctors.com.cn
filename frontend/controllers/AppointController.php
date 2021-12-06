@@ -40,7 +40,8 @@ class AppointController extends Controller
         'E1mUGz95' => [192821],
         'ER8GOz85'=>[257888],
         'y479PewU'=>[314896],
-                  'YPYGI9lE'  =>590848,
+        'YPYGI9lE'  =>590848,
+        '91e43c3'=>47156,
     ];
 
 
@@ -201,14 +202,7 @@ class AppointController extends Controller
     public function actionCalling($h, $d, $s,$aString,$type=0){
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
-        return ['code' => 10000, 'msg' => '成功',
-            'data'=>[
-                'name'=>'临时',
-                'type'=>"测试",
-                'hospital'=>"测试",
-                'num'=> '临时2323',
-                'deng'=>(2 - 1),
-                'date'=>date('Y年m月d日')." 临时"]];
+
 
         $appointArray=explode(':',$aString);
         $id=$appointArray[1];
@@ -217,9 +211,9 @@ class AppointController extends Controller
         if($aString=='tmp'){
 
             $appoint_time=Appoint::getTimeTypeTmp($doctorid,$type);
-            if(!$appoint_time){
-                return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
-            }
+//            if(!$appoint_time){
+//                return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
+//            }
             $appointCallingListModel = new AppointCallingList();
             $appointCallingListModel->aid = 0;
             $appointCallingListModel->openid = '';
