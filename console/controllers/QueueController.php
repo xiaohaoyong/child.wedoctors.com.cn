@@ -25,8 +25,6 @@ class QueueController extends \yii\console\Controller
 // Emitted when new connection come
         $ws_worker->onConnect = function ($connection) {
             echo "New connection\n";
-            $connection->send('Hello ');
-
         };
 
 // Emitted when data received
@@ -37,6 +35,7 @@ class QueueController extends \yii\console\Controller
             if($text) {
                 $connection->send($text);
             }
+            $connection->send("4-清四大皆空逢山开道加快速度".time());
         };
 
 // Emitted when connection closed

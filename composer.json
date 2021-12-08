@@ -1,8 +1,12 @@
 {
   "repositories": {
+    "0": {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    },
     "packagist": {
       "type": "composer",
-      "url": "https://packagist.phpcomposer.com"
+      "url": "https://mirrors.aliyun.com/composer/"
     }
   },
   "name": "yiisoft/yii2-app-advanced",
@@ -77,10 +81,7 @@
       "github.com": "465694c1142f03b524297b20e339617802ab7423"
     },
     "fxp-asset": {
-      "installer-paths": {
-        "npm-asset-library": "vendor/npm",
-        "bower-asset-library": "vendor/bower"
-      }
+      "enabled": false
     }
   }
 }
