@@ -17,8 +17,7 @@ $this->title="就诊列表";
 </style>
 <div style="width: 100vw;height: 100vh;background-color:#098876;">
     <div style="height: 100vh;height: 83px;background: linear-gradient(180deg, #098876 0%, #07AA93 100%);display:flex;justify-content: space-between;line-height: 83px;color: #FFFFFF;font-size: 30px;padding-right: 20px;">
-        <div style="padding-left:20px;padding-right:40px;height: 83px;background: linear-gradient(180deg, #D8FFFA 0%, #FFFFFF 100%);border-radius: 0px 42px 42px 0px;line-height: 83px;font-size: 36px;color: #039A85;"><?=$hospital->name?></div>
-        <div id="start" onclick="getList();">点击开始</div>
+        <div style="padding-left:20px;padding-right:40px;height: 83px;background: linear-gradient(180deg, #D8FFFA 0%, #FFFFFF 100%);border-radius: 0px 42px 42px 0px;line-height: 83px;font-size: 36px;color: #039A85;"><?=$type?\common\models\Appoint::$typeText[$type]:'分诊'?></div>
     </div>
     <?php Pjax::begin([
         'id' => 'countries',
