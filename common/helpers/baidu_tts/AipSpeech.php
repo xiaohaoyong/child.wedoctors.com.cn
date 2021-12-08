@@ -128,6 +128,7 @@ class AipSpeech extends AipBase{
 
         $result = $this->request($this->ttsUrl, $data, array());
 
+        var_dump($result);exit;
         if(isset($result['__json_decode_error'])){
             return $result['__json_decode_error'];
         }

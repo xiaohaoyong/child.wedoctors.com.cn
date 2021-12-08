@@ -7,6 +7,7 @@ use common\models\Appoint;
 use common\models\AppointCallingList;
 use common\models\HospitalAppoint;
 use common\models\queuing\Queue;
+use common\models\UserDoctor;
 use EasyWeChat\Factory;
 use hospital\models\AppointSearchModels;
 use Yii;
@@ -43,12 +44,9 @@ class AppointCallingController extends BaseController
      */
     public function actionIndex()
     {
-        $searchModel = new AppointCallingSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $userDoctor=UserDoctor::findOne(['userid'=>\Yii::$app->user->identity->doctorid]);
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'userDoctor' => $userDoctor,
         ]);
     }
 
@@ -131,19 +129,27 @@ class AppointCallingController extends BaseController
 
         if($state==3) {
             $appointCallingList=$this->calling($model);
-            if($appointCallingList){
-                //上一个预约标记为完成
-                if ($ord_appointCallingList) {
-                    if($ord_appointCallingList->aid) {
-                        $appoint = Appoint::findOne($ord_appointCallingList->aid);
-                        $appoint->state = 2;
-                        $appoint->save();
-                    }
-                    $queue = new Queue(Yii::$app->user->identity->doctorid,$ord_appointCallingList->type, $ord_appointCallingList->time);
-                    $queue->lrem($ord_appointCallingList->id);
-                }
-            }else{
+            if(!$appointCallingList){
                 \Yii::$app->getSession()->setFlash('error', '暂无患者排队！');
+            }
+            //上一个预约标记为完成
+            if ($ord_appointCallingList) {
+                if($ord_appointCallingList->aid) {
+                    $appoint = Appoint::findOne($ord_appointCallingList->aid);
+                    $appoint->state = 2;
+                    $appoint->save();
+                }
+                $queue = new Queue(Yii::$app->user->identity->doctorid,$ord_appointCallingList->type, $ord_appointCallingList->time,$model->type?false:true);
+                $queue->lrem($ord_appointCallingList->id);
+                if($model->type==0){
+                    $queue = new Queue(Yii::$app->user->identity->doctorid,$ord_appointCallingList->type, $ord_appointCallingList->time);
+                    $queue->lpush($ord_appointCallingList->id);
+                    $ord_appointCallingList->state = 0;
+                    $ord_appointCallingList->acid = 0;
+                    $ord_appointCallingList->calling = 0;
+                    $ord_appointCallingList->save();
+
+                }
             }
         }elseif ($state==2){
             if($id) {
@@ -189,7 +195,7 @@ class AppointCallingController extends BaseController
     public function calling($AppointCalling){
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $AppointCalling->doctorid, 'type' => $AppointCalling->type]);
         $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
-        $aclid=$this->queue($AppointCalling->type,$timeType,$hospitalAppoint);
+        $aclid=$this->queue($AppointCalling->type,$timeType,$hospitalAppoint,$AppointCalling->type?false:true);
         if ($aclid) {
             $appointCallingList = AppointCallingList::findOne($aclid);
             if($appointCallingList) {
@@ -207,12 +213,12 @@ class AppointCallingController extends BaseController
      * @param $timeType
      * @return mixed
      */
-    public function queue($type,$timeType,$hospitalAppoint){
-        $queue = new Queue(Yii::$app->user->identity->doctorid,$type, $timeType);
+    public function queue($type,$timeType,$hospitalAppoint,$fenzhen=false){
+        $queue = new Queue(Yii::$app->user->identity->doctorid,$type, $timeType,$fenzhen);
         $aclid = $queue->rpop();
         if (!$aclid) {
             foreach(Appoint::$timeText1 as $k=>$v){
-                $queue = new Queue(Yii::$app->user->identity->doctorid,$type, $k);
+                $queue = new Queue(Yii::$app->user->identity->doctorid,$type, $k,$fenzhen);
                 $aclid = $queue->rpop();
                 if($aclid){
                     break;
@@ -290,18 +296,18 @@ class AppointCallingController extends BaseController
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
         //当前时间段排队
-        $queue = new Queue($doctorid, $type, $timeType);
+        $queue = new Queue($doctorid, $type, $timeType,$type?false:true);
         $list[] = $queue->lrange();
 
         //其他时间段排队
         foreach(Appoint::$timeText as $k=>$v){
             if($k!=$timeType) {
-                $queue = new Queue($doctorid, $type, $k);
+                $queue = new Queue($doctorid, $type, $k,$type?false:true);
                 $list[] = $queue->lrange();
             }
         }
         //临时号排队
-        $queue = new Queue($doctorid, $type, 0);
+        $queue = new Queue($doctorid, $type, 0,$type?false:true);
         $list[] = $queue->lrange();
 
         $this->layout = "@hospital/views/layouts/main-login.php";
@@ -310,14 +316,19 @@ class AppointCallingController extends BaseController
     }
     public function actionTtl($text,$id){
         \Yii::$app->response->format=Response::FORMAT_JSON;
-        $client=new AipSpeech('24276375','U5h1fVBmtuBU6AeQucIzDWxi','OGYO3jmYoGs1kBtpgb8nLb0mSnud64eE');
-        $result = $client->synthesis($text, 'zh', 1, array(
-            'vol' => 5,
-        ));
-        $b64='data:audio/x-mpeg;base64,'.base64_encode($result);
         $appointCallingList=AppointCallingList::findOne($id);
-        $appointCallingList->calling=0;
-        $appointCallingList->save();
-        return ['src'=>$b64];
+        if($appointCallingList->calling==1) {
+            $appointCallingList->calling = 0;
+            $appointCallingList->save();
+            return ['code'=>10000];
+        }else{
+            return ['code'=>20000];
+        }
+    }
+
+    public function actionIspush($id){
+        $userDoctor=UserDoctor::findOne(['userid'=>\Yii::$app->user->identity->doctorid]);
+        $userDoctor->is_zhenshi=$id;
+        $userDoctor->save();
     }
 }

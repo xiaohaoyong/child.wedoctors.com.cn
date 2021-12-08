@@ -202,47 +202,25 @@ class AppointController extends Controller
     public function actionCalling($h, $d, $s,$aString,$type=0){
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
-
-
         $appointArray=explode(':',$aString);
         $id=$appointArray[1];
         $doctorid=$this->hs[$h];
-        $appoint = Appoint::findOne(['state'=>1,'doctorid'=>$doctorid,'id'=>$id,'appoint_date'=>strtotime(date('Y-m-d 00:00:00'))]);
-        if($aString=='tmp'){
-
-            $appoint_time=Appoint::getTimeTypeTmp($doctorid,$type);
-//            if(!$appoint_time){
-//                return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
-//            }
-            $appointCallingListModel = new AppointCallingList();
-            $appointCallingListModel->aid = 0;
-            $appointCallingListModel->openid = '';
-            $appointCallingListModel->doctorid = $doctorid;
-            $appointCallingListModel->time = 0;
-            $appointCallingListModel->type = $type;
-            if ($appointCallingListModel->save()) {
-                $queue = new Queue($doctorid, $type, 0);
-                $queueNum = $queue->lpush($appointCallingListModel->id);
-                $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
-                $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
-                return ['code' => 10000, 'msg' => '成功',
-                    'data'=>[
-                        'name'=>'临时',
-                        'type'=>Appoint::$typeText[$type],
-                        'hospital'=>$hospital->name,
-                        'num'=> '临时'.AppointCallingList::listName($appointCallingListModel->id,$doctorid, $type,0),
-                        'deng'=>($queueNum - 1),
-                        'date'=>date('Y年m月d日')." 临时"]];
-            }else{
-                return ['code'=>30000,'msg'=>'失败',$doctorid,$appointCallingListModel->firstErrors];
-            }
+        $timeType=Appoint::getTimeTypeTmp($doctorid,$type);
+        if(!$timeType){
+            return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
+        }
+        $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
+        $fenzhen=$userDoctor->is_zhenshi;
 
 
-
-        }elseif(!$appoint) {
-            return ['code' => 20000, 'msg' => '未查询到预约信息,或预约已完成'];
-        } else {
+        //计算时间段参数
+        if($aString=='tmp') {
+            $timeType=0;
+            $aid=0;
+        }else{
+            $appoint = Appoint::findOne(['state'=>1,'doctorid'=>$doctorid,'id'=>$id,'appoint_date'=>strtotime(date('Y-m-d 00:00:00'))]);
             $type=$appoint->type;
+            $aid=$appoint->id;
             $appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
             //判断用户是否已经排队
             if ($appointCallingListModel) {
@@ -259,7 +237,7 @@ class AppointController extends Controller
 
                     $appointCallingListModel->time = $timeType;
                     if ($appointCallingListModel->save()) {
-                        $queue = new Queue($doctorid, $appoint->type, $timeType);
+                        $queue = new Queue($doctorid, $appoint->type, $timeType,$fenzhen);
                         $queueNum = $queue->lpush($appointCallingListModel->id);
                         $userDoctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
                         $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
@@ -271,46 +249,53 @@ class AppointController extends Controller
                                 'num'=> $timeType.AppointCallingList::listName($appointCallingListModel->id,$doctorid, $appoint->type,$timeType),
                                 'deng'=>($queueNum - 1),
                                 'date'=>date('Y年m月d日')." ".Appoint::$timeText[$timeType]]];
+                    }else{
+                        return ['code' => 20000, 'msg' => '出号失败请重新尝试！'];
                     }
                 }
 
-            } else {
-                $type=$appoint->type;
-                $times=explode('-',Appoint::$timeText1[$appoint->appoint_time]);
-                $t=date('H:i');
-                if($t>$times[0] && $t<$times[1]){
-                    $timeType=$appoint->appoint_time;
-                }else{
-                    $timeType=Appoint::getTimeTypeTmp($doctorid,$type);
-                    if(!$timeType){
-                        return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
-                    }
-                }
-
-                //排队
-                $appointCallingListModel = new AppointCallingList();
-                $appointCallingListModel->aid = $appoint->id;
-                $appointCallingListModel->openid = '';
-                $appointCallingListModel->doctorid = $doctorid;
-                $appointCallingListModel->time = $timeType;
-                $appointCallingListModel->type = $appoint->type;
-                if ($appointCallingListModel->save()) {
-                    $queue = new Queue($doctorid, $appoint->type, $timeType);
-                    $queueNum = $queue->lpush($appointCallingListModel->id);
-                    $userDoctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
-                    $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
-                    return ['code' => 10000, 'msg' => '成功',
-                        'data'=>[
-                            'name'=>$appoint->name(),
-                            'type'=>Appoint::$typeText[$appoint->type],
-                            'hospital'=>$hospital->name,
-                            'num'=> $timeType.AppointCallingList::listName($appointCallingListModel->id,$doctorid, $appoint->type,$timeType),
-                            'deng'=>($queueNum - 1),
-                            'date'=>date('Y年m月d日')." ".Appoint::$timeText[$timeType]]];
-                }else{
-                    return ['code'=>30000,'msg'=>'失败',$doctorid,$appointCallingListModel->firstErrors];
+            }else {
+                $times = explode('-', Appoint::$timeText1[$appoint->appoint_time]);
+                $t = date('H:i');
+                if ($t > $times[0] && $t < $times[1]) {
+                    $timeType = $appoint->appoint_time;
+                } else {
+                    $timeType = Appoint::getTimeTypeTmp($doctorid, $type);
                 }
             }
+        }
+        $appointCallingListModel = new AppointCallingList();
+        $appointCallingListModel->aid = $aid;
+        $appointCallingListModel->openid = '';
+        $appointCallingListModel->doctorid = $doctorid;
+        $appointCallingListModel->time = $timeType;
+        $appointCallingListModel->type = $type;
+        if ($appointCallingListModel->save()) {
+            $queue = new Queue($doctorid, $type, $timeType,$fenzhen);
+            $queueNum = $queue->lpush($appointCallingListModel->id);
+            $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
+            $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
+            if($timeType==0) {
+                return ['code' => 10000, 'msg' => '成功',
+                    'data' => [
+                        'name' => '临时'.$queue->_name,
+                        'type' => Appoint::$typeText[$type],
+                        'hospital' => $hospital->name,
+                        'num' => '临时' . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $type, 0),
+                        'deng' => "(临时号排在预约号之后)",
+                        'date' => date('Y年m月d日') . " 临时"]];
+            }else {
+                return ['code' => 10000, 'msg' => '成功',
+                    'data' => [
+                        'name' => $appoint->name(),
+                        'type' => Appoint::$typeText[$type],
+                        'hospital' => $hospital->name,
+                        'num' => $timeType . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $appoint->type, $timeType),
+                        'deng' => ($queueNum - 1),
+                        'date' => date('Y年m月d日') . " " . Appoint::$timeText[$timeType]]];
+            }
+        }else{
+            return ['code'=>30000,'msg'=>'失败',$doctorid,$appointCallingListModel->firstErrors];
         }
     }
 }

@@ -16,6 +16,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="appoint-calling-index">
     <div class="col-xs-12">
         <div class="box">
+            <div class="box-header with-border">
+                <div>
+                    <h3 class="box-title">设置：</h3>
+                    是否开启分诊台：<?= Html::checkbox('name', $userDoctor->is_zhenshi, ['id' => 'article_push']) ?>
+                </div>
+            </div>
+
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
@@ -51,3 +58,20 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php
+$updateJs = '
+    jQuery("#article_push").click(function () {
+        if(this.checked==true){
+            if(confirm("注：\n1，勾选后将由在叫号机取号用户将优先分配至分诊台\n2，分诊台确认后分配至诊室")){
+               jQuery.get("/appoint-calling/ispush?id=1",{},function(e){
+               });
+            }else{
+               this.checked=false;
+            }
+        }else{
+            jQuery.get("/appoint-calling/ispush?id=0",{},function(e){
+            });
+        }
+    });';
+$this->registerJs($updateJs);
+?>
