@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+	<script>
+	let msg = new SpeechSynthesisUtterance("请xxx到第1诊室就诊");
+	console.log(msg)
+	//msg.rate = 4 播放语速
+	//msg.pitch = 10 音调高低
+	//msg.text = "播放文本"
+	//msg.volume = 0.5 播放音量
+	speechSynthesis.speak(msg);
+	</script>
+  <body>
+    Well hey there!!!
+  </body>
+</html>
