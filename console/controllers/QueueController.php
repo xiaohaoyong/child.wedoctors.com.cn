@@ -13,7 +13,10 @@ use Workerman\Worker;
 
 class QueueController extends \yii\console\Controller
 {
+    public $doctorid;
     public function actionPing($doctorid){
+
+        $this->doctorid=$doctorid;
 
 
         // Create a Websocket server
@@ -28,9 +31,12 @@ class QueueController extends \yii\console\Controller
 
 // Emitted when data received
         $ws_worker->onMessage = function ($connection, $data) {
+            $redis = \Yii::$app->rd;
             // Send hello $data
-            echo $data;
-            $connection->send('Hello ' . time());
+            $text = $redis->rpop('Queue-ping-' . $this->doctorid);
+            if($text) {
+                $connection->send($text);
+            }
         };
 
 // Emitted when connection closed
