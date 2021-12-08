@@ -203,6 +203,25 @@ class AppointCallingController extends BaseController
                 $appointCallingList->calling = 1;
                 $appointCallingList->save();
             }
+            if($AppointCalling->type) {
+                $redis = \Yii::$app->rd;
+                $num = $appointCallingList->time . \common\models\AppointCallingList::listName($appointCallingList->id, $appointCallingList->doctorid, $appointCallingList->type, $appointCallingList->time);
+                if (!$appointCallingList->aid) {
+                    $name = "临时";
+                } else {
+                    $appoint = \common\models\Appoint::findOne($appointCallingList->aid);
+                    $name = $appoint->name();
+                }
+                if ($appointCallingList->acid) {
+                    $appointCalling = \common\models\AppointCalling::findOne($appointCallingList->acid);
+                    $zname = $appointCalling->name;
+                } else {
+                    $zname = "待定";
+                }
+                $text = "请{$num}号 {$name} 到{$zname}就诊";
+                $redis->lpush('Queue-ping-'.Yii::$app->user->identity->doctorid, $AppointCalling->type . "-" . $text);
+            }
+
         }
         return $appointCallingList;
     }

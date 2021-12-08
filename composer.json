@@ -57,7 +57,8 @@
     "hightman/xunsearch": "dev-master",
     "yiisoft/yii2-elasticsearch": "^2.1",
     "2amigos/yii2-switch-widget": "~1.0",
-    "codemix/yii2-excelexport": "^2.7"
+    "codemix/yii2-excelexport": "^2.7",
+    "workerman/workerman": "^4.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
