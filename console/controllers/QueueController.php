@@ -20,7 +20,7 @@ class QueueController extends \yii\console\Controller
 
 
         // Create a Websocket server
-        $ws_worker = new Worker('websocket://0.0.0.0:8080');
+        $ws_worker = new Worker('websocket://139.129.246.51:8080');
 
 // Emitted when new connection come
         $ws_worker->onConnect = function ($connection) {
