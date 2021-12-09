@@ -29,12 +29,7 @@ class QueueController extends \yii\console\Controller
 
 // Emitted when data received
         $ws_worker->onMessage = function ($connection, $data) {
-            $redis = \Yii::$app->rd;
-            // Send hello $data
-            $text = $redis->rpop('Queue-ping-' . $this->doctorid);
-            if($text) {
-                $connection->send($text);
-            }
+
             $connection->send("4-清四大皆空逢山开道加快速度".time());
         };
 
