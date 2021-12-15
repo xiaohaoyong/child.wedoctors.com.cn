@@ -30,7 +30,7 @@ class QueueController extends \yii\console\Controller
             $redis = \Yii::$app->rd;
             // Send hello $data
             $text = $redis->rpop('Queue-ping-' . $data);
-            var_dump('Queue-ping-' . $data);
+            echo 'Queue-ping-' . $data;
             if($text) {
                 $connection->send($text);
             }
