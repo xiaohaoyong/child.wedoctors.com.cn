@@ -13,10 +13,8 @@ use Workerman\Worker;
 
 class QueueController extends \yii\console\Controller
 {
-    public $doctorid;
-    public function actionPing($doctorid){
+    public function actionPing(){
 
-        $this->doctorid=$doctorid;
 
 
         // Create a Websocket server
@@ -31,7 +29,8 @@ class QueueController extends \yii\console\Controller
         $ws_worker->onMessage = function ($connection, $data) {
             $redis = \Yii::$app->rd;
             // Send hello $data
-            $text = $redis->rpop('Queue-ping-' . $this->doctorid);
+            $text = $redis->rpop('Queue-ping-' . $data);
+            var_dump('Queue-ping-' . $data);
             if($text) {
                 $connection->send($text);
             }
