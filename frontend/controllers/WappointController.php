@@ -45,6 +45,7 @@ class WappointController extends Controller
         }
         if($type){
             $haids=HospitalAppointVaccine::find()->where(['in','vaccine',[43,50,52]])->column();
+            var_dump($haids);exit;
             $doctorids=HospitalAppoint::find()->where(['in','id',$haids])->column();
             $query->andWhere(['in','userid',$doctorids]);
         }
