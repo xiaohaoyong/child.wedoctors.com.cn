@@ -14,7 +14,7 @@
                 </ul>
             </div>
             <div class="search">
-                <form method="get" action="?type=<?=$type?>">
+                <form method="get" action="/wappoint/index?type=<?=$type?>">
                     <input type="search" name="search" placeholder="搜索社区">
                 </form>
             </div>
