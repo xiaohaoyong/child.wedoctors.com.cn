@@ -45,11 +45,10 @@ class WappointController extends Controller
         }
         if($type){
             $haids=HospitalAppointVaccine::find()->where(['in','vaccine',[43,50,52]])->column();
-            var_dump($haids);exit;
             $doctorids=HospitalAppoint::find()->where(['in','id',$haids])->column();
             $query->andWhere(['in','userid',$doctorids]);
         }
-        if ($search || $county) {
+        if ($search || $county || $type) {
             $doctors = $query->orderBy('appoint desc')->all();
         } else {
             $doctors = $query->andWhere(['!=','userid',47156])->orderBy('appoint desc')->limit(50)->all();
