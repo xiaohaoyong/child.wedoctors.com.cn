@@ -14,8 +14,10 @@
                 </ul>
             </div>
             <div class="search">
-                <form method="get" action="/wappoint/index?type=<?=$type?>">
+                <form method="get" action="">
                     <input type="search" name="search" placeholder="搜索社区">
+                    <input type="hidden" name="type" value="<?=$type?>">
+
                 </form>
             </div>
         </div>
