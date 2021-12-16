@@ -49,7 +49,8 @@ class WappointController extends Controller
             $query->andWhere(['in','userid',$doctorids]);
         }
         if ($search || $county || $type) {
-            $doctors = $query->orderBy('appoint desc')->all();
+            $doctors = $query->orderBy('appoint desc');
+            echo $query->createCommand()->getSql();exit;
         } else {
             $doctors = $query->andWhere(['!=','userid',47156])->orderBy('appoint desc')->limit(50)->all();
         }
