@@ -9,7 +9,7 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                     <?php foreach (\common\models\Area::$county['11'] as $k => $v) { ?>
-                        <li><a href="?county=<?= $k ?>"><?= $v ?></a></li>
+                        <li><a href="?county=<?= $k ?>"><?= $v ?>&type=<?=$type?></a></li>
                     <?php } ?>
                 </ul>
             </div>

@@ -82,6 +82,7 @@ class WappointController extends Controller
         return $this->render('list', [
             'doctors' => $docs,
             'county' => $county,
+            'type'=>$type,
             'doctorid'=>$doctorid
         ]);
     }
