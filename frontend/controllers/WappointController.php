@@ -44,8 +44,8 @@ class WappointController extends Controller
             $query->andWhere(['county' => $county]);
         }
         if($type){
-            $haids=HospitalAppointVaccine::find()->where(['in','vaccine',[43,50,52]])->groupBy('haid')->column();
-            $doctorids=HospitalAppoint::find()->where(['in','id',$haids])->groupBy('doctorid')->column();
+            $haids=HospitalAppointVaccine::find()->where(['in','vaccine',[43,50,52]])->column();
+            $doctorids=HospitalAppoint::find()->where(['in','id',$haids])->column();
             $query->andWhere(['in','userid',$doctorids]);
         }
         if ($search || $county) {
