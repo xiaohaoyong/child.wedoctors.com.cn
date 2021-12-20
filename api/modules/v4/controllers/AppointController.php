@@ -161,6 +161,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $rs['dateMsg'] = $dateMsg[$rs['dateState']];
                 $days[] = $rs;
             }
+            exit;
 
             $hospitalV = HospitalAppointVaccine::find()
                 ->select('vaccine')
