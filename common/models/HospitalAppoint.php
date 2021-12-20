@@ -154,6 +154,8 @@ class HospitalAppoint extends \yii\db\ActiveRecord
     {
 
         $week = date('w', $date);
+        var_dump($date);
+        var_dump($week);exit;
         $weeks =str_split((string)$this->weeks);
         $weeks = $weekr?array_intersect($weekr, $weeks):$weeks;
         $holiday = HospitalAppoint::$holiday;
