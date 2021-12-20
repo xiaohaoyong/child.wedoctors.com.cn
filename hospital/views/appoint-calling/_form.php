@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type')->radioList(\common\models\Appoint::$typeText) ?>
+    <?= $form->field($model, 'type')->radioList(\common\models\Appoint::$typeText+ [0 => '疫苗接种分诊台']) ?>
 
 
                 <div class="form-group">

@@ -12,11 +12,15 @@ class Queue
 {
     public $_name;
     public $_redis;
-    public function __construct($doctorid,$type,$time)
+    public function __construct($doctorid,$type,$time,$fenzhen=false)
     {
-        if($doctorid && $type) {
+        if($doctorid && isset($type)) {
             $date=date('Y-m-d');
-            $this->_name = "Queue"."-".$doctorid .'-'.$date. "-" . $type."-".$time;
+            if($fenzhen){
+                $this->_name="Queue"."-".$doctorid .'-'.$date."-".$time. "-fenzhen";
+            }else{
+                $this->_name = "Queue"."-".$doctorid .'-'.$date. "-" . $type."-".$time;
+            }
             $this->_redis = \Yii::$app->rd;
         }
     }

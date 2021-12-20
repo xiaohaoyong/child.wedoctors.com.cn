@@ -155,9 +155,11 @@ class ChildInfoSearchModel extends ChildInfo
             $query->andWhere(['`child_info`.`source`' => $hospitalid]);
             $query->andWhere(['`doctor_parent`.`doctorid`' => $doctorid->userid]);
             $query->andWhere(['`doctor_parent`.`level`' => 1]);
-        } else {
-            $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-$year year")]);
-            $query->andFilterWhere(['`child_info`.`admin`' => $hospitalid]);
+        } else{
+            if(!$this->childname) {
+                $query->andFilterWhere(['>', '`child_info`.birthday', strtotime("-$year year")]);
+            }
+            $query->andFilterWhere(['`child_info`.`doctorid`' => $hospitalid]);
         }
 
 

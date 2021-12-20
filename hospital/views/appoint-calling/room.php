@@ -32,7 +32,9 @@ $this->title = "诊室操作";
                         <div class="btn-group">
                             <?= Html::a('跳过', \yii\helpers\Url::to(['state', 'id' => $appointCallingList->id, 'state' => 2]), ['class' => 'btn btn-block btn-danger', 'data-confirm' => "是否确定跳过此条记录"]) ?>
                         </div>
-
+                        <div class="btn-group">
+                            <?= Html::a('修改诊室', \yii\helpers\Url::to(['create'])) ?>
+                        </div>
                     </div>
                     <div class="margin">
                         操作说明：<br>
@@ -100,7 +102,7 @@ $this->title = "诊室操作";
 
                         </tbody>
                     </table>
-                    <?php }elseif($appointCallingList->aid==0){?>
+                    <?php }elseif($appointCallingList->aid===0){?>
                         <table class="table table-striped table-bordered detail-view">
                             <tbody>
                             <tr>

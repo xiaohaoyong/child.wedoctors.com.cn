@@ -17,8 +17,7 @@ $this->title="就诊列表";
 </style>
 <div style="width: 100vw;height: 100vh;background-color:#098876;">
     <div style="height: 100vh;height: 83px;background: linear-gradient(180deg, #098876 0%, #07AA93 100%);display:flex;justify-content: space-between;line-height: 83px;color: #FFFFFF;font-size: 30px;padding-right: 20px;">
-        <div style="padding-left:20px;padding-right:40px;height: 83px;background: linear-gradient(180deg, #D8FFFA 0%, #FFFFFF 100%);border-radius: 0px 42px 42px 0px;line-height: 83px;font-size: 36px;color: #039A85;"><?=$hospital->name?></div>
-        <div id="start" onclick="getList();">点击开始</div>
+        <div style="padding-left:20px;padding-right:40px;height: 83px;background: linear-gradient(180deg, #D8FFFA 0%, #FFFFFF 100%);border-radius: 0px 42px 42px 0px;line-height: 83px;font-size: 36px;color: #039A85;"><?=$type?\common\models\Appoint::$typeText[$type]:'分诊'?></div>
     </div>
     <?php Pjax::begin([
         'id' => 'countries',
@@ -35,7 +34,7 @@ $this->title="就诊列表";
             if($v){
             foreach($v as $vk=>$vv){
                 $i++;
-                if($i>3){ $i=0; break;}
+                if($i>4){ $i=0; break;}
                 $appointCallingListModel = \common\models\AppointCallingList::findOne($vv);
                 if(!$appointCallingListModel) continue;
                 if(!$appointCallingListModel->aid) {
@@ -69,6 +68,7 @@ $this->title="就诊列表";
     $("document").ready(function(){ 
         setTimeout(function testFunction(){
             $.pjax.reload({container:"#countries", async: false});
+            getList();
         },"2000");
     });'
     );
@@ -89,47 +89,26 @@ $this->title="就诊列表";
         var eachcount= 0;
         var issa=0;
         jQuery(".item").each(function(){
-            var level=$(this).attr('data-level');
-            if(level==1){
-                issa=1;
-                var text=$(this).attr('data');
-                var id=$(this).attr('data-id');
-                jQuery.get('http://hospital.child.wedoctors.com.cn/appoint-calling/ttl?text='+text+'&id='+id,function (e) {
-                    eachcount++
-                    list.push(e.src);
-                    if(eachcount>=$(".item").length){
-                        console.log('i'+eachcount);
-                        console.log('list'+$(".item").length);
-                        actionList();
+            var text=$(this).attr('data');
+            var id=$(this).attr('data-id');
+            if(id) {
+                jQuery.get('http://hospital.child.wedoctors.com.cn/appoint-calling/ttl?text=' + text + '&id=' + id, function (e) {
+                    console.log(e.code);
+                    if (e.code == 10000) {
+                        console.log(e.code);
+                        actionList(text);
                     }
                 })
-            }else{
-                eachcount++
             }
-
         });
-        if(!issa){
-            console.log(123);
-            setTimeout('getList()',4000);
-        }
     };
-    function actionList(){
-        console.log(list);
-        if(list.length>0){
-            var source = document.getElementById("myAu");
-            source.src=list.pop();
-            var vMP3 = document.getElementById("myAudio");
-            vMP3.load();
-            vMP3.addEventListener('ended', actionList, false);
-            vMP3.play();
-        }else{
-            getList();
-        }
+    function actionList(text){
+        let msg = new SpeechSynthesisUtterance(text);
+        console.log(msg)
+        //msg.rate = 4 播放语速
+        //msg.pitch = 10 音调高低
+        //msg.text = "播放文本"
+        //msg.volume = 0.5 播放音量
+        speechSynthesis.speak(msg);
     }
 </script>
-<?php
-$updateJs = <<<JS
-     getList();
-JS;
-$this->registerJs($updateJs);
-?>

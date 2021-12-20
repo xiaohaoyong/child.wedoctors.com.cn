@@ -167,7 +167,7 @@ class Appoint extends \yii\db\ActiveRecord
         $t=date('H:i');
         $key=$t<'12:00'?1:2;
         if($t>'16:00' || $t<'07:00'){
-            return false;
+           // return false;
         }
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         $array=array_reverse(Appoint::$timeTextRow[$hospitalAppoint->interval][$key],true);
@@ -196,8 +196,8 @@ class Appoint extends \yii\db\ActiveRecord
         5 => '待确认',
     ];
     public static $typeText = [
-        1 => '体检预约',
-        2 => '疫苗预约',
+        1 => '儿童体检',
+        2 => '儿童疫苗',
         8 => '入托体检',
         4 => '成人疫苗',
         5 => '建册预约',

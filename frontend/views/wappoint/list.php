@@ -9,13 +9,15 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                     <?php foreach (\common\models\Area::$county['11'] as $k => $v) { ?>
-                        <li><a href="?county=<?= $k ?>"><?= $v ?></a></li>
+                        <li><a href="?county=<?= $k ?>&type=<?=$type?>"><?= $v ?></a></li>
                     <?php } ?>
                 </ul>
             </div>
             <div class="search">
                 <form method="get" action="">
                     <input type="search" name="search" placeholder="搜索社区">
+                    <input type="hidden" name="type" value="<?=$type?>">
+
                 </form>
             </div>
         </div>

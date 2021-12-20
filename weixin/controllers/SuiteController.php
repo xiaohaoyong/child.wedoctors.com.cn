@@ -294,6 +294,11 @@ class SuiteController extends Controller
             ['type' => 'view', 'name' => '成人预约', 'sub_button' => [
                 [
                     'type' => 'view',
+                    'name' => '预约HPV国产双价疫苗',
+                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index?type=1',
+                ],
+                [
+                    'type' => 'view',
                     'name' => '预约核酸检测',
                     'url' => 'http://web.child.wedoctors.com.cn/naire-appoint/index',
                 ],

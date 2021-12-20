@@ -32,7 +32,7 @@ use yii\web\Response;
 class WappointController extends Controller
 {
 
-    public function actionIndex($search = '', $county = 0)
+    public function actionIndex($search = '', $county = 0,$type=0)
     {
 
         //$hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
@@ -40,12 +40,15 @@ class WappointController extends Controller
         if ($search) {
             $query->andFilterWhere(['like', 'name', $search]);
         }
-        if ($search || $county) {
-
-            if ($county) {
-                $query->andWhere(['county' => $county]);
-            }
-
+        if ($county) {
+            $query->andWhere(['county' => $county]);
+        }
+        if($type){
+            $haids=HospitalAppointVaccine::find()->select('haid')->where(['in','vaccine',[43,50,51]])->column();
+            $doctorids=HospitalAppoint::find()->select('doctorid')->where(['in','id',$haids])->column();
+            $query->andWhere(['in','userid',$doctorids]);
+        }
+        if ($search || $county || $type) {
             $doctors = $query->orderBy('appoint desc')->all();
         } else {
             $doctors = $query->andWhere(['!=','userid',47156])->orderBy('appoint desc')->limit(50)->all();
@@ -79,6 +82,7 @@ class WappointController extends Controller
         return $this->render('list', [
             'doctors' => $docs,
             'county' => $county,
+            'type'=>$type,
             'doctorid'=>$doctorid
         ]);
     }
