@@ -127,7 +127,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 }
             }
 
-
+            var_dump(123);exit;
             //判断所选社区都有周几可约
             if ($sid) {
                 $streetView = Street::findOne($sid);
