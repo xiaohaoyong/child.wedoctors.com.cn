@@ -149,6 +149,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $weekr=$streetWeek?$streetWeek:$vaccineWeek;
             }
 
+            var_dump($weekr);exit;
 
             for ($i = 1; $i <= 60; $i++) {
                 $day = $day + 86400;
