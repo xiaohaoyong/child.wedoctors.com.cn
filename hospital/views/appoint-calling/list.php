@@ -83,8 +83,6 @@ $this->title="就诊列表";
 <script>
     var list=[];
     function getList(){
-        document.getElementById("start").innerHTML='就诊队列';
-
         list=[];
         var eachcount= 0;
         var issa=0;
