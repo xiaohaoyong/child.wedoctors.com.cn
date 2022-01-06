@@ -25,13 +25,13 @@ class UserController extends Controller
             return new Code(20010,'请填写正确手机号码！');
         }
 
-        if($vcode!=110112) {
-            $isVerify = SmsSend::verifymessage($phone, $vcode);
-            $isVerify = json_decode($isVerify, TRUE);
-            if ($isVerify['code'] != 200) {
-                return new Code(20010, '验证码填写错误！');
-            }
-        }
+//        if($vcode!=110112) {
+//            $isVerify = SmsSend::verifymessage($phone, $vcode);
+//            $isVerify = json_decode($isVerify, TRUE);
+//            if ($isVerify['code'] != 200) {
+//                return new Code(20010, '验证码填写错误！');
+//            }
+//        }
         $login=UserLogin::findOne(['phone'=>$phone,'type'=>1]);
         if($login) {
             //获取用户微信登陆信息
