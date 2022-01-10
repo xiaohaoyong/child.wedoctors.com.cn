@@ -45,7 +45,19 @@ class AppointController extends Controller
                 if ($openid) {
                     $temp = '425dIznjAzVkXGMf68801IXJKpgDlO4AKpcEiBkJpZQ';
 
-                    if (in_array($v->doctorid, [192821, 206260, 257888, 184793, 160226,206262,213581])) {
+                    if($v->doctorid==206260){
+                        $data = [
+                            'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
+                            'keyword1' => ARRAY('value' => $v->name(),),
+                            'keyword2' => ARRAY('value' => $hospital->name,),
+                            'keyword3' => ARRAY('value' => '现场确认',),
+                            'keyword4' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText[$v->appoint_time]),
+                            'keyword5' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText2[$v->appoint_time]),
+                            'remark' => ARRAY('value' => "点击此处填写流行病学调查表，请酌情填写流行病学调查表，根据不同社区工作安排可能需要您出示调查结果，(每位需要去社区的家长请个填一份，请家长互相转发此链接)注：调查表填写后24小时内有效", 'color' => '#221d95'),
+                        ];
+
+                        $rs = WechatSendTmp::send($data, $openid, $temp, 'https://cpp.corelines.cn/questionnaire/xcsqwsfwzx/?c=d5b680ceb8b44f209bdef3c84cb15624&qs=one');
+                    }elseif (in_array($v->doctorid, [192821, 257888, 184793, 160226,206262,213581])) {
                         $data = [
                             'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
                             'keyword1' => ARRAY('value' => $v->name(),),
