@@ -65,7 +65,7 @@ class AppointController extends Controller
                             'keyword3' => ARRAY('value' => '现场确认',),
                             'keyword4' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText[$v->appoint_time]),
                             'keyword5' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText2[$v->appoint_time]),
-                            'remark' => ARRAY('value' => "再次温馨提醒，宫颈癌疫苗仅限本辖区居民预约，接种时务必携带本人本辖区的身份证或房产证或居住证(有效期内)，非本辖区居民预约后不予以接种。", 'color' => '#221d95'),
+                            'remark' => ARRAY('value' => "", 'color' => '#221d95'),
                         ];
                         if($v->type!=4) {
                             $data['remark'] = '此消息为系统自动推送，如已取消请忽略。';
