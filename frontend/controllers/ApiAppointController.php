@@ -67,7 +67,7 @@ class ApiAppointController extends ApiController
             $har[$v->type] = $hars;
         }
         $row['hospital'] = $hospital->name;
-        $row['hospitalAppoint'] = $har;
+        $row['hospitalAppoint'] = $har?$har:(object)[];
 
 
 
