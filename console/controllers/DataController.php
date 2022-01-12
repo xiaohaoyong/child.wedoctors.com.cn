@@ -78,8 +78,34 @@ use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
-    public function actionTesta($num = 0)
+    public function actionTesta($doctorid)
     {
+        $doctors=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
+
+        $doctorParent=DoctorParent::find()
+            ->select('parentid')
+            ->leftJoin('pregnancy', '`pregnancy`.`familyid` = `doctor_parent`.`parentid`')
+            ->andWhere(['>', 'pregnancy.familyid', 0])
+            ->andWhere(['doctor_parent.doctorid'=>$doctorid])
+            ->column();
+
+        $autograph=Autograph::find()->where(['in','userid',$doctorParent])->andWhere(['doctorid'=>$doctorid])->orderBy('doctorid')->all();
+
+        foreach($autograph as $k=>$v){
+            $ud=UserDoctor::findOne(['userid'=>$v->doctorid]);
+            $Pregnancy=Pregnancy::find()->where(['familyid'=>$v->userid])->one();
+            $phone=UserLogin::getPhone($v->userid);
+            if($phone) {
+                $rs = [];
+                $rs[] = $ud->hospital->name;
+                $rs[] = $Pregnancy->field1;
+                $rs[] = date('Y-m-d', $v->createtime);
+                $rs[] = UserLogin::getPhone($v->userid);
+                echo implode(',', $rs);
+                echo "\n";
+            }
+        }
+        exit;
         $totle = 412976;
         $limit = ceil($totle / 50);
         $snum = $num * $limit;
