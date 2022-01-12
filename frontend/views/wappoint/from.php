@@ -148,6 +148,11 @@ jQuery("#vaccine").change(function(e){
             return false;
         }
     }
+    if(vid==43){
+        if(!confirm("此疫苗接种年龄限制为9至45周岁，接种完全程三针后，不超过46周岁的生日。例如：45周岁5个月也是可以打的，但是一定按照规定时间，三针半年内接种完成，打完不能超过46周岁生日")){
+            return false;
+        }
+    }
     console.log( jQuery("#street").length);
     if(vid && sid && jQuery("#street").length  > 0){
         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
