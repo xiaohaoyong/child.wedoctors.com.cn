@@ -102,6 +102,7 @@ class DataController extends \yii\console\Controller
 //        var_dump($login);
         $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
         exit;
+
         $doctors=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
 
         $doctorParent=DoctorParent::find()
