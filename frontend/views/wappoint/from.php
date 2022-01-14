@@ -189,7 +189,7 @@ function select_time(day){
               var txt="";
               if(item.num1==0){
                   txt='无号';
-              }else if(item.num1>0 && item.num==0){
+              }else if(item.num1>0 && item.num<1){
                   txt='约满';
               }else if(item.num>0){
                   txt='有号';
