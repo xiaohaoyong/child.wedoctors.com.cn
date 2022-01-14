@@ -78,8 +78,30 @@ use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
-    public function actionTesta($doctorid)
+    public function actionTesta($num)
     {
+        $totle = 486410;
+        $limit = ceil($totle / 20);
+        $snum = $num * $limit;
+
+        $data = [
+            'first' => ['value' => "宫颈癌是是发展中国家最常见的妇科恶性肿瘤。那我们该如何预防宫颈癌呢？为此儿宝宝邀请了清华大学第一附属医院预防保健科主任，副主任医师刘兆秋来给大家进行讲解，如何预防“宫颈癌”。"],
+            'keyword1' => ARRAY('value' => '专家教你如何预防宫颈癌，第三十期健康直播课即将开始'),
+            'keyword2' => ARRAY('value' => '2022年1月14日 14点'),
+            'remark' => ARRAY('value' => ""),
+        ];
+        $url='https://appsx0v9q8I8331.h5.xiaoeknow.com/v2/course/alive/l_61dfb2a3e4b02bb0279b1931?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2';
+//        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+//        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+//        foreach ($login as $k => $v) {
+//
+//            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+//            var_dump($rs);
+//            usleep(250000);
+//        }
+//        var_dump($login);
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+        exit;
         $doctors=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
 
         $doctorParent=DoctorParent::find()
