@@ -66,7 +66,7 @@ class ChildInfo extends \yii\db\ActiveRecord
     }
 
     public static $field=[
-        'name' => '儿童姓名',
+        'name' => '姓名',
         'birthday' => '出生日期',
         'gender' => '性别',
         'field54' => '新建地点',
