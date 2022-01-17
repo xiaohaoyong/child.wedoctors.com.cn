@@ -82,7 +82,7 @@ class DataController extends \yii\console\Controller
     {
 //        $log=new \common\components\Log('datacallback',true);
 //        $log->addLog('异步任务');
-        $localfile='/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123.xlsx';
+        $localfile='123.xlsx';
 
         if (empty($localfile) OR !file_exists($localfile)) {
 
