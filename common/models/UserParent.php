@@ -55,10 +55,10 @@ class UserParent extends \yii\db\ActiveRecord {
     }
     public static $field=[
         'mother' => '母亲姓名',
-        'mother_phone' => '母亲联系电话',
-        'mother_id' => '母亲身份证号',
+        //'mother_phone' => '母亲联系电话',
+        //'mother_id' => '母亲身份证号',
         'father' => '父亲姓名',
-        'father_phone' => '父亲联系电话',
+        //'father_phone' => '父亲联系电话',
         'father_birthday' => '父亲生日',
         'state' => '居住状态',
         'address' => '户籍所在省（北京市）',
