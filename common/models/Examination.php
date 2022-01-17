@@ -348,7 +348,7 @@ class Examination extends \yii\db\ActiveRecord
     {
         //if($row['field4']<'2018-01-01 00:00:00'){ echo "end\n";return;}
 
-        $row['field4'] = substr($row['field4'], 0, strlen($row['field4']) - 11);
+        //$row['field4'] = substr($row['field4'], 0, strlen($row['field4']) - 11);
         $ex = self::find()->andFilterWhere(['field1' => $row['field1']])
             ->andFilterWhere(['field2' => $row['field2']])
             ->andFilterWhere(['field3' => $row['field3']])
