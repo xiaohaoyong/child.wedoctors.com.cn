@@ -78,8 +78,107 @@ use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
-    public function actionTesta($num)
+    public function actionTesta($num=0)
     {
+//        $log=new \common\components\Log('datacallback',true);
+//        $log->addLog('异步任务');
+        $localfile='/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123.xlsx';
+
+        if (empty($localfile) OR !file_exists($localfile)) {
+
+//            $log->addLog($localfile."文件不存在");
+//            $log->saveLog();
+
+           // return self::DELETE;
+        }
+        ini_set('memory_limit','1500M');
+
+        $objRead = new Xlsx();   //建立reader对象
+        $objRead->setReadDataOnly(true);
+        $obj = $objRead->load($localfile);  //建立excel对象
+        $currSheet = $obj->getSheet(0);   //获取指定的sheet表
+        $columnH = $currSheet->getHighestColumn();   //取得最大的列号
+        $highestColumnNum = Coordinate::columnIndexFromString($columnH);
+        $rowCnt = $currSheet->getHighestRow();   //获取总行数
+//        $log->addLog("文件解析成功");
+
+//        $dur->state=2;
+//        $dur->num=$rowCnt-1;
+//        $dur->save();
+
+        $field_index=[];
+        for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
+            $rs = [];
+            for ($_column = 0; $_column < $highestColumnNum; $_column++) {
+                $a = "";
+                $b = $_column % 26;
+                $c = floor($_column / 26);
+                if ($c > 0) {
+                    $a = chr($c - 1 + 65);
+                }
+                $a = $a . chr($b + 65);
+                $cellId = $a . $_row;
+                $cellValue = $currSheet->getCell($cellId)->getValue();
+
+                if ($_row == 1) {
+                    $fields[$_column]=$cellValue;
+                } else {
+                    if ($field_index[$_column] && $cellValue !== '') {
+                        $rs[$field_index[$_column]] = $cellValue ? (string)$cellValue : 0;
+                    }
+                }
+            }
+            if ($_row != 1) {
+                var_dump($rs);
+                //$return = $table::inputData($rs, $hospitalid);
+//                if($return==2){
+//                    $dur->new_num=$dur->new_num+1;
+//                    $dur->save();
+//                }
+            }else{
+                $table='\common\models\ChildInfo';
+                if($table) {
+                    //$log->addLog($table);
+                    foreach ($fields as $k => $v) {
+                        $fk = array_search($v, $table::$field);
+                        if ($fk !== false) {
+                            if ($table != '\common\models\ChildInfo') {
+                                $field_index[$k] = 'field' . $fk;
+                            } else {
+                                $field_index[$k] = $fk;
+                            }
+                        }
+                    }
+                    switch ($table){
+                        case '\common\models\ChildInfo':
+                            //ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);
+                            $to_object="ChildInfo";
+                            break;
+                        case '\common\models\Examination':
+                            $to_object="Examination";
+                            break;
+                        case '\common\models\Pregnancy':
+                            $to_object="Pregnancy";
+                            break;
+                    }
+//                    $ossClient->copyObject($bucket, $object, $bucket, $hospitalid."list/".$to_object.date('Ymd')."xlsx");
+//                    $log->addLog("另存文件");
+//                    $log->saveLog();
+                }else{
+//                    $ossClient->deleteObject($bucket, $object);
+//                    $dur->state=4;
+//                    $dur->save();
+//                    return self::DELETE;
+                }
+            }
+        }
+        $obj->disconnectWorksheets();
+        //$log->saveLog();
+
+//        $dur->state=3;
+//        $dur->save();
+//        $ossClient->deleteObject($bucket, $object);
+        exit;
         $totle = 486410;
         $limit = ceil($totle / 20);
         $snum = $num * $limit;
