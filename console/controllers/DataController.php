@@ -80,116 +80,17 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
-//        $log=new \common\components\Log('datacallback',true);
-//        $log->addLog('异步任务');
-        $localfile='123.xlsx';
-
-        if (empty($localfile) OR !file_exists($localfile)) {
-
-//            $log->addLog($localfile."文件不存在");
-//            $log->saveLog();
-
-           // return self::DELETE;
-        }
-        ini_set('memory_limit','1500M');
-
-        $objRead = new Xlsx();   //建立reader对象
-        $objRead->setReadDataOnly(true);
-        $obj = $objRead->load($localfile);  //建立excel对象
-        $currSheet = $obj->getSheet(0);   //获取指定的sheet表
-        $columnH = $currSheet->getHighestColumn();   //取得最大的列号
-        $highestColumnNum = Coordinate::columnIndexFromString($columnH);
-        $rowCnt = $currSheet->getHighestRow();   //获取总行数
-//        $log->addLog("文件解析成功");
-
-//        $dur->state=2;
-//        $dur->num=$rowCnt-1;
-//        $dur->save();
-
-        $field_index=[];
-        for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
-            $rs = [];
-            for ($_column = 0; $_column < $highestColumnNum; $_column++) {
-                $a = "";
-                $b = $_column % 26;
-                $c = floor($_column / 26);
-                if ($c > 0) {
-                    $a = chr($c - 1 + 65);
-                }
-                $a = $a . chr($b + 65);
-                $cellId = $a . $_row;
-                $cellValue = $currSheet->getCell($cellId)->getValue();
-
-                if ($_row == 1) {
-                    $fields[$_column]=$cellValue;
-                } else {
-                    if ($field_index[$_column] && $cellValue !== '') {
-                        $rs[$field_index[$_column]] = $cellValue ? (string)$cellValue : 0;
-                    }
-                }
-            }
-            if ($_row != 1) {
-                var_dump($rs);
-                //$return = $table::inputData($rs, $hospitalid);
-//                if($return==2){
-//                    $dur->new_num=$dur->new_num+1;
-//                    $dur->save();
-//                }
-            }else{
-                $table='\common\models\ChildInfo';
-                if($table) {
-                    //$log->addLog($table);
-                    foreach ($fields as $k => $v) {
-                        $fk = array_search($v, $table::$field);
-                        if ($fk !== false) {
-                            if ($table != '\common\models\ChildInfo') {
-                                $field_index[$k] = 'field' . $fk;
-                            } else {
-                                $field_index[$k] = $fk;
-                            }
-                        }
-                    }
-                    switch ($table){
-                        case '\common\models\ChildInfo':
-                            //ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);
-                            $to_object="ChildInfo";
-                            break;
-                        case '\common\models\Examination':
-                            $to_object="Examination";
-                            break;
-                        case '\common\models\Pregnancy':
-                            $to_object="Pregnancy";
-                            break;
-                    }
-//                    $ossClient->copyObject($bucket, $object, $bucket, $hospitalid."list/".$to_object.date('Ymd')."xlsx");
-//                    $log->addLog("另存文件");
-//                    $log->saveLog();
-                }else{
-//                    $ossClient->deleteObject($bucket, $object);
-//                    $dur->state=4;
-//                    $dur->save();
-//                    return self::DELETE;
-                }
-            }
-        }
-        $obj->disconnectWorksheets();
-        //$log->saveLog();
-
-//        $dur->state=3;
-//        $dur->save();
-//        $ossClient->deleteObject($bucket, $object);
-        exit;
         $totle = 486410;
         $limit = ceil($totle / 20);
         $snum = $num * $limit;
 
         $data = [
-            'first' => ['value' => "宫颈癌是是发展中国家最常见的妇科恶性肿瘤。那我们该如何预防宫颈癌呢？为此儿宝宝邀请了清华大学第一附属医院预防保健科主任，副主任医师刘兆秋来给大家进行讲解，如何预防“宫颈癌”。"],
-            'keyword1' => ARRAY('value' => '专家教你如何预防宫颈癌，第三十期健康直播课即将开始'),
-            'keyword2' => ARRAY('value' => '2022年1月14日 14点'),
+            'first' => ['value' => "宫颈癌是比较常见的妇科恶性肿瘤，在所有女性恶性肿瘤当中发病率排第2位，仅次于乳腺癌，每年约有26万宫颈癌死亡病例，这个数字让人触目惊心，但幸运的是，宫颈癌是目前全世界唯一一个病因明确、可防可控的癌症类型。"],
+            'keyword1' => ARRAY('value' => '专家教你HPV疫苗如何选择，第31期健康直播即将开始'),
+            'keyword2' => ARRAY('value' => '2022年1月20日 晚19点'),
             'remark' => ARRAY('value' => ""),
         ];
-        $url='https://appsx0v9q8I8331.h5.xiaoeknow.com/v2/course/alive/l_61dfb2a3e4b02bb0279b1931?app_id=appsx0v9q8I8331&alive_mode=0&pro_id=&type=2';
+        $url='https://kfl.h5.xeknow.com/sl/4auBgZ';
         $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
         $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
         foreach ($login as $k => $v) {
