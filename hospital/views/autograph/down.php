@@ -47,7 +47,11 @@
             </span>
             <span style="padding-right: 100px;">住宅电话：</span>
         </div>
-        <div>宝宝姓名：<?=$child?implode(',',$child):''?></div>
+        <div>宝宝姓名：<?php
+            foreach ($child as $k=>$v){
+                echo $v->name.",";
+            }
+            ?></div>
         <div>手机：<?=$userParent['mother_phone']?$userParent['mother_phone']:''?></div>
         <div>住址：<?=$userParent['fieldp47']?></div>
         <div>紧急联系人：<?=$userParent['father']?></div>
