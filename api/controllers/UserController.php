@@ -98,9 +98,11 @@ class UserController extends Controller
             $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
             $userJson = $curl->get();
-            var_dump($curl->getMsg());
-            var_dump($curl->getCode());exit;
+
             $log->addLog("wxrequist:".$userJson);
+            $log->addLog("msg:".$curl->getMsg());
+            $log->addLog("code:".$curl->getCode());
+
             $user = json_decode($userJson, true);
             //$log->addLog($user);
             if ($user['errcode'] || !$user) {
