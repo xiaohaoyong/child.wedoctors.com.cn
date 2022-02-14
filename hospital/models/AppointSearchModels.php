@@ -77,11 +77,9 @@ class AppointSearchModels extends Appoint
             // $query->where('0=1');
             return $dataProvider;
         }
-        $doctorid = \common\models\UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital]);
 
-        $hospitalid = Yii::$app->user->identity->hospital;
         if ($this->child_name) {
-            $childids = ChildInfo::find()->select('id')->andWhere(['source' => $hospitalid])->andWhere(['name' => $this->child_name])->column();
+            $childids = ChildInfo::find()->select('id')->andWhere(['name' => $this->child_name])->column();
             if ($childids) {
                 $query->andFilterWhere(['in', 'childid', $childids]);
             } else {
@@ -102,7 +100,6 @@ class AppointSearchModels extends Appoint
         $query->andFilterWhere([
             'id' => $this->id,
             'userid' => $this->userid,
-            'doctorid' => $doctorid->userid,
             'createtime' => $this->createtime,
             'appoint_time' => $this->appoint_time,
             'type' => $this->type,
