@@ -83,7 +83,7 @@ class AppointController extends BaseController
                 $model->setCellValue(chr($key) . $key1, $v);
             }
         }else{
-            $fields = ['姓名', '性别', '身份证号', '联系电话', '户籍地', '预约日期', '预约时间', '预约状态', '预约项目', '取消原因', '推送状态', '来源','备注'];
+            $fields = ['姓名', '性别', '身份证号', '联系电话', '户籍地', '预约日期', '预约时间', '预约状态', '预约项目', '取消原因', '推送状态', '来源','备注','预约社区'];
             $model=$objPHPExcel->setActiveSheetIndex(0);
             foreach($fields as $k=>$v){
                 $key=65+$k;
@@ -168,6 +168,9 @@ class AppointController extends BaseController
                 }else {
                     $row= \common\models\AppointAdult::findOne(['userid' => $v['userid']]);
                 }
+
+                $doctor=\common\models\UserDoctor::findOne(['userid'=>$e->doctorid]);
+                $hospital=\common\models\Hospital::findOne(['id'=>$doctor->hospitalid]);
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $key1, $row->name)
                     ->setCellValue('B' . $key1, \common\models\AppointAdult::$genderText[$row->gender])
@@ -181,7 +184,9 @@ class AppointController extends BaseController
                     ->setCellValue('J' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
                     ->setCellValue('K' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
                     ->setCellValue('L' . $key1, \common\models\Appoint::$modeText[$e->mode])
-                    ->setCellValue('M' . $key1, $v['remark']);
+                    ->setCellValue('M' . $key1, $v['remark'])
+                    ->setCellValue('N' . $key1, $hospital);
+
 
 
             }
