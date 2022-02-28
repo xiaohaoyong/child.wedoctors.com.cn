@@ -163,8 +163,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => 'doctor_id',
                                     'value' => function ($e) {
-                                        $doctor=\common\models\UserDoctor::findOne(['userid'=>$e->doctorid]);
-                                        $hospital=\common\models\Hospital::findOne(['id'=>$doctor->doctorid]);
+                                        $doctor=\common\models\UserDoctor::findOne(['userid'=>$e->doctor_id]);
+                                        $hospital=\common\models\Hospital::findOne(['id'=>$doctor->hospitalid]);
                                         return $hospital->name;
                                     }
                                 ],
