@@ -80,35 +80,17 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
-
-        $appoint = Appoint::findOne(['doctorid'=>590848,'id'=>1483521,'appoint_date'=>strtotime(date('Y-m-d 00:00:00'))]);
-        if($appoint) {
-            $type = $appoint->type;
-            $aid = $appoint->id;
-            //$appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
-            //判断用户是否已经排队
-                $times = explode('-', Appoint::$timeText1[$appoint->appoint_time]);
-                $t = date('10:04');
-                var_dump($t);
-                if ($t < $times[1]) {
-                    $timeType = $appoint->appoint_time;
-                } else {
-                    $timeType = Appoint::getTimeTypeTmp(590848, $type);
-                }
-        }
-        var_dump($timeType);exit;
-
-        $totle = 486410;
+        $totle = 507593;
         $limit = ceil($totle / 20);
         $snum = $num * $limit;
 
         $data = [
-            'first' => ['value' => "宫颈癌是比较常见的妇科恶性肿瘤，在所有女性恶性肿瘤当中发病率排第2位，仅次于乳腺癌，每年约有26万宫颈癌死亡病例，这个数字让人触目惊心，但幸运的是，宫颈癌是目前全世界唯一一个病因明确、可防可控的癌症类型。"],
-            'keyword1' => ARRAY('value' => '专家教你HPV疫苗如何选择，第31期健康直播即将开始'),
-            'keyword2' => ARRAY('value' => '2022年1月20日 晚19点'),
+            'first' => ['value' => "在“女神节”这个宠爱与被宠爱的节日，儿宝宝邀请了张兰萍主任为我们进行直播答疑，解读宫颈癌疫苗你想知道的那些事，同时在直播间更有HPV二价疫苗首针免费抽奖，九价疫苗预约指引，姐妹们一起冲鸭。"],
+            'keyword1' => ARRAY('value' => '迎女神节福利：专家直播答疑，抽奖免费送HPV二价首针，九价疫苗预约指引'),
+            'keyword2' => ARRAY('value' => '2022年3月8日 晚19点'),
             'remark' => ARRAY('value' => ""),
         ];
-        $url='https://kfl.h5.xeknow.com/sl/4auBgZ';
+        $url='https://kfl.h5.xeknow.com/sl/3qJCnD';
         $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
         $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
         foreach ($login as $k => $v) {
@@ -116,7 +98,6 @@ class DataController extends \yii\console\Controller
             $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
             var_dump($rs);
         }
-        var_dump($login);
         $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
         exit;
         $doctors=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
