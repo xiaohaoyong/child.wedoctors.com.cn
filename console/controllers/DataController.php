@@ -80,6 +80,24 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+
+        $appoint = Appoint::findOne(['doctorid'=>590848,'id'=>1483521,'appoint_date'=>strtotime(date('Y-m-d 00:00:00'))]);
+        if($appoint) {
+            $type = $appoint->type;
+            $aid = $appoint->id;
+            //$appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
+            //判断用户是否已经排队
+                $times = explode('-', Appoint::$timeText1[$appoint->appoint_time]);
+                $t = date('08:04');
+                var_dump($t);
+                if ($t > $times[0] && $t < $times[1]) {
+
+                } else {
+                    $timeType = Appoint::getTimeTypeTmp(590848, $type);
+                }
+        }
+        var_dump($times);exit;
+
         $totle = 486410;
         $limit = ceil($totle / 20);
         $snum = $num * $limit;
