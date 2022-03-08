@@ -88,15 +88,15 @@ class DataController extends \yii\console\Controller
             //$appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
             //判断用户是否已经排队
                 $times = explode('-', Appoint::$timeText1[$appoint->appoint_time]);
-                $t = date('08:04');
+                $t = date('10:04');
                 var_dump($t);
-                if ($t > $times[0] && $t < $times[1]) {
-
+                if ($t < $times[1]) {
+                    $timeType = $appoint->appoint_time;
                 } else {
                     $timeType = Appoint::getTimeTypeTmp(590848, $type);
                 }
         }
-        var_dump($times);exit;
+        var_dump($timeType);exit;
 
         $totle = 486410;
         $limit = ceil($totle / 20);

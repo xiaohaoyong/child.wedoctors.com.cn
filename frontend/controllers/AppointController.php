@@ -257,7 +257,13 @@ class AppointController extends Controller
                     }
 
                 } else {
-                    $timeType = $appoint->appoint_time;
+                    $times = explode('-', Appoint::$timeText1[$appoint->appoint_time]);
+                    $t = date('H:i');
+                    if ($t < $times[1]) {
+                        $timeType = $appoint->appoint_time;
+                    } else {
+                        $timeType = Appoint::getTimeTypeTmp($doctorid, $type);
+                    }
                 }
             }else{
                 return ['code'=>30000,'msg'=>'未查询到预约信息'];
