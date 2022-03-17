@@ -102,7 +102,7 @@ class AppointSearchModels extends Appoint
         $query->andFilterWhere([
             'id' => $this->id,
             'userid' => $this->userid,
-            //'doctorid' => $doctorid->userid,
+            'doctorid' => $doctorid->userid,
             'createtime' => $this->createtime,
             'appoint_time' => $this->appoint_time,
             'type' => $this->type,
