@@ -80,6 +80,62 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+
+                $file = fopen('1234.csv', 'r');
+        while (($line = fgets($file)) !== false) {
+            $row = explode(',', trim($line));
+
+
+            $name = $row[0];
+            $birthday = $row[1];
+            $phone1=intval(trim(str_replace('"','',$row[2])));
+            $phone3=intval(trim(str_replace('"','',$row[3])));
+
+            $query=UserLogin::find();
+
+            if($phone1 && $phone3)
+            {
+                $query->where(['phone'=>$phone1])->orWhere(['phone'=>$phone3]);
+            }elseif($phone1 && !$phone3){
+                $query->where(['phone'=>$phone1]);
+            }elseif(!$phone1 && $phone3){
+                $query->where(['phone'=>$phone3]);
+            }else{
+                continue;
+            }
+            $login=$query->one();
+
+
+            if($login) {
+                $child = ChildInfo::findOne(['name' => $name, 'birthday' => strtotime($birthday),'userid'=>$login->userid]);
+                if ($child) {
+                    $auto = Autograph::findOne(['userid' => $child->userid]);
+                    if ($auto) {
+                        $auto->doctorid = 206260;
+                        $auto->save();
+                    }
+                    $doctorParent = DoctorParent::findOne(['parentid' => $child->userid]);
+                    if ($doctorParent) {
+                        $doctorParent->createtime = time();
+                        $doctorParent->doctorid = 206260;
+                        $doctorParent->save();
+                    }
+                    $child->doctorid = 110599;
+                    if ($child->admin) {
+                        $child->admin = 110599;
+                    }
+                    $child->save();
+                    echo trim($line)."true";
+                } else {
+                    echo trim($line)."false child";
+                }
+            }else{
+                echo trim($line)."false login";
+            }
+            echo "\n";
+        }
+        exit;
+
         $totle = 507593;
         $limit = ceil($totle / 20);
         $snum = $num * $limit;
