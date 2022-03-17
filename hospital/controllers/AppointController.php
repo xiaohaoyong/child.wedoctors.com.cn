@@ -185,7 +185,7 @@ class AppointController extends BaseController
                     ->setCellValue('K' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
                     ->setCellValue('L' . $key1, \common\models\Appoint::$modeText[$e->mode])
                     ->setCellValue('M' . $key1, $v['remark'])
-                    ->setCellValue('N' . $key1, $hospital);
+                    ->setCellValue('N' . $key1, $hospital->name);
 
 
 
