@@ -50,7 +50,7 @@ class UserParent extends \yii\db\ActiveRecord {
         return [
             [['userid', 'mother_phone', 'father_phone', 'state', 'source', 'province', 'county', 'city'], 'integer'],
             [['father_birthday','mother', 'father', 'address', 'field34', 'field33', 'field30', 'field29', 'field28', 'field12', 'field11', 'field1', 'fbirthday', 'field43', 'field44', 'field45','fieldu46','fieldp47'], 'safe'],
-            [['mother_id'], 'string', 'max' => 18],
+            //[['mother_id'], 'string', 'max' => 18],
         ];
     }
     public static $field=[
