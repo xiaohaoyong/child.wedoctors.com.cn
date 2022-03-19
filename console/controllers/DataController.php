@@ -78,8 +78,110 @@ use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
-    public function actionTesta($num = 0)
+    public function actionTesta($num=0)
     {
+
+                $file = fopen('1234.csv', 'r');
+        while (($line = fgets($file)) !== false) {
+            $row = explode(',', trim($line));
+
+
+            $name = $row[0];
+            $birthday = $row[1];
+            $phone1=intval(trim(str_replace('"','',$row[2])));
+            $phone3=intval(trim(str_replace('"','',$row[3])));
+
+            $query=UserLogin::find();
+
+            if($phone1 && $phone3)
+            {
+                $query->where(['phone'=>$phone1])->orWhere(['phone'=>$phone3]);
+            }elseif($phone1 && !$phone3){
+                $query->where(['phone'=>$phone1]);
+            }elseif(!$phone1 && $phone3){
+                $query->where(['phone'=>$phone3]);
+            }else{
+                continue;
+            }
+            $login=$query->one();
+
+
+            if($login) {
+                $child = ChildInfo::findOne(['name' => $name, 'birthday' => strtotime($birthday),'userid'=>$login->userid]);
+                if ($child) {
+                    $auto = Autograph::findOne(['userid' => $child->userid]);
+                    if ($auto) {
+                        $auto->doctorid = 206260;
+                        $auto->save();
+                    }
+                    $doctorParent = DoctorParent::findOne(['parentid' => $child->userid]);
+                    if ($doctorParent) {
+                        $doctorParent->createtime = time();
+                        $doctorParent->doctorid = 206260;
+                        $doctorParent->save();
+                    }
+                    $child->doctorid = 110599;
+                    if ($child->admin) {
+                        $child->admin = 110599;
+                    }
+                    $child->save();
+                    echo trim($line)."true";
+                } else {
+                    echo trim($line)."false child";
+                }
+            }else{
+                echo trim($line)."false login";
+            }
+            echo "\n";
+        }
+        exit;
+
+        $totle = 507593;
+        $limit = ceil($totle / 20);
+        $snum = $num * $limit;
+
+        $data = [
+            'first' => ['value' => "在“女神节”这个宠爱与被宠爱的节日，儿宝宝邀请了张兰萍主任为我们进行直播答疑，解读宫颈癌疫苗你想知道的那些事，同时在直播间更有HPV二价疫苗首针免费抽奖，九价疫苗预约指引，姐妹们一起冲鸭。"],
+            'keyword1' => ARRAY('value' => '迎女神节福利：专家直播答疑，抽奖免费送HPV二价首针，九价疫苗预约指引'),
+            'keyword2' => ARRAY('value' => '2022年3月8日 晚19点'),
+            'remark' => ARRAY('value' => ""),
+        ];
+        $url='https://kfl.h5.xeknow.com/sl/3qJCnD';
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+            var_dump($v);
+        }
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+        exit;
+        $doctors=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
+
+        $doctorParent=DoctorParent::find()
+            ->select('parentid')
+            ->leftJoin('pregnancy', '`pregnancy`.`familyid` = `doctor_parent`.`parentid`')
+            ->andWhere(['>', 'pregnancy.familyid', 0])
+            ->andWhere(['doctor_parent.doctorid'=>$doctorid])
+            ->column();
+
+        $autograph=Autograph::find()->where(['in','userid',$doctorParent])->andWhere(['doctorid'=>$doctorid])->orderBy('doctorid')->all();
+
+        foreach($autograph as $k=>$v){
+            $ud=UserDoctor::findOne(['userid'=>$v->doctorid]);
+            $Pregnancy=Pregnancy::find()->where(['familyid'=>$v->userid])->one();
+            $phone=UserLogin::getPhone($v->userid);
+            if($phone) {
+                $rs = [];
+                $rs[] = $ud->hospital->name;
+                $rs[] = $Pregnancy->field1;
+                $rs[] = date('Y-m-d', $v->createtime);
+                $rs[] = UserLogin::getPhone($v->userid);
+                echo implode(',', $rs);
+                echo "\n";
+            }
+        }
+        exit;
         $totle = 412976;
         $limit = ceil($totle / 50);
         $snum = $num * $limit;

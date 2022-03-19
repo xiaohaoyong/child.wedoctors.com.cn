@@ -304,7 +304,7 @@ class AppointController extends Controller
         $row['appid']='wxfef8925dfaa329d7';
         $row['path']='/pages/index-form/index-form?productId=1107001&srcType=2';
         $row['envVersion']='release';
-        $row['adv']=0;
+        $row['adv']=1;
         $row['advText']='30万元保额的疫苗保障，仅需2元，点此领取';
         if($row['doctorid']==206260) {
             $row['is_index'] = '1';

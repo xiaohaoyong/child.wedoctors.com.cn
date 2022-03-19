@@ -259,7 +259,7 @@ class AppointController extends Controller
                 } else {
                     $times = explode('-', Appoint::$timeText1[$appoint->appoint_time]);
                     $t = date('H:i');
-                    if ($t > $times[0] && $t < $times[1]) {
+                    if ($t < $times[1]) {
                         $timeType = $appoint->appoint_time;
                     } else {
                         $timeType = Appoint::getTimeTypeTmp($doctorid, $type);

@@ -66,7 +66,7 @@ class ChildInfo extends \yii\db\ActiveRecord
     }
 
     public static $field=[
-        'name' => '儿童姓名',
+        'name' => '姓名',
         'birthday' => '出生日期',
         'gender' => '性别',
         'field54' => '新建地点',
@@ -106,10 +106,10 @@ class ChildInfo extends \yii\db\ActiveRecord
         'field6' => '出生医学证明号',
         'field0' => '建册时间',
         'mother' => '母亲姓名',
-        'mother_phone' => '母亲联系电话',
-        'mother_id' => '母亲身份证号',
+        //'mother_phone' => '母亲联系电话',
+        //'mother_id' => '母亲身份证号',
         'father' => '父亲姓名',
-        'father_phone' => '父亲联系电话',
+        //'father_phone' => '父亲联系电话',
         'father_birthday' => '父亲生日',
         'state' => '居住状态',
         'address' => '户籍所在省（北京市）',
@@ -126,7 +126,8 @@ class ChildInfo extends \yii\db\ActiveRecord
         'fieldu46'=>'现住址地址',
         'fieldu47'=>'儿童所在段区',
         'fieldp47'=>'现住址详细',
-
+        'eid'=>'儿童保健手册id',
+        'jid'=>'基础档案id'
     ];
 
     /**
@@ -135,7 +136,7 @@ class ChildInfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'birthday', 'createtime', 'gender', 'source', 'admin', 'doctorid'], 'integer'],
+            [['userid', 'birthday', 'createtime', 'gender', 'source', 'admin', 'doctorid','eid','jid'], 'integer'],
             [['fieldu47','idcard','name', 'field54', 'field53', 'field52', 'field51', 'field50', 'field49', 'field48', 'field47', 'field46', 'field45', 'field44', 'field43', 'field42', 'field41', 'field40', 'field39', 'field38', 'field37', 'field27', 'field26', 'field25', 'field24', 'field23', 'field22', 'field21', 'field20', 'field19', 'field18', 'field17', 'field16', 'field15', 'field14', 'field13', 'field7', 'field6', 'field0'], 'string', 'max' => 100],
         ];
     }

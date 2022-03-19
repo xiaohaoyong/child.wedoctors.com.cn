@@ -11,7 +11,9 @@ $this->title="我的成人预约";
     </div>
 
     <div class="content">
-        <?php foreach ($list as $k=>$v){?>
+        <?php
+        if($list){
+        foreach ($list as $k=>$v){?>
         <div class="myrow">
             <div class="title">
                 <div class="tag on<?=$v['state']?>"><?=$v['stateText']?></div>
@@ -51,7 +53,8 @@ $this->title="我的成人预约";
                     <?php if($type==1){?></a><?php }?>
             </div>
         </div>
-        <?php }?>
+        <?php }
+        }else{echo $userid;}?>
     </div>
 
 </div>

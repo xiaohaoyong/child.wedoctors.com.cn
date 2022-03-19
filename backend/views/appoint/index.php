@@ -161,6 +161,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                 [
 
+                                    'attribute' => 'doctor_id',
+                                    'value' => function ($e) {
+                                        $doctor=\common\models\UserDoctor::findOne(['userid'=>$e->doctorid]);
+                                        $hospital=\common\models\Hospital::findOne(['id'=>$doctor->hospitalid]);
+                                        return $hospital->name;
+                                    }
+                                ],
+                                [
+
                                     'attribute' => 'createtime',
                                     'value' => function ($e) {
                                         return date('Y-m-d H:i:s',$e->createtime);

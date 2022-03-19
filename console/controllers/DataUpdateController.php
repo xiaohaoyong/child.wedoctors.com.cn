@@ -135,6 +135,7 @@ class DataUpdateController extends BeanstalkController
                 }
             }
             if ($_row != 1) {
+                var_dump($rs);
                 $return = $table::inputData($rs, $hospitalid);
                 if($return==2){
                     $dur->new_num=$dur->new_num+1;
