@@ -356,24 +356,24 @@ class ChildInfoInput
     }
 
     public function MotherId($value){
-        $motherid = $value['mother_id'];
-        if($motherid!='') {
-            $userParent = UserParent::find()
-                ->andFilterWhere(["mother_id" => $motherid])
-                //->andFilterWhere(["field28" => $value[34]])
-               // ->andFilterWhere(["source" => $this->hospitalid])
-                ->orderBy('userid asc')
-                ->one();
-
-            if ($userParent) {
-                $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid])->one();
-                $this->childInfo = $this->childInfo?$this->childInfo:new ChildInfo();
-
-                $this->user = User::findOne($userParent->userid);
-                $this->userParent = $userParent;
-                return true;
-            }
-        }
+//        $motherid = $value['mother_id'];
+//        if($motherid!='') {
+//            $userParent = UserParent::find()
+//                ->andFilterWhere(["mother_id" => $motherid])
+//                //->andFilterWhere(["field28" => $value[34]])
+//               // ->andFilterWhere(["source" => $this->hospitalid])
+//                ->orderBy('userid asc')
+//                ->one();
+//
+//            if ($userParent) {
+//                $this->childInfo = ChildInfo::find()->where(['name' => $value['name']])->andWhere(['userid'=>$userParent->userid])->one();
+//                $this->childInfo = $this->childInfo?$this->childInfo:new ChildInfo();
+//
+//                $this->user = User::findOne($userParent->userid);
+//                $this->userParent = $userParent;
+//                return true;
+//            }
+//        }
         return false;
     }
 }
