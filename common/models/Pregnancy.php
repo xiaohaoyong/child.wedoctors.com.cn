@@ -247,7 +247,7 @@ class Pregnancy extends \yii\db\ActiveRecord
             [['field6', 'field38','safe'], 'safe'],
             [['field71', 'field73'], 'number'],
             [['field0', 'field75'], 'string', 'max' => 20],
-            [['field4'], 'string', 'max' => 18],
+            //[['field4'], 'string', 'max' => 18],
             [['field10', 'field42','field1','field36'], 'string', 'max' => 40],
             [['field25', 'field27', 'field44', 'field82'], 'string', 'max' => 30],
             [['field26', 'field33'], 'string', 'max' => 5],
