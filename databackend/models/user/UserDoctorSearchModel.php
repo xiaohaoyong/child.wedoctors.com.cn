@@ -72,6 +72,7 @@ class UserDoctorSearchModel extends UserDoctor
             'city' => $this->city,
             'atitle' => $this->atitle,
             'otype' => $this->otype,
+            'is_guanfang'=>0,
         ]);
 
         if(\Yii::$app->user->identity->type != 1)
