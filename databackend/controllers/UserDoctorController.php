@@ -60,7 +60,7 @@ class UserDoctorController extends BaseController
 
         $searchModel = new ChildInfoSearchModel();
         $searchModel->load($params);
-        $doctor = UserDoctor::find()->andFilterWhere(['county' => \Yii::$app->user->identity->county])->andFilterWhere(['>', 'userid', 37])->all();
+        $doctor = UserDoctor::find()->andFilterWhere(['county' => \Yii::$app->user->identity->county])->andWhere(['is_guanfang'=>0])->andFilterWhere(['>', 'userid', 37])->all();
 
         return $this->render('index', [
             'doctor' => $doctor,
