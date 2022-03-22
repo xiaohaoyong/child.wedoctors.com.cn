@@ -70,7 +70,7 @@ class ArticleUserSearchModel extends ArticleUser
             'child_type' => $this->child_type,
         ]);
         if($this->userid){
-            $query->where(['userid'=>$this->userid]);
+            $query->andWhere(['userid'=>$this->userid]);
         }else {
             $query->andFilterWhere(['in', 'userid', $doctors]);
         }
