@@ -69,7 +69,11 @@ class ArticleUserSearchModel extends ArticleUser
             'level' => $this->level,
             'child_type' => $this->child_type,
         ]);
-        $query->andFilterWhere(['in','userid',$doctors]);
+        if($this->userid){
+            $query->where(['userid'=>$this->userid]);
+        }else {
+            $query->andFilterWhere(['in', 'userid', $doctors]);
+        }
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;
