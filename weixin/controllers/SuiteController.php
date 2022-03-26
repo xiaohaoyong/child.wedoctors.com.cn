@@ -359,11 +359,11 @@ class SuiteController extends Controller
                     'appid' => 'wx6c33bfd66eb0a4f0',
                     'pagepath' => 'pages/index/index'
                 ],
-//                [
-//                    'type' => 'view',
-//                    'name' => '24小时视频医生',
-//                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7162935a1a261323&redirect_uri=https%3A%2F%2Fwww.vtumap.com%2Fboli_vd_wechat%2F100%2Ftop&response_type=code&scope=snsapi_userinfo&connect_redirect=1#wechat_redirect'
-//                ],
+                [
+                    'type' => 'view',
+                    'name' => '24小时视频医生',
+                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7162935a1a261323&redirect_uri=https%3A%2F%2Fwww.vtumap.com%2Fboli_vd_wechat%2F100%2Ftop&response_type=code&scope=snsapi_userinfo&connect_redirect=1#wechat_redirect'
+                ],
             ]],
 
         ];
