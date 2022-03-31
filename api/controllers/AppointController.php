@@ -311,8 +311,13 @@ class AppointController extends Controller
             $row['is_index'] = '1';
             $row['appoint_text'] = '请根据社区现场安排排队！';
         }
-        $row['is_show']=1;
-        $row['jihui']=1;
+        if($appoint->type==2) {
+            $row['is_show'] = 1;
+            $row['jihui'] = 1;
+        }else{
+            $row['is_show'] = 0;
+            $row['jihui'] = 0;
+        }
 
         return $row;
     }
