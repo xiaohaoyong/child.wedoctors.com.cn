@@ -25,7 +25,7 @@ use yii\web\Response;
 
 class Controller extends \yii\web\Controller
 {
-    private $result = ['user/phone-login', 'user/wx-user-info', 'article/view', 'baby/collection-list', 'text/text','doctor/row'];
+    private $result = ['user/code','user/phone-login', 'user/wx-user-info', 'article/view', 'baby/collection-list', 'text/text','doctor/row'];
     private $autoResult = ['user/save-image', 'user/login'];
     protected $userid = 0;
     protected $user;
