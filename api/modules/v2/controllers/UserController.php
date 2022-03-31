@@ -11,6 +11,7 @@ namespace api\modules\v2\controllers;
 
 use common\components\Code;
 use common\helpers\SmsSend;
+use common\models\ArticlePushVaccine;
 use common\models\ArticleSend;
 use common\models\Autograph;
 use common\models\ChildInfo;
@@ -50,7 +51,7 @@ class UserController extends \api\modules\v1\controllers\UserController
         $userLogin = UserLogin::findOne(['phone' => $phone, 'type' => 0]);
         if (!$userLogin) {
             $user = User::findOne(['phone' => $phone]);
-            if ($user) {
+            if (!$user) {
                 $userParent1 = UserParent::find()->where(['mother_phone' => $phone])->one();
                 $userParent2 = UserParent::find()->where(['father_phone' => $phone])->one();
                 $userParent3 = UserParent::find()->where(['field12' => $phone])->one();
@@ -75,6 +76,35 @@ class UserController extends \api\modules\v1\controllers\UserController
                 $user->save();
                 $userid = $user->id;
             }
+            $aid=1979;
+            $article=\common\models\ArticleInfo::findOne($aid);
+            $data = [
+                'first' => array('value' => '新注册用户您好，请认真阅读脊灰疫苗接种前注意事项，选择自己宝宝适合的接种方式。'),
+                'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
+                'keyword2' => ARRAY('value' => '儿宝宝'),
+                'keyword3' => ARRAY('value' => '儿宝宝'),
+                'keyword4' => ARRAY('value' => '新注册用户'),
+                'keyword5' => ARRAY('value' => $article->title),
+                'remark' => ARRAY('value' => "为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
+            $url = \Yii::$app->params['site_url'] . "#/mission-read";
+            $miniprogram = [
+                "appid" => \Yii::$app->params['wxXAppId'],
+                "pagepath" => "pages/article/view/index?id=$aid",
+            ];
+
+            Notice::setList($userid, 3, ['title' =>  $article->title, 'ftitle' => '新注册用户', 'id' => "/article/view/index?id=$aid"]);
+            $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$openid,'aid'=>$aid]);
+            if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
+                $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                $articlePushVaccine = new ArticlePushVaccine();
+                $articlePushVaccine->aid = $aid;
+                $articlePushVaccine->openid = $openid;
+                $articlePushVaccine->state = $pushReturn?1:0;
+                $articlePushVaccine->save();
+            }
+
+
+
         } else {
             $userid = $userLogin->userid;
         }
