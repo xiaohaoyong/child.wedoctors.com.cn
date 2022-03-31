@@ -41,10 +41,11 @@ class AppointController extends Controller
         if ($search) {
             $query->andFilterWhere(['like', 'name', $search]);
         }
-        if (!in_array($this->userid,[346470,390512,175579,349835,236368,240818])) {
+        if (!in_array($this->userid,[346470,390512,175579,349835,236368,240818]) && $search!='儿宝宝') {
             $query->andWhere(['city' => 11]);
             $query->andWhere(['!=','userid', 47156]);
         }
+        //echo $query->createCommand()->getRawSql();exit;
         $doctors = $query->orderBy('appoint desc')->all();
 
         $docs = [];
@@ -310,6 +311,7 @@ class AppointController extends Controller
             $row['is_index'] = '1';
             $row['appoint_text'] = '请根据社区现场安排排队！';
         }
+        $row['is_show']=1;
         return $row;
     }
 

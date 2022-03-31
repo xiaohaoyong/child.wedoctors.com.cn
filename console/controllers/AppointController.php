@@ -14,8 +14,11 @@ use common\components\Log;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
 use common\models\AppointOrder1;
+use common\models\ArticlePushVaccine;
+use common\models\ChildInfo;
 use common\models\Hospital;
 use common\models\HospitalForm;
+use common\models\Notice;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use yii\base\Controller;
@@ -86,6 +89,54 @@ class AppointController extends Controller
                             $data['remark'] = '此消息为系统自动推送，如已取消请忽略。如不能赴约请及时取消！';
                         }
                         $rs = WechatSendTmp::send($data, $openid, $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,]);
+                    }
+                }
+
+                //推送脊灰疫苗推广文
+                if($v->type==2){
+                    $child=ChildInfo::findOne(['id'=>$v->childid]);
+                    if($child && $child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-30 day')){
+                        $aid=1979;
+                        $first='宝妈您好，您的宝宝已经到达了接种脊灰疫苗的月龄，请认真阅读脊灰疫苗接种前注意事项，选择自己宝宝适合的接种方式。';
+
+
+                        if($child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-60 day')) {
+                            $aid = 1979;
+                            $title='二至三月龄宝宝家长';
+
+                        }elseif($child->birthday>strtotime('-44 day') && $child->birthday<strtotime('-30 day')) {
+                            $aid = 1979;
+                            $title = '一至二月龄宝宝家长';
+
+                        }
+
+                        if(!$title) continue;
+                        $article=\common\models\ArticleInfo::findOne($aid);
+                        $data = [
+                            'first' => array('value' => $first),
+                            'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
+                            'keyword2' => ARRAY('value' => '儿宝宝'),
+                            'keyword3' => ARRAY('value' => '儿宝宝'),
+                            'keyword4' => ARRAY('value' => $title),
+                            'keyword5' => ARRAY('value' => $article->title),
+                            'remark' => ARRAY('value' => "为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
+                        $url = \Yii::$app->params['site_url'] . "#/mission-read";
+                        $miniprogram = [
+                            "appid" => \Yii::$app->params['wxXAppId'],
+                            "pagepath" => "pages/article/view/index?id=$aid",
+                        ];
+
+                        Notice::setList($v->userid, 3, ['title' =>  $article->title, 'ftitle' => $title, 'id' => "/article/view/index?id=$aid"]);
+                        $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$openid,'aid'=>$aid]);
+                        if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
+                            $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                            $articlePushVaccine = new ArticlePushVaccine();
+                            $articlePushVaccine->aid = $aid;
+                            $articlePushVaccine->openid = $openid;
+                            $articlePushVaccine->state = $pushReturn?1:0;
+                            $articlePushVaccine->save();
+                        }
+
                     }
                 }
             }
