@@ -13,6 +13,7 @@ use api\controllers\Controller;
 use common\models\DoctorTeam;
 use common\models\DoctorParent;
 use common\models\UserDoctor;
+use common\models\UserLogin;
 
 class MyController extends Controller
 {
@@ -64,6 +65,15 @@ class MyController extends Controller
 
 
         return ['name'=>$name,'items'=>$items];
+    }
+    public function actionLoginOut(){
+        if($this->userid) {
+//            $cache = \Yii::$app->rdmp;
+//            $session = $cache->del($this->seaver_token);
+            $this->userLogin->xopenid='';
+            $this->userLogin->unionid='';
+            $this->userLogin->save();
+        }
     }
 
 }
