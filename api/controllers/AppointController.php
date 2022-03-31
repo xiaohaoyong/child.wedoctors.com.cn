@@ -312,6 +312,8 @@ class AppointController extends Controller
             $row['appoint_text'] = '请根据社区现场安排排队！';
         }
         $row['is_show']=1;
+        $row['jihui']=1;
+
         return $row;
     }
 

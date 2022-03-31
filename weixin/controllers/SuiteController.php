@@ -325,11 +325,11 @@ class SuiteController extends Controller
                     'name' => '流行病学调查表',
                     'url' => 'http://web.child.wedoctors.com.cn/question-naire/form?id=1',
                 ],
-                [
-                    'type' => 'view',
-                    'name' => '问医生',
-                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1147c2e491dfdf1d&redirect_uri=http://web.child.wedoctors.com.cn/haodf&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect',
-                ],
+//                [
+//                    'type' => 'view',
+//                    'name' => '问医生',
+//                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1147c2e491dfdf1d&redirect_uri=http://web.child.wedoctors.com.cn/haodf&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect',
+//                ],
 
                 [
                     'type' => 'miniprogram',
