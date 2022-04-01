@@ -49,7 +49,7 @@ class BabyController extends \api\controllers\BabyController
                     ],
                     'right' => [
                         [
-                            'url' => 1,
+                            'url' => '/pages/article/view/index?id=1983',
                             'name' => '五联疫苗',
                         ],
                     ],
@@ -71,7 +71,7 @@ class BabyController extends \api\controllers\BabyController
                     ],
                     'right' => [
                         [
-                            'url' => 1,
+                            'url' => '/pages/article/view/index?id=1983',
                             'name' => '五联疫苗',
                         ],
                     ],
@@ -93,7 +93,7 @@ class BabyController extends \api\controllers\BabyController
                     ],
                     'right' => [
                         [
-                            'url' => 1,
+                            'url' => '/pages/article/view/index?id=1983',
                             'name' => '五联疫苗',
                         ],
                     ],
@@ -185,7 +185,12 @@ class BabyController extends \api\controllers\BabyController
                             'name' => '甲肝疫苗(第1剂)',
                         ],
                     ],
-                    'right' => [],
+                    'right' => [
+                        [
+                            'url' => '/pages/article/view/index?id=1983',
+                            'name' => '五联疫苗',
+                        ],
+                    ],
 
                 ]
             ],
