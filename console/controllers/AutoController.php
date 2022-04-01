@@ -21,7 +21,7 @@ class AutoController extends Controller
     {
 
         $log=new Log('AutographRenew');
-        $auto = Autograph::find()->where(['endtime'=>date('Ymd',strtotime('-1 week'))])->all();
+        $auto = Autograph::find()->where(['<','endtime',date('Ymd')])->all();
 
 //        var_dump(date('Ymd',strtotime('-1 week')));
 //        var_dump($auto);exit;
@@ -31,25 +31,10 @@ class AutoController extends Controller
             "pagepath" => "/pages/article/view/index?id=757",
         ];
         foreach ($auto as $k => $v) {
-            var_dump($v->endtime);
-            $log->addLog($v->userid);
-            $hospital=UserDoctor::findOne(['userid'=>$v->doctorid]);
-            $data = [
-                'first' => array('value' => "家庭医生签约服务续约通知",),
-                'keyword1' => ARRAY('value' => date('Y年m月d日 H:i'),),
-                'keyword2' => ARRAY('value' => "您签约的".$hospital->name."即将到期 \n签约日期：".date('Y年m月d日',$v->createtime)."\n到期日期：".date('Y年m月d日',strtotime($v->endtime))."\n根据签约合同到期之后将自动续约"),
-                'remark' => ARRAY('value' => "如有任何疑问可联系儿宝小助手微信（erbbzs）点击查看详情", 'color' => '#221d95'),
-            ];
-            $userLogin = UserLogin::findAll(['userid' => $v->userid]);
-            if ($userLogin) {
-                foreach ($userLogin as $ulk => $ulv) {
-                    $log->addLog($ulv->openid);
-                    if ($ulv->openid) {
-                        $rs = WechatSendTmp::send($data, $ulv->openid, $temp, '', $miniprogram);
-                    }
-                }
-            }
-            $log->saveLog();
+            $v->endtime=date('Ymd',strtotime('+1 year',strtotime($v->endtime)));
+            $v->save();
+            echo count($auto)."-".$v->endtime;
+            echo "\n";
         }
     }
 }
