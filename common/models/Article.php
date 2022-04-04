@@ -127,6 +127,8 @@ class Article extends \yii\db\ActiveRecord
             'subject_pid' => '主频道',
             'sort' => '排序',
             'img' => '封面',
+            'is_index' => '是否显示在首页',
+
             'article_type'=>'针对用户'
         ];
     }
