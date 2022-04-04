@@ -96,17 +96,19 @@ class AppointController extends Controller
                 if($v->type==2){
                     $child=ChildInfo::findOne(['id'=>$v->childid]);
                     if($child && $child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-30 day')){
-                        $aid=1979;
+                        $aid=1985;
                         $first='宝妈您好，您的宝宝已经到达了接种脊灰疫苗的月龄，请认真阅读脊灰疫苗接种前注意事项，选择自己宝宝适合的接种方式。';
 
 
                         if($child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-60 day')) {
-                            $aid = 1979;
+                            $aid = 1985;
                             $title='二至三月龄宝宝家长';
+                            $footer="";
 
                         }elseif($child->birthday>strtotime('-44 day') && $child->birthday<strtotime('-30 day')) {
-                            $aid = 1979;
+                            $aid = 1985;
                             $title = '一至二月龄宝宝家长';
+                            $footer="";
 
                         }
 
@@ -119,7 +121,7 @@ class AppointController extends Controller
                             'keyword3' => ARRAY('value' => '儿宝宝'),
                             'keyword4' => ARRAY('value' => $title),
                             'keyword5' => ARRAY('value' => $article->title),
-                            'remark' => ARRAY('value' => "为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
+                            'remark' => ARRAY('value' => "就诊当日注意事项和2月龄脊灰疫苗方案早知道，请仔细阅读", 'color' => '#221d95'),];
                         $url = \Yii::$app->params['site_url'] . "#/mission-read";
                         $miniprogram = [
                             "appid" => \Yii::$app->params['wxXAppId'],
