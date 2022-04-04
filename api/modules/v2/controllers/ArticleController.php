@@ -53,6 +53,7 @@ class ArticleController extends \api\modules\v1\controllers\ArticleController
             $articles->andFilterWhere(['!=','catid',6]);
             $articles->andFilterWhere(['!=','type',2]);
             $articles->andFilterWhere(['!=','subject_pid',20]);
+            $articles->andFilterWhere(['is_index'=>1]);
 
         }
        // $view =ArticleInfo::find()->select('id')->andFilterWhere(['like','content','c.wedoctors.com.cn'])->column();

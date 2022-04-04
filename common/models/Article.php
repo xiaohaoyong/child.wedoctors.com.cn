@@ -100,7 +100,7 @@ class Article extends \yii\db\ActiveRecord
     {
         return [
             [['subject_pid', 'subject'], 'required'],
-            [['sort','catid', 'level', 'createtime', 'child_type', 'num', 'type', 'art_type', 'subject', 'subject_pid'], 'integer'],
+            [['is_index','sort','catid', 'level', 'createtime', 'child_type', 'num', 'type', 'art_type', 'subject', 'subject_pid'], 'integer'],
             ['article_type','articleType'],
         ];
     }

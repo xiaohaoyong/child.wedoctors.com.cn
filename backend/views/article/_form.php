@@ -54,6 +54,8 @@ use yii\widgets\ActiveForm;
                 ?>
                 <?= $form->field($model,'type')->radioList($typeText)?>
                 <?= $form->field($model,'art_type')->radioList(\common\models\Article::$artTypeText)?>
+                <?= $form->field($model,'is_index')->radioList([0=>'否',1=>'是'])?>
+
                 <?= $form->field($article,'video_url')->textInput()?>
 
                 <?= $form->field($article, 'content')->widget(\yii\redactor\widgets\Redactor::className(), [
