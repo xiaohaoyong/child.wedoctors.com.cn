@@ -58,12 +58,25 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($article,'video_url')->textInput()?>
 
-                <?= $form->field($article, 'content')->widget(\yii\redactor\widgets\Redactor::className(), [
+                <?= $form->field($article, 'content')->widget('common\helpers\UEditor',[
+
                     'clientOptions' => [
-                        'lang' => 'zh_cn',
-                        'plugins' => ['clips', 'fontcolor','imagemanager']
-                    ]
-                ]) ?>
+                        //定制菜单
+                        'toolbars' => [
+                            [
+                                'fullscreen', 'source', 'undo', 'redo', '|',
+                                'fontsize',
+                                'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'removeformat',
+                                'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|',
+                                'forecolor', 'backcolor', '|',
+                                'lineheight', '|',
+                                'indent', '|',
+                                'simpleupload', //单图上传
+                            ],
+                        ]
+                        ]
+
+                ]); ?>
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                 </div>

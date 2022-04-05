@@ -35,7 +35,6 @@
     "yiisoft/yii2-swiftmailer": "~2.0.0",
     "callmez/yii2-wechat-sdk": "dev-master",
     "gmars/yii2-sms": "dev-master",
-    "kucha/ueditor": "*",
     "moonlandsoft/yii2-phpexcel": "*",
     "2amigos/qrcode-library": "1.0.3",
     "kartik-v/yii2-widget-datepicker": "@dev",
@@ -62,7 +61,8 @@
     "yiisoft/yii2-elasticsearch": "^2.1",
     "2amigos/yii2-switch-widget": "~1.0",
     "codemix/yii2-excelexport": "^2.7",
-    "workerman/workerman": "^4.0"
+    "workerman/workerman": "^4.0",
+    "kucha/ueditor": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
@@ -72,7 +72,6 @@
     "codeception/verify": "~0.3.1",
     "gmars/yii2-sms": "dev-master",
     "bower-asset/jquery": "1.12.1-patch1",
-    "kucha/ueditor": "*",
     "2amigos/qrcode-library": "1.0.3"
   },
   "config": {
@@ -82,6 +81,10 @@
     },
     "fxp-asset": {
       "enabled": false
+    },
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true,
+      "easywechat-composer/easywechat-composer": true
     }
   }
 }

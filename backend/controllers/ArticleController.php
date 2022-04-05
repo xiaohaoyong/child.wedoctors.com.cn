@@ -26,7 +26,15 @@ class ArticleController extends BaseController
         return [
             'Kupload' => [
                 'class' => 'pjkui\kindeditor\KindEditorAction',
-            ]
+            ],
+            'upload' => [
+                'class' => 'common\helpers\UEditorAction',
+                'config' => [
+                    "imageUrlPrefix"  => "http://static.i.wedoctors.com.cn",//图片访问路径前缀
+                    "imagePathFormat" => "upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", //上传保存路径
+                    //"imageRoot" => Yii::getAlias("@webroot"),
+            ],
+        ]
         ];
     }
     /**

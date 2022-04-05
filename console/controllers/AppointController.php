@@ -36,7 +36,7 @@ class AppointController extends Controller
     public function actionNotice()
     {
         $day = strtotime('+1 day', strtotime(date('Y-m-d 00:00:00')));
-        $appoint = Appoint::find()->where(['appoint_date' => $day])->andWhere(['not in', 'doctorid', [221895]])->andWhere(['!=', 'state', 3])->all();
+        $appoint = Appoint::find()->andWhere(['id'=>1575106])->andWhere(['!=', 'state', 3])->all();
 
         if ($appoint) {
             foreach ($appoint as $k => $v) {
@@ -97,7 +97,7 @@ class AppointController extends Controller
                     $child=ChildInfo::findOne(['id'=>$v->childid]);
                     if($child && $child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-30 day')){
                         $aid=1985;
-                        $first='宝妈您好，您的宝宝已经到达了接种脊灰疫苗的月龄，请认真阅读脊灰疫苗接种前注意事项，选择自己宝宝适合的接种方式。';
+                        $first='就诊当日注意事项和2月龄脊灰疫苗方案早知道，请仔细阅读';
 
 
                         if($child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-60 day')) {
@@ -121,7 +121,7 @@ class AppointController extends Controller
                             'keyword3' => ARRAY('value' => '儿宝宝'),
                             'keyword4' => ARRAY('value' => $title),
                             'keyword5' => ARRAY('value' => $article->title),
-                            'remark' => ARRAY('value' => "就诊当日注意事项和2月龄脊灰疫苗方案早知道，请仔细阅读", 'color' => '#221d95'),];
+                            'remark' => ARRAY('value' => "为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
                         $url = \Yii::$app->params['site_url'] . "#/mission-read";
                         $miniprogram = [
                             "appid" => \Yii::$app->params['wxXAppId'],
@@ -129,15 +129,17 @@ class AppointController extends Controller
                         ];
 
                         Notice::setList($v->userid, 3, ['title' =>  $article->title, 'ftitle' => $title, 'id' => "/article/view/index?id=$aid"]);
-                        $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$openid,'aid'=>$aid]);
-                        if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
-                            $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
-                            $articlePushVaccine = new ArticlePushVaccine();
-                            $articlePushVaccine->aid = $aid;
-                            $articlePushVaccine->openid = $openid;
-                            $articlePushVaccine->state = $pushReturn?1:0;
-                            $articlePushVaccine->save();
-                        }
+                        $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                        var_dump($pushReturn);exit;
+//                        $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$openid,'aid'=>$aid]);
+//                        if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
+//                            $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+//                            $articlePushVaccine = new ArticlePushVaccine();
+//                            $articlePushVaccine->aid = $aid;
+//                            $articlePushVaccine->openid = $openid;
+//                            $articlePushVaccine->state = $pushReturn?1:0;
+//                            $articlePushVaccine->save();
+//                        }
 
                     }
                 }
