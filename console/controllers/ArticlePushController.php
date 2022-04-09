@@ -17,6 +17,7 @@ class ArticlePushController extends Controller
         $today=date('Ymd');
         $todayS=strtotime("-6 day");
         $todayE=strtotime('+1 day',$todayS);
+        exit;
         switch ($type){
             case 1:
                 $childs=\common\models\ChildInfo::find()->where(['<','birthday',strtotime('-60 day')])
