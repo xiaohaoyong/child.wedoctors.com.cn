@@ -145,13 +145,13 @@ class Pregnancy extends \yii\db\ActiveRecord
 
 
     public static $field=[
-        0=>'条形码',
+        0=>'产妇条码',
         1=>'产妇姓名',
         2=>'出生日期',
         //3=>'证件类型',
-        4=>'证件号码',
+        //4=>'证件号码',
         5=>'建册日期',
-        6=>'联系电话',
+        6=>'产妇电话',
         7=>'户口所在地-省',
         8=>'居住地-省',
         9=>'居住地-市',
@@ -182,9 +182,9 @@ class Pregnancy extends \yii\db\ActiveRecord
 //        34=>'围产高危',
 //        35=>'高危级别',
         36=>'丈夫姓名',
-        37=>'丈夫证件号',
-        38=>'丈夫联系电话',
-        39=>'丈夫户口地址-省',
+       // 37=>'丈夫证件号',
+       // 38=>'丈夫联系电话',
+        //39=>'丈夫户口地址-省',
 //        40=>'丈夫居住地-省',
 //        41=>'丈夫居住地-市',
 //        42=>'丈夫居住地-详细',
@@ -194,7 +194,7 @@ class Pregnancy extends \yii\db\ActiveRecord
 //        46=>'农村孕产妇住院分娩补助',
 //        47=>'产前检查补助',
 //        48=>'高危',
-        49=>'分娩',
+        49=>'是否分娩',
 //        50=>'产后访视',
 //        51=>'访视次数',
 //        52=>'首检标识',
@@ -371,21 +371,21 @@ class Pregnancy extends \yii\db\ActiveRecord
     }
     public static function inputData($value,$hospital)
     {
-        $preg=\common\models\Pregnancy::findOne(['field4'=>$value['field4']]);
+        $preg=\common\models\Pregnancy::findOne(['field1'=>$value['field1'],'field2'=>strtotime(substr($value['field2'],0,10))]);
         if($preg){
             $return =1;
         }else{
             $return =2;
         }
         $preg=$preg?$preg:new \common\models\Pregnancy();
-        $parent=UserParent::find()
-            ->where(['mother_id'=>$value['field4']])
-            ->orWhere(['mother_phone'=>$value['field6']])
-            ->orWhere(['father_phone'=>$value['field38']])
-            ->orWhere(['father_phone'=>$value['field6']])
-            ->orWhere(['mother_phone'=>$value['field38']])
-            ->one();
-        $value['familyid']=$parent?$parent->userid:0;
+//        $parent=UserParent::find()
+//            ->where(['mother_id'=>$value['field4']])
+//            ->orWhere(['mother_phone'=>$value['field6']])
+//            ->orWhere(['father_phone'=>$value['field38']])
+//            ->orWhere(['father_phone'=>$value['field6']])
+//            ->orWhere(['mother_phone'=>$value['field38']])
+//            ->one();
+        $value['familyid']=$preg?$preg->familyid:0;
         $value['field2']=$value['field2']?strtotime(substr($value['field2'],0,10)):0;
         $value['field5']=$value['field5']?strtotime(substr($value['field5'],0,10)):0;
         $field7=array_search($value['field7'],Area::$province);
