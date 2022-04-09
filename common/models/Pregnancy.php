@@ -373,7 +373,7 @@ class Pregnancy extends \yii\db\ActiveRecord
     {
         //SUBSTRING(ordersn, 9,2)
         $field4=substr('***************6445',-4);
-        $preg=\common\models\Pregnancy::find()->where(['field1'=>$value['field1']])->filterWhere(['SUBSTRING(field4, -4)'=>$field4])->all();
+        $preg=\common\models\Pregnancy::find()->where(['field1'=>$value['field1']])->filterWhere(['SUBSTRING(field4, -4)'=>$field4])->one();
 
         if($preg){
             $return =1;
