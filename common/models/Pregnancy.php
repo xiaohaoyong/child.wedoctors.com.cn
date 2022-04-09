@@ -371,7 +371,10 @@ class Pregnancy extends \yii\db\ActiveRecord
     }
     public static function inputData($value,$hospital)
     {
-        $preg=\common\models\Pregnancy::findOne(['field1'=>$value['field1'],'field2'=>strtotime(substr($value['field2'],0,10))]);
+        //SUBSTRING(ordersn, 9,2)
+        $field4=substr('***************6445',-4);
+        $preg=\common\models\Pregnancy::find()->where(['field1'=>$value['field1']])->filterWhere(['SUBSTRING(field4, -4)'=>$field4])->all();
+
         if($preg){
             $return =1;
         }else{
