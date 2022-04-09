@@ -215,14 +215,15 @@ class SiteController extends BaseController
             ->andWhere(['pregnancy.doctorid'=>\Yii::$app->user->identity->hospitalid])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
 
-        $data['todayPregLCount']=Pregnancy::find()
+        $data['todayPregLCount']=$sql=Pregnancy::find()
             ->andWhere(['pregnancy.field49'=>0])
             ->andWhere(['>', 'pregnancy.familyid', 0])
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
             ->andWhere(['>','doctor_parent.createtime',strtotime(date('Y-m-d'))])
             ->andWhere(['<','doctor_parent.createtime',strtotime(date('Y-m-d 23:59:59'))])
 
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
+            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->createCommand()->getRawSql();
+        var_dump($sql);exit;
 
         return $this->render('index',[
             'data'=>$data,
