@@ -428,7 +428,7 @@ class UserController extends Controller
      * @return Code
      */
     public function actionCode($phone){
-        if(!preg_match("/^1[34578]\d{9}$/", $phone)){
+        if(!preg_match("/^1[23456789]\d{9}$/", $phone)){
             return new Code(20010,'手机号码格式错误！');
         }
         $sendData=SmsSend::sendSms($phone,'SMS_150575871');
@@ -441,7 +441,7 @@ class UserController extends Controller
      * @return Code
      */
     public function actionGetCode($phone,$code){
-        if(!preg_match("/^1[34578]\d{9}$/", $phone)){
+        if(!preg_match("/^1[23456789]\d{9}$/", $phone)){
             return new Code(20010,'手机号码验证失败');
         }
 

@@ -36,7 +36,7 @@ class AppointController extends Controller
     public function actionNotice()
     {
         $day = strtotime('+1 day', strtotime(date('Y-m-d 00:00:00')));
-        $appoint = Appoint::find()->andWhere(['id'=>1575106])->andWhere(['!=', 'state', 3])->all();
+       //$appoint = Appoint::find()->andWhere(['id'=>1575106])->andWhere(['!=', 'state', 3])->all();
 
         if ($appoint) {
             foreach ($appoint as $k => $v) {
