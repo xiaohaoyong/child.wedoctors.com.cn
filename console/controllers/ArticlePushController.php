@@ -37,7 +37,7 @@ class ArticlePushController extends Controller
                     ->column();
                 $openids=\common\models\UserLogin::find()->select('openid')
                     ->where(['in','userid',$preg])->andWhere(['!=','openid',''])->column();
-                $aid=1979;
+                $aid=1993;
                 $title='孕晚期准妈';
                 $first='准妈您好，在您的宝宝出生时需要接种的疫苗，请认真阅读疫苗接种前注意事项，喜迎宝宝出生。';
                 break;
