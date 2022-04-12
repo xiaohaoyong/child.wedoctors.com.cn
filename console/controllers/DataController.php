@@ -80,6 +80,20 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $appoint=Appoint::find()->where(['doctorid'=>442975])->andWhere(['>=','appoint_date',1649692800])
+            ->andWhere(['<=','appoint_date',1650038400])->andWhere(['state'=>1])->all();
+        foreach($appoint as $k=>$v){
+            echo $v->phone;
+            echo "\n";
+        }
+        exit;
+
+
+
+
+        $field4=substr('***************6445',-4);
+        $preg=\common\models\Pregnancy::find()->where(['field1'=>'马玉晶'])->filterWhere(['SUBSTRING(field4, -4)'=>$field4])->all();
+        var_dump($preg);exit;
 
                 $file = fopen('1234.csv', 'r');
         while (($line = fgets($file)) !== false) {

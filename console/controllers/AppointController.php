@@ -129,17 +129,16 @@ class AppointController extends Controller
                         ];
 
                         Notice::setList($v->userid, 3, ['title' =>  $article->title, 'ftitle' => $title, 'id' => "/article/view/index?id=$aid"]);
-                        $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
-                        var_dump($pushReturn);exit;
-//                        $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$openid,'aid'=>$aid]);
-//                        if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
-//                            $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
-//                            $articlePushVaccine = new ArticlePushVaccine();
-//                            $articlePushVaccine->aid = $aid;
-//                            $articlePushVaccine->openid = $openid;
-//                            $articlePushVaccine->state = $pushReturn?1:0;
-//                            $articlePushVaccine->save();
-//                        }
+                        $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);var_dump($pushReturn);exit;
+                        $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$openid,'aid'=>$aid]);
+                        if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
+                            $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                            $articlePushVaccine = new ArticlePushVaccine();
+                            $articlePushVaccine->aid = $aid;
+                            $articlePushVaccine->openid = $openid;
+                            $articlePushVaccine->state = $pushReturn?1:0;
+                            $articlePushVaccine->save();
+                        }
 
                     }
                 }

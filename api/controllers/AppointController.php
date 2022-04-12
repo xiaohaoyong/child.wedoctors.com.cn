@@ -311,12 +311,20 @@ class AppointController extends Controller
             $row['is_index'] = '1';
             $row['appoint_text'] = '请根据社区现场安排排队！';
         }
+        $row['is_show'] = 0;
+        $row['jihui'] = 0;
         if($appoint->type==2) {
             $row['is_show'] = 1;
-            $row['jihui'] = 1;
-        }else{
-            $row['is_show'] = 0;
-            $row['jihui'] = 0;
+            $child=ChildInfo::findOne($appoint->childid);
+            if(($child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-30 day'))
+                || $appoint->vaccine==1
+                || $appoint->vaccine==2
+                || $appoint->vaccine==3
+                || $appoint->vaccine==6)
+            {
+                $row['jihui'] = 1;
+            }
+
         }
 
         return $row;
