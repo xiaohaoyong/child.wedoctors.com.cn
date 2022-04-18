@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             $row=\common\models\AppointAdult::findOne(['userid' => $e->userid]);
                                             $html="姓名：".$row->name."<br>";
                                             $html.="性别：".\common\models\AppointAdult::$genderText[$row->gender]."<br>";
-                                            $html.="性别：".$row->birthday."<br>";
+                                            $html.="生日：".$row->birthday."<br>";
 
                                         }elseif($e->type==5 || $e->type==6){
                                             $preg=\common\models\Pregnancy::findOne(['id' => $e->childid]);
