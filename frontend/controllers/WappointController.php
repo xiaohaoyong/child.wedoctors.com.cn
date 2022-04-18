@@ -553,9 +553,10 @@ class WappointController extends Controller
         $appointAdult->name=$post['appoint_name'];
         $appointAdult->phone=$post['phone'];
         $appointAdult->gender=$post['sex'];
-        //$appointAdult->birthday=strtotime($post['birthday']);
+        $appointAdult->birthday=$post['birthday'];
         if(!$appointAdult->save()){
             \Yii::$app->getSession()->setFlash('error','联系人信息保存失败');
+            var_dump($appointAdult->firstErrors);exit;
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
 
         }
