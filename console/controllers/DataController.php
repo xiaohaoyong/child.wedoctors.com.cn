@@ -80,12 +80,34 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
-        $appoint=Appoint::find()->where(['doctorid'=>442975])->andWhere(['>=','appoint_date',1649692800])
-            ->andWhere(['<=','appoint_date',1650038400])->andWhere(['state'=>1])->all();
-        foreach($appoint as $k=>$v){
-            echo $v->phone;
+        $child=ChildInfo::find()->where(['source'=>110605])->andWhere(['doctorid'=>110605])->andWhere(['>','birthday',1555643600])->andWhere(['in','userid',DoctorParent::find()->select('parentid')->where(['doctorid'=>216593])->column()])->all();
+        foreach($child as $k=>$v){
+            echo implode(',',$v->toArray());
             echo "\n";
         }
+        exit;
+        $child=ChildInfo::find()->select('name,birthday,count(*) as a')->where(['doctorid'=>110605])->groupBy('name,birthday')->having('a>1')->all();
+        foreach($child as $v){
+            $childInfo=ChildInfo::find()->where(['name'=>$v['name']])->andWhere(['birthday'=>$v['birthday']])->andWhere(['source'=>110605])->one();
+            if($childInfo) {
+                $childInfotmp = ChildInfo::find()->where(['name' => $v['name']])->andWhere(['birthday' => $v['birthday']])->andWhere(['source' => 0])->one();
+                $data = $childInfo->toArray();
+                unset($data['id']);
+                unset($data['userid']);
+                $data1 = array_filter($data, function ($e) {
+                    if ($e == '') {
+                        return false;
+                    }
+                    return true;
+                });
+                if ($data1 && $childInfotmp) {
+                    $childInfotmp->load(['ChildInfo' => $data1]);
+                    $childInfotmp->save();
+                    $childInfo->delete();
+                }
+            }
+        }
+        echo count($child);
         exit;
 
 
