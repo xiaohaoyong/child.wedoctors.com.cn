@@ -56,7 +56,7 @@ class WorkerController extends BeanstalkController
                     'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
                 ];
 
-                $temp='Pa_dWDnwfS5FYpQmB8wf5uWyge50tGpxfg47xfGLYrI';
+                $temp='VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0';
             }else{
 
                 $data = [
