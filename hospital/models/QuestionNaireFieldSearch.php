@@ -27,7 +27,7 @@ class QuestionNaireFieldSearch extends QuestionNaireField
     {
         return [
             [['id', 'qnid', 'userid', 'createtime', 'doctorid', 'state'], 'integer'],
-            [['sign'], 'safe'],
+            [['sign','createtime_e','createtime_s'], 'safe'],
             [['birthday_e', 'birthday_s','name'], 'string'],
             [['phone'],'number']
         ];
@@ -91,10 +91,10 @@ class QuestionNaireFieldSearch extends QuestionNaireField
 //            $qna->andFilterWhere(['<=', 'appoint_date', strtotime($this->appoint_dates_end)]);
 //        }
         if($this->createtime_e){
-            $qna->andFilterWhere(['<=', 'createtime', strtotime($this->createtime_e)]);
+            $qna->andFilterWhere(['>=', 'createtime', strtotime($this->createtime_e)]);
         }
         if($this->createtime_s){
-            $qna->andFilterWhere(['>=', 'createtime', strtotime($this->createtime_s)]);
+            $qna->andFilterWhere(['<=', 'createtime', strtotime($this->createtime_s)]);
         }
         // grid filtering conditions
         $qna->andFilterWhere([
@@ -114,6 +114,9 @@ class QuestionNaireFieldSearch extends QuestionNaireField
         $qna->select('qnfid');
 
         $data=$qna->column();
+        if(!$data){
+            $data=[0];
+        }
 
         $query = QuestionNaireField::find();
 
