@@ -91,10 +91,10 @@ class QuestionNaireFieldSearch extends QuestionNaireField
 //            $qna->andFilterWhere(['<=', 'appoint_date', strtotime($this->appoint_dates_end)]);
 //        }
         if($this->createtime_e){
-            $qna->andFilterWhere(['>=', 'createtime', strtotime($this->createtime_e)]);
+            $qna->andFilterWhere(['<=', 'createtime', strtotime($this->createtime_e)]);
         }
         if($this->createtime_s){
-            $qna->andFilterWhere(['<=', 'createtime', strtotime($this->createtime_s)]);
+            $qna->andFilterWhere(['>=', 'createtime', strtotime($this->createtime_s)]);
         }
         // grid filtering conditions
         $qna->andFilterWhere([
