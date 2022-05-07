@@ -77,6 +77,7 @@ class AppointSearchModels extends Appoint
             // $query->where('0=1');
             return $dataProvider;
         }
+
         $doctorid = \common\models\UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospital]);
 
         $hospitalid = Yii::$app->user->identity->hospital;
@@ -102,7 +103,6 @@ class AppointSearchModels extends Appoint
         $query->andFilterWhere([
             'id' => $this->id,
             'userid' => $this->userid,
-            'doctorid' => $doctorid->userid,
             'createtime' => $this->createtime,
             'appoint_time' => $this->appoint_time,
             'type' => $this->type,
@@ -113,6 +113,9 @@ class AppointSearchModels extends Appoint
                         'mode'=>$this->mode
 
         ]);
+        if(\Yii::$app->user->identity->hospital!=110565) {
+            $query->andWhere(['doctorid' => $doctorid->userid]);
+        }
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
 
         return $dataProvider;

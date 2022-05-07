@@ -14,7 +14,9 @@ use common\models\Article;
 use common\models\ArticleInfo;
 use common\models\ArticleSend;
 use common\models\ArticleType;
+use common\models\ArticleUser;
 use common\models\ChildInfo;
+use common\models\Notice;
 use common\models\Pregnancy;
 use common\models\UserDoctor;
 use common\models\UserLogin;
@@ -120,29 +122,61 @@ class PushController extends Controller
     public function actionArticleSend()
     {
         $articleids = [];
-        $child_types = Article::$childText;
-        foreach ($child_types as $k => $v) {
-            $article = \common\models\Article::find()
-                ->select('article_info.title')->indexBy('id')
-                ->leftJoin('article_info', '`article_info`.`id` = `article`.`id`')
-                ->where(['article.child_type' => $v, 'article.type' => 0])->column();
-            $articleids[$k][] = $article;
-        }
+        $article = \common\models\Article::find()
+            ->select('article_info.title,article.id,article.child_type')
+            ->leftJoin('article_info', '`article_info`.`id` = `article`.`id`')
+            ->where(['article.type' => 1])
+            ->andWhere(['<','article.child_type',6])
+            ->all();
 
         $redis = \Yii::$app->rdmp;
         $hospital = $redis->hgetall('article_send_ispush');
-        foreach ($hospital as $k => $v) {
-            if ($k % 2 == 0) {
-                $key = $v;
+        foreach ($hospital as $hk => $hv) {
+            if ($hk % 2 == 0) {
+                $key = $hv;
             } else {
-                $doctorid = UserDoctor::findOne(['hospitalid' => $key])->userid;
-                if ($v == 1) {
-                    foreach ($articleids as $ak => $av) {
-                        $articleSend = new ArticleSend();
-                        //$articleSend->artid=$av;
-                        $articleSend->type = $ak;
-                        $articleSend->doctorid = $doctorid;
-                        $articleSend->send('automatic', false, 'day');
+                $doctor = UserDoctor::findOne(['hospitalid' => $key]);
+                $child=ChildInfo::find()->andWhere(['doctorid'=>$doctor->hospitalid])->all();
+
+                if ($hv == 1) {
+                    foreach ($article as $ak => $av) {
+                        $month=Article::$childMonth[$av->child_type];
+
+                        $typename = Article::$childText[$av->child_type];
+                        //微信模板消息
+                        $data = ['first' => array('value' => "您好！医生给您发来了一份{$typename}儿童中医药健康指导。\n"), 'keyword1' => ARRAY('value' => date('Y年m月d H:i')), 'keyword2' => ARRAY('value' => $doctor->hospital->name), 'keyword3' => ARRAY('value' => $doctor->name), 'keyword4' => ARRAY('value' => $v->name), 'keyword5' => ARRAY('value' => "{$typename}儿童中医药健康指导"), 'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
+                        $url = \Yii::$app->params['site_url'] . "#/mission-read";
+                        $miniprogram = [
+                            "appid" => \Yii::$app->params['wxXAppId'],
+                            "pagepath" => "pages/article/guidance/index?t=0",
+                        ];
+                        foreach ($child as $k => $v) {
+                            if ($v->birthday < strtotime("-$month month")) {
+                                $articleUser = ArticleUser::find()->where(['childid' => $v->id, 'artid' => $av->id])->one();
+                                if (!$articleUser) {
+                                    $touser = UserLogin::find()->where(['userid' => $v->userid])->andWhere(['!=','openid',''])->one();
+                                    WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                                    //小程序首页推送
+                                    Notice::setList($v->userid, 4, [
+                                        'title' => "{$typename}儿童中医药健康指导。",
+                                        'ftitle' => $doctor->name . '提醒您及时查看',
+                                        'id' => '/article/guidance/index?t=0'
+                                    ]);
+                                    $au = ArticleUser::findOne(['touserid' => $v->userid, 'artid' => $av->id]);
+                                    if (!$au) {
+                                        $au = new ArticleUser();
+                                        $au->childid = $v->id;
+                                        $au->touserid = $v->userid;
+                                        $au->createtime = $v->birthday+($month*30*24*3600);
+                                        $au->userid = $doctor->userid;
+                                        $au->artid = $av->id;
+                                        $au->child_type = $av->child_type;
+                                        $au->save();
+                                        unset($au);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

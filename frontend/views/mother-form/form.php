@@ -71,8 +71,6 @@ $this->title="信息提交";
         }
     }
     echo "</script>";
-
-
     ?>
     <div class="form-group field-motherform-province">
         <label class="control-label">孕妈预产期/宝宝出生日期</label>

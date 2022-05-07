@@ -33,7 +33,18 @@ class WechatSendTmp
             'appSecret' => \Yii::$app->params['AppSecret'],
             'encodingAesKey' => \Yii::$app->params['encodingAesKey']
         ]);
-        return $mpWechat->sendTemplateMessage($push_data);
+        $redis=\Yii::$app->rd0;
+        $key='wechat-'.$touser.$tmpid;
+        var_dump($redis->GET($key));
+        if(!$redis->GET($key)) {
+            $redis->SET($key, 1);
+            $time=strtotime(date('Ymd',strtotime('+1 day')))-time();
+            $redis->EXPIRE($key,$time);
+            return $mpWechat->sendTemplateMessage($push_data);
+
+        }else{
+            return false;
+        }
     }
 
     public static function sendMessage($data)

@@ -83,7 +83,7 @@ class AppointController extends BaseController
                 $model->setCellValue(chr($key) . $key1, $v);
             }
         }else{
-            $fields = ['姓名', '性别', '身份证号', '联系电话', '户籍地', '预约日期', '预约时间', '预约状态', '预约项目', '取消原因', '推送状态', '来源','备注','预约社区'];
+            $fields = ['姓名', '性别', '生日', '身份证号', '联系电话', '户籍地', '预约日期', '预约时间', '预约状态', '预约项目', '取消原因', '推送状态', '来源','备注','预约社区'];
             $model=$objPHPExcel->setActiveSheetIndex(0);
             foreach($fields as $k=>$v){
                 $key=65+$k;
@@ -174,18 +174,19 @@ class AppointController extends BaseController
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $key1, $row->name)
                     ->setCellValue('B' . $key1, \common\models\AppointAdult::$genderText[$row->gender])
-                    ->setCellValue('C' . $key1, $row->id_card."  ")
-                    ->setCellValue('D' . $key1, $row->phone)
-                    ->setCellValue('E' . $key1, $row->place)
-                    ->setCellValue('F' . $key1, date('Y-m-d', $v['appoint_date']))
-                    ->setCellValue('G' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
-                    ->setCellValue('H' . $key1, \common\models\Appoint::$stateText[$e->state])
-                    ->setCellValue('I' . $key1, \common\models\Appoint::$typeText[$e->type])
-                    ->setCellValue('J' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
-                    ->setCellValue('K' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
-                    ->setCellValue('L' . $key1, \common\models\Appoint::$modeText[$e->mode])
-                    ->setCellValue('M' . $key1, $v['remark'])
-                    ->setCellValue('N' . $key1, $hospital->name);
+                    ->setCellValue('C' . $key1, $row->birthday)
+                    ->setCellValue('D' . $key1, $row->id_card."  ")
+                    ->setCellValue('E' . $key1, $row->phone)
+                    ->setCellValue('F' . $key1, $row->place)
+                    ->setCellValue('G' . $key1, date('Y-m-d', $v['appoint_date']))
+                    ->setCellValue('H' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
+                    ->setCellValue('I' . $key1, \common\models\Appoint::$stateText[$e->state])
+                    ->setCellValue('J' . $key1, \common\models\Appoint::$typeText[$e->type])
+                    ->setCellValue('K' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
+                    ->setCellValue('L' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
+                    ->setCellValue('M' . $key1, \common\models\Appoint::$modeText[$e->mode])
+                    ->setCellValue('N' . $key1, $v['remark'])
+                    ->setCellValue('O' . $key1, $hospital->name);
 
 
 

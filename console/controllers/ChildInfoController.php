@@ -24,19 +24,24 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use yii\base\Controller;
 use yii\helpers\ArrayHelper;
 
-class ChildInfoController extends Controller
+class ChildInfoController extends \yii\console\Controller
 {
-    public function actionDown(){
+    public function actionDown($userid=0){
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
         set_time_limit(0);
-        $doctor=UserDoctor::find()->all();
-        foreach($doctor as $v)
-        {
-            $this->setDownExcel($v->userid);
-            echo "\n";
+        if($userid){
+            $this->setDownExcel($userid);
+
+        }else{
+            $doctor=UserDoctor::find()->all();
+            foreach($doctor as $v)
+            {
+                $this->setDownExcel($v->userid);
+                echo "\n";
+            }
         }
-        //$this->setDownExcel(18491);
+
     }
     public function setDownExcel($doctorid){
 
