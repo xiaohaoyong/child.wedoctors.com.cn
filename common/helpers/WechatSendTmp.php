@@ -34,14 +34,16 @@ class WechatSendTmp
             'encodingAesKey' => \Yii::$app->params['encodingAesKey']
         ]);
         $redis=\Yii::$app->rd0;
-        $key='wechat-'.$touser.$tmpid;
+        $key='wechat-0'.$touser.$tmpid;
         var_dump($redis->GET($key));
         if(!$redis->GET($key)) {
-            $redis->SET($key, 1);
-            $time=strtotime(date('Ymd',strtotime('+1 day')))-time();
-            $redis->EXPIRE($key,$time);
-            return $mpWechat->sendTemplateMessage($push_data);
-
+            $return=$mpWechat->sendTemplateMessage($push_data);
+            if($return) {
+                $redis->SET($key, 1);
+                $time = strtotime(date('Ymd', strtotime('+1 day'))) - time();
+                $redis->EXPIRE($key, $time);
+            }
+            return $return;
         }else{
             return false;
         }
