@@ -81,6 +81,193 @@ class DataController extends \yii\console\Controller
     public function actionTesta($num=0)
     {
 
+        $data = [
+            'first' => ['value' => "在“女神节”这个宠爱与被宠爱的节日，儿宝宝邀请了张兰萍主任为我们进行直播答疑，解读宫颈癌疫苗你想知道的那些事，同时在直播间更有HPV二价疫苗首针免费抽奖，九价疫苗预约指引，姐妹们一起冲鸭。"],
+            'keyword1' => ARRAY('value' => '迎女神节福利：专家直播答疑，抽奖免费送HPV二价首针，九价疫苗预约指引'),
+            'keyword2' => ARRAY('value' => '2022年3月8日 晚19点'),
+            'keyword3' => ARRAY('value' => '2022年3月8日 晚19点'),
+
+            'remark' => ARRAY('value' => ""),
+        ];
+        $url='https://kfl.h5.xeknow.com/sl/3qJCnD';
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', $url);
+
+        var_dump($rs);
+        exit;
+        $file = fopen('fengtai.csv', 'r');
+        while (($line = fgets($file)) !== false) {
+            $row = explode(',', trim($line));
+            $a=$row[3];
+            $d=date('Y-m',strtotime($a));
+//            if(!file_exists('data/'.$row[0])){
+//                mkdir('data/'.$row[0]);
+//            }
+            if($row[0]) {
+                $row[2]= $row[2]."\t";
+                $row[]="\n";
+                file_put_contents('data/' . $row[0] . ".csv", implode(',',$row), FILE_APPEND);
+            }
+        }exit;
+        $doctorid=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
+        $doctorParent=DoctorParent::find()->where(['in','doctorid',$doctorid])->andWhere(['<','createtime',strtotime('2022-05-01')])->all();
+        foreach($doctorParent as $k=>$v){
+            $child=ChildInfo::find()->where(['userid'=>$v->parentid])->all();
+            foreach($child as $ck=>$cv){
+                $userParent=UserParent::findOne(['userid'=>$cv->userid]);
+                if($userParent){
+                    $phone=$userParent->getPhone();
+                }else{
+                    continue;
+                }
+                $userDoctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+                $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
+                $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $cv->birthday));
+                if ($DiffDate[0]) {
+                    $age = $DiffDate[0] . "岁";
+                } elseif ($DiffDate[1]) {
+                    $age = $DiffDate[1] . "月";
+                } else {
+                    $age = $DiffDate[2] . "天";
+                }
+                $rs=[];
+                $rs[]=$hospital->name;
+                $rs[]=$cv->name;
+                $idcard=$cv->field27?$cv->field27:$cv->idcard;
+                $idcard=$idcard=='*****'?'':$idcard;
+                $rs[]=$idcard==''?$cv->field6:$idcard;
+                $rs[]=date('Y-m-d',$v->createtime);
+                $rs[]=$age;
+                $rs[]=$phone;
+                $rs[]="儿童";
+                echo implode(',',$rs);
+                echo "\n";
+            }
+            $preg=Pregnancy::findAll(['familyid'=>$v->parentid]);
+            foreach($preg as $pk=>$pv){
+                $userParent=UserParent::findOne(['userid'=>$pv->familyid]);
+                if($userParent){
+                    $phone=$userParent->getPhone();
+                }
+                $userDoctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+                $hospital=Hospital::findOne(['id'=>$userDoctor->hospitalid]);
+                $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $pv->field2));
+                if ($DiffDate[0]) {
+                    $age = $DiffDate[0] . "岁";
+                } elseif ($DiffDate[1]) {
+                    $age = $DiffDate[1] . "月";
+                } else {
+                    $age = $DiffDate[2] . "天";
+                }
+                $rs=[];
+                $rs[]=$hospital->name;
+                $rs[]=$pv->field1;
+                $rs[]=$pv->field4;
+                $rs[]=date('Y-m-d',$v->createtime);
+                $rs[]=$age;
+                $rs[]=$phone;
+                $rs[]="孕妇";
+                echo implode(',',$rs);
+                echo "\n";
+            }
+        }
+        exit;
+        $childs = ChildInfo::findAll(['doctorid' => 110588]);
+        if ($childs) {
+            foreach($childs as $k=>$child) {
+                $auto = Autograph::findOne(['userid' => $child->userid]);
+                if ($auto) {
+                    $auto->doctorid = 353548;
+                    $auto->save();
+                }
+                $doctorParent = DoctorParent::findOne(['parentid' => $child->userid]);
+                if ($doctorParent) {
+                    //$doctorParent->createtime = time();
+                    $doctorParent->doctorid = 353548;
+                    $doctorParent->save();
+                }
+                $child->doctorid = 110641;
+                if ($child->admin) {
+                    $child->admin = 110641;
+                }
+                if($child->source){
+                    $child->source = 110641;
+
+                }
+                $child->save();
+            }
+        }
+        exit;
+        $data = [
+            'first' => ['value' => "在“女神节”这个宠爱与被宠爱的节日，儿宝宝邀请了张兰萍主任为我们进行直播答疑，解读宫颈癌疫苗你想知道的那些事，同时在直播间更有HPV二价疫苗首针免费抽奖，九价疫苗预约指引，姐妹们一起冲鸭。"],
+            'keyword1' => ARRAY('value' => '迎女神节福利：专家直播答疑，抽奖免费送HPV二价首针，九价疫苗预约指引'),
+            'keyword2' => ARRAY('value' => '2022年3月8日 晚19点'),
+            'keyword3' => ARRAY('value' => '2022年3月8日 晚19点'),
+
+            'remark' => ARRAY('value' => ""),
+        ];
+        $url='https://kfl.h5.xeknow.com/sl/3qJCnD';
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', $url);
+
+        var_dump($rs);
+        exit;
+        //签约儿童总数
+        $todayNumTotal=ChildInfo::find()
+            ->select('name')
+            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+            ->andFilterWhere(['`child_info`.`source`' => 110555])
+            ->andFilterWhere(['`child_info`.admin'=>110555])
+            ->all();
+        foreach($todayNumTotal as $k=>$v){
+            echo implode(',',$v->toArray());
+            echo "\n";
+        }
+        exit;
+
+
+        //管辖儿童数（0-3）
+        $data['childNum']=ChildInfo::find()
+            ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
+            ->andFilterWhere(['`child_info`.`source`' => 110555])
+            ->andFilterWhere(['`child_info`.admin'=>110555])
+            ->createCommand()->getRawSql();
+        var_dump($data);exit;
+        $child=ChildInfo::find()->where(['source'=>110605])->andWhere(['doctorid'=>110605])->andWhere(['>','birthday',1555643600])->andWhere(['in','userid',DoctorParent::find()->select('parentid')->where(['doctorid'=>216593])->column()])->all();
+        foreach($child as $k=>$v){
+            echo implode(',',$v->toArray());
+            echo "\n";
+        }
+        exit;
+        $child=ChildInfo::find()->select('name,birthday,count(*) as a')->where(['doctorid'=>110605])->groupBy('name,birthday')->having('a>1')->all();
+        foreach($child as $v){
+            $childInfo=ChildInfo::find()->where(['name'=>$v['name']])->andWhere(['birthday'=>$v['birthday']])->andWhere(['source'=>110605])->one();
+            if($childInfo) {
+                $childInfotmp = ChildInfo::find()->where(['name' => $v['name']])->andWhere(['birthday' => $v['birthday']])->andWhere(['source' => 0])->one();
+                $data = $childInfo->toArray();
+                unset($data['id']);
+                unset($data['userid']);
+                $data1 = array_filter($data, function ($e) {
+                    if ($e == '') {
+                        return false;
+                    }
+                    return true;
+                });
+                if ($data1 && $childInfotmp) {
+                    $childInfotmp->load(['ChildInfo' => $data1]);
+                    $childInfotmp->save();
+                    $childInfo->delete();
+                }
+            }
+        }
+        echo count($child);
+        exit;
+
+
+
+
+        $field4=substr('***************6445',-4);
+        $preg=\common\models\Pregnancy::find()->where(['field1'=>'马玉晶'])->filterWhere(['SUBSTRING(field4, -4)'=>$field4])->all();
+        var_dump($preg);exit;
+
         $file = fopen('1234.csv', 'r');
         while (($line = fgets($file)) !== false) {
             $row = explode(',', trim($line));
@@ -125,32 +312,16 @@ class DataController extends \yii\console\Controller
                         $child->admin = 110599;
                     }
                     $child->save();
-                    //echo trim($line)."true";
+                    echo trim($line)."true";
                 } else {
-                    echo trim($line).",未添加宝宝";
+                    echo trim($line)."false child";
                 }
             }else{
-                echo trim($line).",未登录";
+                echo trim($line)."false login";
             }
             echo "\n";
         }
         exit;
-
-        $appoint=Appoint::find()->where(['doctorid'=>442975])->andWhere(['>=','appoint_date',1649692800])
-            ->andWhere(['<=','appoint_date',1650038400])->andWhere(['state'=>1])->all();
-        foreach($appoint as $k=>$v){
-            echo $v->phone;
-            echo "\n";
-        }
-        exit;
-
-
-
-
-        $field4=substr('***************6445',-4);
-        $preg=\common\models\Pregnancy::find()->where(['field1'=>'马玉晶'])->filterWhere(['SUBSTRING(field4, -4)'=>$field4])->all();
-        var_dump($preg);exit;
-
 
         $totle = 507593;
         $limit = ceil($totle / 20);
