@@ -60,18 +60,6 @@ class AppointController extends Controller
                         ];
 
                         $rs = WechatSendTmp::send($data, $openid, $temp, 'https://cpp.corelines.cn/questionnaire/xcsqwsfwzx/?c=d5b680ceb8b44f209bdef3c84cb15624&qs=one');
-                    }elseif($v->doctorid==184741){
-                        $data = [
-                            'first' => array('value' => '因医务人员外出参加核酸检测，马家堡社区卫生服务中心保健科5月11日临时停诊一天，为防止因没有取消预约造成违约，我们会帮大家操作为已完成预约',),
-                            'keyword1' => ARRAY('value' => $v->name(),),
-                            'keyword2' => ARRAY('value' => $hospital->name,),
-                            'keyword3' => ARRAY('value' => '停诊',),
-                            'keyword4' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText[$v->appoint_time]),
-                            'keyword5' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText2[$v->appoint_time]),
-                            'remark' => ARRAY('value' => "近期因门诊调整较多，请您持续关注保健科发布的通知，给您带来不便，敬请谅解！到保健科时请您出示48小时内核酸阴性证明，咨询电话：67527884", 'color' => '#221d95'),
-                        ];
-
-                        $rs = WechatSendTmp::send($data, $openid, $temp);
                     }elseif (in_array($v->doctorid, [192821, 257888, 184793, 160226,206262,213581])) {
                         $data = [
                             'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
