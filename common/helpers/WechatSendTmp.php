@@ -10,13 +10,15 @@ namespace common\helpers;
 
 
 use callmez\wechat\sdk\MpWechat;
+use common\models\Access;
+use common\models\TmpLog;
 
 class WechatSendTmp
 {
 
 
 
-    public static function send($data,$touser,$tmpid,$url="",$miniprogram=[])
+    public static function send($data,$touser,$tmpid,$url="",$miniprogram=[],$fid=0)
     {
         $push_data['data'] = $data;
         $push_data['touser'] = $touser;
@@ -39,6 +41,11 @@ class WechatSendTmp
         if(!$redis->GET($key)) {
             $return=$mpWechat->sendTemplateMessage($push_data);
             if($return) {
+                $TmpLog=new TmpLog();
+                $TmpLog->tmpid=$tmpid;
+                $TmpLog->openid=$touser;
+                $TmpLog->fid=$fid;
+                $TmpLog->save();
                 $redis->SET($key, 1);
                 $time = strtotime(date('Ymd', strtotime('+1 day'))) - time();
                 $redis->EXPIRE($key, $time);
