@@ -37,7 +37,6 @@ class WechatSendTmp
         ]);
         $redis=\Yii::$app->rd0;
         $key='wechat-0'.$touser.$tmpid;
-        var_dump($redis->GET($key));
         if(!$redis->GET($key)) {
             $return=$mpWechat->sendTemplateMessage($push_data);
             if($return) {
