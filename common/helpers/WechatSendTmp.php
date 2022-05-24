@@ -37,7 +37,7 @@ class WechatSendTmp
         ]);
         $redis=\Yii::$app->rd0;
         $key='wechat-0'.$touser.$tmpid;
-        if(!$redis->GET($key) || $tmpid=='H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY') {
+        if(!$redis->GET($key) || $tmpid=='H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY' || $tmpid != 'G6UBxQzjJVUw8QsN2Phv0EQ2fa-3EYy6KflmkxNnuOc' ) {
             $return=$mpWechat->sendTemplateMessage($push_data);
             if($return) {
                 $TmpLog=new TmpLog();
