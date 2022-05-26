@@ -92,7 +92,7 @@ class BabyController extends \api\controllers\BabyController
                         ],
                         [
                             'url' => '/pages/tool/vview/index?id=7',
-                            'name' => '脊灰疫苗(OPV)(第3剂)',
+                            'name' => '脊灰疫苗(bOPV)(第3剂)',
                         ],
                     ],
                     'right' => [
@@ -238,7 +238,7 @@ class BabyController extends \api\controllers\BabyController
                     'left' => [
                         [
                             'url' => '/pages/tool/vview/index?id=20',
-                            'name' => '脊灰疫苗(OPV)(第4剂)',
+                            'name' => '脊灰疫苗(bOPV)(第4剂)',
                         ],
 
                     ],
