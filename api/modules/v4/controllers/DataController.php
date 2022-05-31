@@ -47,7 +47,7 @@ class DataController extends Controller
         $access->userid=$this->userid;
         $access->cid=$id;
         $access->long=0;
-        $access->type=3;
+        $access->type=4;
         $access->save();
     }
 

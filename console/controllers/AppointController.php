@@ -47,7 +47,9 @@ class AppointController extends Controller
 
                 if ($openid) {
                     $temp = '425dIznjAzVkXGMf68801IXJKpgDlO4AKpcEiBkJpZQ';
-
+                    if($v->doctorid==4146){
+                        continue;
+                    }
                     if($v->doctorid==206260){
                         $data = [
                             'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
@@ -59,7 +61,7 @@ class AppointController extends Controller
                             'remark' => ARRAY('value' => "点击此处填写流行病学调查表，请酌情填写流行病学调查表，根据不同社区工作安排可能需要您出示调查结果，(每位需要去社区的家长请个填一份，请家长互相转发此链接)注：调查表填写后24小时内有效", 'color' => '#221d95'),
                         ];
 
-                        $rs = WechatSendTmp::send($data, $openid, $temp, 'https://cpp.corelines.cn/questionnaire/xcsqwsfwzx/?c=d5b680ceb8b44f209bdef3c84cb15624&qs=one');
+                        $rs = WechatSendTmp::send($data, $openid, $temp, 'https://cpp.corelines.cn/questionnaire/xcsqwsfwzx/?c=d5b680ceb8b44f209bdef3c84cb15624&qs=one',[],$v->id);
                     }elseif (in_array($v->doctorid, [192821, 257888, 184793, 160226,206262,213581])) {
                         $data = [
                             'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
@@ -71,7 +73,7 @@ class AppointController extends Controller
                             'remark' => ARRAY('value' => "点击此处填写流行病学调查表，请酌情填写流行病学调查表，根据不同社区工作安排可能需要您出示调查结果，(每位需要去社区的家长请个填一份，请家长互相转发此链接)调查结果可以在公众号底部菜单我的->流行病学调查表中查看", 'color' => '#221d95'),
                         ];
 
-                        $rs = WechatSendTmp::send($data, $openid, $temp, 'http://web.child.wedoctors.com.cn/question-naire/form?id=1&doctorid=' . $v->doctorid);
+                        $rs = WechatSendTmp::send($data, $openid, $temp, 'http://web.child.wedoctors.com.cn/question-naire/form?id=1&doctorid=' . $v->doctorid,[],$v->id);
                     } else {
                         $data = [
                             'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
@@ -88,7 +90,7 @@ class AppointController extends Controller
                         if($v->doctorid == 4154){
                             $data['remark'] = '此消息为系统自动推送，如已取消请忽略。如不能赴约请及时取消！';
                         }
-                        $rs = WechatSendTmp::send($data, $openid, $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,]);
+                        $rs = WechatSendTmp::send($data, $openid, $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,],$v->id);
                     }
                 }
 
@@ -129,10 +131,9 @@ class AppointController extends Controller
                         ];
 
                         Notice::setList($v->userid, 3, ['title' =>  $article->title, 'ftitle' => $title, 'id' => "/article/view/index?id=$aid"]);
-                        $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);var_dump($pushReturn);exit;
                         $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$openid,'aid'=>$aid]);
                         if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
-                            $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                            $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram,$aid);
                             $articlePushVaccine = new ArticlePushVaccine();
                             $articlePushVaccine->aid = $aid;
                             $articlePushVaccine->openid = $openid;

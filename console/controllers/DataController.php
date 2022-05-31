@@ -90,7 +90,7 @@ class DataController extends \yii\console\Controller
             'remark' => ARRAY('value' => ""),
         ];
         $url='https://kfl.h5.xeknow.com/sl/3qJCnD';
-        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', $url);
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', $url,[],123);
 
         var_dump($rs);
         exit;
