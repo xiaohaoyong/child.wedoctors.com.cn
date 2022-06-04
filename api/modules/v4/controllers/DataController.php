@@ -14,12 +14,12 @@ use common\models\Access;
 
 class DataController extends Controller
 {
-    public function actionAppointView($id){
+    public function actionAppointView($id,$long=0){
 
         $access=new Access();
         $access->userid=$this->userid;
         $access->cid=$id;
-        $access->long=0;
+        $access->long=$long;
         $access->type=1;
         $access->save();
     }
