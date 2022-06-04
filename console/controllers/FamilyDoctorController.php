@@ -25,7 +25,7 @@ class FamilyDoctorController extends Controller
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
         set_time_limit(0);
-        $doctor=UserDoctor::find()->all();
+        $doctor=UserDoctor::find()->where(['county'=>1106])->all();
         foreach($doctor as $v)
         {
             $this->setDownExcel($v->userid);
@@ -146,7 +146,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('7')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->andWhere(['>','createtime',strtotime('2022-01-01')])->andWhere(['<','createtime',strtotime('2022-06-01')])->column();
 
         $styleArray = [
             'borders' => [
