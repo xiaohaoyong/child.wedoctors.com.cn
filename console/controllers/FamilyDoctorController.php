@@ -199,7 +199,12 @@ class FamilyDoctorController extends Controller
                 ->all();
 
             foreach($preg as $k=>$v){
+                $autoa=Autograph::findOne(['familyid'=>$v->userid]);
+                $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
+                $hospital=Hospital::findOne($userDoctor->hospitalid);
+
                 $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
+                $worksheet->getCellByColumnAndRow(3,$i)->setValue($hospital->name);
                 $worksheet->getCellByColumnAndRow(4,$i)->setValue($v->field1);
                 $worksheet->getCellByColumnAndRow(5,$i)->setValue("\t".$v->field4);
                 $au=Autograph::findOne(['userid'=>$v->familyid]);
