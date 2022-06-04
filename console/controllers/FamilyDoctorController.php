@@ -11,6 +11,7 @@ namespace console\controllers;
 
 use common\models\Autograph;
 use common\models\ChildInfo;
+use common\models\Hospital;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
@@ -168,9 +169,13 @@ class FamilyDoctorController extends Controller
             $i=8;
 
             foreach($child as $k=>$v){
+                $autoa=Autograph::findOne(['userid'=>$v->userid]);
+                $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
+                $hospital=Hospital::findOne($userDoctor->hospitalid);
                 $idcard=$v->field27?$v->field27:$v->idcard;
 
                 $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
+                $worksheet->getCellByColumnAndRow(3,$i)->setValue($hospital->name);
                 $worksheet->getCellByColumnAndRow(4,$i)->setValue($v->name);
                 $worksheet->getCellByColumnAndRow(5,$i)->setValue("\t".$idcard);
                 $au=Autograph::findOne(['userid'=>$v->userid]);
