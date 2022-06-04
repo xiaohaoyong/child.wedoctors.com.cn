@@ -200,7 +200,7 @@ class FamilyDoctorController extends Controller
                 ->all();
 
             foreach($preg as $k=>$v){
-                $autoa=Autograph::findOne(['familyid'=>$v->userid]);
+                $autoa=Autograph::findOne(['userid'=>$v->familyid]);
                 $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
                 $hospital=Hospital::findOne($userDoctor->hospitalid);
                 echo $hospital->name;
