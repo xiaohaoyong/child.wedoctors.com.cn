@@ -202,7 +202,8 @@ class FamilyDoctorController extends Controller
                 $autoa=Autograph::findOne(['familyid'=>$v->userid]);
                 $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
                 $hospital=Hospital::findOne($userDoctor->hospitalid);
-
+                echo $hospital->name;
+                echo "\n";
                 $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
                 $worksheet->getCellByColumnAndRow(3,$i)->setValue($hospital->name);
                 $worksheet->getCellByColumnAndRow(4,$i)->setValue($v->field1);
