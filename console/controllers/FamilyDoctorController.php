@@ -167,13 +167,12 @@ class FamilyDoctorController extends Controller
                 ->all();
             $i=8;
 
+            $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
+            $hospital=Hospital::findOne($userDoctor->hospitalid);
+
             foreach($child as $k=>$v){
-                $autoa=Autograph::findOne(['userid'=>$v->userid]);
-                $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
-                $hospital=Hospital::findOne($userDoctor->hospitalid);
+
                 $idcard=$v->field27?$v->field27:$v->idcard;
-                echo $hospital->name;
-                echo "\n";
                 $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
                 $worksheet->getCellByColumnAndRow(3,$i)->setValue($hospital->name);
                 $worksheet->getCellByColumnAndRow(4,$i)->setValue($v->name);
@@ -199,11 +198,7 @@ class FamilyDoctorController extends Controller
                 ->all();
 
             foreach($preg as $k=>$v){
-                $autoa=Autograph::findOne(['userid'=>$v->familyid]);
-                $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
-                $hospital=Hospital::findOne($userDoctor->hospitalid);
-                echo $hospital->name;
-                echo "\n";
+
                 $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
                 $worksheet->getCellByColumnAndRow(3,$i)->setValue($hospital->name);
                 $worksheet->getCellByColumnAndRow(4,$i)->setValue($v->field1);
@@ -223,6 +218,6 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/1106/" .$doctorid.'-family.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/1106/" .$hospital->name.'-family.xlsx');
     }
 }
