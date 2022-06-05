@@ -162,10 +162,9 @@ class FamilyDoctorController extends Controller
         ];
         if($auto) {
             $child= ChildInfo::find()
-                ->select('name,birthday')->distinct()
-                ->addSelect('field27,idcard,userid')
                 ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
                 //->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+                ->groupBy('name,birthday')
                 ->all();
             $i=8;
 
@@ -196,9 +195,8 @@ class FamilyDoctorController extends Controller
             $preg=\common\models\Pregnancy::find()
                 //->andWhere(['pregnancy.field49'=>0])
                 //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
-                ->select('field1,field2')->distinct()
-                ->addSelect('field4,field6,familyid')
                 ->andWhere(['in','familyid',$auto])
+                ->groupBy('field1,field2')
                 ->all();
 
             foreach($preg as $k=>$v){
