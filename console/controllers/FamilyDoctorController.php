@@ -148,7 +148,7 @@ class FamilyDoctorController extends Controller
 
         $doctor=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
 
-        $auto=Autograph::find()->select('userid')->where(['in','doctorid',$doctor])->andWhere(['>','createtime',strtotime('2022-01-01')])->andWhere(['<','createtime',strtotime('2022-06-01')])->column();
+        $auto=Autograph::find()->select('userid')->where(['in','doctorid',$doctor])->andWhere(['<','createtime',strtotime('2022-06-01')])->column();
 
         $styleArray = [
             'borders' => [
