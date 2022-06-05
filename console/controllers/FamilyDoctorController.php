@@ -162,6 +162,8 @@ class FamilyDoctorController extends Controller
         ];
         if($auto) {
             $child= ChildInfo::find()
+                ->select('name,birthday')->distinct()
+                ->addSelect('field27,idcard,userid')
                 ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
                 //->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                 ->all();
