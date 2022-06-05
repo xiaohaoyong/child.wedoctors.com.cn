@@ -11,6 +11,7 @@ namespace console\controllers;
 
 use common\models\Autograph;
 use common\models\ChildInfo;
+use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\UserDoctor;
 use common\models\UserLogin;
@@ -147,7 +148,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('7')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->andWhere(['<','createtime',strtotime('2022-06-01')])->column();
+        $auto=DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid])->andWhere(['<','createtime',strtotime('2022-06-01')])->column();
 
         $styleArray = [
             'borders' => [
