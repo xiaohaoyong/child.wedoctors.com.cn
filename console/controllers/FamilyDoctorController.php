@@ -163,66 +163,70 @@ class FamilyDoctorController extends Controller
             ],
         ];
         if($auto) {
-            $child= ChildInfo::find()
-                ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
-                //->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
-                ->groupBy('name,birthday')
-                ->all();
-            $i=8;
+            foreach($auto as $ak=>$av) {
+                $child = ChildInfo::find()
+                    ->andFilterWhere(['userid'=>$av])
+                    //->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+                    ->groupBy('name,birthday')
+                    ->all();
+                $i = 8;
+                if($child) {
+                    foreach ($child as $k => $v) {
+                        $autoa = DoctorParent::findOne(['parentid' => $v->userid]);
+                        $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
+                        $hospital = Hospital::findOne($userDoctor->hospitalid);
 
+                        $idcard = $v->field27 ? $v->field27 : $v->idcard;
+                        $worksheet->getStyle('A' . $i . ':V' . $i)->applyFromArray($styleArray);
+                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
+                        $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->name);
+                        $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $idcard);
+                        $au = Autograph::findOne(['userid' => $v->userid]);
+                        $worksheet->getCellByColumnAndRow(6, $i)->setValue(date('Y-m-d', $au->createtime));
 
-            foreach($child as $k=>$v){
-                $autoa=DoctorParent::findOne(['parentid'=>$v->userid]);
-                $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
-                $hospital=Hospital::findOne($userDoctor->hospitalid);
+                        $userParent = UserParent::findOne(['userid' => $v->userid]);
+                        if ($userParent && $userParent->mother_phone) {
+                            $phone = "\t" . $userParent->mother_phone;
+                        } else {
+                            $phone = "\t" . UserLogin::getPhone($v->userid);
+                        }
+                        $worksheet->getCellByColumnAndRow(7, $i)->setValue($phone);
+                        $worksheet->getCellByColumnAndRow(18, $i)->setValue('✅');
 
-                $idcard=$v->field27?$v->field27:$v->idcard;
-                $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
-                $worksheet->getCellByColumnAndRow(3,$i)->setValue($hospital->name);
-                $worksheet->getCellByColumnAndRow(4,$i)->setValue($v->name);
-                $worksheet->getCellByColumnAndRow(5,$i)->setValue("\t".$idcard);
-                $au=Autograph::findOne(['userid'=>$v->userid]);
-                $worksheet->getCellByColumnAndRow(6,$i)->setValue(date('Y-m-d',$au->createtime));
-
-                $userParent=UserParent::findOne(['userid'=>$v->userid]);
-                if($userParent && $userParent->mother_phone){
-                    $phone="\t".$userParent->mother_phone;
-                }else{
-                    $phone="\t".UserLogin::getPhone($v->userid);
+                        $i++;
+                    }
                 }
-                $worksheet->getCellByColumnAndRow(7,$i)->setValue($phone);
-                $worksheet->getCellByColumnAndRow(18,$i)->setValue('✅');
-
-                $i++;
             }
-            $preg=\common\models\Pregnancy::find()
-                //->andWhere(['pregnancy.field49'=>0])
-                //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
-                ->andWhere(['in','familyid',$auto])
-                ->groupBy('field1,field11')
-                ->all();
+            foreach($auto as $ak=>$av) {
+                $preg = \common\models\Pregnancy::find()
+                    //->andWhere(['pregnancy.field49'=>0])
+                    //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
+                    ->andWhere(['familyid'=> $av])
+                    ->groupBy('field1,field11')
+                    ->all();
+                if($preg) {
+                    foreach ($preg as $k => $v) {
+                        $autoa = DoctorParent::findOne(['parentid' => $v->familyid]);
+                        $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
+                        $hospital = Hospital::findOne($userDoctor->hospitalid);
 
-            foreach($preg as $k=>$v){
+                        $worksheet->getStyle('A' . $i . ':V' . $i)->applyFromArray($styleArray);
+                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
+                        $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->field1);
+                        $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $v->field4);
+                        $au = Autograph::findOne(['userid' => $v->familyid]);
+                        $worksheet->getCellByColumnAndRow(6, $i)->setValue(date('Y-m-d', $au->createtime));
 
-                $autoa=DoctorParent::findOne(['parentid'=>$v->familyid]);
-                $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
-                $hospital=Hospital::findOne($userDoctor->hospitalid);
-
-                $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
-                $worksheet->getCellByColumnAndRow(3,$i)->setValue($hospital->name);
-                $worksheet->getCellByColumnAndRow(4,$i)->setValue($v->field1);
-                $worksheet->getCellByColumnAndRow(5,$i)->setValue("\t".$v->field4);
-                $au=Autograph::findOne(['userid'=>$v->familyid]);
-                $worksheet->getCellByColumnAndRow(6,$i)->setValue(date('Y-m-d',$au->createtime));
-
-                if($v->field6){
-                    $phone="\t".$v->field6;
-                }else{
-                    $phone="\t".UserLogin::getPhone($v->familyid);
+                        if ($v->field6) {
+                            $phone = "\t" . $v->field6;
+                        } else {
+                            $phone = "\t" . UserLogin::getPhone($v->familyid);
+                        }
+                        $worksheet->getCellByColumnAndRow(7, $i)->setValue($phone);
+                        $worksheet->getCellByColumnAndRow(17, $i)->setValue('✅');
+                        $i++;
+                    }
                 }
-                $worksheet->getCellByColumnAndRow(7,$i)->setValue($phone);
-                $worksheet->getCellByColumnAndRow(17,$i)->setValue('✅');
-                $i++;
             }
 
         }
