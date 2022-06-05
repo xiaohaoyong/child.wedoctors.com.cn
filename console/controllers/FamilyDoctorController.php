@@ -163,7 +163,7 @@ class FamilyDoctorController extends Controller
         if($auto) {
             $child= ChildInfo::find()
                 ->andFilterWhere(['in', '`child_info`.`userid`', array_unique($auto)])
-                ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+                //->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                 ->all();
             $i=8;
 
@@ -192,8 +192,8 @@ class FamilyDoctorController extends Controller
                 $i++;
             }
             $preg=\common\models\Pregnancy::find()
-                ->andWhere(['pregnancy.field49'=>0])
-                ->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
+                //->andWhere(['pregnancy.field49'=>0])
+                //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
                 ->andWhere(['in','familyid',$auto])
                 ->all();
 
