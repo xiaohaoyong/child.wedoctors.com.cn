@@ -196,7 +196,7 @@ class FamilyDoctorController extends Controller
                 //->andWhere(['pregnancy.field49'=>0])
                 //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
                 ->andWhere(['in','familyid',$auto])
-                ->groupBy('field1,field2')
+                ->groupBy('field1,field11')
                 ->all();
 
             foreach($preg as $k=>$v){
