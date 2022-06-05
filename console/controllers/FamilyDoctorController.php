@@ -27,13 +27,13 @@ class FamilyDoctorController extends Controller
         ini_set('memory_limit', '2048M');
         ini_set("max_execution_time", "0");
         set_time_limit(0);
-        $doctor=UserDoctor::find()->where(['county'=>1106])->all();
-        foreach($doctor as $v)
-        {
-            $this->setDownExcel($v->userid);
-            echo "\n";
-        }
-        //$this->setDownExcel(192821);
+//        $doctor=UserDoctor::find()->where(['county'=>1106])->all();
+//        foreach($doctor as $v)
+//        {
+//            $this->setDownExcel($v->userid);
+//            echo "\n";
+//        }
+        $this->setDownExcel(192821);
     }
 
     public function setDownExcel($doctorid)
@@ -148,7 +148,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('7')->setRowHeight(50);
 
 
-        $auto=DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid])->andWhere(['<','createtime',strtotime('2022-06-01')])->column();
+        $auto=DoctorParent::find()->select('parentid')->where(['county'=>1106])->andWhere(['<','createtime',strtotime('2022-06-01')])->column();
 
         $styleArray = [
             'borders' => [
@@ -169,10 +169,11 @@ class FamilyDoctorController extends Controller
                 ->all();
             $i=8;
 
-            $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
-            $hospital=Hospital::findOne($userDoctor->hospitalid);
 
             foreach($child as $k=>$v){
+                $autoa=DoctorParent::findOne(['parentid'=>$v->userid]);
+                $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
+                $hospital=Hospital::findOne($userDoctor->hospitalid);
 
                 $idcard=$v->field27?$v->field27:$v->idcard;
                 $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
@@ -201,6 +202,10 @@ class FamilyDoctorController extends Controller
                 ->all();
 
             foreach($preg as $k=>$v){
+
+                $autoa=DoctorParent::findOne(['parentid'=>$v->familyid]);
+                $userDoctor=UserDoctor::findOne(['userid'=>$autoa->doctorid]);
+                $hospital=Hospital::findOne($userDoctor->hospitalid);
 
                 $worksheet->getStyle('A'.$i.':V'.$i)->applyFromArray($styleArray);
                 $worksheet->getCellByColumnAndRow(3,$i)->setValue($hospital->name);
