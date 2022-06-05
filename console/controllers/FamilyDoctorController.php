@@ -223,6 +223,6 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/1106/" .$doctorid.'-family.xlsx');
     }
 }
