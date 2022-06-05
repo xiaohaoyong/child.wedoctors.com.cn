@@ -24,7 +24,7 @@ class FamilyDoctorController extends Controller
 {
     public function actionDown()
     {
-        ini_set('memory_limit', '2048M');
+        ini_set('memory_limit', '8048M');
         ini_set("max_execution_time", "0");
         set_time_limit(0);
 //        $doctor=UserDoctor::find()->where(['county'=>1106])->all();
