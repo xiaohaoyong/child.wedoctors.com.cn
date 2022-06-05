@@ -196,6 +196,8 @@ class FamilyDoctorController extends Controller
             $preg=\common\models\Pregnancy::find()
                 //->andWhere(['pregnancy.field49'=>0])
                 //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
+                ->select('field1,field2')->distinct()
+                ->addSelect('field4,field6,familyid')
                 ->andWhere(['in','familyid',$auto])
                 ->all();
 
