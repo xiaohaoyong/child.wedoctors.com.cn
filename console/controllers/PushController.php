@@ -155,7 +155,7 @@ class PushController extends Controller
                                 $articleUser = ArticleUser::find()->where(['childid' => $v->id, 'artid' => $av->id])->one();
                                 if (!$articleUser) {
                                     $touser = UserLogin::find()->where(['userid' => $v->userid])->andWhere(['!=','openid',''])->one();
-                                    WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                                    //WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
                                     //小程序首页推送
                                     Notice::setList($v->userid, 4, [
                                         'title' => "{$typename}儿童中医药健康指导。",
