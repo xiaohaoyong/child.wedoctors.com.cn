@@ -144,7 +144,7 @@ class PushController extends Controller
 
                         $typename = Article::$childText[$av->child_type];
                         //微信模板消息
-                        $data = ['first' => array('value' => "您好！医生给您发来了一份{$typename}儿童中医药健康指导。\n"), 'keyword1' => ARRAY('value' => date('Y年m月d H:i')), 'keyword2' => ARRAY('value' => $doctor->hospital->name), 'keyword3' => ARRAY('value' => $doctor->name), 'keyword4' => ARRAY('value' => $v->name), 'keyword5' => ARRAY('value' => "{$typename}儿童中医药健康指导"), 'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
+
                         $url = \Yii::$app->params['site_url'] . "#/mission-read";
                         $miniprogram = [
                             "appid" => \Yii::$app->params['wxXAppId'],
@@ -154,8 +154,17 @@ class PushController extends Controller
                             if ($v->birthday < strtotime("-$month month")) {
                                 $articleUser = ArticleUser::find()->where(['childid' => $v->id, 'artid' => $av->id])->one();
                                 if (!$articleUser) {
+                                    $data = [
+                                        'first' => array('value' => "您好！医生给您发来了一份{$typename}儿童中医药健康指导。\n"),
+                                        'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
+                                        'keyword2' => ARRAY('value' => $doctor->hospital->name),
+                                        'keyword3' => ARRAY('value' => $doctor->name),
+                                        'keyword4' => ARRAY('value' => $v->name),
+                                        'keyword5' => ARRAY('value' => "{$typename}儿童中医药健康指导"),
+                                        'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),
+                                    ];
                                     $touser = UserLogin::find()->where(['userid' => $v->userid])->andWhere(['!=','openid',''])->one();
-                                    //WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                                    WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
                                     //小程序首页推送
                                     Notice::setList($v->userid, 4, [
                                         'title' => "{$typename}儿童中医药健康指导。",
