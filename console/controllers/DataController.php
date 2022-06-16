@@ -18,6 +18,7 @@ use common\components\HttpRequest;
 use common\components\wx\WxBizDataCrypt;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
+use common\models\Access;
 use common\models\Appoint;
 use common\models\AppointAdult;
 use common\models\AppointList;
@@ -54,6 +55,7 @@ use common\models\Points;
 use common\models\Pregnancy;
 use common\models\Test;
 use common\models\Test1;
+use common\models\TmpLog;
 use common\models\User;
 use common\models\UserDoctor;
 use common\models\UserDoctorAppoint;
@@ -80,6 +82,156 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $array=[];
+        $file = fopen('fengtai1.csv', 'r');
+        while (($line = fgets($file)) !== false) {
+            $row = explode(',', trim($line));
+            if($array[$row[2]]){
+                if($array[$row[2]][$row[6]] && $array[$row[2]][$row[6]]==$row[3]){
+                    continue;
+                }
+            }
+            $array[$row[2]][$row[6]] = $row[3];
+            echo $line;
+        }exit;
+
+
+        $stime=1653235200;
+        $etime=1653840000;
+        $userDoctor = UserDoctor::find()->select('county')->groupBy('county')->all();
+        foreach ($userDoctor as $k=>$v){
+            $rs=[];
+            $doctorids = UserDoctor::find()->select('userid')->where(['county'=>$v->county])->column();
+            //推送总人数（小于74天的）
+            $tmpLog=TmpLog::find()
+                ->select('openid')
+                ->where(['>','createtime',$stime])
+                ->andWhere(['<','createtime',$etime])
+                ->andWhere(['in','doctorid',$doctorids])
+                ->andWhere(['fid'=>1985])
+                ->column();
+            $rs[]=Area::$all[$v->county];
+            $rs[]=count($tmpLog);
+            //打开人数(小于74天的)
+
+            $userids=UserLogin::find()->select('userid')->where(['in','openid',$tmpLog])->column();
+            $acc=Access::find()
+                ->select('userid')
+                ->where(['>','createtime',$stime])
+                ->andWhere(['<','createtime',$etime])
+                ->andWhere(['in','doctorid',$doctorids])
+                ->andWhere(['in','userid',$userids])
+                ->andWhere(['cid'=>1985])
+                ->column();
+            $acc=array_unique($acc);
+            $rs[]=count($acc);
+            //停留10秒以上的人数
+
+            $acc=Access::find()
+                ->select('userid')
+                ->where(['>','createtime',$stime])
+                ->andWhere(['<','createtime',$etime])
+                ->andWhere(['in','doctorid',$doctorids])
+                ->andWhere(['in','userid',$userids])
+                ->andWhere(['>','long',9])
+                ->andWhere(['cid'=>1985])
+                ->column();
+            $acc=array_unique($acc);
+            $rs[]=count($acc);
+            //预约弹窗总人数（小于74天）
+            $acc=Access::find()
+                ->select('userid')
+                ->where(['>','createtime',$stime])
+                ->andWhere(['<','createtime',$etime])
+                ->andWhere(['in','doctorid',$doctorids])
+                ->andWhere(['type'=>1])
+                ->column();
+            $acc=array_unique($acc);
+            $rs[]=count($acc);
+            //首页视频打开数
+            $acc=Access::find()
+                ->select('userid')
+                ->where(['>','createtime',$stime])
+                ->andWhere(['<','createtime',$etime])
+                ->andWhere(['in','doctorid',$doctorids])
+                ->andWhere(['cid'=>1371])
+                ->column();
+            $acc=array_unique($acc);
+            $rs[]=count($acc);
+            //首页视频停留到播放20秒的人数（目前无五联内容）
+            $acc=Access::find()
+                ->select('userid')
+
+                ->where(['>','createtime',$stime])
+                ->andWhere(['<','createtime',$etime])
+                ->andWhere(['in','doctorid',$doctorids])
+                ->andWhere(['cid'=>1371])
+                ->andWhere(['>','long',20])
+                ->column();
+            $acc=array_unique($acc);
+            $rs[]=count($acc);
+            //五联视频链接的点开人数
+            $acc=Access::find()
+                ->select('userid')
+
+                ->where(['>','createtime',$stime])
+                ->andWhere(['<','createtime',$etime])
+                ->andWhere(['in','doctorid',$doctorids])
+                ->andWhere(['type'=>4])
+                ->column();
+            $acc=array_unique($acc);
+            $rs[]=count($acc);
+            //视频停留30秒以上的人数
+            $acc=Access::find()
+                ->select('userid')
+
+                ->where(['>','createtime',$stime])
+                ->andWhere(['<','createtime',$etime])
+                ->andWhere(['in','doctorid',$doctorids])
+                ->andWhere(['cid'=>1983])
+                ->andWhere(['>','long',30])
+                ->column();
+            $acc=array_unique($acc);
+            $rs[]=count($acc);
+            //视频停留15秒以上的人数
+            $acc=Access::find()
+                ->select('userid')
+
+                ->where(['>','createtime',$stime])
+                ->andWhere(['<','createtime',$etime])
+                ->andWhere(['in','doctorid',$doctorids])
+                ->andWhere(['cid'=>1983])
+                ->andWhere(['>','long',15])
+                ->column();
+            $acc=array_unique($acc);
+            $rs[]=count($acc);
+            echo implode(',',$rs);
+            echo "\n";
+        }
+
+        exit;
+        $access=Access::find()->where(['doctorid'=>0])->all();
+        foreach($access as $k=>$v){
+            $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid]);
+            if($doctorParent) {
+                $v->doctorid = $doctorParent->doctorid;
+                $v->save();
+                var_dump($v->firstErrors);
+            }else{
+                var_dump($v);
+            }
+            echo "\n";
+        }
+        $tmp=TmpLog::find()->where(['doctorid'=>0])->andWhere(['fid'=>1985])->all();
+        foreach($tmp as $k=>$v){
+            $userLogin=UserLogin::findOne(['openid'=>$v->openid]);
+            $doctorParent=DoctorParent::findOne(['parentid'=>$userLogin->userid]);
+            $v->doctorid=$doctorParent->doctorid;
+            $v->save();
+            echo 123;
+            echo "\n";
+        }
+        exit;
 
         $data = [
             'first' => ['value' => "在“女神节”这个宠爱与被宠爱的节日，儿宝宝邀请了张兰萍主任为我们进行直播答疑，解读宫颈癌疫苗你想知道的那些事，同时在直播间更有HPV二价疫苗首针免费抽奖，九价疫苗预约指引，姐妹们一起冲鸭。"],

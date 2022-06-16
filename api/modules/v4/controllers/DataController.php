@@ -19,7 +19,7 @@ class DataController extends Controller
         $access=new Access();
         $access->userid=$this->userid;
         $access->cid=$id;
-        $access->long=$long;
+        $access->long=round($long/1000);
         $access->type=1;
         $access->save();
     }
