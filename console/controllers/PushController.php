@@ -122,69 +122,77 @@ class PushController extends Controller
     public function actionArticleSend()
     {
         $articleids = [];
-        $article = \common\models\Article::find()
-            ->select('article_info.title,article.id,article.child_type')
-            ->leftJoin('article_info', '`article_info`.`id` = `article`.`id`')
-            ->where(['article.type' => 1])
-            ->andWhere(['<','article.child_type',6])
-            ->all();
-
         $redis = \Yii::$app->rdmp;
         $hospital = $redis->hgetall('article_send_ispush');
-        foreach ($hospital as $hk => $hv) {
-            if ($hk % 2 == 0) {
-                $key = $hv;
-            } else {
-                $doctor = UserDoctor::findOne(['hospitalid' => $key]);
-                $child=ChildInfo::find()->andWhere(['doctorid'=>$doctor->hospitalid])->all();
+        $hospitals = array_filter($hospital,function ($e){
+            return $e!=1;
+        });
 
-                if ($hv == 1) {
-                    foreach ($article as $ak => $av) {
-                        $month=Article::$childMonth[$av->child_type];
-
-                        $typename = Article::$childText[$av->child_type];
-                        //微信模板消息
-
-                        $url = \Yii::$app->params['site_url'] . "#/mission-read";
-                        $miniprogram = [
-                            "appid" => \Yii::$app->params['wxXAppId'],
-                            "pagepath" => "pages/article/guidance/index?t=0",
-                        ];
-                        foreach ($child as $k => $v) {
-                            if ($v->birthday < strtotime("-$month month")) {
-                                $articleUser = ArticleUser::find()->where(['childid' => $v->id, 'artid' => $av->id])->one();
-                                if (!$articleUser) {
-                                    $data = [
-                                        'first' => array('value' => "您好！医生给您发来了一份{$typename}儿童中医药健康指导。\n"),
-                                        'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
-                                        'keyword2' => ARRAY('value' => $doctor->hospital->name),
-                                        'keyword3' => ARRAY('value' => $doctor->name),
-                                        'keyword4' => ARRAY('value' => $v->name),
-                                        'keyword5' => ARRAY('value' => "{$typename}儿童中医药健康指导"),
-                                        'remark' => ARRAY('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),
-                                    ];
-                                    $touser = UserLogin::find()->where(['userid' => $v->userid])->andWhere(['!=','openid',''])->one();
-                                    WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
-                                    //小程序首页推送
-                                    Notice::setList($v->userid, 4, [
-                                        'title' => "{$typename}儿童中医药健康指导。",
-                                        'ftitle' => $doctor->name . '提醒您及时查看',
-                                        'id' => '/article/guidance/index?t=0'
-                                    ]);
-                                    $au = ArticleUser::findOne(['touserid' => $v->userid, 'artid' => $av->id]);
-                                    if (!$au) {
-                                        $au = new ArticleUser();
-                                        $au->childid = $v->id;
-                                        $au->touserid = $v->userid;
-                                        $au->createtime = $v->birthday+($month*30*24*3600);
-                                        $au->userid = $doctor->userid;
-                                        $au->artid = $av->id;
-                                        $au->child_type = $av->child_type;
-                                        $au->save();
-                                        unset($au);
-                                    }
-                                }
+        foreach($hospitals as $hk=>$hv) {
+            $doctor = UserDoctor::findOne(['hospitalid' => $hv]);
+            $childs=ChildInfo::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctor->userid])
+                ->andWhere(['>','birthday',strtotime("-37 month")])
+                ->all();
+            foreach ($childs as $ck=>$cv){
+                $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $cv->birthday));
+                $month= $DiffDate[0]*12+$DiffDate[1];
+                $key=0;
+                $child_type=0;
+                foreach (Article::$childMonth as $ak=>$av)
+                {
+                    if($av>$month && $av-$month==1){
+                        $key=$ak;
+                        $child_type=$av;
+                        break;
+                    }
+               }
+                if($child_type){
+                    $articleUser = ArticleUser::find()->where(['childid' => $cv->id, 'child_type' => $key])->one();
+                    if(!$articleUser){
+                        $article = \common\models\Article::find()
+                            ->where(['type' => 1])
+                            ->andWhere(['child_type'=>$key])
+                            ->all();
+                        foreach($article as $ark=>$arv){
+                            $au = ArticleUser::find()->where(['childid' => $cv->id, 'artid' => $arv->id])->one();
+                            if(!$au) {
+                                $au = new ArticleUser();
+                                $au->childid = $cv->id;
+                                $au->touserid = $cv->userid;
+                                $au->createtime = time();
+                                $au->userid = $doctor->userid;
+                                $au->artid = $arv->id;
+                                $au->child_type = $key;
+                                $au->save();
+                                var_dump($au->firstErrors);
                             }
+                        }
+                        if(!$au->firstErrors) {
+                            $typename = Article::$childText[$key];
+                            $url = \Yii::$app->params['site_url'] . "#/mission-read";
+                            $miniprogram = [
+                                "appid" => \Yii::$app->params['wxXAppId'],
+                                "pagepath" => "pages/article/guidance/index?t=0",
+                            ];
+                            $data = [
+                                'first' => array('value' => "您好！医生给您发来了{$typename}儿童中医药健康指导。\n"),
+                                'keyword1' => array('value' => date('Y年m月d H:i')),
+                                'keyword2' => array('value' => $doctor->hospital->name),
+                                'keyword3' => array('value' => $doctor->name),
+                                'keyword4' => array('value' => $cv->name),
+                                'keyword5' => array('value' => "{$typename}儿童中医药健康指导"),
+                                'remark' => array('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),
+                            ];
+                            $touser = UserLogin::find()->where(['userid' => $cv->userid])->andWhere(['!=', 'openid', ''])->one();
+                            WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                            //小程序首页推送
+                            Notice::setList($cv->userid, 4, [
+                                'title' => "{$typename}儿童中医药健康指导。",
+                                'ftitle' => $doctor->name . '提醒您及时查看',
+                                'id' => '/article/guidance/index?t=0'
+                            ]);
                         }
                     }
                 }
