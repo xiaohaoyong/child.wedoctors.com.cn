@@ -185,6 +185,9 @@ class FamilyDoctorController extends Controller
                         if(!$idcard && $userParent->mother_id){
                             $idcard=$userParent->mother_id.'(母亲)';
                         }
+                        echo $v->name;
+                        echo $idcard;
+                        echo "\n";
                         $worksheet->getStyle('A' . $i . ':V' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->name);
