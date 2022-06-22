@@ -149,9 +149,8 @@ class FamilyDoctorController extends Controller
 
         $spreadsheet->getActiveSheet()->getRowDimension('7')->setRowHeight(50);
 
-        $doctor=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
 
-        $auto=DoctorParent::find()->select('parentid')->where(['in','doctorid',$doctor])->andWhere(['<','createtime',strtotime('2022-06-01')])->column();
+        $auto=DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid])->column();
 
         $styleArray = [
             'borders' => [
