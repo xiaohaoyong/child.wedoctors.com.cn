@@ -173,13 +173,17 @@ class FamilyDoctorController extends Controller
                     ->all();
                 if($child) {
                     foreach ($child as $k => $v) {
+                        echo $v->name;
+                        echo "\n";
                         $autoa = DoctorParent::findOne(['parentid' => $v->userid]);
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
                         $hospital = Hospital::findOne($userDoctor->hospitalid);
                         $userParent=UserParent::findOne([$v->userid]);
 
                         $idcard = $v->field27 ? $v->field27 : $v->idcard;
-                        if(!$idcard || $idcard =='******'){
+                        $idcard=str_replace('*','',$idcard);
+
+                        if(!$idcard){
                             $idcard=$userParent->mother_id;
                         }
 
