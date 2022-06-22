@@ -183,7 +183,7 @@ class FamilyDoctorController extends Controller
                         $idcard=str_replace('*','',$idcard);
 
                         if(!$idcard){
-                            $idcard=$userParent->mother_id;
+                            $idcard=$userParent->mother_id.'(母亲)';
                         }
                         echo $v->name;
                         echo $idcard;
