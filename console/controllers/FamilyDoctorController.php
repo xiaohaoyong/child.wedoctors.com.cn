@@ -173,8 +173,7 @@ class FamilyDoctorController extends Controller
                     ->all();
                 if($child) {
                     foreach ($child as $k => $v) {
-                        echo $v->name;
-                        echo "\n";
+
                         $autoa = DoctorParent::findOne(['parentid' => $v->userid]);
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
                         $hospital = Hospital::findOne($userDoctor->hospitalid);
@@ -186,7 +185,9 @@ class FamilyDoctorController extends Controller
                         if(!$idcard){
                             $idcard=$userParent->mother_id;
                         }
-
+                        echo $v->name;
+                        echo $idcard;
+                        echo "\n";
                         $worksheet->getStyle('A' . $i . ':V' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->name);
