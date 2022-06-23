@@ -107,6 +107,7 @@ class ChildController extends \api\modules\v1\controllers\ChildController
         $child->birthday    =strtotime($params['birthday']);
         $child->gender      =$params['sex'];
         $child->idcard    =$params['idcard'];
+        $child->field27    =$params['idcard'];
         $child->field6    =$params['field6'];
 
         $doctorParent = DoctorParent::findOne(['parentid'=>$this->userid]);

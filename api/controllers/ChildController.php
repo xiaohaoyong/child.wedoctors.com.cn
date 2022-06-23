@@ -62,8 +62,18 @@ class ChildController extends Controller
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $child->birthday));
             $row['age'] = $DiffDate[0].'岁'.$DiffDate[1].'个月'.$DiffDate[2].'天';
             $row['parent']=$child->parent->toArray();
-            $row['parent']['mother_id1']=$this->dataDesensitization($row['parent']['mother_id'],6,8);
-            $row['idcard1']=$row['idcard']?$this->dataDesensitization($row['idcard'],6,8):'';
+            $row['parent']['mother_id']=str_replace('*','',$row['parent']['mother_id']);
+            if($row['parent']['mother_id'] && $row['parent']['mother_id']>4) {
+                $row['parent']['mother_id1'] = $this->dataDesensitization($row['parent']['mother_id'], 6, 8);
+            }else{
+                $row['parent']['mother_id']='';
+            }
+            $row['field27']=str_replace('*','',$row['field27']);
+            if($row['field27'] && $row['field27']>4) {
+                $row['field27'] = $row['field27'] ? $this->dataDesensitization($row['field27'], 6, 8) : '';
+            }else{
+                $row['field27'] = '';
+            }
 
             return $row;
         }else{
