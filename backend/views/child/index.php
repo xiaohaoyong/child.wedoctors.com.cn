@@ -55,7 +55,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return $doctor->name;
 
                                     }
-                                ],//             'field54',
+                                ],
+                                [
+                                    'attribute' => '签约社区',
+                                    'value' => function ($e) {
+
+                                        $sign = \common\models\DoctorParent::findOne(['parentid' => $e->userid, 'level' => 1]);
+                                        $userDoctor= \common\models\UserDoctor::findOne(['userid'=>$sign->doctorid]);
+
+                                        return $userDoctor->name;
+                                    }
+                                ],
+                                //             'field54',
 //             'field53',
 //             'field52',
 //             'field51',
