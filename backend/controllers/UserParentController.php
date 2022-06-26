@@ -84,10 +84,7 @@ class UserParentController extends BaseController
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) ) {
-            $model->save();
-            var_dump($model->firstErrors);exit;
-
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->userid]);
         } else {
             return $this->render('update', [
