@@ -33,7 +33,7 @@ AppAsset::register($this);
         <div class="logo"><img src="/img/index_logo.png?t=234" width="107" height="37"></div>
         <div class="navigation">
             <div class="li <?= \Yii::$app->controller->action->id == 'index' ? 'on' : '' ?>"><a
-                        href="/">儿童健康管理SaaS云服务</a></div>
+                        href="/">基层智慧管理SaaS云服务</a></div>
             <div class="li <?= \Yii::$app->controller->action->id == 'view' ? 'on' : '' ?>"><a href="/index/view">开放 合作
                     共享</a></div>
             <div class="li <?= \Yii::$app->controller->action->id == 'about' ? 'on' : '' ?>"><a href="/index/about">关于儿宝宝</a>
