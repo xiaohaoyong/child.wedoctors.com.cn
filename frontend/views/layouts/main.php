@@ -69,7 +69,7 @@ AppAsset::register($this);
     </div>
     <div class="ftCon">
         <div class="text">微医（北京）健康科技有限公司</div>
-        <div class="text">CopyRight 2017 - 2019 wedoctors.com.cn 版权所有 <a href="https://beian.miit.gov.cn"> 京ICP备 16028326 号-1</a></div>
+        <div class="text">CopyRight 2017 - 2022 wedoctors.com.cn 版权所有 <a href="https://beian.miit.gov.cn"> 京ICP备 16028326 号-1</a></div>
     </div>
 </div>
 <?php
