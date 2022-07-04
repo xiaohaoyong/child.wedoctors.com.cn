@@ -26,6 +26,12 @@ class ChildInfo extends \common\models\ChildInfo
             $articleSend->doctorid = $this->doctorid;
             $articleSend->send('addChild', false);
         }
+        if($this->idcard && !$this->field27){
+            $this->field27 = $this->idcard;
+        }
+        if($this->field27 && !$this->idcard){
+            $this->idcard = $this->field27;
+        }
 
     }
 
