@@ -33,7 +33,7 @@ AppAsset::register($this);
         <div class="logo"><img src="/img/index_logo.png?t=234" width="107" height="37"></div>
         <div class="navigation">
             <div class="li <?= \Yii::$app->controller->action->id == 'index' ? 'on' : '' ?>"><a
-                        href="/">儿童健康管理SaaS云服务</a></div>
+                        href="/">基层智慧管理SaaS云服务</a></div>
             <div class="li <?= \Yii::$app->controller->action->id == 'view' ? 'on' : '' ?>"><a href="/index/view">开放 合作
                     共享</a></div>
             <div class="li <?= \Yii::$app->controller->action->id == 'about' ? 'on' : '' ?>"><a href="/index/about">关于儿宝宝</a>
@@ -69,7 +69,7 @@ AppAsset::register($this);
     </div>
     <div class="ftCon">
         <div class="text">微医（北京）健康科技有限公司</div>
-        <div class="text">CopyRight 2017 - 2019 wedoctors.com.cn 版权所有 <a href="https://beian.miit.gov.cn"> 京ICP备 16028326 号-1</a></div>
+        <div class="text">CopyRight 2017 - 2022 wedoctors.com.cn 版权所有 <a href="https://beian.miit.gov.cn"> 京ICP备 16028326 号-1</a></div>
     </div>
 </div>
 <?php

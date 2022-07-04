@@ -12,7 +12,7 @@ $this->title="儿宝宝";
     <div class="main">
         <div class="text">
             <div class="title">SaaS云服务 解决方案</div>
-            <div class="info">面向服务管理，医疗机构，医生团队，提供主动的 儿童健康管理解决方案及服务应用</div>
+            <div class="info">面向服务管理，医疗机构，医生团队，提供主动的 基层智慧管理云服务方案及服务应用</div>
             <div class="list">
                 <div class="li"><a href="#index1" >服务管理端</a></div>
                 <div class="li"><a href="#index2" >医疗机构端</a></div>
