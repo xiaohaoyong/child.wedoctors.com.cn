@@ -150,7 +150,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('7')->setRowHeight(50);
 
 
-        $auto=DoctorParent::find()->select('parentid')->where(['doctorid'=>$doctorid])->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
 
         $styleArray = [
             'borders' => [
