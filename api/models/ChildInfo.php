@@ -28,8 +28,7 @@ class ChildInfo extends \common\models\ChildInfo
         }
         if($this->idcard && !$this->field27){
             $this->field27 = $this->idcard;
-        }
-        if($this->field27 && !$this->idcard){
+        }elseif($this->field27 && !$this->idcard){
             $this->idcard = $this->field27;
         }
 
