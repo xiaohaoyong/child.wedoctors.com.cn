@@ -66,7 +66,7 @@ class ChildController extends \api\modules\v1\controllers\ChildController
                 $child = ChildInfo::find()
                     ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
                     ->andWhere(['user_parent.mother' => $params['mother']])
-                    ->andWhere(['user_parent.mother_id' => $params['mother_id']])
+                    //->andWhere(['user_parent.mother_id' => $params['mother_id']])
                     ->andWhere(['child_info.name' => $params['name']])
                     ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
                     ->andWhere(['child_info.gender' => $params['sex']])
@@ -85,8 +85,13 @@ class ChildController extends \api\modules\v1\controllers\ChildController
                 if ($child->userid == $this->userid) {
                     return new Code(21000, '请勿重复添加宝宝！');
                 }
-                $this->userLogin->userid = $child->userid;
-                $this->userLogin->save();
+                if($child->userid) {
+                    $this->userLogin->userid = $child->userid;
+                    $this->userLogin->save();
+                }else{
+                    $child->userid = $this->userLogin->userid;
+                    $child->save();
+                }
                 $this->doctor_parent($child->userid, $child->id);
                 return ['childid'=>$child->id,'userid'=>$child->userid];
             }
