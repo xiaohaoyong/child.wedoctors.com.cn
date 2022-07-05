@@ -144,25 +144,32 @@ class User extends \yii\db\ActiveRecord {
 
         $user = User::findOne(['phone' => $phone]);
         if (!$user) {
-            $userParent1 = UserParent::find()->where(['mother_phone' => $phone])->one();
-            $userParent2 = UserParent::find()->where(['father_phone' => $phone])->one();
-            $userParent3 = UserParent::find()->where(['field12' => $phone])->one();
-
-            if ($userParent1) {
-                $userid = $userParent1->userid;
-            } elseif ($userParent2) {
-                $userid = $userParent2->userid;
-
-            } elseif ($userParent3) {
-                $userid = $userParent3->userid;
-            }else{
-                $user = new User();
-                $user->phone = $phone;
-                $user->level = 0;
-                $user->type = 1;
-                $user->save();
-                $userid = $user->id;
-            }
+            //20220705 关闭根据手机号码关联二期数据
+//            $userParent1 = UserParent::find()->where(['mother_phone' => $phone])->one();
+//            $userParent2 = UserParent::find()->where(['father_phone' => $phone])->one();
+//            $userParent3 = UserParent::find()->where(['field12' => $phone])->one();
+//
+//            if ($userParent1) {
+//                $userid = $userParent1->userid;
+//            } elseif ($userParent2) {
+//                $userid = $userParent2->userid;
+//
+//            } elseif ($userParent3) {
+//                $userid = $userParent3->userid;
+//            }else{
+//                $user = new User();
+//                $user->phone = $phone;
+//                $user->level = 0;
+//                $user->type = 1;
+//                $user->save();
+//                $userid = $user->id;
+//            }
+            $user = new User();
+            $user->phone = $phone;
+            $user->level = 0;
+            $user->type = 1;
+            $user->save();
+            $userid = $user->id;
         } else {
             $userid = $user->id;
         }
