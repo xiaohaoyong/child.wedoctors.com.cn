@@ -80,15 +80,6 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
-        <div class="item">
-            <div class="title">联系电话</div>
-            <div class="input">
-                <input name="phone"
-                       class="appoint_input"
-                       value="<?= $user['phone'] ?>"
-                       placeholder="请输入您的手机号" >
-            </div>
-        </div>
 
         <?php
         if (!$vaccines || Yii::$app->request->get('vid')) {
@@ -230,20 +221,21 @@ jQuery(".days .rs").bind("click",function(){
 var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！'};
 jQuery("#appoint_form").submit(data,function(e){
     var labelMap = e.data;
-    	var label = '';
-
+    var label = '';
+    console.log(labelMap)	
+    var formdata = [];
   // 循环验证所有text元素是否为空
 	$(this).find(".appoint_input").each(function(){
-	    	console.log(this.name);
+	    	    	console.log(this.name);
 	    	console.log(this.value);
-
-        if(this.name=='phone'){
-            var reg =/^0?1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-            if(!reg.test(this.value)){
-                label = labelMap[this.name];
-                return false;
-            }
-        }
+	    	formdata[this.name]=this.value;
+        // if(this.name=='phone'){
+        //     var reg =/^0?1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+        //     if(!reg.test(this.value)){
+        //         label = labelMap[this.name];
+        //         return false;
+        //     }
+        // }
 		if(this.value=='' || this.value==0 || this.value=='undefined'){
 		    label = labelMap[this.name];
 			return false;
@@ -251,10 +243,143 @@ jQuery("#appoint_form").submit(data,function(e){
 	});
 	if( label ){
 	    showMessage(label,3500,true,'bounceInUp-hastrans','bounceOutDown-hastrans');
-		return false;
+	    return false;
+	}
+	if(!formdata['phone'] || !formdata['vcode']){
+        jQuery("#modle_phone").modal('show');
+        return false;
 	}
 });
+
+
+var phone_data={phone:'请填写正确手机号码！',vcode:'请填写正确验证码！'};
+jQuery("#appoint_phone").submit(phone_data,function(e){
+    var labelMap = e.data;
+    var valueMap ={};
+    	var label = '';
+    
+  // 循环验证所有text元素是否为空
+	$(this).find(".appoint_phone").each(function(){
+		if(this.value=='' || this.value==0 || this.value=='undefined'){
+		    label = labelMap[this.name];
+			return false;
+		}
+		if(this.name=='phone'){
+		    var reg =/^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
+            if(!reg.test(this.value)){
+                label = labelMap[this.name];
+			    return false;
+            }
+		}
+		valueMap[this.name]=this.value;
+		
+	});
+	if( label ){
+	    showMessage(label,3500,true,'bounceInUp-hastrans','bounceOutDown-hastrans');
+		return false;
+	}
+	var input = '<input type="hidden" class="appoint_input"  name="phone" value="'+valueMap.phone+'"> ';
+	jQuery("#appoint_form").append(input);
+	var input = '<input type="hidden" class="appoint_input"  name="vcode" value="'+valueMap.vcode+'"> ';
+	jQuery("#appoint_form").append(input);
+    jQuery("#appoint_form").submit();
+    return false;
+});
+
+
+var v = getCookieValue("secondsremained_login") ? getCookieValue("secondsremained_login") : 0;//获取cookie值  
+    if(v>0){  
+        settime($("#second"));//开始倒计时  
+    }  
+    $('#second').on('click', function () {
+        var phone=$('#phone').val();
+        console.log(phone);
+        $.get('/wappoint/code?phone='+phone+'&type=1',function(e){
+            if(e.code==10000){
+               showMessage('发送成功',3500,true,'bounceInUp-hastrans','bounceOutDown-hastrans');
+
+               addCookie("secondsremained_login",60,60);//添加cookie记录,有效时间60s  
+               setTimeout(function() { settime($('#second')) },1000) //每1000毫秒执行一次}  
+            }else{
+               showMessage('请输入正确手机号码',3500,true,'bounceInUp-hastrans','bounceOutDown-hastrans');
+            }
+        },'json');
+        
+    });
+    function settime(obj) {  
+        countdown=getCookieValue("secondsremained_login") ? getCookieValue("secondsremained_login") : 0;  
+        if (countdown ==0) {  
+            obj.removeAttr("disabled");  
+            obj.val("获取验证码");  
+            return;  
+        } else {  
+            obj.attr("disabled", true);  
+            obj.val(countdown + "秒后重发");  
+            countdown--;  
+            editCookie("secondsremained_login",countdown,countdown+1);
+        }
+        setTimeout(function() { settime($('#second')) },1000) //每1000毫秒执行一次
+    }
+    function getCookieValue(name){  
+        var strCookie=document.cookie;  
+        var arrCookie=strCookie.split("; ");  
+        for(var i=0;i<arrCookie.length;i++){  
+            var arr=arrCookie[i].split("=");  
+              if(arr[0]==name){   
+                 return unescape(arr[1]);  
+               break;  
+            }  
+        }
+    } 
+    function addCookie(name,value,expiresHours){      
+        var cookieString=name+"="+escape(value);      
+        //判断是否设置过期时间,0代表关闭浏览器时失效  
+        if(expiresHours>0){  
+            var date=new Date();  
+            date.setTime(date.getTime()+expiresHours*1000);  
+            cookieString=cookieString+";expires=" + date.toUTCString();  
+        }    document.cookie=cookieString;  
+    }
+    function editCookie(name,value,expiresHours){      
+        var cookieString=name+"="+escape(value);   
+        if(expiresHours>0){  
+        var date=new Date();  
+        date.setTime(date.getTime()+expiresHours*1000); //单位毫秒  
+            cookieString=cookieString+";expires=" + date.toGMTString();  
+        }    document.cookie=cookieString;  
+    }
+
 JS;
 $this->registerJs($updateJs);
 
+?>
+<?php
+\yii\bootstrap\Modal::begin([
+    'id' => 'modle_phone',
+    'header'=>'验证/修改手机号码'
+]);
+?>
+<div class="appoint_p">
+    <form id="appoint_phone">
+        <div class="item">
+            <div class="title">联系电话</div>
+            <div class="input">
+                <input name="phone" class="inputa appoint_phone" id="phone" placeholder="请填写手机号" value="<?=$user['phone']?>">
+                <div class="vcode-model">
+                    <div class="vcode">
+                        <input name="vcode" class="inputa appoint_phone" placeholder="请填写验证码" value="">
+                    </div>
+                    <div class="botton">
+                        <?= \yii\bootstrap\Html::buttonInput(Yii::t('app', '获取验证码'), ['class' => 'btn btn-warning', 'name' => 'signup-button', 'id' => 'second']) ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button">
+            <button type="submit">确定</button>
+        </div>
+    </form>
+</div>
+<?php
+\yii\bootstrap\Modal::end();
 ?>

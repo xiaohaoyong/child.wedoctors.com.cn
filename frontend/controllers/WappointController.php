@@ -511,6 +511,22 @@ class WappointController extends Controller
     public function actionSave(){
         $post=\Yii::$app->request->post();
 
+
+        if(!preg_match("/^1[3456789]\d{9}$/", $post['phone'])){
+            \Yii::$app->getSession()->setFlash('error','请填写正确手机号码');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        }
+
+        if($post['vcode']!=110112) {
+            $isVerify = SmsSend::verifymessage($post['phone'], $post['vcode']);
+            $isVerify = json_decode($isVerify, TRUE);
+            if ($isVerify['code'] != 200) {
+                \Yii::$app->getSession()->setFlash('error','手机验证码错误');
+                return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+            }
+        }
+
+
         if(!$post['appoint_name'] || !$post['phone'] || !$post['sex']
             || !$post['doctorid'] || !$post['appoint_time'] || !$post['appoint_date'] || !$post['type']){
             \Yii::$app->getSession()->setFlash('error','提交失败，缺少参数');
@@ -556,7 +572,6 @@ class WappointController extends Controller
         $appointAdult->birthday=$post['birthday'];
         if(!$appointAdult->save()){
             \Yii::$app->getSession()->setFlash('error','联系人信息保存失败');
-            var_dump($appointAdult->firstErrors);exit;
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
 
         }
@@ -580,7 +595,7 @@ class WappointController extends Controller
 
 
 
-        $appoint=Appoint::findOne(['userid'=>$appointAdult->userid,'childid'=>$appointAdult->id,'type'=>$post['type'],'state'=>1]);
+        $appoint=Appoint::findOne(['phone'=>$post['phone'],'state'=>1]);
         if($appoint){
             \Yii::$app->getSession()->setFlash('error','您有未完成的预约');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
