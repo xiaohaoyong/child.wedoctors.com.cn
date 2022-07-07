@@ -595,7 +595,7 @@ class WappointController extends Controller
 
 
 
-        $appoint=Appoint::findOne(['phone'=>$post['phone'],'state'=>1]);
+        $appoint=Appoint::findOne(['phone'=>$post['phone'],'state'=>1,'vaccine'=>$post['vaccine']]);
         if($appoint){
             \Yii::$app->getSession()->setFlash('error','您有未完成的预约');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
