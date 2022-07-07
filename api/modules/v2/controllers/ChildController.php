@@ -10,6 +10,7 @@ namespace api\modules\v2\controllers;
 
 
 use common\components\Code;
+use common\helpers\IdcardValidator;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Interview;
@@ -62,27 +63,16 @@ class ChildController extends \api\modules\v1\controllers\ChildController
         if($childid){
             $child=ChildInfo::findOne($childid);
         }else{
-            if($params['mother_id']) {
-                $child = ChildInfo::find()
-                    ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                    ->andWhere(['user_parent.mother' => $params['mother']])
-                    //->andWhere(['user_parent.mother_id' => $params['mother_id']])
-                    ->andWhere(['child_info.name' => $params['name']])
-                    ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
-                    ->andWhere(['child_info.gender' => $params['sex']])
-                    ->one();
-            }else{
-                $child = ChildInfo::find()
-                    ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                    ->andWhere(['user_parent.mother' => $params['mother']])
-                    ->andWhere(['user_parent.father' => $params['father']])
-                    ->andWhere(['child_info.name' => $params['name']])
-                    ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
-                    ->andWhere(['child_info.gender' => $params['sex']])
-                    ->one();
-            }
+            $child = ChildInfo::find()
+                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                ->andWhere(['user_parent.mother' => $params['mother']])
+                //->andWhere(['user_parent.mother_id' => $params['mother_id']])
+                ->andWhere(['child_info.name' => $params['name']])
+                ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
+                ->andWhere(['child_info.gender' => $params['sex']])
+                ->one();
             if($child) {
-                if ($child->userid == $this->userid) {
+                if ($child->userid == $this->userLogin->userid) {
                     return new Code(21000, '请勿重复添加宝宝！');
                 }
                 if($child->userid) {
@@ -93,9 +83,56 @@ class ChildController extends \api\modules\v1\controllers\ChildController
                     $child->save();
                 }
                 $this->doctor_parent($child->userid, $child->id);
-                return ['childid'=>$child->id,'userid'=>$child->userid];
+                //return ['childid'=>$child->id,'userid'=>$child->userid];
             }
         }
+        if(isset($params['childidtype']) && $params['idcard']){
+            $IdV=new IdcardValidator();
+            switch ($params['childidtype'])
+            {
+                case 1:
+                    $return=$IdV->passportVerify($params['idcard']);
+                    break;
+                case 2:
+                    $return=$IdV->gapassport_verify($params['idcard']);
+                    break;
+                case 3:
+                    $return=$IdV->junguanVerify($params['idcard']);
+                    break;
+                default:
+                    $return=$IdV->idCardVerify($params['idcard']);
+                    break;
+            }
+            if(!$return)
+            {
+                return new Code(20010,'儿童证件号验证失败');
+            }
+        }
+
+        if(isset($params['childidtype']) && $params['mother_id']){
+            $IdV=new IdcardValidator();
+            switch ($params['motheridtype'])
+            {
+                case 1:
+                    $return=$IdV->passportVerify($params['mother_id']);
+                    break;
+                case 2:
+                    $return=$IdV->gapassport_verify($params['mother_id']);
+                    break;
+                case 3:
+                    $return=$IdV->junguanVerify($params['mother_id']);
+                    break;
+                default:
+                    $return=$IdV->idCardVerify($params['mother_id']);
+                    break;
+            }
+            if(!$return)
+            {
+                return new Code(20010,'妈妈证件号验证失败');
+            }
+        }
+
+
 
         if(!$child){
             $child=new ChildInfo();
@@ -111,8 +148,10 @@ class ChildController extends \api\modules\v1\controllers\ChildController
         $child->name        =$params['name'];
         $child->birthday    =strtotime($params['birthday']);
         $child->gender      =$params['sex'];
-        $child->idcard    =$params['idcard'];
-        $child->field27    =$params['idcard'];
+        if($params['idcard']) {
+            $child->idcard = $params['idcard'];
+            $child->field27 = $params['idcard'];
+        }
         $child->field6    =$params['field6'];
 
         $doctorParent = DoctorParent::findOne(['parentid'=>$this->userid]);
