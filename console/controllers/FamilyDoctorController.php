@@ -188,6 +188,8 @@ class FamilyDoctorController extends Controller
                         echo $v->name;
                         echo $idcard;
                         echo "\n";
+                        $worksheet->getCellByColumnAndRow(1, $i)->setValue($userParent->fieldu46);
+
                         $worksheet->getStyle('A' . $i . ':V' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->name);
