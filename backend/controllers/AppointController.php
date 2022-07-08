@@ -64,7 +64,7 @@ class AppointController extends BaseController
                 $tmpid='oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA';
             }
 
-            $rs = WechatSendTmp::send($data, $login->openid, $tmpid, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
+            $rs = WechatSendTmp::send($data, $login->openid, $tmpid);
 
         }
 
