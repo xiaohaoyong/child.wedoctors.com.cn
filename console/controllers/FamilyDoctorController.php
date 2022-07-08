@@ -182,8 +182,8 @@ class FamilyDoctorController extends Controller
                         $idcard = $v->field27 ? $v->field27 : $v->idcard;
                         $idcard=str_replace('*','',$idcard);
 
-                        if(!$idcard){
-                            $idcard='';
+                        if(!$idcard && $userParent->mother_id){
+                            $idcard=$userParent->mother_id.'(母亲)';
                         }
                         echo $v->name;
                         echo $idcard;
