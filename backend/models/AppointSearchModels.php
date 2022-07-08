@@ -97,7 +97,7 @@ class AppointSearchModels extends Appoint
             }
         }
         if($this->phone){
-            $query->andWhere(['in','phone',$this->phone]);
+            $query->andWhere(['in','phone',explode(',',$this->phone)]);
         }
 
 
