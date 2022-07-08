@@ -53,7 +53,6 @@ class AppointController extends BaseController
                     'remark' => ARRAY('value' => "该电话号码已多次替他人预约，社区医院要求四价九价疫苗由接种本人预约，目前已经取消该预约号，且预约号已经回到号源池，请接种本人用自己电话号码进行预约。感谢配合！"),
                 ];
                 $tmpid='t-fxuMyA77Xx71OA4_3y528hOSWXk_2rDjvN1zgefbk';
-                var_dump($data);exit;
             }else{
                 $data = [
                     'first' => ['value' => '服务已完成'],
