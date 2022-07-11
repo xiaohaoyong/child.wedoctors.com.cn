@@ -76,6 +76,8 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->mergeCells('G3:G5');
         $spreadsheet->getActiveSheet()->mergeCells('H3:H5');
         $spreadsheet->getActiveSheet()->mergeCells('I3:I5');
+        $spreadsheet->getActiveSheet()->mergeCells('J3:J5');
+
         $spreadsheet->getActiveSheet()->getStyle('A3:W5')
             ->getAlignment()->setWrapText(true);
 
@@ -96,7 +98,7 @@ class FamilyDoctorController extends Controller
         $worksheet->getCellByColumnAndRow(23,5)->setValue('计划生育特殊家庭');
         $spreadsheet->getActiveSheet()->mergeCells('K3:V3');
         $spreadsheet->getActiveSheet()->mergeCells('L4:W4');
-        $spreadsheet->getActiveSheet()->mergeCells('J4:J5');
+        $spreadsheet->getActiveSheet()->mergeCells('K4:K5');
 
         $styleArray = [
             'borders' => [
