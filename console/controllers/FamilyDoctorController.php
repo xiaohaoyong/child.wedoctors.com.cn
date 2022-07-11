@@ -108,11 +108,9 @@ class FamilyDoctorController extends Controller
                 ],
             ],
         ];
-        $worksheet->getStyle('A1:V2')->applyFromArray($styleArray);
-
+        $worksheet->getStyle('A1:W2')->applyFromArray($styleArray);
         $worksheet->getStyle('K3:W3')->applyFromArray($styleArray);
         $worksheet->getStyle('L4:W4')->applyFromArray($styleArray);
-        $worksheet->getStyle('K4:K5')->applyFromArray($styleArray);
 
 
 
