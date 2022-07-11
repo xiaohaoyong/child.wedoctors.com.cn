@@ -52,6 +52,10 @@ class FamilyDoctorController extends Controller
         ];
         $worksheet->getStyle('A1')->applyFromArray($styleArray);
         $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
 
@@ -187,13 +191,13 @@ class FamilyDoctorController extends Controller
 
                         $worksheet->getStyle('A' . $i . ':W' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
-                        $worksheet->getCellByColumnAndRow(2, $i)->setValue("\t" .$hospital->name);
-                        $worksheet->getCellByColumnAndRow(3, $i)->setValue("\t" .$v->name);
-                        $worksheet->getCellByColumnAndRow(4, $i)->setValue("\t" .$userParent->fieldu46);
+                        $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
+                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->name);
+                        $worksheet->getCellByColumnAndRow(4, $i)->setValue($userParent->fieldu46);
                         $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $idcard);
                         $au = Autograph::findOne(['userid' => $v->userid]);
-                        $worksheet->getCellByColumnAndRow(6, $i)->setValue("\t" .date('Y-m-d', $au->createtime));
-                        $worksheet->getCellByColumnAndRow(7, $i)->setValue("\t" .date('Y-m-d',strtotime($au->starttime)));
+                        $worksheet->getCellByColumnAndRow(6, $i)->setValue(date('Y-m-d', $au->createtime));
+                        $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
 
                         $userParent = UserParent::findOne(['userid' => $v->userid]);
                         if ($userParent && $userParent->mother_phone) {
@@ -201,7 +205,7 @@ class FamilyDoctorController extends Controller
                         } else {
                             $phone = "\t" . UserLogin::getPhone($v->userid);
                         }
-                        $worksheet->getCellByColumnAndRow(8, $i)->setValue("\t" .$phone);
+                        $worksheet->getCellByColumnAndRow(8, $i)->setValue($phone);
                         $worksheet->getCellByColumnAndRow(19, $i)->setValue('✅');
 
                         $i++;
