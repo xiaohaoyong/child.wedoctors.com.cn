@@ -55,6 +55,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(20);
 
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
@@ -168,7 +169,7 @@ class FamilyDoctorController extends Controller
             foreach($auto as $ak=>$av) {
                 $child = ChildInfo::find()
                     ->andFilterWhere(['userid'=>$av])
-                    ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+                    //->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                     ->groupBy('name,birthday')
                     ->all();
                 if($child) {
