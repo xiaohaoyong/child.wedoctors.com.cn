@@ -190,7 +190,7 @@ class FamilyDoctorController extends Controller
                         $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $idcard);
                         $au = Autograph::findOne(['userid' => $v->userid]);
                         $worksheet->getCellByColumnAndRow(6, $i)->setValue(date('Y-m-d', $au->createtime));
-                        $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', $au->starttime));
+                        $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
 
                         $userParent = UserParent::findOne(['userid' => $v->userid]);
                         if ($userParent && $userParent->mother_phone) {
