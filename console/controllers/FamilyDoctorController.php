@@ -137,8 +137,11 @@ class FamilyDoctorController extends Controller
         $worksheet->getStyle('D3:D5')->applyFromArray($styleArray);
         $worksheet->getStyle('E3:E5')->applyFromArray($styleArray);
         $worksheet->getStyle('F3:F5')->applyFromArray($styleArray);
-        $worksheet->getStyle('G3:I5')->applyFromArray($styleArray);
-        $worksheet->getStyle('J3:V5')->applyFromArray($styleArray);
+        $worksheet->getStyle('G3:G5')->applyFromArray($styleArray);
+        $worksheet->getStyle('H3:H5')->applyFromArray($styleArray);
+        $worksheet->getStyle('I3:I5')->applyFromArray($styleArray);
+        $worksheet->getStyle('J3:J5')->applyFromArray($styleArray);
+        $worksheet->getStyle('K3:W5')->applyFromArray($styleArray);
 
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
