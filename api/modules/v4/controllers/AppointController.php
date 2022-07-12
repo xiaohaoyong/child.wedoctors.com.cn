@@ -85,10 +85,10 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         }elseif($type!=10){
             $childs = ChildInfo::find()->select('id,name,birthday,userid,field27')->where(['userid'=>$this->userid])->all();
             foreach($childs as $k=>$v){
-                $rs=$v->toArray();
-                $idcard=str_replace('*','',$rs['field27']);
-                $rs['field27'] = strlen($idcard) < 18 ?0:1;
-                $rss[]=$rs;
+                $rs1=$v->toArray();
+                $idcard=str_replace('*','',$rs1['field27']);
+                $rs1['field27'] = strlen($idcard) < 18 ?0:1;
+                $rss[]=$rs1;
             }
             $childs = $rss;
         }
@@ -326,6 +326,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
         }
 
         $weeks=$wquery->all();
+
         if ($weeks) {
             $appoints = Appoint::find()
                 ->select('count(*)')
