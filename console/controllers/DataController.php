@@ -82,6 +82,9 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $code = \Yii::$app->cache->get(13601261982);
+        echo $code;
+        exit;
         $array=[];
         $file = fopen('fengtai1.csv', 'r');
         while (($line = fgets($file)) !== false) {
