@@ -517,7 +517,7 @@ class WappointController extends Controller
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
         }
 
-        if($post['vcode']!=110112) {
+        if($post['vcode']!=110112 || $post['phone']!=13601261982) {
             $isVerify = SmsSend::verifymessage($post['phone'], $post['vcode']);
             $isVerify = json_decode($isVerify, TRUE);
             if ($isVerify['code'] != 200) {
