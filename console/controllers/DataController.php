@@ -16,6 +16,7 @@ use callmez\wechat\sdk\MpWechat;
 use callmez\wechat\sdk\Wechat;
 use common\components\HttpRequest;
 use common\components\wx\WxBizDataCrypt;
+use common\helpers\IdcardValidator;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Access;
@@ -85,10 +86,103 @@ class DataController extends \yii\console\Controller
         $code = \Yii::$app->cache->get(13601261982);
         echo $code;
         exit;
+
+//        $con = 'D:\site\child.wedoctors.com.cn\biao\\';
+//        $filename = scandir($con);
+//        $doctorids=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
+//        foreach($filename as $k=>$v){
+//            if($v=="." || $v==".."){continue;}
+//            $doctorid=str_replace('.csv','',$v);
+//            $doctor=UserDoctor::findOne(['userid'=>$doctorid]);
+//            var_dump($doctorid);
+//            $file = fopen($con.$v, 'r');
+//            while (($line = fgets($file)) !== false) {
+//                $rs=explode(',',trim($line));
+//                if($rs[21]==1){
+//                    $idcard=str_replace('*','',$rs[7]);
+//                    if(!$idcard || strlen($idcard)<8){
+//                        echo $rs[5]."===";
+//                        $child=ChildInfo::find()
+//                            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+//                            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+//                            ->andWhere(['child_info.name'=>$rs[5]])
+//                            ->one();
+//                        echo $child->userid."===";
+//
+//                        $userParent=UserParent::findOne([$child->userid]);
+//                        if($userParent->mother_id){
+//                            $rs[7]=$userParent->mother_id.'(母亲)';
+//                        }
+//                    }else{
+//                        echo "----";
+//                        echo "\n";
+//                    }
+//                }
+//                $rs[7]="\t".$rs[7];
+//                $rs[]="\n";
+//                file_put_contents($con.'done\\'.$doctor->hospital->name.".csv", implode(',',$rs), FILE_APPEND);
+//                echo "\n";
+//            }
+//        }
+//        exit;
+
+        $file = fopen('221895.csv', 'r');
+        $i=0;
+        while (($line = fgets($file)) !== false) {
+            $rs=explode(',',trim($line));
+            $child=ChildInfo::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                ->andFilterWhere(['`doctor_parent`.`doctorid`' => 221895])
+                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                ->andWhere(['user_parent.mother'=>$rs[7]])
+                ->andWhere(['child_info.name'=>$rs[1]])
+                ->andWhere(['child_info.birthday'=>strtotime($rs[5])])
+                ->one();
+
+            if($rs[3] && $child){
+                echo $rs[3];echo "\n";
+                $child->field27=$rs[3];
+                $child->save();
+                $userParent=UserParent::findOne(['userid'=>$child->userid]);
+                if($userParent){
+                    $userParent->fieldu46=$rs[9];
+                    $userParent->fieldp47=$rs[9];
+                    $userParent->save();
+                }
+                echo "\n";
+            }
+        }
+        echo $i;
+        exit;
+        $IdV=new IdcardValidator();
+        $file = fopen('1.csv', 'r');
+        while (($line = fgets($file)) !== false) {
+            $line=iconv("GBK", "UTF-8//IGNORE", $line);
+            $rs=explode(',',trim($line));
+            $rs[1]=preg_replace('/^0*/', '', $rs[1]);
+            if($rs[6]){
+                $rs1[$rs[1]][$rs[5]]=trim($rs[6]);
+            }
+        }
+        $file = fopen('2.csv', 'r');
+        while (($line = fgets($file)) !== false) {
+            $line=iconv("GBK", "UTF-8//IGNORE", $line);
+            $rs=explode(',',trim($line));
+            $rs[6]=str_replace('*','',$rs[6]);
+
+            if($rs1[$rs[1]][$rs[5]] && !$IdV->idCardVerify($rs[6])){
+               $rs[6]=$rs1[$rs[1]][$rs[5]]."\t";
+            }
+            echo implode(',',$rs);
+            echo "\n";
+        }
+        exit;
+
         $array=[];
-        $file = fopen('fengtai1.csv', 'r');
+        $file = fopen('2.csv', 'r');
         while (($line = fgets($file)) !== false) {
             $row = explode(',', trim($line));
+            $idcard=str_replace('*','',$child->field27);
             if($array[$row[2]]){
                 if($array[$row[2]][$row[6]] && $array[$row[2]][$row[6]]==$row[3]){
                     continue;

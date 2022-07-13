@@ -51,9 +51,6 @@ class IdcardValidator extends Validator
     {
         if (strlen($id_card) == 18) {
             return $this->idcard_checksum18($id_card);
-        } elseif ((strlen($id_card) == 15)) {
-            $id_card = $this->idcard_15to18($id_card);
-            return $this->idcard_checksum18($id_card);
         } else {
             return false;
         }

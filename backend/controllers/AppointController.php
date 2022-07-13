@@ -42,16 +42,29 @@ class AppointController extends BaseController
         $model = $this->findModel($id);
         $model->state = $state;
         if ($model->save()) {
-
             $login = UserLogin::findOne(['id' => $model->loginid]);
-            $data = [
-                'first' => ['value' => '服务已完成'],
-                'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
-                'keyword2' => ARRAY('value' => date('Y年m月d日 H:i:00')),
-                'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
 
-            ];
-            $rs = WechatSendTmp::send($data, $login->openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
+            if($state==3){
+                $data = [
+                    'first' => ['value' => '您的预约已经取消。'],
+                    'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                    'keyword2' => ARRAY('value' => $model->name()),
+                    'keyword3' => ARRAY('value' => '预约异常'),
+                    'remark' => ARRAY('value' => "该电话号码已多次替他人预约，社区医院要求四价九价疫苗由接种本人预约，目前已经取消该预约号，且预约号已经回到号源池，请接种本人用自己电话号码进行预约。感谢配合！"),
+                ];
+                $tmpid='t-fxuMyA77Xx71OA4_3y528hOSWXk_2rDjvN1zgefbk';
+            }else{
+                $data = [
+                    'first' => ['value' => '服务已完成'],
+                    'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                    'keyword2' => ARRAY('value' => date('Y年m月d日 H:i:00')),
+                    'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
+
+                ];
+                $tmpid='oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA';
+            }
+
+            $rs = WechatSendTmp::send($data, $login->openid, $tmpid);
 
         }
 

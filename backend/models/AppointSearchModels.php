@@ -26,8 +26,8 @@ class AppointSearchModels extends Appoint
     public function rules()
     {
         return [
-            [['vaccine','county','state','cancel_type','id', 'userid','loginid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
-            [['child_name', 'appoint_dates','appoint_dates_end','ids'], 'string']
+            [['vaccine','county','state','cancel_type','id', 'userid','loginid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid'], 'integer'],
+            [['child_name', 'appoint_dates','appoint_dates_end','ids','phone'], 'string']
         ];
     }
     /**
@@ -96,6 +96,9 @@ class AppointSearchModels extends Appoint
                 $query->andFilterWhere(['in', 'childid', [0]]);
             }
         }
+        if($this->phone){
+            $query->andWhere(['in','phone',explode(',',$this->phone)]);
+        }
 
 
         if($this->ids){
@@ -114,7 +117,6 @@ class AppointSearchModels extends Appoint
             'appoint_time' => $this->appoint_time,
             'appoint_date' => $this->appoint_date,
             'type' => $this->type,
-            'phone' => $this->phone,
             'cancel_type'=>$this->cancel_type,
             'state'=>$this->state,
             'vaccine'=>$this->vaccine,
