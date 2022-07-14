@@ -83,9 +83,9 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
-        $code = \Yii::$app->cache->get(13601261982);
-        echo $code;
-        exit;
+//        $code = \Yii::$app->cache->get(13601261982);
+//        echo $code;
+//        exit;
 
 //        $con = 'D:\site\child.wedoctors.com.cn\biao\\';
 //        $filename = scandir($con);
@@ -126,29 +126,29 @@ class DataController extends \yii\console\Controller
 //        }
 //        exit;
 
-        $file = fopen('221895.csv', 'r');
+        $file = fopen('321.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
             $rs=explode(',',trim($line));
             $child=ChildInfo::find()
                 ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                ->andFilterWhere(['`doctor_parent`.`doctorid`' => 221895])
-                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                ->andWhere(['user_parent.mother'=>$rs[7]])
-                ->andWhere(['child_info.name'=>$rs[1]])
-                ->andWhere(['child_info.birthday'=>strtotime($rs[5])])
+                ->andFilterWhere(['`doctor_parent`.`doctorid`' => 184741])
+//                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+//                ->andWhere(['user_parent.mother'=>$rs[7]])
+                ->andWhere(['child_info.name'=>$rs[2]])
+                ->andWhere(['child_info.birthday'=>strtotime($rs[4])])
                 ->one();
 
-            if($rs[3] && $child){
-                echo $rs[3];echo "\n";
-                $child->field27=$rs[3];
+            if($rs[6] && $child){
+                echo $rs[6];echo "\n";
+                $child->field27=$rs[6];
                 $child->save();
-                $userParent=UserParent::findOne(['userid'=>$child->userid]);
-                if($userParent){
-                    $userParent->fieldu46=$rs[9];
-                    $userParent->fieldp47=$rs[9];
-                    $userParent->save();
-                }
+//                $userParent=UserParent::findOne(['userid'=>$child->userid]);
+//                if($userParent){
+//                    $userParent->fieldu46=$rs[9];
+//                    $userParent->fieldp47=$rs[9];
+//                    $userParent->save();
+//                }
                 echo "\n";
             }
         }
