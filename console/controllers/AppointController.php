@@ -227,8 +227,12 @@ class AppointController extends Controller
     }
 
     public function actionState(){
+        $log=new \common\components\Log('appoint-state');
         $appoints = Appoint::find()->where(['state' => 6])->orderBy('id asc')->all();
         foreach ($appoints as $k=>$v){
+            $log->addLog(date('Y-m-d H:i:s'));
+            $log->addLog($v->id);
+
             $week = date('w', $v->appoint_date);
             $appoint = HospitalAppoint::findOne(['doctorid' => $v->doctorid, 'type' => $v->type]);
 
@@ -264,6 +268,8 @@ class AppointController extends Controller
             }
             $v->state=1;
             $v->save();
+            $log->addLog($v->state);
+            $log->saveLog();
         }
     }
 }
