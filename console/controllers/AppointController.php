@@ -230,7 +230,6 @@ class AppointController extends Controller
         $log=new \common\components\Log('appoint-state');
         $appoints = Appoint::find()->where(['state' => 6])->orderBy('id asc')->all();
         foreach ($appoints as $k=>$v){
-            $log->addLog(date('Y-m-d H:i:s'));
             $log->addLog($v->id);
 
             $week = date('w', $v->appoint_date);
@@ -251,6 +250,12 @@ class AppointController extends Controller
                     $v->state=3;
                     $v->cancel_type=5;
                     $v->save();
+                    $log->addLog($v->state);
+                    $log->addLog('疫苗');
+                    $log->addLog("设置数：".$hospitalAppointVaccineNum->num);
+                    $log->addLog("已约数：".$appoint_count);
+
+                    $log->saveLog();
                     continue;
                 }
             }else {
@@ -263,6 +268,10 @@ class AppointController extends Controller
                     $v->state=3;
                     $v->cancel_type=5;
                     $v->save();
+                    $log->addLog($v->state);
+                    $log->addLog("设置数：".$weeks->num);
+                    $log->addLog("已约数：".$appoint_count);
+                    $log->saveLog();
                     continue;
                 }
             }
