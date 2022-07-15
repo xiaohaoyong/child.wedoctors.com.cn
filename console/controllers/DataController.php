@@ -83,6 +83,20 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $rs[]='o5ODa0451fMb_sJ1D1T4YhYXDOcg';
+        //$rs[]='o5ODa095XBZB6gzpNVo9R8gKYZZ4';
+        foreach($rs as $v) {
+            $data = [
+                'first' => ['value' => '尊敬的用户，由于号源调整，您之前预约的方庄社区进口二价疫苗接种，已自动修改至下一个接种日（2022年7月25日），给您带来的不便深感歉意,感谢您一直以来对方庄社区和儿宝宝的支持'],
+                'keyword1' => ARRAY('value' => '方庄社区卫生服务中心'),
+                'keyword2' => ARRAY('value' => 010 - 67631290),
+                'keyword3' => ARRAY('value' => '如有问题可联系儿宝宝小助手（erbbzs）或拨打社区医院电话'),
+                'remark' => ARRAY('value' => ""),
+            ];
+            $rs = WechatSendTmp::send($data, $v, '3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=1',]);
+
+        }
+        exit;
 //        $code = \Yii::$app->cache->get(13601261982);
 //        echo $code;
 //        exit;

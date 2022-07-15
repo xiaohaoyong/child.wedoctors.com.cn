@@ -7,17 +7,19 @@ $this->title='我的预约';
             <image src="/img/appoint_view_loge.png" style="width: 66px;height: 58px;"></image>
         </div>
         <div class="title">
-            <div class="title1">预约成功</div>
-            <div class="title2">凭此二维码到社区接种</div>
+            <div class="title1"><?=\common\models\Appoint::$stateText[$row['state']]?></div>
+            <?php if($row['state']==1){?>><div class="title2" 凭此二维码到社区接种</div><?php }?>
         </div>
     </div>
 
     <div class="container">
+        <?php if($row['state']==1){?>
         <div class="content1">
             <div class="qrcode">
                 <image src="https://api.child.wedoctors.com.cn/image/qr-code?id=<?=$row['id']?>" style="width: 225px;height: 225px;"></image>
             </div>
         </div>
+        <?php }?>
         <div class="zhong">
             <div class="left"></div>
             <div class="middle"></div>
