@@ -227,6 +227,7 @@ class Appoint extends \yii\db\ActiveRecord
         2 => '时间原因',
         3 => '身体不适',
         4 => '其他',
+        5 => '预约失败'
     ];
     public  static $push_stateText=[
         1=>'发送中',

@@ -17,6 +17,10 @@ use common\models\AppointOrder1;
 use common\models\ArticlePushVaccine;
 use common\models\ChildInfo;
 use common\models\Hospital;
+use common\models\HospitalAppoint;
+use common\models\HospitalAppointVaccine;
+use common\models\HospitalAppointVaccineNum;
+use common\models\HospitalAppointWeek;
 use common\models\HospitalForm;
 use common\models\Notice;
 use common\models\UserDoctor;
@@ -219,6 +223,47 @@ class AppointController extends Controller
                 $hospitalFrom->save();
                 echo "\n";
             }
+        }
+    }
+
+    public function actionState(){
+        $appoints = Appoint::find()->where(['state' => 6])->orderBy('id asc')->all();
+        foreach ($appoints as $k=>$v){
+            $week = date('w', $v->appoint_date);
+            $appoint = HospitalAppoint::findOne(['doctorid' => $v->doctorid, 'type' => $v->type]);
+
+            $query = Appoint::find()
+                ->andWhere(['type' => $v->type])
+                ->andWhere(['doctorid' => $v->doctorid])
+                ->andWhere(['appoint_date' =>$v->appoint_date])
+                ->andWhere(['appoint_time' => $v->appoint_time])
+                ->andWhere(['mode' => 0])
+                ->andWhere(['<','state',3]);
+            if($v->vaccine){
+                $query->andWhere(['vaccine'=>$v->vaccine]);
+                $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $v->vaccine]);
+                $appoint_count=$query->count();
+                if ($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num - $appoint_count <= 0) {
+                    $v->state=3;
+                    $v->cancel_type=5;
+                    $v->save();
+                    continue;
+                }
+            }else {
+                $appoint_count = $query->count();
+                $weeks = HospitalAppointWeek::find()
+                    ->andWhere(['week' => $week])
+                    ->andWhere(['haid' => $appoint->id])
+                    ->andWhere(['time_type' => $v->appoint_time])->one();
+                if (($weeks->num - $appoint_count) <= 0) {
+                    $v->state=3;
+                    $v->cancel_type=5;
+                    $v->save();
+                    continue;
+                }
+            }
+            $v->state=1;
+            $v->save();
         }
     }
 }

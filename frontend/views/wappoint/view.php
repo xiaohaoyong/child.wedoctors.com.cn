@@ -8,7 +8,7 @@ $this->title='我的预约';
         </div>
         <div class="title">
             <div class="title1"><?=\common\models\Appoint::$stateText[$row['state']]?></div>
-            <?php if($row['state']==1){?>><div class="title2" 凭此二维码到社区接种</div><?php }?>
+            <?php if($row['state']==1){?><div class="title2"> 凭此二维码到社区接种</div><?php }?>
         </div>
     </div>
 
