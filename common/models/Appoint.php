@@ -193,8 +193,8 @@ class Appoint extends \yii\db\ActiveRecord
         2 => '已完成',
         3 => '已取消',
         4 => '已过期',
-        5 => '待确认',
-        6 => '待确认',
+        5 => '待确认（加号）',
+        6 => '待确认（排队）',
 
     ];
     public static $typeText = [
