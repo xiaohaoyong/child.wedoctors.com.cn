@@ -607,7 +607,7 @@ class WappointController extends Controller
         } else{
 
             $model = new Appoint();
-            $post['state'] = 5;
+            $post['state'] = 6;
             $post['userid'] = $this->login->userid;
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;

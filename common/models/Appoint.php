@@ -194,6 +194,8 @@ class Appoint extends \yii\db\ActiveRecord
         3 => '已取消',
         4 => '已过期',
         5 => '待确认',
+        6 => '待确认',
+
     ];
     public static $typeText = [
         1 => '儿童体检',
