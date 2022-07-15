@@ -22,14 +22,14 @@ $this->title="我的成人预约";
                         <a href="/wappoint/state?id=<?=$v['id']?>&type=1" class="cancel">取消预约</a>
 
                     <?php } if($v['state']==5){?>
-                    <div class="confirm">
-                        <form bindsubmit="confirm" report-submit="true" id="<?=$v['id']?>tr">
-                            <input type="text" name="id" value="<?=$v['id']?>" hidden="true"/>
-                            <input type="text" name="k" value="<?=$v['id']?>" hidden="true"/>
-                            <input type="text" name="type" value="2" hidden="true"/>
-                            <button formType="submit">确认预约</button>
-                        </form>
-                    </div>
+<!--                    <div class="confirm">-->
+<!--                        <form bindsubmit="confirm" report-submit="true" id="--><?//=$v['id']?><!--tr">-->
+<!--                            <input type="text" name="id" value="--><?//=$v['id']?><!--" hidden="true"/>-->
+<!--                            <input type="text" name="k" value="--><?//=$v['id']?><!--" hidden="true"/>-->
+<!--                            <input type="text" name="type" value="2" hidden="true"/>-->
+<!--                            <button formType="submit">确认预约</button>-->
+<!--                        </form>-->
+<!--                    </div>-->
                     <?php }?>
                 </div>
             </div>
