@@ -6,6 +6,7 @@ use common\models\Appoint;
 use common\models\AppointCalling;
 use common\models\AppointCallingList;
 use common\models\HospitalAppoint;
+use common\models\MpEventPush;
 use common\models\queuing\Queue;
 use EasyWeChat\Factory;
 use common\components\HttpRequest;
@@ -66,6 +67,12 @@ class SuiteController extends Controller
                 // $loga = new Log('subscribe');
                 //分享是的二维码
                 $openid = $xml['FromUserName'];
+
+                $mpEvent=new MpEventPush();
+                $mpEvent->openid = $openid;
+                $mpEvent->event = $xml['Event'];
+                $mpEvent->save();
+
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
 //                    $loga->addLog(file_get_contents('php://input'));
 //                    $loga->addLog($_GET['msg_signature'] . '|||' . $_GET['timestamp'] . '|||' . $nonce = $_GET['nonce'] . '|||' . $_GET['encrypt_type']);
