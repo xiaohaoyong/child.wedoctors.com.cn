@@ -219,7 +219,7 @@ class SuiteController extends Controller
                         $url = \Yii::$app->params['htmlUrl'] . "#/sign?usertype=parent";
                         $url_doctor = \Yii::$app->params['htmlUrl'] . "#/accountdocter?usertype=docter";
 
-                        $text = implode(',',$mpEvent->firstErrors)."您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，回复SQ+社区名称即可获取社区二维码（如：“SQ小红门”，）长按并识别二维码即可签约成功并享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如需要查询社区名称请访问：http://child.wedoctors.com.cn/doctors 查询社区后长按并识别二维码即可\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
+                        $text = "您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，回复SQ+社区名称即可获取社区二维码（如：“SQ小红门”，）长按并识别二维码即可签约成功并享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如需要查询社区名称请访问：http://child.wedoctors.com.cn/doctors 查询社区后长按并识别二维码即可\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
                         $return = self::sendText($openid, $xml['ToUserName'], $text);
                         $this->custom_send($openid);
                         return $return;
