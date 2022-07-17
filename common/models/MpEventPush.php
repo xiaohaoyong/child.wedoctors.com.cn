@@ -29,7 +29,6 @@ class MpEventPush extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['createtime'], 'required'],
             [['createtime', 'is_push'], 'integer'],
             [['openid'], 'string', 'max' => 100],
             [['event'], 'string', 'max' => 30],
