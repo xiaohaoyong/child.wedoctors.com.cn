@@ -89,7 +89,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $idcard=str_replace('*','',$rs1['field27']);
                 $idcard1=str_replace('*','',$rs1['idcard']);
 
-                $rs1['field27'] = strlen($idcard) < 18 && strlen($idcard1) < 18 ?0:1;
+                $rs1['field27'] = $idcard || $idcard1 ?1:0;
                 $rss[]=$rs1;
             }
             $childs = $rss;
