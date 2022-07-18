@@ -87,7 +87,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             foreach($childs as $k=>$v){
                 $rs1=$v->toArray();
                 $idcard=str_replace('*','',$rs1['field27']);
-                $rs1['field27'] = strlen($idcard) < 18 ?0:1;
+                $idcard1=str_replace('*','',$rs1['idcard']);
+
+                $rs1['field27'] = strlen($idcard) < 18 && strlen($idcard1) < 18 ?0:1;
                 $rss[]=$rs1;
             }
             $childs = $rss;
