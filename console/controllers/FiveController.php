@@ -28,14 +28,12 @@ class FiveController extends Controller
 {
     public function actionUpdateData()
     {
-        $access=Access::find()->where(['doctorid'=>0])->all();
+        $access=Access::find()->where(['doctorid'=>0])->andWhere(['>','createtime',1656604800])->all();
         foreach($access as $k=>$v){
             $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid]);
             if($doctorParent) {
                 $v->doctorid = $doctorParent->doctorid;
-                var_dump($v->firstErrors);
             }else{
-                var_dump($v);
             }
 
 //            if($v->type==1){
@@ -47,7 +45,8 @@ class FiveController extends Controller
 //                    $v->month = $day;
 //                }
 //            }
-//            $v->save();
+            $v->save();
+            var_dump($v->firstErrors);
 
             echo "\n";
         }
@@ -68,8 +67,8 @@ class FiveController extends Controller
 
     public function actionExcel()
     {
-        $stime=1654012800;
-        $etime=1656604800;
+        $stime=1651334400;
+        $etime=1654012800;
         $userDoctor = UserDoctor::find()->all();
         foreach ($userDoctor as $k=>$v){
             $rs=[];
@@ -87,6 +86,9 @@ class FiveController extends Controller
                     $c++;
                 }
             }
+            $rs[]=$doctorids;
+            $rs[]=$v->hospital->name;
+
             $rs[]=Area::$all[$v->county];
 
             $rs[]=$c;

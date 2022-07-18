@@ -33,7 +33,7 @@ class PushLog extends \yii\db\ActiveRecord
     {
         return [
             [['type', 'openid', 'return'], 'required'],
-            [['type', 'createtime', 'return'], 'integer'],
+            [['type', 'createtime', 'return','doctorid'], 'integer'],
             [['openid'], 'string', 'max' => 50],
         ];
     }
