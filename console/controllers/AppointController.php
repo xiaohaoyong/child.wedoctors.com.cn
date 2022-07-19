@@ -246,50 +246,43 @@ class AppointController extends Controller
             if($v->vaccine){
                 $log->addLog('疫苗:'.$v->vaccine);
 
-
-                $query->andWhere(['vaccine'=>$v->vaccine]);
-                $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $v->vaccine]);
-                $appoint_count=$query->count();
-                $log->addLog('num'.$hospitalAppointVaccineNum->num);
-                $log->addLog('num2-'.$appoint_count);
-                if ($hospitalAppointVaccineNum) {
-                    if($hospitalAppointVaccineNum->num - $appoint_count <= 0) {
-                        $v->state = 3;
-                        $v->cancel_type = 5;
-                        $v->save();
-                        $log->addLog($v->state);
-                        $log->addLog('疫苗');
-                        $log->addLog("设置数：" . $hospitalAppointVaccineNum->num);
-                        $log->addLog("已约数：" . $appoint_count);
-
-                        $log->saveLog();
-                        continue;
-                    }
-                }else{
+                $hospitalAppointVaccine=HospitalAppointVaccine::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $v->vaccine]);
+                if(!$hospitalAppointVaccine){
                     $v->state = 3;
                     $v->cancel_type = 5;
                     $v->save();
                     $log->addLog("号源已取消");
                     continue;
                 }
-            }else {
-                $log->addLog('疫苗:无');
 
-                $appoint_count = $query->count();
-                $weeks = HospitalAppointWeek::find()
-                    ->andWhere(['week' => $week])
-                    ->andWhere(['haid' => $appoint->id])
-                    ->andWhere(['time_type' => $v->appoint_time])->one();
-                if (($weeks->num - $appoint_count) <= 0) {
-                    $v->state=3;
-                    $v->cancel_type=5;
+                $query->andWhere(['vaccine'=>$v->vaccine]);
+                $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $v->vaccine]);
+                $appoint_count=$query->count();
+                $log->addLog("设置数：" . $hospitalAppointVaccineNum->num);
+                $log->addLog("已约数：" . $appoint_count);
+                if ($hospitalAppointVaccineNum && ($hospitalAppointVaccineNum->num - $appoint_count <= 0)) {
+                    $v->state = 3;
+                    $v->cancel_type = 5;
                     $v->save();
                     $log->addLog($v->state);
-                    $log->addLog("设置数：".$weeks->num);
-                    $log->addLog("已约数：".$appoint_count);
                     $log->saveLog();
                     continue;
                 }
+            }
+            $appoint_count = $query->count();
+            $weeks = HospitalAppointWeek::find()
+                ->andWhere(['week' => $week])
+                ->andWhere(['haid' => $appoint->id])
+                ->andWhere(['time_type' => $v->appoint_time])->one();
+            if (($weeks->num - $appoint_count) <= 0) {
+                $v->state=3;
+                $v->cancel_type=5;
+                $v->save();
+                $log->addLog($v->state);
+                $log->addLog("设置数：".$weeks->num);
+                $log->addLog("已约数：".$appoint_count);
+                $log->saveLog();
+                continue;
             }
             $v->state=1;
             $v->save();
