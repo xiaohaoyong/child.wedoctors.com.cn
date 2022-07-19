@@ -50,7 +50,7 @@ class AppointController extends BaseController
                     'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
                     'keyword2' => ARRAY('value' => $model->name()),
                     'keyword3' => ARRAY('value' => '号源不足'),
-                    'remark' => ARRAY('value' => "尊敬的用户您好，由于下周社区号源不足您的预约已被取消，给您造成的不便敬请谅解。"),
+                    'remark' => ARRAY('value' => "尊敬的用户您好，由于下周社区号源不足，您的预约已被取消，给您造成的不便敬请谅解。"),
                 ];
                 $tmpid='t-fxuMyA77Xx71OA4_3y528hOSWXk_2rDjvN1zgefbk';
             }else{
