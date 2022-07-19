@@ -279,8 +279,8 @@ class AppointController extends Controller
                 $v->cancel_type=5;
                 $v->save();
                 $log->addLog($v->state);
-                $log->addLog("设置数：".$weeks->num);
-                $log->addLog("已约数：".$appoint_count);
+                $log->addLog("1设置数：".$weeks->num);
+                $log->addLog("1已约数：".$appoint_count);
                 $log->saveLog();
                 continue;
             }
