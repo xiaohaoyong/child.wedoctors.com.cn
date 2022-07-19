@@ -67,8 +67,8 @@ class FiveController extends Controller
 
     public function actionExcel()
     {
-        $stime=1651334400;
-        $etime=1654012800;
+        $stime=1654012800;
+        $etime=1656604800;
         $userDoctor = UserDoctor::find()->all();
         foreach ($userDoctor as $k=>$v){
             $rs=[];
@@ -87,7 +87,6 @@ class FiveController extends Controller
                 }
             }
             $rs[]=$doctorids;
-            $rs[]=$v->hospital->name;
 
             $rs[]=Area::$all[$v->county];
 

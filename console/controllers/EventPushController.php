@@ -59,7 +59,7 @@ class EventPushController extends Controller
                         "appid" => \Yii::$app->params['wxXAppId'],
                         "pagepath" => "/pages/article/view/index?id=" . $config[$doctorid][$type],
                     ];
-                    $rs = WechatSendTmp::send($data, $v->openid, $temp, '', $miniprogram);
+                    $rs = WechatSendTmp::send($data, $v->openid, $temp, '', $miniprogram,$config[$doctorid][$type]);
                     var_dump($rs);
 
                     $pushLog = new PushLog();
