@@ -227,9 +227,10 @@ class AppointController extends Controller
     }
 
     public function actionState(){
-        $log=new \common\components\Log('appoint-state');
-        $appoints = Appoint::find()->where(['state' => 6])->orderBy('id asc')->all();
+        $appoints = Appoint::find()->where(['in','id',[1774922,1774919,1774918,1774917,1774916,1774914,1774915,1774912,1774911,1774909,1774910,1774908,1774907,1774906,1774905,1774903,1774902,1774900,1774899,1774898,]])->orderBy('id asc')->all();
         foreach ($appoints as $k=>$v){
+            $log=new \common\components\Log('appoint-state',true);
+
             $log->addLog($v->id);
 
             $week = date('w', $v->appoint_date);
@@ -243,22 +244,37 @@ class AppointController extends Controller
                 ->andWhere(['mode' => 0])
                 ->andWhere(['<','state',3]);
             if($v->vaccine){
+                $log->addLog('疫苗:'.$v->vaccine);
+
+
                 $query->andWhere(['vaccine'=>$v->vaccine]);
                 $hospitalAppointVaccineNum = HospitalAppointVaccineNum::findOne(['haid' => $appoint->id, 'week' => $week, 'vaccine' => $v->vaccine]);
                 $appoint_count=$query->count();
-                if ($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num - $appoint_count <= 0) {
-                    $v->state=3;
-                    $v->cancel_type=5;
-                    $v->save();
-                    $log->addLog($v->state);
-                    $log->addLog('疫苗');
-                    $log->addLog("设置数：".$hospitalAppointVaccineNum->num);
-                    $log->addLog("已约数：".$appoint_count);
+                $log->addLog('num'.$hospitalAppointVaccineNum->num);
+                $log->addLog('num2-'.$appoint_count);
+                if ($hospitalAppointVaccineNum) {
+                    if($hospitalAppointVaccineNum->num - $appoint_count <= 0) {
+                        $v->state = 3;
+                        $v->cancel_type = 5;
+                        $v->save();
+                        $log->addLog($v->state);
+                        $log->addLog('疫苗');
+                        $log->addLog("设置数：" . $hospitalAppointVaccineNum->num);
+                        $log->addLog("已约数：" . $appoint_count);
 
-                    $log->saveLog();
+                        $log->saveLog();
+                        continue;
+                    }
+                }else{
+                    $v->state = 3;
+                    $v->cancel_type = 5;
+                    $v->save();
+                    $log->addLog("号源已取消");
                     continue;
                 }
             }else {
+                $log->addLog('疫苗:无');
+
                 $appoint_count = $query->count();
                 $weeks = HospitalAppointWeek::find()
                     ->andWhere(['week' => $week])
