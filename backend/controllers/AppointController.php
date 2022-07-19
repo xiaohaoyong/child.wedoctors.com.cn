@@ -49,8 +49,8 @@ class AppointController extends BaseController
                     'first' => ['value' => '您的预约已经取消。'],
                     'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
                     'keyword2' => ARRAY('value' => $model->name()),
-                    'keyword3' => ARRAY('value' => '预约异常'),
-                    'remark' => ARRAY('value' => "该电话号码已多次替他人预约，社区医院要求四价九价疫苗由接种本人预约，目前已经取消该预约号，且预约号已经回到号源池，请接种本人用自己电话号码进行预约。感谢配合！"),
+                    'keyword3' => ARRAY('value' => '号源不足'),
+                    'remark' => ARRAY('value' => "尊敬的用户您好，由于下周社区号源不足您的预约已被取消，给您造成的不便敬请谅解。"),
                 ];
                 $tmpid='t-fxuMyA77Xx71OA4_3y528hOSWXk_2rDjvN1zgefbk';
             }else{
