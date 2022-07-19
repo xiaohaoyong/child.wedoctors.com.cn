@@ -227,7 +227,7 @@ class AppointController extends Controller
     }
 
     public function actionState(){
-        $appoints = Appoint::find()->where(['in','id',[1774922,1774919,1774918,1774917,1774916,1774914,1774915,1774912,1774911,1774909,1774910,1774908,1774907,1774906,1774905,1774903,1774902,1774900,1774899,1774898,]])->orderBy('id asc')->all();
+        $appoints = Appoint::find()->where(['state' => 6])->orderBy('id asc')->all();
         foreach ($appoints as $k=>$v){
             $log=new \common\components\Log('appoint-state',true);
 
