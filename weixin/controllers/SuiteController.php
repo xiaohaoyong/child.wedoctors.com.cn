@@ -68,10 +68,13 @@ class SuiteController extends Controller
                 //分享是的二维码
                 $openid = $xml['FromUserName'];
 
-                $mpEvent=new MpEventPush();
-                $mpEvent->openid = $openid;
-                $mpEvent->event = $xml['Event'];
-                $mpEvent->save();
+                if($xml['Event']) {
+                    $mpEvent = new MpEventPush();
+                    $mpEvent->openid = $openid;
+                    $mpEvent->event = $xml['Event'];
+                    $mpEvent->save();
+                }
+
                 if ($xml['Event'] == 'subscribe' || $xml['Event'] == 'SCAN') {
 //                    $loga->addLog(file_get_contents('php://input'));
 //                    $loga->addLog($_GET['msg_signature'] . '|||' . $_GET['timestamp'] . '|||' . $nonce = $_GET['nonce'] . '|||' . $_GET['encrypt_type']);
@@ -390,12 +393,7 @@ class SuiteController extends Controller
         <Content><![CDATA[%s]]></Content>
     </xml>
 XML;
-        $a=trim(sprintf($template, $openid, $tousername, time(), $content));
-        $log = new Log('suite_index_return');
-        $log->addLog($a);
-        $log->saveLog();
-
-        return $a;
+        return sprintf($template, $openid, $tousername, time(), $content);
     }
 
     /**
