@@ -355,6 +355,8 @@ class FamilyDoctorController extends Controller
                     ->all();
                 if($preg) {
                     foreach ($preg as $k => $v) {
+                        echo $v->familyid;
+                        echo "\n";
                         $autoa = DoctorParent::findOne(['parentid' => $v->familyid]);
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
                         $hospital = Hospital::findOne($userDoctor->hospitalid);
