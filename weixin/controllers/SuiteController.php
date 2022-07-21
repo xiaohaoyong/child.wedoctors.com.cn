@@ -390,11 +390,12 @@ class SuiteController extends Controller
         <Content><![CDATA[%s]]></Content>
     </xml>
 XML;
+        $a=sprintf($template, $openid, $tousername, time(), $content);
         $log = new Log('suite_index_return');
-        $log->addLog($template);
+        $log->addLog($a);
         $log->saveLog();
 
-        return sprintf($template, $openid, $tousername, time(), $content);
+        return $a;
     }
 
     /**
