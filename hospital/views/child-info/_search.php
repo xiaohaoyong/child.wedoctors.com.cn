@@ -57,7 +57,8 @@ use yii\widgets\ActiveForm;
         <?= Html::a('一键导出已签约服务记录表(0-6)',"http://static.wedoctors.com.cn/".\Yii::$app->user->identity->hospital."-0-6.xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
         <?= Html::a('一键导出全部已签约',"http://static.wedoctors.com.cn/".\Yii::$app->user->identity->hospital."-all.xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
         <br>
-        <?= Html::a('家庭医生签约服务签约居民基本信息汇总表下载',"http://static.wedoctors.com.cn/".\Yii::$app->user->identity->doctorid."-family.xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
+        <?= Html::a('家庭医生签约服务签约居民基本信息汇总表下载(儿童)',"http://static.wedoctors.com.cn/".\Yii::$app->user->identity->doctorid."-family.xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
+        <?= Html::a('家庭医生签约服务签约居民基本信息汇总表下载(孕妇)',"http://static.wedoctors.com.cn/".\Yii::$app->user->identity->doctorid."-family-pregnancy.xlsx", ['id'=>'downnew','class' => 'btn btn-primary','target'=>'_blank']) ?>
 
         <div class="help-block"></div>
     </div>
