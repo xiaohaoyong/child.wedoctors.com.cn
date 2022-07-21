@@ -367,7 +367,7 @@ class FamilyDoctorController extends Controller
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1);
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue("\t" . $v->field10);
                         $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $v->field4);
-                        $au = Autograph::findOne(['userid' => $v->userid]);
+                        $au = Autograph::findOne(['userid' => $v->familyid]);
                         $worksheet->getCellByColumnAndRow(6, $i)->setValue(date('Y-m-d', $au->createtime));
                         $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
 
