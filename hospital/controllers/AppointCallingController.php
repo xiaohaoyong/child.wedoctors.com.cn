@@ -333,6 +333,11 @@ class AppointCallingController extends BaseController
 
         return $this->render('list',['doctorid'=>$doctorid,'list'=>$list,'time'=>date("h:i:s"),'type'=>$type]);
     }
+    public function actionText(){
+        $this->layout = "@hospital/views/layouts/main-login.php";
+
+        return $this->render('text');
+    }
     public function actionTtl($text,$id){
         \Yii::$app->response->format=Response::FORMAT_JSON;
         $appointCallingList=AppointCallingList::findOne($id);
