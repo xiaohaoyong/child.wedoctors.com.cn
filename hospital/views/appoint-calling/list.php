@@ -100,8 +100,10 @@ $this->title="就诊列表";
             }
         });
     };
+    actionList(123);
+
     function actionList(text){
-        let msg = new SpeechSynthesisUtterance(text);
+        let msg = new SpeechSynthesisUtterance('测试测试测试123123地卡兰蒂斯');
         console.log(msg)
         //msg.rate = 4 播放语速
         //msg.pitch = 10 音调高低
