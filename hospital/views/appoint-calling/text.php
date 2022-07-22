@@ -1,6 +1,7 @@
 <script>
     actionList("请张三到第三诊室接种")
     function actionList(text){
+        alert(text);
         let msg = new SpeechSynthesisUtterance(text);
         console.log(msg)
         //msg.rate = 4 播放语速

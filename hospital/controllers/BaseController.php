@@ -9,7 +9,7 @@ class BaseController extends \yii\web\Controller {
     private $notCheckAccess = ['/rbac/access-error', 'site/index'];
 
     private $ignore = [
-        'appoint-calling/list','appoint-calling/ttl','site/hospitals','site/login', 'site/logout','site/captcha','site/code','site/code','synchronization/data-callback'
+        'appoint-calling/text','appoint-calling/list','appoint-calling/ttl','site/hospitals','site/login', 'site/logout','site/captcha','site/code','site/code','synchronization/data-callback'
     ];
     private $nocsrf=[
         'synchronization/data-callback'
