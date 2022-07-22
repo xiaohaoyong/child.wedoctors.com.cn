@@ -96,10 +96,6 @@ class Controller extends \yii\web\Controller
         }
 
 
-        if($this->userLogin->xopenid=='oAV095f4yOt_fjT5EMjc9FeQQcWY'){
-            \Yii::$app->response->data = ['code' => 30001, 'msg' => '账户已注销'];
-            return false;
-        }
 
 
         /*

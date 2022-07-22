@@ -34,9 +34,7 @@ class UserController extends \api\modules\v1\controllers\UserController
         $phone = \Yii::$app->request->get('phone');
         $code = \Yii::$app->request->get('code');
         $wxCode = \Yii::$app->request->get('wxCode');
-        if($phone=='13910211712'){
-            return new Code(20010, '您的账户已注销');
-        }
+
         //验证字段
         $isVerify = SmsSend::verifymessage(\Yii::$app->request->get('phone'), \Yii::$app->request->get('code'));
         $log->addLog("验证:" . $isVerify);
