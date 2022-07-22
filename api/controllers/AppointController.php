@@ -38,6 +38,16 @@ class AppointController extends Controller
     public function actionDoctors($search = '')
     {
         $query = UserDoctor::find();
+        $query->andWhere(['or',
+            ['like','appoint','1'],
+            ['like','appoint','2'],
+            ['like','appoint','8'],
+            ['like','appoint','6'],
+            ['like','appoint','10'],
+            ['like','appoint','12'],
+            ['like','appoint','5']]);
+
+
         if ($search) {
             $query->andFilterWhere(['like', 'name', $search]);
         }
