@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
                 <?=\common\models\UserParent::findOne($model->parentid)->mother?>
                 <hr>
                 <?= $form->field($model, 'parentid'); ?>
-                <?= $form->field($model, 'itemid'); ?>
+                <?= $form->field($model, 'item_id'); ?>
 
                 <hr>
                 <?= $form->field($model, 'doctorid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->column(),['prompt'=>'请选择']) ?>
