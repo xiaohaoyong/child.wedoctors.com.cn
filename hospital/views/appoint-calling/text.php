@@ -1,5 +1,5 @@
+<button onclick="actionList('请张三到第三诊室接种')">点击</button>
 <script>
-    actionList("请张三到第三诊室接种")
     function actionList(text){
         alert(text);
         let msg = new SpeechSynthesisUtterance(text);
