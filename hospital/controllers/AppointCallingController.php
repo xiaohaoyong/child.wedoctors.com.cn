@@ -333,6 +333,39 @@ class AppointCallingController extends BaseController
 
         return $this->render('list',['doctorid'=>$doctorid,'list'=>$list,'time'=>date("h:i:s"),'type'=>$type]);
     }
+    public function actionListNew($doctorid=590848,$type){
+
+        error_reporting(E_ALL ^ E_NOTICE);
+        \Yii::$app->response->format=Response::FORMAT_JSON;
+
+        $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+        //当前时间段排队
+        $queue = new Queue($doctorid, $type, $timeType,$type?false:true);
+        $list[] = $queue->lrange();
+
+        //其他时间段排队
+        foreach(Appoint::$timeText as $k=>$v){
+            if($k!=$timeType) {
+                $queue = new Queue($doctorid, $type, $k,$type?false:true);
+                $list[] = $queue->lrange();
+            }
+        }
+        //临时号排队
+        $queue = new Queue($doctorid, $type, 0,$type?false:true);
+        $list[] = $queue->lrange();
+        $list = [
+            ['num'=>'1号','name'=>'汪振','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'2号','name'=>'汪振1','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'3号','name'=>'汪振2','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'4号','name'=>'汪振3','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'5号','name'=>'汪振4','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
+
+        ];
+
+        return ['lists'=>$list];
+
+    }
     public function actionText(){
         $this->layout = "@hospital/views/layouts/main-login.php";
 
@@ -340,7 +373,7 @@ class AppointCallingController extends BaseController
     }
     public function actionTtl($text,$id){
         \Yii::$app->response->format=Response::FORMAT_JSON;
-        $appointCallingList=AppointCallingList::findOne($id);
+            $appointCallingList=AppointCallingList::findOne($id);
         if($appointCallingList->calling==1) {
             $appointCallingList->calling = 0;
             $appointCallingList->save();
