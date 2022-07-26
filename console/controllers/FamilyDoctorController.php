@@ -164,6 +164,7 @@ class FamilyDoctorController extends Controller
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
         ];
+        $names=[];
         if($auto) {
             $i = 6;
             foreach($auto as $ak=>$av) {
@@ -174,6 +175,10 @@ class FamilyDoctorController extends Controller
                     ->all();
                 if($child) {
                     foreach ($child as $k => $v) {
+
+                        if($names[$v->name] && $names[$v->name] == $v->birthday) continue;
+                        $names[$v->name] =  $v->birthday;
+
 
                         $autoa = DoctorParent::findOne(['parentid' => $v->userid]);
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);

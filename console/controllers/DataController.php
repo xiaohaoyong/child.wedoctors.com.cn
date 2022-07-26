@@ -83,6 +83,10 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $IdV=new IdcardValidator();
+        $return=$IdV->idCardVerify('11010220211214271x');
+        var_dump($return);exit;
+
 
 //        $code = \Yii::$app->cache->get(13601261982);
 //        echo $code;
