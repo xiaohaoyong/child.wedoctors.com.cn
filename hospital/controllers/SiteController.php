@@ -243,6 +243,10 @@ class SiteController extends BaseController
                 'value' => $hospitalid,
                 'expire'=>time()+3600000
             ]));
+            if($_GET['redirect']){
+                return $this->redirect([$_GET['redirect']]);
+
+            }
             return $this->redirect(['site/index']);
 
         }
