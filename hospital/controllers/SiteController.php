@@ -267,7 +267,7 @@ class SiteController extends BaseController
 
         $model = new \hospital\models\LoginForm();             //②
         if ($model->load(Yii::$app->request->post()) && $model->login()) {      //③
-            return $this->redirect(['site/hospitals?redirect='+$_GET['redirect']]);
+            return $this->redirect(['site/hospitals','redirect'=>$_GET['redirect']]);
             //return $this->goBack();          //④
         }
         return $this->render('login', [
