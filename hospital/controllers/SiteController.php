@@ -232,7 +232,7 @@ class SiteController extends BaseController
     }
 
 
-    public function actionHospitals($hospitalid=0){
+    public function actionHospitals($hospitalid=0,$redirect=''){
         $this->layout = "@hospital/views/layouts/main-login.php";
 
         if($hospitalid){
@@ -243,7 +243,7 @@ class SiteController extends BaseController
                 'value' => $hospitalid,
                 'expire'=>time()+3600000
             ]));
-            if($_GET['redirect']){
+            if($redirect){
                 return $this->redirect([$_GET['redirect']]);
 
             }

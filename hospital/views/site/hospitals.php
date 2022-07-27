@@ -19,11 +19,10 @@
             <?php
             foreach($hospitals as $k=>$v){
 
-                echo \yii\helpers\Html::a($v,['site/hospitals','hospitalid'=>$k],['class'=>'btn btn-success btn-lg btn-block']);
+                echo \yii\helpers\Html::a($v,['site/hospitals','hospitalid'=>$k,'redirect'=>$_GET['redirect']],['class'=>'btn btn-success btn-lg btn-block']);
 
             }
             ?>
-
 
         </div>
         <!-- /.login-box-body -->
