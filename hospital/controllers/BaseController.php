@@ -38,6 +38,7 @@ class BaseController extends \yii\web\Controller {
         {
             return true;
         }
+        $redirect = [];
         if (stripos('appoint-calling/room', $permissionName) !== false) {
             $redirect = ['redirect'=>'appoint-calling/room'];
         }
