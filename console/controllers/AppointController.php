@@ -227,6 +227,7 @@ class AppointController extends Controller
     }
 
     public function actionState(){
+        exit;
         $appoints = Appoint::find()->where(['state' => 6])->orderBy('id asc')->all();
         foreach ($appoints as $k=>$v){
             $log=new \common\components\Log('appoint-state',true);

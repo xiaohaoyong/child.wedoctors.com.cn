@@ -30,7 +30,7 @@ class Access extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'createtime', 'long', 'cid', 'userid'], 'integer'],
+            [['type', 'createtime', 'long', 'cid', 'userid','month'], 'integer'],
         ];
     }
 
