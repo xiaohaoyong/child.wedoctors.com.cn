@@ -74,7 +74,7 @@ class ChildAllController extends \yii\console\Controller
             ->setCellValue('K'.$key1, '联系人姓名')
             ->setCellValue('L'.$key1, '联系人电话')
             ->setCellValue('M'.$key1, '登陆手机号')
-            ->setCellValue('M'.$key1, '签约社区')
+            ->setCellValue('N'.$key1, '签约社区')
             ->setCellValue('O'.$key1, '签约时间')
             ->setCellValue('P'.$key1, '签字时间')
             ->setCellValue('Q'.$key1, '签约状态')
