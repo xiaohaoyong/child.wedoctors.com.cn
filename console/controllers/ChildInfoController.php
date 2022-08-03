@@ -12,7 +12,6 @@ namespace console\controllers;
 use common\models\Article;
 use common\models\ArticleInfo;
 use common\models\ArticleUser;
-use common\models\Autograph;
 use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\Hospital;
@@ -74,22 +73,14 @@ class ChildInfoController extends \yii\console\Controller
             ->setCellValue('J'.$key1, '父亲电话')
             ->setCellValue('K'.$key1, '联系人姓名')
             ->setCellValue('L'.$key1, '联系人电话')
-            ->setCellValue('M'.$key1, '登陆手机号')
-            ->setCellValue('N'.$key1, '签约社区')
-            ->setCellValue('O'.$key1, '签约时间')
-            ->setCellValue('P'.$key1, '签字时间')
-            ->setCellValue('Q'.$key1, '签约状态')
-            ->setCellValue('R'.$key1, '签约协议')
-            ->setCellValue('S'.$key1, '现住址')
-            ->setCellValue('T'.$key1, '是否宣教')
-            ->setCellValue('U'.$key1, '宣教月龄')
-            ->setCellValue('V'.$key1, '宣教内容')
-            ->setCellValue('W'.$key1, '宣教时间');
-        $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
-            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
-        $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
-            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
-
+            ->setCellValue('M'.$key1, '签约社区')
+            ->setCellValue('N'.$key1, '签约时间')
+            ->setCellValue('O'.$key1, '签约状态')
+            ->setCellValue('P'.$key1, '现住址')
+            ->setCellValue('Q'.$key1, '是否宣教')
+            ->setCellValue('R'.$key1, '宣教月龄')
+            ->setCellValue('S'.$key1, '宣教内容')
+            ->setCellValue('T'.$key1, '宣教时间');
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
         $data=ChildInfo::find()
@@ -103,93 +94,75 @@ class ChildInfoController extends \yii\console\Controller
 //写入内容
 
         foreach($data as $k=>$v) {
-            echo "==" . $v['userid'] . "===";
-            $e = $v;
-            $sign = \common\models\DoctorParent::findOne(['parentid' => $v['userid'], 'level' => 1]);
-            $userParent = UserParent::findOne(['userid' => $e['userid']]);
+            echo "==".$v['userid']."===";
+            $e=$v;
+            $sign = \common\models\DoctorParent::findOne(['parentid'=>$v['userid'],'level'=>1]);
+            $userParent = UserParent::findOne(['userid'=>$e['userid']]);
 
             $DiffDate = \common\helpers\StringHelper::DiffDate(date('Y-m-d', time()), date('Y-m-d', $v['birthday']));
-            if ($DiffDate[0]) {
-                $age = $DiffDate[0] . "岁";
-            } elseif ($DiffDate[1]) {
-                $age = $DiffDate[1] . "月";
-            } else {
-                $age = $DiffDate[2] . "天";
+            if($DiffDate[0]) {
+                $age=$DiffDate[0]."岁";
+            }elseif($DiffDate[1]){
+                $age=$DiffDate[1]."月";
+            }else{
+                $age=$DiffDate[2]."天";
             }
-            if ($sign->level != 1) {
-                $return = "未签约";
-            } else {
-                if ($userParent->source <= 38) {
-                    $return = "已签约未关联";
+            if($sign->level!=1)
+            {
+                $return="未签约";
+            }else{
+                if($userParent->source<=38){
+                    $return="已签约未关联";
 
-                } else {
+                }else {
                     $return = "已签约";
                 }
             }
-            $autograph = \common\models\Autograph::findOne(['userid' => $v['userid']]);
-            if ($autograph) {
-                $signa = "已签字";
-            } else {
-                $signa = "未签字";
-            }
 
-            $article = ArticleUser::findAll(['touserid' => $v['userid']]);
+            $article=ArticleUser::findAll(['touserid'=>$v['userid']]);
 
-            $articleid = ArrayHelper::getColumn($article, 'artid');
-            $date = '';
-            $child_type = '';
-            $title = '';
+            $articleid=ArrayHelper::getColumn($article,'artid');
+            $date='';
+            $child_type='';
+            $title='';
 
-            if ($article) {
+            if($article) {
                 foreach ($article as $ak => $av) {
-                    $date .= "，" . date('Y-m-d', $av->createtime);
-                    $child_type .= "，" . Article::$childText[$av->child_type];
+                    $date.="，".date('Y-m-d',$av->createtime);
+                    $child_type.="，".Article::$childText[$av->child_type];
                 }
-                $articleInfo = ArticleInfo::find()->andFilterWhere(['in', 'id', $articleid])->select('title')->column();
-                $title = implode(',', $articleInfo);
+                $articleInfo=ArticleInfo::find()->andFilterWhere(['in','id',$articleid])->select('title')->column();
+                $title=implode(',',$articleInfo);
 
-                $is_article = "是";
-            } else {
-                $is_article = "否";
+                $is_article="是";
+            }else{
+                $is_article="否";
             }
             echo "\n";
-
-
-            $idcard=$v['field27']?$v['field27']:$v['idcard'];
-            if($v['birthday']>strtotime('-6 month'))
-            {
-                $idcard=$idcard?$idcard:$v['field6'];
-            }
-
-
             $phone=UserLogin::getPhone($userParent->userid);
 
             $key1 = $k + 2;
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $key1, $v['name'])
-                ->setCellValue('B' . $key1, " " . \common\models\User::findOne($v['userid'])->phone)
+                ->setCellValue('B' . $key1, " ".$phone)
                 ->setCellValue('C' . $key1, \common\models\ChildInfo::$genderText[$v['gender']])
                 ->setCellValue('D' . $key1, $age)
                 ->setCellValue('E' . $key1, date('Y-m-d', $v['birthday']))
-                ->setCellValueExplicit('F' . $key1, $v['field6']?$v['field6']:$idcard,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2)
-                ->setCellValueExplicit('G' . $key1, $idcard?$idcard:$v['field6'],\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2)
-                ->setCellValue('H' . $key1, $userParent->mother || $userParent->father ? $userParent->mother . "/" . $userParent->father : "无")
-                ->setCellValue('I' . $key1, $userParent->mother_phone ? " " . $userParent->mother_phone : "无")
-                ->setCellValue('J' . $key1, $userParent->father_phone ? " " . $userParent->father_phone : "无")
-                ->setCellValue('K' . $key1, $userParent->field11 ? $userParent->field11 : "无")
-                ->setCellValue('L' . $key1, $userParent->field12 ? " " . $userParent->field12 : "无")
-                ->setCellValue('M' . $key1, $phone ? " " . $phone : "无")
-                ->setCellValue('N' . $key1, $sign->level == 1 ? \common\models\UserDoctor::findOne(['userid' => $sign->doctorid])->name : "--")
-                ->setCellValue('O' . $key1, $sign->level == 1 ? date('Y-m-d', $sign->createtime) : "无")
-                ->setCellValue('P' . $key1, date('Y-m-d H:i',  Autograph::find()->where(['userid'=>$userParent->userid])->orderBy('id desc')->one()->createtime))
-                ->setCellValue('Q' . $key1, $return)
-                ->setCellValue('R' . $key1, $signa)
-                ->setCellValue('S' . $key1, $userParent->fieldu46)
-                ->setCellValue('T' . $key1, $is_article)
-                ->setCellValue('U' . $key1, $child_type)
-                ->setCellValue('V' . $key1, $title)
-                ->setCellValue('W' . $key1, $date);
-
+                ->setCellValue('F' . $key1, $v['field6'])
+                ->setCellValue('G' . $key1, " ".$v['field27'])
+                ->setCellValue('H' . $key1, $userParent->mother || $userParent->father?$userParent->mother."/".$userParent->father:"无")
+                ->setCellValue('I' . $key1, $userParent->mother_phone ? " ".$userParent->mother_phone : "无")
+                ->setCellValue('J' . $key1, $userParent->father_phone ?  " ".$userParent->father_phone  : "无")
+                ->setCellValue('K' . $key1, $userParent->field11 ?  $userParent->field11 : "无")
+                ->setCellValue('L' . $key1, $userParent->field12 ? " ".$userParent->field12 : "无")
+                ->setCellValue('M' . $key1, $sign->level==1 ? \common\models\UserDoctor::findOne(['userid'=>$sign->doctorid])->name : "--")
+                ->setCellValue('N' . $key1, $sign->level == 1 ? date('Y-m-d H:i', $sign->createtime) : "无")
+                ->setCellValue('O' . $key1, $return)
+                ->setCellValue('P' . $key1, $userParent->fieldu46)
+                ->setCellValue('Q' . $key1, $is_article)
+                ->setCellValue('R' . $key1, $child_type)
+                ->setCellValue('S' . $key1, $title)
+                ->setCellValue('T' . $key1, $date);
 
         }
         // $objPHPExcel->setActiveSheetIndex(0);
