@@ -109,7 +109,7 @@ class ChildController extends \api\modules\v1\controllers\ChildController
             }
         }
 
-        if(isset($params['childidtype']) && $params['mother_id']){
+        if(isset($params['motheridtype']) && $params['mother_id']){
             $IdV=new IdcardValidator();
             switch ($params['motheridtype'])
             {

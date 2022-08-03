@@ -11,6 +11,7 @@ namespace api\modules\v4\controllers;
 
 use api\controllers\Controller;
 use common\components\Code;
+use common\helpers\IdcardValidator;
 use common\models\Area;
 use common\models\DoctorParent;
 use common\models\Notice;
@@ -27,6 +28,28 @@ class GravidaController extends \api\modules\v2\controllers\GravidaController
             if($e=='') return false;
             return true;
         });
+        if(isset($data['idtype']) && $data['field4']){
+            $IdV=new IdcardValidator();
+            switch ($data['idtype'])
+            {
+                case 1:
+                    $return=$IdV->passportVerify($data['field4']);
+                    break;
+                case 2:
+                    $return=$IdV->gapassport_verify($data['field4']);
+                    break;
+                case 3:
+                    $return=$IdV->junguanVerify($data['field4']);
+                    break;
+                default:
+                    $return=$IdV->idCardVerify($data['field4']);
+                    break;
+            }
+            if(!$return)
+            {
+                return new Code(20010,'证件号码验证失败');
+            }
+        }
         if(!$id) {
             //确定家庭数据
             $userParent = UserParent::findOne(['mother_id' => $data['field4']]);
@@ -47,6 +70,9 @@ class GravidaController extends \api\modules\v2\controllers\GravidaController
                 $userParent->mother_id = $data['field4'];
                 $userParent->mother = $data['field1'];
                 $userParent->save();
+                if(!$userParent->save()){
+                    return new Code(20010,implode(',',$userParent->firstErrors));
+                }
             }
             $preg = Pregnancy::find()->where(['field4' => $data['field4']])->andWhere(['field11'=>$data['field11']])->one();
 
@@ -78,7 +104,9 @@ class GravidaController extends \api\modules\v2\controllers\GravidaController
                     return new Code(20010,'您的孕期数据来源与社区，如有疑问请联系客服');
                 }
                 $preg->load(['Pregnancy'=>$data]);
-                $preg->save();
+                if(!$preg->save()){
+                    return new Code(20010,implode(',',$preg->firstErrors));
+                }
             }
             $userParent = UserParent::findOne([['userid'=>$preg->familyid]]);
             if($userParent){
@@ -88,7 +116,9 @@ class GravidaController extends \api\modules\v2\controllers\GravidaController
                 $userParent->userid = $this->userid;
                 $userParent->mother_id = $data['field4'];
                 $userParent->mother = $data['field1'];
-                $userParent->save();
+                if(!$userParent->save()){
+                    return new Code(20010,implode(',',$userParent->firstErrors));
+                }
             }
         }
 

@@ -48,9 +48,8 @@ class UserParent extends \yii\db\ActiveRecord {
     public function rules()
     {
         return [
-            [['userid', 'mother_phone', 'father_phone', 'state', 'source', 'province', 'county', 'city'], 'integer'],
-            [['father_birthday','mother', 'father', 'address', 'field34', 'field33', 'field30', 'field29', 'field28', 'field12', 'field11', 'field1', 'fbirthday', 'field43', 'field44', 'field45','fieldu46','fieldp47'], 'safe'],
-            [['mother_id'], 'string', 'max' => 18],
+            [['userid', 'mother_phone', 'father_phone', 'state', 'source', 'province', 'county', 'city','idtype'], 'integer'],
+            [['mother_id','father_birthday','mother', 'father', 'address', 'field34', 'field33', 'field30', 'field29', 'field28', 'field12', 'field11', 'field1', 'fbirthday', 'field43', 'field44', 'field45','fieldu46','fieldp47'], 'safe'],
         ];
     }
     public static $field=[
