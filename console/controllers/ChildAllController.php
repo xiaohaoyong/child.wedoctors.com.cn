@@ -73,16 +73,17 @@ class ChildAllController extends \yii\console\Controller
             ->setCellValue('J'.$key1, '父亲电话')
             ->setCellValue('K'.$key1, '联系人姓名')
             ->setCellValue('L'.$key1, '联系人电话')
+            ->setCellValue('M'.$key1, '登陆手机号')
             ->setCellValue('M'.$key1, '签约社区')
-            ->setCellValue('N'.$key1, '签约时间')
-            ->setCellValue('O'.$key1, '签字时间')
-            ->setCellValue('P'.$key1, '签约状态')
-            ->setCellValue('Q'.$key1, '签约协议')
-            ->setCellValue('R'.$key1, '现住址')
-            ->setCellValue('S'.$key1, '是否宣教')
-            ->setCellValue('T'.$key1, '宣教月龄')
-            ->setCellValue('U'.$key1, '宣教内容')
-            ->setCellValue('V'.$key1, '宣教时间');
+            ->setCellValue('O'.$key1, '签约时间')
+            ->setCellValue('P'.$key1, '签字时间')
+            ->setCellValue('Q'.$key1, '签约状态')
+            ->setCellValue('R'.$key1, '签约协议')
+            ->setCellValue('S'.$key1, '现住址')
+            ->setCellValue('T'.$key1, '是否宣教')
+            ->setCellValue('U'.$key1, '宣教月龄')
+            ->setCellValue('V'.$key1, '宣教内容')
+            ->setCellValue('W'.$key1, '宣教时间');
         $objPHPExcel->getActiveSheet()->getStyle('F')->getNumberFormat()
             ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
         $objPHPExcel->getActiveSheet()->getStyle('G')->getNumberFormat()
@@ -156,7 +157,7 @@ class ChildAllController extends \yii\console\Controller
                 }
 
 
-                $phone=$userParent->mother_phone?$userParent->mother_phone:UserLogin::getPhone($userParent->userid);
+                $phone=UserLogin::getPhone($userParent->userid);
 
                 $key1 = $k + 2;
                 $objPHPExcel->setActiveSheetIndex(0)
@@ -168,20 +169,21 @@ class ChildAllController extends \yii\console\Controller
                     ->setCellValueExplicit('F' . $key1, $v['field6']?$v['field6']:$idcard,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2)
                     ->setCellValueExplicit('G' . $key1, $idcard?$idcard:$v['field6'],\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2)
                     ->setCellValue('H' . $key1, $userParent->mother || $userParent->father ? $userParent->mother . "/" . $userParent->father : "无")
-                    ->setCellValue('I' . $key1, $phone ? " " . $phone : "无")
+                    ->setCellValue('I' . $key1, $userParent->mother_phone ? " " . $userParent->mother_phone : "无")
                     ->setCellValue('J' . $key1, $userParent->father_phone ? " " . $userParent->father_phone : "无")
                     ->setCellValue('K' . $key1, $userParent->field11 ? $userParent->field11 : "无")
                     ->setCellValue('L' . $key1, $userParent->field12 ? " " . $userParent->field12 : "无")
-                    ->setCellValue('M' . $key1, $sign->level == 1 ? \common\models\UserDoctor::findOne(['userid' => $sign->doctorid])->name : "--")
-                    ->setCellValue('N' . $key1, $sign->level == 1 ? date('Y-m-d', $sign->createtime) : "无")
-                    ->setCellValue('O' . $key1, date('Y-m-d H:i',  Autograph::find()->where(['userid'=>$userParent->userid])->orderBy('id desc')->one()->createtime))
-                    ->setCellValue('P' . $key1, $return)
-                    ->setCellValue('Q' . $key1, $signa)
-                    ->setCellValue('R' . $key1, $userParent->fieldu46)
-                    ->setCellValue('S' . $key1, $is_article)
-                    ->setCellValue('T' . $key1, $child_type)
-                    ->setCellValue('U' . $key1, $title)
-                    ->setCellValue('V' . $key1, $date);
+                    ->setCellValue('M' . $key1, $phone ? " " . $phone : "无")
+                    ->setCellValue('N' . $key1, $sign->level == 1 ? \common\models\UserDoctor::findOne(['userid' => $sign->doctorid])->name : "--")
+                    ->setCellValue('O' . $key1, $sign->level == 1 ? date('Y-m-d', $sign->createtime) : "无")
+                    ->setCellValue('P' . $key1, date('Y-m-d H:i',  Autograph::find()->where(['userid'=>$userParent->userid])->orderBy('id desc')->one()->createtime))
+                    ->setCellValue('Q' . $key1, $return)
+                    ->setCellValue('R' . $key1, $signa)
+                    ->setCellValue('S' . $key1, $userParent->fieldu46)
+                    ->setCellValue('T' . $key1, $is_article)
+                    ->setCellValue('U' . $key1, $child_type)
+                    ->setCellValue('V' . $key1, $title)
+                    ->setCellValue('W' . $key1, $date);
 
             }
             // $objPHPExcel->setActiveSheetIndex(0);

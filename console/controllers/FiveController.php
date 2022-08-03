@@ -28,7 +28,7 @@ class FiveController extends Controller
 {
     public function actionUpdateData()
     {
-        $access=Access::find()->where(['doctorid'=>0])->andWhere(['>','createtime',1656604800])->all();
+        $access=Access::find()->where(['doctorid'=>0])->andWhere(['<','createtime',1659283200])->andWhere(['>','createtime',1656604800])->all();
         foreach($access as $k=>$v){
             $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid]);
             if($doctorParent) {
@@ -36,15 +36,15 @@ class FiveController extends Controller
             }else{
             }
 
-//            if($v->type==1){
-//                $appoint=Appoint::findOne($v->cid);
-//                $child=ChildInfo::findOne($appoint->childid);
-//                if($child) {
-//                    $day=ceil(($v->createtime-$child->birthday)/86400);
-//                    echo $day;
-//                    $v->month = $day;
-//                }
-//            }
+            if($v->type==1){
+                $appoint=Appoint::findOne($v->cid);
+                $child=ChildInfo::findOne($appoint->childid);
+                if($child) {
+                    $day=ceil(($v->createtime-$child->birthday)/86400);
+                    echo $day;
+                    $v->month = $day;
+                }
+            }
             $v->save();
             var_dump($v->firstErrors);
 
@@ -67,8 +67,8 @@ class FiveController extends Controller
 
     public function actionExcel()
     {
-        $stime=1654012800;
-        $etime=1656604800;
+        $stime=1656604800;
+        $etime=1659283200;
         $userDoctor = UserDoctor::find()->all();
         foreach ($userDoctor as $k=>$v){
             $rs=[];
