@@ -205,6 +205,17 @@ class AppointController extends Controller
 
         $appointArray=explode(':',$aString);
         $id=$appointArray[1];
+        if($id == 'test'){
+            return ['code' => 10000, 'msg' => '成功',
+                'data' => [
+                    'name' => '测试',
+                    'type' => '测试',
+                    'hospital' => '测试',
+                    'num' => '测试',
+                    'deng' => '测试',
+                    'date' => date('Y年m月d日') . "测试",
+            ]];
+        }
         $doctorid=$this->hs[$h];
         $t=date('H:i');
         if($t>'16:00' || $t<'07:00'){
