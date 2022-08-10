@@ -355,11 +355,12 @@ class AppointCallingController extends BaseController
         $queue = new Queue($doctorid, $type, 0,$type?false:true);
         $list[] = $queue->lrange();
         $list = [
-            ['num'=>'1号','name'=>'汪振','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
-            ['num'=>'2号','name'=>'汪振1','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
-            ['num'=>'3号','name'=>'汪振2','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
-            ['num'=>'4号','name'=>'汪振3','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
-            ['num'=>'5号','name'=>'汪振4','zname'=>'第四窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'1号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'2号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'3号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'4号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'5号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
+            ['num'=>'6号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
 
         ];
 
