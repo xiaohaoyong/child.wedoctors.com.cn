@@ -180,7 +180,7 @@ class FamilyDoctorController extends Controller
                         $names[$v->name] =  $v->birthday;
 
 
-                        $autoa = DoctorParent::findOne(['parentid' => $v->userid]);
+                        $autoa = Autograph::findOne(['userid' => $v->userid]);
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
                         $hospital = Hospital::findOne($userDoctor->hospitalid);
                         $userParent=UserParent::findOne([$v->userid]);
