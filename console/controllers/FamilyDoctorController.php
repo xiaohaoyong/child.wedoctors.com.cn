@@ -372,7 +372,7 @@ class FamilyDoctorController extends Controller
                         $worksheet->getStyle('A' . $i . ':W' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
                         $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
-                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1.$v->familyid);
+                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1);
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue("\t" . $v->field10);
                         $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $v->field4);
                         $au = Autograph::findOne(['userid' => $v->familyid]);
