@@ -18,6 +18,8 @@ class AutographSearch extends Autograph
     public $mother;
     public $childname;
     public $t;
+    public $createtimes;
+    public $createtimese;
     /**
      * @inheritdoc
      */
