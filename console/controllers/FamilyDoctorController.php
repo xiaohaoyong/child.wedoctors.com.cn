@@ -364,7 +364,7 @@ class FamilyDoctorController extends Controller
                         echo "==";
                         echo $v->field1;
                         echo "\n";
-                        $autoa = Autograph::findOne(['userid' => $v->userid]);
+                        $autoa = Autograph::findOne(['userid' => $v->familyid]);
 
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
                         $hospital = Hospital::findOne($userDoctor->hospitalid);
