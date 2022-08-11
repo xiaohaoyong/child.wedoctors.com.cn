@@ -336,7 +336,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->andWhere(['<','createtime',strtotime('2021-09-30')])->column();
 
         $styleArray = [
             'borders' => [
@@ -393,7 +393,7 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-pregnancy.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/county/" .$doctorid.'-pregnancy.xlsx');
     }
 
 }
