@@ -353,8 +353,8 @@ class FamilyDoctorController extends Controller
             $i = 6;
             foreach($auto as $ak=>$av) {
                 $preg = \common\models\Pregnancy::find()
-                    ->andWhere(['pregnancy.field49'=>0])
-                    ->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
+                    //->andWhere(['pregnancy.field49'=>0])
+                    //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
                     ->andWhere(['familyid'=> $av])
                     ->groupBy('field1,field11')
                     ->all();
