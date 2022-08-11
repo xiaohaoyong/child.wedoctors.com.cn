@@ -151,7 +151,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->andWhere(['<','createtime',strtotime('2021-09-30')])->column();
 
         $styleArray = [
             'borders' => [
@@ -221,7 +221,7 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/county/" .$hospital->name.'-family.xlsx');
     }
     public function setDownFExcel($doctorid)
     {
@@ -361,6 +361,8 @@ class FamilyDoctorController extends Controller
                 if($preg) {
                     foreach ($preg as $k => $v) {
                         echo $v->familyid;
+                        echo "==";
+                        echo $v->field1;
                         echo "\n";
                         $autoa = DoctorParent::findOne(['parentid' => $v->familyid]);
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
@@ -369,7 +371,7 @@ class FamilyDoctorController extends Controller
                         $worksheet->getStyle('A' . $i . ':W' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
                         $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
-                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1);
+                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1.$v->familyid);
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue("\t" . $v->field10);
                         $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $v->field4);
                         $au = Autograph::findOne(['userid' => $v->familyid]);
