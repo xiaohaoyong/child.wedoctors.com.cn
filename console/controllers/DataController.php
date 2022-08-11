@@ -28,6 +28,7 @@ use common\models\AppointOrder1;
 use common\models\Area;
 use common\models\Article;
 use common\models\ArticleComment;
+use common\models\ArticleInfo;
 use common\models\ArticlePushVaccine;
 use common\models\ArticleUser;
 use common\models\Autograph;
@@ -83,6 +84,17 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $doctors= UserDoctor::find()->all();
+        foreach($doctors as $k=>$v){
+            $rs=[];
+            $rs[]=$v->hospital->name;
+            $rs[]=ArticleUser::find()->andWhere(['userid'=>$v->userid])
+                ->andWhere(['>','createtime',strtotime('20210101')])
+                ->andWhere(['<','createtime',strtotime('20220101')])->count();
+            $rs[]="\n";
+            echo implode(',',$rs);
+        }
+        exit;
 
 //        $code = \Yii::$app->cache->get(13601261982);
 //        echo $code;
@@ -126,31 +138,59 @@ class DataController extends \yii\console\Controller
 //            }
 //        }
 //        exit;
-
-        $file = fopen('206262.csv', 'r');
+        $file = fopen('190922.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
             $rs=explode(',',trim($line));
             $child=ChildInfo::find()
                 ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                ->andFilterWhere(['`doctor_parent`.`doctorid`' => 206262])
+                ->andFilterWhere(['`doctor_parent`.`doctorid`' => 190922])
                 ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
                 ->andWhere(['user_parent.mother'=>$rs[7]])
                 ->andWhere(['child_info.name'=>$rs[1]])
-                ->andWhere(['child_info.birthday'=>strtotime($rs[3])])
+                ->andWhere(['child_info.birthday'=>strtotime($rs[5])])
                 ->one();
 
-            if($rs[4] && $child){
+            if($rs[3] && $child){
                 echo $rs[1];echo "\n";
-                $child->field27=$rs[4];
+                $child->field27=$rs[3];
                 $child->save();
                 $i++;
-//                $userParent=UserParent::findOne(['userid'=>$child->userid]);
-//                if($userParent){
-//                    $userParent->fieldu46=$rs[5];
-//                    $userParent->fieldp47=$rs[5];
-//                    $userParent->save();
-//                }
+                $userParent=UserParent::findOne(['userid'=>$child->userid]);
+                if($userParent){
+                    $userParent->fieldu46=$rs[9];
+                    $userParent->fieldp47=$rs[9];
+                    $userParent->save();
+                }
+            }else{
+                echo "===\n";
+            }
+        }
+        exit;
+        $file = fopen('190922.csv', 'r');
+        $i=0;
+        while (($line = fgets($file)) !== false) {
+            $rs=explode(',',trim($line));
+            $child=ChildInfo::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                ->andFilterWhere(['`doctor_parent`.`doctorid`' => 190922])
+                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                ->andWhere(['user_parent.mother'=>$rs[7]])
+                ->andWhere(['child_info.name'=>$rs[1]])
+                ->andWhere(['child_info.birthday'=>strtotime($rs[5])])
+                ->one();
+
+            if($rs[3] && $child){
+                echo $rs[1];echo "\n";
+                $child->field27=$rs[3];
+                $child->save();
+                $i++;
+                $userParent=UserParent::findOne(['userid'=>$child->userid]);
+                if($userParent){
+                    $userParent->fieldu46=$rs[9];
+                    $userParent->fieldp47=$rs[9];
+                    $userParent->save();
+                }
             }else{
                 echo "===\n";
             }

@@ -27,7 +27,7 @@ class AutographSearch extends Autograph
             [['t','id', 'createtime', 'loginid', 'userid'], 'integer'],
             [['father', 'mother', 'childname'], 'string'],
 
-            [['img'], 'safe'],
+            [['img','createtimes','createtimese'], 'safe'],
         ];
     }
     /**
@@ -104,6 +104,12 @@ class AutographSearch extends Autograph
             if($this->mother) {
                 $dp->andWhere(['user_parent.mother' => $this->mother]);
             }
+        }
+        if($this->createtimes){
+            $dp->andWhere(['>','autograph.createtime',strtotime($this->createtimes)]);
+        }
+        if($this->createtimese){
+            $dp->andWhere(['<','autograph.createtime',strtotime($this->createtimese)]);
         }
 
         if($this->childname){
