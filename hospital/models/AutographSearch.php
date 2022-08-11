@@ -108,10 +108,10 @@ class AutographSearch extends Autograph
             }
         }
         if($this->createtimes){
-            $dp->andWhere(['>','autograph.createtime',strtotime($this->createtimes)]);
+            $query->andWhere(['>','autograph.createtime',strtotime($this->createtimes)]);
         }
         if($this->createtimese){
-            $dp->andWhere(['<','autograph.createtime',strtotime($this->createtimese)]);
+            $query->andWhere(['<','autograph.createtime',strtotime($this->createtimese)]);
         }
 
         if($this->childname){
@@ -125,7 +125,12 @@ class AutographSearch extends Autograph
         if (!$doctorParent) {
             $doctorParent = [0];
         }
-
+        if($this->createtimes){
+            $query->andWhere(['>','autograph.createtime',strtotime($this->createtimes)]);
+        }
+        if($this->createtimese){
+            $query->andWhere(['<','autograph.createtime',strtotime($this->createtimese)]);
+        }
         $query->andWhere(['in', 'userid', $doctorParent]);
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
         return $dataProvider;
