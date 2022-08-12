@@ -336,7 +336,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->andWhere(['<','createtime',strtotime('2021-09-30')])->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
 
         $styleArray = [
             'borders' => [
