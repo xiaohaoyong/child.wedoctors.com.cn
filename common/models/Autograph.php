@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use hospital\models\user\UserDoctor;
 use Yii;
 
 /**
@@ -18,6 +19,12 @@ use Yii;
  */
 class Autograph extends \yii\db\ActiveRecord
 {
+    public  static function find()
+    {
+        $find=parent::find();
+        $find->andWhere(['level'=>1]);
+        return $find;
+    }
     /**
      * {@inheritdoc}
      */
@@ -32,7 +39,7 @@ class Autograph extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['createtime', 'loginid','userid','doctorid','endtime','starttime'], 'integer'],
+            [['createtime', 'loginid','userid','doctorid','endtime','starttime','level'], 'integer'],
             [['img'], 'string', 'max' => 150],
         ];
     }
