@@ -326,7 +326,7 @@ class AppointController extends Controller
         if($appoint->type==2) {
             $row['is_show'] = 1;
             $child=ChildInfo::findOne($appoint->childid);
-            if(($child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-30 day'))
+            if(($child->birthday>strtotime('-74 day'))
                 || $appoint->vaccine==1
                 || $appoint->vaccine==2
                 || $appoint->vaccine==3

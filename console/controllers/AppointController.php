@@ -101,7 +101,7 @@ class AppointController extends Controller
                 //推送脊灰疫苗推广文
                 if($v->type==2){
                     $child=ChildInfo::findOne(['id'=>$v->childid]);
-                    if($child && $child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-30 day')){
+                    if($child && $child->birthday>strtotime('-74 day')){
                         $aid=1985;
                         $first='就诊当日注意事项和2月龄脊灰疫苗方案早知道，请仔细阅读';
 
@@ -114,6 +114,11 @@ class AppointController extends Controller
                         }elseif($child->birthday>strtotime('-44 day') && $child->birthday<strtotime('-30 day')) {
                             $aid = 1985;
                             $title = '一至二月龄宝宝家长';
+                            $footer="";
+
+                        }else {
+                            $aid = 1985;
+                            $title = '宝宝家长';
                             $footer="";
 
                         }
