@@ -151,7 +151,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->andWhere(['<','createtime',strtotime('2021-09-30')])->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
 
         $styleArray = [
             'borders' => [
@@ -221,7 +221,7 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/county/" .$hospital->name.'-family.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family.xlsx');
     }
     public function setDownFExcel($doctorid)
     {
@@ -394,7 +394,7 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/county/" .$hospital->name.'-孕妇.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-pregnancy.xlsx');
     }
 
 }
