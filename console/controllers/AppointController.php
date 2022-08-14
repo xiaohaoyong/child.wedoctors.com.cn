@@ -240,6 +240,16 @@ class AppointController extends Controller
 
             $week = date('w', $v->appoint_date);
             $appoint = HospitalAppoint::findOne(['doctorid' => $v->doctorid, 'type' => $v->type]);
+            $app = Appoint::find()->where(['state'=>1])->andWhere(['phone'=>$v->phone])->one();
+            if($app){
+                $v->state=3;
+                $v->cancel_type=5;
+                $v->save();
+                $log->addLog($v->state);
+                $log->addLog("已存在进行中");
+                $log->saveLog();
+                continue;
+            }
 
             $query = Appoint::find()
                 ->andWhere(['type' => $v->type])
