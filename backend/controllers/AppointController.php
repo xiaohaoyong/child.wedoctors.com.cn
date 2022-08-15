@@ -47,9 +47,10 @@ class AppointController extends BaseController
             if($state==3){
                 $data = [
                     'first' => ['value' => '您的预约已经取消。'],
-                    'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
-                    'keyword2' => ARRAY('value' => $model->name()),
-                    'keyword3' => ARRAY('value' => '号源不足'),
+                    'keyword1' => ARRAY('value' => $model->name()),
+                    'keyword2' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                    'keyword3' => ARRAY('value' => Appoint::$timeText[$model->appoint_time]),
+                    'keyword4' => ARRAY('value' => '号源不足'),
                     'remark' => ARRAY('value' => "尊敬的用户您好，由于号源不足您的预约已被取消，请您调整出行，给您造成的不便敬请谅解，如有问题请联系在线客服"),
                 ];
                 $tmpid='t-fxuMyA77Xx71OA4_3y528hOSWXk_2rDjvN1zgefbk';
