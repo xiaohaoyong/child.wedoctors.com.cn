@@ -251,6 +251,7 @@ class AppointController extends Controller
                 continue;
             }
 
+
             $query = Appoint::find()
                 ->andWhere(['type' => $v->type])
                 ->andWhere(['doctorid' => $v->doctorid])
