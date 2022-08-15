@@ -55,10 +55,10 @@ class Controller extends \yii\web\Controller
         $wechat_user=$_SESSION['wechat_user'];
         $openid=$wechat_user['original']['openid'];
         $unionid=$wechat_user['original']['unionid'];
-        $query=UserLogin::find()->where(['and', ['openid' => $openid]]);
-        if($unionid){
-            $query->orWhere(['and', ['unionid' => $unionid]]);
-        }
+        $query=UserLogin::find()->where(['openid' => $openid]);
+//        if($unionid){
+//            $query->orWhere(['and', ['unionid' => $unionid]]);
+//        }
         $query->andWhere(['type'=>0]);
         $login=$query->one();
         if($login){
