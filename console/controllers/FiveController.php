@@ -28,7 +28,7 @@ class FiveController extends Controller
 {
     public function actionUpdateData()
     {
-        $access=Access::find()->where(['doctorid'=>0])->andWhere(['<','createtime',1659283200])->andWhere(['>','createtime',1656604800])->all();
+        $access=Access::find()->where(['doctorid'=>0])->all();
         foreach($access as $k=>$v){
             $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid]);
             if($doctorParent) {
