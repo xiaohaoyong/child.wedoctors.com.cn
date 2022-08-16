@@ -349,14 +349,15 @@ class FamilyDoctorController extends Controller
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
         ];
+        $data=[];
         if($auto) {
             $i = 6;
             foreach($auto as $ak=>$av) {
                 $preg = \common\models\Pregnancy::find()
                     //->andWhere(['pregnancy.field49'=>0])
-                    //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
+                    ->andWhere(['>','pregnancy.field11',strtotime('-84 week')])
                     ->andWhere(['familyid'=> $av])
-                    ->groupBy('field1,field11')
+                    ->andWhere(['!=','pregnancy.field4',''])
                     ->all();
                 if($preg) {
                     foreach ($preg as $k => $v) {
@@ -364,6 +365,7 @@ class FamilyDoctorController extends Controller
                         echo "==";
                         echo $v->field1;
                         echo "\n";
+                        $data[]=$v->familyid;
                         $autoa = Autograph::findOne(['userid' => $v->familyid]);
 
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);

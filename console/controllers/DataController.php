@@ -143,16 +143,16 @@ class DataController extends \yii\console\Controller
 //            }
 //        }
 //        exit;
-        $file = fopen('190922.csv', 'r');
+        $file = fopen('216593.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
             $rs=explode(',',trim($line));
-            if(!trim(str_replace('"','',$rs[8]))){
+            if(!$phone = trim(str_replace('"','',$rs[7]))){
                 continue;
             }
             $child=ChildInfo::find()
                 ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
-                ->andWhere(['`user_login`.`phone`' => trim(str_replace('"','',$rs[8]))])
+                ->andWhere(['`user_login`.`phone`' => $phone])
 //                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
 //                ->andWhere(['user_parent.mother'=>$rs[7]])
                 ->andWhere(['child_info.name'=>$rs[2]])
@@ -166,12 +166,12 @@ class DataController extends \yii\console\Controller
                 $child->field27=trim($rs[4]);
                 $child->save();
                 $i++;
-                $userParent=UserParent::findOne(['userid'=>$child->userid]);
-                if($userParent){
-                    $userParent->fieldu46=trim($rs[3]);
-                    $userParent->fieldp47=trim($rs[3]);
-                    $userParent->save();
-                }
+//                $userParent=UserParent::findOne(['userid'=>$child->userid]);
+//                if($userParent){
+//                    $userParent->fieldu46=trim($rs[3]);
+//                    $userParent->fieldp47=trim($rs[3]);
+//                    $userParent->save();
+//                }
             }else{
                 echo "===\n";
             }
