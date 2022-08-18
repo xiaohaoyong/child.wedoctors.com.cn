@@ -33,7 +33,8 @@ class EventPushController extends Controller
     public function actionGroup()
     {
         $config = [
-            113890=>[2=>2228,3=>2229]
+            //113890=>[2=>2228,3=>2229],
+            110623=>[2=>2227,3=>2280]
         ];
         $weopenid = MpEventPush::find()
             ->andWhere(['>', 'createtime', strtotime('-2 hours')])

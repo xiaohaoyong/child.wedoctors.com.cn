@@ -109,7 +109,7 @@ class DataController extends \yii\console\Controller
 //        $count=Autograph::find()->count();
 //        echo $count;
 //        exit;
-//        $file = fopen('190922.csv', 'r');
+//        $file = fopen('216593.csv', 'r');
 //        $i=0;
 //        while (($line = fgets($file)) !== false) {
 //            $rs=explode(',',trim($line));
