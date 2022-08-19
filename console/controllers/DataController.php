@@ -84,7 +84,17 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
-
+        $doctors= UserDoctor::find()->andWhere(['userid'=>206262])->all();
+        foreach($doctors as $k=>$v){
+            $rs=[];
+            $rs[]=$v->hospital->name;
+            $rs[]=ArticleUser::find()->andWhere(['userid'=>$v->userid])
+                ->andWhere(['>','createtime',strtotime('20200101')])
+                ->andWhere(['<','createtime',strtotime('20210101')])->count();
+            $rs[]="\n";
+            echo implode(',',$rs);
+        }
+        exit;
 
 //        $code = \Yii::$app->cache->get(13601261982);
 //        echo $code;
