@@ -84,6 +84,18 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
+        $data = [
+            'first' => ['value' => '您预约的九价宫颈癌疫苗，已修改至2022年9月7日星期三'],
+            'keyword1' => ARRAY('value' => '新街口社区卫生服务中心'),
+            'keyword2' => ARRAY('value' => '010-66184175'),
+            'keyword3' => ARRAY('value' => '如有问题可联系儿宝宝小助手（erbbzs）或拨打社区医院电话'),
+            'remark' => ARRAY('value' => ""),
+        ];
+        $tmpid='3ui_xwyZXEw4DK4Of5FRavHDziSw3kiUyeo74-B0grk';
+        $rs = WechatSendTmp::send($data, 'o5ODa00hsX2jkXFNsttaBQnmY8V8', $tmpid);
+        var_dump($rs);
+        exit;
+
 //        $count=Autograph::find()->count();
 //        echo $count;
 //        $file = fopen('phone.csv', 'r');
