@@ -20,6 +20,8 @@ class AutographSearch extends Autograph
     public $t;
     public $createtimes;
     public $createtimese;
+    public $screatetimes;
+    public $screatetimese;
     /**
      * @inheritdoc
      */
@@ -29,7 +31,7 @@ class AutographSearch extends Autograph
             [['t','id', 'createtime', 'loginid', 'userid'], 'integer'],
             [['father', 'mother', 'childname'], 'string'],
 
-            [['img','createtimes','createtimese'], 'safe'],
+            [['img','createtimes','createtimese','screatetimes','screatetimese'], 'safe'],
         ];
     }
     /**
@@ -46,6 +48,10 @@ class AutographSearch extends Autograph
             'father'=>'父亲姓名',
             'mother'=>'母亲姓名',
             'childname'=>'儿童姓名',
+            'createtimes'=>'签约时间',
+            'createtimese'=>'~',
+            'screatetimes'=>'需要时间',
+            'screatetimese'=>'~',
         ];
     }
     /**
@@ -113,7 +119,12 @@ class AutographSearch extends Autograph
         if($this->createtimese){
             $query->andWhere(['<','autograph.createtime',strtotime($this->createtimese)]);
         }
-
+        if($this->screatetimes){
+            $query->andWhere(['>','autograph.starttime',strtotime($this->createtimes)]);
+        }
+        if($this->screatetimese){
+            $query->andWhere(['<','autograph.starttime',strtotime($this->createtimese)]);
+        }
         if($this->childname){
             if($t) {
                 $dp->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`');
