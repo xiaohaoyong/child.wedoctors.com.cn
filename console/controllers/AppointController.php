@@ -232,9 +232,12 @@ class AppointController extends Controller
     }
 
     public function actionState(){
+        $time = time();
         $appoints = Appoint::find()->where(['state' => 6])->orderBy('id asc')->all();
         foreach ($appoints as $k=>$v){
             $log=new \common\components\Log('appoint-state',true);
+            $log->addLog($time);
+
             $log->addLog($v->doctorid);
 
             $log->addLog($v->id);
