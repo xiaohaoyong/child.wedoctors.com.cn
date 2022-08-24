@@ -60,32 +60,7 @@ class ChildController extends \api\modules\v1\controllers\ChildController
      */
     public function actionFive($childid=0){
         $params=\Yii::$app->request->post();
-        if($childid){
-            $child=ChildInfo::findOne($childid);
-        }else{
-            $child = ChildInfo::find()
-                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                ->andWhere(['user_parent.mother' => $params['mother']])
-                //->andWhere(['user_parent.mother_id' => $params['mother_id']])
-                ->andWhere(['child_info.name' => $params['name']])
-                ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
-                ->andWhere(['child_info.gender' => $params['sex']])
-                ->one();
-            if($child) {
-                if ($child->userid == $this->userLogin->userid) {
-                    return new Code(21000, '请勿重复添加宝宝！');
-                }
-                if($child->userid) {
-                    $this->userLogin->userid = $child->userid;
-                    $this->userLogin->save();
-                }else{
-                    $child->userid = $this->userLogin->userid;
-                    $child->save();
-                }
-                $this->doctor_parent($child->userid, $child->id);
-                //return ['childid'=>$child->id,'userid'=>$child->userid];
-            }
-        }
+
         if(isset($params['childidtype']) && $params['idcard']){
             $IdV=new IdcardValidator();
             switch ($params['childidtype'])
@@ -131,20 +106,41 @@ class ChildController extends \api\modules\v1\controllers\ChildController
                 return new Code(20010,'妈妈证件号验证失败');
             }
         }
-
+        if($childid){
+            $child=ChildInfo::findOne($childid);
+        }else{
+            $child = ChildInfo::find()
+                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                ->andWhere(['user_parent.mother' => $params['mother']])
+                //->andWhere(['user_parent.mother_id' => $params['mother_id']])
+                ->andWhere(['child_info.name' => $params['name']])
+                ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
+                ->andWhere(['child_info.gender' => $params['sex']])
+                ->one();
+            if($child) {
+                if ($child->userid == $this->userLogin->userid) {
+                    return new Code(21000, '请勿重复添加宝宝！');
+                }
+                if($child->userid) {
+                    $this->userLogin->userid = $child->userid;
+                    $this->userLogin->save();
+                }
+                //return ['childid'=>$child->id,'userid'=>$child->userid];
+            }
+        }
 
 
         if(!$child){
             $child=new ChildInfo();
         }
 
-        $parent=UserParent::findOne(['userid'=>$this->userid]);
+        $parent=UserParent::findOne(['userid'=>$this->userLogin->userid]);
         $parent=$parent?$parent:new UserParent();
-        $params['userid']=$this->userid;
+        $params['userid']=$this->userLogin->userid;
         $parent->load(['UserParent'=>$params]);
         $parent->save();
 
-        $child->userid      =$this->userid;
+        $child->userid      =$this->userLogin->userid;
         $child->name        =$params['name'];
         $child->birthday    =strtotime($params['birthday']);
         $child->gender      =$params['sex'];
@@ -154,7 +150,7 @@ class ChildController extends \api\modules\v1\controllers\ChildController
         }
         $child->field6    =$params['field6'];
 
-        $doctorParent = DoctorParent::findOne(['parentid'=>$this->userid]);
+        $doctorParent = DoctorParent::findOne(['parentid'=>$this->userLogin->userid]);
         if($doctorParent && $doctorParent->level==1)
         {
             $UserDoctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
@@ -167,6 +163,7 @@ class ChildController extends \api\modules\v1\controllers\ChildController
         {
             return new Code(20010,'失败');
         }
+        $this->doctor_parent($child->userid, $child->id);
 
         $point=new Points();
         $point->addPoint($this->userid,2);
