@@ -152,8 +152,8 @@ class FamilyDoctorController extends Controller
 
 
         $auto=Autograph::find()->select('userid')
-            ->where(['and',['>','createtime',strtotime('2021-04-01')],['<','createtime',strtotime('2022-04-01')]])
-            ->orWhere(['and',['>','starttime',strtotime('2021-04-01')],['<','starttime',strtotime('2022-04-01')]])
+            ->where(['and',['>','createtime',strtotime('2021-07-01')],['<','createtime',strtotime('2022-07-01')]])
+            ->orWhere(['and',['>','starttime',strtotime('2021-07-01')],['<','starttime',strtotime('2022-07-01')]])
             ->andWhere(['doctorid'=>$doctorid])
             ->column();
 
@@ -341,8 +341,8 @@ class FamilyDoctorController extends Controller
 
 
         $auto=Autograph::find()->select('userid')
-            ->where(['and',['>','createtime',strtotime('2021-04-01')],['<','createtime',strtotime('2022-04-01')]])
-            ->orWhere(['and',['>','starttime',strtotime('2021-04-01')],['<','starttime',strtotime('2022-04-01')]])
+            ->where(['and',['>','createtime',strtotime('2021-07-01')],['<','createtime',strtotime('2022-07-01')]])
+            ->orWhere(['and',['>','starttime',strtotime('2021-07-01')],['<','starttime',strtotime('2022-07-01')]])
             ->andWhere(['doctorid'=>$doctorid])
             ->column();
         $styleArray = [
