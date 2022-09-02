@@ -151,11 +151,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')
-            ->where(['and',['>','createtime',strtotime('2021-07-01')],['<','createtime',strtotime('2022-07-01')]])
-            ->orWhere(['and',['>','starttime',strtotime('2021-07-01')],['<','starttime',strtotime('2022-07-01')]])
-            ->andWhere(['doctorid'=>$doctorid])
-            ->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
 
         $styleArray = [
             'borders' => [
@@ -340,11 +336,8 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')
-            ->where(['and',['>','createtime',strtotime('2021-07-01')],['<','createtime',strtotime('2022-07-01')]])
-            ->orWhere(['and',['>','starttime',strtotime('2021-07-01')],['<','starttime',strtotime('2022-07-01')]])
-            ->andWhere(['doctorid'=>$doctorid])
-            ->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
+
         $styleArray = [
             'borders' => [
                 'allBorders' => [
