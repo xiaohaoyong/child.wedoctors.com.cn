@@ -21,7 +21,7 @@ use yii\console\Controller;
 
 class FamilyDoctorController extends Controller
 {
-    public function actionDown($doctorid=0,$action='Excel')
+    public function actionDown($doctorid=0,$action='Excel',$type=1)
     {
         $act='setDown'.$action;
         ini_set('memory_limit', '8048M');
@@ -30,15 +30,15 @@ class FamilyDoctorController extends Controller
         if($doctorid==0) {
             $doctor = UserDoctor::find()->where(['county' => 1106])->all();
             foreach ($doctor as $v) {
-                $this->$act($v->userid);
+                $this->$act($v->userid,$type);
                 echo "\n";
             }
         }else {
-            $this->$act($doctorid);
+            $this->$act($doctorid,$type);
         }
     }
 
-    public function setDownExcel($doctorid)
+    public function setDownExcel($doctorid,$type)
     {
         echo $doctorid."\n";
         $spreadsheet = new Spreadsheet();
@@ -151,11 +151,19 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')
-            ->where(['and',['>','createtime',strtotime('2021-04-01')],['<','createtime',strtotime('2022-04-01')]])
-            ->orWhere(['and',['>','starttime',strtotime('2021-04-01')],['<','starttime',strtotime('2022-04-01')]])
-            ->andWhere(['doctorid'=>$doctorid])
-            ->column();
+        if($type==1) {
+            $auto = Autograph::find()->select('userid')
+                ->where(['and', ['>', 'createtime', strtotime('2021-04-01')], ['<', 'createtime', strtotime('2022-04-01')]])
+                ->orWhere(['and', ['>', 'starttime', strtotime('2021-04-01')], ['<', 'starttime', strtotime('2022-04-01')]])
+                ->andWhere(['doctorid' => $doctorid])
+                ->column();
+        }else{
+            $auto = Autograph::find()->select('userid')
+                ->where(['and', ['>', 'createtime', strtotime('2021-07-01')], ['<', 'createtime', strtotime('2022-07-01')]])
+                ->orWhere(['and', ['>', 'starttime', strtotime('2021-07-01')], ['<', 'starttime', strtotime('2022-07-01')]])
+                ->andWhere(['doctorid' => $doctorid])
+                ->column();
+        }
 
         $styleArray = [
             'borders' => [
@@ -225,9 +233,9 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-'.$type.'.xlsx');
     }
-    public function setDownFExcel($doctorid)
+    public function setDownFExcel($doctorid,$type)
     {
         echo $doctorid."\n";
         $spreadsheet = new Spreadsheet();
@@ -340,11 +348,20 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')
-            ->where(['and',['>','createtime',strtotime('2021-04-01')],['<','createtime',strtotime('2022-04-01')]])
-            ->orWhere(['and',['>','starttime',strtotime('2021-04-01')],['<','starttime',strtotime('2022-04-01')]])
-            ->andWhere(['doctorid'=>$doctorid])
-            ->column();
+        if($type==1) {
+            $auto = Autograph::find()->select('userid')
+                ->where(['and', ['>', 'createtime', strtotime('2021-04-01')], ['<', 'createtime', strtotime('2022-04-01')]])
+                ->orWhere(['and', ['>', 'starttime', strtotime('2021-04-01')], ['<', 'starttime', strtotime('2022-04-01')]])
+                ->andWhere(['doctorid' => $doctorid])
+                ->column();
+        }else{
+            $auto = Autograph::find()->select('userid')
+                ->where(['and', ['>', 'createtime', strtotime('2021-07-01')], ['<', 'createtime', strtotime('2022-07-01')]])
+                ->orWhere(['and', ['>', 'starttime', strtotime('2021-07-01')], ['<', 'starttime', strtotime('2022-07-01')]])
+                ->andWhere(['doctorid' => $doctorid])
+                ->column();
+        }
+
         $styleArray = [
             'borders' => [
                 'allBorders' => [
@@ -402,7 +419,7 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-pregnancy.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-pregnancy-'.$type.'.xlsx');
     }
 
 }
