@@ -60,7 +60,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
 
-        $spreadsheet->getActiveSheet()->mergeCells('A1:W2');
+        $spreadsheet->getActiveSheet()->mergeCells('A1:X2');
         $worksheet->getCellByColumnAndRow(1,3)->setValue('序号');
         $worksheet->getCellByColumnAndRow(2,3)->setValue('签约医生姓名');
         $worksheet->getCellByColumnAndRow(3,3)->setValue('签约居民姓名');
@@ -148,6 +148,7 @@ class FamilyDoctorController extends Controller
         $worksheet->getStyle('H3:H5')->applyFromArray($styleArray);
         $worksheet->getStyle('I3:I5')->applyFromArray($styleArray);
         $worksheet->getStyle('J3:J5')->applyFromArray($styleArray);
+        $worksheet->getStyle('K3:K5')->applyFromArray($styleArray);
         $worksheet->getStyle('L3:X5')->applyFromArray($styleArray);
 
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
@@ -209,7 +210,7 @@ class FamilyDoctorController extends Controller
                         echo $idcard;
                         echo "\n";
 
-                        $worksheet->getStyle('A' . $i . ':W' . $i)->applyFromArray($styleArray);
+                        $worksheet->getStyle('A' . $i . ':X' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
                         $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->name);
@@ -261,7 +262,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
 
-        $spreadsheet->getActiveSheet()->mergeCells('A1:W2');
+        $spreadsheet->getActiveSheet()->mergeCells('A1:X2');
         $worksheet->getCellByColumnAndRow(1,3)->setValue('序号');
         $worksheet->getCellByColumnAndRow(2,3)->setValue('签约医生姓名');
         $worksheet->getCellByColumnAndRow(3,3)->setValue('签约居民姓名');
@@ -349,6 +350,7 @@ class FamilyDoctorController extends Controller
         $worksheet->getStyle('H3:H5')->applyFromArray($styleArray);
         $worksheet->getStyle('I3:I5')->applyFromArray($styleArray);
         $worksheet->getStyle('J3:J5')->applyFromArray($styleArray);
+        $worksheet->getStyle('K3:K5')->applyFromArray($styleArray);
         $worksheet->getStyle('L3:X5')->applyFromArray($styleArray);
 
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
@@ -400,7 +402,7 @@ class FamilyDoctorController extends Controller
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
                         $hospital = Hospital::findOne($userDoctor->hospitalid);
 
-                        $worksheet->getStyle('A' . $i . ':W' . $i)->applyFromArray($styleArray);
+                        $worksheet->getStyle('A' . $i . ':X' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
                         $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1);
