@@ -154,6 +154,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
+        $birthday = strtotime('- 7 year');
         if($type==1) {
             $auto = Autograph::find()->select('userid')
                 ->where(['and', ['>', 'createtime', strtotime('2021-04-01')], ['<', 'createtime', strtotime('2022-04-01')]])
@@ -162,15 +163,17 @@ class FamilyDoctorController extends Controller
                 ->column();
         }elseif($type==2){
             $auto = Autograph::find()->select('userid')
-                ->where(['and', ['>', 'createtime', strtotime('2021-07-01')], ['<', 'createtime', strtotime('2022-07-01')]])
-                ->orWhere(['and', ['>', 'starttime', strtotime('2021-07-01')], ['<', 'starttime', strtotime('2022-07-01')]])
+                ->where(['<','createtime',strtotime('2022-04-01')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
+            $birthday = strtotime('- 7 year',strtotime('2022-04-01'));
         }elseif($type==3){
             $auto = Autograph::find()->select('userid')
                 ->where(['<','createtime',strtotime('2022-07-01')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
+            $birthday = strtotime('- 7 year',strtotime('2022-07-01'));
+
         }else{
             $auto = Autograph::find()->select('userid')
                 ->andWhere(['doctorid' => $doctorid])
@@ -194,7 +197,7 @@ class FamilyDoctorController extends Controller
             foreach($auto as $ak=>$av) {
                 $child = ChildInfo::find()
                     ->andFilterWhere(['userid'=>$av])
-                    //->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
+                    ->andFilterWhere(['>', '`child_info`.birthday', $birthday])
                     ->groupBy('name,birthday')
                     ->all();
                 if($child) {
@@ -218,6 +221,15 @@ class FamilyDoctorController extends Controller
                         echo $v->name;
                         echo $idcard;
                         echo "\n";
+                        $userParent = UserParent::findOne(['userid' => $v->userid]);
+                        if ($userParent && $userParent->mother_phone) {
+                            $phone = "\t" . $userParent->mother_phone;
+                        } else {
+                            $phone = "\t" . UserLogin::getPhone($v->userid);
+                        }
+                        if(strlen($idcard)<10 || !$phone){
+                            continue;
+                        }
 
                         $worksheet->getStyle('A' . $i . ':X' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
@@ -230,13 +242,6 @@ class FamilyDoctorController extends Controller
                         $au = Autograph::findOne(['userid' => $v->userid]);
                         $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', $au->createtime));
                         $worksheet->getCellByColumnAndRow(8, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
-
-                        $userParent = UserParent::findOne(['userid' => $v->userid]);
-                        if ($userParent && $userParent->mother_phone) {
-                            $phone = "\t" . $userParent->mother_phone;
-                        } else {
-                            $phone = "\t" . UserLogin::getPhone($v->userid);
-                        }
                         $worksheet->getCellByColumnAndRow(9, $i)->setValue($phone);
                         $worksheet->getCellByColumnAndRow(20, $i)->setValue('✅');
 
@@ -365,6 +370,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
+        $birthday = strtotime('- 7 year');
         if($type==1) {
             $auto = Autograph::find()->select('userid')
                 ->where(['and', ['>', 'createtime', strtotime('2021-04-01')], ['<', 'createtime', strtotime('2022-04-01')]])
@@ -373,15 +379,17 @@ class FamilyDoctorController extends Controller
                 ->column();
         }elseif($type==2){
             $auto = Autograph::find()->select('userid')
-                ->where(['and', ['>', 'createtime', strtotime('2021-07-01')], ['<', 'createtime', strtotime('2022-07-01')]])
-                ->orWhere(['and', ['>', 'starttime', strtotime('2021-07-01')], ['<', 'starttime', strtotime('2022-07-01')]])
+                ->where(['<','createtime',strtotime('2022-04-01')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
+            $birthday = strtotime('- 7 year',strtotime('2022-04-01'));
         }elseif($type==3){
             $auto = Autograph::find()->select('userid')
                 ->where(['<','createtime',strtotime('2022-07-01')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
+            $birthday = strtotime('- 7 year',strtotime('2022-07-01'));
+
         }else{
             $auto = Autograph::find()->select('userid')
                 ->andWhere(['doctorid' => $doctorid])
