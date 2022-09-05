@@ -160,10 +160,19 @@ class FamilyDoctorController extends Controller
                 ->orWhere(['and', ['>', 'starttime', strtotime('2021-04-01')], ['<', 'starttime', strtotime('2022-04-01')]])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
-        }else{
+        }elseif($type==2){
             $auto = Autograph::find()->select('userid')
                 ->where(['and', ['>', 'createtime', strtotime('2021-07-01')], ['<', 'createtime', strtotime('2022-07-01')]])
                 ->orWhere(['and', ['>', 'starttime', strtotime('2021-07-01')], ['<', 'starttime', strtotime('2022-07-01')]])
+                ->andWhere(['doctorid' => $doctorid])
+                ->column();
+        }elseif($type==3){
+            $auto = Autograph::find()->select('userid')
+                ->where(['<','createtime',strtotime('2022-07-01')])
+                ->andWhere(['doctorid' => $doctorid])
+                ->column();
+        }else{
+            $auto = Autograph::find()->select('userid')
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
         }
@@ -362,10 +371,19 @@ class FamilyDoctorController extends Controller
                 ->orWhere(['and', ['>', 'starttime', strtotime('2021-04-01')], ['<', 'starttime', strtotime('2022-04-01')]])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
-        }else{
+        }elseif($type==2){
             $auto = Autograph::find()->select('userid')
                 ->where(['and', ['>', 'createtime', strtotime('2021-07-01')], ['<', 'createtime', strtotime('2022-07-01')]])
                 ->orWhere(['and', ['>', 'starttime', strtotime('2021-07-01')], ['<', 'starttime', strtotime('2022-07-01')]])
+                ->andWhere(['doctorid' => $doctorid])
+                ->column();
+        }elseif($type==3){
+            $auto = Autograph::find()->select('userid')
+                ->where(['<','createtime',strtotime('2022-07-01')])
+                ->andWhere(['doctorid' => $doctorid])
+                ->column();
+        }else{
+            $auto = Autograph::find()->select('userid')
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
         }
