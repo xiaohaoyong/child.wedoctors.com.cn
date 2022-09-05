@@ -98,26 +98,27 @@ class DataController extends \yii\console\Controller
 
 //        $count=Autograph::find()->count();
 //        echo $count;
-//        $file = fopen('phone.csv', 'r');
-//        $i=0;
-//        while (($line = fgets($file)) !== false) {
-//            $rs = trim($line);
-//            echo $rs;
-//            echo "\n";
-//            $userLogin = UserLogin::findOne(['phone'=>$rs]);
-//            if($userLogin) {
-//                $userParent = DoctorParent::findOne(['parentid' => $userLogin->userid]);
-//                if($userParent) {
-//                    $userParent->doctorid = 47156;
-//                    $userParent->save();
-//                    $auto = Autograph::findOne(['userid' => $userLogin->userid]);
-//                    if ($auto) {
-//                        $auto->level = 0;
-//                        $auto->save();
-//                    }
-//                }
-//            }
-//        }
+        $file = fopen('phone.csv', 'r');
+        $i=0;
+        while (($line = fgets($file)) !== false) {
+            $rs = trim($line);
+            echo $rs;
+            echo "\n";
+            $userLogin = UserLogin::findOne(['phone'=>$rs]);
+            if($userLogin) {
+                $userParent = DoctorParent::findOne(['parentid' => $userLogin->userid]);
+                if($userParent) {
+                    $userParent->doctorid = 213579;
+                    $userParent->save();
+                    $auto = Autograph::findOne(['userid' => $userLogin->userid]);
+                    if ($auto) {
+                        $auto->doctorid =213579;
+                        $auto->save();
+                    }
+                }
+            }
+        }
+        exit;
 //        $count=Autograph::find()->count();
 //        echo $count;
 //        exit;
