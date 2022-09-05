@@ -1,6 +1,6 @@
 <?php
 
-namespace hospital\controllers;
+namespace interfaces\controllers;
 
 use common\helpers\baidu_tts\AipSpeech;
 use common\models\Appoint;
