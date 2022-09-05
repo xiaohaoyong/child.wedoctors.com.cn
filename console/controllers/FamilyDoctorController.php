@@ -213,7 +213,7 @@ class FamilyDoctorController extends Controller
                         $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
                         $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->name);
-                        $gender = $v->gender?$v->gerder:1;
+                        $gender = $v->gender?$v->gender:1;
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue(ChildInfo::$genderText[$gender]);
                         $worksheet->getCellByColumnAndRow(5, $i)->setValue($userParent->fieldu46);
                         $worksheet->getCellByColumnAndRow(6, $i)->setValue("\t" . $idcard);
