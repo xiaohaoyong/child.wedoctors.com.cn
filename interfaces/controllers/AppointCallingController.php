@@ -29,10 +29,12 @@ class AppointCallingController extends Controller
         \Yii::$app->response->format=Response::FORMAT_JSON;
 
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
-        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('10:i'));
+        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
         //当前时间段排队
-        $queue = new Queue($doctorid, $type, $timeType,$type?false:true);
-        $list[] = $queue->lrange();
+        if($timeType) {
+            $queue = new Queue($doctorid, $type, $timeType, $type ? false : true);
+            $list[] = $queue->lrange();
+        }
 
         //其他时间段排队
         foreach(Appoint::$timeText as $k=>$v){
