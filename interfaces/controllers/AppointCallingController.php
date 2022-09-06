@@ -81,8 +81,6 @@ class AppointCallingController extends Controller
                 }
             }
         }
-
-
         return ['lists'=>$lista];
 
     }
