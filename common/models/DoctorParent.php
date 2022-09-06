@@ -75,15 +75,16 @@ class DoctorParent extends \yii\db\ActiveRecord
                 ChildInfo::updateAll(['doctorid' => $doctor->hospitalid], 'userid=' . $this->parentid);
             }
         }
-        $doctor=UserDoctor::findOne(['userid'=>$this->doctorid]);
-        if($doctor && $doctor->is_team){
-            $doctorParent=DoctorParent::find()->select('count(*) as a,teamid')->where(['doctorid'=>$this->doctorid])->andWhere(['>','teamid',0])->groupBy('teamid')->orderBy('a asc')->one();
-            if(!$doctorParent)
-            {
-                $doctorTeam=DoctorTeam::findOne(['doctorid'=>$this->doctorid]);
-                $this->teamid=$doctorTeam->id;
-            }else {
-                $this->teamid = $doctorParent->teamid;
+        $doctorTeam=DoctorTeam::findOne(['doctorid'=>$this->doctorid]);
+        if($doctorTeam) {
+            $doctor = UserDoctor::findOne(['userid' => $this->doctorid]);
+            if ($doctor && $doctor->is_team) {
+                $doctorParent = DoctorParent::find()->select('count(*) as a,teamid')->where(['doctorid' => $this->doctorid])->andWhere(['>', 'teamid', 0])->groupBy('teamid')->orderBy('a asc')->one();
+                if (!$doctorParent) {
+                    $this->teamid = $doctorTeam->id;
+                } else {
+                    $this->teamid = $doctorParent->teamid;
+                }
             }
         }
         $this->level=1;
