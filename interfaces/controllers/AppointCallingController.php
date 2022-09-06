@@ -86,7 +86,7 @@ class AppointCallingController extends Controller
         return ['lists'=>$lista];
 
     }
-    public function actionTtl($text,$id){
+    public function actionTtl($id){
     \Yii::$app->response->format=Response::FORMAT_JSON;
     $appointCallingList=AppointCallingList::findOne($id);
     if($appointCallingList->calling==1) {
