@@ -29,7 +29,7 @@ class AppointCallingController extends Controller
         \Yii::$app->response->format=Response::FORMAT_JSON;
 
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
-        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('10:i'));
         //当前时间段排队
         $queue = new Queue($doctorid, $type, $timeType,$type?false:true);
         $list[] = $queue->lrange();
