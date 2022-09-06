@@ -308,13 +308,13 @@ class SuiteController extends Controller
                 ],
                 [
                     'type' => 'view',
-                    'name' => '预约核酸检测',
-                    'url' => 'http://web.child.wedoctors.com.cn/naire-appoint/index',
+                    'name' => '预约HPV九价疫苗',
+                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index?search=%E5%98%89&type=0',
                 ],
                 [
                     'type' => 'view',
-                    'name' => '预约HPV九价疫苗',
-                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index?type=2',
+                    'name' => '预约成人疫苗接种疫苗',
+                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index',
                 ],
                 [
                     'type' => 'view',
