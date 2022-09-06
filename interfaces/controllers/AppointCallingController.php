@@ -73,9 +73,10 @@ class AppointCallingController extends Controller
                         $zname = "待定";
                     }
                     $num = $appointCallingListModel->time . \common\models\AppointCallingList::listName($appointCallingListModel->id, $appointCallingListModel->doctorid, $appointCallingListModel->type, $appointCallingListModel->time);
+                    $rs['id']=$vv;
 
                     $rs['num']=$num;
-                    $rs['name']=$name.$vv;
+                    $rs['name']=$name;
                     $rs['zname']=$zname;
                     $rs['times']=$appointCallingListModel->time?\common\models\Appoint::$timeText[$appointCallingListModel->time]:'临时';
                     $rs['is_read']=$appointCallingListModel->acid&&$appointCallingListModel->calling?1:0;
