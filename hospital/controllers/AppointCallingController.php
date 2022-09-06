@@ -124,7 +124,7 @@ class AppointCallingController extends BaseController
             if ($state != 4) {
                 $ord_appointCallingList->state = $state;
                 $ord_appointCallingList->save();
-                var_dump($ord_appointCallingList->firstErrors);
+                var_dump($ord_appointCallingList->firstErrors);exit;
             }
         }
 
