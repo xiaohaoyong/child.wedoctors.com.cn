@@ -219,7 +219,7 @@ class AppointController extends Controller
         $doctorid=$this->hs[$h];
         $t=date('H:i');
         if($t>'16:00' || $t<'07:00'){
-            return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
+            //return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
         }
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
