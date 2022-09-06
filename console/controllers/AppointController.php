@@ -310,6 +310,7 @@ class AppointController extends Controller
             $v->state=1;
             $v->save();
             $log->addLog($v->state);
+            sleep(5);
             $log->saveLog();
             $this->pushTmp($v);
         }
