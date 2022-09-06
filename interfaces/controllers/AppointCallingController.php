@@ -33,9 +33,6 @@ class AppointCallingController extends Controller
         //当前时间段排队
         $queue = new Queue($doctorid, $type, $timeType,$type?false:true);
         $list[] = $queue->lrange();
-        var_dump($queue->_name);
-        var_dump($list);exit;
-
 
         //其他时间段排队
         foreach(Appoint::$timeText as $k=>$v){
@@ -48,7 +45,45 @@ class AppointCallingController extends Controller
         $queue = new Queue($doctorid, $type, 0,$type?false:true);
         $list[] = $queue->lrange();
 
-        return ['lists'=>$list];
+
+        $i=0;
+        foreach($list as $k=>$v) {
+            if ($v) {
+                foreach ($v as $vk => $vv) {
+                    $i++;
+                    if ($i > 4) {
+                        $i = 0;
+                        break;
+                    }
+                    $appointCallingListModel = \common\models\AppointCallingList::findOne($vv);
+                    if (!$appointCallingListModel) continue;
+                    if (!$appointCallingListModel->aid) {
+                        $name = "临时";
+                    } else {
+                        $appoint = \common\models\Appoint::findOne($appointCallingListModel->aid);
+
+                        $name = $appoint->name();
+                    }
+                    if ($appointCallingListModel->acid) {
+                        $appointCalling = \common\models\AppointCalling::findOne($appointCallingListModel->acid);
+                        $zname = $appointCalling->name;
+                    } else {
+                        $zname = "待定";
+                    }
+                    $num = $appointCallingListModel->time . \common\models\AppointCallingList::listName($appointCallingListModel->id, $appointCallingListModel->doctorid, $appointCallingListModel->type, $appointCallingListModel->time);
+
+                    $rs['num']=$num;
+                    $rs['name']=$name;
+                    $rs['zname']=$zname;
+                    $rs['times']=$appointCallingListModel->time?\common\models\Appoint::$timeText[$appointCallingListModel->time]:'临时';
+                    $rs['is_read']=$appointCallingListModel->acid&&$appointCallingListModel->calling?1:0;
+                    $lista[]=$rs;
+                }
+            }
+        }
+
+
+        return ['lists'=>$lista];
 
     }
 }
