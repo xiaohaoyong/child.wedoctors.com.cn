@@ -195,6 +195,7 @@ class AppointCallingController extends BaseController
     public function calling($AppointCalling){
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $AppointCalling->doctorid, 'type' => $AppointCalling->type]);
         $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+        var_dump($timeType);exit;
         $aclid=$this->queue($AppointCalling->type,$timeType,$hospitalAppoint,$AppointCalling->type?false:true);
         if ($aclid) {
             $appointCallingList = AppointCallingList::findOne($aclid);
