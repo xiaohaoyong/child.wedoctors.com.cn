@@ -35,6 +35,7 @@ class AppointCallingController extends Controller
         $list[] = $queue->lrange();
         var_dump($list);exit;
 
+
         //其他时间段排队
         foreach(Appoint::$timeText as $k=>$v){
             if($k!=$timeType) {
