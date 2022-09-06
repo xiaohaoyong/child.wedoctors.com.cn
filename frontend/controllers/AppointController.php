@@ -188,7 +188,12 @@ class AppointController extends Controller
     public function actionDel($doctorid){
         AppointCallingList::deleteAll(['doctorid' => $doctorid]);
         $redis=\Yii::$app->rd;
-        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-0');
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-3');
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-');
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-s');
+
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-3s');
+
         $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-1-0');
         $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-4-0');
 

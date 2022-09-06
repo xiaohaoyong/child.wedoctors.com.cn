@@ -101,6 +101,7 @@ class AppointCallingController extends BaseController
         $appointCallingList = AppointCallingList::find()->where(['acid' => $model->id])
             ->andWhere(['>', 'createtime', strtotime('today')])
             ->andWhere(['<', 'createtime', strtotime('+1 day')])
+            ->andWhere(['!=','state',3])
             ->orderBy('state asc,id asc')
             ->one();
         if($appointCallingList){
