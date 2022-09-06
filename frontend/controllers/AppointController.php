@@ -270,7 +270,7 @@ class AppointController extends Controller
 
                 } else {
                     $times = explode('-', Appoint::$timeText1[$appoint->appoint_time]);
-                    $t = date('H:i');
+                    $t = date('10:20');
                     if ($t < $times[1]) {
                         $timeType = $appoint->appoint_time;
                     } else {
