@@ -313,8 +313,8 @@ class SuiteController extends Controller
                 ],
                 [
                     'type' => 'view',
-                    'name' => '预约成人疫苗接种疫苗',
-                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index',
+                    'name' => '预约HPV九价疫苗',
+                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index?type=2',
                 ],
                 [
                     'type' => 'view',
