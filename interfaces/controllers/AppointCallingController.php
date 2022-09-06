@@ -74,7 +74,6 @@ class AppointCallingController extends Controller
                     }
                     $num = $appointCallingListModel->time . \common\models\AppointCallingList::listName($appointCallingListModel->id, $appointCallingListModel->doctorid, $appointCallingListModel->type, $appointCallingListModel->time);
                     $rs['id']=$vv;
-
                     $rs['num']=$num;
                     $rs['name']=$name;
                     $rs['zname']=$zname;
