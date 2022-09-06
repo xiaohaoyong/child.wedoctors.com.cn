@@ -33,6 +33,7 @@ class AppointCallingController extends Controller
         //当前时间段排队
         $queue = new Queue($doctorid, $type, $timeType,$type?false:true);
         $list[] = $queue->lrange();
+        var_dump($queue->_name);
         var_dump($list);exit;
 
 
