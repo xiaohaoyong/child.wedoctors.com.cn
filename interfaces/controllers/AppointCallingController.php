@@ -44,15 +44,6 @@ class AppointCallingController extends Controller
         //临时号排队
         $queue = new Queue($doctorid, $type, 0,$type?false:true);
         $list[] = $queue->lrange();
-        $list = [
-            ['num'=>'1号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
-            ['num'=>'2号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
-            ['num'=>'3号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
-            ['num'=>'4号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
-            ['num'=>'5号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
-            ['num'=>'6号','name'=>'汪振','zname'=>'第'.rand(0,4).'窗口','times'=>'临时','is_read'=>rand(0,1)],
-
-        ];
 
         return ['lists'=>$list];
 
