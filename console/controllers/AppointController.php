@@ -304,13 +304,14 @@ class AppointController extends Controller
                 ->andWhere(['week' => $week])
                 ->andWhere(['haid' => $appoint->id])
                 ->andWhere(['time_type' => $v->appoint_time])->one();
+            $log->addLog("1设置数：".$weeks->num);
+            $log->addLog("1已约数：".$appoint_count);
             if (($weeks->num - $appoint_count) <= 0) {
                 $v->state=3;
                 $v->cancel_type=5;
                 $v->save();
                 $log->addLog($v->state);
-                $log->addLog("1设置数：".$weeks->num);
-                $log->addLog("1已约数：".$appoint_count);
+
                 $log->saveLog();
                 $this->pushTmp($v);
                 continue;
