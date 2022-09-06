@@ -125,8 +125,6 @@ class AppointCallingController extends BaseController
                 $ord_appointCallingList->state = $state;
                 $ord_appointCallingList->save();
             }
-            var_dump($ord_appointCallingList->firstErrors);exit;
-
         }
 
         if($state==3) {
@@ -162,7 +160,7 @@ class AppointCallingController extends BaseController
                         $queue->lrem($ord_appointCallingList->id);
 
                         $timeType=Appoint::getTimeTypeTmp($ord_appointCallingList->doctorid,$ord_appointCallingList->type);
-                        $ord_appointCallingList->state=1;
+                        $ord_appointCallingList->state=5;
                         $ord_appointCallingList->time=Appoint::getTimeTypeTmp($ord_appointCallingList->doctorid,$ord_appointCallingList->type);
                         if($ord_appointCallingList->save())
                         {
