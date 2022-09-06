@@ -164,11 +164,11 @@ class Appoint extends \yii\db\ActiveRecord
 
     public static function getTimeTypeTmp($doctorid,$type){
         //排队
-        $t=date('H:i');
+        $t=date('10:20');
         $key=$t<'12:00'?1:2;
-        if($t>'16:00' || $t<'07:00'){
-            return false;
-        }
+//        if($t>'16:00' || $t<'07:00'){
+//            return false;
+//        }
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
         $array=array_reverse(Appoint::$timeTextRow[$hospitalAppoint->interval][$key],true);
 

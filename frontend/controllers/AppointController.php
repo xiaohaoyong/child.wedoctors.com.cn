@@ -185,6 +185,14 @@ class AppointController extends Controller
         }
         return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功'];
     }
+    public function actionDel($doctorid){
+        AppointCallingList::deleteAll(['doctorid' => $doctorid]);
+        $redis=\Yii::$app->rd;
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-0');
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-1-0');
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-4-0');
+
+    }
 
     public function actionDone($h, $d, $s,$code=''){
         \Yii::$app->response->format = Response::FORMAT_JSON;
@@ -276,6 +284,7 @@ class AppointController extends Controller
                     } else {
                         $timeType = Appoint::getTimeTypeTmp($doctorid, $type);
                     }
+                    //var_dump($timeType);exit;
                 }
             }else{
                 return ['code'=>30000,'msg'=>'未查询到预约信息'];
