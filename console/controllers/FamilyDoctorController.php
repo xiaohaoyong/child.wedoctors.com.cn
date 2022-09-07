@@ -151,7 +151,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->andWhere(['<','createtime',strtotime('2021-09-30')])->column();
+        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
 
         $styleArray = [
             'borders' => [
@@ -221,7 +221,7 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/county/" .$hospital->name.'-family.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family.xlsx');
     }
     public function setDownFExcel($doctorid)
     {
@@ -353,10 +353,11 @@ class FamilyDoctorController extends Controller
             $i = 6;
             foreach($auto as $ak=>$av) {
                 $preg = \common\models\Pregnancy::find()
-                    ->andWhere(['pregnancy.field49'=>0])
-                    ->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
+                    //->andWhere(['pregnancy.field49'=>0])
+                    ->andWhere(['>','pregnancy.field11',strtotime('-84 week')])
                     ->andWhere(['familyid'=> $av])
-                    ->groupBy('field1,field11')
+                    ->andWhere(['!=','pregnancy.field4',''])
+                    ->groupBy('field1,field4')
                     ->all();
                 if($preg) {
                     foreach ($preg as $k => $v) {
@@ -364,14 +365,15 @@ class FamilyDoctorController extends Controller
                         echo "==";
                         echo $v->field1;
                         echo "\n";
-                        $autoa = DoctorParent::findOne(['parentid' => $v->familyid]);
+                        $autoa = Autograph::findOne(['userid' => $v->familyid]);
+
                         $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
                         $hospital = Hospital::findOne($userDoctor->hospitalid);
 
                         $worksheet->getStyle('A' . $i . ':W' . $i)->applyFromArray($styleArray);
                         $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
                         $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
-                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1.$v->familyid);
+                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1);
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue("\t" . $v->field10);
                         $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $v->field4);
                         $au = Autograph::findOne(['userid' => $v->familyid]);

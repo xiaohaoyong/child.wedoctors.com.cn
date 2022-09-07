@@ -93,9 +93,9 @@ class SynchronizationController extends BaseController
     public function actionDataCallback(){
         \Yii::$app->response->format=Response::FORMAT_JSON;
 
-        $log=new Log('datacallback');
-        $log->addLog(json_encode($_POST));
-        $log->saveLog();
+//        $log=new Log('datacallback');
+//        $log->addLog(json_encode($_POST));
+//        $log->saveLog();
 
         $dur=new DataUpdateRecord();
         $dur->hospitalid=$_POST['id'];

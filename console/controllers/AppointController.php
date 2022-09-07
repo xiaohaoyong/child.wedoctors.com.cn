@@ -101,7 +101,7 @@ class AppointController extends Controller
                 //推送脊灰疫苗推广文
                 if($v->type==2){
                     $child=ChildInfo::findOne(['id'=>$v->childid]);
-                    if($child && $child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-30 day')){
+                    if($child && $child->birthday>strtotime('-74 day')){
                         $aid=1985;
                         $first='就诊当日注意事项和2月龄脊灰疫苗方案早知道，请仔细阅读';
 
@@ -114,6 +114,11 @@ class AppointController extends Controller
                         }elseif($child->birthday>strtotime('-44 day') && $child->birthday<strtotime('-30 day')) {
                             $aid = 1985;
                             $title = '一至二月龄宝宝家长';
+                            $footer="";
+
+                        }else {
+                            $aid = 1985;
+                            $title = '宝宝家长';
                             $footer="";
 
                         }
@@ -235,6 +240,17 @@ class AppointController extends Controller
 
             $week = date('w', $v->appoint_date);
             $appoint = HospitalAppoint::findOne(['doctorid' => $v->doctorid, 'type' => $v->type]);
+            $app = Appoint::find()->where(['state'=>1])->andWhere(['phone'=>$v->phone])->one();
+            if($app){
+                $v->state=3;
+                $v->cancel_type=5;
+                $v->save();
+                $log->addLog($v->state);
+                $log->addLog("已存在进行中");
+                $log->saveLog();
+                continue;
+            }
+
 
             $query = Appoint::find()
                 ->andWhere(['type' => $v->type])
@@ -252,6 +268,7 @@ class AppointController extends Controller
                     $v->cancel_type = 5;
                     $v->save();
                     $log->addLog("号源已取消");
+                    $this->pushTmp($v);
                     continue;
                 }
 
@@ -266,6 +283,7 @@ class AppointController extends Controller
                     $v->save();
                     $log->addLog($v->state);
                     $log->saveLog();
+                    $this->pushTmp($v);
                     continue;
                 }
             }
@@ -282,12 +300,41 @@ class AppointController extends Controller
                 $log->addLog("1设置数：".$weeks->num);
                 $log->addLog("1已约数：".$appoint_count);
                 $log->saveLog();
+                $this->pushTmp($v);
                 continue;
             }
             $v->state=1;
             $v->save();
             $log->addLog($v->state);
             $log->saveLog();
+            $this->pushTmp($v);
         }
+    }
+    public function pushTmp(Appoint $appoint){
+        if($appoint->state == 1) {
+            $data = [
+                'first' => ['value' => ''],
+                'keyword1' => array('value' => Appoint::$typeText[$appoint->type]),
+                'keyword2' => array('value' => $appoint->name()),
+                'keyword3' => array('value' => $appoint->phone),
+                'keyword4' => array('value' => date('Y-m-d',$appoint->appoint_date)),
+                'keyword5' => array('value' => Appoint::$timeText[$appoint->appoint_time]),
+                'remark' => array('value' => "尊敬的用户您好，您的预约已生效，请您按照预约时间前往社区，如有问题请联系在线客服"),
+            ];
+            $tmpid = '83CpoxWB9JCnwdXPr0H7dB66QQnFdJQvBbeMnJ9rdHo';
+        }else{
+            $data = [
+                'first' => ['value' => ''],
+                'keyword1' => array('value' => $appoint->name()),
+                'keyword2' => array('value' => $appoint->phone),
+                'keyword3' => array('value' => date('Y-m-d',$appoint->appoint_date)),
+                'keyword4' => array('value' => Appoint::$typeText[$appoint->type]),
+                'keyword5' => array('value' => '预约人数较多未能成功预约'),
+                'remark' => array('value' => "尊敬的用户您好，很抱歉的通知您，由于预约量较大，您未能预约成功已自动取消，如有问题请联系在线客服"),
+            ];
+            $tmpid = 'Osp0A-3RxrPZpyts8GhASy8jOJLGC6y0m_DHlaF-Z3c';
+        }
+        $login = UserLogin::findOne(['id' => $appoint->loginid]);
+        return $rs = WechatSendTmp::send($data, $login->openid, $tmpid,'',[],0,0);
     }
 }

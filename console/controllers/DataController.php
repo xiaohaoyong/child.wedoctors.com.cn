@@ -84,113 +84,94 @@ class DataController extends \yii\console\Controller
 {
     public function actionTesta($num=0)
     {
-        $doctors= UserDoctor::find()->andWhere(['userid'=>206262])->all();
-        foreach($doctors as $k=>$v){
-            $rs=[];
-            $rs[]=$v->hospital->name;
-            $rs[]=ArticleUser::find()->andWhere(['userid'=>$v->userid])
-                ->andWhere(['>','createtime',strtotime('20200101')])
-                ->andWhere(['<','createtime',strtotime('20210101')])->count();
-            $rs[]="\n";
-            echo implode(',',$rs);
-        }
-        exit;
-
-//        $code = \Yii::$app->cache->get(13601261982);
-//        echo $code;
-//        exit;
-
-//        $con = 'D:\site\child.wedoctors.com.cn\biao\\';
-//        $filename = scandir($con);
-//        $doctorids=UserDoctor::find()->select('userid')->where(['county'=>1106])->column();
-//        foreach($filename as $k=>$v){
-//            if($v=="." || $v==".."){continue;}
-//            $doctorid=str_replace('.csv','',$v);
-//            $doctor=UserDoctor::findOne(['userid'=>$doctorid]);
-//            var_dump($doctorid);
-//            $file = fopen($con.$v, 'r');
-//            while (($line = fgets($file)) !== false) {
-//                $rs=explode(',',trim($line));
-//                if($rs[21]==1){
-//                    $idcard=str_replace('*','',$rs[7]);
-//                    if(!$idcard || strlen($idcard)<8){
-//                        echo $rs[5]."===";
-//                        $child=ChildInfo::find()
-//                            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-//                            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-//                            ->andWhere(['child_info.name'=>$rs[5]])
-//                            ->one();
-//                        echo $child->userid."===";
-//
-//                        $userParent=UserParent::findOne([$child->userid]);
-//                        if($userParent->mother_id){
-//                            $rs[7]=$userParent->mother_id.'(母亲)';
-//                        }
-//                    }else{
-//                        echo "----";
-//                        echo "\n";
+//        $count=Autograph::find()->count();
+//        echo $count;
+//        $file = fopen('phone.csv', 'r');
+//        $i=0;
+//        while (($line = fgets($file)) !== false) {
+//            $rs = trim($line);
+//            echo $rs;
+//            echo "\n";
+//            $userLogin = UserLogin::findOne(['phone'=>$rs]);
+//            if($userLogin) {
+//                $userParent = DoctorParent::findOne(['parentid' => $userLogin->userid]);
+//                if($userParent) {
+//                    $userParent->doctorid = 47156;
+//                    $userParent->save();
+//                    $auto = Autograph::findOne(['userid' => $userLogin->userid]);
+//                    if ($auto) {
+//                        $auto->level = 0;
+//                        $auto->save();
 //                    }
 //                }
-//                $rs[7]="\t".$rs[7];
-//                $rs[]="\n";
-//                file_put_contents($con.'done\\'.$doctor->hospital->name.".csv", implode(',',$rs), FILE_APPEND);
-//                echo "\n";
+//            }
+//        }
+//        $count=Autograph::find()->count();
+//        echo $count;
+//        exit;
+//        $file = fopen('216593.csv', 'r');
+//        $i=0;
+//        while (($line = fgets($file)) !== false) {
+//            $rs=explode(',',trim($line));
+//            if(!$phone=trim(str_replace('"','',$rs[7]))){
+//                continue;
+//            }
+//            $child=Pregnancy::find()
+//                ->leftJoin('user_login', '`user_login`.`userid` = `pregnancy`.`familyid`')
+//                ->andFilterWhere(['`user_login`.`phone`' => $phone])
+//                ->andWhere(['pregnancy.field1'=>$rs[2]])
+//                ->andWhere(['pregnancy.field4'=>''])
+//                //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
+//
+//                //->andWhere(['pregnancy.field2'=>strtotime($rs[5])])
+//                ->one();
+//            var_dump($child);
+//
+//            if($rs[4] && $child){
+//                echo $rs[2];echo "\n";
+//                $child->field4=trim($rs[4]);
+//                //$child->field2=strtotime($rs[5]);
+//                $child->save();
+//                $i++;
+//                $userParent=UserParent::findOne(['userid'=>$child->familyid]);
+//                if($userParent){
+//                    $userParent->mother_id=$rs[4];
+//                    $userParent->save();
+//                }
+//            }else{
+//                echo "===\n";
 //            }
 //        }
 //        exit;
-        $file = fopen('190922.csv', 'r');
-        $i=0;
-        while (($line = fgetcsv($file)) !== false) {
-            $rs=$line;
-            $child=Pregnancy::find()
-                ->leftJoin('user_login', '`user_login`.`userid` = `pregnancy`.`familyid`')
-                ->andFilterWhere(['`user_login`.`phone`' => trim($rs[7])])
-                ->andWhere(['pregnancy.field1'=>$rs[3]])
-                ->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
-
-                //->andWhere(['pregnancy.field2'=>strtotime($rs[5])])
-                ->one();
-
-            if($rs[4] && $child){
-                echo $rs[3];echo "\n";
-                $child->field4=trim($rs[4]);
-                $child->field2=strtotime($rs[5]);
-                $child->save();
-                $i++;
-                $userParent=UserParent::findOne(['userid'=>$child->familyid]);
-                if($userParent){
-                    $userParent->mother_id=$rs[4];
-                    $userParent->save();
-                }
-            }else{
-                echo "===\n";
-            }
-        }
-        exit;
-        $file = fopen('190922.csv', 'r');
+        $file = fopen('216593.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
             $rs=explode(',',trim($line));
+            if(!$phone = trim(str_replace('"','',$rs[7]))){
+                continue;
+            }
             $child=ChildInfo::find()
-                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                ->andFilterWhere(['`doctor_parent`.`doctorid`' => 190922])
-                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                ->andWhere(['user_parent.mother'=>$rs[7]])
-                ->andWhere(['child_info.name'=>$rs[1]])
-                ->andWhere(['child_info.birthday'=>strtotime($rs[5])])
+                ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+                ->andWhere(['`user_login`.`phone`' => $phone])
+//                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+//                ->andWhere(['user_parent.mother'=>$rs[7]])
+                ->andWhere(['child_info.name'=>$rs[2]])
+                //->andWhere(['child_info.birthday'=>strtotime($rs[5])])
                 ->one();
-
-            if($rs[3] && $child){
-                echo $rs[1];echo "\n";
-                $child->field27=$rs[3];
+            if(strstr($rs[4],"母亲")){
+                continue;
+            }
+            if($rs[4] && $child){
+                echo $rs[2];echo "\n";
+                $child->field27=trim($rs[4]);
                 $child->save();
                 $i++;
-                $userParent=UserParent::findOne(['userid'=>$child->userid]);
-                if($userParent){
-                    $userParent->fieldu46=$rs[9];
-                    $userParent->fieldp47=$rs[9];
-                    $userParent->save();
-                }
+//                $userParent=UserParent::findOne(['userid'=>$child->userid]);
+//                if($userParent){
+//                    $userParent->fieldu46=trim($rs[3]);
+//                    $userParent->fieldp47=trim($rs[3]);
+//                    $userParent->save();
+//                }
             }else{
                 echo "===\n";
             }

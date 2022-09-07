@@ -28,7 +28,7 @@ class FiveController extends Controller
 {
     public function actionUpdateData()
     {
-        $access=Access::find()->where(['doctorid'=>0])->andWhere(['<','createtime',1659283200])->andWhere(['>','createtime',1656604800])->all();
+        $access=Access::find()->where(['doctorid'=>0])->all();
         foreach($access as $k=>$v){
             $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid]);
             if($doctorParent) {
@@ -67,8 +67,8 @@ class FiveController extends Controller
 
     public function actionExcel()
     {
-        $stime=1656604800;
-        $etime=1659283200;
+        $stime=strtotime('2022-08-01');
+        $etime=strtotime('2022-08-15');
         $userDoctor = UserDoctor::find()->all();
         foreach ($userDoctor as $k=>$v){
             $rs=[];
@@ -98,7 +98,7 @@ class FiveController extends Controller
                 ->andWhere(['<','createtime',$etime])
                 ->andWhere(['doctorid'=>$doctorids])
                 ->andWhere(['fid'=>1985])
-                ->andWhere(['>=','day',30])
+                ->andWhere(['>=','day',0])
                 ->andWhere(['<=','day',60])
                 ->column();
             $rs[]=count($tmpLog);
@@ -134,7 +134,7 @@ class FiveController extends Controller
                 ->where(['>','createtime',$stime])
                 ->andWhere(['<','createtime',$etime])
                 ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['>=','month',30])
+                ->andWhere(['>=','month',0])
                 ->andWhere(['<=','month',60])
                 ->andWhere(['type'=>1])
                 ->column();
@@ -146,78 +146,13 @@ class FiveController extends Controller
                 ->where(['>','createtime',$stime])
                 ->andWhere(['<','createtime',$etime])
                 ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['>=','month',30])
+                ->andWhere(['>=','month',0])
                 ->andWhere(['<=','month',60])
                 ->andWhere(['type'=>1])
                 ->andWhere(['>','long',9])
                 ->column();
             $acc=array_unique($acc);
             $rs[]=count($acc);
-
-
-            //推送总人数（小于74天的）
-            $tmpLog=TmpLog::find()
-                ->select('openid')
-                ->where(['>','createtime',$stime])
-                ->andWhere(['<','createtime',$etime])
-                ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['fid'=>1985])
-                ->andWhere(['>=','day',61])
-                ->andWhere(['<=','day',74])
-                ->column();
-            $rs[]=count($tmpLog);
-            //打开人数(小于74天的)
-
-            $userids=UserLogin::find()->select('userid')->where(['in','openid',$tmpLog])->column();
-            $acc=Access::find()
-                ->select('userid')
-                ->where(['>','createtime',$stime])
-                ->andWhere(['<','createtime',$etime])
-                ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['in','userid',$userids])
-                ->andWhere(['cid'=>1985])
-                ->column();
-            $acc=array_unique($acc);
-            $rs[]=count($acc);
-            //停留10秒以上的人数
-
-            $acc=Access::find()
-                ->select('userid')
-                ->where(['>','createtime',$stime])
-                ->andWhere(['<','createtime',$etime])
-                ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['in','userid',$userids])
-                ->andWhere(['>','long',9])
-                ->andWhere(['cid'=>1985])
-                ->column();
-            $acc=array_unique($acc);
-            $rs[]=count($acc);
-            //预约弹窗总人数（小于74天）
-            $acc=Access::find()
-                ->select('userid')
-                ->where(['>','createtime',$stime])
-                ->andWhere(['<','createtime',$etime])
-                ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['>=','month',61])
-                ->andWhere(['<=','month',74])
-                ->andWhere(['type'=>1])
-                ->column();
-            $acc=array_unique($acc);
-            $rs[]=count($acc);
-//预约弹窗总人数（小于74天）
-            $acc=Access::find()
-                ->select('userid')
-                ->where(['>','createtime',$stime])
-                ->andWhere(['<','createtime',$etime])
-                ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['>=','month',61])
-                ->andWhere(['<=','month',74])
-                ->andWhere(['type'=>1])
-                ->andWhere(['>','long',9])
-                ->column();
-            $acc=array_unique($acc);
-            $rs[]=count($acc);
-
 
 
 
