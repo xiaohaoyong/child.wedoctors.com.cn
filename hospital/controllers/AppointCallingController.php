@@ -101,6 +101,7 @@ class AppointCallingController extends BaseController
         $appointCallingList = AppointCallingList::find()->where(['acid' => $model->id])
             ->andWhere(['>', 'createtime', strtotime('today')])
             ->andWhere(['<', 'createtime', strtotime('+1 day')])
+            ->andWhere(['!=','state',3])
             ->orderBy('state asc,id asc')
             ->one();
         if($appointCallingList){
@@ -160,7 +161,7 @@ class AppointCallingController extends BaseController
                         $queue->lrem($ord_appointCallingList->id);
 
                         $timeType=Appoint::getTimeTypeTmp($ord_appointCallingList->doctorid,$ord_appointCallingList->type);
-                        $ord_appointCallingList->state=1;
+                        $ord_appointCallingList->state=5;
                         $ord_appointCallingList->time=Appoint::getTimeTypeTmp($ord_appointCallingList->doctorid,$ord_appointCallingList->type);
                         if($ord_appointCallingList->save())
                         {
@@ -194,7 +195,7 @@ class AppointCallingController extends BaseController
      */
     public function calling($AppointCalling){
         $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $AppointCalling->doctorid, 'type' => $AppointCalling->type]);
-        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
+        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('10:30'));
         $aclid=$this->queue($AppointCalling->type,$timeType,$hospitalAppoint,$AppointCalling->type?false:true);
         if ($aclid) {
             $appointCallingList = AppointCallingList::findOne($aclid);

@@ -89,7 +89,7 @@ class ChildAllController extends \yii\console\Controller
             ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
-        $auto=Autograph::find()->select('userid')->where(['doctorid'=>$doctorid])->column();
+        $auto=DoctorParent::find()->select('parentid as userid')->where(['doctorid'=>$doctorid])->column();
 
         if($auto) {
             $data = ChildInfo::find()

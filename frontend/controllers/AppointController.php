@@ -185,6 +185,19 @@ class AppointController extends Controller
         }
         return ['code' => $code ? $code : 10000, 'msg' => $msg ? $msg : '成功'];
     }
+    public function actionDel($doctorid){
+        AppointCallingList::deleteAll(['doctorid' => $doctorid]);
+        $redis=\Yii::$app->rd;
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-3');
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-');
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-s');
+
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-2-3s');
+
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-1-0');
+        $redis->del('Queue-'.$doctorid.'-'.date('Y-m-d').'-4-0');
+
+    }
 
     public function actionDone($h, $d, $s,$code=''){
         \Yii::$app->response->format = Response::FORMAT_JSON;
@@ -219,7 +232,7 @@ class AppointController extends Controller
         $doctorid=$this->hs[$h];
         $t=date('H:i');
         if($t>'16:00' || $t<'07:00'){
-            return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
+            //return ['code' => 20000, 'msg' => '可使用时间为:<br>早7点至下午4点'];
         }
 
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
@@ -270,12 +283,13 @@ class AppointController extends Controller
 
                 } else {
                     $times = explode('-', Appoint::$timeText1[$appoint->appoint_time]);
-                    $t = date('H:i');
+                    $t = date('10:20');
                     if ($t < $times[1]) {
                         $timeType = $appoint->appoint_time;
                     } else {
                         $timeType = Appoint::getTimeTypeTmp($doctorid, $type);
                     }
+                    //var_dump($timeType);exit;
                 }
             }else{
                 return ['code'=>30000,'msg'=>'未查询到预约信息'];

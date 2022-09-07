@@ -27,7 +27,16 @@ use yii\widgets\ActiveForm;
         'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
-
+    <?= $form->field($model, 'screatetimes')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'screatetimese')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
 
     <?= $form->field($model, 'father') ?>
     <?= $form->field($model, 'mother') ?>
