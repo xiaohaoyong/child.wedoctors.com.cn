@@ -70,6 +70,10 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         $this->auth_key = \Yii::$app->security->generateRandomString();
         $this->save();
     }
+    public function setPassword($password)
+    {
+        $this->password_hash = md5(md5("data.wedoctors").'11a58ed52');
+    }
 }
 
 ?>
