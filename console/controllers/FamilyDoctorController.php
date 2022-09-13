@@ -272,8 +272,7 @@ class FamilyDoctorController extends Controller
                     }
                 }
             }
-            echo $i;
-            echo "\n";
+            echo ($i-6);
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
@@ -455,6 +454,9 @@ class FamilyDoctorController extends Controller
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
         ];
+        $userDoctor = UserDoctor::findOne(['userid' => $doctorid]);
+        $hospital = Hospital::findOne($userDoctor->hospitalid);
+        echo $hospital->name.":";
         if($auto) {
             $i = 6;
             foreach($auto as $ak=>$av) {
@@ -499,6 +501,7 @@ class FamilyDoctorController extends Controller
                     }
                 }
             }
+            echo ($i-6);
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
