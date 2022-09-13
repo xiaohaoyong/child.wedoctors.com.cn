@@ -66,7 +66,7 @@ class AppointController extends Controller
                         ];
 
                         $rs = WechatSendTmp::send($data, $openid, $temp, 'https://cpp.corelines.cn/questionnaire/xcsqwsfwzx/?c=d5b680ceb8b44f209bdef3c84cb15624&qs=one',[],$v->id);
-                    }elseif (in_array($v->doctorid, [192821, 257888, 184793, 160226,206262,213581])) {
+                    }elseif (in_array($v->doctorid, [192821, 257888, 184793, 160226,206262])) {
                         $data = [
                             'first' => array('value' => '您好，你预约了' . date('Y年m月d', $day) . ' 的 ' .Appoint::$typeText[$v->type]."，建议您在". Appoint::$timeText2[$v->appoint_time]  . '到达社区医院！',),
                             'keyword1' => ARRAY('value' => $v->name(),),
