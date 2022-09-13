@@ -82,8 +82,48 @@ use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 
 class DataController extends \yii\console\Controller
 {
+    function getfiles($path, $allowFiles = '', $depth = 1, $substart = 0, &$files = array()){
+        $depth--;
+        $path = realpath($path) . '/';
+        $substart = $substart ? $substart : strlen($path);
+
+        if (!is_dir($path)){
+            return false;
+        }
+
+        if($handle = opendir($path)){
+            while (false !== ($file = readdir($handle))) {
+                if ($file != '.' && $file != '..') {
+                    $path2 = $path . $file;
+                    if (is_dir($path2) && $depth > 0){
+                        getfiles($path2, $allowFiles, $depth, $substart, $files);
+                    } elseif (empty($allowFiles) || preg_match($allowFiles, $file)) {
+                        $files[] = substr($path2, $substart);
+                    }
+                }
+            }
+        }
+        sort($files);
+        return $files;
+    }
     public function actionTesta($num=0)
     {
+        $fiels=$this->getfiles('/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123', '#\.(xlsx)$#', 3);
+        foreach($fiels as $k=>$v){
+            $fname=$v;
+            $excelInfo['path'] = '/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123/'.$fname;
+            $inputFileType = PHPExcel_IOFactory::identify($excelInfo['path']);
+            $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+
+            $objPHPExcels = $objReader->load($excelInfo['path']);
+            $maxRow = $objPHPExcels->getSheet(0)->getHighestRow();#总行数
+            echo $maxRow;
+            echo "\n";
+
+        }
+        exit;
+
+
 //        $data = [
 //            'first' => ['value' => '您预约的九价宫颈癌疫苗，已修改至2022年9月7日星期三'],
 //            'keyword1' => ARRAY('value' => '新街口社区卫生服务中心'),

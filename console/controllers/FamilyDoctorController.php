@@ -40,7 +40,6 @@ class FamilyDoctorController extends Controller
 
     public function setDownExcel($doctorid,$type)
     {
-        echo $doctorid."\n";
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
         $worksheet->getCellByColumnAndRow(1,1)->setValue('家庭医生签约服务签约居民基本信息汇总表');
@@ -215,6 +214,9 @@ class FamilyDoctorController extends Controller
             ],
         ];
         $names=[];
+        $userDoctor = UserDoctor::findOne(['userid' => $doctorid]);
+        $hospital = Hospital::findOne($userDoctor->hospitalid);
+        echo $hospital->name.":";
         if($auto) {
             $i = 6;
             foreach($auto as $ak=>$av) {
@@ -241,9 +243,7 @@ class FamilyDoctorController extends Controller
                         if(!$idcard && $userParent->mother_id){
                             $idcard=$userParent->mother_id.'(母亲)';
                         }
-                        echo $v->name;
-                        echo $idcard;
-                        echo "\n";
+
                         $userParent = UserParent::findOne(['userid' => $v->userid]);
                         if ($userParent && $userParent->mother_phone) {
                             $phone = "\t" . $userParent->mother_phone;
@@ -272,6 +272,8 @@ class FamilyDoctorController extends Controller
                     }
                 }
             }
+            echo $i;
+            echo "\n";
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
