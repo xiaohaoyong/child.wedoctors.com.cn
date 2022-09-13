@@ -266,6 +266,8 @@ class FamilyDoctorController extends Controller
                         $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', $au->createtime));
                         $worksheet->getCellByColumnAndRow(8, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
                         $worksheet->getCellByColumnAndRow(9, $i)->setValue($phone);
+                        $worksheet->getCellByColumnAndRow(10, $i)->setValue($v->birthday?date('Y-m-d',$v->birthday):'');
+
                         $worksheet->getCellByColumnAndRow(20, $i)->setValue('✅');
 
                         $i++;
