@@ -246,7 +246,12 @@ jQuery("#appoint_form").submit(data,function(e){
 	    return false;
 	}
 	if(!formdata['phone'] || !formdata['vcode']){
-        jQuery("#modle_phone").modal('show');
+	    var vid=jQuery("#vaccine").val();
+	    if(vid == 64){
+	        jQuery("#modle_phone1").modal('show');
+	    }else{
+	        jQuery("#modle_phone").modal('show');
+	    }
         return false;
 	}
 });
@@ -373,6 +378,28 @@ $this->registerJs($updateJs);
                         <?= \yii\bootstrap\Html::buttonInput(Yii::t('app', '获取验证码'), ['class' => 'btn btn-warning', 'name' => 'signup-button', 'id' => 'second']) ?>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="button">
+            <button type="submit">确定</button>
+        </div>
+    </form>
+</div>
+<?php
+\yii\bootstrap\Modal::end();
+?>
+<?php
+\yii\bootstrap\Modal::begin([
+    'id' => 'modle_phone1',
+    'header'=>'验证/修改手机号码'
+]);
+?>
+<div class="appoint_p">
+    <form id="appoint_phone">
+        <div class="item">
+            <div class="title">联系电话</div>
+            <div class="input">
+                <input name="phone" class="inputa appoint_phone" id="phone" placeholder="请填写手机号" value="<?=$user['phone']?>">
             </div>
         </div>
         <div class="button">
