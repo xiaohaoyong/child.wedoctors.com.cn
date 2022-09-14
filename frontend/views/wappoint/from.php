@@ -260,7 +260,7 @@ jQuery("#appoint_form").submit(data,function(e){
 
 
 var phone_data={phone:'请填写正确手机号码！',vcode:'请填写正确验证码！'};
-jQuery("#appoint_phone").submit(phone_data,function(e){
+jQuery(".appoint_phone_form").submit(phone_data,function(e){
     var labelMap = e.data;
     var valueMap ={};
     	var label = '';
@@ -367,7 +367,7 @@ $this->registerJs($updateJs);
 ]);
 ?>
 <div class="appoint_p">
-    <form id="appoint_phone">
+    <form id="appoint_phone" class="appoint_phone_form">
         <div class="item">
             <div class="title">联系电话</div>
             <div class="input">
@@ -397,7 +397,7 @@ $this->registerJs($updateJs);
 ]);
 ?>
 <div class="appoint_p">
-    <form id="appoint_phone">
+    <form id="appoint_phone1" class="appoint_phone_form">
         <div class="item">
             <div class="title">联系电话</div>
             <div class="input">
