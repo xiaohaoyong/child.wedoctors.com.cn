@@ -136,7 +136,7 @@ jQuery("#vaccine").change(function(e){
     var sid=jQuery("#street").val();
     
     if(vid==64){
-        if(!confirm("此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1961年12月31日前）预约通道，请确认")){
+        if(!confirm("此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1962年12月31日前）预约通道，请确认")){
             return false;
         }
     }
