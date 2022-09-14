@@ -257,6 +257,8 @@ jQuery("#appoint_form").submit(data,function(e){
 });
 
 
+
+
 var phone_data={phone:'请填写正确手机号码！',vcode:'请填写正确验证码！'};
 jQuery("#appoint_phone").submit(phone_data,function(e){
     var labelMap = e.data;
