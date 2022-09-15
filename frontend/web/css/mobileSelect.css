@@ -92,7 +92,7 @@
 }
 .mobileSelect .content .panel .wheel .selectContainer {
   display: block;
-  text-align: center;
+  /*text-align: center;*/
   -webkit-transition: -webkit-transform 0.18s ease-out;
   transition: -webkit-transform 0.18s ease-out;
   transition: transform 0.18s ease-out;
