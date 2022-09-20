@@ -289,10 +289,10 @@ use common\models\Vaccine;
                                                     <table class="table table-striped table-bordered detail-view">
                                                         <tbody>
                                                         <tr>
-                                                            <td colspan="3" style="font-weight: bold;">选择上午/全天疫苗:</td>
+                                                            <td colspan="4" style="font-weight: bold;">选择上午/全天疫苗:</td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3">
+                                                            <td colspan="4">
                                                                 <?= \kartik\select2\Select2::widget([
                                                                     'name' => 'vaccine[' . $wv . ']',
                                                                     'data' => $data,
@@ -308,10 +308,10 @@ use common\models\Vaccine;
                                                         </tr>
                                                         <?php if ($type == 2 or $type == 4) { ?>
                                                             <tr>
-                                                                <td colspan="3" style="font-weight: bold;">选择下午疫苗:</td>
+                                                                <td colspan="4" style="font-weight: bold;">选择下午疫苗:</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="3">
+                                                                <td colspan="4">
                                                                     <?= \kartik\select2\Select2::widget([
                                                                         'name' => 'vaccine1[' . $wv . ']',
                                                                         'data' => $data,
@@ -326,7 +326,7 @@ use common\models\Vaccine;
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="3">
+                                                                <td colspan="4">
                                                                     <div class="form-group">
                                                                         注：只设置上午/全天疫苗，则按照全天可约判断，如需下午不可以设置无号即可<br>
                                                                         注：选择街道目前对一类疫苗有效，二类疫苗不受限制
@@ -335,7 +335,7 @@ use common\models\Vaccine;
                                                             </tr>
                                                         <?php } ?>
                                                         <tr>
-                                                            <td colspan="3" style="font-weight: bold;">
+                                                            <td colspan="4" style="font-weight: bold;">
                                                                 疫苗预约上限设置(如设置10，则单日最多可以预约10个此疫苗，空表示不限制此疫苗，0表示该疫苗无号）:
                                                             </td>
                                                         </tr>
@@ -372,6 +372,8 @@ use common\models\Vaccine;
                                                             <td>数量</td>
                                                             <td>疫苗名称</td>
                                                             <td>分配疫苗号源</td>
+                                                            <td>疫苗预约周期</td>
+
                                                         </tr>
                                                         <?php
 
