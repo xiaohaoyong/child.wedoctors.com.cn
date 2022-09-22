@@ -5,9 +5,11 @@ namespace hospital\controllers;
 use common\models\HospitalAppointMonth;
 use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
+use common\models\HospitalAppointVaccineDay;
 use common\models\HospitalAppointVaccineNum;
 use common\models\HospitalAppointVaccineTimeNum;
 use common\models\HospitalAppointWeek;
+use common\models\Vaccine;
 use Yii;
 use common\models\HospitalAppoint;
 use hospital\models\HospitalAppointSearchModels;
@@ -303,4 +305,48 @@ class HospitalAppointController extends BaseController
         return ['list'=>$list];
 
     }
+
+    public function actionVaccineDaySave(){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $post=Yii::$app->request->post();
+
+
+        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+        $model=HospitalAppoint::findOne(['doctorid'=>$doctor->userid,'type'=>$post['type']]);
+
+        $hav=HospitalAppointVaccineDay::findOne(['haid'=>$model->id,'vaccine'=>$post['vaccine']]);
+
+        if( $post){
+            $hospitalAppointVaccine = $hav?$hav: new HospitalAppointVaccineDay();
+            $hospitalAppointVaccine->haid = $model->id;
+            $hospitalAppointVaccine->vaccine = $post['vaccine'];
+            $hospitalAppointVaccine->day = $post['day'];
+            $hospitalAppointVaccine->save();
+        }
+        return ['code'=>10000];
+    }
+    public function actionVaccineDayList($type){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
+        $model=HospitalAppoint::findOne(['doctorid'=>$doctor->userid,'type'=>$type]);
+
+        $hav=HospitalAppointVaccineDay::findAll(['haid'=>$model->id]);
+        foreach($hav as $k=>$v){
+            $rs=$v->toArray();
+            $rs['vaccine']=Vaccine::findOne($v->vaccine)->name;
+            $list[]=$rs;
+        }
+
+        return ['list'=>$list];
+    }
+    public function actionVaccineDayDel($id)
+    {
+        $hav=HospitalAppointVaccineDay::findOne($id);
+        $type = HospitalAppoint::findOne($hav->haid)->type;
+
+        $hav->delete();
+
+        return $this->redirect(['create', 'type' => $type]);
+    }
+
 }

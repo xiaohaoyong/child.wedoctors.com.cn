@@ -148,7 +148,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
      * @param int $vid
      * @return bool
      */
-    public function is_appoint($date,$weekr=[])
+    public function is_appoint($date,$weekr=[],$cycle=0)
     {
 
         $week = date('w', $date);
@@ -165,7 +165,9 @@ class HospitalAppoint extends \yii\db\ActiveRecord
         }
 
         //$sure_date=[1593273600];
-        $cycle=self::$cycleNum[$this->cycle];
+        if(!$cycle) {
+            $cycle = self::$cycleNum[$this->cycle];
+        }
         $sday = strtotime(date('Y-m-d', strtotime('+' . ($this->delay+1) . " day")));
         $eday = strtotime('+'.($cycle-1).' day',$sday);
 

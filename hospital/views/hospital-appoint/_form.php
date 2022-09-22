@@ -9,13 +9,16 @@ use common\models\Vaccine;
 /* @var $model common\models\HospitalAppoint */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<style>
-    .modal_over {overflow: hidden;}
-    .modal_over .modal {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-</style>
+    <style>
+        .modal_over {
+            overflow: hidden;
+        }
+
+        .modal_over .modal {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+    </style>
     <div class="hospital-appoint-form">
         <div class="col-xs-12">
             <div class="box">
@@ -28,7 +31,17 @@ use common\models\Vaccine;
                         <tbody>
                         <tr>
                             <th>周期长度</th>
-                            <td><?= $form->field($model, 'cycle', ['options' => ['class' => "col-xs-3"]])->dropDownList(\common\models\HospitalAppoint::$cycleText, ['prompt' => '请选择'])->label(false) ?></td>
+                            <td>
+                                <?= $form->field($model, 'cycle', ['options' => ['class' => "col-xs-3"]])->dropDownList(\common\models\HospitalAppoint::$cycleText, ['prompt' => '请选择'])->label(false) ?>
+                                <?php if ($type == 4) {
+                                    echo Html::a('扩展', '#', [
+                                        'class' => 'extend btn btn-primary',
+                                        'data-target' => '#extend',//关联模拟框(模拟框的ID)
+                                        'data-toggle' => "modal", //定义为模拟框 触发按钮
+                                    ]);
+                                }
+                                ?>
+                            </td>
                         </tr>
                         <tr>
                             <th>
@@ -182,6 +195,14 @@ use common\models\Vaccine;
                             </div>
                         </div>
                     <?php } ?>
+                    <?php
+                    if ($type == 4) {
+                        $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 1])->indexBy('id')->column();
+                    } elseif ($type == 2) {
+                        $data = \common\models\Vaccine::find()->select('GROUP_CONCAT(`name` ,`type`) as a,id')->where(['adult' => 0])->indexBy('id')->groupBy('id')->column();
+                        $data = [0 => '全部一类疫苗', -1 => '全部二类疫苗'] + $data;
+                    }
+                    ?>
                     <div>
                         <!-- Nav tabs -->
                         <ul id="intervalTab" class="nav nav-tabs" role="tablist">
@@ -257,12 +278,7 @@ use common\models\Vaccine;
                                 <?php
 
                                 if (in_array($type, [2, 4])) {
-                                    if ($type == 4) {
-                                        $data = \common\models\Vaccine::find()->select('name')->where(['adult' => 1])->indexBy('id')->column();
-                                    } else {
-                                        $data = \common\models\Vaccine::find()->select('GROUP_CONCAT(`name` ,`type`) as a,id')->where(['adult' => 0])->indexBy('id')->groupBy('id')->column();
-                                        $data = [0 => '全部一类疫苗', -1 => '全部二类疫苗'] + $data;
-                                    }
+
                                     ?>
 
                                     <tr>
@@ -289,10 +305,10 @@ use common\models\Vaccine;
                                                     <table class="table table-striped table-bordered detail-view">
                                                         <tbody>
                                                         <tr>
-                                                            <td colspan="4" style="font-weight: bold;">选择上午/全天疫苗:</td>
+                                                            <td colspan="3" style="font-weight: bold;">选择上午/全天疫苗:</td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="4">
+                                                            <td colspan="3">
                                                                 <?= \kartik\select2\Select2::widget([
                                                                     'name' => 'vaccine[' . $wv . ']',
                                                                     'data' => $data,
@@ -308,10 +324,10 @@ use common\models\Vaccine;
                                                         </tr>
                                                         <?php if ($type == 2 or $type == 4) { ?>
                                                             <tr>
-                                                                <td colspan="4" style="font-weight: bold;">选择下午疫苗:</td>
+                                                                <td colspan="3" style="font-weight: bold;">选择下午疫苗:</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="4">
+                                                                <td colspan="3">
                                                                     <?= \kartik\select2\Select2::widget([
                                                                         'name' => 'vaccine1[' . $wv . ']',
                                                                         'data' => $data,
@@ -326,7 +342,7 @@ use common\models\Vaccine;
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="4">
+                                                                <td colspan="3">
                                                                     <div class="form-group">
                                                                         注：只设置上午/全天疫苗，则按照全天可约判断，如需下午不可以设置无号即可<br>
                                                                         注：选择街道目前对一类疫苗有效，二类疫苗不受限制
@@ -335,7 +351,7 @@ use common\models\Vaccine;
                                                             </tr>
                                                         <?php } ?>
                                                         <tr>
-                                                            <td colspan="4" style="font-weight: bold;">
+                                                            <td colspan="3" style="font-weight: bold;">
                                                                 疫苗预约上限设置(如设置10，则单日最多可以预约10个此疫苗，空表示不限制此疫苗，0表示该疫苗无号）:
                                                             </td>
                                                         </tr>
@@ -372,8 +388,6 @@ use common\models\Vaccine;
                                                             <td>数量</td>
                                                             <td>疫苗名称</td>
                                                             <td>分配疫苗号源</td>
-                                                            <td>疫苗预约周期</td>
-
                                                         </tr>
                                                         <?php
 
@@ -393,7 +407,7 @@ use common\models\Vaccine;
                                                                 </td>
                                                                 <td>
                                                                     <?php echo Html::a('分配', '#', [
-                                                                            'class'=>'fenpei',
+                                                                        'class' => 'fenpei',
                                                                         'data-target' => '#vaccine-num',//关联模拟框(模拟框的ID)
                                                                         'data-toggle' => "modal", //定义为模拟框 触发按钮
                                                                         'data-week' => $wv,
@@ -518,6 +532,81 @@ Modal::begin([
 Modal::end();
 ?>
 
+
+<?php
+Modal::begin([
+    'id' => 'extend',
+    'header' => '<h5>扩展设置疫苗预约周期</h5>',
+]);
+?>
+<?php echo Html::a('添加', '#', [
+    'class' => 'extend-add btn btn-primary',
+    'data-target' => '#extend-add',//关联模拟框(模拟框的ID)
+    'data-toggle' => "modal", //定义为模拟框 触发按钮
+]);
+?>
+    <table class="table table-striped table-bordered detail-view" id="vaccine_day_list">
+    </table>
+<?php
+Modal::end();
+?>
+<?php
+Modal::begin([
+    'id' => 'extend-add',
+    'options' => [
+        'data-backdrop' => 'static',
+        'tabindex' => false,
+    ],
+    'header' => '<h5>添加疫苗周期</h5>',
+]);
+?>
+    <form name="vaccine-day-form" id="vaccine_day_form" action="vaccine-day-save" method="post">
+        <input name="_csrf-frontend"
+
+               type="hidden"
+
+               id="_csrf-frontend"
+
+               value="<?= Yii::$app->request->csrfToken ?>">
+        <input type="hidden" value="<?= $type ?>" name="type">
+        <table class="table table-striped table-bordered detail-view">
+            <tbody>
+            <tr>
+                <td>
+                    疫苗
+                </td>
+                <td>
+                    <?= \kartik\select2\Select2::widget([
+                        'name' => 'vaccine',
+                        'data' => $data,
+                        'options' => ['placeholder' => '请选择'],
+                        'value' => '',
+
+                    ]) ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    预约周期（天）
+                </td>
+                <td><input type="text" class="form-control vaccine_num" name="day" value=""
+                           style="width: 50px;"></td>
+            </tr>
+            <tr>
+
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <button class="btn btn-default" type="submit">保存</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+<?php
+Modal::end();
+?>
+
 <?php
 $interval = isset($model->interval) ? $model->interval : 1;
 $is_month = isset($model->is_month) ? $model->is_month : 0;
@@ -545,8 +634,6 @@ $('#vaccine-num').on('show.bs.modal', function (event) {
             $('#vaccine_num_form input[name="vaccine_num['+value.appoint_time+']"]').val(value.num);
         });
     },'json');
-  
-  
 })	
 $('#vaccine-num').on('shown.bs.modal', function (event) {
   $("body").addClass("modal-open");
@@ -556,11 +643,38 @@ jQuery("#vaccine_num_form").submit(function(){
     console.log(data);
     $.post('/hospital-appoint/vaccine-save',data,function(e){
         is_add=1;
-        $('#vaccine-num').modal('hide');
+        $('#extend-add').modal('hide');
         $('#modal'+_week).modal('show');
     },'json');
     return false;
 });
+jQuery("#vaccine_day_form").submit(function(){
+    let data = $("#vaccine_day_form").serialize();
+    console.log(data);
+     $.post('/hospital-appoint/vaccine-day-save',data,function(e){
+             $('#extend-add').modal('hide');
+             extendlist();
+     },'json');
+    return false;
+});
+$('#extend').on('shown.bs.modal', function (event) {
+    extendlist();
+})
+function extendlist(){
+    var html = "<tbody><tr><td>疫苗</td><td>周期（天）</td><td>操作</td></tr>";
+  $.get('/hospital-appoint/vaccine-day-list?type='+{$type},function(e){
+      if(e.list){
+        e.list.forEach(function(item,index,self){
+           html = html+'<tr><td>'+item.vaccine+'</td><td>'+item.day+'</td><td><a href="/hospital-appoint/vaccine-day-del?id='+item.id+'">删除</a></td></tr>'
+        })
+        html = html+'<tbody>';
+        console.log(html)
+        jQuery('#vaccine_day_list').html(html);
+        }
+      },'json');
+  
+}
+
 $('#vaccine-num').on('hidden.bs.modal', function (event) {
             $('#modal'+_week).modal('show');
     $("body").addClass("modal-open");

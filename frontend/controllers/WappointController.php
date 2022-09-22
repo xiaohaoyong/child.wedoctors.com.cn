@@ -19,6 +19,7 @@ use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
+use common\models\HospitalAppointVaccineDay;
 use common\models\HospitalAppointVaccineNum;
 use common\models\HospitalAppointVaccineTimeNum;
 use common\models\HospitalAppointWeek;
@@ -141,6 +142,11 @@ class WappointController extends Controller
         }elseif($streetWeek || $vaccineWeek){
             $weekr=$streetWeek?$streetWeek:$vaccineWeek;
         }
+        $cycle = 0;
+        $hav = HospitalAppointVaccineDay::findOne(['haid'=>$hospitalA->id,'vaccine'=>$vid]);
+        if($hav){
+            $cycle = $hav->day;
+        }
 
 
         for ($i = 1; $i <= 60; $i++) {
@@ -150,7 +156,7 @@ class WappointController extends Controller
             $rs['dateStr'] = date('Ymd', $day);
             $rs['week'] = date('w', $day);
             $rs['weekStr'] = $dweek[$rs['week']];
-            $rs['dateState'] = $hospitalA->is_appoint($day, $weekr);
+            $rs['dateState'] = $hospitalA->is_appoint($day, $weekr,$cycle);
             $rs['dateMsg'] = $dateMsg[$rs['dateState']];
             $days[] = $rs;
         }
@@ -255,8 +261,13 @@ class WappointController extends Controller
             $weekr=$streetWeek?$streetWeek:$weekv;
         }
 
+        $cycle = 0;
+        $hav = HospitalAppointVaccineDay::findOne(['haid'=>$hospitalA->id,'vaccine'=>$vid]);
+        if($hav){
+            $cycle = $hav->day;
+        }
 
-        $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekr);
+        $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekr,$cycle);
         if (!$is_appoint) {
             return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];
         }
