@@ -114,7 +114,7 @@ class ChildSearch extends ChildInfo
         $query->andFilterWhere(['name'=>$this->name]);
 
         $query->orderBy('`doctor_parent`.createtime desc');
-        //var_dump($query->createCommand()->getRawSql());exit;
+        //WechatSendTmpvar_dump($query->createCommand()->getRawSql());exit;
         return $dataProvider;
     }
 }

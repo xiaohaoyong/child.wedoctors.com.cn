@@ -47,6 +47,17 @@ $this->title ='加号';
                             ]])?></td></tr>
                     <tr><th>时间段</th><td><?= $form->field($model, 'appoint_time')->dropDownList(\common\models\Appoint::$timeText, ['prompt'=>'请选择']) ?></td></tr>
                     <tr><th>类型</th><td><?= $form->field($model, 'type')->dropDownList(\common\models\UserDoctorAppoint::$typeText, ['prompt'=>'请选择']) ?></td></tr>
+                    <tr><th>疫苗</th>
+                    <td><?php
+                        $data = \common\models\Vaccine::find()->select('name')->indexBy('id')->column();
+
+                        echo $form->field($model, 'vaccine')->widget('\kartik\select2\Select2',[
+                            'data' => $data,
+                            'options' => ['placeholder' => '请选择'],
+                            'value' => '',
+
+                        ])?></td>
+                    </tr>
                     <tr><th>备注</th><td><?= $form->field($model, 'remark')->textarea() ?></td></tr>
                     </tbody></table>
                 <div class="form-group">
