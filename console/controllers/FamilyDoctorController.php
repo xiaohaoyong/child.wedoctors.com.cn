@@ -180,6 +180,7 @@ class FamilyDoctorController extends Controller
                 ->column();
             $birthday = strtotime('- 7 year',strtotime('2022-09-22'));
 
+
         }elseif($type==5){
             $auto = Autograph::find()->select('userid')
                 ->where(['and', ['>', 'createtime', strtotime('2022-01-01')], ['<', 'createtime', strtotime('2022-04-01')]])
