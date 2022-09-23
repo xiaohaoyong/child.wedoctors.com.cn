@@ -76,7 +76,7 @@ class AppointController extends BaseController
 
 
         }elseif($searchModel->type!=7 and $searchModel->type!=4 and $searchModel->type!=9) {
-            $fields = ['姓名', '性别', '生日', '儿童户籍', '母亲姓名', '户籍地', '预约日期', '预约时间', '手机号', '预约状态', '预约项目', '选择疫苗', '取消原因', '推送状态', '来源', '排号顺序'];
+            $fields = ['姓名', '性别', '生日', '儿童户籍', '母亲姓名', '户籍地', '预约日期', '预约时间', '手机号', '预约状态', '预约项目', '选择疫苗', '取消原因', '推送状态', '来源', '排号顺序','备注'];
             $model=$objPHPExcel->setActiveSheetIndex(0);
             foreach($fields as $k=>$v){
                 $key=65+$k;
@@ -160,7 +160,9 @@ class AppointController extends BaseController
                     ->setCellValue('M' . $key1, \common\models\Appoint::$cancel_typeText[$e->cancel_type])
                     ->setCellValue('N' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
                     ->setCellValue('O' . $key1, \common\models\Appoint::$modeText[$e->mode])
-                    ->setCellValue('P' . $key1, $e->appoint_time . "-" . ($index + 1));
+                    ->setCellValue('P' . $key1, $e->appoint_time . "-" . ($index + 1))
+                    ->setCellValue('Q' . $key1, $v['remark']);
+
             }else{
 
                 if($e->childid){
