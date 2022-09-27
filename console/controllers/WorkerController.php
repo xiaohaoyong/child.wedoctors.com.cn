@@ -81,16 +81,16 @@ class WorkerController extends BeanstalkController
 
 
             foreach($userids as $k=>$v) {
-                $userLogin=UserLogin::findAll(['userid'=>$v]);
-                if($userLogin) {
-                    foreach ($userLogin as $ulk => $ulv) {
-                        if ($ulv->openid  && $article->type==2) {
-                            $rs = WechatSendTmp::send($data, $ulv->openid, $temp, '', $miniprogram);
-                            $log->addLog($ulv->openid);
-                            $log->addLog($rs?'true':'false');
-                        }
-                    }
-                }
+//                $userLogin=UserLogin::findAll(['userid'=>$v]);
+//                if($userLogin) {
+//                    foreach ($userLogin as $ulk => $ulv) {
+//                        if ($ulv->openid  && $article->type==2) {
+//                            //$rs = WechatSendTmp::send($data, $ulv->openid, $temp, '', $miniprogram);
+//                            $log->addLog($ulv->openid);
+//                            $log->addLog($rs?'true':'false');
+//                        }
+//                    }
+//                }
                 if($article->art_type!=2)
                 {
                     $key=$article->catid==6?3:5;
