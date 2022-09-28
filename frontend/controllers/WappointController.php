@@ -605,8 +605,7 @@ class WappointController extends Controller
         }
 
 
-
-        if($post['vaccine']!=64) {
+        if(!in_array([64,66],$post['vaccine'])){
             $appointA = Appoint::findOne(['phone' => $post['phone'], 'state' => 1, 'vaccine' => $post['vaccine']]);
         }
         if($appointA){
