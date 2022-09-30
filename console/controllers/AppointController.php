@@ -245,7 +245,7 @@ class AppointController extends Controller
             $week = date('w', $v->appoint_date);
             //0判断是否已经存在预约
             $appoint = HospitalAppoint::findOne(['doctorid' => $v->doctorid, 'type' => $v->type]);
-            if(!in_array($v->vaccine,[64,66])) {
+            if(!in_array($v->vaccine,[64,66,46])) {
                 $app = Appoint::find()->where(['state' => 1])->andWhere(['type' => $v->type])->andWhere(['phone' => $v->phone])->one();
                 if ($app) {
                     $v->state = 3;
