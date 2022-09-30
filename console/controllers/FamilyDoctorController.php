@@ -156,8 +156,8 @@ class FamilyDoctorController extends Controller
         $birthday = strtotime('- 7 year');
         if($type==1) {
             $auto = Autograph::find()->select('userid')
-                ->where(['and', ['>', 'createtime', strtotime('2021-04-01')], ['<', 'createtime', strtotime('2022-04-01')]])
-                ->orWhere(['and', ['>', 'starttime', strtotime('2021-04-01')], ['<', 'starttime', strtotime('2022-04-01')]])
+                ->where(['and', ['>', 'createtime', strtotime('2022-07-01')], ['<', 'createtime', strtotime('2022-10-01')]])
+                ->orWhere(['and', ['>', 'starttime', strtotime('2021-07-01')], ['<', 'starttime', strtotime('2022-10-01')]])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
         }elseif($type==2){
@@ -223,7 +223,7 @@ class FamilyDoctorController extends Controller
             foreach($auto as $ak=>$av) {
                 $child = ChildInfo::find()
                     ->andFilterWhere(['userid'=>$av])
-                    ->andFilterWhere(['>', '`child_info`.birthday', $birthday])
+                    ->andFilterWhere(['>', '`child_info`.birthday', strtotime('2022-07-01')])
                     ->groupBy('name,birthday')
                     ->all();
                 if($child) {
