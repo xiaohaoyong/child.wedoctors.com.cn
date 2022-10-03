@@ -88,6 +88,9 @@ class Controller extends \yii\web\Controller
                         }
                     }
                 }
+            }elseif (!in_array($controllerID . "/" . $actionID, $this->result)) {
+                \Yii::$app->response->data = ['code' => 30001, 'msg' => '数字签证错误'];
+                return false;
             }
 
         } elseif (!in_array($controllerID . "/" . $actionID, $this->result)) {
