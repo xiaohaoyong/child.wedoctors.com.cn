@@ -108,21 +108,59 @@ class DataController extends \yii\console\Controller
     }
     public function actionTesta($num=0)
     {
-        $fiels=$this->getfiles('/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123', '#\.(xlsx)$#', 3);
-        foreach($fiels as $k=>$v){
-            $fname=$v;
-            $excelInfo['path'] = '/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123/'.$fname;
-            $inputFileType = PHPExcel_IOFactory::identify($excelInfo['path']);
-            $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+//        $fiels=$this->getfiles('/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123', '#\.(xlsx)$#', 3);
+//        foreach($fiels as $k=>$v){
+//            $fname=$v;
+//            $excelInfo['path'] = '/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123/'.$fname;
+//            $inputFileType = PHPExcel_IOFactory::identify($excelInfo['path']);
+//            $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+//
+//            $objPHPExcels = $objReader->load($excelInfo['path']);
+//            $maxRow = $objPHPExcels->getSheet(0)->getHighestRow();#总行数
+//            echo $maxRow;
+//            echo "\n";
+//
+//        }
+//        exit;
+        $file = fopen('idcard1.csv', 'r');
+        while (($line = fgets($file)) !== false) {
+            $rs = explode(',',trim($line));
 
-            $objPHPExcels = $objReader->load($excelInfo['path']);
-            $maxRow = $objPHPExcels->getSheet(0)->getHighestRow();#总行数
-            echo $maxRow;
+            $child_info = ChildInfo::findOne(['idcard'=>$rs[3]]);
+            if($child_info){
+                //echo $child_info->name;
+            }else{
+                $rs = explode(',',trim($line));
+                $birthday = substr($rs[3],6,8);
+                $count = ChildInfo::find()->where(['name'=>$rs[0],'birthday'=>strtotime($birthday)])->count();
+                if($count == 1) {
+                    $child_info = ChildInfo::findOne(['name' => $rs[0], 'birthday' => strtotime($birthday)]);
+                }elseif($count > 1){
+                    $rm = '同名同生日超过一个无法确定';
+                }else{
+                    $rm = '未查询到孩子';
+                }
+            }
+            echo trim($line);
+            if($child_info) {
+                echo ",已修改";
+                $userParent = DoctorParent::findOne(['parentid' => $child_info->userid]);
+                if ($userParent) {
+                    $userParent->doctorid = 353548;
+                    $userParent->save();
+                    $auto = Autograph::findOne(['userid' => $child_info->userid]);
+                    if ($auto) {
+                        $auto->doctorid = 353548;
+                        $auto->save();
+                    }
+                }
+            }else{
+                echo ",未修改,".$rm;
+            }
+
             echo "\n";
-
         }
         exit;
-
 
 //        $data = [
 //            'first' => ['value' => '您预约的九价宫颈癌疫苗，已修改至2022年9月7日星期三'],
