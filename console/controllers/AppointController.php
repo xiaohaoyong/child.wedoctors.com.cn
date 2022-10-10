@@ -245,17 +245,15 @@ class AppointController extends Controller
             $week = date('w', $v->appoint_date);
             //0判断是否已经存在预约
             $appoint = HospitalAppoint::findOne(['doctorid' => $v->doctorid, 'type' => $v->type]);
-            if(!in_array($v->vaccine,[64,66,46])) {
-                $app = Appoint::find()->where(['state' => 1])->andWhere(['type' => $v->type])->andWhere(['phone' => $v->phone])->one();
-                if ($app) {
-                    $v->state = 3;
-                    $v->cancel_type = 5;
-                    $v->save();
-                    $log->addLog($v->state);
-                    $log->addLog("已存在进行中");
-                    $log->saveLog();
-                    continue;
-                }
+            $app = Appoint::find()->where(['state'=>1])->andWhere(['type' => $v->type])->andWhere(['phone'=>$v->phone])->one();
+            if($app){
+                $v->state=3;
+                $v->cancel_type=5;
+                $v->save();
+                $log->addLog($v->state);
+                $log->addLog("已存在进行中");
+                $log->saveLog();
+                continue;
             }
             $log->addLog('疫苗:'.$v->vaccine);
             //1判断疫苗是否约满

@@ -8,9 +8,9 @@ $config= [
     'language' => 'zh-CN',
     'timeZone' => 'Asia/Shanghai',
     'components' => [
-        'cache' => [
+/*        'cache' => [
             'class' => 'yii\redis\Cache',
-        ],
+        ],*/
 
         'formatter'=>[
             'dateFormat'=>'php:Y-m-d',

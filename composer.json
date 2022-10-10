@@ -1,90 +1,91 @@
 {
-  "repositories": {
-    "0": {
-      "type": "composer",
-      "url": "https://asset-packagist.org"
-    },
-    "packagist": {
-      "type": "composer",
-      "url": "https://mirrors.aliyun.com/composer/"
-    }
-  },
-  "name": "yiisoft/yii2-app-advanced",
-  "description": "Yii 2 Advanced Project Template",
-  "keywords": [
-    "yii2",
-    "framework",
-    "advanced",
-    "project template"
-  ],
-  "homepage": "http://www.yiiframework.com/",
-  "type": "project",
-  "license": "BSD-3-Clause",
-  "support": {
-    "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-    "forum": "http://www.yiiframework.com/forum/",
-    "wiki": "http://www.yiiframework.com/wiki/",
-    "irc": "irc://irc.freenode.net/yii",
-    "source": "https://github.com/yiisoft/yii2"
-  },
-  "minimum-stability": "stable",
-  "require": {
-    "php": ">=5.4.0",
-    "yiisoft/yii2": "~2.0.6",
-    "yiisoft/yii2-bootstrap": "~2.0.0",
-    "yiisoft/yii2-swiftmailer": "~2.0.0",
-    "callmez/yii2-wechat-sdk": "dev-master",
-    "gmars/yii2-sms": "dev-master",
-    "moonlandsoft/yii2-phpexcel": "*",
-    "2amigos/qrcode-library": "1.0.3",
-    "kartik-v/yii2-widget-datepicker": "@dev",
-    "yiisoft/yii2-redis": "^2.0",
-    "yiidoc/yii2-redactor": "*",
-    "dmstr/yii2-adminlte-asset": "^2.1",
-    "mdmsoft/yii2-admin": "~2.0",
-    "udokmeci/yii2-beanstalk": "dev-master",
-    "jianyan74/yii2-websocket": "^1.1",
-    "saviorlv/yii2-dysms": "dev-master",
-    "kartik-v/yii2-widget-fileinput": "@dev",
-    "linslin/yii2-curl": "*",
-    "kartik-v/yii2-krajee-base": "dev-master",
-    "kartik-v/bootstrap-fileinput": "@dev",
-    "kartik-v/yii2-widget-select2": "@dev",
-    "aliyuncs/oss-sdk-php": "^2.3",
-    "cache/simple-cache-bridge": "^1.0",
-    "cache/redis-adapter": "^1.0",
-    "cache/apcu-adapter": "^1.0",
-    "overtrue/wechat": "~4.0",
-    "kop/yii2-scroll-pager": "dev-master",
-    "jormin/baidu-speech": "^1.0",
-    "hightman/xunsearch": "dev-master",
-    "yiisoft/yii2-elasticsearch": "^2.1",
-    "2amigos/yii2-switch-widget": "~1.0",
-    "codemix/yii2-excelexport": "^2.7",
-    "workerman/workerman": "^4.0",
-    "kucha/ueditor": "*"
-  },
-  "require-dev": {
-    "yiisoft/yii2-debug": "~2.0.0",
-    "yiisoft/yii2-gii": "~2.0.0",
-    "yiisoft/yii2-faker": "~2.0.0",
-    "codeception/base": "^2.2.3",
-    "codeception/verify": "~0.3.1",
-    "gmars/yii2-sms": "dev-master",
-    "bower-asset/jquery": "1.12.1-patch1",
-    "2amigos/qrcode-library": "1.0.3"
-  },
-  "config": {
-    "process-timeout": 1800,
-    "github-oauth": {
-      "github.com": "465694c1142f03b524297b20e339617802ab7423"
-    },
-    "fxp-asset": {
-      "enabled": false
-    },
-    "allow-plugins": {
-      "yiisoft/yii2-composer": true,
-      "easywechat-composer/easywechat-composer": true
-    }
-  }
+	"repositories": {
+		"0": {
+			"type": "composer",
+			"url": "https://asset-packagist.org"
+		},
+		"packagist": {
+			"type": "composer",
+			"url": "https://mirrors.aliyun.com/composer/"
+		}
+	}, 
+	"name": "yiisoft/yii2-app-advanced",
+	"description": "Yii 2 Advanced Project Template",
+	"keywords": [
+		"yii2",
+		"framework",
+		"advanced",
+		"project template"
+	],
+	"homepage": "http://www.yiiframework.com/",
+	"type": "project",
+	"license": "BSD-3-Clause",
+	"support": {
+		"issues": "https://github.com/yiisoft/yii2/issues?state=open",
+		"forum": "http://www.yiiframework.com/forum/",
+		"wiki": "http://www.yiiframework.com/wiki/",
+		"irc": "irc://irc.freenode.net/yii",
+		"source": "https://github.com/yiisoft/yii2"
+	},
+	"minimum-stability": "stable",
+	"require": {
+		"php": ">=5.4.0",
+		"yiisoft/yii2": "~2.0.6",
+		"yiisoft/yii2-bootstrap": "~2.0.0",
+		"yiisoft/yii2-swiftmailer": "~2.0.0",
+		"callmez/yii2-wechat-sdk": "dev-master",
+		"gmars/yii2-sms": "dev-master",
+		"moonlandsoft/yii2-phpexcel": "*",
+		"2amigos/qrcode-library": "1.0.3",
+		"kartik-v/yii2-widget-datepicker": "@dev",
+		"yiisoft/yii2-redis": "^2.0",
+		"yiidoc/yii2-redactor": "*",
+		"dmstr/yii2-adminlte-asset": "^2.1",
+		"mdmsoft/yii2-admin": "~2.0",
+		"udokmeci/yii2-beanstalk": "dev-master",
+		"jianyan74/yii2-websocket": "^1.1",
+		"saviorlv/yii2-dysms": "dev-master",
+		"kartik-v/yii2-widget-fileinput": "@dev",
+		"linslin/yii2-curl": "*",
+		"kartik-v/yii2-krajee-base": "dev-master",
+		"kartik-v/bootstrap-fileinput": "@dev",
+		"kartik-v/yii2-widget-select2": "@dev",
+		"aliyuncs/oss-sdk-php": "^2.3",
+		"cache/simple-cache-bridge": "^1.0",
+		"cache/redis-adapter": "^1.0",
+		"cache/apcu-adapter": "^1.0",
+		"overtrue/wechat": "~4.0",
+		"kop/yii2-scroll-pager": "dev-master",
+		"jormin/baidu-speech": "^1.0",
+		"hightman/xunsearch": "dev-master",
+		"yiisoft/yii2-elasticsearch": "^2.1",
+		"2amigos/yii2-switch-widget": "~1.0",
+		"codemix/yii2-excelexport": "^2.7",
+		"workerman/workerman": "^4.0",
+		"bower-asset/jquery": "1.12.1-patch1",
+		"kucha/ueditor": "*"
+	},
+	"require-dev": {
+		"yiisoft/yii2-debug": "~2.0.0",
+		"yiisoft/yii2-gii": "~2.0.0",
+		"yiisoft/yii2-faker": "~2.0.0",
+		"codeception/base": "^2.2.3",
+		"codeception/verify": "~0.3.1",
+		"gmars/yii2-sms": "dev-master",
+		"2amigos/qrcode-library": "1.0.3"
+	},
+	"config": {
+		"process-timeout": 1800,
+		"github-oauth": {
+			"github.com": "465694c1142f03b524297b20e339617802ab7423"
+		},
+		"fxp-asset": {
+			"enabled":true 
+		},
+		"allow-plugins": {
+			"yiisoft/yii2-composer": true,
+			"easywechat-composer/easywechat-composer": true
+		}
+	}
+
 }

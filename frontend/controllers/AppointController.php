@@ -151,9 +151,6 @@ class AppointController extends Controller
                 $rs['date'] = date('Y-m-d',$v->appoint_date);
                 $rs['project'] = $v->type;
                 $rs['time'] = Appoint::$timeText[$v->appoint_time];
-                $time = explode('-',$rs['time']);
-                $rs['start'] = date('Y-m-d '.$time[0].':00');
-                $rs['end'] = date('Y-m-d '.$time[1].':00');
                 $arr[] = $rs;
             }
         } else {

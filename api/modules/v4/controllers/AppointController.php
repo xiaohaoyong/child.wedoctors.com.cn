@@ -83,18 +83,16 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $gravida_is=1;
             }
         }elseif($type!=10){
-            if($this->userid) {
-                $childs = ChildInfo::find()->select('id,name,birthday,userid,field27')->where(['userid' => $this->userid])->all();
-                foreach ($childs as $k => $v) {
-                    $rs1 = $v->toArray();
-                    $idcard = str_replace('*', '', $rs1['field27']);
-                    $idcard1 = str_replace('*', '', $rs1['idcard']);
+            $childs = ChildInfo::find()->select('id,name,birthday,userid,field27')->where(['userid'=>$this->userid])->all();
+            foreach($childs as $k=>$v){
+                $rs1=$v->toArray();
+                $idcard=str_replace('*','',$rs1['field27']);
+                $idcard1=str_replace('*','',$rs1['idcard']);
 
-                    $rs1['field27'] = $idcard || $idcard1 ? 1 : 0;
-                    $rss[] = $rs1;
-                }
-                $childs = $rss;
+                $rs1['field27'] = $idcard || $idcard1 ?1:0;
+                $rss[]=$rs1;
             }
+            $childs = $rss;
         }
 
         //doctor
