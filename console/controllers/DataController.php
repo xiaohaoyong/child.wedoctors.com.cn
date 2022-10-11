@@ -122,45 +122,45 @@ class DataController extends \yii\console\Controller
 //
 //        }
 //        exit;
-        $file = fopen('idcard1.csv', 'r');
-        while (($line = fgets($file)) !== false) {
-            $rs = explode(',',trim($line));
-
-            $child_info = ChildInfo::findOne(['idcard'=>$rs[3]]);
-            if($child_info){
-                //echo $child_info->name;
-            }else{
-                $rs = explode(',',trim($line));
-                $birthday = substr($rs[3],6,8);
-                $count = ChildInfo::find()->where(['name'=>$rs[0],'birthday'=>strtotime($birthday)])->count();
-                if($count == 1) {
-                    $child_info = ChildInfo::findOne(['name' => $rs[0], 'birthday' => strtotime($birthday)]);
-                }elseif($count > 1){
-                    $rm = '同名同生日超过一个无法确定';
-                }else{
-                    $rm = '未查询到孩子';
-                }
-            }
-            echo trim($line);
-            if($child_info) {
-                echo ",已修改";
-                $userParent = DoctorParent::findOne(['parentid' => $child_info->userid]);
-                if ($userParent) {
-                    $userParent->doctorid = 353548;
-                    $userParent->save();
-                    $auto = Autograph::findOne(['userid' => $child_info->userid]);
-                    if ($auto) {
-                        $auto->doctorid = 353548;
-                        $auto->save();
-                    }
-                }
-            }else{
-                echo ",未修改,".$rm;
-            }
-
-            echo "\n";
-        }
-        exit;
+//        $file = fopen('idcard1.csv', 'r');
+//        while (($line = fgets($file)) !== false) {
+//            $rs = explode(',',trim($line));
+//
+//            $child_info = ChildInfo::findOne(['idcard'=>$rs[3]]);
+//            if($child_info){
+//                //echo $child_info->name;
+//            }else{
+//                $rs = explode(',',trim($line));
+//                $birthday = substr($rs[3],6,8);
+//                $count = ChildInfo::find()->where(['name'=>$rs[0],'birthday'=>strtotime($birthday)])->count();
+//                if($count == 1) {
+//                    $child_info = ChildInfo::findOne(['name' => $rs[0], 'birthday' => strtotime($birthday)]);
+//                }elseif($count > 1){
+//                    $rm = '同名同生日超过一个无法确定';
+//                }else{
+//                    $rm = '未查询到孩子';
+//                }
+//            }
+//            echo trim($line);
+//            if($child_info) {
+//                echo ",已修改";
+//                $userParent = DoctorParent::findOne(['parentid' => $child_info->userid]);
+//                if ($userParent) {
+//                    $userParent->doctorid = 353548;
+//                    $userParent->save();
+//                    $auto = Autograph::findOne(['userid' => $child_info->userid]);
+//                    if ($auto) {
+//                        $auto->doctorid = 353548;
+//                        $auto->save();
+//                    }
+//                }
+//            }else{
+//                echo ",未修改,".$rm;
+//            }
+//
+//            echo "\n";
+//        }
+//        exit;
 
 //        $data = [
 //            'first' => ['value' => '您预约的九价宫颈癌疫苗，已修改至2022年9月7日星期三'],
@@ -179,28 +179,34 @@ class DataController extends \yii\console\Controller
         $file = fopen('gw.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
-            $rs = explode(',',trim($line));
+            $phone = trim($line);
             $child=ChildInfo::find()
-                //->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
-                //->andWhere(['`user_login`.`phone`' => $phone])
-                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                ->andWhere(['user_parent.mother'=>$rs[2]])
-                ->andWhere(['child_info.name'=>$rs[0]])
-                ->andWhere(['child_info.birthday'=>strtotime($rs[1])])
+                ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+                ->andWhere(['`user_login`.`phone`' => $phone])
+//                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+//                ->andWhere(['user_parent.mother'=>$rs[2]])
+//                ->andWhere(['child_info.name'=>$rs[0]])
+//                ->andWhere(['child_info.birthday'=>strtotime($rs[1])])
                 ->one();
+            echo $line;
             if($child) {
                 echo $line;
+
                 $userParent = DoctorParent::findOne(['parentid' => $child->userid]);
                 if ($userParent) {
-                    $userParent->doctorid = 4119;
+                    $userParent->doctorid = 47156;
                     $userParent->save();
                     $auto = Autograph::findOne(['userid' => $child->userid]);
                     if ($auto) {
-                        $auto->doctorid = 4119;
+                        $auto->doctorid = 47156;
                         $auto->save();
                     }
                 }
+                echo "成功";
+            }else{
+                echo "失败";
             }
+            echo "\n";
         }
         exit;
 //        $count=Autograph::find()->count();
