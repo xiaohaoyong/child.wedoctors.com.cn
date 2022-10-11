@@ -176,21 +176,27 @@ class DataController extends \yii\console\Controller
 
 //        $count=Autograph::find()->count();
 //        echo $count;
-        $file = fopen('phone.csv', 'r');
+        $file = fopen('gw.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
-            $rs = trim($line);
-            echo $rs;
-            echo "\n";
-            $userLogin = UserLogin::findOne(['phone'=>$rs]);
-            if($userLogin) {
-                $userParent = DoctorParent::findOne(['parentid' => $userLogin->userid]);
-                if($userParent) {
-                    $userParent->doctorid = 213579;
+            $rs = explode(',',trim($line));
+            $child=ChildInfo::find()
+                //->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+                //->andWhere(['`user_login`.`phone`' => $phone])
+                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                ->andWhere(['user_parent.mother'=>$rs[2]])
+                ->andWhere(['child_info.name'=>$rs[0]])
+                ->andWhere(['child_info.birthday'=>strtotime($rs[1])])
+                ->one();
+            if($child) {
+                echo $line;
+                $userParent = DoctorParent::findOne(['parentid' => $child->userid]);
+                if ($userParent) {
+                    $userParent->doctorid = 4119;
                     $userParent->save();
-                    $auto = Autograph::findOne(['userid' => $userLogin->userid]);
+                    $auto = Autograph::findOne(['userid' => $child->userid]);
                     if ($auto) {
-                        $auto->doctorid =213579;
+                        $auto->doctorid = 4119;
                         $auto->save();
                     }
                 }
@@ -234,24 +240,18 @@ class DataController extends \yii\console\Controller
 //            }
 //        }
 //        exit;
-        $file = fopen('216593.csv', 'r');
+        $file = fopen('gw.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
             $rs=explode(',',trim($line));
-            if(!$phone = trim(str_replace('"','',$rs[7]))){
-                continue;
-            }
             $child=ChildInfo::find()
-                ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
-                ->andWhere(['`user_login`.`phone`' => $phone])
-//                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-//                ->andWhere(['user_parent.mother'=>$rs[7]])
-                ->andWhere(['child_info.name'=>$rs[2]])
-                //->andWhere(['child_info.birthday'=>strtotime($rs[5])])
+                //->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+                //->andWhere(['`user_login`.`phone`' => $phone])
+                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                ->andWhere(['user_parent.mother'=>$rs[2]])
+                ->andWhere(['child_info.name'=>$rs[0]])
+                ->andWhere(['child_info.birthday'=>strtotime($rs[1])])
                 ->one();
-            if(strstr($rs[4],"母亲")){
-                continue;
-            }
             if($rs[4] && $child){
                 echo $rs[2];echo "\n";
                 $child->field27=trim($rs[4]);
