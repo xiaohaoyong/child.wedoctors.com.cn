@@ -88,6 +88,7 @@ class AppointController extends Controller
                             'keyword5' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText2[$v->appoint_time]),
                             'remark' => ARRAY('value' => "", 'color' => '#221d95'),
                         ];
+                        $data['remark'] = "请点击查看预约二维码。";
                         if($v->type!=4) {
                             $data['remark'] = '此消息为系统自动推送，如已取消请忽略。';
                         }
@@ -116,7 +117,7 @@ class AppointController extends Controller
                             'keyword3' => ARRAY('value' => '儿宝宝'),
                             'keyword4' => ARRAY('value' => $title),
                             'keyword5' => ARRAY('value' => $article->title),
-                            'remark' => ARRAY('value' => "为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
+                            'remark' => ARRAY('value' => "为了您宝宝健康，请点击查看。", 'color' => '#221d95'),];
                         $url = \Yii::$app->params['site_url'] . "#/mission-read";
                         $miniprogram = [
                             "appid" => \Yii::$app->params['wxXAppId'],
@@ -124,15 +125,12 @@ class AppointController extends Controller
                         ];
 
                         Notice::setList($v->userid, 3, ['title' =>  $article->title, 'ftitle' => $title, 'id' => "/article/view/index?id=$aid"]);
-                        $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$openid,'aid'=>$aid]);
-                        if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
-                            $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram,$aid);
-                            $articlePushVaccine = new ArticlePushVaccine();
-                            $articlePushVaccine->aid = $aid;
-                            $articlePushVaccine->openid = $openid;
-                            $articlePushVaccine->state = $pushReturn?1:0;
-                            $articlePushVaccine->save();
-                        }
+                        $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram,$aid);
+                        $articlePushVaccine = new ArticlePushVaccine();
+                        $articlePushVaccine->aid = $aid;
+                        $articlePushVaccine->openid = $openid;
+                        $articlePushVaccine->state = $pushReturn?1:0;
+                        $articlePushVaccine->save();
 
                     }
                 }
