@@ -98,42 +98,6 @@ class AppointController extends Controller
                         $rs = WechatSendTmp::send($data, $openid, $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,],$v->id);
                     }
                 }
-
-                //推送脊灰疫苗推广文
-                if($v->type==2){
-                    $child=ChildInfo::findOne(['id'=>$v->childid]);
-                    if($child && $child->birthday>strtotime('-60 day')){
-                        $aid=1985;
-                        $first='就诊当日注意事项和2月龄脊灰疫苗方案早知道，请仔细阅读';
-                        $title = '宝宝家长';
-
-
-                        if(!$title) continue;
-                        $article=\common\models\ArticleInfo::findOne($aid);
-                        $data = [
-                            'first' => array('value' => $first),
-                            'keyword1' => ARRAY('value' => date('Y年m月d H:i')),
-                            'keyword2' => ARRAY('value' => '儿宝宝'),
-                            'keyword3' => ARRAY('value' => '儿宝宝'),
-                            'keyword4' => ARRAY('value' => $title),
-                            'keyword5' => ARRAY('value' => $article->title),
-                            'remark' => ARRAY('value' => "为了您宝宝健康，请点击查看。", 'color' => '#221d95'),];
-                        $url = \Yii::$app->params['site_url'] . "#/mission-read";
-                        $miniprogram = [
-                            "appid" => \Yii::$app->params['wxXAppId'],
-                            "pagepath" => "pages/article/view/index?id=$aid",
-                        ];
-
-                        Notice::setList($v->userid, 3, ['title' =>  $article->title, 'ftitle' => $title, 'id' => "/article/view/index?id=$aid"]);
-                        $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram,$aid);
-                        $articlePushVaccine = new ArticlePushVaccine();
-                        $articlePushVaccine->aid = $aid;
-                        $articlePushVaccine->openid = $openid;
-                        $articlePushVaccine->state = $pushReturn?1:0;
-                        $articlePushVaccine->save();
-
-                    }
-                }
             }
         }
     }
