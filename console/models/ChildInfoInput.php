@@ -61,7 +61,7 @@ class ChildInfoInput
         }
         $this->log->addLog($this->hospitalid);
         $this->log->addLog($value['name']);
-        $this->childInfo = new ChildInfo();
+        //$this->childInfo = new ChildInfo();
         $this->user = new User();
         $this->userParent = new UserParent();
 
@@ -75,7 +75,6 @@ class ChildInfoInput
             $this->user = User::findOne($this->childInfo->userid);
             $this->userParent = UserParent::findOne(['userid' => $this->childInfo->userid]);
         } else {
-            echo 123;exit;
             if (!$this->phoneSelect($value)) {
 
                 //五项查询
@@ -281,7 +280,6 @@ class ChildInfoInput
         $name = $value['name'];
         $barthday = strtotime($value['birthday']);
         $gender = $value['gender'] == "男" ? 1 : 2;
-        var_dump($mother,$name,$barthday);exit;
 
         if($mother  && $name && $barthday) {
             $childInfo = ChildInfo::find()
