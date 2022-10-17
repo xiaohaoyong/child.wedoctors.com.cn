@@ -281,7 +281,7 @@ class ChildInfoInput
         $barthday = strtotime($value['birthday']);
         $gender = $value['gender'] == "男" ? 1 : 2;
 
-        if($mother  && $name && $barthday && $gender) {
+        if($mother  && $name && $barthday) {
             $childInfo = ChildInfo::find()
                 ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
                 ->andFilterWhere(["`user_parent`.`mother`" => $mother])
