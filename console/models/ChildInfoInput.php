@@ -290,6 +290,7 @@ class ChildInfoInput
                 ->andFilterWhere(["`child_info`.`birthday`" => $barthday])
                 //->andFilterWhere(["`child_info`.`gender`" => $gender])
                 ->one();
+            var_dump($childInfo);exit;
             if ($childInfo) {
                 $this->childInfo = $childInfo;
                 $this->user = User::findOne($childInfo->userid);
