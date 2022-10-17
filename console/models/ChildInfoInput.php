@@ -66,9 +66,9 @@ class ChildInfoInput
         $this->userParent = new UserParent();
 
         //条形码查询
-        $this->childInfo = ChildInfo::find()->where(['field7' => $value['field7']])
-            ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-            ->andWhere(['user_parent.mother'=>$value['mother']])->one();
+//        $this->childInfo = ChildInfo::find()->where(['field7' => $value['field7']])
+//            ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+//            ->andWhere(['user_parent.mother'=>$value['mother']])->one();
 
         if ($this->childInfo) {
             $this->log->addLog("条形码");
