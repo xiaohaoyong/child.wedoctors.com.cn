@@ -278,7 +278,7 @@ class ChildInfoInput
         $mother = $value['mother'];
         //$father = $value['father'];
         $name = $value['name'];
-        $barthday = intval(strtotime($value['birthday']));
+        $barthday = strtotime($value['birthday']);
         $gender = $value['gender'] == "男" ? 1 : 2;
 
         if($mother  && $name && $barthday && $gender) {
