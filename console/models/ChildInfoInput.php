@@ -276,16 +276,16 @@ class ChildInfoInput
     public function fiveSelect($value)
     {
         $mother = $value['mother'];
-        $father = $value['father'];
+        //$father = $value['father'];
         $name = $value['name'];
         $barthday = intval(strtotime($value['birthday']));
         $gender = $value['gender'] == "男" ? 1 : 2;
 
-        if($mother && $father && $name && $barthday && $gender) {
+        if($mother  && $name && $barthday && $gender) {
             $childInfo = ChildInfo::find()
                 ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
                 ->andFilterWhere(["`user_parent`.`mother`" => $mother])
-                ->andFilterWhere(["`user_parent`.`father`" => $father])
+                //->andFilterWhere(["`user_parent`.`father`" => $father])
                 ->andFilterWhere(["`child_info`.`name`" => $name])
                 ->andFilterWhere(["`child_info`.`birthday`" => $barthday])
                 ->andFilterWhere(["`child_info`.`gender`" => $gender])
