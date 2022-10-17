@@ -75,6 +75,7 @@ class ChildInfoInput
             $this->user = User::findOne($this->childInfo->userid);
             $this->userParent = UserParent::findOne(['userid' => $this->childInfo->userid]);
         } else {
+            echo 123;exit;
             if (!$this->phoneSelect($value)) {
 
                 //五项查询
