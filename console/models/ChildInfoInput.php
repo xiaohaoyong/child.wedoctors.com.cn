@@ -288,7 +288,7 @@ class ChildInfoInput
                 //->andFilterWhere(["`user_parent`.`father`" => $father])
                 ->andFilterWhere(["`child_info`.`name`" => $name])
                 ->andFilterWhere(["`child_info`.`birthday`" => $barthday])
-                ->andFilterWhere(["`child_info`.`gender`" => $gender])
+                //->andFilterWhere(["`child_info`.`gender`" => $gender])
                 ->one();
             if ($childInfo) {
                 $this->childInfo = $childInfo;
