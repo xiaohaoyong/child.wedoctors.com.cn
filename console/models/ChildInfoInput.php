@@ -280,6 +280,7 @@ class ChildInfoInput
         $name = $value['name'];
         $barthday = strtotime($value['birthday']);
         $gender = $value['gender'] == "男" ? 1 : 2;
+        var_dump($mother,$name,$barthday);exit;
 
         if($mother  && $name && $barthday) {
             $childInfo = ChildInfo::find()
@@ -290,7 +291,6 @@ class ChildInfoInput
                 ->andFilterWhere(["`child_info`.`birthday`" => $barthday])
                 //->andFilterWhere(["`child_info`.`gender`" => $gender])
                 ->one();
-            var_dump($childInfo);exit;
             if ($childInfo) {
                 $this->childInfo = $childInfo;
                 $this->user = User::findOne($childInfo->userid);
