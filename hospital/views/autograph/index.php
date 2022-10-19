@@ -83,10 +83,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             ', 'buttons' => [
                                     'down' => function ($url, $model, $key) {
-                                        return Html::a('<span class="fa fa-database"></span> 仅签字协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'t'=>$_GET['t']]), ['target=' => '_blank']);
+                                        return Html::a('<span class="fa fa-database"></span> 仅签字协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'t'=>$_GET['AutographSearch[t]']]), ['target=' => '_blank']);
                                     },
                                     'downx' => function ($url, $model, $key) {
-                                        return Html::a('<span class="fa fa-database"></span> 完整协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'t'=>$_GET['t'], 'type' => 1]), ['target=' => '_blank']);
+                                        return Html::a('<span class="fa fa-database"></span> 完整协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'t'=>$_GET['AutographSearch[t]'], 'type' => 1]), ['target=' => '_blank']);
                                     },
                                 ],
                                 ],
