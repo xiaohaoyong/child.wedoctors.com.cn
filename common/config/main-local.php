@@ -3,9 +3,9 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;dbname=zzy_local',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=child_healtha',
             'username' => 'root',
-            'password' => 'root',
+            'password' => '123456',
             'charset' => 'utf8',
         ],
         'aliyun' => [
