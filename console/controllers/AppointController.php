@@ -88,6 +88,7 @@ class AppointController extends Controller
                             'keyword5' => ARRAY('value' => date('Y年m月d', $day) . ' ' . Appoint::$timeText2[$v->appoint_time]),
                             'remark' => ARRAY('value' => "", 'color' => '#221d95'),
                         ];
+                        $data['remark'] = "请点击查看预约二维码。";
                         if($v->type!=4) {
                             $data['remark'] = '此消息为系统自动推送，如已取消请忽略。';
                         }
@@ -97,31 +98,28 @@ class AppointController extends Controller
                         $rs = WechatSendTmp::send($data, $openid, $temp, '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/appoint/view?id=' . $v->id,],$v->id);
                     }
                 }
+            }
+        }
+    }
+    public function actionNoticeNew()
+    {
+        $day = strtotime('+1 day', strtotime(date('Y-m-d 00:00:00')));
+        $appoint = Appoint::find()->where(['appoint_date' => $day])->andWhere(['not in', 'doctorid', [221895]])->andWhere(['!=', 'state', 3])->all();
 
+        if ($appoint) {
+            foreach ($appoint as $k => $v) {
+
+                $openid = UserLogin::getOpenid($v->userid);
+                $doctor=UserDoctor::findOne(['userid'=>$v->doctorid]);
+                $hospital=Hospital::findOne($doctor->hospitalid);
                 //推送脊灰疫苗推广文
                 if($v->type==2){
                     $child=ChildInfo::findOne(['id'=>$v->childid]);
-                    if($child && $child->birthday>strtotime('-74 day')){
+                    if($child && $child->birthday>strtotime('-60 day')){
                         $aid=1985;
                         $first='就诊当日注意事项和2月龄脊灰疫苗方案早知道，请仔细阅读';
+                        $title = '宝宝家长';
 
-
-                        if($child->birthday>strtotime('-74 day') && $child->birthday<strtotime('-60 day')) {
-                            $aid = 1985;
-                            $title='二至三月龄宝宝家长';
-                            $footer="";
-
-                        }elseif($child->birthday>strtotime('-44 day') && $child->birthday<strtotime('-30 day')) {
-                            $aid = 1985;
-                            $title = '一至二月龄宝宝家长';
-                            $footer="";
-
-                        }else {
-                            $aid = 1985;
-                            $title = '宝宝家长';
-                            $footer="";
-
-                        }
 
                         if(!$title) continue;
                         $article=\common\models\ArticleInfo::findOne($aid);
@@ -132,7 +130,7 @@ class AppointController extends Controller
                             'keyword3' => ARRAY('value' => '儿宝宝'),
                             'keyword4' => ARRAY('value' => $title),
                             'keyword5' => ARRAY('value' => $article->title),
-                            'remark' => ARRAY('value' => "为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),];
+                            'remark' => ARRAY('value' => "为了您宝宝健康，请点击查看。", 'color' => '#221d95'),];
                         $url = \Yii::$app->params['site_url'] . "#/mission-read";
                         $miniprogram = [
                             "appid" => \Yii::$app->params['wxXAppId'],
@@ -140,22 +138,18 @@ class AppointController extends Controller
                         ];
 
                         Notice::setList($v->userid, 3, ['title' =>  $article->title, 'ftitle' => $title, 'id' => "/article/view/index?id=$aid"]);
-                        $articlePushVaccine=ArticlePushVaccine::findOne(['openid'=>$openid,'aid'=>$aid]);
-                        if(!$articlePushVaccine || $articlePushVaccine->state!=1) {
-                            $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram,$aid);
-                            $articlePushVaccine = new ArticlePushVaccine();
-                            $articlePushVaccine->aid = $aid;
-                            $articlePushVaccine->openid = $openid;
-                            $articlePushVaccine->state = $pushReturn?1:0;
-                            $articlePushVaccine->save();
-                        }
+                        $pushReturn = \common\helpers\WechatSendTmp::send($data, $openid, \Yii::$app->params['zhidao'], $url, $miniprogram,$aid);
+                        $articlePushVaccine = new ArticlePushVaccine();
+                        $articlePushVaccine->aid = $aid;
+                        $articlePushVaccine->openid = $openid;
+                        $articlePushVaccine->state = $pushReturn?1:0;
+                        $articlePushVaccine->save();
 
                     }
                 }
             }
         }
     }
-
     //国医数据导入
     public function actionGPush()
     {

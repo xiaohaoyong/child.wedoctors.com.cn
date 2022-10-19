@@ -61,14 +61,14 @@ class ChildInfoInput
         }
         $this->log->addLog($this->hospitalid);
         $this->log->addLog($value['name']);
-        $this->childInfo = new ChildInfo();
+        //$this->childInfo = new ChildInfo();
         $this->user = new User();
         $this->userParent = new UserParent();
 
         //条形码查询
-        $this->childInfo = ChildInfo::find()->where(['field7' => $value['field7']])
-            ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-            ->andWhere(['user_parent.mother'=>$value['mother']])->one();
+//        $this->childInfo = ChildInfo::find()->where(['field7' => $value['field7']])
+//            ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+//            ->andWhere(['user_parent.mother'=>$value['mother']])->one();
 
         if ($this->childInfo) {
             $this->log->addLog("条形码");
@@ -276,19 +276,19 @@ class ChildInfoInput
     public function fiveSelect($value)
     {
         $mother = $value['mother'];
-        $father = $value['father'];
+        //$father = $value['father'];
         $name = $value['name'];
-        $barthday = intval(strtotime($value['birthday']));
+        $barthday = strtotime($value['birthday']);
         $gender = $value['gender'] == "男" ? 1 : 2;
 
-        if($mother && $father && $name && $barthday && $gender) {
+        if($mother  && $name && $barthday) {
             $childInfo = ChildInfo::find()
                 ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
                 ->andFilterWhere(["`user_parent`.`mother`" => $mother])
-                ->andFilterWhere(["`user_parent`.`father`" => $father])
+                //->andFilterWhere(["`user_parent`.`father`" => $father])
                 ->andFilterWhere(["`child_info`.`name`" => $name])
                 ->andFilterWhere(["`child_info`.`birthday`" => $barthday])
-                ->andFilterWhere(["`child_info`.`gender`" => $gender])
+                //->andFilterWhere(["`child_info`.`gender`" => $gender])
                 ->one();
             if ($childInfo) {
                 $this->childInfo = $childInfo;

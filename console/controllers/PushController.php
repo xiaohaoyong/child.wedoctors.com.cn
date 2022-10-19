@@ -127,7 +127,7 @@ class PushController extends Controller
         $hospitals = array_filter($hospital,function ($e){
             return $e!=1;
         });
-        $hospitals=[110598];
+        $hospitals = UserDoctor::find()->select('hospitalid')->column();
 
         foreach($hospitals as $hk=>$hv) {
             $doctor = UserDoctor::findOne(['hospitalid' => $hv]);

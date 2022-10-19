@@ -3,81 +3,101 @@
 /* @var $this yii\web\View */
 
 $this->title = '首页';
-databackend\assets\IndexAsset::register($this);
+hospital\assets\IndexAsset::register($this);
 
 ?>
+<style>
+    .info-box-content .title {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .info-box-content .item {
+        line-height: 24px;
+    }
+</style>
 <div class="col-xs-12">
 
     <div class="row">
-        <?php         if (in_array(Yii::$app->user->identity->county ,[1105,1106])) {?>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box bg-green">
+        <!--判断是否签名-->
+        <?php if (in_array(Yii::$app->user->identity->county, [1105, 1106,1109,1116,1113])) { ?>
 
-                    <div class="info-box-content" style="margin-left:0px;height: 128px;">
-                <span class="info-box-number" style="height: 25px; line-height: 25px"><?= $data['todayNumTotal'] ?>
-                    /<?= $data['childNum'] ?>&nbsp;&nbsp;&nbsp;<?= $data['baifen'] ?>% </span>
-                        <span class="progress-description" style="height: 30px; line-height: 30px">已完成签约/管理儿童总数</span>
-                        <div class="progress"></div>
-                        <span class="info-box-number" style="height: 25px; line-height: 25px"><?= $data['AutoNum'] ?>
-                            /<?= $data['achildNum'] ?>&nbsp;&nbsp;&nbsp;<?= $data['abaifen'] ?>% </span>
-                        <span class="progress-description" style="height: 30px; line-height: 30px">签字数/管理儿童总数</span>
+            <div class="col-md-3">
+                <!-- Widget: user widget style 1 -->
+                <div class="box box-solid">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="box-header with-border bg-yellow">
+                        <h3 class="box-title">0-3岁中医药儿童健康管理</h3>
+                        <!-- /.box-tools -->
                     </div>
-                    <!-- /.info-box-content -->
+                    <div class="box-footer no-padding">
+                        <ul class="nav nav-stacked">
+                            <li><a href="#">今日签约数 <span class="pull-right badge bg-blue"><?= $data['todayNum'] ?></span></a></li>
+                            <li><a href="#">已完成签约 <span class="pull-right badge bg-aqua"><?= $data['todayNumTotal'] ?></span></a></li>
+                            <li><a href="#">已完成签约率 <span class="pull-right badge bg-green"><?= $data['baifen'] ?>%</span></a></li>
+                            <li><a href="#">管理儿童总数 <span class="pull-right badge bg-red"><?= $data['childNum'] ?></span></a></li>
+                        </ul>
+                    </div>
                 </div>
-                <!-- /.info-box -->
+                <!-- /.widget-user -->
             </div>
-            <!-- /.col -->
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <!-- small box -->
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h3><?= $data['todayNum'] ?>/<?= $data['todayInkNum'] ?></h3>
-                        <p>今日签约 / 今日签字</p>
+            <div class="col-md-3">
+                <!-- Widget: user widget style 1 -->
+                <div class="box box-solid">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="box-header with-border bg-green">
+                        <h3 class="box-title">0-6岁家庭医生签约服务</h3>
+                        <!-- /.box-tools -->
                     </div>
-                    <div class="icon">
-                        <i class="fa fa-user-plus"></i>
+                    <div class="box-footer no-padding">
+                        <ul class="nav nav-stacked">
+                            <li><a href="#">今日签约数 <span class="pull-right badge bg-blue"><?= $data['todayInkNum'] ?></span></a></li>
+                            <li><a href="#">已完成签约 <span class="pull-right badge bg-aqua"><?= $data['AutoNum'] ?></span></a></li>
+                            <li><a href="#">已完成签约率 <span class="pull-right badge bg-green"><?= $data['abaifen'] ?>%</span></a></li>
+                            <li><a href="#">管理儿童总数 <span class="pull-right badge bg-red"><?= $data['achildNum'] ?></span></a></li>
+                        </ul>
                     </div>
-                    <a href="<?= \yii\helpers\Url::to(['child-info/index']) ?>" class="small-box-footer">点击查看<i
-                                class="fa fa-arrow-circle-right"></i>
-                    </a>
                 </div>
+                <!-- /.widget-user -->
             </div>
-            <!-- /.col -->
-
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <!-- small box -->
-                <div class="small-box bg-green">
-                    <div class="inner">
-                        <h3><?= $data['todayNumTotal'] ?>/<?= $data['AutoNum'] ?></h3>
-                        <p>已完成签约 / 已完成签字管理儿童数</p>
+            <div class="col-md-3">
+                <!-- Widget: user widget style 1 -->
+                <div class="box box-solid">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="box-header with-border bg-aqua">
+                        <h3 class="box-title">孕产期管理</h3>
+                        <!-- /.box-tools -->
                     </div>
-                    <div class="icon">
-                        <i class="fa fa-bar-chart"></i>
+                    <div class="box-footer no-padding">
+                        <ul class="nav nav-stacked">
+                            <li><a href="#">今日签约数 <span class="pull-right badge bg-blue"><?= $data['todayPregLCount'] ?></span></a></li>
+                            <li><a href="#">已完成签约 <span class="pull-right badge bg-aqua"><?= $data['pregLCount'] ?></span></a></li>
+                            <li><a href="#">已完成签约率 <span class="pull-right badge bg-green"><?= $data['pregCount'] ? round(($data['pregLCount'] / $data['pregCount']) * 100, 1) : 0 ?>%</span></a></li>
+                            <li><a href="#">管理孕产妇总数 <span class="pull-right badge bg-red"><?= $data['pregCount'] ?></span></a></li>
+                        </ul>
                     </div>
-                    <a href="<?= \yii\helpers\Url::to(['child-info/index?ChildInfoSearchModel[level]=1']) ?>"
-                       class="small-box-footer">点击查看<i class="fa fa-arrow-circle-right"></i>
-                    </a>
                 </div>
+                <!-- /.widget-user -->
             </div>
-            <!-- /.col -->
-
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <!-- small box -->
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h3><?= $data['articleNum'] ?></h3>
-                        <p style="font-size: 14px; margin-bottom: 5px; line-height: 14px;">宣教总次数</p>
-                        <p style="font-size: 12px; margin-bottom: 0px; line-height: 12px;">规范化管理率：100%</p>
+            <div class="col-md-3">
+                <!-- Widget: user widget style 1 -->
+                <div class="box box-solid">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="box-header with-border bg-red">
+                        <h3 class="box-title">宣教</h3>
+                        <!-- /.box-tools -->
                     </div>
-                    <div class="icon">
-                        <i class="fa fa-pie-chart"></i>
+                    <div class="box-footer no-padding">
+                        <ul class="nav nav-stacked">
+                            <li><a href="#">宣教总次数 <span class="pull-right badge bg-blue"><?= $data['articleNum'] ?></span></a></li>
+                            <li><a href="#">规范化管理率 <span class="pull-right badge bg-aqua">100%</span></a></li>
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                        </ul>
                     </div>
-                    <a href="<?= \yii\helpers\Url::to(['user-doctor/index']) ?>" class="small-box-footer">点击查看<i
-                                class="fa fa-arrow-circle-right"></i>
-                    </a>
                 </div>
+                <!-- /.widget-user -->
             </div>
-            <!-- /.col -->
         <?php } else { ?>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-green">
@@ -216,7 +236,9 @@ databackend\assets\IndexAsset::register($this);
                                 <td><?= $v->doctor[0]->name ?></td>
                                 <td><?= $v->parent->father . "/" . $v->parent->mother ?></td>
                                 <td><?= date('Y-m-d', \common\models\DoctorParent::findOne(['parentid' => $v->userid])->createtime) ?></td>
-                                <td><?php //$v->parent->mother_phone ? $v->parent->mother_phone : $v->parent->father_phone ? $v->parent->father_phone : $v->parent->field12 ?></td>
+                                <td><?php //$v->parent->mother_phone ? $v->parent->mother_phone : $v->parent->father_phone ? $v->parent->father_phone : $v->parent->field12 ? $v->parent->field12 : $v->user->phone
+                                    echo "-";
+                                    ?></td>
                             </tr>
                         <?php } ?>
                     </table>
@@ -227,30 +249,6 @@ databackend\assets\IndexAsset::register($this);
         </div>
 
     </div>
-
-    <?php if (\Yii::$app->user->identity->type == 1) { ?>
-
-        <?php
-        $updateJs = <<<JS
-        $(function () {
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "iDisplayLength":100,
-                "bPaginate":false,
-                "bInfo":false
-            });
-        });
-JS;
-        $this->registerJs($updateJs);
-
-        ?>
-    <?php } ?>
-
     <script>
         var line_data =<?=json_encode($line_data)?>;
 
