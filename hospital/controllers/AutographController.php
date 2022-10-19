@@ -4,6 +4,7 @@ namespace hospital\controllers;
 
 use common\models\ChildInfo;
 use common\models\DoctorParent;
+use common\models\Pregnancy;
 use common\models\UserDoctor;
 use common\models\UserParent;
 use Yii;
@@ -67,22 +68,35 @@ class AutographController extends BaseController
      */
     public function actionDown($userid,$type=0)
     {
-        if($type) {
+        if($type == 1) {
             $userParent = UserParent::findOne(['userid' => $userid]);
+
+
+            $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
+            $userDoctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
+            $child = ChildInfo::find()->where(['userid' => $userid])->all();
+
+
+            $view = Yii::$app->user->identity->hospitalid == 110647 ? 'down1' : 'down';
+            return $this->renderPartial($view, [
+                'userParent' => $userParent,
+                'userid' => $userid,
+                'userDoctor' => $userDoctor,
+                'child' => $child,
+            ]);
+        }elseif($type == 2){
+            $userParent = UserParent::findOne(['userid' => $userid]);
+            $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
+            $userDoctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
+            $pregnancy = Pregnancy::findOne(['familyid'=>$userid]);
+            return $this->renderPartial('downa', [
+                'pregnancy' => $pregnancy,
+                'userid' => $userid,
+                'userParent' => $userParent,
+                'userDoctor' => $userDoctor,
+
+            ]);
         }
-
-        $doctorParent=DoctorParent::findOne(['parentid'=>$userid]);
-        $userDoctor=UserDoctor::findOne(['userid'=>$doctorParent->doctorid]);
-        $child=ChildInfo::find()->where(['userid'=>$userid])->all();
-
-
-        $view=Yii::$app->user->identity->hospitalid==110647?'down1':'down';
-        return $this->renderPartial($view,[
-            'userParent'=>$userParent,
-            'userid'=>$userid,
-            'userDoctor'=>$userDoctor,
-            'child'=>$child,
-        ]);
     }
 
 
