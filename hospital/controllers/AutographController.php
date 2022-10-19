@@ -45,7 +45,7 @@ class AutographController extends BaseController
         $param=Yii::$app->request->queryParams;
         $t=$param['AutographSearch']['t'];
         return $this->render('index', [
-            't'=>$t,
+            'ttt'=>$t,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

@@ -6,12 +6,13 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel hospital\models\AutographSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
+/* @var $ttt int */
 $this->title = '管理列表';
 $this->params['breadcrumbs'][] = $this->title;
 \common\helpers\HeaderActionHelper::$action = [
     0 => ['name' => '添加', 'url' => ['create']]
 ];
+define('TTT',$ttt);
 ?>
 <div class="autograph-index">
     <div class="col-xs-12">
@@ -83,10 +84,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             ', 'buttons' => [
                                     'down' => function ($url, $model, $key) {
-                                        return Html::a('<span class="fa fa-database"></span> 仅签字协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'t'=>$t]), ['target=' => '_blank']);
+                                        return Html::a('<span class="fa fa-database"></span> 仅签字协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'t'=>TTT]), ['target=' => '_blank']);
                                     },
                                     'downx' => function ($url, $model, $key) {
-                                        return Html::a('<span class="fa fa-database"></span> 完整协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'t'=>$t, 'type' => 1]), ['target=' => '_blank']);
+                                        return Html::a('<span class="fa fa-database"></span> 完整协议', \yii\helpers\Url::to(['autograph/down', 'userid' => $model->userid,'t'=>TTT, 'type' => 1]), ['target=' => '_blank']);
                                     },
                                 ],
                                 ],
