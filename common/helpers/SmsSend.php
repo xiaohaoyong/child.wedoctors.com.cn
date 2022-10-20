@@ -19,7 +19,8 @@ class SmsSend
         if (empty($code)) {
             $str = StringHelper::getRandStr(6, 1);
         }
-        $response = \Yii::$app->aliyun->sendSms(
+        //lrs 注释
+        /*$response = \Yii::$app->aliyun->sendSms(
             "儿宝宝", // 短信签名
             $templatecode, // 短信模板编号
             $mobile, // 短信接收者
@@ -27,8 +28,8 @@ class SmsSend
                 "code"=>$str,
             )
         );
-        $response=json_decode($response,true);
-
+        $response=json_decode($response,true);*/
+        $response['code'] = 200;
         if ($response['code']==200) {
             //该验证码存cache
             \Yii::$app->cache->set($mobile, $str, 900);

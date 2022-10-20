@@ -232,9 +232,9 @@ class SiteController extends BaseController
     }
 
 
-    public function actionHospitals($hospitalid=0,$redirect=''){
+    public function actionHospitals(){
         $this->layout = "@hospital/views/layouts/main-login.php";
-
+        $hospitalid = Yii::$app->request->get('hospitalid');
         if($hospitalid){
 
             $cookies = Yii::$app->response->cookies;
@@ -243,8 +243,9 @@ class SiteController extends BaseController
                 'value' => $hospitalid,
                 'expire'=>time()+3600000
             ]));
+            $redirect = Yii::$app->request->get('redirect');
             if($redirect){
-                return $this->redirect([$_GET['redirect']]);
+                return $this->redirect([$redirect]);
 
             }
             return $this->redirect(['site/index']);
@@ -253,7 +254,6 @@ class SiteController extends BaseController
 
         $hospitalids=DoctorHospital::find()->select('hospitalid')->where(['doctorid'=>\Yii::$app->user->identity->userid])->column();
         $hospitals=Hospital::find()->select('name')->indexBy('id')->where(['id'=>$hospitalids])->column();
-
         return $this->render('hospitals',[
             'hospitals'=>$hospitals
         ]);
@@ -271,7 +271,11 @@ class SiteController extends BaseController
 
         $model = new \hospital\models\LoginForm();             //②
         if ($model->load(Yii::$app->request->post()) && $model->login()) {      //③
-            return $this->redirect(['site/hospitals','redirect'=>$_GET['redirect']]);
+            $redirect = '';
+            if(isset($_GET['redirect'])){
+                $redirect = $_GET['redirect'];
+            }
+            return $this->redirect(['site/hospitals','redirect'=>$redirect]);
             //return $this->goBack();          //④
         }
         return $this->render('login', [
@@ -295,9 +299,9 @@ class SiteController extends BaseController
      * @param $phone
      * @return Code
      */
-    public function actionCode($phone){
+    public function actionCode(){
         \Yii::$app->response->format=Response::FORMAT_JSON;
-
+        $phone = Yii::$app->request->get('phone');
         if(!preg_match("/^1[34578]\d{9}$/", $phone)){
             return ['code'=>20010,'msg'=>'手机号码格式错误'];
         }

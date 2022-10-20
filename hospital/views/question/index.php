@@ -18,8 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header with-border">
-                是否开通留言板：
-                <?= \dosamigos\switchinput\SwitchBox::widget([
+                是否开通留言板： <!--lrs 注释-->
+             <!-- \dosamigos\switchinput\SwitchBox::widget([
                     'name' => 'is_question',
                     'checked' => $userDoctor['is_question'],
                     'clientOptions' => [
@@ -32,8 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             ajax(e.currentTarget.checked);
                         }"
                     ],
-                ]);?>
-
+                ]);
+-->
 
             </div>
         </div>
