@@ -89,7 +89,7 @@ use yii\widgets\ActiveForm;
                 $("#' . Html::getInputId($userInfo, 'city') . '").html(data);
             });',
                         ]) ?>
-                    <?php $city = \common\models\Area::$city[$userInfo->province] ? \common\models\Area::$city[$userInfo->province] : []; ?>
+                    <?php $city = $userInfo->province && \common\models\Area::$city[$userInfo->province] ? \common\models\Area::$city[$userInfo->province] : []; ?>
                     <?= $form->field($userInfo, 'city')->dropDownList($city,
                         [
                             'prompt' => '请选择',
@@ -99,7 +99,7 @@ use yii\widgets\ActiveForm;
                 $("#' . Html::getInputId($userInfo, 'county') . '").html(data);
             });',
                         ]) ?>
-                    <?php $county = \common\models\Area::$city[$userInfo->province] ? \common\models\Area::$county[$userInfo->city] : []; ?>
+                    <?php $county = $userInfo->province && \common\models\Area::$city[$userInfo->province] ? \common\models\Area::$county[$userInfo->city] : []; ?>
 
                     <?= $form->field($userInfo, 'county')->dropDownList($county, [
                         'prompt' => '请选择',

@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
                 $("#'.Html::getInputId($model,'city').'").html(data);
             });',
         ]) ?>
-    <?php $city=\common\models\Area::$city[$model->province]?\common\models\Area::$city[$model->province]:[];?>
+    <?php $city=$model->province && \common\models\Area::$city[$model->province]?\common\models\Area::$city[$model->province]:[];?>
     <?= $form->field($model,'city')->dropDownList($city,
         [
             'prompt'=>'请选择',
@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
                 $("#'.Html::getInputId($model,'county').'").html(data);
             });',
         ]) ?>
-    <?php $county=\common\models\Area::$city[$model->province]?\common\models\Area::$county[$model->city]:[];?>
+    <?php $county=$model->city &&\common\models\Area::$city[$model->city]?\common\models\Area::$county[$model->city]:[];?>
 
     <?= $form->field($model,'county')->dropDownList($county,['prompt'=>'请选择']) ?>
 

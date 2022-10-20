@@ -195,4 +195,12 @@ class QuestionController extends Controller
         }
         return ;
     }
+
+    /**
+     * 问题评论
+     */
+    public function actionComment(){
+        $id = \Yii::$app->request->get('id'); //问题ID
+        var_dump($id);die;
+    }
 }

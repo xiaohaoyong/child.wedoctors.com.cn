@@ -113,6 +113,7 @@ class UserDoctorController extends BaseController
      */
     public function actionCreate()
     {
+        $userLogin = [];
         $model = new User();
         $userInfo=new \common\models\UserDoctor();
         $model->loadDefaultValues();

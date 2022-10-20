@@ -49,7 +49,7 @@ class Controller extends \yii\web\Controller
         $log = new \common\components\Log('controller');
         $rs[] = $this->seaver_token;
         $log->addLog(json_encode($rs));
-        $log->saveLog();
+        //$log->saveLog(); //lrs 注释
         $this->userid = 123345;
       /*  if ($this->seaver_token) {
             $cache = \Yii::$app->rdmp;
