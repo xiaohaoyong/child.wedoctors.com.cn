@@ -1,4 +1,8 @@
 <?php
+$password = 123456;
+echo md5(md5("data.wedoctors").$password);
+
+die;
 
 // NOTE: Make sure this file is not accessible when deployed to production
 if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {

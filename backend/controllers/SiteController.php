@@ -96,8 +96,9 @@ class SiteController extends BaseController
             ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
             ->andFilterWhere(['>','child_info.source',0])
             ->count();
+        $data['todayNumTotal'] = 0;
         //签约率
-        if($data['childNum']) {
+        if($data['childNum'] && isset($data['todayNumTotal'])) {
             $data['baifen'] = round(($data['todayNumTotal'] / $data['childNum']) * 100,1);
         }else{
             $data['baifen'] = 0;

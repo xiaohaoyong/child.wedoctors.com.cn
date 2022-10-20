@@ -14,4 +14,4 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/../config/main-local.php')
 );
 
-(new yii\web\Application($config))->run();
+(new \api\components\base\Application($config))->run();
