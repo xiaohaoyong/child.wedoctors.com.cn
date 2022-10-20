@@ -75,5 +75,4 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         $this->password_hash = md5(md5("data.wedoctors").'11a58ed52');
     }
 }
-
 ?>
