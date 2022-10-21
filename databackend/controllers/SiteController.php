@@ -127,7 +127,7 @@ class SiteController extends BaseController
         }else{
             $data['baifen'] = 0;
         }
-
+        $data['AutoNum'] = '';
         $auto=Autograph::find()->select('userid')->andFilterWhere(['in','`doctorid`' ,$doctorids])->column();
         if($auto) {
             $data['AutoNum'] = ChildInfo::find()
@@ -135,6 +135,7 @@ class SiteController extends BaseController
                 ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-6 year')])
                 ->count();
         }
+
         //签字数
         //签约率
         if($data['AutoNum']) {
@@ -321,6 +322,7 @@ class SiteController extends BaseController
      */
     public function actionLogin()
     {
+
         if (!\Yii::$app->user->isGuest) {     //①
             return $this->goHome();
         }

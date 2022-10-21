@@ -17,7 +17,7 @@ class BaseController extends \yii\web\Controller {
     {
         parent::beforeAction($action);
 
-
+//lrs 注释
         $this->doctor=UserDoctor::find()->andFilterWhere(['county'=> \Yii::$app->user->identity->county])->asArray()->all();
         $path = \Yii::$app->request->pathInfo;
 

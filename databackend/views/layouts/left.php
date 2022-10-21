@@ -3,6 +3,10 @@
     <section class="sidebar">
 
         <?php
+        $a =[];
+        $b =[];
+        $d =[];
+        $c =[];
         if(Yii::$app->user->identity->county==1105){
             $a=['label' => '签名记录','icon' => 'pencil-square-o','url' => \yii\helpers\Url::to(['autograph/index']),];
         }
