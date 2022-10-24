@@ -63,6 +63,9 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+        if (\Yii::$app->user->isGuest) {     //①
+            return $this->redirect(['site/login']);
+        }
         $doctorid = UserDoctor::findOne(['hospitalid' => \Yii::$app->user->identity->hospitalid])->userid;
 
         $today=strtotime(date('Y-m-d 00:00:00'));
