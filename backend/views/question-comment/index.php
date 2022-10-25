@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '问题',
                                     'value' => function ($e) {
-                                        $info = \common\models\QuestionInfo::findOne(['qid' => $e->id]);
+                                        $info = \common\models\QuestionInfo::findOne(['qid' => $e->qid]);
                                         return $info->content;
                                     }
                                 ],
@@ -57,7 +57,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
 
-
+                                [
+                                    'attribute' => 'is_satisfied',
+                                    'value' => function ($e) {
+                                       if($e->is_satisfied){
+                                           return \common\models\QuestionComment::$satisfiedArr[$e->is_satisfied];
+                                       }
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'is_solve',
+                                    'value' => function ($e) {
+                                        if($e->is_solve){
+                                            return \common\models\QuestionComment::$solvedArr[$e->is_solve];
+                                        }
+                                    }
+                                ],
 
                                 // 'orderid',
                                 // 'level',
@@ -65,24 +80,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                                 [
-                                    'class' => 'common\components\grid\ActionColumn',
-                                    'template' => '
-                            <div class="btn-group dropup">
-                                <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li>{update}</li>
-                                    <li>{delete}</li>
-                                    <li>{reply}</li>
-                                </ul>
-                            </div>
-                            ',
+                                    'class' => 'yii\grid\ActionColumn',
+                                    'header'=>'操作',
+                                    'template' => '{view}',
                                     'buttons' => [
-                                        'reply' => function ($url, $model, $key) {
-                                            return \yii\helpers\Html::a('<span class="fa fa-share"> 回复</span>', '/question/reply?id='.$model->id);
-                                        }
-                                    ]
+                                        'view' => function($url, $model) {
+                                            $options = [
+                                                'title' => '查看',
+                                                'style' => 'margin-left:5px;'
+                                            ];
+
+                                                return Html::a('查看', ['question-comment/view', 'id'=>$model->id], $options);
+                                        },
+
+                                    ],
                                 ],
                             ],
                         ]); ?>
