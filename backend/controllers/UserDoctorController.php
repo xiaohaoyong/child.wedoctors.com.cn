@@ -208,11 +208,11 @@ class UserDoctorController extends BaseController
                 $userInfo->appoints = str_split((string)$userInfo->appoint);
             }
         }
-
+        $userLogin = [];
         return $this->render('update', [
             'model' => $model,
             'userInfo' => $userInfo,
-           // 'userLogin' => $userLogin,
+            'userLogin' => $userLogin,
         ]);
 
     }
