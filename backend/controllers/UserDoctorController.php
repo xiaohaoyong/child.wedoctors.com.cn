@@ -212,7 +212,7 @@ class UserDoctorController extends BaseController
         return $this->render('update', [
             'model' => $model,
             'userInfo' => $userInfo,
-            'userLogin' => $userLogin,
+           // 'userLogin' => $userLogin,
         ]);
 
     }
