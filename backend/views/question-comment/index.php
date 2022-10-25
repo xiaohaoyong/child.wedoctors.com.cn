@@ -9,9 +9,7 @@ use yii\grid\GridView;
 
 $this->title = '管理列表';
 $this->params['breadcrumbs'][] = $this->title;
-\common\helpers\HeaderActionHelper::$action = [
-    0 => ['name' => '添加', 'url' => ['create']]
-];
+
 ?>
 <div class="question-index">
     <div class="col-xs-12">
@@ -32,33 +30,39 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
 
                             'columns' => [
-                                'id',
+                                'qid',
                                 'userid',
-                                'createtime:datetime',
                                 [
                                     'attribute' => '问题',
                                     'value' => function ($e) {
-
                                         $info = \common\models\QuestionInfo::findOne(['qid' => $e->id]);
-                                        return $info?$info->content:'';
+                                        return $info->content;
                                     }
                                 ],
                                 [
-                                    'attribute' => 'doctorid',
+                                    'label' => '创建时间',
+                                    'format'=>['date','php:Y-m-d H:i:s'],
+                                    'value' => 'createtime',
+                                ],
+                                [
+                                    'label' => '回复时间',
+                                    'format'=>['date','php:Y-m-d H:i:s'],
+                                    'value' => 'createtime',
+                                ],
+                                [
+                                    'attribute' => '指定社区',
                                     'value' => function ($e) {
-                                        $doctor=\common\models\UserDoctor::findOne($e->doctorid);
+                                        $doctor=\common\models\UserDoctor::find()->where(['userid'=>$e->userid])->one();
                                         return $doctor->name;
                                     }
                                 ],
+
+
+
                                 // 'orderid',
                                 // 'level',
                                 // 'state',
-                                [
-                                    'attribute' => 'state',
-                                    'value' => function ($e) {
-                                        return \common\models\Question::$stateText[$e->state];
-                                    }
-                                ],
+
 
                                 [
                                     'class' => 'common\components\grid\ActionColumn',

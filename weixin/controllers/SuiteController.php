@@ -38,12 +38,12 @@ class SuiteController extends Controller
 
     public function actionIndex()
     {
-//        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-//        $app->server->push(function ($message) {
-//
-//        });
-//        $response = $app->server->serve();
-//        $response->send();
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $app->server->push(function ($message) {
+
+        });
+       $response = $app->server->serve();
+        $response->send();
 
         $log = new Log('suite_index');
         $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
