@@ -18,11 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget(['dataProvider' => $dataProvider,
 
         'columns' => [['class' => 'yii\grid\SerialColumn'], 'name', ['attribute' => 'province', 'value' => function ($e) {
-            return \common\models\Area::$all[$e->province];
+            return $e->province?\common\models\Area::$all[$e->province]:'';
         }], ['attribute' => 'city', 'value' => function ($e) {
-            return \common\models\Area::$all[$e->city];
+            return $e->city?\common\models\Area::$all[$e->city]:'';
         }], ['attribute' => 'county', 'value' => function ($e) {
-            return \common\models\Area::$all[$e->county];
+            return $e->county?\common\models\Area::$all[$e->county]:'';
         }], 'area', ['class' => 'common\components\grid\ActionColumn', 'template' => '
                 <div class="btn-group dropup">
                     <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
