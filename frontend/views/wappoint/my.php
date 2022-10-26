@@ -50,6 +50,12 @@ $this->title="我的成人预约";
                         <div class="title1">预约时间:</div>
                         <div class="value"><?=$v['time']?></div>
                     </div>
+                    <?php if($type==2 || $type==4){?>
+                    <div class="item">
+                        <div class="title1">预约疫苗:</div>
+                        <div class="value"><?=$v['vaccineStr']?></div>
+                    </div>
+                    <?php }?>
                 </div>
                     <?php if($type==1){?></a><?php }?>
             </div>

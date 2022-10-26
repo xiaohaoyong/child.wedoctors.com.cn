@@ -493,6 +493,10 @@ class WappointController extends Controller
             $row['time']=date('Y.m.d',$v->appoint_date)."  ".Appoint::$timeText[$v->appoint_time];
             $row['stateText']=Appoint::$stateText[$v->state];
             $row['child_name']=AppointAdult::findOne(['id'=>$v->childid])->name;
+            if($v->vaccine){
+                $vaccine = Vaccine::findOne($v->vaccine);
+                $row['vaccineStr'] = $vaccine ? $vaccine->name : '';
+            }
             $list[]=$row;
         }
 
