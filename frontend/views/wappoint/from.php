@@ -155,6 +155,11 @@ jQuery("#vaccine").change(function(e){
             return false;
         }
     }
+    if(vid==80){
+        if(!confirm("此疫苗接种年龄限制为3岁以内，超过三岁清选择三岁以上疫苗接种，成人请勿预约")){
+            return false;
+        }
+    }
     console.log( jQuery("#street").length);
     if(vid && sid && jQuery("#street").length  > 0){
         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
