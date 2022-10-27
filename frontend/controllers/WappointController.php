@@ -540,7 +540,10 @@ class WappointController extends Controller
                 return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
             }
         }
-
+        if($post['vaccine']==80 && $post['birthday'] && $post['birthday']>date('Y-m-d',strtotime('-3 year'))) {
+            \Yii::$app->getSession()->setFlash('error','此疫苗为三岁以儿童接种，超过三岁请勿预约！');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        }
 
         if(!$post['appoint_name'] || !$post['phone'] || !$post['sex']
             || !$post['doctorid'] || !$post['appoint_time'] || !$post['appoint_date'] || !$post['type']){
