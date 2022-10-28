@@ -221,6 +221,7 @@ class QuestionController extends Controller
                 $comment = new QuestionComment();
                 $comment->qid = $question->id;
                 $comment->userid = $this->userid;
+               // $comment->doctorid = $doctorid;//社区ID
                 $comment->is_satisfied = intval($satisfied);
                 $comment->is_solve = intval($solve);
                 $comment->createtime = time();
