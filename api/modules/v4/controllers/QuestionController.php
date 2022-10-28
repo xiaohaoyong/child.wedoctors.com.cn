@@ -26,7 +26,8 @@ class QuestionController extends Controller
 {
     public function actionPut($id)
     {
-        $post = \Yii::$app->request->post();
+       // $post = \Yii::$app->request->post();
+        $post = \Yii::$app->request->get();
         $question = new Question();
         $question->userid = $this->userid;
         $question->doctorid=$id;
