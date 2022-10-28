@@ -38,7 +38,7 @@ class UserController extends \api\modules\v1\controllers\UserController
         //验证字段
         $isVerify = SmsSend::verifymessage(\Yii::$app->request->get('phone'), \Yii::$app->request->get('code'));
         $log->addLog("验证:" . $isVerify);
-
+var_dump($isVerify);die;
         $isVerify = json_decode($isVerify, TRUE);
         if ($isVerify['code'] != 200 && $code != 110112) {
             return new Code(20010, '手机验证码错误');
