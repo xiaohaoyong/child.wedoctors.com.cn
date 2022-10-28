@@ -26,12 +26,11 @@ class QuestionController extends Controller
 {
     public function actionPut($id)
     {
-       // $post = \Yii::$app->request->post();
-        $post = \Yii::$app->request->get();
+        $post = \Yii::$app->request->post();
         $question = new Question();
         $question->userid = $this->userid;
-        $question->doctorid=5;
-        $question->loginid=0;
+        $question->doctorid=$id;
+        $question->loginid=$this->userLogin->id;
 
         if ($question->save()) {
             $quesInfo = new QuestionInfo();
