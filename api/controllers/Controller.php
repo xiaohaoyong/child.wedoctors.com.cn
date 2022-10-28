@@ -51,9 +51,9 @@ class Controller extends \yii\web\Controller
         $log->addLog(json_encode($rs));
         $log->saveLog();
 
-        $this->userid = 1;
+       // $this->userid = 1;
 
-  /*      if ($this->seaver_token) {
+        if ($this->seaver_token) {
             $cache = \Yii::$app->rdmp;
             $session = $cache->get($this->seaver_token);
             $session = explode('@@', $session);
@@ -98,7 +98,7 @@ class Controller extends \yii\web\Controller
         } elseif (!in_array($controllerID . "/" . $actionID, $this->result)) {
             \Yii::$app->response->data = ['code' => 30001, 'msg' => '数字签证错误'];
             return false;
-        }*/
+        }
 
 
 
