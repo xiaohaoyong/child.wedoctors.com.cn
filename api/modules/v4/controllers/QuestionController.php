@@ -30,8 +30,8 @@ class QuestionController extends Controller
         $post = \Yii::$app->request->get();
         $question = new Question();
         $question->userid = $this->userid;
-        $question->doctorid=$id;
-        $question->loginid=$this->userLogin->id;
+        $question->doctorid=5;
+        $question->loginid=0;
 
         if ($question->save()) {
             $quesInfo = new QuestionInfo();
