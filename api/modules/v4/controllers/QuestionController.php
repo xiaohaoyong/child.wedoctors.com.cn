@@ -20,6 +20,7 @@ use common\models\QuestionReply;
 use common\models\UserDoctor;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
+use common\models\QuestionComment;
 
 class QuestionController extends Controller
 {
@@ -193,5 +194,47 @@ class QuestionController extends Controller
             $question_reply->save();
         }
         return ;
+    }
+    /**
+     * 推送消息发送评价页面
+     * 问题已结束才能评价，一个问题只能评价一次
+     * 问题评论
+     */
+    public function actionComment(){
+        $qid = \Yii::$app->request->get('id'); //问题ID
+        $satisfied = \Yii::$app->request->get('satisfied'); //满意 1不满意 2满意
+        $solve = \Yii::$app->request->get('solve');//1未解决2已解决
+        $question = Question::findOne(intval($qid));
+        $msg = '问题不存在或还未结束';
+        if(empty($satisfied) || empty($solve)){
+            $msg = '参数有误!';
+            return new Code(20000,$msg);
+        }
+        //已结束
+        if($question && $question->state == 2){
+            //一个问题只能评论一次
+            $questionComment = QuestionComment::find()->where(['qid'=>$question->id])->one();
+            if($questionComment){
+                $msg = '问题已提交过评价，不可重复评价';
+                return new Code(20000,$msg);
+            }else{
+                $comment = new QuestionComment();
+                $comment->qid = $question->id;
+                $comment->userid = $this->userid;
+                $comment->is_satisfied = intval($satisfied);
+                $comment->is_solve = intval($solve);
+                $comment->createtime = time();
+                $comment->save(false);
+                //修改问题为已评价
+                Question::updateAll(['is_comment'=>1],['id'=>$question->id]);
+
+            }
+        }else{
+            return new Code(20000,$msg);
+        }
+
+
+
+        // var_dump($qid);die;
     }
 }
