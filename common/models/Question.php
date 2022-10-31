@@ -33,7 +33,7 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'createtime', 'childid', 'doctorid', 'orderid','state','loginid'], 'integer'],
+            [['userid', 'createtime', 'childid', 'doctorid', 'orderid','state','loginid','is_comment'], 'integer'],
         ];
     }
 

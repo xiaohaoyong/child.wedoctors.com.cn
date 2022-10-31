@@ -136,6 +136,7 @@ class QuestionController extends Controller
         $rs=$question->toArray();
         $rs['state']=Question::$stateText[$question->state];
         $rs['state_num']=$question->state;
+        $rs['is_comment'] = $question->is_comment;//是否评论
         $rs['createtime']=date('m-d',$question->createtime);
         $rs['imgs']=QuestionImg::find()->where(['qid'=>$question->id])->select('image')->column();
         $rs['info']=QuestionInfo::findOne(['qid'=>$question->id]);
