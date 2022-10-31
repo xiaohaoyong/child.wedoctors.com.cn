@@ -1,7 +1,7 @@
 <?php
 
 namespace hospital\controllers;
-use backend\models\QuestionReplySearch;
+use hospital\models\QuestionReplySearch;
 use common\models\QuestionComment;
 use Yii;
 use common\models\Question;
