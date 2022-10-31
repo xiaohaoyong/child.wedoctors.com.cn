@@ -65,6 +65,15 @@
                             ['label' => '添加文章', 'url' => ['article/create']],
                         ]
                     ],
+                    [
+                        'label' => '评价管理',
+                        'icon' => 'comments',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '预约就诊评价',  'url' => ['/question'],],
+                            ['label' => '医生回复评价',  'url' => ['/question-comment'],],
+                        ],
+                    ],
                     ['label' => '工具', 'icon' => 'send', 'url' => "#",
                         'items' => [
                             ['label' => '留言板', 'url' => ['/question']],
