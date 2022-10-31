@@ -135,6 +135,7 @@ class QuestionController extends Controller
         $question=Question::findOne($id);
         $rs=$question->toArray();
         $rs['state']=Question::$stateText[$question->state];
+        $rs['state_num']=$question->state;
         $rs['createtime']=date('m-d',$question->createtime);
         $rs['imgs']=QuestionImg::find()->where(['qid'=>$question->id])->select('image')->column();
         $rs['info']=QuestionInfo::findOne(['qid'=>$question->id]);
