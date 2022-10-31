@@ -69,7 +69,7 @@ class QuestionReplySearch extends QuestionReply
 
         $query->andFilterWhere(['like', 'content', $this->content]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
-echo $query->createCommand()->getRawSql();die;
+
         return $dataProvider;
     }
 }

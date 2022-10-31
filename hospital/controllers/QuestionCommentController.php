@@ -54,13 +54,14 @@ class QuestionCommentController extends Controller
      */
     public function actionView()
     {
-        $id = intval(\Yii::$app->request->get('id'));
+        $id = intval(\Yii::$app->request->get('id')); //评论ID
+        $model = $this->findModel($id);
         $searchModel = new QuestionReplySearch();
         $params=Yii::$app->request->queryParams;
-        $params['QuestionReplySearch']['qid']= $id;
+        $params['QuestionReplySearch']['qid']= $model->qid; //问题ID
         $dataProvider = $searchModel->search($params);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'dataProvider' => $dataProvider,
         ]);
     }
