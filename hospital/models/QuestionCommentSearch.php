@@ -81,6 +81,7 @@ class QuestionCommentSearch extends QuestionComment
         if($this->endDate){
             $query->andFilterWhere(['<=', 'createtime', strtotime($this->endDate)]);
         }
+        $query->andWhere(['doctorid'=>\Yii::$app->user->identity->doctorid]);
         // grid filtering conditions
 //echo $query->createCommand()->getRawSql();die;
         //$query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
