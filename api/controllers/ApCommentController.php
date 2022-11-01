@@ -68,12 +68,34 @@ class ApCommentController extends Controller {
     public function actionView()
     {
         $id=\Yii::$app->request->get('id');
+        if(empty($id)){
+            $msg='参数异常';
+            return new Code(20000,$msg);
+        }
         $appoint = Appoint::findOne(['id' => $id]);
+        if(empty($appoint)){
+            $msg='无此预约，请确认';
+            return new Code(20000,$msg);
+        }
         $appointcomment = AppointComment::findOne(['aid' => $id]);
+        if($appointcomment){
+            $all = $appointcomment->is_envir+$appointcomment->is_process+$appointcomment->is_staff;
+            if($all<=6){
+                $return['all']='差评';
+            }elseif($all>=7 && $all<=10){
+                $return['all']='中评';
+            }elseif($all>10){
+                $return['all']='好评';
+            }
+            $return['is_envir']=$appointcomment->is_envir;
+            $return['is_process']=$appointcomment->is_process;
+            $return['is_staff']=$appointcomment->is_staff;
+            return new Code(10000,$return);
+        }else{
+            $msg='暂无评价';
+            return new Code(20000,$msg);
+        }
 
-
-
-        return $appoint;
     }
 
 
