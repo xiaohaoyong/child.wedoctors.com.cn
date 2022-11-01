@@ -18,7 +18,7 @@ use dosamigos\qrcode\QrCode;
 use linslin\yii2\curl\Curl;
 use yii\data\Pagination;
 
-class ApcommentController extends Controller {
+class ApCommentController extends Controller {
 
     /**
      * 预约就诊评价
