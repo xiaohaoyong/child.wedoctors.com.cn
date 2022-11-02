@@ -5,6 +5,7 @@
 
 namespace api\modules\v4\controllers;
 
+use api\controllers\Controller;
 use common\components\Code;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
