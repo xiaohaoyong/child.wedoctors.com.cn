@@ -353,6 +353,6 @@ class UserDoctor extends \yii\db\ActiveRecord
     }
 
     public static function getUserDoctorData(){
-        return UserDoctor::find()->select(['userid','name'])->indexBy('userid')->column();
+        return UserDoctor::find()->select(['name'])->indexBy('userid')->column();
     }
 }
