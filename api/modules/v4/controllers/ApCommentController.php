@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  */
 
-namespace api\controllers;
+namespace api\modules\v4\controllers;
 
 use common\components\Code;
 use common\helpers\WechatSendTmp;
