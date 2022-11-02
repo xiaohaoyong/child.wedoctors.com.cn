@@ -19,33 +19,21 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'qid') ?>
 
     <?= $form->field($model, 'userid') ?>
+    <?= $form->field($model, 'startDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'endDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
 
-    <?= $form->field($model, 'startDate',[
-        'template' => '{label}{input}<span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>',
-        'options' => [
-            'class' => 'form-group has-feedback mt-10'
-        ],
-        'inputOptions' => [
-            'class' => 'form-control',
-            'placeholder' => '开始时间',
-            'value' => $model->startDate,
-            'autocomplete' => 'off'
-        ]
-    ])->label('创建时间'); ?>
-    <div class="form-group mt-10" style="margin-left: 2px;color: grey;">—</div>
 
-    <?= $form->field($model, 'endDate',[
-        'template' => '{label}{input}<span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>',
-        'options' => [
-            'class' => 'form-group has-feedback mt-10 mr-10',
-        ],
-        'inputOptions' => [
-            'class' => 'form-control',
-            'placeholder' => '结束时间',
-            'value' => $model->endDate,
-            'autocomplete' =>'off'
-        ]
-    ])->label(false); ?>
+
+
+
 
     <?=$form->field($model,'is_satisfied')->dropDownList(\common\models\QuestionComment::$satisfiedArr,['prompt'=>'全部']);?>
     <?=$form->field($model,'is_solve')->dropDownList(\common\models\QuestionComment::$solvedArr,['prompt'=>'全部']);?>
