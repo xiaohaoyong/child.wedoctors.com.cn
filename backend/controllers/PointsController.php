@@ -36,11 +36,11 @@ class PointsController extends BaseController
     public function actionIndex()
     {
         $searchModel = new PointsSearch();
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-//        $data['userNum']=Points::find()->groupBy('userid')->count();
-//        $data['todayTotal']=Points::find()->where(['>','createtime',strtotime(date('Ymd'))])->sum('point');
-//        $data['total']=Points::find()->sum('point');
+        $data['userNum']=Points::find()->groupBy('userid')->count();
+        $data['todayTotal']=Points::find()->where(['>','createtime',strtotime(date('Ymd'))])->sum('point');
+        $data['total']=Points::find()->sum('point');
 
         return $this->render('index', [
             'data'=>$data,
