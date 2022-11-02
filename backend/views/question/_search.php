@@ -30,7 +30,8 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'level') ?>
 
-    <?php // echo $form->field($model, 'state') ?>
+    <?php  echo $form->field($model, 'state') ?>
+    <?php echo $form->field($model,'is_comment')?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>

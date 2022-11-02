@@ -66,6 +66,7 @@ class QuestionSearch extends Question
             'orderid' => $this->orderid,
             'level' => $this->level,
             'state' => $this->state,
+            'is_comment' => $this->is_comment,
         ]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 

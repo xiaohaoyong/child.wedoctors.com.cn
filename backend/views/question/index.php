@@ -34,7 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'columns' => [
                                 'id',
                                 'userid',
-                                'createtime:datetime',
+                                [
+                                    'label' => '创建时间',
+                                    'format'=>['date','php:Y-m-d H:i:s'],
+                                    'value' => 'createtime',
+                                ],
                                 [
                                     'attribute' => '问题',
                                     'value' => function ($e) {
@@ -51,13 +55,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                 // 'orderid',
                                 // 'level',
-                                // 'state',
                                 [
-                                    'attribute' => 'state',
+                                    'attribute' => '问题状态',//问题状态
                                     'value' => function ($e) {
                                         return \common\models\Question::$stateText[$e->state];
                                     }
                                 ],
+                                [
+                                    'attribute' => '是否评价',//是否评价
+                                    'value' => function ($e) {
+                                        if($e->is_comment == 1){
+                                            return '是';
+                                        }else{
+                                            return '否';
+                                        }
+
+                                    }
+                                ],
+
 
                                 [
                                     'class' => 'common\components\grid\ActionColumn',
@@ -67,6 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                    aria-expanded="false">
                                     <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
                                 <ul class="dropdown-menu pull-right" role="menu">
+                       
                                     <li>{update}</li>
                                     <li>{delete}</li>
                                     <li>{reply}</li>
