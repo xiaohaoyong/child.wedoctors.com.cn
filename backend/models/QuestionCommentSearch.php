@@ -21,7 +21,7 @@ class QuestionCommentSearch extends QuestionComment
     public function rules()
     {
         return [
-            [['id','userid','qid','createtime','is_satisfied','is_solve'], 'integer'],
+            [['id','userid','qid','createtime','is_satisfied','is_solve','doctorid'], 'integer'],
             [['startDate','endDate'], 'date', 'format' => 'php:Y-m-d', 'message'=>'日期格式不对']
         ];
     }
@@ -73,6 +73,10 @@ class QuestionCommentSearch extends QuestionComment
         //问题是否解决
         if($this->is_solve){
             $query->andWhere(['is_solve'=>$this->is_solve]);
+        }
+//指定社区
+        if($this->doctorid){
+            $query->andWhere(['doctorid'=>$this->doctorid]);
         }
 
         if ($this->startDate !== '' and $this->endDate !== null) {

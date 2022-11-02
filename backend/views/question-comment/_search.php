@@ -19,6 +19,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'qid') ?>
 
     <?= $form->field($model, 'userid') ?>
+
+    <?=$form->field($model,'doctorid')->dropDownList(\common\models\UserDoctor::getUserDoctorData(),['prompt'=>'全部']);?>
     <?= $form->field($model, 'startDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'autocomplete'=>'off',
