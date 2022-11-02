@@ -79,8 +79,8 @@ class QuestionCommentSearch extends QuestionComment
 
             $state = strtotime($this->startDate . " 00:00:00");
             $end = strtotime($this->endDate . " 23:59:59");
-            $query->andFilterWhere(['>', '`createtime`.`createtime`', $state]);
-            $query->andFilterWhere(['<', '`createtime`.`createtime`', $end]);
+            $query->andFilterWhere(['>', '`createtime`', $state]);
+            $query->andFilterWhere(['<', '`createtime`', $end]);
         }
 
         // grid filtering conditions
