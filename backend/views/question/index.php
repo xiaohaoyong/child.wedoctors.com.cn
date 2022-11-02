@@ -65,7 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute' => '是否评价',//是否评价
                                     'value' => function ($e) {
                                         if($e->is_comment == 1){
-                                            return \yii\helpers\Html::a('是', '/question-comment/view?qid='.$e->id);
+                                            return '是';
+                                           // return \yii\helpers\Html::a('是', '/question-comment/view?qid='.$e->id);
 
                                         }else{
                                             return '否';
@@ -74,28 +75,50 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
 
-
                                 [
                                     'class' => 'common\components\grid\ActionColumn',
-                                    'template' => '
-                            <div class="btn-group dropup">
-                                <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                       
-                                    <li>{update}</li>
-                                    <li>{delete}</li>
-                                    <li>{reply}</li>
-                                </ul>
-                            </div>
-                            ',
+                                    'header'=>'操作',
+                                    'template' => '{update}{delete}{reply}{audit}{view}',
                                     'buttons' => [
+                                        'update' => function($url, $model) {
+                                            return Html::a('修改', ['question/update', 'id' => $model->id]);
+                                        },
+
+
+                                        'view' => function($url, $model) {
+                                            $options = [
+                                                'title' => '结束会话',
+                                                'style' => 'margin-left:5px;',
+                                                'data-method' => 'post',
+                                                'data-confirm' => '确认结束会话吗'
+                                            ];
+                                            //已回复
+                                            if($model->state==1 ) {
+                                                return Html::a('结束会话', ['question/update-state', 'id' => $model->id], $options);
+                                            }
+
+                                        },
+                                        'delete' => function($url, $model) {
+                                            $options = [
+                                                'title' => '删除',
+                                                'style' => 'margin-left:5px;',
+                                                'data-method' => 'post',
+                                                'data-confirm' => '数据删除后将无法恢复，确认删除？'
+                                            ];
+                                            return Html::a('删除', ['question/delete', 'id'=>$model->id],$options);
+                                        },
                                         'reply' => function ($url, $model, $key) {
-                                            return \yii\helpers\Html::a('<span class="fa fa-share"> 回复</span>', '/question/reply?id='.$model->id);
+                            //未回复，已回复
+                                            if(in_array($model->state,[0,1])){
+                                                return \yii\helpers\Html::a('<span class="fa fa-share"> 回复</span>', '/question/reply?id='.$model->id);
+
+                                            }
                                         }
-                                    ]
+
+
+                                    ],
                                 ],
+
                             ],
                         ]); ?>
                     </div>

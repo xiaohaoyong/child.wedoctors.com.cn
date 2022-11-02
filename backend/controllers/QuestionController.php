@@ -156,4 +156,18 @@ class QuestionController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+     * 更改问题状态-已结束
+     */
+    public function actionUpdateState(){
+
+        $id = Yii::$app->request->get('id');
+        $model = $this->findModel($id);
+        if($model){
+            Question::updateAll(['state'=>2],['id'=>$model->id]);
+               return $this->redirect(['index']);
+        }
+
+    }
 }
