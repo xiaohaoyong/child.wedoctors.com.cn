@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'qid',
                         'label' => '指定社区',
                         'value' => function ($model){
-                            $doctor=\common\models\UserDoctor::find()->where(['userid'=>$model->userid])->one();
+                            $doctor=\common\models\UserDoctor::find()->where(['userid'=>$model->doctorid])->one();
 
                             return $doctor?$doctor->name:'';
 
