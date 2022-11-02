@@ -26,9 +26,15 @@ class QuestionCommentController extends Controller
             if ($list) {
 
                 foreach ($list as $k => $val) {
-
+    //获取最后一条回复时间
                         $questionReply = QuestionReply::find()->where(['qid'=>$val['id']])->orderBy('id desc')->one();
-                        var_dump($questionReply);die;
+                        if($questionReply){
+                            $current_time = time();
+                            $last_time = strtotime("+1 day",$questionReply->createtime); // 2022年11月1日
+                            echo date("Y-m-d H:i:s",$last_time);
+                        }
+
+
                 }
             }
         }
