@@ -15,6 +15,7 @@ class QuestionCommentController extends Controller
 {
     public function actionComment()
     {
+        echo 'ok';
         //已回复 后的24小时没有在回复，结束会话
         $query = Question::find()->where(['state'=>1]);
         $total = $query->count();
