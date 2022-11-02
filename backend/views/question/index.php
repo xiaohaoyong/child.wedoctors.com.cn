@@ -110,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'reply' => function ($url, $model, $key) {
                             //未回复，已回复
                                             if(in_array($model->state,[0,1])){
-                                                return \yii\helpers\Html::a('<span class="fa fa-share"> 回复</span>', '/question/reply?id='.$model->id);
+                                                return \yii\helpers\Html::a(' 回复', '/question/reply?id='.$model->id);
 
                                             }
                                         }
