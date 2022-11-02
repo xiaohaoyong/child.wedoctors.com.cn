@@ -31,7 +31,12 @@ class QuestionCommentController extends Controller
                         if($questionReply){
                             $current_time = time();
                             $last_time = strtotime("+1 day",$questionReply->createtime); // 2022年11月1日
-                            echo date("Y-m-d H:i:s",$last_time);
+                            if($current_time >$last_time){
+                                echo date("Y-m-d H:i:s",$last_time);
+                                //超过24小时没有回复，问题自动结束
+                                Question::updateAll(['state'=>3],['id'=>$val['id']]);
+                            }
+
                         }
 
 
