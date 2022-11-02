@@ -15,7 +15,7 @@ class QuestionCommentController extends Controller
 {
     public function actionComment()
     {
-        echo 'ok';
+        echo 'start';
         //已回复 后的24小时没有在回复，结束会话
         $query = Question::find()->where(['state'=>1]);
         $total = $query->count();
@@ -32,7 +32,7 @@ class QuestionCommentController extends Controller
                             $current_time = time();
                             $last_time = strtotime("+1 day",$questionReply->createtime); // 2022年11月1日
                             if($current_time >$last_time){
-                                echo date("Y-m-d H:i:s",$last_time);
+                                echo $val['id'].'-'.date("Y-m-d H:i:s",$last_time)."\n";
                                 //超过24小时没有回复，问题自动结束
                                 Question::updateAll(['state'=>3],['id'=>$val['id']]);
                             }
@@ -43,6 +43,7 @@ class QuestionCommentController extends Controller
                 }
             }
         }
+        echo 'end';
 
     }
 
