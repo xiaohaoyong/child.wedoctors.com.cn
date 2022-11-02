@@ -29,9 +29,10 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'orderid') ?>
 
     <?php // echo $form->field($model, 'level') ?>
+    <?=$form->field($model,'state')->dropDownList(\common\models\Question::$stateText,['prompt'=>'全部'])->label('问题状态');?>
+    <?=$form->field($model,'is_comment')->dropDownList(['1'=>'是','0'=>'否'],['prompt'=>'全部'])->label('是否评价');?>
 
-    <?php  echo $form->field($model, 'state') ?>
-    <?php echo $form->field($model,'is_comment')?>
+
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
