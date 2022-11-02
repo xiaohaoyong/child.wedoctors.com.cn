@@ -55,8 +55,8 @@ class QuestionCommentController extends Controller
      */
     public function actionView()
     {
-        $id = intval(\Yii::$app->request->get('id')); //评论ID
-        $model = $this->findModel($id);
+        $qid = intval(\Yii::$app->request->get('qid')); //评论ID
+        $model = $this->findModel($qid);
         $searchModel = new QuestionReplySearch();
         $params=Yii::$app->request->queryParams;
         $params['QuestionReplySearch']['qid']= $model->qid; //问题ID
@@ -77,7 +77,7 @@ class QuestionCommentController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = QuestionComment::findOne($id)) !== null) {
+        if (($model = QuestionComment::find()->where(['qid'=>$id]))->one() !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

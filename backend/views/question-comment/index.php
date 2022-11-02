@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'style' => 'margin-left:5px;'
                                             ];
 
-                                                return Html::a('查看', ['question-comment/view', 'id'=>$model->id], $options);
+                                                return Html::a('查看', ['question-comment/view', 'qid'=>$model->qid], $options);
                                         },
 
                                     ],

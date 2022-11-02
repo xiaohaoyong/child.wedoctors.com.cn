@@ -65,7 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute' => '是否评价',//是否评价
                                     'value' => function ($e) {
                                         if($e->is_comment == 1){
-                                            return '是';
+                                            return \yii\helpers\Html::a('是', '/question-comment/view?qid='.$e->id);
+
                                         }else{
                                             return '否';
                                         }
