@@ -21,7 +21,7 @@ class QuestionCommentSearch extends QuestionComment
     public function rules()
     {
         return [
-            [['id','userid','qid','createtime','is_satisfied','is_solve'], 'integer'],
+            [['id','userid','qid','createtime','is_satisfied','is_solve','doctorid'], 'integer'],
             [['startDate','endDate'], 'date', 'format' => 'php:Y-m-d', 'message'=>'日期格式不对']
         ];
     }
@@ -74,17 +74,33 @@ class QuestionCommentSearch extends QuestionComment
         if($this->is_solve){
             $query->andWhere(['is_solve'=>$this->is_solve]);
         }
+//指定社区
+        if($this->doctorid){
+            $query->andWhere(['doctorid'=>$this->doctorid]);
+        }
 
-        if($this->startDate){
-            $query->andFilterWhere(['>=', 'createtime', strtotime($this->startDate)]);
+        if ($this->startDate !== '' and $this->endDate !== null) {
+
+            $state = strtotime($this->startDate . " 00:00:00");
+            $end = strtotime($this->endDate . " 23:59:59");
+            $query->andFilterWhere(['>', '`createtime`', $state]);
+            $query->andFilterWhere(['<', '`createtime`', $end]);
         }
-        if($this->endDate){
-            $query->andFilterWhere(['<=', 'createtime', strtotime($this->endDate)]);
-        }
+
         // grid filtering conditions
 //echo $query->createCommand()->getRawSql();die;
         //$query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;
+    }
+    public function attributeLabels()
+    {
+        $attr = parent::attributeLabels();
+
+
+        $attr['startDate'] = '创建时间';
+        $attr['endDate'] = '~';
+
+        return $attr;
     }
 }

@@ -61,6 +61,7 @@ class QuestionComment extends \yii\db\ActiveRecord
             'userid' => '用户ID',
             'is_satisfied' => '回复及时性满意',
             'is_solve' => '回复是否解决问题',
+            'doctorid' => '指定社区'
         ];
     }
 }

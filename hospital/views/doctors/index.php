@@ -36,8 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'value' => function ($e) {
                                         $return=[];
                                         foreach(\common\models\Doctors::$typeText as $v){
-                                            var_dump($v);die;
-                                            if($e->type && ($e->type|bindec($v))==$e->type){
+                                           // if($e->type && ($e->type|bindec($v))==$e->type){
+                                            if($e->type && ($e->type)==$e->type){
                                                 $return[]=$v;
                                             }
                                         }
