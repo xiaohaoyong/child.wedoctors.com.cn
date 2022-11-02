@@ -34,7 +34,7 @@ class QuestionCommentController extends Controller
                             if($current_time >$last_time){
                                 echo $val['id'].'-'.date("Y-m-d H:i:s",$last_time)."\n";
                                 //超过24小时没有回复，问题自动结束
-                                Question::updateAll(['state'=>3],['id'=>$val['id']]);
+                                Question::updateAll(['state'=>2],['id'=>$val['id']]);
                             }
 
                         }
