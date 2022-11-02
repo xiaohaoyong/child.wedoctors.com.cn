@@ -75,16 +75,28 @@ class QuestionCommentSearch extends QuestionComment
             $query->andWhere(['is_solve'=>$this->is_solve]);
         }
 
-        if($this->startDate){
-            $query->andFilterWhere(['>=', 'createtime', strtotime($this->startDate)]);
+        if ($this->startDate !== '' and $this->endDate !== null) {
+
+            $state = strtotime($this->startDate . " 00:00:00");
+            $end = strtotime($this->endDate . " 23:59:59");
+            $query->andFilterWhere(['>', '`createtime`.`createtime`', $state]);
+            $query->andFilterWhere(['<', '`createtime`.`createtime`', $end]);
         }
-        if($this->endDate){
-            $query->andFilterWhere(['<=', 'createtime', strtotime($this->endDate)]);
-        }
+
         // grid filtering conditions
 //echo $query->createCommand()->getRawSql();die;
         //$query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;
+    }
+    public function attributeLabels()
+    {
+        $attr = parent::attributeLabels();
+
+
+        $attr['startDate'] = '创建时间';
+        $attr['endDate'] = '~';
+
+        return $attr;
     }
 }
