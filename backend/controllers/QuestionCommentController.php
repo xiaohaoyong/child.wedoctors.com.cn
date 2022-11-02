@@ -77,7 +77,7 @@ class QuestionCommentController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = QuestionComment::find()->where(['qid'=>$id]))->one() !== null) {
+        if (($model = QuestionComment::find()->where(['qid'=>$id])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
