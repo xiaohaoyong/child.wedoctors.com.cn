@@ -20,7 +20,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'userid') ?>
 
-    <?= $form->field($model, 'createtime')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+    <?= $form->field($model, 'startDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'endDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'autocomplete'=>'off',
         'todayHighlight' => true

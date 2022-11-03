@@ -23,7 +23,7 @@ class AppointCommentSearch extends AppointComment
     {
         return [
             [['id','userid','aid','is_envir','is_process','is_staff'], 'integer'],
-            [['createtime'], 'date', 'format' => 'php:Y-m-d', 'message'=>'日期格式不对']
+            [['startDate','endDate'], 'date', 'format' => 'php:Y-m-d', 'message'=>'日期格式不对']
         ];
     }
 
@@ -78,9 +78,11 @@ class AppointCommentSearch extends AppointComment
         if($this->is_staff){
             $query->andWhere(['is_staff'=>$this->is_staff]);
         }
-        if($this->createtime){
-            $query->andFilterWhere(['>=', 'createtime', strtotime($this->createtime)]);
-            $ends=strtotime($this->createtime)+86400;
+        if($this->startDate){
+            $query->andFilterWhere(['>=', 'createtime', strtotime($this->startDate)]);
+        }
+        if($this->endDate){
+            $ends=strtotime($this->endDate)+86400;
             $query->andFilterWhere(['<=', 'createtime', $ends]);
         }
         return $dataProvider;
