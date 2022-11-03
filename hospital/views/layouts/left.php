@@ -70,7 +70,7 @@
                         'icon' => 'comments',
                         'url' => '#',
                         'items' => [
-                            ['label' => '预约就诊评价',  'url' => ['/question'],],
+                            ['label' => '预约就诊评价',  'url' => ['/appoint-comment'],],
                             ['label' => '医生回复评价',  'url' => ['/question-comment'],],
                         ],
                     ],
