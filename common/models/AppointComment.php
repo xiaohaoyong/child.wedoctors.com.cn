@@ -81,12 +81,13 @@ class AppointComment extends \yii\db\ActiveRecord
             'createtime' => '评价时间',
             'aid' => '预约订单ID',
             'userid' => '用户ID',
-            'doctorid' => '社区ID',
+            'doctorid' => '预约社区医院',
             'is_envir' => '对环境是否满意',
             'is_process' => '对就诊流程是否满意',
             'is_staff' => '对工作人员是否满意',
             'startDate' => '开始时间',
             'endDate' => '结束时间',
+            'county' => '地区',
         ];
     }
 }

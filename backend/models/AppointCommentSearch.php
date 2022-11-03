@@ -16,13 +16,14 @@ class AppointCommentSearch extends AppointComment
 
     public $startDate;
     public $endDate;
+    public $county;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id','userid','aid','is_envir','is_process','is_staff'], 'integer'],
+            [['id','userid','aid','is_envir','is_process','is_staff','county','doctorid'], 'integer'],
             [['startDate','endDate'], 'date', 'format' => 'php:Y-m-d', 'message'=>'日期格式不对']
         ];
     }
@@ -60,23 +61,23 @@ class AppointCommentSearch extends AppointComment
         }
 
         if($this->aid){
-            $query->andWhere(['aid'=>$this->aid]);
+            $query->andFilterWhere(['aid'=>$this->aid]);
         }
         if($this->userid){
-            $query->andWhere(['userid'=>$this->userid]);
+            $query->andFilterWhere(['userid'=>$this->userid]);
         }
         if($this->doctorid){
-            $query->andWhere(['doctorid'=>$this->doctorid]);
+            $query->andFilterWhere(['doctorid'=>$this->doctorid]);
         }
         //满意度
         if($this->is_envir){
-            $query->andWhere(['is_envir'=>$this->is_envir]);
+            $query->andFilterWhere(['is_envir'=>$this->is_envir]);
         }
         if($this->is_process){
-            $query->andWhere(['is_process'=>$this->is_process]);
+            $query->andFilterWhere(['is_process'=>$this->is_process]);
         }
         if($this->is_staff){
-            $query->andWhere(['is_staff'=>$this->is_staff]);
+            $query->andFilterWhere(['is_staff'=>$this->is_staff]);
         }
         if($this->startDate){
             $query->andFilterWhere(['>=', 'createtime', strtotime($this->startDate)]);
@@ -85,6 +86,7 @@ class AppointCommentSearch extends AppointComment
             $ends=strtotime($this->endDate)+86400;
             $query->andFilterWhere(['<=', 'createtime', $ends]);
         }
+        //var_dump($query);
         return $dataProvider;
     }
 }
