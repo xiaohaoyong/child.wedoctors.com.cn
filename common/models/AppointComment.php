@@ -85,6 +85,8 @@ class AppointComment extends \yii\db\ActiveRecord
             'is_envir' => '对环境是否满意',
             'is_process' => '对就诊流程是否满意',
             'is_staff' => '对工作人员是否满意',
+            'startDate' => '开始时间',
+            'endDate' => '结束时间',
         ];
     }
 }
