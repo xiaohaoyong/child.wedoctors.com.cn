@@ -13,6 +13,14 @@ $this->params['breadcrumbs'][] = $this->title;
 \common\helpers\HeaderActionHelper::$action=[
 0=>['name'=>'列表','url'=>['index']],
 ];
+
+$pagedata = '';
+
+if ($model->type == 1)
+{
+    $pagedata = $model->get_pregnancy_info($model->userid);
+}
+
 ?>
 <div class="signing-record-view">
     <div class="col-xs-12">
@@ -60,6 +68,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                             ],
                             [
+                                'label'=>'末次月经',
+                                'value'=>$pagedata['field16']
+                            ],
+                            [
                                 'attribute'=>'info_pics',
                                 'value'=>function ($model){
                                     return '';
@@ -74,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $html= '';
                         foreach ($pics as $v)
                         {
-                            $html .= '<a target="_blank" href="'.$v.'"><img src="'.$v.'" style="width:100px;height:100px"></a>';
+                            $html .= '<a target="_blank" href="'.$v.'"><img src="'.$v.'" style="width:100px;height:100px"></a>&nbsp;&nbsp;';
                         }
                         echo $html;
                     }

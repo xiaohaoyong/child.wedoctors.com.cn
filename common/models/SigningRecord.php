@@ -66,6 +66,11 @@ class SigningRecord extends \yii\db\ActiveRecord
         ];
     }
 
+    public function get_pregnancy_info($pid)
+    {
+        return Pregnancy::findOne($pid);
+    }
+
     public function convert_iid($iid)
     {
         $data = Hospital::findOne($iid);
