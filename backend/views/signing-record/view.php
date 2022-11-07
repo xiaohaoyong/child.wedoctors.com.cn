@@ -169,9 +169,10 @@ if ($model->type == 1)
 
 
         <form action="/signing-record/audit" method="post" id="audit_form" name="audit_form">
-            <?= $form->field($model, 'id')->textInput() ?>
-            <?= $form->field($model, 'remark')->textInput(['maxlength' => true]) ?>
-            <input id="status" name="status" id="status" type="hidden" value="">
+
+            <textarea name="remark" id="remark"  cols="30" rows="10" wrap="hard"><?=$model->remark?></textarea>
+            <input id="id" name="id"  type="hidden" value="<?=$model->id?>">
+            <input id="status" name="status" type="hidden" value="">
         </form>
 
         <button onclick="submit_audit(1)">审核通过</button>
