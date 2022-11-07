@@ -76,6 +76,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                         ],
                     ]) ;
+
+                    $pics = json_decode($model->info_pics);
+                    if (count($pics))
+                    {
+                        $html= '';
+                        foreach ($pics as $v)
+                        {
+                            $html .= '<a target="_blank" href="'.$v.'"><img src="'.$v.'" style="width:100px;height:100px"></a>';
+                        }
+                        return $html;
+                    }
                 }
                 else
                 {
