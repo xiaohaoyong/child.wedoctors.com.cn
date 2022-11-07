@@ -16,6 +16,8 @@ use Yii;
  * @property string $info_pics 资料图片
  * @property string $remark 备注
  * @property int $createtime 创建时间
+ * @property int $startDate 创建时间
+ * @property int $endDate 创建时间
  */
 class SigningRecord extends \yii\db\ActiveRecord
 {
