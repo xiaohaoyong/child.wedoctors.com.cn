@@ -1,11 +1,10 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
-use backend\controllers\BaseController;
 use Yii;
 use common\models\SigningRecord;
-    use app\models\SigningRecordSearch;
+    use backend\models\SigningRecordSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -13,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
 * SigningRecordController implements the CRUD actions for SigningRecord model.
 */
-class SigningRecordController extends BaseController
+class SigningRecordController extends Controller
 {
 /**
 * @inheritdoc
