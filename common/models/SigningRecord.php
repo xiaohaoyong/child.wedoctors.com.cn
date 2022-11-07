@@ -21,6 +21,10 @@ use Yii;
  */
 class SigningRecord extends \yii\db\ActiveRecord
 {
+
+    private $startDate;
+    private $endDate;
+
     /**
      * {@inheritdoc}
      */
