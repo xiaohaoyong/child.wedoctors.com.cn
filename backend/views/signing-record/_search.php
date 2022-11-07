@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+$hdata = \common\models\Hospital::find()->orderBy('id')->all();
 
 
 /* @var $this yii\web\View */
