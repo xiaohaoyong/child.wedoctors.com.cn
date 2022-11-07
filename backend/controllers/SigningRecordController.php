@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Hospital;
 use Yii;
 use common\models\SigningRecord;
     use backend\models\SigningRecordSearch;
@@ -37,10 +38,12 @@ public function actionIndex()
 {
     $searchModel = new SigningRecordSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    $hdata = Hospital::find()->orderBy('id')->all();
 
     return $this->render('index', [
-    'searchModel' => $searchModel,
-    'dataProvider' => $dataProvider,
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+        'hdata' => $hdata,
     ]);
 }
 

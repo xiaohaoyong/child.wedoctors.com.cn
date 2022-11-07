@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\SigningRecordSearch */
@@ -20,9 +22,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'type')->dropDownList(['1'=>'孕妈','2'=>'宝宝'],['prompt'=>'请选择']); ?>
 
-    <?= $form->field($model, 'sign_item_id_from') ?>
+    <?= $form->field($model, 'sign_item_id_from')->dropDownList(ArrayHelper::map($hdata,'id','name'),['prompt'=>'请选择']) ?>
 
-    <?= $form->field($model, 'sign_item_id_to') ?>
+    <?= $form->field($model, 'sign_item_id_to')->dropDownList(ArrayHelper::map($hdata,'id','name'),['prompt'=>'请选择']) ?>
+
 
     <?= $form->field($model, 'startDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
