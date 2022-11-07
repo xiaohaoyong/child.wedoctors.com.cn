@@ -55,6 +55,8 @@ class SigningRecord extends \yii\db\ActiveRecord
             'info_pics' => '资料图片',
             'remark' => '备注',
             'createtime' => '创建时间',
+            'startDate' => '开始时间',
+            'endDate' => '截止时间',
         ];
     }
 }
