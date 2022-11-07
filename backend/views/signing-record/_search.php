@@ -21,27 +21,31 @@ $hdata = \common\models\Hospital::find()->orderBy('id')->all();
 
     <?= $form->field($model, 'name') ?>
 
+    &nbsp;&nbsp;
+
     <?= $form->field($model, 'type')->dropDownList(['1'=>'孕妈','2'=>'宝宝'],['prompt'=>'请选择']); ?>
-
+    &nbsp;&nbsp;
     <?= $form->field($model, 'sign_item_id_from')->dropDownList(ArrayHelper::map($hdata,'id','name'),['prompt'=>'请选择']) ?>
-
+    &nbsp;&nbsp;
     <?= $form->field($model, 'sign_item_id_to')->dropDownList(ArrayHelper::map($hdata,'id','name'),['prompt'=>'请选择']) ?>
 
+    <br/>
 
     <?= $form->field($model, 'startDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
+    &nbsp;&nbsp;
     <?= $form->field($model, 'endDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
 
+    <br/>
 
     <?php $county = \common\models\Area::$city[11] ? \common\models\Area::$county[11] : []; ?>
-    <br/>
     <?= $form->field($model, 'county')->dropDownList($county, [
         'prompt' => '请选择',
         'onchange' => '
@@ -50,6 +54,7 @@ $hdata = \common\models\Hospital::find()->orderBy('id')->all();
                 $("#' . Html::getInputId($model, 'operator') . '").html(data);
             });',
     ]) ?>
+    &nbsp;&nbsp;
     <?= $form->field($model, 'operator')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->where(['county' => $model['county']])->column(), ['prompt' => '请选择']) ?>
 
 
