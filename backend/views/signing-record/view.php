@@ -173,6 +173,7 @@ if ($model->type == 1)
             <textarea name="remark" id="remark"  cols="30" rows="10" wrap="hard"><?=$model->remark?></textarea>
             <input id="id" name="id"  type="hidden" value="<?=$model->id?>">
             <input id="status" name="status" type="hidden" value="">
+            <input type="hidden" name="<?= \Yii::$app->request->csrfParam; ?>" value="<?= \Yii::$app->request->getCsrfToken();?>">
         </form>
 
         <button onclick="submit_audit(1)">审核通过</button>
