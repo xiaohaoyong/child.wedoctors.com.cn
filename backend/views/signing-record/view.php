@@ -170,14 +170,16 @@ if ($model->type == 1)
 
         <form action="/signing-record/audit" method="post" id="audit_form" name="audit_form">
 
-            <textarea name="remark" id="remark"  cols="30" rows="10" wrap="hard"><?=$model->remark?></textarea>
+            添加备注：<br />
+            <textarea name="remark" id="remark"  cols="80" rows="3" wrap="hard"><?=$model->remark?></textarea>
             <input id="id" name="id"  type="hidden" value="<?=$model->id?>">
             <input id="status" name="status" type="hidden" value="">
             <input type="hidden" name="<?= \Yii::$app->request->csrfParam; ?>" value="<?= \Yii::$app->request->getCsrfToken();?>">
         </form>
 
-        <button onclick="submit_audit(1)">审核通过</button>
-        <button onclick="submit_audit(2)">审核不通过</button>
+        <button onclick="submit_audit(1)" class="btn btn-primary">审核通过</button>
+        &nbsp;&nbsp;&nbsp;
+        <button onclick="submit_audit(2)" class="btn btn-default">审核不通过</button>
 
         <script type="text/javascript">
             function submit_audit(status) {
