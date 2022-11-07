@@ -43,7 +43,7 @@ use yii\widgets\ActiveForm;
         'onchange' => '
             $("#' . Html::getInputId($model, 'doctorid') . '").html(\'' . Html::tag('option', Html::encode("请选择"), array('value' => 0)) . '\');
             $.post("' . \yii\helpers\Url::to(['user-doctor/get']) . '?UserDoctorSearchModel[county]="+$(this).val(),function(data){
-                $("#' . Html::getInputId($model, 'doctorid') . '").html(data);
+                $("#' . Html::getInputId($model, 'operator') . '").html(data);
             });',
     ]) ?>
     <?= $form->field($model, 'operator')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->where(['county' => $model['county']])->column(), ['prompt' => '请选择']) ?>
