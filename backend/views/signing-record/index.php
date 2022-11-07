@@ -59,13 +59,14 @@ $this->params['breadcrumbs'][] = $this->title;
          ],
          [
              'attribute'=>'status',
+             'format'=>'raw',
              'value'=>function ($model){
                  if ($model->status == 0)
                      return '未审核';
                  elseif($model->status == 1)
-                     return '审核通过';
+                     return '<font color="green">审核通过</font>';
                  elseif($model->status == 2)
-                     return '审核不通过';
+                     return '<font color="red">审核未通过</font>';
              }
          ],
          [
