@@ -93,7 +93,7 @@ if ($model->type == 1)
                     ]) ;
 
                     $pics = json_decode($model->info_pics);
-                    if (count($pics))
+                    if ($pics && count($pics))
                     {
                         $html= '';
                         foreach ($pics as $v)
@@ -152,7 +152,7 @@ if ($model->type == 1)
                     ]) ;
 
                     $pics = json_decode($model->info_pics);
-                    if (count($pics))
+                    if ($pics && count($pics))
                     {
                         $html= '';
                         foreach ($pics as $v)
