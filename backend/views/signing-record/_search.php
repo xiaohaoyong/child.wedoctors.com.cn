@@ -45,7 +45,7 @@ use yii\widgets\ActiveForm;
                 $("#' . Html::getInputId($model, 'doctorid') . '").html(data);
             });',
     ]) ?>
-    <?= $form->field($model, 'doctorid')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->where(['county' => $model['county']])->column(), ['prompt' => '请选择']) ?>
+    <?= $form->field($model, 'operator')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->where(['county' => $model['county']])->column(), ['prompt' => '请选择']) ?>
 
 
 
