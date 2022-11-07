@@ -112,7 +112,11 @@ public function actionAudit()
     $id = $_POST['id'];
     $model = $this->findModel($id);
 
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    $model->status = $_POST['status'];
+    $model->remark = $_POST['remark'];
+    $model->operator = Yii::$app->user->id;
+    if ($model->save())
+    {
         return $this->redirect(['view', 'id' => $model->id]);
     }
 }
