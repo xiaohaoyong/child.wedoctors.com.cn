@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use backend\controllers\BaseController;
 use Yii;
 use common\models\SigningRecord;
     use app\models\SigningRecordSearch;
@@ -12,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
 * SigningRecordController implements the CRUD actions for SigningRecord model.
 */
-class SigningRecordController extends Controller
+class SigningRecordController extends BaseController
 {
 /**
 * @inheritdoc
