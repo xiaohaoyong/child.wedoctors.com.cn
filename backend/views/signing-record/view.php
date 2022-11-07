@@ -22,28 +22,97 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php
                 if ($model->type == 1)
                 {
-                    echo 'mom';
+                    echo DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            'type',
+                            [
+                                'attribute' => 'type',
+                                'value' => $model->type == 2 ? '宝宝'  : '孕妈',
+                            ],
+                            [
+                                'attribute'=>'sign_item_id_from',
+                                'value'=>function ($model){
+                                    return $model->convert_iid($model->sign_item_id_from);
+                                }
+                            ],
+
+                            [
+                                'attribute'=>'sign_item_id_to',
+                                'value'=>function ($model){
+                                    return $model->convert_iid($model->sign_item_id_to);
+                                }
+                            ],
+                            [
+                                'attribute'=>'status',
+                                'value'=>function ($model){
+                                    if ($model->status == 0)
+                                        return '未审核';
+                                    elseif($model->status == 1)
+                                        return '审核通过';
+                                    elseif($model->status == 2)
+                                        return '审核不通过';
+                                }
+                            ],
+                            'remark',
+                            [
+                                'attribute'=>'createtime',
+                                'value'=>function ($model){
+                                    return date('Y-m-d H:i:s',$model->createtime);
+                                }
+                            ],
+                            'info_pics',
+                        ],
+                    ]) ;
                 }
                 else
                 {
-                    echo 'child';
+                    echo DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            'type',
+                            [
+                                'attribute' => 'type',
+                                'value' => $model->type == 2 ? '宝宝'  : '孕妈',
+                            ],
+                            [
+                                'attribute'=>'sign_item_id_from',
+                                'value'=>function ($model){
+                                    return $model->convert_iid($model->sign_item_id_from);
+                                }
+                            ],
+
+                            [
+                                'attribute'=>'sign_item_id_to',
+                                'value'=>function ($model){
+                                    return $model->convert_iid($model->sign_item_id_to);
+                                }
+                            ],
+                            [
+                                'attribute'=>'status',
+                                'value'=>function ($model){
+                                    if ($model->status == 0)
+                                        return '未审核';
+                                    elseif($model->status == 1)
+                                        return '审核通过';
+                                    elseif($model->status == 2)
+                                        return '审核不通过';
+                                }
+                            ],
+                            'remark',
+                            [
+                                'attribute'=>'createtime',
+                                'value'=>function ($model){
+                                    return date('Y-m-d H:i:s',$model->createtime);
+                                }
+                            ],
+                            'info_pics',
+                        ],
+                    ]) ;
                 }
 
                 ?>
-                <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                            'id',
-            'userid',
-            'type',
-            'sign_item_id_from',
-            'sign_item_id_to',
-            'status',
-            'info_pics',
-            'remark',
-            'createtime:datetime',
-                ],
-                ]) ?>
+
 
             </div>
         </div>
