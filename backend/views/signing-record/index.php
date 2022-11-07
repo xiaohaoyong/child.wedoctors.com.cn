@@ -83,8 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                    aria-expanded="false">
                                     <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li>{update}</li>
-                                    <li>{delete}</li>
+                                    <li>{view}</li>
                                 </ul>
                             </div>
                             ',

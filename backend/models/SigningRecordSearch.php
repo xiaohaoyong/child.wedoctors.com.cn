@@ -63,8 +63,7 @@ class SigningRecordSearch extends SigningRecord
             // $query->where('0=1');
             return $dataProvider;
         }
-        
-        var_dump(Yii::$app->user->id);
+
 
         // grid filtering conditions
         $query->andFilterWhere([
