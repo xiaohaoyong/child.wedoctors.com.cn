@@ -122,12 +122,9 @@ class PushController extends Controller
     public function actionArticleSend()
     {
         $articleids = [];
-        $redis = \Yii::$app->rdmp;
-        $hospital = $redis->hgetall('article_send_ispush');
-        $hospitals = array_filter($hospital,function ($e){
-            return $e!=1;
-        });
-        $hospitals = UserDoctor::find()->select('hospitalid')->column();
+//        push
+
+        $hospitals = UserDoctor::find()->where(['county' => 1106])->select('hospitalid')->column();
 
         foreach($hospitals as $hk=>$hv) {
             $doctor = UserDoctor::findOne(['hospitalid' => $hv]);
