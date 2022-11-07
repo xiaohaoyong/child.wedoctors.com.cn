@@ -58,7 +58,7 @@ class SigningRecord extends \yii\db\ActiveRecord
             'status' => '审核状态',
             'info_pics' => '资料图片',
             'remark' => '备注',
-            'createtime' => '创建时间',
+            'createtime' => '申请时间',
             'startDate' => '开始时间',
             'endDate' => '截止时间',
             'county' => '地区',
@@ -69,6 +69,16 @@ class SigningRecord extends \yii\db\ActiveRecord
     public function get_pregnancy_info($pid)
     {
         return Pregnancy::findOne($pid);
+    }
+
+    public function get_child_info($cid)
+    {
+        return ChildInfo::findOne($cid);
+    }
+
+    public function get_mom_info($userid)
+    {
+        return Pregnancy::findOne(['userid'=>$userid]);
     }
 
     public function convert_iid($iid)

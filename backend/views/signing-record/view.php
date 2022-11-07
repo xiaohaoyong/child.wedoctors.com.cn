@@ -15,10 +15,20 @@ $this->params['breadcrumbs'][] = $this->title;
 ];
 
 $pagedata = '';
+$cinfo = '';
+$minfo = '';
 
 if ($model->type == 1)
 {
     $pagedata = $model->get_pregnancy_info($model->userid);
+}
+
+if ($model->type == 2)
+{
+    $cinfo = $model->get_child_info($model->userid);
+    $userid = $cinfo['userid'];
+    $minfo = $model->get_mom_info($userid);
+
 }
 
 ?>
@@ -114,6 +124,16 @@ if ($model->type == 1)
                                 'value' => $model->type == 2 ? '宝宝'  : '孕妈',
                             ],
                             [
+                                'label'=>'宝宝性别',
+                                'attribute' => 'gender',
+                                'value'=>function ($model,$cinfo){
+                                    if ($cinfo['gender'] == 1)
+                                        return '男宝';
+                                    elseif($model->status == 2)
+                                        return '女宝';
+                                }
+                            ],
+                            [
                                 'attribute'=>'sign_item_id_from',
                                 'value'=>function ($model){
                                     return $model->convert_iid($model->sign_item_id_from);
@@ -143,6 +163,22 @@ if ($model->type == 1)
                                 'value'=>function ($model){
                                     return date('Y-m-d H:i:s',$model->createtime);
                                 }
+                            ],
+                            [
+                                'attribute'=>'birthday',
+                                'value'=>function ($model,$cinfo){
+                                    return date('Y-m-d H:i:s',$cinfo['birthday']);
+                                }
+                            ],
+                            [
+                                'label'=>'母亲姓名',
+                                'attribute' => 'momname',
+                                'value' => $minfo['field1'],
+                            ],
+                            [
+                                'label'=>'母亲电话',
+                                'attribute' => 'momphone',
+                                'value' => $minfo['field6'],
                             ],
                             [
                                 'attribute'=>'info_pics',
