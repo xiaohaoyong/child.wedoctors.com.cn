@@ -40,6 +40,8 @@ public function actionIndex()
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     $hdata = Hospital::find()->orderBy('id')->all();
 
+    var_dump($hdata);exit;
+
     return $this->render('index', [
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
