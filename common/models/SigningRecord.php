@@ -36,9 +36,10 @@ class SigningRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'type', 'sign_item_id_from', 'sign_item_id_to', 'status', 'createtime'], 'integer'],
+            [['userid', 'type', 'sign_item_id_from', 'sign_item_id_to', 'status', 'createtime','operator'], 'integer'],
             [['info_pics'], 'string', 'max' => 500],
             [['remark'], 'string', 'max' => 100],
+            [['name'], 'string', 'max' => 20],
         ];
     }
 
