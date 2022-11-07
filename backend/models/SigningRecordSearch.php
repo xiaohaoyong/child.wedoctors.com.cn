@@ -25,6 +25,8 @@ class SigningRecordSearch extends SigningRecord
         return [
             [['id', 'userid', 'type', 'sign_item_id_from', 'sign_item_id_to', 'status', 'createtime'], 'integer'],
             [['info_pics', 'remark'], 'safe'],
+            [['startDate','endDate'], 'date', 'format' => 'php:Y-m-d', 'message'=>'日期格式不对']
+
         ];
     }
 
