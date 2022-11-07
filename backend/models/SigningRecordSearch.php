@@ -72,9 +72,12 @@ class SigningRecordSearch extends SigningRecord
 
 
         if($this->startDate){
+            var_dump('123');
             $query->andFilterWhere(['>=', 'createtime', strtotime($this->startDate)]);
         }
         if($this->endDate){
+            var_dump('456');
+
             $ends=strtotime($this->endDate)+86400;
             $query->andFilterWhere(['<=', 'createtime', $ends]);
         }
