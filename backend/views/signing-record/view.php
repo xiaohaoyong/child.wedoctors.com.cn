@@ -142,13 +142,48 @@ if ($model->type == 1)
                                     return date('Y-m-d H:i:s',$model->createtime);
                                 }
                             ],
-                            'info_pics',
+                            [
+                                'attribute'=>'info_pics',
+                                'value'=>function ($model){
+                                    return '';
+                                }
+                            ],
                         ],
                     ]) ;
+
+                    $pics = json_decode($model->info_pics);
+                    if (count($pics))
+                    {
+                        $html= '';
+                        foreach ($pics as $v)
+                        {
+                            $html .= '<a target="_blank" href="'.$v.'"><img src="'.$v.'" style="width:100px;height:100px"></a>&nbsp;&nbsp;';
+                        }
+                        echo $html;
+                    }
                 }
 
                 ?>
             </div>
         </div>
+
+
+        <form action="/signing-record/audit" method="post" id="audit_form" name="audit_form">
+            <?= $form->field($model, 'id')->textInput() ?>
+            <?= $form->field($model, 'remark')->textInput(['maxlength' => true]) ?>
+            <input id="status" name="status" id="status" type="hidden" value="">
+        </form>
+
+        <button onclick="submit_audit(1)">审核通过</button>
+        <button onclick="submit_audit(2)">审核不通过</button>
+
+        <script type="text/javascript">
+            function submit_audit(status) {
+                document.getElementById("status").value = status;
+                document.getElementById("audit_form" ).submit();
+            }
+
+        </script>
+
     </div>
 </div>

@@ -107,6 +107,11 @@ public function actionDelete($id)
 return $this->redirect(['index']);*/
 }
 
+public function actionAudit($id)
+{
+    var_dump($_POST);
+}
+
 /**
 * Finds the SigningRecord model based on its primary key value.
 * If the model is not found, a 404 HTTP exception will be thrown.
