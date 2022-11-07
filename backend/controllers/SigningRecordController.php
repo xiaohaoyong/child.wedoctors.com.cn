@@ -109,7 +109,12 @@ return $this->redirect(['index']);*/
 
 public function actionAudit()
 {
-    var_dump($_POST);
+    $id = $_POST['id'];
+    $model = $this->findModel($id);
+
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->id]);
+    }
 }
 
 /**
