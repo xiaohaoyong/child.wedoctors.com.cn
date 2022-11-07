@@ -31,11 +31,22 @@ $this->params['breadcrumbs'][] = $this->title;
                             
      'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-            'userid',
+            'id',
             'name',
             'type',
-            'sign_item_id_from',
-            'sign_item_id_to',
+         [
+             'attribute'=>'sign_item_id_from',
+             'value'=>function ($model){
+                 return $model->convert_iid($model->sign_item_id_from);
+             }
+         ],
+
+         [
+             'attribute'=>'sign_item_id_to',
+             'value'=>function ($model){
+                 return $model->convert_iid($model->sign_item_id_to);
+             }
+         ],
              'status',
              'createtime:datetime',
 

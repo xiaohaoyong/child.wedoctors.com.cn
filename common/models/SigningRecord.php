@@ -53,7 +53,7 @@ class SigningRecord extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'userid' => '家庭ID',
+            'userid' => '家庭成员ID',
             'name' => '成员姓名',
             'type' => '成员类型',
             'sign_item_id_from' => '原签约社区',
@@ -67,5 +67,11 @@ class SigningRecord extends \yii\db\ActiveRecord
             'county' => '地区',
             'operator' => '操作人',
         ];
+    }
+
+    public function convert_iid($iid)
+    {
+        $data = Hospital::findOne($iid);
+        return isset($data) ? $data['name'] : '';
     }
 }
