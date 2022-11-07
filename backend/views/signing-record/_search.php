@@ -24,7 +24,7 @@ $hdata = \common\models\Hospital::find()->orderBy('id')->all();
     &nbsp;&nbsp;
 
     <?= $form->field($model, 'type')->dropDownList(['1'=>'孕妈','2'=>'宝宝'],['prompt'=>'请选择']); ?>
-    &nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;
     <?= $form->field($model, 'sign_item_id_from')->dropDownList(ArrayHelper::map($hdata,'id','name'),['prompt'=>'请选择']) ?>
     &nbsp;&nbsp;
     <?= $form->field($model, 'sign_item_id_to')->dropDownList(ArrayHelper::map($hdata,'id','name'),['prompt'=>'请选择']) ?>
@@ -36,7 +36,7 @@ $hdata = \common\models\Hospital::find()->orderBy('id')->all();
         'autocomplete'=>'off',
         'todayHighlight' => true
     ]]) ?>
-    &nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <?= $form->field($model, 'endDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
         'autocomplete'=>'off',
@@ -58,16 +58,7 @@ $hdata = \common\models\Hospital::find()->orderBy('id')->all();
     <?= $form->field($model, 'operator')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->where(['county' => $model['county']])->column(), ['prompt' => '请选择']) ?>
 
 
-
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'info_pics') ?>
-
-    <?php // echo $form->field($model, 'remark') ?>
-
-    <?php // echo $form->field($model, 'createtime') ?>
-
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
