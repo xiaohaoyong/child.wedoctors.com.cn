@@ -65,11 +65,17 @@ class SigningRecordSearch extends SigningRecord
             'sign_item_id_from' => $this->sign_item_id_from,
             'sign_item_id_to' => $this->sign_item_id_to,
             'status' => $this->status,
-            'createtime' => $this->createtime,
+            'operator' => $this->doctorid,
         ]);
 
-        $query->andFilterWhere(['like', 'info_pics', $this->info_pics])
-            ->andFilterWhere(['like', 'remark', $this->remark]);
+        if($this->startDate){
+            $query->andFilterWhere(['>=', 'createtime', strtotime($this->startDate)]);
+        }
+        if($this->endDate){
+            $ends=strtotime($this->endDate)+86400;
+            $query->andFilterWhere(['<=', 'createtime', $ends]);
+        }
+
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;
