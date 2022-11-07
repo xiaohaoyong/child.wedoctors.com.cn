@@ -71,4 +71,9 @@ class SigningRecord extends \yii\db\ActiveRecord
         $data = Hospital::findOne($iid);
         return isset($data) ? $data['name'] : '';
     }
+
+    public function convert_oid($oid)
+    {
+
+    }
 }
