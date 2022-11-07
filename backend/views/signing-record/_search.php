@@ -16,11 +16,9 @@ use yii\widgets\ActiveForm;
         'options' => ['class' => 'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'userid') ?>
-
-    <?= $form->field($model, 'type') ?>
+    <?= $form->field($model, 'type')->dropDownList(['1'=>'孕妈','2'=>'宝宝'],['prompt'=>'请选择']); ?>
 
     <?= $form->field($model, 'sign_item_id_from') ?>
 
