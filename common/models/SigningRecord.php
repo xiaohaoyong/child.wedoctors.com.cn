@@ -47,10 +47,11 @@ class SigningRecord extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'userid' => '家庭ID',
-            'type' => '成员类型，1-孕妇  2-孩子',
+            'name' => '成员姓名',
+            'type' => '成员类型',
             'sign_item_id_from' => '原签约团队id',
             'sign_item_id_to' => '变更后的签约团队id',
-            'status' => '状态 0-未审核 1-审核通过 2-审核不通过',
+            'status' => '审核状态',
             'info_pics' => '资料图片',
             'remark' => '备注',
             'createtime' => '创建时间',
