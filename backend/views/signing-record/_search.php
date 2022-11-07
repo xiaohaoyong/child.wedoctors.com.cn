@@ -37,6 +37,7 @@ use yii\widgets\ActiveForm;
 
 
     <?php $county = \common\models\Area::$city[11] ? \common\models\Area::$county[11] : []; ?>
+    <br/>
     <?= $form->field($model, 'county')->dropDownList($county, [
         'prompt' => '请选择',
         'onchange' => '

@@ -56,14 +56,16 @@ class SigningRecord extends \yii\db\ActiveRecord
             'userid' => '家庭ID',
             'name' => '成员姓名',
             'type' => '成员类型',
-            'sign_item_id_from' => '原签约团队id',
-            'sign_item_id_to' => '变更后的签约团队id',
+            'sign_item_id_from' => '原签约社区',
+            'sign_item_id_to' => '变更后签约社区',
             'status' => '审核状态',
             'info_pics' => '资料图片',
             'remark' => '备注',
             'createtime' => '创建时间',
             'startDate' => '开始时间',
             'endDate' => '截止时间',
+            'county' => '地区',
+            'operator' => '操作人',
         ];
     }
 }
