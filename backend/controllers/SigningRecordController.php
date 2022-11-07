@@ -107,7 +107,7 @@ public function actionDelete($id)
 return $this->redirect(['index']);*/
 }
 
-public function actionAudit($id)
+public function actionAudit()
 {
     var_dump($_POST);
 }
