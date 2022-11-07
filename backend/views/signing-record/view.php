@@ -177,9 +177,23 @@ if ($model->type == 1)
             <input type="hidden" name="<?= \Yii::$app->request->csrfParam; ?>" value="<?= \Yii::$app->request->getCsrfToken();?>">
         </form>
 
-        <button onclick="submit_audit(1)" class="btn btn-primary">审核通过</button>
-        &nbsp;&nbsp;&nbsp;
-        <button onclick="submit_audit(2)" class="btn btn-default">审核不通过</button>
+        <?php
+        if ($model->status != 1) {
+
+            ?>
+            <button onclick="submit_audit(1)" class="btn btn-primary">审核通过</button>
+            &nbsp;&nbsp;&nbsp;
+            <?php
+        }
+        ?>
+        <?php
+        if ($model->status != 2) {
+
+            ?>
+            <button onclick="submit_audit(2)" class="btn btn-default">审核不通过</button>
+            <?php
+        }
+        ?>
 
         <script type="text/javascript">
             function submit_audit(status) {
