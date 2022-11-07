@@ -12,9 +12,6 @@ use common\models\SigningRecord;
  */
 class SigningRecordSearch extends SigningRecord
 {
-
-    private $startDate;
-    private $endDate;
     
 
     /**
