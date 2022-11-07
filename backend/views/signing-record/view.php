@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         {
                             $html .= '<a target="_blank" href="'.$v.'"><img src="'.$v.'" style="width:100px;height:100px"></a>';
                         }
-                        return $html;
+                        echo $html;
                     }
                 }
                 else
