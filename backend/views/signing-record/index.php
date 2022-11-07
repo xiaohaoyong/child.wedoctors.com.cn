@@ -9,9 +9,7 @@ use yii\grid\GridView;
 
 $this->title = '管理列表';
 $this->params['breadcrumbs'][] = $this->title;
-\common\helpers\HeaderActionHelper::$action=[
-0=>['name'=>'添加','url'=>['create']]
-];
+
 ?>
 <div class="signing-record-index">
     <div class="col-xs-12">
