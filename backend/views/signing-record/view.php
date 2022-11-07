@@ -12,7 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 \common\helpers\HeaderActionHelper::$action=[
 0=>['name'=>'列表','url'=>['index']],
-1=>['name'=>'添加','url'=>['create']]
 ];
 ?>
 <div class="signing-record-view">
@@ -20,18 +19,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-                <p>
-                    <?= Html::a('Update', ['update', 'id' => $model->id],
-                    ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger',
-                    'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
-                    'method' => 'post',
-                    ],
-                    ]) ?>
-                </p>
+                <?
+                if ($model->type == 1)
+                {
+                    echo 'mom';
+                }
+                else
+                {
+                    echo 'child';
+                }
 
+                ?>
                 <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
