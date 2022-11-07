@@ -69,7 +69,19 @@ if ($model->type == 1)
                             ],
                             [
                                 'label'=>'末次月经',
-                                'value'=>$pagedata['field16']
+                                'value'=>$pagedata['field16'] ? date('Y:m:d H:i:s',$pagedata['field16']) : ''
+                            ],
+                            [
+                                'label'=>'户籍类型',
+                                'value'=>$pagedata['field7'] == 11 ? '本市户籍' : '外地户籍'
+                            ],
+                            [
+                                'label'=>'孕妇户籍地',
+                                'value'=>\common\models\Area::$province[$pagedata['field7']]
+                            ],
+                            [
+                                'label'=>'丈夫户籍地',
+                                'value'=>\common\models\Area::$province[$pagedata['field39']]
                             ],
                             [
                                 'attribute'=>'info_pics',
