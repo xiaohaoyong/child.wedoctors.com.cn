@@ -31,16 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             
      'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-
-                                        'id',
             'userid',
+            'name',
             'type',
             'sign_item_id_from',
             'sign_item_id_to',
-            // 'status',
-            // 'info_pics',
-            // 'remark',
-            // 'createtime:datetime',
+             'status',
+             'createtime:datetime',
 
                             [
                             'class' => 'common\components\grid\ActionColumn',

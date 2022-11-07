@@ -44,7 +44,8 @@ $hdata = \common\models\Hospital::find()->orderBy('id')->all();
     ]]) ?>
 
     <br/>
-
+    <?= $form->field($model, 'status')->dropDownList(['0'=>'未审核','1'=>'审核通过','2'=>'审核不通过'],['prompt'=>'请选择']); ?>
+    &nbsp;&nbsp;
     <?php $county = \common\models\Area::$city[11] ? \common\models\Area::$county[11] : []; ?>
     <?= $form->field($model, 'county')->dropDownList($county, [
         'prompt' => '请选择',
