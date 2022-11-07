@@ -65,9 +65,13 @@ class SigningRecordSearch extends SigningRecord
             'sign_item_id_from' => $this->sign_item_id_from,
             'sign_item_id_to' => $this->sign_item_id_to,
             'status' => $this->status,
-            'operator' => $this->doctorid,
         ]);
 
+
+        if($this->doctorid){
+            $query->andFilterWhere(['operator'=>$this->doctorid]);
+        }
+        
         if($this->startDate){
             $query->andFilterWhere(['>=', 'createtime', strtotime($this->startDate)]);
         }
