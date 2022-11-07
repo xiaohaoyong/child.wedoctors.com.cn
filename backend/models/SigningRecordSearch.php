@@ -66,8 +66,7 @@ class SigningRecordSearch extends SigningRecord
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'userid' => $this->userid,
+            'name' => $this->name,
             'type' => $this->type,
             'sign_item_id_from' => $this->sign_item_id_from,
             'sign_item_id_to' => $this->sign_item_id_to,
@@ -76,19 +75,15 @@ class SigningRecordSearch extends SigningRecord
         ]);
 
 
-        var_dump($this->startDate);
-        var_dump($this->endDate);
 
         if($this->startDate){
-            var_dump('123');
             $query->andFilterWhere(['>=', 'createtime', strtotime($this->startDate)]);
         }
         if($this->endDate){
-            var_dump('456');
-
             $ends=strtotime($this->endDate)+86400;
             $query->andFilterWhere(['<=', 'createtime', $ends]);
         }
+
 
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
