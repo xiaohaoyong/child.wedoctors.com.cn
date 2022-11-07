@@ -12,7 +12,7 @@ use common\models\SigningRecord;
  */
 class SigningRecordSearch extends SigningRecord
 {
-    
+
 
     /**
      * @inheritdoc
