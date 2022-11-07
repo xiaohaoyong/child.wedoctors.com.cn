@@ -38,7 +38,7 @@ public function actionIndex()
 {
     $searchModel = new SigningRecordSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-    $hdata = Hospital::find()->orderBy('id')->all();
+    $hdata = Hospital::find()->orderBy('id')->all()->asArray();
 
     var_dump($hdata);exit;
 
