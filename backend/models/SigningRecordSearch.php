@@ -13,6 +13,9 @@ use common\models\SigningRecord;
 class SigningRecordSearch extends SigningRecord
 {
 
+    public $startDate;
+    public $endDate;
+    public $county;
 
     /**
      * @inheritdoc
