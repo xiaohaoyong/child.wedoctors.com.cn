@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     echo DetailView::widget([
                         'model' => $model,
                         'attributes' => [
-                            'type',
                             [
                                 'attribute' => 'type',
                                 'value' => $model->type == 2 ? '宝宝'  : '孕妈',
@@ -54,7 +53,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return '审核不通过';
                                 }
                             ],
-                            'remark',
                             [
                                 'attribute'=>'createtime',
                                 'value'=>function ($model){
@@ -70,7 +68,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     echo DetailView::widget([
                         'model' => $model,
                         'attributes' => [
-                            'type',
                             [
                                 'attribute' => 'type',
                                 'value' => $model->type == 2 ? '宝宝'  : '孕妈',
@@ -99,7 +96,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return '审核不通过';
                                 }
                             ],
-                            'remark',
                             [
                                 'attribute'=>'createtime',
                                 'value'=>function ($model){
