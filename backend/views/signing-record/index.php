@@ -33,7 +33,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\SerialColumn'],
             'id',
             'name',
-            'type',
+         [
+             'attribute'=>'type',
+             'value'=>function ($model){
+                 if ($model->type == 1)
+                     return '孕妈';
+                 elseif($model->type == 2)
+                     return '宝宝';
+                 else
+                     return $model->type;
+             }
+         ],
          [
              'attribute'=>'sign_item_id_from',
              'value'=>function ($model){
@@ -47,8 +57,23 @@ $this->params['breadcrumbs'][] = $this->title;
                  return $model->convert_iid($model->sign_item_id_to);
              }
          ],
-             'status',
-             'createtime:datetime',
+         [
+             'attribute'=>'status',
+             'value'=>function ($model){
+                 if ($model->status == 0)
+                     return '未审核';
+                 elseif($model->status == 1)
+                     return '审核通过';
+                 elseif($model->status == 2)
+                     return '审核不通过';
+             }
+         ],
+         [
+             'attribute'=>'createtime',
+             'value'=>function ($model){
+                 return date('Y-m-d H:i:s',$model->createtime);
+             }
+         ],
 
                             [
                             'class' => 'common\components\grid\ActionColumn',
