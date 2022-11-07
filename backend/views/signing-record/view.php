@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-                <?
+                <?php
                 if ($model->type == 1)
                 {
                     echo 'mom';
