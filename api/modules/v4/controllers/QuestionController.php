@@ -235,6 +235,5 @@ class QuestionController extends Controller
         }else{
             return new Code(20000,$msg);
         }
-
     }
 }
