@@ -15,9 +15,7 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
-
     <?= $form->field($model, 'qid') ?>
-
     <?= $form->field($model, 'userid') ?>
     <?php $county = \common\models\Area::$city[11] ? \common\models\Area::$county[11] : []; ?>
     <?= $form->field($model, 'county')->dropDownList($county, [
