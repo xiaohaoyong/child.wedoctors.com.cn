@@ -78,7 +78,7 @@ class SigningRecord extends \yii\db\ActiveRecord
 
     public function get_mom_info($userid)
     {
-        return Pregnancy::findOne(['familyid'=>$userid]);
+        return Pregnancy::find()->where(['familyid'=>$userid])->one();
     }
 
     public function convert_iid($iid)
