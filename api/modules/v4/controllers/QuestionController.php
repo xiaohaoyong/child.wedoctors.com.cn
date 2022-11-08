@@ -200,7 +200,7 @@ class QuestionController extends Controller
     /**
      * 推送消息发送评价页面
      * 问题已结束才能评价，一个问题只能评价一次
-     * 问题评论
+     * 问题评论,问题表中得dcotorid代表得是user_doctor中得userid
      */
     public function actionComment(){
         $qid = \Yii::$app->request->get('id'); //问题ID
