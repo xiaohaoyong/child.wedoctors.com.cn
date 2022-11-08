@@ -39,8 +39,8 @@ class QuestionCommentController extends \yii\console\Controller
                                 Question::updateAll(['state'=>2],['id'=>$val['id']]);
                                 $userDoctor = UserDoctor::find()->where(['userid'=>$val['userid']])->one();
                                 $data = [
-                                    'name1' => ARRAY('value' => '您向'.$userDoctor->name.'的在线咨询已结束，邀请您对医生的回复进行评价'),
-                                    'time2' => ARRAY('value' => date('Y年m月d日 H:i',time())),
+                                    'thing1' => ARRAY('value' => '您向'.$userDoctor->name.'的在线咨询已结束，邀请您对医生的回复进行评价'),
+                                    'time3' => ARRAY('value' => date('Y年m月d日 H:i',time())),
                                     'thing3' => ARRAY('value' => '感谢你的配合'),
                                 ];
                                 $userLogin = UserLogin::find()->where(['userid'=>$val['userid']])->one();
