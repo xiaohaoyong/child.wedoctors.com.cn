@@ -44,6 +44,12 @@ class TextController extends Controller
         echo $content;
         exit;
     }
+    public function actionUpdateCode(){
+        exec("cd /home/wwwroot/child.wedoctors.com.cn && git pull",$result,$status);
+        echo date('Y-m-d H:i:s', time());
+        var_dump($status);
+        var_dump($result);
+    }
 
 
 }
