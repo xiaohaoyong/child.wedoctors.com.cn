@@ -44,13 +44,4 @@ class TextController extends Controller
         echo $content;
         exit;
     }
-    public function actionUpdateCode(){
-        ini_set('memory_limit', '1G');
-        exec("cd /home/wwwroot/child.wedoctors.com.cn && git pull origin test1",$result,$status);
-        echo date('Y-m-d H:i:s', time());
-        var_dump($status);
-        var_dump($result);
-    }
-
-
 }
