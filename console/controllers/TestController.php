@@ -24,6 +24,10 @@ use yii\base\Controller;
 
 class TestController extends Controller
 {
+
+	public function actionCeshi(){
+	echo '1234';die;
+}
     public function actionAbc(){
 
 //        $we=WeOpenid::find()->select('openid')->where(['>','createtime',strtotime('-2 hour')])->column();

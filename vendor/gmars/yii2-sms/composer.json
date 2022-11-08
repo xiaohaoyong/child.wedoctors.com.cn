@@ -1,0 +1,27 @@
+{
+  "name": "gmars/yii2-sms",
+  "description": "a library for yii2.this library instanced SMS api include alidayu and aliyunsms and so on,i will instance all most popular SMS API",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "weiyongqiang",
+      "email": "hayixia606@163.com"
+    }
+
+  ],
+  "keywords": ["yii2", "sms", "alidayu", "yii2 library"],
+  "homepage": "http://www.weiyongqiang.com/",
+  "type": "library",
+  "support": {
+    "issues": "https://github.com/gmars/yii2-sms/issues",
+    "source": "https://github.com/gmars/yii2-sms"
+  },
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-4" : {
+      "gmars\\sms\\" : ""
+    }
+  }
+}
