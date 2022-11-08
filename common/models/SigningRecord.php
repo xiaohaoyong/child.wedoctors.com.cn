@@ -73,7 +73,7 @@ class SigningRecord extends \yii\db\ActiveRecord
 
     public function get_child_info($cid)
     {
-        return ChildInfo::findOne($cid);
+        return ChildInfo::findOne($cid)->asArray();
     }
 
     public function get_mom_info($userid)
