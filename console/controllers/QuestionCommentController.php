@@ -40,7 +40,7 @@ class QuestionCommentController extends \yii\console\Controller
 
                                 $userDoctor = UserDoctor::find()->where(['userid'=>$val['doctorid']])->one();
                                 $thing2 = '感谢你的配合';
-                                $thing1 = '您向'.$userDoctor->name.'的在线咨询已结束，邀请您对医生的回复进行评价';
+                                $thing1 = $userDoctor->name;
                                 $data = [
                                     'thing1' => ARRAY('value' => $thing1),
                                     'thing2' => ARRAY('value' => $thing2),
