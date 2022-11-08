@@ -26,8 +26,10 @@ if ($model->type == 1)
 if ($model->type == 2)
 {
     $cinfo = $model->get_child_info($model->userid);
-    var_dump($cinfo);exit;
+    var_dump($cinfo);
     $userid = $cinfo['userid'];
+    var_dump($userid);
+    exit;
     $minfo = $model->get_mom_info($userid);
 
 }
