@@ -126,7 +126,9 @@ if ($model->type == 2)
                                 'label'=>'宝宝性别',
                                 'attribute' => 'gender',
                                 'value'=>function ($model,$cinfo){
-                        var_dump($cinfo);exit;
+                                    var_dump($cinfo['gender']);
+                                    var_dump($cinfo->gender);
+                        exit;
                                     if ($cinfo['gender'] == 1)
                                         return '男宝';
                                     elseif($cinfo['gender'] == 2)
