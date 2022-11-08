@@ -129,7 +129,7 @@ if ($model->type == 2)
                                 'value'=>function ($model,$cinfo){
                                     if ($cinfo['gender'] == 1)
                                         return '男宝';
-                                    elseif($model->status == 2)
+                                    elseif($cinfo['gender'] == 2)
                                         return '女宝';
                                 }
                             ],
