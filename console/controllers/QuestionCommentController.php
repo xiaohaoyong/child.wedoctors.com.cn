@@ -37,11 +37,15 @@ class QuestionCommentController extends \yii\console\Controller
                                 echo $val['id'].'-'.date("Y-m-d H:i:s",$last_time)."\n";
                                 //超过24小时没有回复，问题自动结束
                                 Question::updateAll(['state'=>2],['id'=>$val['id']]);
-                                $userDoctor = UserDoctor::find()->where(['userid'=>$val['userid']])->one();
+
+                                $userDoctor = UserDoctor::find()->where(['userid'=>$val['doctorid']])->one();
+                                $thing1 = '在线咨询';
+                               // $thing2 = '您向'.$userDoctor->name.'的在线咨询已结束，邀请您对医生的回复进行评价';
+                                $thing2 = '邀请您对本次咨询进行评价';
                                 $data = [
-                                    'name1' => ARRAY('value' => '您向'.$userDoctor->name.'的在线咨询已结束，邀请您对医生的回复进行评价'),
-                                    'time2' => ARRAY('value' => date('Y年m月d日 H:i',time())),
-                                    'thing3' => ARRAY('value' => '感谢你的配合'),
+                                    'thing1' => ARRAY('value' => $thing1),
+                                    'thing2' => ARRAY('value' => $thing2),
+                                    'time3' => ARRAY('value' => date('Y年m月d日 H:i',time())),
                                 ];
                                 $userLogin = UserLogin::find()->where(['userid'=>$val['userid']])->one();
                                 $rs=WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'cJqc11RdX95akxICJmQo3nP-0yo6VA4eHAeZHjEViHo','/pages/question/view?id='.$val['id']);
