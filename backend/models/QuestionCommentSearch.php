@@ -15,13 +15,14 @@ class QuestionCommentSearch extends QuestionComment
 
     public $startDate;
     public $endDate;
+    public $county;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id','userid','qid','createtime','is_satisfied','is_solve','doctorid'], 'integer'],
+            [['id','userid','qid','createtime','is_satisfied','is_solve','doctorid','county'], 'integer'],
             [['startDate','endDate'], 'date', 'format' => 'php:Y-m-d', 'message'=>'日期格式不对']
         ];
     }
