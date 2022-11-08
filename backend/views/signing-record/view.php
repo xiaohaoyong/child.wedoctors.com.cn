@@ -127,9 +127,9 @@ if ($model->type == 2)
                                 'label'=>'宝宝性别',
                                 'attribute' => 'gender',
                                 'value'=>function ($model,$cinfo){
-                                    if ($cinfo['gender'] == 1)
+                                    if ($cinfo->gender == 1)
                                         return '男宝';
-                                    elseif($cinfo['gender'] == 2)
+                                    elseif($cinfo->gender == 2)
                                         return '女宝';
                                 }
                             ],
@@ -167,7 +167,7 @@ if ($model->type == 2)
                             [
                                 'attribute'=>'birthday',
                                 'value'=>function ($model,$cinfo){
-                                    return date('Y-m-d H:i:s',$cinfo['birthday']);
+                                    return date('Y-m-d H:i:s',$cinfo->birthday);
                                 }
                             ],
                             [
