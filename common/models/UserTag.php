@@ -14,6 +14,11 @@ use Yii;
  */
 class UserTag extends \yii\db\ActiveRecord
 {
+    public static $qywx_id=[
+        1=>'etCPM_CQAAIEt4_oMnN2a5x3exhIFaKQ',
+        2=>'etCPM_CQAAVHC6Gb95gsXYwttCFBWlSA',
+        3=>'etCPM_CQAAvlFQKammHgFXsLZ5c0WeyA',
+    ];
     /**
      * {@inheritdoc}
      */
@@ -29,7 +34,7 @@ class UserTag extends \yii\db\ActiveRecord
     {
         return [
             [[ 'type'], 'integer'],
-            [['name'], 'string', 'max' => 100],
+            [['name','wx_tag_id'], 'string', 'max' => 100],
         ];
     }
 
@@ -44,16 +49,35 @@ class UserTag extends \yii\db\ActiveRecord
             'type' => 'Type',
         ];
     }
-    public static function getid($name,$type){
 
+    public static function getid($name,$type){
+        $app = Factory::work(\Yii::$app->params['qywx']);
         $userTag= UserTag::findOne(['name'=>$name,'type'=>$type]);
         if(!$userTag){
             $userTag = new UserTag();
             $userTag->name = $name;
             $userTag->type = $type;
             $userTag->save();
-            var_dump($userTag->firstErrors);
         }
+        if(!$userTag->wx_tag_id){
+            $params = [
+                "group_id" => self::$qywx_id[$type],
+                "tag" => [
+                    [
+                        "name" => $name,
+                        "order" => $userTag->id,
+                    ]
+                ]
+            ];
+
+            $return=$app->external_contact->addCorpTag($params);
+            if($return['errmsg']=='ok'){
+                $wx_tag_id=$return['tag_group']['tag'][0]['id'];
+                $userTag->wx_tag_id=$wx_tag_id;
+                $userTag->save();
+            }
+        }
+
         return $userTag->id;
     }
 }
