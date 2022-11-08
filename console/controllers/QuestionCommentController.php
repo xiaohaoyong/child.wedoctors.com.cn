@@ -40,8 +40,8 @@ class QuestionCommentController extends \yii\console\Controller
                                 $userDoctor = UserDoctor::find()->where(['userid'=>$val['userid']])->one();
                                 $data = [
                                     'thing1' => ARRAY('value' => '您向'.$userDoctor->name.'的在线咨询已结束，邀请您对医生的回复进行评价'),
-                                    'thing3' => ARRAY('value' => date('Y年m月d日 H:i',time())),
                                     'thing2' => ARRAY('value' => '感谢你的配合'),
+                                    'time3' => ARRAY('value' => date('Y年m月d日 H:i',time())),
                                 ];
                                 $userLogin = UserLogin::find()->where(['userid'=>$val['userid']])->one();
                                 $rs=WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'cJqc11RdX95akxICJmQo3nP-0yo6VA4eHAeZHjEViHo','/pages/question/view?id='.$val['id']);
