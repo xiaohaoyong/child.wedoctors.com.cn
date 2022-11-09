@@ -60,7 +60,16 @@ class SignChangeController extends Controller
      */
     public function actionArea()
     {
-        return Area::$county[11];
+        $data =  Area::$county[11];
+        $result = [];
+        foreach ($data as $k=>$v)
+        {
+            $result[] = [
+                'id'=>$k,
+                'name'=>$v
+            ];
+        }
+        return $result;
     }
 
     /**
@@ -174,6 +183,28 @@ class SignChangeController extends Controller
             'now'=>$now,
             'history'=>$historys,
         ];
+
+    }
+
+    /**
+     * 签约状态查询
+     */
+    public function actionStatus()
+    {
+        $id = \Yii::$app->request->get('id');
+        $sign_info = SigningRecord::find()->where(['id' => $id])->asArray()->one();
+        $frominfo = Hospital::find()->where(['id' => $sign_info['sign_item_id_from']])->asArray()->one();
+        $toinfo = Hospital::find()->where(['id' => $sign_info['sign_item_id_to']])->asArray()->one();
+        if ($sign_info) {
+            return [
+                'status'=>$sign_info['status'],
+                'name'=>$sign_info['name'],
+                'from_name'=>$frominfo['name'],
+                'to_name'=>$toinfo['name']
+            ];
+        }
+
+        return new Code(20000,'failed');
 
     }
 
