@@ -101,6 +101,7 @@ class QuestionCommentSearch extends QuestionComment
 
         $attr['startDate'] = '创建时间';
         $attr['endDate'] = '~';
+        $attr['county'] = '区/县';
 
         return $attr;
     }
