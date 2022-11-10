@@ -165,7 +165,7 @@ class QuestionController extends Controller
         $id = Yii::$app->request->get('id');
         $model = $this->findModel($id);
         if($model){
-            Question::updateAll(['state'=>2],['id'=>$model->id]);
+
             //发送评价消息
             $thing1 = '在线咨询';
             // $thing2 = '您向'.$userDoctor->name.'的在线咨询已结束，邀请您对医生的回复进行评价';
@@ -177,6 +177,8 @@ class QuestionController extends Controller
             ];
             $userLogin = UserLogin::find()->where(['userid'=>$model->userid])->one();
             $rs=WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'cJqc11RdX95akxICJmQo3nP-0yo6VA4eHAeZHjEViHo','/pages/question/view?id='.$model->id);
+
+            Question::updateAll(['state'=>2],['id'=>$model->id]);
                return $this->redirect(['index']);
         }
 
