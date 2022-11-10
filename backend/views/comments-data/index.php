@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $appointcomment \common\models\AppointComment */
+/* @var $apcounty \common\models\UserDoctor */
 /* @var $form yii\widgets\ActiveForm */
 
 
@@ -35,7 +36,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <?php $form = ActiveForm::begin(); ?>
 
-                                    <?= $form->field($appointcomment, 'doctorid')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->column(), ['prompt' => '请选择']) ?>
+									<?php $county = \common\models\Area::$city[11] ? \common\models\Area::$county[11] : []; ?>
+									<?= $form->field($apcounty, 'county')->dropDownList($county, [
+										'prompt' => '请选择',
+										'onchange' => '
+											$("#' . Html::getInputId($appointcomment, 'doctorid') . '").html(\'' . Html::tag('option', Html::encode("请选择"), array('value' => 0)) . '\');
+											$.post("' . \yii\helpers\Url::to(['user-doctor/get']) . '?UserDoctorSearchModel[county]="+$(this).val(),function(data){
+												$("#' . Html::getInputId($appointcomment, 'doctorid') . '").html(data);
+											});',
+									]) ?>
+									<?= $form->field($appointcomment, 'doctorid')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->where(['county' => $apcounty['county']])->column(), ['prompt' => '请选择']) ?>
 
                                     <?=\kartik\date\DatePicker::widget([
                                         'name' => 'sdate',

@@ -3,6 +3,7 @@ namespace backend\controllers;
 
 
 
+use common\models\Appoint;
 use common\models\AppointComment;
 use common\models\Question;
 use common\models\QuestionComment;
@@ -47,6 +48,7 @@ class CommentsDataController extends BaseController
     {
 
         $appointcomment = new AppointComment();
+		$apcounty = new UserDoctor();
         $arr_data=array();
         $arr_datas=array();
 
@@ -151,6 +153,7 @@ class CommentsDataController extends BaseController
         return $this->render('index', [
             'arr_datas' => $arr_datas,
             'appointcomment' => $appointcomment,
+            'apcounty' => $apcounty,
         ]);
     }
 
