@@ -4,6 +4,8 @@ namespace hospital\controllers;
 use app\models\Ausers;
 use common\components\Code;
 use common\helpers\SmsSend;
+use common\models\Appoint;
+use common\models\AppointComment;
 use common\models\Article;
 use common\models\ArticleUser;
 use common\models\Auser;
@@ -13,6 +15,9 @@ use common\models\DoctorHospital;
 use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\Pregnancy;
+use common\models\Question;
+use common\models\QuestionComment;
+use common\models\QuestionReply;
 use common\models\UserDoctor;
 use Yii;
 use common\models\LoginForm;
@@ -224,10 +229,71 @@ class SiteController extends BaseController
 
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])->count();
 
+
+
+
+        ##############################
+        ###就诊评价统计
+        $visit_stat['visit_total'] = Appoint::find()->where(['state'=>2,'doctorid'=>$doctorid])->count() ;    #总就诊完成数
+        $visit_stat['comment_total'] = AppointComment::find()->where(['doctorid'=>$doctorid])->count() ;      #就诊评价数
+        $visit_stat['comment_total_hp'] = AppointComment::find()->where(['is_rate'=>1,'doctorid'=>$doctorid])->count() ;    #就诊好评数量
+        $visit_stat['comment_total_zp'] = AppointComment::find()->where(['is_rate'=>2,'doctorid'=>$doctorid])->count() ;    #就诊中评数量
+        $visit_stat['comment_total_cp'] = AppointComment::find()->where(['is_rate'=>3,'doctorid'=>$doctorid])->count() ;    #就诊差评数量
+
+
+        ##############################
+        ###问题回复统计
+        #问题总数
+        $question_stat['question_total'] = Question::find()->where(['doctorid'=>$doctorid])->count() ;
+
+        $dbi = (new Question())->find();
+
+        #回复总数
+        $dbi->sql = 'select count(DISTINCT(qid)) as num from question tb1,question_reply tb2 where tb1.id = tb2.qid and tb1.doctorid='.$doctorid;
+        $question_stat['reply_total'] = $dbi->createCommand()->queryOne()['num'];
+
+        #巡医团队回复总数
+        $dbi->sql = 'select count(DISTINCT(qid)) as num from question tb1,question_reply tb2 where tb1.id = tb2.qid and tb1.doctorid='.$doctorid.' and  tb2.userid=47156';
+        $question_stat['reply_total_xyitem'] = $dbi->createCommand()->queryOne()['num'];
+
+        #社区回复总数
+        $dbi->sql = 'select count(DISTINCT(qid)) as num from question tb1,question_reply tb2 where tb1.id = tb2.qid and tb1.doctorid='.$doctorid.' and  tb2.userid='.$doctorid;
+        $question_stat['reply_total_item'] = $dbi->createCommand()->queryOne()['num'];
+
+        #总回复率
+        $question_stat['question_total_reply_rate'] =  $question_stat['question_total'] ? round($question_stat['reply_total'] / $question_stat['question_total'])*100 : 0;
+
+        #巡医团队回复占比
+        $question_stat['reply_total_xyitem_percent'] = $question_stat['reply_total'] ? round($question_stat['reply_total_xyitem'] /  $question_stat['reply_total'])*100 : 0;
+
+        #社区医院回复占比
+        $question_stat['reply_total_item_percent'] = $question_stat['reply_total'] ? round($question_stat['reply_total_item'] /  $question_stat['reply_total'])*100 : 0;
+
+
+
+        #总评价数量
+        $question_stat['comment_total'] = QuestionComment::find()->where(['doctorid'=>$doctorid])->count() ;
+
+        #满意的评价数量
+        $question_stat['comment_total_satisfied'] = QuestionComment::find()->where(['is_satisfied'=>2,'doctorid'=>$doctorid])->count() ;
+
+        #解决问题的评价数量
+        $question_stat['comment_total_solve'] = QuestionComment::find()->where(['is_solve'=>2,'doctorid'=>$doctorid])->count() ;
+
+        #满意度
+        $question_stat['comment_satisfied_rate'] = $question_stat['comment_total']  ? round($question_stat['comment_total_satisfied'] / $question_stat['comment_total'])*100 : 0;
+
+        #问题解决率
+        $question_stat['comment_solve_rate'] = $question_stat['omment_total']  ? round($question_stat['comment_total_solve'] / $question_stat['comment_total'])*100 : 0;
+
+
+
         return $this->render('index',[
             'data'=>$data,
             'line_data'=>$line_data,
             'now'=>$now,
+            'visit_stat'=>$visit_stat,
+            'question_stat'=>$question_stat,
         ]);
     }
 
