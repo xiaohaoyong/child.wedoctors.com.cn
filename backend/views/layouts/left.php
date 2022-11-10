@@ -46,6 +46,14 @@
                         ],
                     ],
                     [
+                        'label' => '统计',
+                        'icon' => 'comments',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '评 价 统 计',  'url' => ['/comments-data'],],
+                        ],
+                    ],
+                    [
                         'label' => '数据管理',
                         'icon' => 'database',
                         'url' => '#',

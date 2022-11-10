@@ -55,6 +55,14 @@ class ApCommentController extends Controller {
             $acomment->is_process_on=$is_process_on;
             $acomment->is_staff=$is_staff;
             $acomment->is_staff_on=$is_staff_on;
+            $tot = $is_envir+$is_process+$is_staff;
+            if($tot>0 && $tot<=6) {
+                $acomment->is_rate = 3;
+            }elseif($tot>=7 && $tot<=10){
+                $acomment->is_rate = 2;
+            }elseif($tot>=11){
+                $acomment->is_rate = 1;
+            }
             $acomment->save(false);
 
             $msg = '评价成功';

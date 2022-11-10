@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
     <?=$form->field($model,'is_envir')->dropDownList(\common\models\AppointComment::$enverstaffArr,['prompt'=>'全部']);?>
     <?=$form->field($model,'is_process')->dropDownList(\common\models\AppointComment::$enverstaffArr,['prompt'=>'全部']);?>
     <?=$form->field($model,'is_staff')->dropDownList(\common\models\AppointComment::$enverstaffArr,['prompt'=>'全部']);?>
-
+    <?=$form->field($model,'is_rate')->dropDownList(\common\models\AppointComment::$allArr,['prompt'=>'全部']);?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
