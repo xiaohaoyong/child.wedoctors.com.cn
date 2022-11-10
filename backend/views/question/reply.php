@@ -54,33 +54,34 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]) ?>
 
             </div>
-            <div class="box-body">
-                <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                    <div class="row">
-                        <?= \yii\grid\GridView::widget([
-                            'options' => ['class' => 'col-sm-12'],
-                            'dataProvider' => $dataProvider,
 
-                            'columns' => [
-                                'content',
-                                'createtime:datetime',
-                                [
-                                    'attribute' => 'userid',
-                                    'value' => function ($e) {
-                                        if ($e->is_doctor) {
-                                            $name = \common\models\UserDoctor::findOne(['userid' => $e->userid])->name;
-                                        } else {
-                                            $name = "用户：" . $e->userid;
-                                        }
-                                        return $name;
-                                    }
-                                ],
-                                //'qid',
-                                // 'level',
+                    <div class="box-body">
+                        <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                                <?= \yii\grid\GridView::widget([
+                                    'options' => ['class' => 'col-sm-12'],
+                                    'dataProvider' => $dataProvider,
 
-                                [
-                                    'class' => 'common\components\grid\ActionColumn',
-                                    'template' => '
+                                    'columns' => [
+                                        'content',
+                                        'createtime:datetime',
+                                        [
+                                            'attribute' => 'userid',
+                                            'value' => function ($e) {
+                                                if ($e->is_doctor) {
+                                                    $name = \common\models\UserDoctor::findOne(['userid' => $e->userid])->name;
+                                                } else {
+                                                    $name = "用户：" . $e->userid;
+                                                }
+                                                return $name;
+                                            }
+                                        ],
+                                        //'qid',
+                                        // 'level',
+
+                                        [
+                                            'class' => 'common\components\grid\ActionColumn',
+                                            'template' => '
                             <div class="btn-group dropup">
                                 <a class="btn btn-circle btn-default btn-sm" href="javascript:;" data-toggle="dropdown"
                                    aria-expanded="false">
@@ -91,33 +92,40 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </ul>
                             </div>
                             ',
-                                    'buttons' => [
-                                        'update' => function ($url, $model, $key) {
-                                            return \yii\helpers\Html::a('<span class="glyphicon glyphicon-pencil"> 编辑</span>', '/question-reply/update?id='.$model->id);
-                                        }
-                                    ]
-                                ],
-                            ],
-                        ]); ?>
+                                            'buttons' => [
+                                                'update' => function ($url, $model, $key) {
+                                                    return \yii\helpers\Html::a('<span class="glyphicon glyphicon-pencil"> 编辑</span>', '/question-reply/update?id='.$model->id);
+                                                }
+                                            ]
+                                        ],
+                                    ],
+                                ]); ?>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="box-body">
-                <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+            <?php
+            if($model->state!=2){
+                ?>
+                    <div class="box-body">
+                        <?php $form = \yii\widgets\ActiveForm::begin(); ?>
 
-                <?= $form->field($reply, 'content')->textarea()->label('回复') ?>
-                <?= $form->field($reply, 'userid')->hiddenInput(['value'=>47156])->label(false) ?>
-                <?= $form->field($reply, 'is_doctor')->hiddenInput(['value'=>1])->label(false) ?>
-                <?= $form->field($reply, 'qid')->hiddenInput(['value'=>$model->id])->label(false) ?>
+                        <?= $form->field($reply, 'content')->textarea()->label('回复') ?>
+                        <?= $form->field($reply, 'userid')->hiddenInput(['value'=>47156])->label(false) ?>
+                        <?= $form->field($reply, 'is_doctor')->hiddenInput(['value'=>1])->label(false) ?>
+                        <?= $form->field($reply, 'qid')->hiddenInput(['value'=>$model->id])->label(false) ?>
 
 
-                <div class="form-group">
-                    <?= Html::submitButton($reply->isNewRecord ? '提交'                    : '提交', ['class' => $reply->isNewRecord ? 'btn btn-success' :
-                        'btn btn-primary']) ?>
-                </div>
+                        <div class="form-group">
+                            <?= Html::submitButton($reply->isNewRecord ? '提交'                    : '提交', ['class' => $reply->isNewRecord ? 'btn btn-success' :
+                                'btn btn-primary']) ?>
+                        </div>
 
-                <?php \yii\widgets\ActiveForm::end(); ?>
-            </div>
+                        <?php \yii\widgets\ActiveForm::end(); ?>
+                    </div>
+            <?php
+                }
+            ?>
+
 
         </div>
     </div>

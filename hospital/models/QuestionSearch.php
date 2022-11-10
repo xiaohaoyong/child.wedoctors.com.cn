@@ -18,7 +18,7 @@ class QuestionSearch extends Question
     public function rules()
     {
         return [
-            [['id', 'userid', 'createtime', 'childid', 'doctorid', 'orderid', 'level', 'state'], 'integer'],
+            [['id', 'userid', 'createtime', 'childid', 'doctorid', 'orderid', 'level', 'state','is_comment'], 'integer'],
         ];
     }
 
@@ -66,6 +66,7 @@ class QuestionSearch extends Question
             'orderid' => $this->orderid,
             'level' => $this->level,
             'state' => $this->state,
+            'is_comment' => $this->is_comment,
         ]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
