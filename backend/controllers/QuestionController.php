@@ -166,6 +166,17 @@ class QuestionController extends Controller
         $model = $this->findModel($id);
         if($model){
             Question::updateAll(['state'=>2],['id'=>$model->id]);
+            //发送评价消息
+            $thing1 = '在线咨询';
+            // $thing2 = '您向'.$userDoctor->name.'的在线咨询已结束，邀请您对医生的回复进行评价';
+            $thing2 = '邀请您对本次咨询进行评价';
+            $data = [
+                'thing1' => ARRAY('value' => $thing1),
+                'thing2' => ARRAY('value' => $thing2),
+                'time3' => ARRAY('value' => date('Y年m月d日 H:i',time())),
+            ];
+            $userLogin = UserLogin::find()->where(['userid'=>$model->userid])->one();
+            $rs=WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'cJqc11RdX95akxICJmQo3nP-0yo6VA4eHAeZHjEViHo','/pages/question/view?id='.$model->id);
                return $this->redirect(['index']);
         }
 

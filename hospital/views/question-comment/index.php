@@ -48,8 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '指定社区',
                                     'value' => function ($e) {
-                                        $doctor=\common\models\UserDoctor::find()->where(['userid'=>\Yii::$app->user->identity->doctorid
-                                        ])->one();
+                                        $doctor=\common\models\UserDoctor::find()->where(['userid'=>$e->doctorid])->one();
                                         return $doctor->name;
                                     }
                                 ],
