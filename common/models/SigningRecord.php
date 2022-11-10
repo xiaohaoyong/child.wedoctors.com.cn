@@ -62,9 +62,21 @@ class SigningRecord extends \yii\db\ActiveRecord
             'startDate' => '开始时间',
             'endDate' => '截止时间',
             'county' => '地区',
-            'operator' => '操作人',
+            'operator' => '审核人',
         ];
     }
+
+    /**
+     * 获取当前签约的信息
+     * @param $pid
+     */
+    public static function get_now_sign($pid)
+    {
+        $sign_info = DoctorParent::find()->where(['parentid'=>$pid])->asArray()->one();
+        $doc_info = UserDoctor::find()->where(['userid'=>$sign_info['doctorid']])->asArray()->one();
+        return @array_merge($sign_info,$doc_info);
+    }
+
 
     public function get_pregnancy_info($pid)
     {
@@ -73,17 +85,17 @@ class SigningRecord extends \yii\db\ActiveRecord
 
     public function get_child_info($cid)
     {
-        return ChildInfo::findOne($cid);
+        return ChildInfo::find()->where(['id'=>$cid])->asArray()->one();
     }
 
     public function get_mom_info($userid)
     {
-        return Pregnancy::findOne(['familyid'=>$userid]);
+        return Pregnancy::find()->where(['familyid'=>$userid])->one();
     }
 
     public function convert_iid($iid)
     {
-        $data = Hospital::findOne($iid);
+        $data = UserDoctor::find()->where(['userid'=>$iid])->asArray()->one();
         return isset($data) ? $data['name'] : '';
     }
 

@@ -58,6 +58,12 @@ $this->params['breadcrumbs'][] = $this->title;
              }
          ],
          [
+             'attribute'=>'createtime',
+             'value'=>function ($model){
+                 return date('Y-m-d H:i:s',$model->createtime);
+             }
+         ],
+         [
              'attribute'=>'status',
              'format'=>'raw',
              'value'=>function ($model){
@@ -70,9 +76,9 @@ $this->params['breadcrumbs'][] = $this->title;
              }
          ],
          [
-             'attribute'=>'createtime',
+             'attribute'=>'operator',
              'value'=>function ($model){
-                 return date('Y-m-d H:i:s',$model->createtime);
+                 return $model->convert_iid($model->operator);
              }
          ],
 

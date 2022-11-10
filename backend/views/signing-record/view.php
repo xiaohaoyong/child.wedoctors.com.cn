@@ -28,7 +28,16 @@ if ($model->type == 2)
     $cinfo = $model->get_child_info($model->userid);
     $userid = $cinfo['userid'];
     $minfo = $model->get_mom_info($userid);
-
+    $gender = '';
+    if ($cinfo['gender'] == 1)
+    {
+        $gender = '男宝';
+    }
+    elseif($cinfo['gender'] == 2)
+    {
+        $gender = '女宝';
+    }
+    $birthday =date('Y-m-d H:i:s',$cinfo['birthday']);
 }
 
 ?>
@@ -126,13 +135,7 @@ if ($model->type == 2)
                             [
                                 'label'=>'宝宝性别',
                                 'attribute' => 'gender',
-                                'value'=>function ($model,$cinfo){
-                                    var_dump($cinfo);exit;
-                                    if ($cinfo->gender == 1)
-                                        return '男宝';
-                                    elseif($cinfo->gender == 2)
-                                        return '女宝';
-                                }
+                                'value'=>$gender
                             ],
                             [
                                 'attribute'=>'sign_item_id_from',
@@ -167,9 +170,8 @@ if ($model->type == 2)
                             ],
                             [
                                 'attribute'=>'birthday',
-                                'value'=>function ($model,$cinfo){
-                                    return date('Y-m-d H:i:s',$cinfo->birthday);
-                                }
+                                'label'=>'出生日期',
+                                'value'=>$birthday
                             ],
                             [
                                 'label'=>'母亲姓名',

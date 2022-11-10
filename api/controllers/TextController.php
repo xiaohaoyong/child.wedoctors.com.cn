@@ -44,6 +44,4 @@ class TextController extends Controller
         echo $content;
         exit;
     }
-
-
 }
