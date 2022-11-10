@@ -107,8 +107,10 @@ class QuestionController extends Controller
         }
 
     }
-    public function actionList($type,$doctorid=0){
+    public function actionList(){
 
+        $type = \Yii::$app->request->get('type'); //type=1 是我的提问
+        $doctorid = \Yii::$app->request->get('doctorid');
         $question=Question::find()->where(['level'=>1]);
         if($doctorid) {
             $question->andWhere(['doctorid'=>$doctorid]);
