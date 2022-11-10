@@ -93,7 +93,7 @@ class AppointComment extends \yii\db\ActiveRecord
             'is_staff' => '对工作人员是否满意',
             'startDate' => '开始时间',
             'endDate' => '结束时间',
-            'county' => '地区',
+            'county' => '县',
             'is_rate' => '整体评价',
         ];
     }
