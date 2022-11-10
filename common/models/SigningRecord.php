@@ -62,7 +62,7 @@ class SigningRecord extends \yii\db\ActiveRecord
             'startDate' => '开始时间',
             'endDate' => '截止时间',
             'county' => '地区',
-            'operator' => '操作人',
+            'operator' => '审核人',
         ];
     }
 
@@ -95,7 +95,7 @@ class SigningRecord extends \yii\db\ActiveRecord
 
     public function convert_iid($iid)
     {
-        $data = Hospital::findOne($iid);
+        $data = UserDoctor::find()->where(['userid'=>$iid])->asArray()->one();
         return isset($data) ? $data['name'] : '';
     }
 

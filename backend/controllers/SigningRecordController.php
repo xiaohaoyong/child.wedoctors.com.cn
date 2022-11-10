@@ -114,7 +114,7 @@ public function actionAudit()
 
     $model->status = $_POST['status'];
     $model->remark = $_POST['remark'];
-    $model->operator = Yii::$app->user->id;
+    $model->operator = 47156;
     if ($model->save())
     {
         return $this->redirect(['view', 'id' => $model->id]);

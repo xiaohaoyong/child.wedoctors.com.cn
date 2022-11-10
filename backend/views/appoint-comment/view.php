@@ -95,13 +95,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'label' => '整体评价',
                             'value' => function ($e){
-                                $con=($e->is_envir+$e->is_process+$e->is_staff);
-                                if($con<=6){
-                                    return '差评';
-                                }elseif($con>6 && $con<11){
-                                    return '中评';
-                                }elseif($con>10){
+                                if($e->is_rate==1){
                                     return '好评';
+                                }elseif($e->is_rate==2){
+                                    return '中评';
+                                }elseif($e->is_rate==3){
+                                    return '差评';
                                 }
                             }
                         ],

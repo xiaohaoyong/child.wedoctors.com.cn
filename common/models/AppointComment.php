@@ -53,6 +53,12 @@ class AppointComment extends \yii\db\ActiveRecord
         2=>'答非所问',
         3=>'没有实质性建议'
     ];
+    //整体评价
+    public static $allArr = [
+        1=>'好评',
+        2=>'中评',
+        3=>'差评',
+    ];
     /**
      * {@inheritdoc}
      */
@@ -67,7 +73,7 @@ class AppointComment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid','doctorid', 'aid', 'is_envir', 'is_process','is_staff'], 'integer'],
+            [['userid','doctorid', 'aid', 'is_envir', 'is_process','is_staff','is_rate'], 'integer'],
         ];
     }
 
@@ -88,6 +94,7 @@ class AppointComment extends \yii\db\ActiveRecord
             'startDate' => '开始时间',
             'endDate' => '结束时间',
             'county' => '地区',
+            'is_rate' => '整体评价',
         ];
     }
 }

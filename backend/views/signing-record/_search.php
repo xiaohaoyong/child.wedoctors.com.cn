@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
-$hdata = \common\models\Hospital::find()->orderBy('id')->all();
+$hdata = \common\models\UserDoctor::find()->orderBy('userid')->all();
 
 
 /* @var $this yii\web\View */
@@ -25,9 +25,9 @@ $hdata = \common\models\Hospital::find()->orderBy('id')->all();
 
     <?= $form->field($model, 'type')->dropDownList(['1'=>'孕妈','2'=>'宝宝'],['prompt'=>'请选择']); ?>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <?= $form->field($model, 'sign_item_id_from')->dropDownList(ArrayHelper::map($hdata,'id','name'),['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'sign_item_id_from')->dropDownList(ArrayHelper::map($hdata,'userid','name'),['prompt'=>'请选择']) ?>
     &nbsp;&nbsp;
-    <?= $form->field($model, 'sign_item_id_to')->dropDownList(ArrayHelper::map($hdata,'id','name'),['prompt'=>'请选择']) ?>
+    <?= $form->field($model, 'sign_item_id_to')->dropDownList(ArrayHelper::map($hdata,'userid','name'),['prompt'=>'请选择']) ?>
 
     <br/>
 

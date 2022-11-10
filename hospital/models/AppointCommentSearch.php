@@ -24,7 +24,7 @@ class AppointCommentSearch extends AppointComment
     public function rules()
     {
         return [
-            [['id','userid','aid','is_envir','is_process','is_staff','doctorid'], 'integer'],
+            [['id','userid','aid','is_envir','is_process','is_staff','doctorid','is_rate'], 'integer'],
             [['startDate','endDate'], 'date', 'format' => 'php:Y-m-d', 'message'=>'日期格式不对']
         ];
     }
@@ -78,8 +78,11 @@ class AppointCommentSearch extends AppointComment
             $query->andFilterWhere(['>=', 'createtime', strtotime($this->startDate)]);
         }
         if($this->endDate){
-            $ends=strtotime($this->endDate)+86400;
+            $ends=strtotime($this->endDate." 23:59:59");
             $query->andFilterWhere(['<=', 'createtime', $ends]);
+        }
+        if($this->is_rate){
+            $query->andFilterWhere(['is_rate'=>$this->is_rate]);
         }
         $query->andWhere(['doctorid'=>\Yii::$app->user->identity->doctorid]);
         return $dataProvider;

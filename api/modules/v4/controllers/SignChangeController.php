@@ -11,9 +11,9 @@ use api\controllers\Controller;
 use api\models\ChildInfo;
 use common\components\Code;
 use common\models\Area;
-use common\models\Hospital;
 use common\models\Pregnancy;
 use common\models\SigningRecord;
+use common\models\UserDoctor;
 use yii\web\UploadedFile;
 
 class SignChangeController extends Controller
@@ -78,7 +78,7 @@ class SignChangeController extends Controller
     public function actionGetItem()
     {
         $cid = \Yii::$app->request->get('cid');
-        return Hospital::find()->select('id,name')->where(['county'=>$cid])->asArray()->all();
+        return UserDoctor::find()->select('userid as id,name')->where(['county'=>$cid])->asArray()->all();
     }
 
 
@@ -168,15 +168,19 @@ class SignChangeController extends Controller
         }
         $nowsign = SigningRecord::get_now_sign($userid);
         $now['name'] = $nowsign['name'];
+        $now['iid'] = $nowsign['userid'];
         $now['createtime'] = date('Y-m-d H:i:s',$nowsign['createtime']);
 
-        $history = SigningRecord::find()->select('sign_item_id_to')->where(['userid'=>$fid,'status'=>1])->asArray()->all();
+        $history = SigningRecord::find()->select('sign_item_id_to,createtime')->where(['userid'=>$fid,'status'=>1])->asArray()->all();
         $historys = [];
         foreach ($history as $v)
         {
-            $data = Hospital::find()->select('name,createtime')->where(['id'=>$v['sign_item_id_to']])->asArray()->one();
-            $data['createtime'] = date('Y-m-d H:i:s',$data['createtime']);
-            $historys[] = $data;
+            $data = UserDoctor::find()->select('name')->where(['userid'=>$v['sign_item_id_to']])->asArray()->one();
+            if ($data) {
+                $data['createtime'] = date('Y-m-d H:i:s', $v['createtime']);
+                $data['iid'] = $v['sign_item_id_to'];
+                $historys[] = $data;
+            }
         }
 
         return [
@@ -193,8 +197,8 @@ class SignChangeController extends Controller
     {
         $id = \Yii::$app->request->get('id');
         $sign_info = SigningRecord::find()->where(['id' => $id])->asArray()->one();
-        $frominfo = Hospital::find()->where(['id' => $sign_info['sign_item_id_from']])->asArray()->one();
-        $toinfo = Hospital::find()->where(['id' => $sign_info['sign_item_id_to']])->asArray()->one();
+        $frominfo = UserDoctor::find()->where(['userid' => $sign_info['sign_item_id_from']])->asArray()->one();
+        $toinfo = UserDoctor::find()->where(['userid' => $sign_info['sign_item_id_to']])->asArray()->one();
         if ($sign_info) {
             return [
                 'status'=>$sign_info['status'],
