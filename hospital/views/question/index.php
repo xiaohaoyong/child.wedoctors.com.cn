@@ -56,6 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
 
                             'columns' => [
+                                    'id',
                                 [
                                     'attribute' => '问题',
                                     'value' => function ($e) {

@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             'columns' => [
                                 'qid',
-                                'userid',
                                 [
                                     'attribute' => '问题',
                                     'value' => function ($e) {
