@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'qid',
                         'label' => '指定社区',
                         'value' => function ($model){
-                            $doctor=\common\models\UserDoctor::find()->where(['userid'=>$model->userid])->one();
+                            $doctor=\common\models\UserDoctor::find()->where(['userid'=>$model->doctorid])->one();
 
                             return $doctor?$doctor->name:'';
 
@@ -44,13 +44,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'attribute' => 'createtime',
-                        'label' => '创建时间',
+                        'label' => '评价时间',
                         'value' => function ($model){
                             return date("Y-m-d H:i:s",$model->createtime);
                         },
                     ],
 
-            'userid',
                     [
                         'attribute' => 'is_satisfied',
                         'label' => '回复及时性满意度',
