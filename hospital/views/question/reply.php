@@ -94,22 +94,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
             </div>
-            <div class="box-body">
-                <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+            <?php
+            if($model->state!=2) {
+                ?>
+                <div class="box-body">
+                    <?php $form = \yii\widgets\ActiveForm::begin(); ?>
 
-                <?= $form->field($reply, 'content')->textarea()->label('回复') ?>
-                <?= $form->field($reply, 'userid')->hiddenInput(['value' => \Yii::$app->user->identity->doctorid])->label(false) ?>
-                <?= $form->field($reply, 'is_doctor')->hiddenInput(['value' => 1])->label(false) ?>
-                <?= $form->field($reply, 'qid')->hiddenInput(['value' => $model->id])->label(false) ?>
+                    <?= $form->field($reply, 'content')->textarea()->label('回复') ?>
+                    <?= $form->field($reply, 'userid')->hiddenInput(['value' => \Yii::$app->user->identity->doctorid])->label(false) ?>
+                    <?= $form->field($reply, 'is_doctor')->hiddenInput(['value' => 1])->label(false) ?>
+                    <?= $form->field($reply, 'qid')->hiddenInput(['value' => $model->id])->label(false) ?>
 
 
-                <div class="form-group">
-                    <?= Html::submitButton($reply->isNewRecord ? '提交' : '提交', ['class' => $reply->isNewRecord ? 'btn btn-success' :
-                        'btn btn-primary']) ?>
+                    <div class="form-group">
+                        <?= Html::submitButton($reply->isNewRecord ? '提交' : '提交', ['class' => $reply->isNewRecord ? 'btn btn-success' :
+                            'btn btn-primary']) ?>
+                    </div>
+
+                    <?php \yii\widgets\ActiveForm::end(); ?>
                 </div>
-
-                <?php \yii\widgets\ActiveForm::end(); ?>
-            </div>
+                <?php
+            }
+            ?>
 
         </div>
     </div>

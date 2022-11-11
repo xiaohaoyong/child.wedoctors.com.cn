@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             'columns' => [
                                 'qid',
-                                'userid',
                                 [
                                     'attribute' => '问题',
                                     'value' => function ($e) {
@@ -40,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ],
                                 [
-                                    'label' => '创建时间',
+                                    'label' => '评价时间',
                                     'format'=>['date','php:Y-m-d H:i:s'],
                                     'value' => 'createtime',
                                 ],

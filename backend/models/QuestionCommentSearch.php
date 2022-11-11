@@ -90,7 +90,7 @@ class QuestionCommentSearch extends QuestionComment
 
         // grid filtering conditions
 //echo $query->createCommand()->getRawSql();die;
-        //$query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+        $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;
     }
@@ -99,7 +99,7 @@ class QuestionCommentSearch extends QuestionComment
         $attr = parent::attributeLabels();
 
 
-        $attr['startDate'] = '创建时间';
+        $attr['startDate'] = '评价时间';
         $attr['endDate'] = '~';
         $attr['county'] = '区/县';
 

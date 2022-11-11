@@ -117,7 +117,14 @@
                             ['label' => '添加医生', 'url' => ['doctors/create']],
                         ]
                     ],
-
+                    [
+                        'label' => '审核管理',
+                        'icon' => 'file-text-o',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '变更签约社区审核列表', 'icon' => 'user', 'url' => ['/signing-record'],],
+                        ],
+                    ],
                 ],
             ]
         ) ?>

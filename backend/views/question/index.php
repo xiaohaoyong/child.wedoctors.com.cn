@@ -112,6 +112,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                             if(in_array($model->state,[0,1])){
                                                 return \yii\helpers\Html::a(' 回复', '/question/reply?id='.$model->id);
 
+                                            }else{
+                                                return \yii\helpers\Html::a(' 查看', '/question/reply?id='.$model->id);
                                             }
                                         }
 

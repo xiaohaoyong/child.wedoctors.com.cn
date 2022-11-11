@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'attribute' => 'createtime',
-                        'label' => '创建时间',
+                        'label' => '评价时间',
                         'value' => function ($model){
                             return date("Y-m-d H:i:s",$model->createtime);
                         },
