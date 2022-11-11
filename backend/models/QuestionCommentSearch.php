@@ -90,7 +90,7 @@ class QuestionCommentSearch extends QuestionComment
 
         // grid filtering conditions
 //echo $query->createCommand()->getRawSql();die;
-        //$query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+        $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;
     }
