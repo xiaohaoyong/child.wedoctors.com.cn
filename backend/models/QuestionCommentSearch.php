@@ -99,7 +99,7 @@ class QuestionCommentSearch extends QuestionComment
         $attr = parent::attributeLabels();
 
 
-        $attr['startDate'] = '创建时间';
+        $attr['startDate'] = '评价时间';
         $attr['endDate'] = '~';
         $attr['county'] = '区/县';
 
