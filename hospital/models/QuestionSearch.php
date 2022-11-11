@@ -55,7 +55,23 @@ class QuestionSearch extends Question
             // $query->where('0=1');
             return $dataProvider;
         }
+        if($this->state == ''){
+            $this->state = -1;
+        }
+        if($this->is_comment == ''){
+            $this->is_comment = -1;
+        }
 
+        if($this->state == -1){
+            $query->andWhere(['in','state',[0,1,2]]);
+        }else{
+            $query->andWhere(['state'=>$this->state]);
+        }
+        if($this->is_comment == -1){
+            $query->andWhere(['in','is_comment',[0,1]]);
+        }else{
+            $query->andWhere(['is_comment'=>$this->is_comment]);
+        }
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -65,8 +81,8 @@ class QuestionSearch extends Question
             'doctorid' => $this->doctorid,
             'orderid' => $this->orderid,
             'level' => $this->level,
-            'state' => $this->state,
-            'is_comment' => $this->is_comment,
+          //  'state' => $this->state,
+           // 'is_comment' => $this->is_comment,
         ]);
         $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
