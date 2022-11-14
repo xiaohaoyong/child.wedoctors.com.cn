@@ -85,17 +85,25 @@ class ApCommentController extends Controller {
         }
         $appointcomment = AppointComment::findOne(['aid' => $id]);
         if($appointcomment){
-            $all = $appointcomment->is_envir+$appointcomment->is_process+$appointcomment->is_staff;
-            if($all<=6){
-                $return['all']='差评';
-            }elseif($all>=7 && $all<=10){
-                $return['all']='中评';
-            }elseif($all>10){
-                $return['all']='好评';
-            }
+			if($appointcomment->is_rate == 1){
+				$return['all']='好评';
+			}elseif($appointcomment->is_rate ==2){
+				$return['all']='中评';
+			}elseif($appointcomment->is_rate == 3){
+				$return['all']='差评';
+			}
             $return['is_envir']=$appointcomment->is_envir;
             $return['is_process']=$appointcomment->is_process;
             $return['is_staff']=$appointcomment->is_staff;
+			if($appointcomment->is_envir_on){
+			    $return['is_envir_on'] = $appointcomment->is_envir_on;
+            }
+			if($appointcomment->is_process_on){
+			    $return['is_process_on'] = $appointcomment->is_process_on;
+            }
+			if($appointcomment->is_staff_on){
+			    $return['is_staff_on'] = $appointcomment->is_staff_on;
+            }
             return new Code(10000,$return);
         }else{
             $msg='暂无评价';
