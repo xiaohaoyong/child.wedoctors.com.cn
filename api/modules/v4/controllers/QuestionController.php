@@ -252,7 +252,7 @@ class QuestionController extends Controller
         }
         $comment = QuestionComment::find()->where(['qid'=>$question->id])->one();
         if($comment){
-            return ['satisfied'=>$comment->satisfied,'solve'=>$comment->solve];
+            return ['satisfied'=>$comment->is_satisfied,'solve'=>$comment->is_solve];
         }else{
             return new Code(20000,'操作有误');
         }
