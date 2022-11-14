@@ -242,7 +242,7 @@ class QuestionController extends Controller
     /**
      * 查看评价
      */
-    public function actionCommentView(){
+    public function actionViewComment(){
         $qid = \Yii::$app->request->get('id'); //问题ID
         $question = Question::find()->where(['id'=>intval($qid),'state'=>2]);
         $msg = '问题不存在或还未结束';
