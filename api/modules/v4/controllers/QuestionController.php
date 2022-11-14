@@ -244,7 +244,7 @@ class QuestionController extends Controller
      */
     public function actionViewComment(){
         $qid = \Yii::$app->request->get('id'); //问题ID
-        $question = Question::find()->where(['id'=>intval($qid),'state'=>2]);
+        $question = Question::find()->where(['id'=>intval($qid),'state'=>2])->one();
         $msg = '问题不存在或还未结束';
         if(empty($question) ){
            // $msg = '参数有误!';
