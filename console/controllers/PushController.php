@@ -151,8 +151,8 @@ class PushController extends Controller
                             ->all();
                         foreach ($article as $ark => $arv) {
                             $au = ArticleUser::find()->where(['childid' => $cv->id, 'artid' => $arv->id])->one();
-                            if (!$au) {
-                                $au = new ArticleUser();
+                            if (!$au || date('Ymd',$au->createtime)=='20220408') {
+                                $au = $au?$au:new ArticleUser();
                                 $au->childid = $cv->id;
                                 $au->touserid = $cv->userid;
                                 $au->createtime = $cv->birthday+($av*30*86400);

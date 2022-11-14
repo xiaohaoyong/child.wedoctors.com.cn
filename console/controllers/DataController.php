@@ -176,36 +176,30 @@ class DataController extends \yii\console\Controller
 
 //        $count=Autograph::find()->count();
 //        echo $count;
-        $file = fopen('gw.csv', 'r');
+        $file = fopen('123.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
             $phone = trim($line);
+            $rs = explode(',',$phone);
             $child=ChildInfo::find()
-                ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
-                ->andWhere(['`user_login`.`phone`' => $phone])
-//                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-//                ->andWhere(['user_parent.mother'=>$rs[2]])
-//                ->andWhere(['child_info.name'=>$rs[0]])
-//                ->andWhere(['child_info.birthday'=>strtotime($rs[1])])
+//                ->select('user_login.phone')
+//                ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+//                ->andWhere(['`user_login`.`phone`' => $phone])
+//                ->leftJoin('user_parent', '`user_parent`.`userid` = `pregnancy`.`familyid`')
+//                ->andWhere(['user_parent.mother_id'=>$phone])
+//                ->orWhere(['pregnancy.field4'=>$phone])
+                ->andWhere(['child_info.name'=>$rs[0]])
+                ->andWhere(['child_info.birthday'=>strtotime($rs[2])])
+                ->andWhere(['child_info.doctorid'=>110605])
                 ->one();
-            echo $line;
+            //echo "\t".$phone.",";
             if($child) {
-                echo $line;
-
-                $userParent = DoctorParent::findOne(['parentid' => $child->userid]);
-                if ($userParent) {
-                    $userParent->doctorid = 47156;
-                    $userParent->save();
-                    $auto = Autograph::findOne(['userid' => $child->userid]);
-                    if ($auto) {
-                        $auto->doctorid = 47156;
-                        $auto->save();
-                    }
-                }
-                echo "成功";
-            }else{
-                echo "失败";
+                //echo $child->phone;
+               //echo "\t".$phone;
+                $userLogin = UserLogin::findOne(['userid'=>$child->userid]);
+                $rs[3]=$userLogin->phone;
             }
+            echo implode(',',$rs);
             echo "\n";
         }
         exit;
