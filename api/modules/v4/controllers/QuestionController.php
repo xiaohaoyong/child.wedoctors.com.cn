@@ -238,4 +238,19 @@ class QuestionController extends Controller
             return new Code(20000,$msg);
         }
     }
+
+    /**
+     * 查看评价
+     */
+    public function actionCommentView(){
+        $qid = \Yii::$app->request->get('id'); //问题ID
+        $question = Question::find()->where(['id'=>intval($qid),'state'=>2]);
+        $msg = '问题不存在或还未结束';
+        if(empty($question) ){
+           // $msg = '参数有误!';
+            return new Code(20000,$msg);
+        }
+        return ['satisfied'=>$question->satisfied,'solve'=>$question->solve];
+
+    }
 }
