@@ -250,7 +250,13 @@ class QuestionController extends Controller
            // $msg = '参数有误!';
             return new Code(20000,$msg);
         }
-        return ['satisfied'=>$question->satisfied,'solve'=>$question->solve];
+        $comment = QuestionComment::find()->where(['qid'=>$question->id])->one();
+        if($comment){
+            return ['satisfied'=>$comment->satisfied,'solve'=>$comment->solve];
+        }else{
+            return new Code(20000,'操作有误');
+        }
+
 
     }
 }
