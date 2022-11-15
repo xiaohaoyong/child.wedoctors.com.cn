@@ -107,6 +107,7 @@ class QuestionController extends Controller
         }
 
     }
+    //问题列表
     public function actionList(){
 
         $type = \Yii::$app->request->get('type'); //type=1 是我的提问
@@ -118,6 +119,29 @@ class QuestionController extends Controller
         if($type){
             $question->andWhere(['userid'=>$this->userid]);
         }
+        $pages = new Pagination(['totalCount' => $question->count(), 'pageSize' => 10]);
+        $list = $question->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
+        foreach($list as $k=>$v){
+            $rs=$v->toArray();
+            $rs['state']=Question::$stateText[$v->state];
+            $rs['createtime']=date('m-d',$v->createtime);
+            $rs['imgs']=QuestionImg::findAll(['qid'=>$v->id]);
+            $rs['info']=QuestionInfo::findOne(['qid'=>$v->id]);
+            $data['list'][]=$rs;
+        }
+        $data['pageTotal']=ceil($question->count()/10);
+
+        return $data;
+    }
+    //我的提问
+    public function actionMy(){
+
+        $doctorid = \Yii::$app->request->get('doctorid');
+        $question=Question::find()->where(['level'=>1]);
+        if($doctorid) {
+            $question->andWhere(['doctorid'=>$doctorid]);
+        }
+        $question->andWhere(['userid'=>$this->userid]);
         $pages = new Pagination(['totalCount' => $question->count(), 'pageSize' => 10]);
         $list = $question->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
         foreach($list as $k=>$v){
