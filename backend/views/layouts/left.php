@@ -118,7 +118,10 @@
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                             ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],],
                     ],
-					['label' => '迁入迁出管理', 'icon' => 'file-text-o', 'url' => "#",
+					[
+						'label' => '迁入迁出管理', 
+						'icon' => 'file-text-o', 
+						'url' => "#",
                         'items' => [
                             ['label' => '迁入迁出成功历史记录', 'url' => ['xlsxoutof/list-info']],
                         ]
