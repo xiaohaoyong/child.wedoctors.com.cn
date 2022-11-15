@@ -9,13 +9,7 @@ use yii\widgets\ActiveForm;
 
 
 $this->title = '迁入迁出历史';
-//$this->params['breadcrumbs'][] = $this->title;
-/*
-\common\helpers\HeaderActionHelper::$action = [
-    0 => ['name' => '添加', 'url' => ['create']]
-];
-define('TTT',$ttt);
-*/
+
 ?>
 <div class="autograph-index">
     <div class="col-xs-12">

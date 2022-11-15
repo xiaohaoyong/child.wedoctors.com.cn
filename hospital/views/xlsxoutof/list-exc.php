@@ -1,5 +1,5 @@
 <?php
-$this->title = "批量迁入迁出";
+$this->title = "批量迁入迁出";  
 ?>
 <div class="child-info-index">
     <div class="col-xs-12">
