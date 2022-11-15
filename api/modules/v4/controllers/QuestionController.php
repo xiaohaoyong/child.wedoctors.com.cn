@@ -239,4 +239,25 @@ class QuestionController extends Controller
 
         // var_dump($qid);die;
     }
+
+    /**
+     * 查看评价
+     */
+    public function actionViewComment(){
+        $qid = \Yii::$app->request->get('id'); //问题ID
+        $question = Question::find()->where(['id'=>intval($qid),'state'=>2])->one();
+        $msg = '问题不存在或还未结束';
+        if(empty($question) ){
+            // $msg = '参数有误!';
+            return new Code(20000,$msg);
+        }
+        $comment = QuestionComment::find()->where(['qid'=>$question->id])->one();
+        if($comment){
+            return ['satisfied'=>$comment->is_satisfied,'solve'=>$comment->is_solve];
+        }else{
+            return new Code(20000,'操作有误');
+        }
+
+
+    }
 }
