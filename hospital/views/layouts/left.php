@@ -65,6 +65,15 @@
                             ['label' => '添加文章', 'url' => ['article/create']],
                         ]
                     ],
+                    [
+                        'label' => '评价管理',
+                        'icon' => 'comments',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '预约就诊评价',  'url' => ['/appoint-comment'],],
+                            ['label' => '医生回复评价',  'url' => ['/question-comment'],],
+                        ],
+                    ],
                     ['label' => '工具', 'icon' => 'send', 'url' => "#",
                         'items' => [
                             ['label' => '留言板', 'url' => ['/question']],
@@ -113,6 +122,15 @@
                             ['label' => '批量迁入迁出', 'url' => ['xlsxoutof/list-exc']],
                             ['label' => '迁入迁出历史', 'url' => ['xlsxoutof/list-info']],
                         ]
+					],
+                    [
+                        'label' => '审核管理',
+                        'icon' => 'file-text-o',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '变更签约社区审核列表', 'icon' => 'user', 'url' => ['/signing-record'],],
+                        ],
+
                     ],
                 ],
             ]
