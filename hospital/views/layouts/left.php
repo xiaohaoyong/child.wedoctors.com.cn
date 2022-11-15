@@ -122,7 +122,7 @@
                             ['label' => '批量迁入迁出', 'url' => ['xlsxoutof/list-exc']],
                             ['label' => '迁入迁出历史', 'url' => ['xlsxoutof/list-info']],
                         ]
-					],
+					]  ,
                     [
                         'label' => '审核管理',
                         'icon' => 'file-text-o',

@@ -56,6 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
 
                             'columns' => [
+                                    'id',
                                 [
                                     'attribute' => '问题',
                                     'value' => function ($e) {
@@ -63,11 +64,28 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return $info->content;
                                     }
                                 ],
-                                'createtime:datetime',
                                 [
-                                    'attribute' => 'state',
+                                    'label' => '创建时间',
+                                    'format'=>['date','php:Y-m-d H:i:s'],
+                                    'value' => 'createtime',
+                                ],
+                                [
+                                    'attribute' => '问题状态',
                                     'value' => function ($e) {
                                         return \common\models\Question::$stateText[$e->state];
+                                    }
+                                ],
+                                [
+                                    'attribute' => '是否评价',//是否评价
+                                    'value' => function ($e) {
+                                        if($e->is_comment == 1){
+                                            return '是';
+                                            // return \yii\helpers\Html::a('是', '/question-comment/view?qid='.$e->id);
+
+                                        }else{
+                                            return '否';
+                                        }
+
                                     }
                                 ],
 
@@ -81,12 +99,30 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <ul class="dropdown-menu pull-right" role="menu">
                                
                                     <li>{reply}</li>
+                                     <li>{view}</li>
                                 </ul>
                             </div>
                             ',
                                     'buttons' => [
                                         'reply' => function ($url, $model, $key) {
-                                            return \yii\helpers\Html::a('<span class="fa fa-share"> 回复</span>', '/question/reply?id=' . $model->id);
+
+                                            if(in_array($model->state,[0,1])){
+                                                return \yii\helpers\Html::a('<span class="fa fa-share"> 回复</span>', '/question/reply?id=' . $model->id);
+
+                                            }else{
+                                                return \yii\helpers\Html::a(' 查看', '/question/reply?id='.$model->id);
+                                            }
+                                        },
+                                        'view' => function ($url, $model, $key) {
+                                            $options = [
+                                                'title' => '结束会话',
+                                                'style' => 'margin-left:5px;',
+                                                'data-method' => 'post',
+                                                'data-confirm' => '确认结束会话吗'
+                                            ];
+                                            if($model->state==1 ) {
+                                                return Html::a('结束会话', ['question/update-state', 'id' => $model->id],$options);
+                                            }
                                         }
                                     ]
                                 ],

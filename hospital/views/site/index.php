@@ -15,6 +15,14 @@ hospital\assets\IndexAsset::register($this);
     .info-box-content .item {
         line-height: 24px;
     }
+    .reply_total_list{
+        height:340px;
+        padding: 15px;
+    }
+    .reply_total_list li{
+        list-style: none;
+        margin-bottom: 8px;
+    }
 </style>
 <div class="col-xs-12">
 
@@ -203,6 +211,50 @@ hospital\assets\IndexAsset::register($this);
             </div>
             <!-- /.box -->
         </section>
+        <div class="col-lg-3">
+            饼状图
+        </div>
+        <div class="col-lg-4">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">医生回复评价统计</h3>
+                </div>
+
+                <ul class="reply_total_list">
+                   <li>
+                       问题总数：<?=$question_stat['question_total']?>
+                   </li>
+                    <li>
+                        已回复总数：<?=$question_stat['reply_total']?>
+                    </li>
+                    <li>
+                        总回复率：<?=$question_stat['question_total_reply_rate']?>%
+                    </li>
+                    <br/>
+                    <li style="font-weight: bold">
+                        儿宝宝巡医团队回复数：<?=$question_stat['reply_total_xyitem']?>
+                    </li>
+                    <li style="font-weight: bold">
+                        回复比例：<?=$question_stat['reply_total_xyitem_percent']?>%
+                    </li>
+                    <li style="font-weight: bold">
+                        社区医院回复数：<?=$question_stat['reply_total_item']?>
+                    </li>
+                    <li style="font-weight: bold">
+                        回复比例：<?=$question_stat['reply_total_item_percent']?>%
+                    </li>
+                <br/>
+                    <li>
+                        回复及时性满意度：<?=$question_stat['comment_satisfied_rate']?>%
+                    </li>
+                    <li>
+                        回复问题解决率：<?=$question_stat['comment_solve_rate']?>%
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
         <div class="col-lg-7">
             <div class="box">
                 <div class="box-header">
@@ -252,6 +304,8 @@ hospital\assets\IndexAsset::register($this);
     <script>
         var line_data =<?=json_encode($line_data)?>;
 
+        var visit_stat =<?=json_encode($visit_stat)?>;
+        var question_stat =<?=json_encode($question_stat)?>;
 
     </script>
 </div>
