@@ -32,7 +32,7 @@
 
             $e = ['label' => '同步已签约数据', 'url' => ['/synchronization']];
         }
-
+		$health_records=array();
         if(in_array(Yii::$app->user->identity->hospitalid,[110647,110565,110598])){
             $health_records=['label' => '6岁以上学生签约', 'icon' => 'file-text-o', 'url' => "#",
                 'items' => [
@@ -108,7 +108,12 @@
                             ['label' => '添加医生', 'url' => ['doctors/create']],
                         ]
                     ],
-
+					['label' => '迁入迁出管理', 'icon' => 'file-text-o', 'url' => "#",
+                        'items' => [
+                            ['label' => '批量迁入迁出', 'url' => ['xlsxoutof/list-exc']],
+                            ['label' => '迁入迁出历史', 'url' => ['xlsxoutof/list-info']],
+                        ]
+                    ],
                 ],
             ]
         ) ?>
