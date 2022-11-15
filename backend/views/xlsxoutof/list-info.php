@@ -4,18 +4,11 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 
-use yii\widgets\ActiveForm;
+use yii\widgets\ActiveForm; 
 
 
 
 $this->title = '成功历史记录';
-//$this->params['breadcrumbs'][] = $this->title;
-/*
-\common\helpers\HeaderActionHelper::$action = [
-    0 => ['name' => '添加', 'url' => ['create']]
-];
-define('TTT',$ttt);
-*/
 ?>
 <div class="autograph-index">
     <div class="col-xs-12">

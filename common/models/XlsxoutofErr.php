@@ -7,7 +7,7 @@ use Yii;
 
 class XlsxoutofErr extends \yii\db\ActiveRecord
 {
-    public static function tableName()
+    public static function tableName() 
     {
         return 'xlsxoutof_err';
     }

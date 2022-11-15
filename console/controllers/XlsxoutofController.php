@@ -21,7 +21,7 @@ use udokmeci\yii2beanstalk\BeanstalkController;
 class XlsxoutofController extends BeanstalkController
 {
     public function listenTubes()
-    {
+    { 
         return ['xlsxoutof'];
     }
     

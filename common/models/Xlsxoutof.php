@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 
-class Xlsxoutof extends \yii\db\ActiveRecord
+class Xlsxoutof extends \yii\db\ActiveRecord 
 {
     public static function tableName()
     {

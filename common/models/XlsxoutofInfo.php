@@ -11,7 +11,7 @@ class XlsxoutofInfo extends \yii\db\ActiveRecord
     {
         return 'Xlsxoutof_info';
     }
-    
+     
     
     
     

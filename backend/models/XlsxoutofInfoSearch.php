@@ -8,7 +8,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 use common\models\XlsxoutofInfo;
-
+ 
 
 class XlsxoutofInfoSearch extends XlsxoutofInfo
 {
