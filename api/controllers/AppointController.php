@@ -300,6 +300,10 @@ class AppointController extends Controller
                 $row['child_name'] = ChildInfo::findOne($appoint->childid)->name;
             }
         }
+        //添加儿童ID，儿童身份证
+        $row['child_id'] = $appoint->childid;
+        $row['child_idcard'] =  ChildInfo::findOne($appoint->childid)->idcard;
+
         $row['duan'] = $appoint->appoint_time;
         $vaccine = Vaccine::findOne($appoint->vaccine);
         $row['vaccineStr'] = $vaccine ? $vaccine->name : '';
