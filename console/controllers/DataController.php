@@ -108,6 +108,34 @@ class DataController extends \yii\console\Controller
     }
     public function actionTesta($num=0)
     {
+        $ids=DoctorParent::find()->select('parentid')->where(['doctorid'=>353548])->column();
+        $preg = Pregnancy::find()->where(['<','field11',strtotime('-37 week')])
+            ->select('familyid')
+            ->andWhere(['>','field11',strtotime('-48 week')])
+            ->andWhere(['field49'=>0])
+            ->andWhere(['familyid'=>$ids])
+            ->column();
+        $child = ChildInfo::find()->select('userid')->where(['>','birthday',strtotime('-3 month')])->andWhere(['userid'=>$ids])->column();
+        $userids = array_unique($preg+$child);
+        //var_dump($userids);exit;
+        $data = [
+            'first' => ['value' => "恭喜您有了或即将有一个健康的宝宝，为了更好的给宝宝提供优质的接种服务，本单位开展线上家长课堂"],
+            'keyword1' => ARRAY('value' => '疫苗接种-新手妈妈早知道'),
+            'keyword2' => ARRAY('value' => '2022年11月25日20:30-21:00'),
+            'keyword3' => ARRAY('value' => '2022年11月25日20:30-21:00'),
+
+            'remark' => ARRAY('value' => ""),
+        ];
+        foreach($userids as $k=>$v){
+            
+            $url='https://kfl.h5.xeknow.com/sl/6GdLU';
+            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', $url,[],123);
+    
+            var_dump($rs);exit;
+        }
+exit;
+
+
 //        $fiels=$this->getfiles('/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123', '#\.(xlsx)$#', 3);
 //        foreach($fiels as $k=>$v){
 //            $fname=$v;
