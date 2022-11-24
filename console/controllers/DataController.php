@@ -131,7 +131,11 @@ class DataController extends \yii\console\Controller
         ];
         foreach($userids as $k=>$v){
 
-            WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', '', $miniprogram);exit;
+            $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['userid'=>$v])->one();
+            echo $login->openid;
+            echo "\n";
+            //$rs = WechatSendTmp::send($data, $login->openid, 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', '', $miniprogram);
+            var_dump($rs);
         }
 exit;
 
