@@ -117,19 +117,18 @@ class DataController extends \yii\console\Controller
             ->column();
         $child = ChildInfo::find()->select('userid')->where(['>','birthday',strtotime('-3 month')])->andWhere(['userid'=>$ids])->column();
         $userids = array_unique($preg+$child);
-        //var_dump($userids);exit;
         $data = [
             'first' => ['value' => "恭喜您有了或即将有一个健康的宝宝，为了更好的给宝宝提供优质的接种服务，本单位开展线上家长课堂"],
             'keyword1' => ARRAY('value' => '疫苗接种-新手妈妈早知道'),
             'keyword2' => ARRAY('value' => '2022年11月25日20:30-21:00'),
+            'keyword3' => ARRAY('value' => '2022年11月25日20:30-21:00'),
+
             'remark' => ARRAY('value' => ""),
         ];
         foreach($userids as $k=>$v){
             
             $url='https://kfl.h5.xeknow.com/sl/6GdLU';
-            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url,[],123);
-    
-            var_dump($rs);exit;
+            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', $url,[],123);
         }
 exit;
 
