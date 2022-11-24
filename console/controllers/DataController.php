@@ -131,7 +131,7 @@ class DataController extends \yii\console\Controller
         ];
         foreach($userids as $k=>$v){
 
-            WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);exit;
+            WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', '', $miniprogram);exit;
         }
 exit;
 
