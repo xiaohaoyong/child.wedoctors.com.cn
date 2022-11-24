@@ -125,10 +125,13 @@ class DataController extends \yii\console\Controller
 
             'remark' => ARRAY('value' => ""),
         ];
+        $miniprogram = [
+            "appid" => \Yii::$app->params['wxXAppId'],
+            "pagepath" => "/pages/article/view/index?id=2398",
+        ];
         foreach($userids as $k=>$v){
-            
-            $url='https://kfl.h5.xeknow.com/sl/6GdLU';
-            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', $url,[],123);
+
+            WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'b1mjgyGxK-YzQgo3IaGARjC6rkRN3qu56iDjbD6hir4', '', $miniprogram);exit;
         }
 exit;
 
