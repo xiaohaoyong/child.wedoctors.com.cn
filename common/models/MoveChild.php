@@ -51,6 +51,7 @@ class MoveChild  extends \yii\db\ActiveRecord
                 }
             
                 $doctorParent = DoctorParent::findOne(['parentid' => $child->userid]);
+                $in_hospitalid = $doctorParent->doctorid;
                 if ($doctorParent) {
                     //$doctorParent->createtime = time();
                     $doctorParent->doctorid = $this->hospitalid;
@@ -60,7 +61,7 @@ class MoveChild  extends \yii\db\ActiveRecord
                 if ($child->admin) {
                     $child->admin = $doctor->hospitalid;
                 }
-                return ['code'=>'100','msg'=>'成功'];
+                return ['code'=>'100','msg'=>'成功','data'=>['in_hospitalid'=>$this->hospitalid,'out_hospitalid'=>$in_hospitalid,'userid'=>$preg->familyid]];
             }
             return ['code'=>200,'msg'=>'未查询到儿童'];
         }
@@ -98,7 +99,7 @@ class MoveChild  extends \yii\db\ActiveRecord
             if ($child->admin) {
                 $child->admin = 0;
             }
-            return ['code'=>'100','msg'=>'成功'];
+            return ['code'=>'100','msg'=>'成功','data'=>['in_hospitalid'=>47156,'out_hospitalid'=>$this->hospitalid,'userid'=>$child->userid]];
         }
         return ['code'=>200,'msg'=>'未查询到儿童'];
     }

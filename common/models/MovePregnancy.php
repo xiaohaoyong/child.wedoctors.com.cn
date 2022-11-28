@@ -44,12 +44,13 @@ class MovePregnancy  extends \yii\db\ActiveRecord
                 }
             
                 $doctorParent = DoctorParent::findOne(['parentid' => $preg->familyid]);
+                $in_hospitalid = $doctorParent->doctorid;
                 if ($doctorParent) {
                     //$doctorParent->createtime = time();
                     $doctorParent->doctorid = $this->hospitalid;
                     $doctorParent->save();
                 }
-                return ['code'=>'100','msg'=>'成功'];
+                return ['code'=>'100','msg'=>'成功','data'=>['in_hospitalid'=>$this->hospitalid,'out_hospitalid'=>$in_hospitalid,'userid'=>$preg->familyid]];
             }
             return ['code'=>200,'msg'=>'未查询到孕妇'];
         }
@@ -74,12 +75,14 @@ class MovePregnancy  extends \yii\db\ActiveRecord
             }
         
             $doctorParent = DoctorParent::findOne(['parentid' => $preg->familyid]);
+            $in_hospitalid = $doctorParent->doctorid;
+
             if ($doctorParent) {
                 //$doctorParent->createtime = time();
                 $doctorParent->doctorid = 47156;
                 $doctorParent->save();
             }
-            return ['code'=>200,'msg'=>'成功'];
+            return ['code'=>'100','msg'=>'成功','data'=>['in_hospitalid'=>47156,'out_hospitalid'=>$this->hospitalid,'userid'=>$preg->familyid]];
         }
         return ['code'=>200,'msg'=>'未查询到孕妇'];
     }
