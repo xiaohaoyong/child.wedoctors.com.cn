@@ -120,7 +120,7 @@ class DataController extends \yii\console\Controller
             'keyword2' => ARRAY('value' => '2022年12月11日 下午15点'),
             'remark' => ARRAY('value' => ""),
         ];
-        $url='https://kfl.h5.xeknow.com/sl/9D1TK';
+        $url='https://kfl.h5.xeknow.com/sl/2u3uAK';
         $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'ob5OPSvdOJ2DhK13eDdnI9PwABfDjDDssTIGHjYB_WQ', $url);
         exit;
         $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
