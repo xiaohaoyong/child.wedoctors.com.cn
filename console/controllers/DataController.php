@@ -117,7 +117,7 @@ class DataController extends \yii\console\Controller
         $data = [
             'first' => ['value' => "HPV 疫苗作为目前可以有效预防宫颈癌的疫苗，一直以来被高度关注。关于2价、4价、9价有什么区别，该怎样选择，接种疫苗有什么注意事项等等，也是女性朋友们非常关心的话题。为此儿宝宝邀请了北京大学国际医院特需国际医疗部成人疫苗门诊，主治医师 刘芳勋和北京王府中西医结合医院 主任医师 医学博士 妇产科专家 董文辉来给大家进行讲解，宫颈癌的预防策略及HPV疫苗该怎么选。"],
             'keyword1' => ARRAY('value' => '第三十三期健康直播课HPV疫苗怎么选，听听专家怎么说'),
-            'keyword2' => ARRAY('value' => '12月11日15:00点'),
+            'keyword2' => ARRAY('value' => '2022年12月11日'),
             'remark' => ARRAY('value' => ""),
         ];
         $url='https://kfl.h5.xeknow.com/sl/9D1TK';
