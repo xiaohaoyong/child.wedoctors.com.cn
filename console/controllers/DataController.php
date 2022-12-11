@@ -121,15 +121,15 @@ class DataController extends \yii\console\Controller
             'remark' => ARRAY('value' => ""),
         ];
         $url='https://kfl.h5.xeknow.com/sl/9D1TK';
-        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'ob5OPSvdOJ2DhK13eDdnI9PwABfDjDDssTIGHjYB_WQ', $url);
         exit;
         $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
         foreach ($login as $k => $v) {
 
-            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+            $rs = WechatSendTmp::send($data, $v, 'ob5OPSvdOJ2DhK13eDdnI9PwABfDjDDssTIGHjYB_WQ', $url);
             var_dump($v);
         }
-        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'ob5OPSvdOJ2DhK13eDdnI9PwABfDjDDssTIGHjYB_WQ', $url);
         exit;
 
         $rs['name'] = 'sdf';
