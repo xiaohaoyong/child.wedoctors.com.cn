@@ -64,6 +64,7 @@ use common\models\UserDoctorAppoint;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\Vaccine;
+use common\models\MoveChild;
 use common\models\WeOpenid;
 use EasyWeChat\Factory;
 use Faker\Provider\File;
@@ -108,6 +109,36 @@ class DataController extends \yii\console\Controller
     }
     public function actionTesta($num=0)
     {
+
+        $totle = 507593;
+        $limit = ceil($totle / 20);
+        $snum = $num * $limit;
+
+        $data = [
+            'first' => ['value' => "HPV 疫苗作为目前可以有效预防宫颈癌的疫苗，一直以来被高度关注。关于2价、4价、9价有什么区别，该怎样选择，接种疫苗有什么注意事项等等，也是女性朋友们非常关心的话题。为此儿宝宝邀请了北京大学国际医院特需国际医疗部成人疫苗门诊，主治医师 刘芳勋和北京王府中西医结合医院 主任医师 医学博士 妇产科专家 董文辉来给大家进行讲解，宫颈癌的预防策略及HPV疫苗该怎么选。"],
+            'keyword1' => ARRAY('value' => '第三十三期健康直播课HPV疫苗怎么选，听听专家怎么说'),
+            'keyword2' => ARRAY('value' => '2022年12月11日15:00点'),
+            'remark' => ARRAY('value' => ""),
+        ];
+        $url='https://kfl.h5.xeknow.com/sl/9D1TK';
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+        exit;
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+
+            $rs = WechatSendTmp::send($data, $v, 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+            var_dump($v);
+        }
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'NNm7CTQLIY66w3h4FzSrp_Lz54tA12eFgds07LRMQ8g', $url);
+        exit;
+
+        $rs['name'] = 'sdf';
+        $rs['birthday'] = 'sdf';
+        $rs['mother'] = 'sdf';
+        $rs['hospitalid'] = 'sdf';
+        $rs['idcard'] = 'sdf';
+        $moveChild = new MoveChild();
+
         $ids=DoctorParent::find()->select('parentid')->where(['doctorid'=>353548])->column();
         $preg = Pregnancy::find()->where(['<','field11',strtotime('-37 week')])
             ->select('familyid')
