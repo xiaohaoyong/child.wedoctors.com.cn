@@ -8,6 +8,9 @@ use common\models\Xlsxoutof;
 use common\models\XlsxoutofErr;
 use common\models\XlsxoutofInfo;
 
+use common\models\MoveChild;
+use common\models\MovePregnancy;
+
 use common\models\Doctors;
 use common\models\Examination;
 use common\models\UserParent;
@@ -130,7 +133,7 @@ class XlsxoutofController extends BeanstalkController
         
         $field_index=[];
         for ($_row = 1; $_row <= $rowCnt; $_row++) {  //循环 一行 xlsx
-            $rs = [];
+            $xls_rs = [];
             for ($_column = 0; $_column < $highestColumnNum; $_column++) {
                 $a = "";
                 $b = $_column % 26;
@@ -146,7 +149,7 @@ class XlsxoutofController extends BeanstalkController
                     $fields[$_column]=$cellValue;
                 } else {
                     if ($field_index[$_column] && $cellValue !== '') {
-                        $rs[$field_index[$_column]] = $cellValue ? (string)$cellValue : 0;
+                        $xls_rs[$field_index[$_column]] = $cellValue ? (string)$cellValue : 0;
                     }
                 }
             }
@@ -159,7 +162,6 @@ class XlsxoutofController extends BeanstalkController
                 
                 if($file_type_num) {    //1宝宝  2孕妈
                     $log->addLog( '分析类型 1宝宝2孕妈'.$file_type_num );
-                    
                     
                     switch ($file_type_num){
                         case 1:
@@ -190,8 +192,20 @@ class XlsxoutofController extends BeanstalkController
                     return self::DELETE;
                 }
             }else{
-                var_dump($rs);
-                $return = self::$__function($rs, $hospitalid,$__Xlsxoutof);
+                var_dump($xls_rs);
+                if( empty($__function) )
+                {
+                    $__Xlsxoutof->lock_num=2;       //执行完毕
+                    $__Xlsxoutof->msg_str='执行失败!分析类型错误.';
+                    $__Xlsxoutof->save();
+                    
+                    $log->addLog("执行失败!分析类型错误.");
+                    $log->saveLog();
+                    
+                    return self::DELETE;
+                }
+                
+                $return = self::$__function($xls_rs, $hospitalid,$__Xlsxoutof);
                 if($return['code']==100)
                 {
                     $__Xlsxoutof->s_num=$__Xlsxoutof->s_num+1;        //成功数
@@ -264,52 +278,38 @@ class XlsxoutofController extends BeanstalkController
         $XlsxoutofErr->save();
     }
     
-    public static function typeXlsxoutof($rs,Xlsxoutof $__Xlsxoutof){
+    public static function typeXlsxoutof($xls_rs,Xlsxoutof $__Xlsxoutof){
         
-        if( array_search('儿童姓名',$rs)){
+        if( array_search('儿童姓名',$xls_rs)){
             $__Xlsxoutof->file_type_num=1;
             $__Xlsxoutof->save();
             
             return 1;
-            /*
-            if( $__Xlsxoutof->type_num )    //0迁入1迁出
-            {
-                return 'out_baby';
-            }
-            return 'in_baby';
-            */
         }
         
-        if( array_search('孕产妇姓名',$rs)){
+        if( array_search('孕产妇姓名',$xls_rs)){
             $__Xlsxoutof->file_type_num=2;
             $__Xlsxoutof->save();
             
             return 2;
-            /*
-            if( $__Xlsxoutof->type_num )    //0迁入1迁出
-            {
-                return 'out_mam';
-            }
-            return 'in_mam';
-            */
         }
         return 0;
     }
     
     
     //处理 1宝宝  2孕妈
-    public static function file_type_num1($rs, $hospitalid,$__Xlsxoutof)         //1宝宝  2孕妈
+    public static function file_type_num1($xls_rs, $hospitalid,$__Xlsxoutof)         //1宝宝  2孕妈
     {
-        return file_type_num($rs, $hospitalid,$__Xlsxoutof,1);
+        return file_type_num($xls_rs, $hospitalid,$__Xlsxoutof,1);
     }
-    public static function file_type_num2($rs, $hospitalid,$__Xlsxoutof)         //1宝宝  2孕妈
+    public static function file_type_num2($xls_rs, $hospitalid,$__Xlsxoutof)         //1宝宝  2孕妈
     {
-        return file_type_num($rs, $hospitalid,$__Xlsxoutof,2);
+        return file_type_num($xls_rs, $hospitalid,$__Xlsxoutof,2);
     }
     
-    public static function file_type_num($rs, $hospitalid,$__Xlsxoutof,$file_type_num)         //1宝宝  2孕妈
+    public static function file_type_num($xls_rs, $hospitalid,$__Xlsxoutof,$file_type_num)         //1宝宝  2孕妈
     {
-        //$rs一条excel    $file_type_num 1宝宝  2孕妈
+        //$xls_rs一条excel    $file_type_num 1宝宝  2孕妈
         /*
         $file_type_num 1宝宝
         儿童姓名	儿童生日	母亲姓名	儿童身份证号码（非必填）	原签约社区（迁入时必填）
@@ -320,11 +320,75 @@ class XlsxoutofController extends BeanstalkController
         //$hospitalid       社区id
         //$file_type_num    1宝宝  2孕妈
         //$__Xlsxoutof->type_num     //0迁入1迁出
-        $url = self::api_mkurl($rs, $hospitalid,$file_type_num,$__Xlsxoutof->type_num);       //API url
         
-        $curl = new HttpRequest($url, false, 10);
-        $json_str = $curl->get();
-        $user_data = json_decode($json_str, true);
+        if( $file_type_num==1 )
+        {
+            /*
+            'name' => '儿童姓名',
+            'birthday' => '儿童生日',
+            'mother' => '母亲姓名',
+            'hospitalid' => '操作社区',
+            'idcard' => '身份证号',
+                */
+            if( $__Xlsxoutof->type_num==0 )     //$__Xlsxoutof->type_num     //0迁入
+            {
+                $rs=array();
+                $rs['name'] = $xls_rs['儿童姓名'];
+                $rs['birthday'] = $xls_rs['儿童生日'];
+                $rs['mother'] = $xls_rs['母亲姓名'];
+                $rs['hospitalid'] = $xls_rs['原签约社区（迁入时必填）'];
+                $rs['idcard'] = $xls_rs['儿童身份证号码（非必填）'];
+                $moveChild = new MoveChild();
+                $moveChild->load(['MoveChild'=>$rs]);
+                $user_data = $moveChild->actionOn();
+            }
+            else     //$__Xlsxoutof->type_num     //1迁出
+            {
+                $rs=array();
+                $rs['name'] = $xls_rs['儿童姓名'];
+                $rs['birthday'] = $xls_rs['儿童生日'];
+                $rs['mother'] = $xls_rs['母亲姓名'];
+                $rs['hospitalid'] = $xls_rs['原签约社区（迁入时必填）'];
+                $rs['idcard'] = $xls_rs['儿童身份证号码（非必填）'];
+                $moveChild = new MoveChild();
+                $moveChild->load(['MoveChild'=>$rs]);
+                $user_data = $moveChild->actionOff();
+            }
+            
+        }
+        else
+        {
+            /*
+            'name' => '产妇姓名',
+            'birthday' => '产妇生日',
+            'hospitalid' => '操作社区',
+            'idcard' => '身份证号',
+            */
+            if( $__Xlsxoutof->type_num==0 )     //$__Xlsxoutof->type_num     //0迁入
+            {
+                $rs=array();
+                $rs['name'] = $xls_rs['孕产妇姓名'];
+                $rs['birthday'] = $xls_rs['孕产妇生日'];
+                $rs['hospitalid'] = $xls_rs['签约社区（迁入时必填）'];
+                $rs['idcard'] = $xls_rs['孕产妇身份证号码'];
+                $MovePregnancy = new MovePregnancy();
+                $MovePregnancy->load(['MovePregnancy'=>$rs]);
+                $user_data = $MovePregnancy->actionOn();
+            }
+            else     //$__Xlsxoutof->type_num     //1迁出
+            {
+                $rs=array();
+                $rs['name'] = $xls_rs['孕产妇姓名'];
+                $rs['birthday'] = $xls_rs['孕产妇生日'];
+                $rs['hospitalid'] = $xls_rs['签约社区（迁入时必填）'];
+                $rs['idcard'] = $xls_rs['孕产妇身份证号码'];
+                $MovePregnancy = new MovePregnancy();
+                $MovePregnancy->load(['MovePregnancy'=>$rs]);
+                $user_data = $MovePregnancy->actionOff();
+            }
+            
+        }
+        
         /**   
         --------------需 接口 实现数据返回------------------------
         返回数组
