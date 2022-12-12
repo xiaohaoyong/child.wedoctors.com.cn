@@ -80,6 +80,7 @@ class AppointController extends BaseController
             $doctor=UserDoctor::findOne(['hospitalid'=>Yii::$app->user->identity->hospital]);
             $model->appoint_date=strtotime($model->date);
             $model->doctorid=$doctor->userid;
+            $model->vaccine = 0;
             $model->state = 5;
             $model->push_state=1;
             $model->mode=1;
