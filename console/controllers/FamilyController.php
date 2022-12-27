@@ -412,10 +412,10 @@ class FamilyController extends Controller
 
         }elseif($type==4){
             $auto = Autograph::find()->select('userid')
-                ->where(['<','createtime',strtotime('2022-10-01')])
+                ->where(['<','createtime',strtotime('2022-12-01')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
-            $birthday = strtotime('- 7 year',strtotime('2022-10-01'));
+            $birthday = strtotime('- 44 week',strtotime('2022-12-01'));
 
         }elseif($type==5){
             $auto = Autograph::find()->select('userid')
@@ -458,7 +458,7 @@ class FamilyController extends Controller
             foreach($auto as $ak=>$av) {
                 $preg = \common\models\Pregnancy::find()
                     //->andWhere(['pregnancy.field49'=>0])
-                    ->andWhere(['>','pregnancy.field11',strtotime('-60 week')])
+                    ->andWhere(['>','pregnancy.field11',$birthday])
                     ->andWhere(['familyid'=> $av])
                     ->andWhere(['!=','pregnancy.field4',''])
                     ->groupBy('field1,field4')
