@@ -51,7 +51,7 @@ class FamilyController extends Controller
         ];
         $worksheet->getStyle('A1')->applyFromArray($styleArray);
         $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(10);
-        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(20);
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(20);
@@ -59,52 +59,52 @@ class FamilyController extends Controller
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
 
-        $spreadsheet->getActiveSheet()->mergeCells('A1:X2');
-        $worksheet->getCellByColumnAndRow(1,3)->setValue('序号');
-        $worksheet->getCellByColumnAndRow(2,3)->setValue('签约医生姓名');
-        $worksheet->getCellByColumnAndRow(3,3)->setValue('签约居民姓名');
-        $worksheet->getCellByColumnAndRow(4,3)->setValue('性别');
-        $worksheet->getCellByColumnAndRow(5,3)->setValue('签约居民住址');
-        $worksheet->getCellByColumnAndRow(6,3)->setValue('签约居民身份证号');
-        $worksheet->getCellByColumnAndRow(7,3)->setValue('首次签约日期');
-        $worksheet->getCellByColumnAndRow(8,3)->setValue('续约日期');
-        $worksheet->getCellByColumnAndRow(9,3)->setValue('联系电话1');
-        $worksheet->getCellByColumnAndRow(10,3)->setValue('联系电话2');
-        $worksheet->getCellByColumnAndRow(11,3)->setValue('联系电话3');
-        $worksheet->getStyle('A3:X5')->applyFromArray($styleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('A3:A5');
-        $spreadsheet->getActiveSheet()->mergeCells('B3:B5');
-        $spreadsheet->getActiveSheet()->mergeCells('C3:C5');
-        $spreadsheet->getActiveSheet()->mergeCells('D3:D5');
-        $spreadsheet->getActiveSheet()->mergeCells('E3:E5');
-        $spreadsheet->getActiveSheet()->mergeCells('F3:F5');
-        $spreadsheet->getActiveSheet()->mergeCells('G3:G5');
-        $spreadsheet->getActiveSheet()->mergeCells('H3:H5');
-        $spreadsheet->getActiveSheet()->mergeCells('I3:I5');
-        $spreadsheet->getActiveSheet()->mergeCells('J3:J5');
-        $spreadsheet->getActiveSheet()->mergeCells('K3:K5');
+        $spreadsheet->getActiveSheet()->mergeCells('A1:T2');
+        $spreadsheet->getActiveSheet()->mergeCells('A3:T3');
+        $spreadsheet->getActiveSheet()->mergeCells('A4:C4');
+        $spreadsheet->getActiveSheet()->mergeCells('D4:E4');
+        $spreadsheet->getActiveSheet()->mergeCells('F4:T4');
 
-        $spreadsheet->getActiveSheet()->getStyle('A3:X5')
+        $worksheet->getCellByColumnAndRow(1,5)->setValue('区');
+        $worksheet->getCellByColumnAndRow(2,5)->setValue('机构编码');
+        $worksheet->getCellByColumnAndRow(3,5)->setValue('机构名称');
+        $worksheet->getCellByColumnAndRow(4,5)->setValue('签约居民姓名');
+        $worksheet->getCellByColumnAndRow(5,5)->setValue('签约日期');
+        $worksheet->getCellByColumnAndRow(6,5)->setValue('联系电话1');
+        $worksheet->getCellByColumnAndRow(7,5)->setValue('联系电话2');
+        $worksheet->getCellByColumnAndRow(8,5)->setValue('联系电话3');
+        $worksheet->getStyle('A3:T3')->applyFromArray($styleArray);
+        $worksheet->getStyle('A4:T4')->applyFromArray($styleArray);
+        $worksheet->getStyle('A5:T7')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('A5:A7');
+        $spreadsheet->getActiveSheet()->mergeCells('B5:B7');
+        $spreadsheet->getActiveSheet()->mergeCells('C5:C7');
+        $spreadsheet->getActiveSheet()->mergeCells('D5:D7');
+        $spreadsheet->getActiveSheet()->mergeCells('E5:E7');
+        $spreadsheet->getActiveSheet()->mergeCells('F5:F7');
+        $spreadsheet->getActiveSheet()->mergeCells('G5:G7');
+        $spreadsheet->getActiveSheet()->mergeCells('H5:H7');
+
+        $spreadsheet->getActiveSheet()->getStyle('A5:T7')
             ->getAlignment()->setWrapText(true);
 
-        $worksheet->getCellByColumnAndRow(12,3)->setValue('人群分类');
-        $worksheet->getCellByColumnAndRow(12,4)->setValue('一般人群');
-        $worksheet->getCellByColumnAndRow(13,4)->setValue('重点人群');
-        $worksheet->getCellByColumnAndRow(13,5)->setValue('高血压患者');
-        $worksheet->getCellByColumnAndRow(14,5)->setValue('糖尿病患者');
-        $worksheet->getCellByColumnAndRow(15,5)->setValue('冠心病患者');
-        $worksheet->getCellByColumnAndRow(16,5)->setValue('脑卒中患者');
-        $worksheet->getCellByColumnAndRow(17,5)->setValue('65(含)岁以上老年人');
-        $worksheet->getCellByColumnAndRow(18,5)->setValue('残疾人');
-        $worksheet->getCellByColumnAndRow(19,5)->setValue('孕产妇');
-        $worksheet->getCellByColumnAndRow(20,5)->setValue('0-6岁儿童');
-        $worksheet->getCellByColumnAndRow(21,5)->setValue('重型精神疾病患者');
-        $worksheet->getCellByColumnAndRow(22,5)->setValue('结核病患者');
-        $worksheet->getCellByColumnAndRow(23,5)->setValue('低收入人口');
-        $worksheet->getCellByColumnAndRow(24,5)->setValue('计划生育特殊家庭');
-        $spreadsheet->getActiveSheet()->mergeCells('L3:X3');
-        $spreadsheet->getActiveSheet()->mergeCells('M4:X4');
-        $spreadsheet->getActiveSheet()->mergeCells('L4:L5');
+        $worksheet->getCellByColumnAndRow(9,5)->setValue('人群分类');
+        $worksheet->getCellByColumnAndRow(9,6)->setValue('一般人群');
+        $worksheet->getCellByColumnAndRow(10,6)->setValue('重点人群');
+        $worksheet->getCellByColumnAndRow(10,7)->setValue('高血压患者');
+        $worksheet->getCellByColumnAndRow(11,7)->setValue('糖尿病患者');
+        $worksheet->getCellByColumnAndRow(12,7)->setValue('冠心病患者');
+        $worksheet->getCellByColumnAndRow(13,7)->setValue('脑卒中患者');
+        $worksheet->getCellByColumnAndRow(14,7)->setValue('65(含)岁以上老年人');
+        $worksheet->getCellByColumnAndRow(15,7)->setValue('残疾人');
+        $worksheet->getCellByColumnAndRow(16,7)->setValue('孕产妇');
+        $worksheet->getCellByColumnAndRow(17,7)->setValue('0-6岁儿童');
+        $worksheet->getCellByColumnAndRow(18,7)->setValue('重型精神疾病患者');
+        $worksheet->getCellByColumnAndRow(19,7)->setValue('结核病患者');
+        $worksheet->getCellByColumnAndRow(20,7)->setValue('计划生育特殊家庭');
+        $spreadsheet->getActiveSheet()->mergeCells('I5:T5');
+        $spreadsheet->getActiveSheet()->mergeCells('J6:T6');
+        $spreadsheet->getActiveSheet()->mergeCells('I6:I7');
 
         $styleArray = [
             'borders' => [
@@ -114,9 +114,11 @@ class FamilyController extends Controller
                 ],
             ],
         ];
-        $worksheet->getStyle('A1:X2')->applyFromArray($styleArray);
-        $worksheet->getStyle('L3:X3')->applyFromArray($styleArray);
-        $worksheet->getStyle('M4:X4')->applyFromArray($styleArray);
+        $worksheet->getStyle('A1:T2')->applyFromArray($styleArray);
+        $worksheet->getStyle('I5:T5')->applyFromArray($styleArray);
+        $worksheet->getStyle('J6:T6')->applyFromArray($styleArray);
+        $worksheet->getStyle('A3:T3')->applyFromArray($styleArray);
+        $worksheet->getStyle('A4:T4')->applyFromArray($styleArray);
 
 
 
@@ -127,7 +129,7 @@ class FamilyController extends Controller
                 ]
             ]
         ];
-        $worksheet->getStyle('L5:W5')->applyFromArray($styleArray);
+        $worksheet->getStyle('J7:T7')->applyFromArray($styleArray);
 
         $styleArray = [
             'borders' => [
@@ -137,20 +139,17 @@ class FamilyController extends Controller
                 ],
             ],
         ];
-        $worksheet->getStyle('A3:A5')->applyFromArray($styleArray);
-        $worksheet->getStyle('B3:B5')->applyFromArray($styleArray);
-        $worksheet->getStyle('C3:C5')->applyFromArray($styleArray);
-        $worksheet->getStyle('D3:D5')->applyFromArray($styleArray);
-        $worksheet->getStyle('E3:E5')->applyFromArray($styleArray);
-        $worksheet->getStyle('F3:F5')->applyFromArray($styleArray);
-        $worksheet->getStyle('G3:G5')->applyFromArray($styleArray);
-        $worksheet->getStyle('H3:H5')->applyFromArray($styleArray);
-        $worksheet->getStyle('I3:I5')->applyFromArray($styleArray);
-        $worksheet->getStyle('J3:J5')->applyFromArray($styleArray);
-        $worksheet->getStyle('K3:K5')->applyFromArray($styleArray);
-        $worksheet->getStyle('L3:X5')->applyFromArray($styleArray);
+        $worksheet->getStyle('A5:A7')->applyFromArray($styleArray);
+        $worksheet->getStyle('B5:B7')->applyFromArray($styleArray);
+        $worksheet->getStyle('C5:C7')->applyFromArray($styleArray);
+        $worksheet->getStyle('D5:D7')->applyFromArray($styleArray);
+        $worksheet->getStyle('E5:E7')->applyFromArray($styleArray);
+        $worksheet->getStyle('F5:F7')->applyFromArray($styleArray);
+        $worksheet->getStyle('G5:G7')->applyFromArray($styleArray);
+        $worksheet->getStyle('H5:H7')->applyFromArray($styleArray);
+        $worksheet->getStyle('I5:T7')->applyFromArray($styleArray);
 
-        $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
+        $spreadsheet->getActiveSheet()->getRowDimension('7')->setRowHeight(50);
 
 
         $birthday = strtotime('- 7 year');
@@ -175,10 +174,10 @@ class FamilyController extends Controller
 
         }elseif($type==4){
             $auto = Autograph::find()->select('userid')
-                ->where(['<','createtime',strtotime('2022-01-01')])
+                ->where(['<','createtime',strtotime('2022-12-01')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
-            $birthday = strtotime('- 7 year',strtotime('2021-10-01'));
+            $birthday = strtotime('- 7 year',strtotime('2022-12-01'));
 
 
         }elseif($type==5){
@@ -219,7 +218,7 @@ class FamilyController extends Controller
         $hospital = Hospital::findOne($userDoctor->hospitalid);
         echo $hospital->name.":";
         if($auto) {
-            $i = 6;
+            $i = 8;
             foreach($auto as $ak=>$av) {
                 $child = ChildInfo::find()
                     ->andFilterWhere(['userid'=>$av])
@@ -254,22 +253,19 @@ class FamilyController extends Controller
                         if(strlen($idcard)<10 || !$phone){
                             continue;
                         }
-
-                        $worksheet->getStyle('A' . $i . ':X' . $i)->applyFromArray($styleArray);
-                        $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
-                        $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
-                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->name);
-                        $gender = $v->gender?$v->gender:1;
-                        $worksheet->getCellByColumnAndRow(4, $i)->setValue(ChildInfo::$genderText[$gender]);
-                        $worksheet->getCellByColumnAndRow(5, $i)->setValue($userParent->fieldu46);
-                        $worksheet->getCellByColumnAndRow(6, $i)->setValue("\t" . $idcard);
                         $au = Autograph::findOne(['userid' => $v->userid]);
-                        $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', $au->createtime));
-                        $worksheet->getCellByColumnAndRow(8, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
-                        $worksheet->getCellByColumnAndRow(9, $i)->setValue($phone);
-                        $worksheet->getCellByColumnAndRow(10, $i)->setValue($v->birthday?date('Y-m-d',$v->birthday):'');
 
-                        $worksheet->getCellByColumnAndRow(20, $i)->setValue('✅');
+                        $worksheet->getStyle('A' . $i . ':T' . $i)->applyFromArray($styleArray);
+                        $worksheet->getCellByColumnAndRow(1, $i)->setValue('丰台区');
+                        $worksheet->getCellByColumnAndRow(2, $i)->setValue('');
+                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
+                        $gender = $v->gender?$v->gender:1;
+                        $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->name);
+                        $worksheet->getCellByColumnAndRow(5, $i)->setValue(date('Y-m-d', $au->createtime));
+                        $worksheet->getCellByColumnAndRow(6, $i)->setValue($phone);
+                      //  $worksheet->getCellByColumnAndRow(10, $i)->setValue($v->birthday?date('Y-m-d',$v->birthday):'');
+
+                        $worksheet->getCellByColumnAndRow(17, $i)->setValue('1');
 
                         $i++;
                     }
@@ -279,7 +275,7 @@ class FamilyController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-'.$type.'.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/" .$hospital->name.'.xlsx');
     }
     public function setDownFExcel($doctorid,$type)
     {
