@@ -174,10 +174,10 @@ class FamilyController extends Controller
 
         }elseif($type==4){
             $auto = Autograph::find()->select('userid')
-                ->where(['<','createtime',strtotime('2022-12-01')])
+                ->where(['<','createtime',strtotime('2022-12-25')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
-            $birthday = strtotime('- 7 year',strtotime('2022-12-01'));
+            $birthday = strtotime('- 7 year',strtotime('2022-12-25'));
 
 
         }elseif($type==5){
