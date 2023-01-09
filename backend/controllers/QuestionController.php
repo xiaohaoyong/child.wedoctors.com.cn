@@ -62,7 +62,7 @@ class QuestionController extends Controller
             'model' =>$model,
             'dataProvider' => $dataProvider,
             'reply'=>$reply,
-	'questionImg' =>$questionImg //回复图片
+	        'questionImg' =>$questionImg //回复图片
         ]);
     }
 

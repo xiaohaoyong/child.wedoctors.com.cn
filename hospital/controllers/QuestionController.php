@@ -3,6 +3,7 @@
 namespace hospital\controllers;
 
 use common\helpers\WechatSendTmp;
+use common\models\QuestionImg;
 use common\models\QuestionReply;
 use common\models\UserDoctor;
 use common\models\UserLogin;
@@ -67,7 +68,7 @@ class QuestionController extends Controller
         $dataProvider = $searchModel->search($params);
         $reply = new QuestionReply();
         $model=$this->findModel($id);
-
+        $questionImg = QuestionImg::find()->where(['qid'=>$id])->select('image')->column();
         if( $reply->load(Yii::$app->request->post())){
             $reply->userid=\Yii::$app->user->identity->doctorid;
             if($reply->save()){
@@ -90,6 +91,7 @@ class QuestionController extends Controller
             'model' => $model,
             'dataProvider' => $dataProvider,
             'reply'=>$reply,
+            'questionImg' =>$questionImg //回复图片
         ]);
     }
 
