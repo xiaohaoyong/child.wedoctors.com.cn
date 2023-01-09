@@ -86,7 +86,7 @@ class QuestionCommentSearch extends QuestionComment
         $query->andWhere(['doctorid'=>\Yii::$app->user->identity->doctorid]);
         // grid filtering conditions
 //echo $query->createCommand()->getRawSql();die;
-        //$query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+        $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
 
         return $dataProvider;
     }
