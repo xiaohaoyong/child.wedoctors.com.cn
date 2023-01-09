@@ -49,6 +49,13 @@ class CommentsDataController extends BaseController
 		$arr_data=array();
         $arr_datas=array();
 		$doctor = UserDoctor::find()->andFilterWhere(['county' => \Yii::$app->user->identity->county])->andWhere(['is_guanfang'=>0])->andFilterWhere(['>', 'userid', 37])->all();
+		$apm=Yii::$app->request->post('UserDoctor');
+        $doctorid=$apm['doctorid'];
+		if($doctorid>0){
+			$doctor=array(
+				'userid'=>$doctorid,
+			);
+		}
 		foreach($doctor as $dv){
 			$doctorid=$dv['userid'];
 			//社区名称
