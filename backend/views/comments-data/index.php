@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <th>社区</th>
                                             <th>预约就诊后评价总数</th>
                                             <th>预约就诊后好评率 %</th>
-                                            <th>医生问题回复率 %</th>
+                                            <!--<th>医生问题回复率 %</th>-->
                                             <th>医生回复及时性满意率 %</th>
                                             <th>医生回复问题解决率 %</th>
                                         </tr>
@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <td><?=$v['name']?></td>
                                                 <td><?=$v['ap_total']?></td>
                                                 <td><?=$v['gd_total']?></td>
-                                                <td><?=$v['q_gr']?></td>
+                                                <!--<td><?=$v['q_gr']?></td>-->
                                                 <td><?=$v['qc_gd_c']?></td>
                                                 <td><?=$v['qc_gs_c']?></td>
                                             </tr>
