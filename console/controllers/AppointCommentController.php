@@ -23,17 +23,15 @@ class AppointCommentController extends \yii\console\Controller
         foreach ($ap_da as $v){
             $is_d=AppointComment::find()->where(['aid' => $v['id']])->one();
             if(!$is_d) { //未评价才可以推送
-                $openid = UserLogin::getOpenid($v['userid']);
-                $doctor = UserDoctor::find()->where(['userid' => $v['doctorid']])->one();
-                $jz_int = date("Y-m-d H:i:s", $v['appoint_date']);
-                $data = [
-                    'first' => ['value' => "感谢您的信任，请点击完成您在医院就诊后满意度调查"],
-                    'keyword1' => array('value' => $doctor->name),
-                    'keyword2' => array('value' => $jz_int),
-                    'remark' => array('value' => "点击详情反馈您的就诊体验，这将帮助我们更好的为您服务，感谢您的配合"),
-                ];
-                $url = "pages/evaluate/index?id=".$v['id'];
-                WechatSendTmp::send($data,$openid,'1tLWy0T7zLQ9WC4I1YR4YvuSwHlEkmNJyOB5ww0CS8A',$url);
+				$thing1 = '就诊评价提醒';
+				$thing2 = '感谢您的信任，请点击完成您在医院就诊后满意度调查';
+				$data = [
+					'thing1' => ARRAY('value' => $thing1),
+					'thing2' => ARRAY('value' => $thing2),
+					'time3'  => ARRAY('value' => date('Y年m月d日 H:i',time())),
+				];
+				$userLogin = UserLogin::find()->where(['userid'=>$v['userid']])->one();
+				$rs=WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'cJqc11RdX95akxICJmQo3nP-0yo6VA4eHAeZHjEViHo','pages/evaluate/index?id='.$v['id']);
             }
         }
     }
