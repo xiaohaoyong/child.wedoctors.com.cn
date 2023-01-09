@@ -211,10 +211,64 @@ hospital\assets\IndexAsset::register($this);
             </div>
             <!-- /.box -->
         </section>
-        <div class="col-lg-3">
-            饼状图
-        </div>
         <div class="col-lg-4">
+            <script type="text/javascript" src="/js/echarts.min.js"></script>
+            <div class="box-header">
+                <h3 class="box-title">医院就诊评价统计</h3>
+            </div>
+            <ul>
+                <li style="list-style: none;">
+                    总就诊完成数：<?=$visit_stat['visit_total']?>
+                </li>
+                <li style="list-style: none;">
+                    就诊评价数：<?=$visit_stat['comment_total']?>
+                </li>
+            </ul>
+            <div id="container" style="height: 300px"></div>
+            <script type="text/javascript">
+                var dom = document.getElementById('container');
+                var myChart = echarts.init(dom, null, {
+                    renderer: 'canvas',
+                    useDirtyRect: false
+                });
+                var app = {};
+
+                var option;
+
+                option = {
+                    legend: {
+                        orient: '',
+                        left: 'top'
+                    },
+                    series: [
+                        {
+                            name: 'Access From',
+                            type: 'pie',
+                            radius: '80%',
+                            data: [
+                                { value: <?=$visit_stat['comment_total_hp']?>, name: '好评率' },
+                                { value: <?=$visit_stat['comment_total_zp']?>, name: '中平率' },
+                                { value: <?=$visit_stat['comment_total_cp']?>, name: '差评率' },
+                            ],
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                if (option && typeof option === 'object') {
+                    myChart.setOption(option);
+                }
+
+                window.addEventListener('resize', myChart.resize);
+            </script>
+        </div>
+        <div class="col-lg-3">
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">医生回复评价统计</h3>
