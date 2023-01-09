@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <?php $form = ActiveForm::begin(); ?>
 
-                                    <?= $form->field($appointcomment, 'doctorid')->dropDownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->column(), ['prompt' => '请选择']) ?>
+                                    <?= $form->field($appointcomment, 'hospitalid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->andFilterWhere(['>', 'userid', '37'])->andFilterWhere(['county' => \Yii::$app->user->identity->county])->column(), ['prompt' => '请选择']) ?>
 
                                     <?=\kartik\date\DatePicker::widget([
                                         'name' => 'sdate',
