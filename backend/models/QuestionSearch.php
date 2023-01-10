@@ -86,7 +86,7 @@ class QuestionSearch extends Question
             'id' => $this->id,
             'userid' => $this->userid,
             'createtime' => $this->createtime,
-            'childid' => $this->childid,
+            //'childid' => $this->childid,
             'doctorid' => $this->doctorid,
             'orderid' => $this->orderid,
             'level' => $this->level,

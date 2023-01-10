@@ -30,8 +30,6 @@ use yii\widgets\ActiveForm;
         'todayHighlight' => true
     ]]) ?>
 
-    <?= $form->field($model, 'childid') ?>
-
     <?= $form->field($model, 'doctorid') ?>
 
     <?php // echo $form->field($model, 'orderid') ?>
