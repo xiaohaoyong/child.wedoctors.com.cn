@@ -42,7 +42,16 @@
                 ]
             ];
         }
-
+		$xlsxoutof_records=array();
+		if (Yii::$app->user->identity->hospitalid != 110587) {
+           
+				$xlsxoutof_records = ['label' => '迁入迁出管理', 'icon' => 'file-text-o', 'url' => "#",
+                        'items' => [
+                            ['label' => '批量迁入迁出', 'url' => ['xlsxoutof/list-exc']],
+                            ['label' => '迁入迁出历史', 'url' => ['xlsxoutof/list-info']],
+                        ]
+					]  ;
+        }
 
 
         ?>
@@ -117,12 +126,9 @@
                             ['label' => '添加医生', 'url' => ['doctors/create']],
                         ]
                     ],
-					['label' => '迁入迁出管理', 'icon' => 'file-text-o', 'url' => "#",
-                        'items' => [
-                            ['label' => '批量迁入迁出', 'url' => ['xlsxoutof/list-exc']],
-                            ['label' => '迁入迁出历史', 'url' => ['xlsxoutof/list-info']],
-                        ]
-					]  ,
+					
+					$xlsxoutof_records ,
+					
                     [
                         'label' => '审核管理',
                         'icon' => 'file-text-o',
