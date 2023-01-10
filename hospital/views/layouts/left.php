@@ -43,7 +43,7 @@
             ];
         }
 		$xlsxoutof_records=array();
-		if (Yii::$app->user->identity->hospitalid != 110587) {
+		if (Yii::$app->user->identity->hospitalid == 110587) {
            
 				$xlsxoutof_records = ['label' => '迁入迁出管理', 'icon' => 'file-text-o', 'url' => "#",
                         'items' => [
