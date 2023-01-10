@@ -70,7 +70,7 @@
                         'icon' => 'comments',
                         'url' => '#',
                         'items' => [
-                            ['label' => '预约就诊评价',  'url' => ['/appoint-comment'],],
+                           // ['label' => '预约就诊评价',  'url' => ['/appoint-comment'],],
                             ['label' => '医生回复评价',  'url' => ['/question-comment'],],
                         ],
                     ],
@@ -100,13 +100,13 @@
                             ['label' => 'HPV专用号源设置', 'url' => ['appoint-hpv-setting/update']],
                         ]
                     ],
-                    ['label' => '登记表', 'icon' => 'file-text-o', 'url' => "#",
-                        'items' => [
-                            ['label' => '新冠筛查表', 'url' => ['question-naire-field/index?qnid=1']],
-                            ['label' => '儿童登记表', 'url' => ['question-naire-field/index?qnid=4']],
+                    // ['label' => '登记表', 'icon' => 'file-text-o', 'url' => "#",
+                    //     'items' => [
+                    //         ['label' => '新冠筛查表', 'url' => ['question-naire-field/index?qnid=1']],
+                    //         ['label' => '儿童登记表', 'url' => ['question-naire-field/index?qnid=4']],
 
-                        ]
-                    ],
+                    //     ]
+                    // ],
                     $health_records,
                     ['label' => '医生管理', 'icon' => 'file-text-o', 'url' => "#",
                         'items' => [
@@ -117,21 +117,21 @@
                             ['label' => '添加医生', 'url' => ['doctors/create']],
                         ]
                     ],
-					['label' => '迁入迁出管理', 'icon' => 'file-text-o', 'url' => "#",
-                        'items' => [
-                            ['label' => '批量迁入迁出', 'url' => ['xlsxoutof/list-exc']],
-                            ['label' => '迁入迁出历史', 'url' => ['xlsxoutof/list-info']],
-                        ]
-					]  ,
-                    [
-                        'label' => '审核管理',
-                        'icon' => 'file-text-o',
-                        'url' => '#',
-                        'items' => [
-                            ['label' => '变更签约社区审核列表', 'icon' => 'user', 'url' => ['/signing-record'],],
-                        ],
+					// ['label' => '迁入迁出管理', 'icon' => 'file-text-o', 'url' => "#",
+                    //     'items' => [
+                    //         ['label' => '批量迁入迁出', 'url' => ['xlsxoutof/list-exc']],
+                    //         ['label' => '迁入迁出历史', 'url' => ['xlsxoutof/list-info']],
+                    //     ]
+					// ]  ,
+                    // [
+                    //     'label' => '审核管理',
+                    //     'icon' => 'file-text-o',
+                    //     'url' => '#',
+                    //     'items' => [
+                    //         ['label' => '变更签约社区审核列表', 'icon' => 'user', 'url' => ['/signing-record'],],
+                    //     ],
 
-                    ],
+                    // ],
                 ],
             ]
         ) ?>
