@@ -211,7 +211,7 @@ hospital\assets\IndexAsset::register($this);
             </div>
             <!-- /.box -->
         </section>
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
             <script type="text/javascript" src="/js/echarts.min.js"></script>
             <div class="box-header">
                 <h3 class="box-title">医院就诊评价统计</h3>
@@ -308,7 +308,7 @@ hospital\assets\IndexAsset::register($this);
 
 
             </div>
-        </div>
+        </div> -->
         <div class="col-lg-7">
             <div class="box">
                 <div class="box-header">
