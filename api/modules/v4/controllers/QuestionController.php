@@ -207,9 +207,13 @@ class QuestionController extends Controller
         $solve = \Yii::$app->request->get('solve');//1未解决2已解决
         $question = Question::findOne(intval($qid));
         $msg = '问题不存在或还未结束';
-        if(empty($satisfied) || empty($solve)){
+        if(!is_numeric($satisfied) || !is_numeric($solve)){
             $msg = '参数有误!';
-            return new Code(20000,$msg);
+            return new Code(20001,$msg);
+        }
+        if(empty($satisfied) || empty($solve) ){
+            $msg = '参数有误!';
+            return new Code(20001,$msg);
         }
         //已结束
         if($question && $question->state == 2){
@@ -232,7 +236,7 @@ class QuestionController extends Controller
 
             }
         }else{
-            return new Code(20000,$msg);
+            return new Code(20001,$msg);
         }
 
 
