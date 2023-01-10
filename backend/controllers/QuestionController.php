@@ -9,6 +9,7 @@ use common\models\UserDoctor;
 use common\models\UserLogin;
 use Yii;
 use common\models\Question;
+use common\models\QuestionImg;
 use backend\models\QuestionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -40,7 +41,7 @@ class QuestionController extends Controller
         $dataProvider = $searchModel->search($params);
         $reply = new QuestionReply();
         $model= $this->findModel($id);
-
+        $questionImg = QuestionImg::find()->where(['qid'=>$id])->select('image')->column();
         if( $reply->load(Yii::$app->request->post())){
             if($reply->save()){
                 $model->state=1;
@@ -61,6 +62,7 @@ class QuestionController extends Controller
             'model' =>$model,
             'dataProvider' => $dataProvider,
             'reply'=>$reply,
+	        'questionImg' =>$questionImg //回复图片
         ]);
     }
 

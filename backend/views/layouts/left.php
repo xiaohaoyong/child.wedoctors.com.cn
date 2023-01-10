@@ -29,6 +29,31 @@
                         ],
                     ],
                     [
+                        'label' => '审核管理',
+                        'icon' => 'user',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '变更签约社区审核列表', 'icon' => 'user', 'url' => ['/signing-record'],],
+                        ],
+                    ],
+                    [
+                        'label' => '评价管理',
+                        'icon' => 'comments',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '预约就诊评价',  'url' => ['/appoint-comment'],],
+                            ['label' => '医生回复评价',  'url' => ['/question-comment'],],
+                        ],
+                    ],
+                    [
+                        'label' => '统计',
+                        'icon' => 'comments',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '评 价 统 计',  'url' => ['/comments-data'],],
+                        ],
+                    ],
+                    [
                         'label' => '数据管理',
                         'icon' => 'database',
                         'url' => '#',
@@ -108,6 +133,14 @@
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                             ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],],
+                    ],
+					[
+						'label' => '迁入迁出管理', 
+						'icon' => 'file-text-o', 
+						'url' => "#",
+                        'items' => [
+                            ['label' => '迁入迁出成功历史记录', 'url' => ['xlsxoutof/list-info']],
+                        ]
                     ],
                 ],
             ]

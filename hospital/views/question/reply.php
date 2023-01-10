@@ -43,9 +43,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return $info->content;
                             }
                         ],
+                        [
+                            'attribute'=>'资料图片',
+                            'value'=>function ($model){
+                                return '';
+                            }
+                        ],
                     ],
                 ]) ?>
-
+                <?php
+                if ($questionImg && count($questionImg))
+                {
+                    $html= '';
+                    foreach ($questionImg as $v)
+                    {
+                        $html .= '<a target="_blank" href="'.$v.'"><img src="'.$v.'" style="width:100px;height:100px"></a>&nbsp;&nbsp;';
+                    }
+                    echo $html;
+                }
+                ?>
             </div>
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
@@ -94,22 +110,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
             </div>
-            <div class="box-body">
-                <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+            <?php
+            if($model->state!=2) {
+                ?>
+                <div class="box-body">
+                    <?php $form = \yii\widgets\ActiveForm::begin(); ?>
 
-                <?= $form->field($reply, 'content')->textarea()->label('回复') ?>
-                <?= $form->field($reply, 'userid')->hiddenInput(['value' => \Yii::$app->user->identity->doctorid])->label(false) ?>
-                <?= $form->field($reply, 'is_doctor')->hiddenInput(['value' => 1])->label(false) ?>
-                <?= $form->field($reply, 'qid')->hiddenInput(['value' => $model->id])->label(false) ?>
+                    <?= $form->field($reply, 'content')->textarea()->label('回复') ?>
+                    <?= $form->field($reply, 'userid')->hiddenInput(['value' => \Yii::$app->user->identity->doctorid])->label(false) ?>
+                    <?= $form->field($reply, 'is_doctor')->hiddenInput(['value' => 1])->label(false) ?>
+                    <?= $form->field($reply, 'qid')->hiddenInput(['value' => $model->id])->label(false) ?>
 
 
-                <div class="form-group">
-                    <?= Html::submitButton($reply->isNewRecord ? '提交' : '提交', ['class' => $reply->isNewRecord ? 'btn btn-success' :
-                        'btn btn-primary']) ?>
+                    <div class="form-group">
+                        <?= Html::submitButton($reply->isNewRecord ? '提交' : '提交', ['class' => $reply->isNewRecord ? 'btn btn-success' :
+                            'btn btn-primary']) ?>
+                    </div>
+
+                    <?php \yii\widgets\ActiveForm::end(); ?>
                 </div>
-
-                <?php \yii\widgets\ActiveForm::end(); ?>
-            </div>
+                <?php
+            }
+            ?>
 
         </div>
     </div>

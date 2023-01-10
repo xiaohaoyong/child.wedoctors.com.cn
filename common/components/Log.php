@@ -34,7 +34,7 @@ class Log
 
         $header= date('YmdHis')."|,|";
 
-        file_put_contents($file, $header.$this->lineLog . "\n", FILE_APPEND);
+        //file_put_contents($file, $header.$this->lineLog . "\n", FILE_APPEND);
     }
 
 }
