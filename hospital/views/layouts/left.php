@@ -130,16 +130,16 @@
 					
 					$xlsxoutof_records ,
 					
-                    [
-                        'label' => '审核管理',
-                        'icon' => 'file-text-o',
-                        'url' => '#',
-                        'items' => [
-                            ['label' => '变更签约社区审核列表', 'icon' => 'user', 'url' => ['/signing-record'],],
-                        ],
+                    // [
+                    //     'label' => '审核管理',
+                    //     'icon' => 'file-text-o',
+                    //     'url' => '#',
+                    //     'items' => [
+                    //         ['label' => '变更签约社区审核列表', 'icon' => 'user', 'url' => ['/signing-record'],],
+                    //     ],
 
 
-                     ],
+                    // // ],
                 ],
             ]
         ) ?>
