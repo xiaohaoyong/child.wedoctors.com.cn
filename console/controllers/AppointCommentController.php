@@ -20,7 +20,7 @@ class AppointCommentController extends \yii\console\Controller
         $t_tds=time();
         $ap_qy=Appoint::find()->andWhere(['state'=>2])->andWhere(['>=','appoint_date',$t_td])->andWhere(['<=','appoint_date',$t_tds]);
         $ap_da=$ap_qy->asArray()->all();
-		print_r($ap_qy);exit;
+		print_r($ap_da);exit;
         foreach ($ap_da as $v){
             $is_d=AppointComment::find()->where(['aid' => $v['id']])->one();
             if(!$is_d) { //未评价才可以推送
