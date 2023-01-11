@@ -24,7 +24,7 @@ class AppointCommentController extends \yii\console\Controller
             $is_d=AppointComment::find()->where(['aid' => $v['id']])->one();
             if(!$is_d) { //未评价才可以推送
 				$thing1 = '就诊评价提醒';
-				$thing2 = '感谢您的信任，请点击完成您在医院就诊后满意度调查';
+				$thing2 = '感谢您的信任意度调查';
 				$data = [
 					'thing1' => ARRAY('value' => $thing1),
 					'thing2' => ARRAY('value' => $thing2),
