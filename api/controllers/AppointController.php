@@ -375,6 +375,15 @@ class AppointController extends Controller
             $row['child_name']=$row['child_name']?$row['child_name']:"-";
             $vaccine = Vaccine::findOne($v->vaccine);
             $row['vaccineStr'] = $vaccine ? $vaccine->name : '';
+			if($state==2) {
+                /*查询已完成预约是否评价过 is_comt 1-已评价  2-未评价*/
+                $apcomment = AppointComment::findOne(['aid' => $v->id]);
+                if ($apcomment) {
+                    $row['is_comt'] = 1;
+                } else {
+                    $row['is_comt'] = 2;
+                }
+            }
             $list[] = $row;
         }
         return $list;
