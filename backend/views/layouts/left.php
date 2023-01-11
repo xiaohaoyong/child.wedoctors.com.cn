@@ -5,7 +5,7 @@
 		<?php
 		
 		$xlsxoutof_records=array();
-		if (Yii::$app->user->identity->hospitalid == 110587) {
+		//if (Yii::$app->user->identity->hospitalid == 110587) {
            
 				$xlsxoutof_records = [
 						'label' => '迁入迁出管理', 
@@ -15,7 +15,7 @@
                             ['label' => '迁入迁出成功历史记录', 'url' => ['xlsxoutof/list-info']],
                         ]
                     ];
-        }
+       // }
 		
 		?>
 		
