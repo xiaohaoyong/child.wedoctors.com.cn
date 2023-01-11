@@ -47,7 +47,7 @@ class MpWechat extends \callmez\wechat\sdk\MpWechat
         ], $data), [
             'access_token' => $this->getAccessToken()
         ]);
-       // var_dump($result);die;
+        var_dump($result);die;
         return isset($result['msgid']) ? $result['msgid'] : false;
     }
     public function delCache($name){
