@@ -24,7 +24,7 @@ class AppointCommentController extends \yii\console\Controller
             $is_d=AppointComment::find()->where(['aid' => $v['id']])->one();
             if(!$is_d) { //未评价才可以推送
 				$thing1 = '就诊评价提醒';
-				$thing2 = '感谢您的信任意度调查';
+				$thing2 = '邀请您对本次就诊进行评价';
 				$data = [
 					'thing1' => ARRAY('value' => $thing1),
 					'thing2' => ARRAY('value' => $thing2),
@@ -32,7 +32,6 @@ class AppointCommentController extends \yii\console\Controller
 				];
 				$userLogin = UserLogin::find()->where(['userid'=>$v['userid']])->one();
 				$rs=WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'cJqc11RdX95akxICJmQo3nP-0yo6VA4eHAeZHjEViHo','pages/evaluate/index?id='.$v['id']);
-				var_dump($rs);
             }
         }
     }
