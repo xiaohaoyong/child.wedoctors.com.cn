@@ -16,7 +16,7 @@ class AppointCommentController extends \yii\console\Controller
 {
     public function actionAmessage()
     {
-        $t_td=date("Y-m-d");
+        $t_td=strtotime(date("Y-m-d"));
         $t_tds=time();
         $ap_qy=Appoint::find()->andWhere(['state'=>2])->andWhere(['>=','appoint_date',$t_td])->andWhere(['<=','appoint_date',$t_tds]);
         $ap_da=$ap_qy->asArray()->all();
