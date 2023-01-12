@@ -11,6 +11,7 @@ use common\models\Appoint;
 use common\models\AppointComment;
 use common\models\UserLogin;
 use common\models\UserDoctor;
+use common\models\MsgComment;
 
 class AppointCommentController extends \yii\console\Controller
 {
@@ -32,6 +33,13 @@ class AppointCommentController extends \yii\console\Controller
 				];
 				$userLogin = UserLogin::find()->where(['userid'=>$v['userid']])->one();
 				$rs=WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'cJqc11RdX95akxICJmQo3nP-0yo6VA4eHAeZHjEViHo','pages/evaluate/index?id='.$v['id']);
+
+				//记录推送记录
+				$msg_appoint = new MsgComment;
+				$msg_appoint->aid=$v['id'];
+				$msg_appoint->userid=$v['userid'];
+				$msg_appoint->createtime=time();
+				$msg_appoint->save(false);
             }
         }
     }
