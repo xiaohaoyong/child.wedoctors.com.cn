@@ -74,6 +74,20 @@ class CommentsDataController extends BaseController
             }
             $gd_total = $gd_qy->count();
             $arr_data['gd_total'] = $gd_total>0?ceil($gd_total/$arr_data['ap_total']*100):0;
+			//中评数
+			$md_qy=AppointComment::find()->andWhere(['doctorid'=>$doctorid])->andWhere(['is_rate'=>'2']);
+			if($sdate && $edate){
+                $md_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
+            }
+			$md_total = $md_qy->count();
+            $arr_data['md_total'] = $md_total>0?ceil($md_total/$arr_data['ap_total']*100):0;
+			//差评
+			$ld_qy=AppointComment::find()->andWhere(['doctorid'=>$doctorid])->andWhere(['is_rate'=>'3']);
+			if($sdate && $edate){
+                $ld_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
+            }
+			$ld_total = $ld_qy->count();
+            $arr_data['ld_total'] = $ld_total>0?ceil($ld_total/$arr_data['ap_total']*100):0;
 
             //问题部分
             $q_totals=Question::find()->andWhere(['doctorid'=>$doctorid])->count();

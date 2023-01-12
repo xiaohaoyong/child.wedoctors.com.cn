@@ -85,6 +85,8 @@ class AppointCommentSearch extends AppointComment
             $query->andFilterWhere(['is_rate'=>$this->is_rate]);
         }
         $query->andWhere(['doctorid'=>\Yii::$app->user->identity->doctorid]);
+		$query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+
         return $dataProvider;
     }
 }
