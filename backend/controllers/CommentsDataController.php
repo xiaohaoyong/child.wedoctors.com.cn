@@ -120,6 +120,7 @@ print_r(Yii::$app->request->post());
             if($sdate && $edate){
                 $query_r->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
             }
+			echo $query_r->createCommand()->getRawSql();die;
             $qr_cm = $query_r->asArray()->all();
             $datas=array_merge($ap_cm,$qr_cm);
             $ar_da=array();
