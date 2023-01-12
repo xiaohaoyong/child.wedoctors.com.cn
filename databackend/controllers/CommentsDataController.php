@@ -58,6 +58,7 @@ class CommentsDataController extends BaseController
 				),
 			);
 		}
+		print_r($doctor);
 		foreach($doctor as $dv){
 			$doctorid=$dv['userid'];
 			//社区名称
