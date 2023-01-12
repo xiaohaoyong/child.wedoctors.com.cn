@@ -50,7 +50,7 @@ class CommentsDataController extends BaseController
         $arr_datas=array();
 		$doctor = UserDoctor::find()->andFilterWhere(['county' => \Yii::$app->user->identity->county])->andWhere(['is_guanfang'=>0])->andFilterWhere(['>', 'userid', 37])->all();
 		$apm=Yii::$app->request->post('UserDoctor');
-        $doctorid=$apm['hospitalid'];
+        $doctorid=$apm['userid'];
 		if($doctorid>0){
 			$doctor=array(
 				array(
