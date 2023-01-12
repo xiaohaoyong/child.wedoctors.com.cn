@@ -66,6 +66,7 @@ print_r(Yii::$app->request->post());
             if($sdate && $edate){
                 $ap_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
             }
+			 echo $ap_qy->createCommand()->getRawSql();die;
             $arr_data['ap_total']=$ap_qy->count();
             //好评总数及好评率
             $gd_qy=AppointComment::find()->andWhere(['doctorid'=>$doctorid])->andWhere(['is_rate'=>'1']);
