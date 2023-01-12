@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => '姓名',
                                     'value' => function ($e) {
-                                        $info = \common\models\Appoint::findOne(['id' => $e->aid]);
+                                        $info = \common\models\ChildInfo::findOne(['userid' => $e->userid]);
                                         return $info->name;
                                     }
                                 ],
