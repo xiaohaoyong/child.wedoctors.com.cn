@@ -58,6 +58,9 @@ class CommentsDataController extends BaseController
 				),
 			);
 		}
+        $sdate=Yii::$app->request->post('sdate');
+        $edate=Yii::$app->request->post('edate');
+        $edate = $edate." 23:59:59";
 		foreach($doctor as $dv){
 			$doctorid=$dv['userid'];
 			//社区名称
