@@ -89,6 +89,7 @@ class AppointCommentSearch extends AppointComment
         if($this->is_rate){
             $query->andFilterWhere(['is_rate'=>$this->is_rate]);
         }
+        echo $query->createCommand()->getRawSql();die;
 		$query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
         return $dataProvider;
     }
