@@ -51,7 +51,7 @@ class CommentsDataController extends BaseController
 		$apcounty = new UserDoctor();
         $arr_data=array();
         $arr_datas=array();
-print_r(Yii::$app->request->post);
+print_r(Yii::$app->request->post());
         $sdate=Yii::$app->request->post('sdate');
         $edate=Yii::$app->request->post('edate');
         $edate = date("Y-m-d",strtotime($edate." 23:59:59"));
