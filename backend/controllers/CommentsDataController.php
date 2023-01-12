@@ -74,27 +74,27 @@ class CommentsDataController extends BaseController
                 $gd_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
             }
             $gd_total = $gd_qy->count();
-            $arr_data['gd_total'] = $gd_total>0?ceil($gd_total/$arr_data['ap_total']*100):0;
+            $arr_data['gd_total'] = $gd_total>0?ceil($gd_total/$arr_data['ap_total']*100):'---';
 			//中评数
 			$md_qy=AppointComment::find()->andWhere(['doctorid'=>$doctorid])->andWhere(['is_rate'=>'2']);
 			if($sdate && $edate){
                 $md_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
             }
 			$md_total = $md_qy->count();
-            $arr_data['md_total'] = $md_total>0?ceil($md_total/$arr_data['ap_total']*100):0;
+            $arr_data['md_total'] = $md_total>0?ceil($md_total/$arr_data['ap_total']*100):'---';
 			//差评
 			$ld_qy=AppointComment::find()->andWhere(['doctorid'=>$doctorid])->andWhere(['is_rate'=>'3']);
 			if($sdate && $edate){
                 $ld_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
             }
 			$ld_total = $ld_qy->count();
-            $arr_data['ld_total'] = $ld_total>0?ceil($ld_total/$arr_data['ap_total']*100):0;
+            $arr_data['ld_total'] = $ld_total>0?ceil($ld_total/$arr_data['ap_total']*100):'---';
 
 
             //问题部分
             $q_totals=Question::find()->andWhere(['doctorid'=>$doctorid])->count();
             $q_total=Question::find()->andWhere(['doctorid'=>$doctorid])->andWhere(['>','state','0'])->count();
-            $arr_data['q_gr'] = $q_total?ceil($q_total/$q_totals*100):0;
+            $arr_data['q_gr'] = $q_total?ceil($q_total/$q_totals*100):'---';
 
             //问题评价部分
             $qc_qy=QuestionComment::find()->andWhere(['doctorid'=>$doctorid]);
@@ -103,9 +103,9 @@ class CommentsDataController extends BaseController
             }
             $qc_total=$qc_qy->count();
             $qc_gd_qy=$qc_qy->andWhere(['is_satisfied'=>'2'])->count();
-            $arr_data['qc_gd_c']=$qc_gd_qy?ceil($qc_gd_qy/$qc_total*100):0;
+            $arr_data['qc_gd_c']=$qc_gd_qy?ceil($qc_gd_qy/$qc_total*100):'---';
             $qc_gs_qy=$qc_qy->andWhere(['is_solve'=>'2'])->count();
-            $arr_data['qc_gs_c']=$qc_gs_qy?ceil($qc_gs_qy/$qc_total*100):0;
+            $arr_data['qc_gs_c']=$qc_gs_qy?ceil($qc_gs_qy/$qc_total*100):'---';
 
             $arr_datas[]=$arr_data;
         }else{
@@ -144,26 +144,26 @@ class CommentsDataController extends BaseController
                     $gd_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
                 }
                 $gd_total = $gd_qy->count();
-                $arr_data['gd_total'] = $gd_total>0?ceil($gd_total/$arr_data['ap_total']*100):0;
+                $arr_data['gd_total'] = $gd_total>0?ceil($gd_total/$arr_data['ap_total']*100):'---';
 				//中评数
 				$md_qy=AppointComment::find()->andWhere(['doctorid'=>$doctorid])->andWhere(['is_rate'=>'2']);
 				if($sdate && $edate){
 					$md_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
 				}
 				$md_total = $md_qy->count();
-				$arr_data['md_total'] = $md_total>0?ceil($md_total/$arr_data['ap_total']*100):0;
+				$arr_data['md_total'] = $md_total>0?ceil($md_total/$arr_data['ap_total']*100):'---';
 				//差评
 				$ld_qy=AppointComment::find()->andWhere(['doctorid'=>$doctorid])->andWhere(['is_rate'=>'3']);
 				if($sdate && $edate){
 					$ld_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
 				}
 				$ld_total = $ld_qy->count();
-				$arr_data['ld_total'] = $ld_total>0?ceil($ld_total/$arr_data['ap_total']*100):0;
+				$arr_data['ld_total'] = $ld_total>0?ceil($ld_total/$arr_data['ap_total']*100):'---';
 
                 //问题部分
                 $q_totals=Question::find()->andWhere(['doctorid'=>$doctorid])->count();
                 $q_total=Question::find()->andWhere(['doctorid'=>$doctorid])->andWhere(['>','state','0'])->count();
-                $arr_data['q_gr'] = $q_total?ceil($q_total/$q_totals*100):0;
+                $arr_data['q_gr'] = $q_total?ceil($q_total/$q_totals*100):'---';
 
                 //问题评价部分
                 $qc_qy=QuestionComment::find()->andWhere(['doctorid'=>$doctorid]);
@@ -172,9 +172,9 @@ class CommentsDataController extends BaseController
                 }
                 $qc_total=$qc_qy->count();
                 $qc_gd_qy=$qc_qy->andWhere(['is_satisfied'=>'2'])->count();
-                $arr_data['qc_gd_c']=$qc_gd_qy?ceil($qc_gd_qy/$qc_total*100):0;
+                $arr_data['qc_gd_c']=$qc_gd_qy?ceil($qc_gd_qy/$qc_total*100):'---';
                 $qc_gs_qy=$qc_qy->andWhere(['is_solve'=>'2'])->count();
-                $arr_data['qc_gs_c']=$qc_gs_qy?ceil($qc_gs_qy/$qc_total*100):0;
+                $arr_data['qc_gs_c']=$qc_gs_qy?ceil($qc_gs_qy/$qc_total*100):'---';
 
                 $arr_datas[]=$arr_data;
             }
