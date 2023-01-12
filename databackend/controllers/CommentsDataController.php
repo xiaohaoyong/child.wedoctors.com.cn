@@ -53,7 +53,9 @@ class CommentsDataController extends BaseController
         $doctorid=$apm['hospitalid'];
 		if($doctorid>0){
 			$doctor=array(
-				'userid'=>$doctorid,
+				array(
+					'userid'=>$doctorid,
+				),
 			);
 		}
 		foreach($doctor as $dv){
