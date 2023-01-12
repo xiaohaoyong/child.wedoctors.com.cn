@@ -104,7 +104,7 @@ class CommentsDataController extends BaseController
             if($sdate && $edate){
                 $qc_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
             }
-            echo $qc_qy->createCommand()->getRawSql();
+
             $qc_total=$qc_qy->count();
             $qc_gd_qy=$qc_qy->andWhere(['is_satisfied'=>'2'])->count();
             $arr_data['qc_gd_c']=$qc_gd_qy?ceil($qc_gd_qy/$qc_total*100):0;
