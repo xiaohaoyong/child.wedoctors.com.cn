@@ -101,15 +101,17 @@ class CommentsDataController extends BaseController
 
             //问题评价部分
             $qc_qy=QuestionComment::find()->andWhere(['doctorid'=>$doctorid]);
+            $qc_qys=QuestionComment::find()->andWhere(['doctorid'=>$doctorid]);
             if($sdate && $edate){
                 $qc_qy->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
+                $qc_qys->andWhere(['>=','createtime',strtotime($sdate)])->andWhere(['<=','createtime',strtotime($edate)]);
             }
-
             $qc_total=$qc_qy->count();
             $qc_gd_qy=$qc_qy->andWhere(['is_satisfied'=>'2'])->count();
-            $arr_data['qc_gd_c']=$qc_gd_qy?ceil($qc_gd_qy/$qc_total*100):0;
-            $qc_gs_qy=$qc_qy->andWhere(['is_solve'=>'2'])->count();
-            $arr_data['qc_gs_c']=$qc_gs_qy?ceil($qc_gs_qy/$qc_total*100):0;
+            $arr_data['qc_gd_c']=$qc_gd_qy?ceil($qc_gd_qy/$qc_total*100):'---';
+
+            $qc_gs_qy=$qc_qys->andWhere(['is_solve'=>'2'])->count();
+            $arr_data['qc_gs_c']=$qc_gs_qy?ceil($qc_gs_qy/$qc_total*100):'---';
 
             $arr_datas[]=$arr_data;
 		}
