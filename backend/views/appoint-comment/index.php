@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute' => '预约时间',
                                     'value' => function ($e) {
                                         $info = \common\models\Appoint::findOne(['id' => $e->aid]);
-                                        return date("Y-m-d H:i:s",$info->appoint_date);
+                                        return date("Y-m-d",$info->appoint_date);
                                     }
                                 ],
                                 [
