@@ -176,7 +176,6 @@ class CommentsDataController extends BaseController
                 $qc_gd_qy=$qc_qy->andWhere(['is_satisfied'=>'2'])->count();
                 $arr_data['qc_gd_c']=$qc_gd_qy?ceil($qc_gd_qy/$qc_total*100):'---';
                 $qc_gs_qy=$qc_qy->andWhere(['is_solve'=>'2'])->count();
-                echo $qc_gs_qy->createCommand()->getRawSql();
                 $arr_data['qc_gs_c']=$qc_gs_qy?ceil($qc_gs_qy/$qc_total*100):'---';
 
                 $arr_datas[]=$arr_data;
