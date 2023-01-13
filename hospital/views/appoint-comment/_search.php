@@ -16,9 +16,8 @@ use yii\widgets\ActiveForm;
         'options' => ['class' => 'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'aid') ?>
+   <!-- 先注释下$form->field($model, 'aid')  $form->field($model, 'userid') -->
 
-    <?= $form->field($model, 'userid') ?>
 
     <?= $form->field($model, 'startDate')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
         'format' => 'yyyy-mm-dd',
