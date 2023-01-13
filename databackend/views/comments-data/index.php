@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <?php $form = ActiveForm::begin(); ?>
 
-                                    <?= $form->field($appointcomment, 'hospitalid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('hospitalid')->andFilterWhere(['>', 'userid', '37'])->andFilterWhere(['county' => \Yii::$app->user->identity->county])->column(), ['prompt' => '请选择']) ?>
+                                    <?= $form->field($appointcomment, 'hospitalid')->dropdownList(\common\models\UserDoctor::find()->select('name')->indexBy('userid')->andFilterWhere(['>', 'userid', '37'])->andFilterWhere(['county' => \Yii::$app->user->identity->county])->column(), ['prompt' => '请选择'])->label('社区') ?>
 
                                     <?=\kartik\date\DatePicker::widget([
                                         'name' => 'sdate',
@@ -75,6 +75,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <th>社区</th>
                                             <th>预约就诊后评价总数</th>
                                             <th>预约就诊后好评率 %</th>
+                                            <th>预约就诊后中评率 %</th>
+                                            <th>预约就诊后差评率 %</th>
                                             <!--<th>医生问题回复率 %</th>-->
                                             <th>医生回复及时性满意率 %</th>
                                             <th>医生回复问题解决率 %</th>
@@ -90,6 +92,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <td><?=$v['name']?></td>
                                                 <td><?=$v['ap_total']?></td>
                                                 <td><?=$v['gd_total']?></td>
+                                                <td><?=$v['md_total']?></td>
+                                                <td><?=$v['ld_total']?></td>
                                                 <!--<td><?=$v['q_gr']?></td>-->
                                                 <td><?=$v['qc_gd_c']?></td>
                                                 <td><?=$v['qc_gs_c']?></td>

@@ -3,7 +3,7 @@
     <section class="sidebar">
 
 		<?php
-		
+
 		// $xlsxoutof_records=array();
 		// if (Yii::$app->user->identity->hospitalid == 110587) {
            
@@ -16,7 +16,7 @@
         //                 ]
         //             ];
         // }
-		
+
 		?>
 		
         <?= dmstr\widgets\Menu::widget(
