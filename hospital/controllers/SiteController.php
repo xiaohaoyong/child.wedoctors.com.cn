@@ -261,13 +261,13 @@ class SiteController extends BaseController
         $question_stat['reply_total_item'] = $dbi->createCommand()->queryOne()['num'];
 
         #总回复率
-        $question_stat['question_total_reply_rate'] =  $question_stat['question_total'] ? round($question_stat['reply_total'] / $question_stat['question_total'])*100 : 0;
+        $question_stat['question_total_reply_rate'] =  $question_stat['question_total'] ? round($question_stat['reply_total'] / $question_stat['question_total'],2)*100 : 0;
 
         #巡医团队回复占比
-        $question_stat['reply_total_xyitem_percent'] = $question_stat['reply_total'] ? round($question_stat['reply_total_xyitem'] /  $question_stat['reply_total'])*100 : 0;
+        $question_stat['reply_total_xyitem_percent'] = $question_stat['reply_total'] ? round($question_stat['reply_total_xyitem'] /  $question_stat['reply_total'],2)*100 : 0;
 
         #社区医院回复占比
-        $question_stat['reply_total_item_percent'] = $question_stat['reply_total'] ? round($question_stat['reply_total_item'] /  $question_stat['reply_total'])*100 : 0;
+        $question_stat['reply_total_item_percent'] = $question_stat['reply_total'] ? round($question_stat['reply_total_item'] /  $question_stat['reply_total'],2)*100 : 0;
 
 
 
@@ -281,10 +281,10 @@ class SiteController extends BaseController
         $question_stat['comment_total_solve'] = QuestionComment::find()->where(['is_solve'=>2,'doctorid'=>$doctorid])->count() ;
 
         #满意度
-        $question_stat['comment_satisfied_rate'] = $question_stat['comment_total']  ? round($question_stat['comment_total_satisfied'] / $question_stat['comment_total'])*100 : 0;
+        $question_stat['comment_satisfied_rate'] = $question_stat['comment_total']  ? round($question_stat['comment_total_satisfied'] / $question_stat['comment_total'],2)*100 : 0;
 
         #问题解决率
-        $question_stat['comment_solve_rate'] = $question_stat['omment_total']  ? round($question_stat['comment_total_solve'] / $question_stat['comment_total'])*100 : 0;
+        $question_stat['comment_solve_rate'] = $question_stat['omment_total']  ? round($question_stat['comment_total_solve'] / $question_stat['comment_total'],2)*100 : 0;
 
 
 

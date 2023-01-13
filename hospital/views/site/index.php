@@ -236,6 +236,10 @@ hospital\assets\IndexAsset::register($this);
                 var option;
 
                 option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter:'{d}%'
+                    },
                     legend: {
                         orient: '',
                         left: 'top'
