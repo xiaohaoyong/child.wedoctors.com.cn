@@ -613,7 +613,7 @@ class WappointController extends Controller
 
 
         if(!in_array($post['vaccine'],[64,66,46])){
-            $appointA = Appoint::findOne(['phone' => $post['phone'], 'state' => 1, 'vaccine' => $post['vaccine']]);
+            $appointA = Appoint::findOne(['phone' => $post['phone'], 'state' => [1,6], 'vaccine' => $post['vaccine']]);
         }
         if($appointA){
             \Yii::$app->getSession()->setFlash('error','您有未完成的预约');
