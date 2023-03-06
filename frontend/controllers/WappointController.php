@@ -33,8 +33,13 @@ use yii\web\Response;
 class WappointController extends Controller
 {
 
-    public function actionIndex($search = '', $county = 0,$type=0)
+    public function actionIndex($search = '', $county = 0,$type=0,$vaccine=0)
     {
+        $vType=[
+            1=>[43,50,51,78],
+            2=>[44,54,55,56,98],
+            3=>[97,45,57,58,59],
+        ];
 
         //$hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
         $query = UserDoctor::find()->where(['like','appoint',4]);
@@ -46,6 +51,11 @@ class WappointController extends Controller
         }
         if($type){
             $haids=HospitalAppointVaccine::find()->select('haid')->where(['in','vaccine',[43,50,51]])->column();
+            $doctorids=HospitalAppoint::find()->select('doctorid')->where(['in','id',$haids])->column();
+            $query->andWhere(['in','userid',$doctorids]);
+        }
+        if($vType[$vaccine]){
+            $haids=HospitalAppointVaccine::find()->select('haid')->where(['in','vaccine',$vType[$vaccine]])->column();
             $doctorids=HospitalAppoint::find()->select('doctorid')->where(['in','id',$haids])->column();
             $query->andWhere(['in','userid',$doctorids]);
         }
