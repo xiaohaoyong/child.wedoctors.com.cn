@@ -32,7 +32,7 @@ class DoctorsController extends Controller
             }
             $doctors=$query->all();
             foreach($doctors as $k=>$v){
-                $rs=UserDoctor::findOne(['hospitalid'=>$v->id]);
+                $rs=UserDoctor::findOne(['hospitalid'=>$v->id,'is_guanfang'=>0]);
                 if($rs) {
                     $docs[] = $rs->toArray();
                 }
