@@ -154,6 +154,7 @@ class FamilyDoctorController extends Controller
 
 
         $doctor = UserDoctor::find()->where(['county' => 1106])->andwhere(['is_guanfang'=>0])->all();
+        $i = 6;
             foreach ($doctor as $v) {
                 $doctorid=$v->userid;
 
@@ -223,7 +224,7 @@ class FamilyDoctorController extends Controller
         $hospital = Hospital::findOne($userDoctor->hospitalid);
         echo $hospital->name.":";
         if($auto) {
-            $i = 6;
+           
             foreach($auto as $ak=>$av) {
                 $child = ChildInfo::find()
                     ->andFilterWhere(['userid'=>$av])
