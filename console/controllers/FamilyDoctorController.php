@@ -468,8 +468,8 @@ class FamilyDoctorController extends Controller
                     ->andWhere(['>','pregnancy.field11',strtotime('-84 week')])
                     ->andWhere(['familyid'=> $av])
                     ->andWhere(['!=','pregnancy.field4',''])
-                    ->max('source')
                     ->groupBy('field1,field11')
+                    ->max('source')
                     ->createCommand()->getRawSql();
                     echo $preg;exit;
                 if($preg) {
