@@ -279,7 +279,7 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-'.$type.'.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/s/" .$hospital->name.'儿童.xlsx');
     }
     public function setDownFExcel($doctorid,$type)
     {
@@ -468,7 +468,7 @@ class FamilyDoctorController extends Controller
                     ->andWhere(['>','pregnancy.field11',strtotime('-84 week')])
                     ->andWhere(['familyid'=> $av])
                     ->andWhere(['!=','pregnancy.field4',''])
-                    ->groupBy('field1,field4')
+                    ->groupBy('field1,field11')
                     ->all();
                 if($preg) {
                     foreach ($preg as $k => $v) {
@@ -504,7 +504,7 @@ class FamilyDoctorController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-pregnancy-'.$type.'.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/s/" .$hospital->name.'孕妇.xlsx');
     }
 
 }
