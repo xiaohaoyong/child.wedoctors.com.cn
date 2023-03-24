@@ -468,10 +468,8 @@ class FamilyDoctorController extends Controller
                     ->andWhere(['>','pregnancy.field11',strtotime('-84 week')])
                     ->andWhere(['familyid'=> $av])
                     ->andWhere(['!=','pregnancy.field4',''])
-                    ->groupBy('field1,field11')
-                    ->max('source')
-                    ->createCommand()->getRawSql();
-                    echo $preg;exit;
+                    ->andWhere(['>','pregnancy.source',0])
+                    ->all();
                 if($preg) {
                     foreach ($preg as $k => $v) {
                         $autoa = Autograph::findOne(['userid' => $v->familyid]);
