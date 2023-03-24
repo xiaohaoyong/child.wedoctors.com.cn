@@ -153,6 +153,10 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
+        $doctor = UserDoctor::find()->where(['county' => 1106])->andwhere(['is_guanfang'=>0])->all();
+            foreach ($doctor as $v) {
+                $doctorid=$v->userid;
+
         $birthday = strtotime('- 7 year');
         if($type==1) {
             $auto = Autograph::find()->select('userid')
@@ -278,8 +282,9 @@ class FamilyDoctorController extends Controller
             echo ($i-6);
 
         }
+    }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/s/" .$hospital->name.'儿童.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/s/1106.xlsx");
     }
     public function setDownFExcel($doctorid,$type)
     {
