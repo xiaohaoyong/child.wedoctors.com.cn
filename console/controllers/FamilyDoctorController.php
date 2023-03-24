@@ -310,8 +310,8 @@ class FamilyDoctorController extends Controller
         $worksheet->getCellByColumnAndRow(4,3)->setValue('性别');
         $worksheet->getCellByColumnAndRow(5,3)->setValue('签约居民住址');
         $worksheet->getCellByColumnAndRow(6,3)->setValue('签约居民身份证号');
-        $worksheet->getCellByColumnAndRow(7,3)->setValue('首次签约日期');
-        $worksheet->getCellByColumnAndRow(8,3)->setValue('续约日期');
+        $worksheet->getCellByColumnAndRow(7,3)->setValue('签约日期');
+        $worksheet->getCellByColumnAndRow(8,3)->setValue('');
         $worksheet->getCellByColumnAndRow(9,3)->setValue('联系电话1');
         $worksheet->getCellByColumnAndRow(10,3)->setValue('联系电话2');
         $worksheet->getCellByColumnAndRow(11,3)->setValue('联系电话3');
@@ -485,8 +485,8 @@ class FamilyDoctorController extends Controller
                         $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $v->field10);
                         $worksheet->getCellByColumnAndRow(6, $i)->setValue("\t" . $v->field4);
                         $au = Autograph::findOne(['userid' => $v->familyid]);
-                        $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', $au->createtime));
-                        $worksheet->getCellByColumnAndRow(8, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
+                        $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', strtotime($au->starttime)));
+                        $worksheet->getCellByColumnAndRow(8, $i)->setValue('-');
 
 
                         if ($v->field6) {
