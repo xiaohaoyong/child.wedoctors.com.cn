@@ -403,6 +403,11 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
+        $doctor = UserDoctor::find()->where(['county' => 1106])->andwhere(['is_guanfang'=>0])->all();
+        $i = 6;
+            foreach ($doctor as $v) {
+                $doctorid=$v->userid;
+
         $birthday = strtotime('- 7 year');
         if($type==1) {
             $auto = Autograph::find()->select('userid')
@@ -463,17 +468,19 @@ class FamilyDoctorController extends Controller
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
         ];
+
         $userDoctor = UserDoctor::findOne(['userid' => $doctorid]);
         $hospital = Hospital::findOne($userDoctor->hospitalid);
         echo $hospital->name.":";
         if($auto) {
-            $i = 6;
+            //$i = 6;
             foreach($auto as $ak=>$av) {
                 $preg = \common\models\Pregnancy::find()
                     //->andWhere(['pregnancy.field49'=>0])
                     ->andWhere(['>','pregnancy.field11',strtotime('-84 week')])
                     ->andWhere(['familyid'=> $av])
                     ->andWhere(['!=','pregnancy.field4',''])
+                    ->andWhere(['no like','field4','*'])
                     ->groupBy('field1,field11')
                     ->orderBy('source')
                     ->all();
@@ -510,8 +517,9 @@ class FamilyDoctorController extends Controller
             echo ($i-6);
 
         }
+    }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/s/" .$hospital->name.'孕妇.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/s/1孕妇.xlsx');
     }
 
 }
