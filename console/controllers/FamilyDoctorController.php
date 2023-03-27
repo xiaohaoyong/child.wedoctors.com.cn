@@ -480,7 +480,7 @@ class FamilyDoctorController extends Controller
                         ->andWhere(['>','pregnancy.field11',strtotime('-84 week')])
                         ->andWhere(['familyid'=> $av])
                         ->andWhere(['!=','pregnancy.field4',''])
-                        ->andWhere(['no like','field4','*'])
+                        ->andWhere(['not like','field4','*'])
                         ->groupBy('field1,field11')
                         ->orderBy('source')
                         ->all();
