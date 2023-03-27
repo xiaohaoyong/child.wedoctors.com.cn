@@ -405,121 +405,121 @@ class FamilyDoctorController extends Controller
 
         $doctor = UserDoctor::find()->where(['county' => 1106])->andwhere(['is_guanfang'=>0])->all();
         $i = 6;
-            foreach ($doctor as $v) {
-                $doctorid=$v->userid;
+        foreach ($doctor as $v) {
+            $doctorid=$v->userid;
 
-        $birthday = strtotime('- 7 year');
-        if($type==1) {
-            $auto = Autograph::find()->select('userid')
-                ->where(['and', ['>', 'createtime', strtotime('2021-04-01')], ['<', 'createtime', strtotime('2022-04-01')]])
-                ->orWhere(['and', ['>', 'starttime', strtotime('2021-04-01')], ['<', 'starttime', strtotime('2022-04-01')]])
-                ->andWhere(['doctorid' => $doctorid])
-                ->column();
-        }elseif($type==2){
-            $auto = Autograph::find()->select('userid')
-                ->where(['<','createtime',strtotime('2022-04-01')])
-                ->andWhere(['doctorid' => $doctorid])
-                ->column();
-            $birthday = strtotime('- 7 year',strtotime('2022-04-01'));
-        }elseif($type==3){
-            $auto = Autograph::find()->select('userid')
-                ->where(['<','createtime',strtotime('2022-07-01')])
-                ->andWhere(['doctorid' => $doctorid])
-                ->column();
-            $birthday = strtotime('- 7 year',strtotime('2022-07-01'));
+            $birthday = strtotime('- 7 year');
+            if($type==1) {
+                $auto = Autograph::find()->select('userid')
+                    ->where(['and', ['>', 'createtime', strtotime('2021-04-01')], ['<', 'createtime', strtotime('2022-04-01')]])
+                    ->orWhere(['and', ['>', 'starttime', strtotime('2021-04-01')], ['<', 'starttime', strtotime('2022-04-01')]])
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->column();
+            }elseif($type==2){
+                $auto = Autograph::find()->select('userid')
+                    ->where(['<','createtime',strtotime('2022-04-01')])
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->column();
+                $birthday = strtotime('- 7 year',strtotime('2022-04-01'));
+            }elseif($type==3){
+                $auto = Autograph::find()->select('userid')
+                    ->where(['<','createtime',strtotime('2022-07-01')])
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->column();
+                $birthday = strtotime('- 7 year',strtotime('2022-07-01'));
 
-        }elseif($type==4){
-            $auto = Autograph::find()->select('userid')
-                ->where(['<','createtime',strtotime('2023-03-20')])
-                ->andWhere(['doctorid' => $doctorid])
-                ->column();
-            $birthday = strtotime('- 7 year',strtotime('2023-03-20'));
+            }elseif($type==4){
+                $auto = Autograph::find()->select('userid')
+                    ->where(['<','createtime',strtotime('2023-03-20')])
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->column();
+                $birthday = strtotime('- 7 year',strtotime('2023-03-20'));
 
-        }elseif($type==5){
-            $auto = Autograph::find()->select('userid')
-                ->where(['and', ['>', 'createtime', strtotime('2022-01-01')], ['<', 'createtime', strtotime('2022-04-01')]])
-                ->orWhere(['and', ['>', 'starttime', strtotime('2022-01-01')], ['<', 'starttime', strtotime('2022-04-01')]])
-                ->andWhere(['doctorid' => $doctorid])
-                ->column();
-            $birthday = strtotime('- 7 year',strtotime('2022-01-01'));
+            }elseif($type==5){
+                $auto = Autograph::find()->select('userid')
+                    ->where(['and', ['>', 'createtime', strtotime('2022-01-01')], ['<', 'createtime', strtotime('2022-04-01')]])
+                    ->orWhere(['and', ['>', 'starttime', strtotime('2022-01-01')], ['<', 'starttime', strtotime('2022-04-01')]])
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->column();
+                $birthday = strtotime('- 7 year',strtotime('2022-01-01'));
 
-        }elseif($type==6){
-            $auto = Autograph::find()->select('userid')
-                ->where(['and', ['>', 'createtime', strtotime('2022-04-01')], ['<', 'createtime', strtotime('2022-07-01')]])
-                ->orWhere(['and', ['>', 'starttime', strtotime('2022-04-01')], ['<', 'starttime', strtotime('2022-07-01')]])
-                ->andWhere(['doctorid' => $doctorid])
-                ->column();
-            $birthday = strtotime('- 7 year',strtotime('2022-01-01'));
+            }elseif($type==6){
+                $auto = Autograph::find()->select('userid')
+                    ->where(['and', ['>', 'createtime', strtotime('2022-04-01')], ['<', 'createtime', strtotime('2022-07-01')]])
+                    ->orWhere(['and', ['>', 'starttime', strtotime('2022-04-01')], ['<', 'starttime', strtotime('2022-07-01')]])
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->column();
+                $birthday = strtotime('- 7 year',strtotime('2022-01-01'));
 
-        }else{
-            $auto = Autograph::find()->select('userid')
-                ->andWhere(['doctorid' => $doctorid])
-                ->column();
-        }
+            }else{
+                $auto = Autograph::find()->select('userid')
+                    ->andWhere(['doctorid' => $doctorid])
+                    ->column();
+            }
 
-        $styleArray = [
-            'borders' => [
-                'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN //细边框
-                ]
-            ],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-            ],
-        ];
+            $styleArray = [
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN //细边框
+                    ]
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+            ];
 
-        $userDoctor = UserDoctor::findOne(['userid' => $doctorid]);
-        $hospital = Hospital::findOne($userDoctor->hospitalid);
-        echo $hospital->name.":";
-        if($auto) {
-            //$i = 6;
-            foreach($auto as $ak=>$av) {
-                $preg = \common\models\Pregnancy::find()
-                    //->andWhere(['pregnancy.field49'=>0])
-                    ->andWhere(['>','pregnancy.field11',strtotime('-84 week')])
-                    ->andWhere(['familyid'=> $av])
-                    ->andWhere(['!=','pregnancy.field4',''])
-                    ->andWhere(['no like','field4','*'])
-                    ->groupBy('field1,field11')
-                    ->orderBy('source')
-                    ->all();
-                if($preg) {
-                    foreach ($preg as $k => $v) {
-                        $autoa = Autograph::findOne(['userid' => $v->familyid]);
+            $userDoctor = UserDoctor::findOne(['userid' => $doctorid]);
+            $hospital = Hospital::findOne($userDoctor->hospitalid);
+            echo $hospital->name.":";
+            if($auto) {
+                //$i = 6;
+                foreach($auto as $ak=>$av) {
+                    $preg = \common\models\Pregnancy::find()
+                        //->andWhere(['pregnancy.field49'=>0])
+                        ->andWhere(['>','pregnancy.field11',strtotime('-84 week')])
+                        ->andWhere(['familyid'=> $av])
+                        ->andWhere(['!=','pregnancy.field4',''])
+                        ->andWhere(['no like','field4','*'])
+                        ->groupBy('field1,field11')
+                        ->orderBy('source')
+                        ->all();
+                    if($preg) {
+                        foreach ($preg as $k => $v) {
+                            $autoa = Autograph::findOne(['userid' => $v->familyid]);
 
-                        $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
-                        $hospital = Hospital::findOne($userDoctor->hospitalid);
+                            $userDoctor = UserDoctor::findOne(['userid' => $autoa->doctorid]);
+                            $hospital = Hospital::findOne($userDoctor->hospitalid);
 
-                        $worksheet->getStyle('A' . $i . ':X' . $i)->applyFromArray($styleArray);
-                        $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
-                        $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
-                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1);
-                        $worksheet->getCellByColumnAndRow(4, $i)->setValue('女');
-                        $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $v->field10);
-                        $worksheet->getCellByColumnAndRow(6, $i)->setValue("\t" . $v->field4);
-                        $au = Autograph::findOne(['userid' => $v->familyid]);
-                        $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', strtotime($au->starttime)));
-                        $worksheet->getCellByColumnAndRow(8, $i)->setValue('-');
+                            $worksheet->getStyle('A' . $i . ':X' . $i)->applyFromArray($styleArray);
+                            $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
+                            $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
+                            $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1);
+                            $worksheet->getCellByColumnAndRow(4, $i)->setValue('女');
+                            $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $v->field10);
+                            $worksheet->getCellByColumnAndRow(6, $i)->setValue("\t" . $v->field4);
+                            $au = Autograph::findOne(['userid' => $v->familyid]);
+                            $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', strtotime($au->starttime)));
+                            $worksheet->getCellByColumnAndRow(8, $i)->setValue('-');
 
 
-                        if ($v->field6) {
-                            $phone = "\t" . $v->field6;
-                        } else {
-                            $phone = "\t" . UserLogin::getPhone($v->familyid);
+                            if ($v->field6) {
+                                $phone = "\t" . $v->field6;
+                            } else {
+                                $phone = "\t" . UserLogin::getPhone($v->familyid);
+                            }
+                            $worksheet->getCellByColumnAndRow(9, $i)->setValue($phone);
+                            $worksheet->getCellByColumnAndRow(19, $i)->setValue('✅');
+                            $i++;
                         }
-                        $worksheet->getCellByColumnAndRow(9, $i)->setValue($phone);
-                        $worksheet->getCellByColumnAndRow(19, $i)->setValue('✅');
-                        $i++;
                     }
                 }
-            }
-            echo ($i-6);
+                echo ($i-6);
 
+            }
         }
-    }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/s/1孕妇.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/s/1孕妇.xlsx");
     }
 
 }
