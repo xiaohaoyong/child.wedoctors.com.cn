@@ -154,7 +154,8 @@ class FamilyDoctorController extends Controller
 
 
         $i = 6;
-          
+
+
         $birthday = strtotime('- 7 year');
         if($type==1) {
             $auto = Autograph::find()->select('userid')
@@ -278,6 +279,7 @@ class FamilyDoctorController extends Controller
                 }
             }
             echo ($i-6);
+
         }
     
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
@@ -399,9 +401,7 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $doctor = UserDoctor::find()->where(['county' => 1106])->andwhere(['is_guanfang'=>0])->all();
         $i = 6;
-
 
             $birthday = strtotime('- 7 year');
             if($type==1) {
@@ -512,7 +512,7 @@ class FamilyDoctorController extends Controller
                 echo ($i-6);
 
             }
-        }
+        
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save(dirname(__ROOT__) . "/static/s/1孕妇.xlsx");
     }
