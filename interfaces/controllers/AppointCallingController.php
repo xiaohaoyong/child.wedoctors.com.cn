@@ -53,7 +53,6 @@ class AppointCallingController extends Controller
         $i=0;
         foreach($list as $k=>$v) {
             if ($v) {
-                var_dump($v);
                 foreach ($v as $vk => $vv) {
                     $i++;
                     if ($i > 4) {
@@ -86,8 +85,6 @@ class AppointCallingController extends Controller
                 }
             }
         }
-
-        $lista[]=$rs;
         return ['lists'=>$lista];
 
     }
