@@ -84,13 +84,6 @@ class AppointCallingController extends Controller
             }
         }
 
-        $rs['id']=1;
-        $rs['num']=1;
-        $rs['name']=1;
-        $rs['zname']=1;
-        $rs['times']=1;
-        $rs['is_read']=1;
-
         $lista[]=$rs;
         return ['lists'=>$lista];
 
