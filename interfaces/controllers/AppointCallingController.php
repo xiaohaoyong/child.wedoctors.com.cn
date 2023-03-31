@@ -49,8 +49,6 @@ class AppointCallingController extends Controller
         //临时号排队
         $queue = new Queue($doctorid, $type, 0,$type?false:true);
         $list[] = $queue->lrange();
-        var_dump($list);exit;
-
 
         $i=0;
         foreach($list as $k=>$v) {
