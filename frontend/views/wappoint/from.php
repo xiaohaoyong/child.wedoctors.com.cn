@@ -160,6 +160,12 @@ jQuery("#vaccine").change(function(e){
             return false;
         }
     }
+    if(vid == 45 || vid == 57 || vid == 58 || vid ==59 || vid == 97){
+        if(!confirm("，九价hpv疫苗接种年龄范围目前仍是16-26周岁，年龄不符合者不能接种9价疫苗。接种时请您携带医保卡及儿宝宝预约二维码。为防止倒号行为，现场将实名扫码核销二维码。二维码中姓名与实际姓名不同者或者预约时间不是当天者不提供接种服务。"))
+        {
+            return false;
+        }
+    }
     console.log( jQuery("#street").length);
     if(vid && sid && jQuery("#street").length  > 0){
         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
