@@ -83,7 +83,9 @@ frontend\assets\DateAsset::register($this);
         <div class="item">
             <div class="title">居住证明</div>
             <div class="input">
-                <input type="file" name="img"/>
+                <input type='text' id='text-field' class="appoint_input" onclick="document.getElementById('fileName').click()"/>
+
+                <input type="file" name="img" id="fileName" style="display: none" onchange="document.getElementById('text-field').value=this.value.substring(this.value.lastIndexOf('\\')+1)"/>
                 注：需要居住或工作在社区附近的用户才可预约，上传租住合同、居住证、工作证明即可
             </div>
         </div>
