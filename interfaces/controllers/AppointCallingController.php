@@ -33,7 +33,9 @@ class AppointCallingController extends Controller
         //当前时间段排队
         if($timeType) {
             $queue = new Queue($doctorid, $type, $timeType, $type ? false : true);
-            $list[] = $queue->lrange();
+            if($queue->lrange()) {
+                $list[] = $queue->lrange();
+            }
         }
 
         //其他时间段排队
@@ -43,10 +45,10 @@ class AppointCallingController extends Controller
                 $list[] = $queue->lrange();
             }
         }
+
         //临时号排队
         $queue = new Queue($doctorid, $type, 0,$type?false:true);
         $list[] = $queue->lrange();
-
 
         $i=0;
         foreach($list as $k=>$v) {
@@ -83,15 +85,6 @@ class AppointCallingController extends Controller
                 }
             }
         }
-
-        $rs['id']=1;
-        $rs['num']=1;
-        $rs['name']=1;
-        $rs['zname']=1;
-        $rs['times']=1;
-        $rs['is_read']=1;
-
-        $lista[]=$rs;
         return ['lists'=>$lista];
 
     }
