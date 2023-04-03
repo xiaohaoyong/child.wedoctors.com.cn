@@ -8,6 +8,9 @@
 
 namespace frontend\controllers;
 
+
+use yii\helpers\Html;
+use common\components\UploadForm;
 use api\models\ChildInfo;
 use common\components\Code;
 use common\helpers\SmsSend;
@@ -28,6 +31,8 @@ use common\models\UserDoctor;
 use common\models\Vaccine;
 use EasyWeChat\Factory;
 use yii\web\Response;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
 
 
 class WappointController extends Controller
@@ -535,6 +540,15 @@ class WappointController extends Controller
 
     public function actionSave(){
         $post=\Yii::$app->request->post();
+
+
+        $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($post,'img'));
+        if($imagesFile) {
+            $upload= new UploadForm();
+            $upload->imageFiles = $imagesFile;
+            $image = $upload->upload();
+            var_dump($image);exit;
+        }
 
 
         if(!preg_match("/^1[3456789]\d{9}$/", $post['phone'])){
