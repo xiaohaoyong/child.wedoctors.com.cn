@@ -542,12 +542,13 @@ class WappointController extends Controller
         $post=\Yii::$app->request->post();
 
 
-        $imagesFile = UploadedFile::getInstancesByName('img');
-        if($imagesFile) {
-            $upload= new UploadForm();
-            $upload->imageFiles = $imagesFile;
-            $image = $upload->upload();
-            var_dump($image);exit;
+        if($post['img']){
+            $imagesFile = UploadedFile::getInstancesByName('img');
+            if($imagesFile) {
+                $upload= new UploadForm();
+                $upload->imageFiles = $imagesFile;
+                $image = $upload->upload();
+            }
         }
 
 
@@ -654,6 +655,7 @@ class WappointController extends Controller
             $post['userid'] = $this->login->userid;
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;
+            $post['image'] = $image?$image:'';
             $model->load(["Appoint" => $post]);
             if(!$this->login->phone){
                 $this->login->phone=$post['phone'];
