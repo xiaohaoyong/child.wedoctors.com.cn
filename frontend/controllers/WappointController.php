@@ -547,7 +547,6 @@ class WappointController extends Controller
             $upload= new UploadForm();
             $upload->imageFiles = $imagesFile;
             $image = $upload->upload();
-            var_dump($image);
         }
 
 
@@ -655,7 +654,6 @@ class WappointController extends Controller
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;
             $post['image'] = $image?$image:'';
-            var_dump($post);exit;
             $model->load(["Appoint" => $post]);
             if(!$this->login->phone){
                 $this->login->phone=$post['phone'];
