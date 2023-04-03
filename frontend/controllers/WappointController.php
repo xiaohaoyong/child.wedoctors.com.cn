@@ -654,7 +654,6 @@ class WappointController extends Controller
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;
             $post['image'] = $image?$image[0]:'';
-            var_dump($post);
             $model->load(["Appoint" => $post]);
             if(!$this->login->phone){
                 $this->login->phone=$post['phone'];
@@ -663,7 +662,6 @@ class WappointController extends Controller
             if ($model->save()) {
                 return $this->redirect(['wappoint/view','id'=>$model->id]);
             } else {
-                var_dump($model->firstErrors);exit;
                 \Yii::$app->getSession()->setFlash('error','提交失败');
                 return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
             }
