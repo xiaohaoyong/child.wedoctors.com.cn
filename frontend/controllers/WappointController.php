@@ -653,7 +653,7 @@ class WappointController extends Controller
             $post['userid'] = $this->login->userid;
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;
-            $post['image'] = $image?$image:'';
+            $post['image'] = $image?$image[0]:'';
             var_dump($post);
             $model->load(["Appoint" => $post]);
             if(!$this->login->phone){
