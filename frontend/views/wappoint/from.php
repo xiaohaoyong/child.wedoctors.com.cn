@@ -11,7 +11,7 @@ frontend\assets\DateAsset::register($this);
 ?>
 
 <div class="appoint">
-    <form name="appoint" id="appoint_form" action="/wappoint/save" method="post">
+    <form name="appoint" id="appoint_form" action="/wappoint/save" method="post" enctype="multipart/form-data">
         <input name="_csrf-frontend"
 
                type="hidden"
@@ -80,7 +80,13 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
-
+        <div class="item">
+            <div class="title">居住证明</div>
+            <div class="input">
+                <input type="file" name="img"/>
+                注：需要居住或工作在社区附近的用户才可预约，上传租住合同、居住证、工作证明即可
+            </div>
+        </div>
         <?php
         if (!$vaccines || Yii::$app->request->get('vid')) {
             ?>
