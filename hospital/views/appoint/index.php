@@ -213,13 +213,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                    aria-expanded="false">
                                     <i class="icon-settings"></i> 操作 <i class="fa fa-angle-up"></i></a>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li>{true}</li>
+                                    <li>{true}{image}</li>
                                 </ul>
                             </div>
                             ',
                                     'buttons' => [
                                         'true' => function ($url, $model, $key) {
                                             return Html::a('<span class="fa fa-database"></span> 完成', \yii\helpers\Url::to(['appoint/done', 'id' => $model->id]), ['data-confirm' => "是否确定已完成"]);
+                                        },
+                                        'image' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-database"></span> 查看凭证', $model->image);
                                         },
                                     ],
                                 ],
