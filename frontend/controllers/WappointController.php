@@ -548,6 +548,7 @@ class WappointController extends Controller
                 $upload= new UploadForm();
                 $upload->imageFiles = $imagesFile;
                 $image = $upload->upload();
+                var_dump($image);
             }
         }
 
