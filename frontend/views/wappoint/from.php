@@ -80,6 +80,7 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
+        <?php if($doctor['userid'] == 38){ ?>
         <div class="item">
             <div class="title">居住证明</div>
             <div class="input">
@@ -89,6 +90,7 @@ frontend\assets\DateAsset::register($this);
                 注：需要居住或工作在社区附近的用户才可预约，上传租住合同、居住证、工作证明即可
             </div>
         </div>
+        <?php }?>
         <?php
         if (!$vaccines || Yii::$app->request->get('vid')) {
             ?>
@@ -237,7 +239,7 @@ jQuery(".days .rs").bind("click",function(){
   jQuery('#appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
 });
-var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！'};
+var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！',img:'请上传预约凭证'};
 jQuery("#appoint_form").submit(data,function(e){
     var labelMap = e.data;
     var label = '';
