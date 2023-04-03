@@ -542,7 +542,7 @@ class WappointController extends Controller
         $post=\Yii::$app->request->post();
 
 
-        $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($post,'img'));
+        $imagesFile = UploadedFile::getInstancesByName('img');
         if($imagesFile) {
             $upload= new UploadForm();
             $upload->imageFiles = $imagesFile;
