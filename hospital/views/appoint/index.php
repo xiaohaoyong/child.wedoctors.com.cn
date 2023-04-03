@@ -144,6 +144,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                 [
 
+                                    'attribute' => 'createtime',
+                                    'value' => function ($e) {
+                                        return date('Y-m-d', $e->createtime);
+                                    }
+                                ],
+                                [
+
                                     'attribute' => 'state',
                                     'value' => function ($e) {
                                         return \common\models\Appoint::$stateText[$e->state];
