@@ -553,10 +553,10 @@ class WappointController extends Controller
         }
 
 
-        if(!preg_match("/^1[3456789]\d{9}$/", $post['phone'])){
-            \Yii::$app->getSession()->setFlash('error','请填写正确手机号码');
-            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
-        }
+        // if(!preg_match("/^1[3456789]\d{9}$/", $post['phone'])){
+        //     \Yii::$app->getSession()->setFlash('error','请填写正确手机号码');
+        //     return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        // }
 
         if($post['vcode']!=110112 && $post['vaccine']!=64) {
             $isVerify = SmsSend::verifymessage($post['phone'], $post['vcode']);
