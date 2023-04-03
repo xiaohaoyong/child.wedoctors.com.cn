@@ -662,6 +662,7 @@ class WappointController extends Controller
             if ($model->save()) {
                 return $this->redirect(['wappoint/view','id'=>$model->id]);
             } else {
+                var_dump($model->firstErrors);
                 \Yii::$app->getSession()->setFlash('error','提交失败');
                 return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
             }
