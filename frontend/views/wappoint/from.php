@@ -80,14 +80,14 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
-        <?php if($doctor['userid'] == 38){ ?>
+        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[45 , 57 , 58 , 59 , 97])){ ?>
         <div class="item">
             <div class="title">居住证明</div>
             <div class="input">
                 <input type='text' id='text-field' class="appoint_input" onclick="document.getElementById('fileName').click()"/>
 
                 <input type="file" name="img" id="fileName" style="display: none" onchange="document.getElementById('text-field').value=this.value.substring(this.value.lastIndexOf('\\')+1)"/>
-                注：需要居住或工作在社区附近的用户才可预约，上传租住合同、居住证、工作证明即可
+                注：HPV疫苗及带状疱疹疫苗限在白纸坊街道居住、工作或上学的家医签约居民。HPV疫苗预约前需上传凭证，线上完善健康档案，现场签订家医协议或缴纳家医服务费。
             </div>
         </div>
         <?php }?>
