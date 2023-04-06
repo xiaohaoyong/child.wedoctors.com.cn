@@ -15,16 +15,9 @@ use yii\widgets\ActiveForm;
             <div class="box-body">
                 <?php $form = ActiveForm::begin(); ?>
 
-                    <?= $form->field($model, 'userid')->textInput() ?>
-                <?= $form->field($model, 'name')->textInput() ?>
+                <?= $form->field($model, 'name',['options' => ['disabled' => "disabled"])->textInput() ?>
 
-    <?= $form->field($model, 'birthday')->textInput() ?>
-
-    <?= $form->field($model, 'createtime')->textInput() ?>
-
-    <?= $form->field($model, 'gender')->textInput() ?>
                 <?= $form->field($model, 'idcard')->textInput() ?>
-                <?= $form->field($model, 'field27')->textInput() ?>
 
 
                 <div class="form-group">
