@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
             <div class="box-body">
                 <?php $form = ActiveForm::begin(); ?>
 
-                <?= $form->field($model, 'name',['options' => ['disabled' => "disabled"]])->textInput() ?>
+                <?= $form->field($model, 'name',['options' => ['disabled' => "disabled"]])->textInput(['disabled' => "disabled"]) ?>
 
                 <?= $form->field($model, 'idcard')->textInput() ?>
 
