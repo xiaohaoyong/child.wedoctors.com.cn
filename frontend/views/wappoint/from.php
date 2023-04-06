@@ -170,7 +170,7 @@ jQuery("#vaccine").change(function(e){
             return false;
         }
     }
-    const arr = [45,57,58,59,97];
+    const arr = ['45','57','58','59','97'];
     console.log(arr.indexOf(vid));
     console.log(vid);
 
