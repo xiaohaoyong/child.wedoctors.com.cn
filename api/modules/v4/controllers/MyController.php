@@ -39,7 +39,7 @@ class MyController extends Controller
                     ['title'=>'我的家庭','img'=>'http://static.i.wedoctors.com.cn/user_index_item2.png','url'=>''],
                     ['title'=>'我的签约','img'=>'http://static.i.wedoctors.com.cn/user_index_item3.png','url'=>'/pages/doctor/index'],
                     ['title'=>'我的预约','img'=>'http://static.i.wedoctors.com.cn/user_index_item4.png','url'=>'/pages/appoint/my'],
-                    ['title'=>'家医协议','img'=>'http://static.i.wedoctors.com.cn/user_index_item6.png','url'=>'/pages/my/index/xieyi?id='.$this->userid],
+                    ['title'=>'家医协议','img'=>'http://static.i.wedoctors.com.cn/user_index_item6.png','url'=>'/pages/user/index/xieyi?id='.$this->userid],
 
                     ['title'=>'优选服务包','img'=>'http://static.i.wedoctors.com.cn/user_index_item5.png','url'=>''],
                 ],
