@@ -39,7 +39,7 @@ class MyController extends Controller
                     ['title'=>'我的家庭','img'=>'http://static.i.wedoctors.com.cn/user_index_item2.png','url'=>''],
                     ['title'=>'我的签约','img'=>'http://static.i.wedoctors.com.cn/user_index_item3.png','url'=>'/pages/doctor/index'],
                     ['title'=>'我的预约','img'=>'http://static.i.wedoctors.com.cn/user_index_item4.png','url'=>'/pages/appoint/my'],
-                    ['title'=>'家医协议','img'=>'http://static.i.wedoctors.com.cn/user_index_item10.png','url'=>'/pages/user/index/xieyi?id='.$this->userid],
+                    ['title'=>'家医协议','img'=>'http://static.i.wedoctors.com.cn/user_index_item11.png','url'=>'/pages/user/index/xieyi?id='.$this->userid],
                     ['title'=>'优选服务包','img'=>'http://static.i.wedoctors.com.cn/user_index_item5.png','url'=>''],
                 ],
             ],
@@ -61,7 +61,7 @@ class MyController extends Controller
                 'list'=>[
                     ['title'=>'客服咨询','img'=>'http://static.i.wedoctors.com.cn/user_index_item8.png'],
                     ['title'=>'新冠疫苗相关问题解答','img'=>'http://static.i.wedoctors.com.cn/user_index_item9.png','url'=>'/pages/doctor/street'],
-                    ['title'=>'常见问题','img'=>'http://static.i.wedoctors.com.cn/user_index_item10.png','url'=>'/pages//qa/index'],
+                    ['title'=>'常见问题','img'=>'http://static.i.wedoctors.com.cn/user_index_item10.png','url'=>'/pages/qa/index'],
                 ],
             ],
         ];
