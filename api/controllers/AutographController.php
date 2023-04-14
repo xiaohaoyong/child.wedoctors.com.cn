@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\controllers;
+namespace api\controllers;
 
 use common\models\ChildInfo;
 use common\models\DoctorParent;
