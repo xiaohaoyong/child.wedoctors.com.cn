@@ -214,7 +214,6 @@ class AppointController extends BaseController
 
         $model = $this->findModel($id);
         $hospital = UserDoctor::findOne($model->doctorid)->hospital->name;
-        var_dump($hospital);exit;
         $model->state = $state;
         if ($model->save()) {
             $login = UserLogin::findOne(['id' => $model->loginid]);
@@ -240,7 +239,7 @@ class AppointController extends BaseController
                 $tmpid='oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA';
             }
 
-            $rs = WechatSendTmp::send($data, $login->openid, $tmpid);
+            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $tmpid);
 
         }
         $redirect=$redirect?$redirect:Yii::$app->request->referrer;
