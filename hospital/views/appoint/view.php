@@ -34,9 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]) ?>
                 <?php $form = ActiveForm::begin([
-                    'action' => ['appoint/done'],
-                    'method'=>'post',
-                ]); ?>
+                    'action' => ['appoint/done']                ]); ?>
 <?= $form->field($model,'referrer')->hiddenInput(['value'=>$referrer]) ?>
 <?= $form->field($model,'id')->hiddenInput(['value'=>$model->id]) ?>
 <?= $form->field($model,'state')->radioList([1=>'通过',3=>'不通过'])?>
