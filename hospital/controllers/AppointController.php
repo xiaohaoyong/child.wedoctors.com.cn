@@ -211,11 +211,11 @@ class AppointController extends BaseController
 
     public function actionDone()
     {
-        $p = Yii::$app->request->queryParams['Appoint'];
+        $p = Yii::$app->request->queryParams;
         $id= $p['id'];
         $state= $p['state']?$p['state']:2;
         $referrer= $p['referrer'];
-        var_dump($p);exit;
+        var_dump(Yii::$app->request->queryParams);exit;
 
         $model = $this->findModel($id);
         $hospital = UserDoctor::findOne($model->doctorid)->hospital->name;
