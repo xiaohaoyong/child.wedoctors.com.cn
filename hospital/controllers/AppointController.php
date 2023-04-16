@@ -211,7 +211,7 @@ class AppointController extends BaseController
 
     public function actionDone()
     {
-        $p = Yii::$app->request->queryParams;
+        $p = Yii::$app->request->queryParams['Appoint'];
         $id= $p['id'];
         $state= $p['state']?$p['state']:2;
         $referrer= $p['referrer'];
