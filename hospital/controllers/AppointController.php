@@ -209,7 +209,7 @@ class AppointController extends BaseController
 
 
 
-    public function actionDone($id,$state=2,$redirect='')
+    public function actionDone($id,$state=2,$referrer='')
     {
 
         $model = $this->findModel($id);
@@ -242,9 +242,8 @@ class AppointController extends BaseController
             $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $tmpid);
 
         }
-        $redirect=$redirect?$redirect:Yii::$app->request->referrer;
-        var_dump($redirect);exit;
-        return $this->redirect($redirect);
+        $referrer=$referrer?$referrer:Yii::$app->request->referrer;
+        return $this->redirect($referrer);
     }
 
 
