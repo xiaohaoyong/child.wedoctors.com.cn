@@ -39,24 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class' => 'btn btn-danger']) ?>
                 </div>
                 <?php $form = ActiveForm::begin(); ?>
-
-<?= $form->field($model, 'userid')->textInput() ?>
-
-<?= $form->field($model, 'doctorid')->textInput() ?>
-
-<?= $form->field($model, 'createtime')->textInput() ?>
-
-<?= $form->field($model, 'appoint_time')->textInput() ?>
-
-<?= $form->field($model, 'appoint_date')->textInput() ?>
-
-<?= $form->field($model, 'type')->textInput() ?>
-
-<?= $form->field($model, 'childid')->textInput() ?>
-
-<?= $form->field($model, 'phone')->textInput() ?>
-<?= $form->field($model,'state')->radioList([1=>'通过',2=>'不通过']])?>
-
+<?=Html::radioList('state','',[1=>'通过',2=>'不通过'])?>
 <div class="form-group">
 <?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
 'btn btn-primary']) ?>
