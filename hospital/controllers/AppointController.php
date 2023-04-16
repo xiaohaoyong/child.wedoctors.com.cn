@@ -215,6 +215,7 @@ class AppointController extends BaseController
         $id= $p['id'];
         $state= $p['state']?$p['state']:2;
         $referrer= $p['referrer'];
+        var_dump($p);exit;
 
         $model = $this->findModel($id);
         $hospital = UserDoctor::findOne($model->doctorid)->hospital->name;
