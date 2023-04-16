@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\widgets\ActiveForm;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\Appoint */
 
@@ -39,7 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class' => 'btn btn-danger']) ?>
                 </div>
                 <?php $form = ActiveForm::begin(); ?>
-<?=Html::radioList('state','',[1=>'通过',2=>'不通过'])?>
+
+<?= $form->field($model,'state')->radioList([1=>'通过',2=>'不通过'])?>
+
 <div class="form-group">
 <?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
 'btn btn-primary']) ?>
