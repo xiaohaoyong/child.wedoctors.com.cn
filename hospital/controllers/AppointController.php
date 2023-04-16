@@ -243,6 +243,7 @@ class AppointController extends BaseController
 
         }
         $redirect=$redirect?$redirect:Yii::$app->request->referrer;
+        var_dump($redirect);exit;
         return $this->redirect($redirect);
     }
 
