@@ -33,15 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ],
                 ]) ?>
-                <div class="form-group" style="padding-top: 20px;">
-                    <?= Html::a('通过', ['/appoint/done?state=1&referrer='.$referrer.'&id='.$model->id],
-                        ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('不通过', ['/appoint/done?state=3&referrer='.$referrer.'&id='.$model->id],
-                        ['class' => 'btn btn-danger']) ?>
-                </div>
-                <?php $form = ActiveForm::begin(); ?>
-
-<?= $form->field($model,'state')->radioList([1=>'通过',2=>'不通过'])?>
+                <?php $form = ActiveForm::begin([
+                    'action' => ['appoint/done'],
+                    'method'=>'post',
+                ]); ?>
+<?= $form->field($model,'referrer')->hiddenInput(['value'=>$referrer]) ?>
+<?= $form->field($model,'id')->hiddenInput(['value'=>$model->id]) ?>
+<?= $form->field($model,'state')->radioList([1=>'通过',3=>'不通过'])?>
 
 <div class="form-group">
 <?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
