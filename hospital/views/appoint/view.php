@@ -35,15 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-                        'id',
-                        'userid',
-                        'doctorid',
-                        'createtime:datetime',
-                        'appoint_time:datetime',
-                        'appoint_date',
-                        'type',
-                        'childid',
-                        'phone',
+                        [
+                            'attribute' => 'image',
+                            'format'=>'raw',
+                            'value' => function ($e) {
+                                return Html::img($e->image,['class'=>'file-preview-image','style'=>'max-width:300px']);
+                            }
+                        ],
                     ],
                 ]) ?>
 
