@@ -33,9 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]) ?>
                 <div class="form-group" style="padding-top: 20px;">
-                    <?= Html::a('通过', ['done?state=1&referrer='.$referrer.'&id='.$model->id],
+                    <?= Html::a('通过', ['/appoint/done?state=1&referrer='.$referrer.'&id='.$model->id],
                         ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('不通过', ['done?state=3&referrer='.$referrer.'&id='.$model->id],
+                    <?= Html::a('不通过', ['/appoint/done?state=3&referrer='.$referrer.'&id='.$model->id],
                         ['class' => 'btn btn-danger']) ?>
                 </div>
             </div>
