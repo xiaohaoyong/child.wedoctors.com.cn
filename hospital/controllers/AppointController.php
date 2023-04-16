@@ -220,7 +220,7 @@ class AppointController extends BaseController
                    'remark' => ARRAY('value' => "尊敬的用户您好，系统已取消您当前预约".$hospital."的疫苗，请上传正确的图片，如有需求，您可重新预约"),
                ];
                $tmpid='t-fxuMyA77Xx71OA4_3y528hOSWXk_2rDjvN1zgefbk';
-            }else{
+            }elseif($state==2){
                 $data = [
                     'first' => ['value' => '服务已完成'],
                     'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
@@ -231,7 +231,7 @@ class AppointController extends BaseController
                 $tmpid='oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA';
             }
 
-            $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $tmpid);
+            $rs = WechatSendTmp::send($data, $login->openid, $tmpid);
 
         }
         $r=$referrer?$referrer:Yii::$app->request->referrer;
