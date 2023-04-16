@@ -207,26 +207,47 @@ class AppointController extends BaseController
         $objWriter->save('php://output');
     }
 
-    public function actionDone($id)
+
+
+    public function actionDone($id,$state=2,$redirect='')
     {
 
         $model = $this->findModel($id);
-        $model->state = 2;
+        $hospital = UserDoctor::findOne($model->doctorid)->hospital->name;
+        var_dump($hospital);exit;
+        $model->state = $state;
         if ($model->save()) {
-
             $login = UserLogin::findOne(['id' => $model->loginid]);
-            $data = [
-                'first' => ['value' => '服务已完成'],
-                'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
-                'keyword2' => ARRAY('value' => date('Y年m月d日 H:i:00')),
-                'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
 
-            ];
-            $rs = WechatSendTmp::send($data, $login->openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
+            if($state==3){
+               $data = [
+                   'first' => ['value' => '您的预约已经取消。'],
+                   'keyword1' => ARRAY('value' => $model->name()),
+                   'keyword2' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                   'keyword3' => ARRAY('value' => Appoint::$timeText[$model->appoint_time]),
+                   'keyword4' => ARRAY('value' => '住址/学校/工作单位不属于辖区'),
+                   'remark' => ARRAY('value' => "尊敬的用户您好，由于号源不足您的预约已被取消，请您调整出行，给您造成的不便敬请谅解，如有问题请联系在线客服"),
+               ];
+               $tmpid='t-fxuMyA77Xx71OA4_3y528hOSWXk_2rDjvN1zgefbk';
+            }else{
+                $data = [
+                    'first' => ['value' => '服务已完成'],
+                    'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                    'keyword2' => ARRAY('value' => date('Y年m月d日 H:i:00')),
+                    'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
+
+                ];
+                $tmpid='oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA';
+            }
+
+            $rs = WechatSendTmp::send($data, $login->openid, $tmpid);
 
         }
-        return $this->redirect(Yii::$app->request->referrer);
+        $redirect=$redirect?$redirect:Yii::$app->request->referrer;
+        return $this->redirect($redirect);
     }
+
+
     public function actionDoneAll()
     {
         $params = \Yii::$app->request->queryParams;
@@ -358,6 +379,7 @@ class AppointController extends BaseController
     public function actionView($id)
     {
         return $this->render('view', [
+            'referrer'=>Yii::$app->request->referrer,
             'model' => $this->findModel($id),
         ]);
     }
