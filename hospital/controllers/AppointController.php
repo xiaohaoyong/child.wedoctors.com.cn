@@ -242,8 +242,10 @@ class AppointController extends BaseController
             $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $tmpid);
 
         }
-        $referrer=$referrer?$referrer:Yii::$app->request->referrer;
-        return $this->redirect($referrer);
+        var_dump($referrer);
+        $r=$referrer?$referrer:Yii::$app->request->referrer;
+        var_dump($r);
+        return $this->redirect($r);
     }
 
 
