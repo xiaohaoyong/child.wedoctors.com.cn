@@ -222,7 +222,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             return Html::a('<span class="fa fa-database"></span> 完成', \yii\helpers\Url::to(['appoint/done', 'id' => $model->id]), ['data-confirm' => "是否确定已完成"]);
                                         },
                                         'image' => function ($url, $model, $key) {
-                                            return Html::a('<span class="fa fa-database"></span> 查看凭证', $model->image);
+                                            return Html::a('<span class="fa fa-database"></span> 查看凭证', \yii\helpers\Url::to(['appoint/view', 'id' => $model->id]));
                                         },
                                     ],
                                 ],
