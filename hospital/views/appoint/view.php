@@ -20,18 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-                <p>
-                    <?= Html::a('Update', ['update', 'id' => $model->id],
-                        ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                        'class' => 'btn btn-danger',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to delete this item?',
-                            'method' => 'post',
-                        ],
-                    ]) ?>
-                </p>
-
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
@@ -44,7 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ],
                 ]) ?>
-
+                <div class="form-group" style="padding-top: 20px;">
+                    <?= Html::a('不通过', ['done?state=3&id='.$model->id],
+                        ['class' => 'btn btn-danger']) ?>
+                </div>
             </div>
         </div>
     </div>
