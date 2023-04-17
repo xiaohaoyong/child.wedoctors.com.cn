@@ -231,7 +231,7 @@ class AppointController extends BaseController
                 $tmpid='oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA';
             }
 
-           // $rs = WechatSendTmp::send($data, $login->openid, $tmpid);
+            $rs = WechatSendTmp::send($data, $login->openid, $tmpid);
 
         }
         $r=$referrer?$referrer:Yii::$app->request->referrer;
