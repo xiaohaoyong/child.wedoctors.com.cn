@@ -279,7 +279,7 @@ class FamilyController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-'.$type.'.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/s/" .$hospital->name.'儿童.xlsx');
     }
     public function setDownFExcel($doctorid,$type)
     {
@@ -504,7 +504,7 @@ class FamilyController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-pregnancy-'.$type.'.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/s/" .$hospital->name.'孕妇.xlsx');
     }
 
 }
