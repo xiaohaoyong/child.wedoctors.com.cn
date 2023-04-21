@@ -293,6 +293,7 @@ class FamilyController extends Controller
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
         ];
+        
         $worksheet->getStyle('A1')->applyFromArray($styleArray);
         $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(10);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
