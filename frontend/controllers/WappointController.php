@@ -8,6 +8,9 @@
 
 namespace frontend\controllers;
 
+
+use yii\helpers\Html;
+use common\components\UploadForm;
 use api\models\ChildInfo;
 use common\components\Code;
 use common\helpers\SmsSend;
@@ -28,6 +31,8 @@ use common\models\UserDoctor;
 use common\models\Vaccine;
 use EasyWeChat\Factory;
 use yii\web\Response;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
 
 
 class WappointController extends Controller
@@ -537,6 +542,14 @@ class WappointController extends Controller
         $post=\Yii::$app->request->post();
 
 
+        $imagesFile = UploadedFile::getInstancesByName('img');
+        if($imagesFile) {
+            $upload= new UploadForm();
+            $upload->imageFiles = $imagesFile;
+            $image = $upload->upload();
+        }
+
+
         if(!preg_match("/^1[3456789]\d{9}$/", $post['phone'])){
             \Yii::$app->getSession()->setFlash('error','请填写正确手机号码');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
@@ -640,6 +653,7 @@ class WappointController extends Controller
             $post['userid'] = $this->login->userid;
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;
+            $post['image'] = $image?$image[0]:'';
             $model->load(["Appoint" => $post]);
             if(!$this->login->phone){
                 $this->login->phone=$post['phone'];

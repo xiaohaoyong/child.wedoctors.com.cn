@@ -74,9 +74,9 @@ class ChildInfoController extends BaseController
      * @param string $name
      * @return mixed
      */
-    public function actionUpdate($id, $name)
+    public function actionUpdate($id)
     {
-        $model = $this->findModel($id, $name);
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'name' => $model->name]);

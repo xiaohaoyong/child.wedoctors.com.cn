@@ -153,7 +153,6 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $i = 6;
 
 
         $birthday = strtotime('- 7 year');
@@ -222,7 +221,8 @@ class FamilyDoctorController extends Controller
         $hospital = Hospital::findOne($userDoctor->hospitalid);
         echo $hospital->name.":";
         if($auto) {
-           
+            $i = 6;
+
             foreach($auto as $ak=>$av) {
                 $child = ChildInfo::find()
                     ->andFilterWhere(['userid'=>$av])
@@ -283,7 +283,7 @@ class FamilyDoctorController extends Controller
         }
     
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/s/1106.xlsx");
+        $writer->save(dirname(__ROOT__) . "/static/s/".$hospital->name."儿童.xlsx");
     }
     public function setDownFExcel($doctorid,$type)
     {
@@ -401,7 +401,6 @@ class FamilyDoctorController extends Controller
         $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(50);
 
 
-        $i = 6;
 
             $birthday = strtotime('- 7 year');
             if($type==1) {
@@ -468,7 +467,7 @@ class FamilyDoctorController extends Controller
             $hospital = Hospital::findOne($userDoctor->hospitalid);
             echo $hospital->name.":";
             if($auto) {
-                //$i = 6;
+                $i = 6;
                 foreach($auto as $ak=>$av) {
                     $preg = \common\models\Pregnancy::find()
                         //->andWhere(['pregnancy.field49'=>0])
@@ -514,7 +513,7 @@ class FamilyDoctorController extends Controller
             }
         
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/s/1孕妇.xlsx");
+        $writer->save(dirname(__ROOT__) . "/static/s/".$hospital->name."孕妇.xlsx");
     }
 
 }

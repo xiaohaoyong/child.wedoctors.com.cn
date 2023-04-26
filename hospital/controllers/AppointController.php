@@ -26,20 +26,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  */
 class AppointController extends BaseController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+
 
     public function actionDown()
     {
@@ -207,26 +194,51 @@ class AppointController extends BaseController
         $objWriter->save('php://output');
     }
 
-    public function actionDone($id)
+
+
+    public function actionDone($id=0)
     {
+        $p = Yii::$app->request->queryParams['Appoint'];
+        $p = $p?$p:Yii::$app->request->bodyParams['Appoint'];
+        $id= $id?$id:$p['id'];
+        $state= $p['state']?$p['state']:2;
+        $referrer= $p['referrer'];
 
         $model = $this->findModel($id);
-        $model->state = 2;
+        $hospital = UserDoctor::findOne($model->doctorid)->hospital->name;
+        $model->state = $state;
         if ($model->save()) {
-
             $login = UserLogin::findOne(['id' => $model->loginid]);
-            $data = [
-                'first' => ['value' => '服务已完成'],
-                'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
-                'keyword2' => ARRAY('value' => date('Y年m月d日 H:i:00')),
-                'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
 
-            ];
-            $rs = WechatSendTmp::send($data, $login->openid, 'oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA', '', ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => '/pages/appoint/my?type=2',]);
+            if($state==3){
+               $data = [
+                   'first' => ['value' => '您的预约已经取消。'],
+                   'keyword1' => ARRAY('value' => $model->name()),
+                   'keyword2' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                   'keyword3' => ARRAY('value' => Appoint::$timeText[$model->appoint_time]),
+                   'keyword4' => ARRAY('value' => '住址/学校/工作单位不属于'.$hospital.'辖区'),
+                   'remark' => ARRAY('value' => "尊敬的用户您好，系统已取消您当前预约".$hospital."的疫苗，请上传正确的图片，如有需求，您可重新预约"),
+               ];
+               $tmpid='t-fxuMyA77Xx71OA4_3y528hOSWXk_2rDjvN1zgefbk';
+            }elseif($state==2){
+                $data = [
+                    'first' => ['value' => '服务已完成'],
+                    'keyword1' => ARRAY('value' => Appoint::$typeText[$model->type]),
+                    'keyword2' => ARRAY('value' => date('Y年m月d日 H:i:00')),
+                    'remark' => ARRAY('value' => "感谢您对社区医院本次服务的支持，如有问题请联系在线客服"),
+
+                ];
+                $tmpid='oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA';
+            }
+
+            $rs = WechatSendTmp::send($data, $login->openid, $tmpid);
 
         }
-        return $this->redirect(Yii::$app->request->referrer);
+        $r=$referrer?$referrer:Yii::$app->request->referrer;
+        return $this->redirect($r);
     }
+
+
     public function actionDoneAll()
     {
         $params = \Yii::$app->request->queryParams;
@@ -358,6 +370,7 @@ class AppointController extends BaseController
     public function actionView($id)
     {
         return $this->render('view', [
+            'referrer'=>Yii::$app->request->referrer,
             'model' => $this->findModel($id),
         ]);
     }
