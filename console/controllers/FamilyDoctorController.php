@@ -201,6 +201,7 @@ class FamilyDoctorController extends Controller
 
         }else{
             $auto = Autograph::find()->select('userid')
+                ->where(['>','createtime',strtotime('2023-01-01')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
         }
