@@ -3,6 +3,7 @@
 namespace hospital\controllers;
 
 use common\helpers\WechatSendTmp;
+use common\models\QuestionImg;
 use common\models\QuestionReply;
 use common\models\UserDoctor;
 use common\models\UserLogin;
@@ -67,7 +68,7 @@ class QuestionController extends Controller
         $dataProvider = $searchModel->search($params);
         $reply = new QuestionReply();
         $model=$this->findModel($id);
-
+        $questionImg = QuestionImg::find()->where(['qid'=>$id])->select('image')->column();
         if( $reply->load(Yii::$app->request->post())){
             $reply->userid=\Yii::$app->user->identity->doctorid;
             if($reply->save()){
@@ -90,6 +91,7 @@ class QuestionController extends Controller
             'model' => $model,
             'dataProvider' => $dataProvider,
             'reply'=>$reply,
+            'questionImg' =>$questionImg //回复图片
         ]);
     }
 
@@ -169,5 +171,31 @@ class QuestionController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    /**
+     * 更改问题状态-已结束
+     */
+    public function actionUpdateState(){
+
+        $id = Yii::$app->request->get('id');
+        $model = $this->findModel($id);
+        if($model){
+
+            //发送评价消息
+            $thing1 = '在线咨询';
+            // $thing2 = '您向'.$userDoctor->name.'的在线咨询已结束，邀请您对医生的回复进行评价';
+            $thing2 = '邀请您对本次咨询进行评价';
+            $data = [
+                'thing1' => ARRAY('value' => $thing1),
+                'thing2' => ARRAY('value' => $thing2),
+                'time3' => ARRAY('value' => date('Y年m月d日 H:i',time())),
+            ];
+            $userLogin = UserLogin::find()->where(['userid'=>$model->userid])->one();
+            $rs=WechatSendTmp::sendSubscribe($data,$userLogin->xopenid,'cJqc11RdX95akxICJmQo3nP-0yo6VA4eHAeZHjEViHo','/pages/question/view?id='.$model->id);
+
+            Question::updateAll(['state'=>2],['id'=>$model->id]);
+            return $this->redirect(['index']);
+        }
+
     }
 }

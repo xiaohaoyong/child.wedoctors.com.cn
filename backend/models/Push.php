@@ -90,8 +90,8 @@ class Push extends Model
             $userids = $userids;
         }
         if ($this->test) {
-            $userids[] = 79911;
-            $userids[] = 78256;
+            $userids[] = 175579;
+            $userids[] = 830468;
         }
         return $userids;
     }

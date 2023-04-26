@@ -309,7 +309,7 @@ class SuiteController extends Controller
                 [
                     'type' => 'view',
                     'name' => '预约HPV九价疫苗',
-                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index?search=%E5%98%89&type=0',
+                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/index?search=%E6%96%B0%E4%B8%96%E7%BA%AA%E5%A5%A5%E4%B8%9C%E7%96%AB%E8%8B%97%E6%8E%A5%E7%A7%8D%E9%97%A8%E8%AF%8A&type=0',
                 ],
                 [
                     'type' => 'view',
@@ -371,7 +371,7 @@ class SuiteController extends Controller
                 [
                     'type' => 'view',
                     'name' => '24小时视频医生',
-                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7162935a1a261323&redirect_uri=https%3A%2F%2Fwww.vtumap.com%2Fboli_vd_wechat%2F100%2Ftop&response_type=code&scope=snsapi_userinfo&connect_redirect=1#wechat_redirect'
+                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7162935a1a261323&redirect_uri=https%3A%2F%2Fvd.lequnmed.club%2Fboli_vd_wechat%2F100%2Ftop&response_type=code&scope=snsapi_userinfo&connect_redirect=1#wechat_redirect'
                 ],
             ]],
 

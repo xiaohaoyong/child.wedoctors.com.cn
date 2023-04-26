@@ -50,9 +50,27 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return $info->name;
                             }
                         ],
+                            [
+                                'attribute'=>'资料图片',
+                                'value'=>function ($model){
+                                    return '';
+                                }
+                            ],
                     ],
-                ]) ?>
+                ])
 
+ ?>
+    <?php
+    if ($questionImg && count($questionImg))
+                        {
+                            $html= '';
+                            foreach ($questionImg as $v)
+                            {
+                                $html .= '<a target="_blank" href="'.$v.'"><img src="'.$v.'" style="width:100px;height:100px"></a>&nbsp;&nbsp;';
+                            }
+                            echo $html;
+                        }
+        ?>
             </div>
             <div class="box-body">
                 <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">

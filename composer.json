@@ -54,7 +54,6 @@
     "cache/simple-cache-bridge": "^1.0",
     "cache/redis-adapter": "^1.0",
     "cache/apcu-adapter": "^1.0",
-    "overtrue/wechat": "~4.0",
     "kop/yii2-scroll-pager": "dev-master",
     "jormin/baidu-speech": "^1.0",
     "hightman/xunsearch": "dev-master",
@@ -62,7 +61,9 @@
     "2amigos/yii2-switch-widget": "~1.0",
     "codemix/yii2-excelexport": "^2.7",
     "workerman/workerman": "^4.0",
-    "kucha/ueditor": "*"
+    "kucha/ueditor": "*",
+    "phpoffice/phpspreadsheet": "^1.25",
+    "w7corp/easywechat": "~4.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

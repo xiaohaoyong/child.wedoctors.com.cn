@@ -64,6 +64,7 @@ use common\models\UserDoctorAppoint;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\Vaccine;
+use common\models\MoveChild;
 use common\models\WeOpenid;
 use EasyWeChat\Factory;
 use Faker\Provider\File;
@@ -108,6 +109,67 @@ class DataController extends \yii\console\Controller
     }
     public function actionTesta($num=0)
     {
+
+        $totle = 507593;
+        $limit = ceil($totle / 20);
+        $snum = $num * $limit;
+
+        $data = [
+            'first' => ['value' => "HPV 疫苗作为目前可以有效预防宫颈癌的疫苗，一直以来被高度关注。该怎样选择，接种疫苗有什么注意事项等等，也是朋友们关心的话题。为此儿宝宝邀请了北京大学国际医院特需国际医疗部成人疫苗门诊，主治医师 刘芳勋和北京王府中西医结合医院 主任医师 医学博士 妇产科专家 董文辉来给大家进行讲解，宫颈癌的预防策略及HPV疫苗该怎么选。"],
+            'keyword1' => ARRAY('value' => '第三十三期健康直播课HPV疫苗怎么选'),
+            'keyword2' => ARRAY('value' => '2022年12月11日 下午15点'),
+            'remark' => ARRAY('value' => ""),
+        ];
+        $url='https://kfl.h5.xeknow.com/sl/2u3uAK';
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'ob5OPSvdOJ2DhK13eDdnI9PwABfDjDDssTIGHjYB_WQ', $url);
+        exit;
+        $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['type'=>0])->groupBy('openid')->orderBy('id desc')->offset($snum)->limit($limit)->column();
+        foreach ($login as $k => $v) {
+
+            $rs = WechatSendTmp::send($data, $v, 'ob5OPSvdOJ2DhK13eDdnI9PwABfDjDDssTIGHjYB_WQ', $url);
+            var_dump($v);
+        }
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', 'ob5OPSvdOJ2DhK13eDdnI9PwABfDjDDssTIGHjYB_WQ', $url);
+        exit;
+
+        $rs['name'] = 'sdf';
+        $rs['birthday'] = 'sdf';
+        $rs['mother'] = 'sdf';
+        $rs['hospitalid'] = 'sdf';
+        $rs['idcard'] = 'sdf';
+        $moveChild = new MoveChild();
+
+        $ids=DoctorParent::find()->select('parentid')->where(['doctorid'=>353548])->column();
+        $preg = Pregnancy::find()->where(['<','field11',strtotime('-37 week')])
+            ->select('familyid')
+            ->andWhere(['>','field11',strtotime('-48 week')])
+            ->andWhere(['field49'=>0])
+            ->andWhere(['familyid'=>$ids])
+            ->column();
+        $child = ChildInfo::find()->select('userid')->where(['>','birthday',strtotime('-3 month')])->andWhere(['userid'=>$ids])->column();
+        $userids = array_unique($preg+$child);
+        $data = [
+            'first' => ['value' => "恭喜您有了或即将有一个健康的宝宝，为了更好的给宝宝提供优质的接种服务，本单位开展线上家长课堂"],
+            'keyword1' => ARRAY('value' => '疫苗接种-新手妈妈早知道'),
+            'keyword2' => ARRAY('value' => '2022年11月25日20:30-21:00'),
+            'keyword3' => ARRAY('value' => '2022年11月25日20:30-21:00'),
+
+            'remark' => ARRAY('value' => ""),
+        ];
+        $miniprogram = [
+            "appid" => \Yii::$app->params['wxXAppId'],
+            "pagepath" => "/pages/article/view/index?id=2398",
+        ];
+        foreach($userids as $k=>$v){
+
+            $login = UserLogin::find()->select('openid')->where(['!=', 'openid', ''])->andWhere(['userid'=>$v])->one();
+           
+            $rs = WechatSendTmp::send($data, $login->openid, 'VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0', '', $miniprogram);
+            var_dump($rs);
+        }
+exit;
+
+
 //        $fiels=$this->getfiles('/Users/wangzhen/PhpstormProjects/child.wedoctors.com.cn/123', '#\.(xlsx)$#', 3);
 //        foreach($fiels as $k=>$v){
 //            $fname=$v;
@@ -176,36 +238,30 @@ class DataController extends \yii\console\Controller
 
 //        $count=Autograph::find()->count();
 //        echo $count;
-        $file = fopen('gw.csv', 'r');
+        $file = fopen('123.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
             $phone = trim($line);
+            $rs = explode(',',$phone);
             $child=ChildInfo::find()
-                ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
-                ->andWhere(['`user_login`.`phone`' => $phone])
-//                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-//                ->andWhere(['user_parent.mother'=>$rs[2]])
-//                ->andWhere(['child_info.name'=>$rs[0]])
-//                ->andWhere(['child_info.birthday'=>strtotime($rs[1])])
+//                ->select('user_login.phone')
+//                ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+//                ->andWhere(['`user_login`.`phone`' => $phone])
+//                ->leftJoin('user_parent', '`user_parent`.`userid` = `pregnancy`.`familyid`')
+//                ->andWhere(['user_parent.mother_id'=>$phone])
+//                ->orWhere(['pregnancy.field4'=>$phone])
+                ->andWhere(['child_info.name'=>$rs[0]])
+                ->andWhere(['child_info.birthday'=>strtotime($rs[2])])
+                ->andWhere(['child_info.doctorid'=>110605])
                 ->one();
-            echo $line;
+            //echo "\t".$phone.",";
             if($child) {
-                echo $line;
-
-                $userParent = DoctorParent::findOne(['parentid' => $child->userid]);
-                if ($userParent) {
-                    $userParent->doctorid = 47156;
-                    $userParent->save();
-                    $auto = Autograph::findOne(['userid' => $child->userid]);
-                    if ($auto) {
-                        $auto->doctorid = 47156;
-                        $auto->save();
-                    }
-                }
-                echo "成功";
-            }else{
-                echo "失败";
+                //echo $child->phone;
+               //echo "\t".$phone;
+                $userLogin = UserLogin::findOne(['userid'=>$child->userid]);
+                $rs[3]=$userLogin->phone;
             }
+            echo implode(',',$rs);
             echo "\n";
         }
         exit;

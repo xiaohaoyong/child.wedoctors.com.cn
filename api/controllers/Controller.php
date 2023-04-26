@@ -51,6 +51,8 @@ class Controller extends \yii\web\Controller
         $log->addLog(json_encode($rs));
         $log->saveLog();
 
+       // $this->userid = 1;
+
         if ($this->seaver_token) {
             $cache = \Yii::$app->rdmp;
             $session = $cache->get($this->seaver_token);

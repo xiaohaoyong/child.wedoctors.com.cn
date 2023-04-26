@@ -32,7 +32,7 @@
 
             $e = ['label' => '同步已签约数据', 'url' => ['/synchronization']];
         }
-
+		$health_records=array();
         if(in_array(Yii::$app->user->identity->hospitalid,[110647,110565,110598])){
             $health_records=['label' => '6岁以上学生签约', 'icon' => 'file-text-o', 'url' => "#",
                 'items' => [
@@ -42,7 +42,16 @@
                 ]
             ];
         }
-
+		$xlsxoutof_records=array();
+		if (Yii::$app->user->identity->hospitalid == 110587) {
+           
+				$xlsxoutof_records = ['label' => '迁入迁出管理', 'icon' => 'file-text-o', 'url' => "#",
+                        'items' => [
+                            ['label' => '批量迁入迁出', 'url' => ['xlsxoutof/list-exc']],
+                            ['label' => '迁入迁出历史', 'url' => ['xlsxoutof/list-info']],
+                        ]
+					]  ;
+        }
 
 
         ?>
@@ -64,6 +73,15 @@
                             ['label' => '文章列表', 'url' => ['article/index']],
                             ['label' => '添加文章', 'url' => ['article/create']],
                         ]
+                    ],
+                    [
+                        'label' => '评价管理',
+                        'icon' => 'comments',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '预约就诊评价',  'url' => ['/appoint-comment'],],
+                            ['label' => '医生回复评价',  'url' => ['/question-comment'],],
+                        ],
                     ],
                     ['label' => '工具', 'icon' => 'send', 'url' => "#",
                         'items' => [
@@ -91,13 +109,13 @@
                             ['label' => 'HPV专用号源设置', 'url' => ['appoint-hpv-setting/update']],
                         ]
                     ],
-                    ['label' => '登记表', 'icon' => 'file-text-o', 'url' => "#",
-                        'items' => [
-                            ['label' => '新冠筛查表', 'url' => ['question-naire-field/index?qnid=1']],
-                            ['label' => '儿童登记表', 'url' => ['question-naire-field/index?qnid=4']],
+                    // ['label' => '登记表', 'icon' => 'file-text-o', 'url' => "#",
+                    //     'items' => [
+                    //         ['label' => '新冠筛查表', 'url' => ['question-naire-field/index?qnid=1']],
+                    //         ['label' => '儿童登记表', 'url' => ['question-naire-field/index?qnid=4']],
 
-                        ]
-                    ],
+                    //     ]
+                    // ],
                     $health_records,
                     ['label' => '医生管理', 'icon' => 'file-text-o', 'url' => "#",
                         'items' => [
@@ -109,6 +127,19 @@
                         ]
                     ],
 
+					
+					$xlsxoutof_records ,
+					
+                    // [
+                    //     'label' => '审核管理',
+                    //     'icon' => 'file-text-o',
+                    //     'url' => '#',
+                    //     'items' => [
+                    //         ['label' => '变更签约社区审核列表', 'icon' => 'user', 'url' => ['/signing-record'],],
+                    //     ],
+
+
+                    // // ],
                 ],
             ]
         ) ?>

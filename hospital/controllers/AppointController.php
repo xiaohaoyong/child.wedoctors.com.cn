@@ -267,6 +267,9 @@ class AppointController extends BaseController
             $model->state = 5;
             $model->push_state = 1;
             $model->mode = 1;
+            if(!$model->vaccine){
+                $model->vaccine=0;
+            }
             $log = new \common\components\Log('Appoint_Doctor_Push');
             if ($model->save()) {
                 if ($model->loginid) {

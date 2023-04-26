@@ -83,6 +83,7 @@ class SiteController extends BaseController
             ->andFilterWhere(['>','child_info.birthday',strtotime('-3 year')])
             ->andWhere(['>','child_info.admin',0])
             ->count();
+        $data['todayNumTotal']=0;
 //        //签约儿童总数
 //        $data['todayNumTotal']=ChildInfo::find()
 //            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')

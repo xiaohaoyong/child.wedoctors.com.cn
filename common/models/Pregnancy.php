@@ -149,7 +149,7 @@ class Pregnancy extends \yii\db\ActiveRecord
         1=>'产妇姓名',
         2=>'出生日期',
         //3=>'证件类型',
-        //4=>'证件号码',
+        4=>'证件号码',
         5=>'建册日期',
         6=>'产妇电话',
         7=>'户口所在地-省',
@@ -372,7 +372,7 @@ class Pregnancy extends \yii\db\ActiveRecord
     public static function inputData($value,$hospital)
     {
         //SUBSTRING(ordersn, 9,2)
-        $field4=substr('***************6445',-4);
+        $field4=substr($value['field4'],-4);
         $preg=\common\models\Pregnancy::find()->where(['field1'=>$value['field1']])->filterWhere(['SUBSTRING(field4, -4)'=>$field4])->one();
 
         if($preg){
@@ -381,14 +381,11 @@ class Pregnancy extends \yii\db\ActiveRecord
             $return =2;
         }
         $preg=$preg?$preg:new \common\models\Pregnancy();
-//        $parent=UserParent::find()
-//            ->where(['mother_id'=>$value['field4']])
-//            ->orWhere(['mother_phone'=>$value['field6']])
-//            ->orWhere(['father_phone'=>$value['field38']])
-//            ->orWhere(['father_phone'=>$value['field6']])
-//            ->orWhere(['mother_phone'=>$value['field38']])
-//            ->one();
-        $value['familyid']=$preg?$preg->familyid:0;
+        $parent=UserParent::find()
+            ->filterWhere(['SUBSTRING(mother_id, -4)'=>$field4])
+            ->andWhere(['mother'=>$value['field1']])
+            ->one();
+        $value['familyid']=$parent?$parent->userid:0;
         $value['field2']=$value['field2']?strtotime(substr($value['field2'],0,10)):0;
         $value['field5']=$value['field5']?strtotime(substr($value['field5'],0,10)):0;
         $field7=array_search($value['field7'],Area::$province);
