@@ -8,6 +8,7 @@
 
 namespace frontend\controllers;
 
+
 use yii\helpers\Html;
 use common\components\UploadForm;
 use api\models\ChildInfo;
@@ -33,11 +34,17 @@ use yii\web\Response;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 
+
 class WappointController extends Controller
 {
 
-    public function actionIndex($search = '', $county = 0,$type=0)
+    public function actionIndex($search = '', $county = 0,$type=0,$vaccine=0)
     {
+        $vType=[
+            1=>[43,50,51,78],
+            2=>[44,54,55,56,98],
+            3=>[97,45,57,58,59],
+        ];
 
         //$hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
         $query = UserDoctor::find()->where(['like','appoint',4]);
@@ -49,6 +56,11 @@ class WappointController extends Controller
         }
         if($type){
             $haids=HospitalAppointVaccine::find()->select('haid')->where(['in','vaccine',[43,50,51]])->column();
+            $doctorids=HospitalAppoint::find()->select('doctorid')->where(['in','id',$haids])->column();
+            $query->andWhere(['in','userid',$doctorids]);
+        }
+        if($vType[$vaccine]){
+            $haids=HospitalAppointVaccine::find()->select('haid')->where(['in','vaccine',$vType[$vaccine]])->column();
             $doctorids=HospitalAppoint::find()->select('doctorid')->where(['in','id',$haids])->column();
             $query->andWhere(['in','userid',$doctorids]);
         }
@@ -530,14 +542,12 @@ class WappointController extends Controller
         $post=\Yii::$app->request->post();
 
 
-        $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($post,'img'));
+        $imagesFile = UploadedFile::getInstancesByName('img');
         if($imagesFile) {
             $upload= new UploadForm();
             $upload->imageFiles = $imagesFile;
             $image = $upload->upload();
-            var_dump($image);exit;
         }
-
 
 
         if(!preg_match("/^1[3456789]\d{9}$/", $post['phone'])){
@@ -626,7 +636,7 @@ class WappointController extends Controller
 
 
         if(!in_array($post['vaccine'],[64,66,46])){
-            $appointA = Appoint::findOne(['phone' => $post['phone'], 'state' => 1, 'vaccine' => $post['vaccine']]);
+            $appointA = Appoint::findOne(['phone' => $post['phone'], 'state' => [1,6], 'vaccine' => $post['vaccine']]);
         }
         if($appointA){
             \Yii::$app->getSession()->setFlash('error','您有未完成的预约');
@@ -643,6 +653,7 @@ class WappointController extends Controller
             $post['userid'] = $this->login->userid;
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;
+            $post['image'] = $image?$image[0]:'';
             $model->load(["Appoint" => $post]);
             if(!$this->login->phone){
                 $this->login->phone=$post['phone'];

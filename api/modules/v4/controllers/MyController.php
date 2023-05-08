@@ -13,6 +13,9 @@ use api\controllers\Controller;
 use common\models\DoctorTeam;
 use common\models\DoctorParent;
 use common\models\UserDoctor;
+use common\models\UserParent;
+use common\models\ChildInfo;
+
 use common\models\UserLogin;
 
 class MyController extends Controller
@@ -36,6 +39,7 @@ class MyController extends Controller
                     ['title'=>'我的家庭','img'=>'http://static.i.wedoctors.com.cn/user_index_item2.png','url'=>''],
                     ['title'=>'我的签约','img'=>'http://static.i.wedoctors.com.cn/user_index_item3.png','url'=>'/pages/doctor/index'],
                     ['title'=>'我的预约','img'=>'http://static.i.wedoctors.com.cn/user_index_item4.png','url'=>'/pages/appoint/my'],
+                    ['title'=>'家医协议','img'=>'http://static.i.wedoctors.com.cn/user_index_item11.png','url'=>'/pages/user/index/xieyi?id='.$this->userid],
                     ['title'=>'优选服务包','img'=>'http://static.i.wedoctors.com.cn/user_index_item5.png','url'=>''],
                 ],
             ],
@@ -57,7 +61,7 @@ class MyController extends Controller
                 'list'=>[
                     ['title'=>'客服咨询','img'=>'http://static.i.wedoctors.com.cn/user_index_item8.png'],
                     ['title'=>'新冠疫苗相关问题解答','img'=>'http://static.i.wedoctors.com.cn/user_index_item9.png','url'=>'/pages/doctor/street'],
-                    ['title'=>'常见问题','img'=>'http://static.i.wedoctors.com.cn/user_index_item10.png','url'=>'/pages//qa/index'],
+                    ['title'=>'常见问题','img'=>'http://static.i.wedoctors.com.cn/user_index_item10.png','url'=>'/pages/qa/index'],
                 ],
             ],
         ];
@@ -74,6 +78,25 @@ class MyController extends Controller
             $this->userLogin->unionid='';
             $this->userLogin->save();
         }
+    }
+    public function actionXieyi(){
+        $userid = $this->userid;
+
+        $userParent = UserParent::findOne(['userid' => $userid]);
+
+
+        $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
+        $userDoctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
+        $child = ChildInfo::find()->where(['userid' => $userid])->all();
+
+
+        return  [
+            'userParent' => $userParent,
+            'userid' => $userid,
+            'userDoctor' => $userDoctor,
+            'child' => $child,
+        ];
+
     }
 
 }

@@ -286,7 +286,7 @@ class Appoint extends \yii\db\ActiveRecord
             ['appoint_date','required','message'=>'请选择预约日期'],
 
             [['street','orderid','vaccine','push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
-            [['remark'], 'string', 'max' => 100],
+            [['remark','image'], 'string', 'max' => 100],
             [['date','name'], 'string'],
 
         ];
@@ -314,6 +314,7 @@ class Appoint extends \yii\db\ActiveRecord
             'cancel_type'=>'取消原因',
             'push_state'=>'推送状态',
             'mode'=>'来源',
+            'image'=>'凭证',
             'vaccine'=>'疫苗'
         ];
     }

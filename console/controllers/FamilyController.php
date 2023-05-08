@@ -279,7 +279,7 @@ class FamilyController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-'.$type.'.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/s/" .$hospital->name.'儿童.xlsx');
     }
     public function setDownFExcel($doctorid,$type)
     {
@@ -293,6 +293,7 @@ class FamilyController extends Controller
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
         ];
+        
         $worksheet->getStyle('A1')->applyFromArray($styleArray);
         $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(10);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
@@ -504,7 +505,7 @@ class FamilyController extends Controller
 
         }
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(dirname(__ROOT__) . "/static/" .$doctorid.'-family-pregnancy-'.$type.'.xlsx');
+        $writer->save(dirname(__ROOT__) . "/static/s/" .$hospital->name.'孕妇.xlsx');
     }
 
 }

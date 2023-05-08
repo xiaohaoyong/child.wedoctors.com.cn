@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Appoint */
@@ -20,33 +21,30 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-                <p>
-                    <?= Html::a('Update', ['update', 'id' => $model->id],
-                        ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                        'class' => 'btn btn-danger',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to delete this item?',
-                            'method' => 'post',
-                        ],
-                    ]) ?>
-                </p>
-
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-                        'id',
-                        'userid',
-                        'doctorid',
-                        'createtime:datetime',
-                        'appoint_time:datetime',
-                        'appoint_date',
-                        'type',
-                        'childid',
-                        'phone',
+                        [
+                            'attribute' => 'image',
+                            'format'=>'raw',
+                            'value' => function ($e) {
+                                return Html::img($e->image,['class'=>'file-preview-image','style'=>'max-width:300px']);
+                            }
+                        ],
                     ],
                 ]) ?>
+                <?php $form = ActiveForm::begin([
+                    'action' => ['appoint/done']                ]); ?>
+<?= $form->field($model,'referrer')->hiddenInput(['value'=>$referrer]) ?>
+<?= $form->field($model,'id')->hiddenInput(['value'=>$model->id]) ?>
+<?= $form->field($model,'state')->radioList([1=>'通过',3=>'不通过'])?>
 
+<div class="form-group">
+<?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
+'btn btn-primary']) ?>
+</div>
+
+<?php ActiveForm::end(); ?>
             </div>
         </div>
     </div>

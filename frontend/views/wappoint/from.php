@@ -11,7 +11,7 @@ frontend\assets\DateAsset::register($this);
 ?>
 
 <div class="appoint">
-    <form name="appoint" id="appoint_form" action="/wappoint/save" method="post">
+    <form name="appoint" id="appoint_form" action="/wappoint/save" method="post" enctype="multipart/form-data">
         <input name="_csrf-frontend"
 
                type="hidden"
@@ -80,7 +80,17 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
+        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[45 , 57 , 58 , 59 , 97 ,114,78,51,50,43,44,54,55,56,98])){ ?>
+        <div class="item">
+            <div class="title">居住证明</div>
+            <div class="input">
+                <input type='text' id='text-field' class="appoint_input" onclick="document.getElementById('fileName').click()"/>
 
+                <input type="file" name="img" id="fileName" style="display: none" onchange="document.getElementById('text-field').value=this.value.substring(this.value.lastIndexOf('\\')+1)"/>
+                注：HPV疫苗及带状疱疹疫苗限在白纸坊街道居住、工作或上学的家医签约居民。HPV疫苗预约前需上传凭证，线上完善健康档案，现场签订家医协议或缴纳家医服务费。
+            </div>
+        </div>
+        <?php }?>
         <?php
         if (!$vaccines || Yii::$app->request->get('vid')) {
             ?>
@@ -160,6 +170,14 @@ jQuery("#vaccine").change(function(e){
             return false;
         }
     }
+    const arr = ['45','57','58','59','97'];
+
+    if(arr.indexOf(vid)>-1){
+        if(!confirm("九价hpv疫苗接种年龄范围目前仍是16-26周岁，年龄不符合者不能接种9价疫苗。接种时请您携带医保卡及儿宝宝预约二维码。为防止倒号行为，现场将实名扫码核销二维码。二维码中姓名与实际姓名不同者或者预约时间不是当天者不提供接种服务。"))
+        {
+            return false;
+        }
+    }
     console.log( jQuery("#street").length);
     if(vid && sid && jQuery("#street").length  > 0){
         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
@@ -223,7 +241,7 @@ jQuery(".days .rs").bind("click",function(){
   jQuery('#appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
 });
-var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！'};
+var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！',img:'请上传预约凭证'};
 jQuery("#appoint_form").submit(data,function(e){
     var labelMap = e.data;
     var label = '';

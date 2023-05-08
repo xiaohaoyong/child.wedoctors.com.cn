@@ -86,6 +86,7 @@ class WorkerController extends BeanstalkController
                     foreach ($userLogin as $ulk => $ulv) {
                         if ($ulv->openid  && $article->type==2) {
                             $rs = WechatSendTmp::send($data, $ulv->openid, $temp, '', $miniprogram);
+                            //echo "====\n";
                             $log->addLog($ulv->openid);
                             $log->addLog($rs?'true':'false');
                         }
