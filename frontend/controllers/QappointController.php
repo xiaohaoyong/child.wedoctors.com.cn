@@ -282,7 +282,7 @@ class QappointController extends Controller
         $row['hospital']=$hospital->name;
         $row['type']=Appoint::$typeText[$appoint->type];
         $row['time']=date('Y.m.d',$appoint->appoint_date)."  ".Appoint::$timeText[$appoint->appoint_time];
-        $row['child_name']=AppointAdult::findOne($appoint->userid)->name;
+        $row['child_name']=AppointAdult::findOne(['userid'=>$appoint->userid])->name;
         $row['duan']=$appoint->appoint_time;
         if($appoint->vaccine==-2){
             $row['vaccineStr']='两癌筛查';
