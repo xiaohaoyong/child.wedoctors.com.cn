@@ -28,11 +28,11 @@ databackend\assets\DatabasesAsset::register($this);
                     <th>医院名称</th>
                     <th>上线时间</th>
                     <th>名称</th>
+                    <th>社区电话</th>
                     <th>辖区内管理儿童数</th>
                     <th>今日签约 </th>
                     <th>签约总数</th>
                     <th>预约开通情况</th>
-
                     <th>已宣教数</th>
                     <th>数据</th>
                     <th>操作</th>
