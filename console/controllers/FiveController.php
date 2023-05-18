@@ -67,8 +67,8 @@ class FiveController extends Controller
 
     public function actionExcel()
     {
-        $stime=strtotime('2023-02-01');
-        $etime=strtotime('2023-03-01');
+        $stime=strtotime('2023-03-01');
+        $etime=strtotime('2023-04-01');
         $userDoctor = UserDoctor::find()->all();
         foreach ($userDoctor as $k=>$v){
             $rs=[];
