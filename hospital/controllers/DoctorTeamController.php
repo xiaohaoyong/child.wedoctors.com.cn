@@ -9,7 +9,10 @@ use hospital\models\DoctorTeamSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\web\UploadedFile;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use udokmeci\yii2beanstalk\BeanstalkController;
 /**
 * DoctorTeamController implements the CRUD actions for DoctorTeam model.
 */
@@ -134,4 +137,23 @@ return $model;
 throw new NotFoundHttpException('The requested page does not exist.');
 }
 }
+public function actionData()
+{
+    $teams=DoctorTeam::findAll(['doctorid'=>Yii::$app->user->identity->doctorid]);
+    return $this->render('data',['teams'=>$teams,'doctorid'=>Yii::$app->user->identity->doctorid]);
 }
+public function actionDataEx()
+{
+    $imagesFile =  UploadedFile::getInstancesByName('team-file');
+    $objRead = new Xlsx();   //建立reader对象
+    $objRead->setReadDataOnly(true);
+    $obj = $objRead->load($_FILES['team-file']['tmp_name']);  //建立excel对象
+    $currSheet = $obj->getSheet(0);   //获取指定的sheet表
+    $columnH = $currSheet->getHighestColumn();   //取得最大的列号
+    $highestColumnNum = Coordinate::columnIndexFromString($columnH);
+    $rowCnt = $currSheet->getHighestRow();   //获取总行数
+    $sheetData = $currSheet->toArray(null, true, true, true);
+    var_dump($sheetData);exit;
+}
+}
+
