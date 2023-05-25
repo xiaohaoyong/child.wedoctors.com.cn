@@ -318,7 +318,9 @@ class AppointController extends Controller
             $v->save();
             $log->addLog($v->state);
             $log->saveLog();
-            $this->pushTmp($v);
+            if($v->doctorid!=38){
+                $this->pushTmp($v);
+            }
         }
     }
     public function pushTmp(Appoint $appoint){
