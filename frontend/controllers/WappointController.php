@@ -667,7 +667,7 @@ class WappointController extends Controller
             }
         }
     }
-    public function test(){
+    public function actionTest(){
 
 
         return $this->render('test1');

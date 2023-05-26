@@ -11,7 +11,7 @@ namespace common\helpers;
 
 use Psr\Cache\CacheException;
 
-class EasyRedisCache implements \Psr\SimpleCache\CacheException
+class EasyRedisCache implements \Psr\SimpleCache\CacheInterface
 {
     public function __construct()
     {
@@ -20,12 +20,14 @@ class EasyRedisCache implements \Psr\SimpleCache\CacheException
 
     public function get($key, $default = null)
     {
-        $this->redis->get($key);
+        $value = $this->redis->get($key);
+        return explode(',',$value);
         // your code
     }
 
     public function set($key, $value, $ttl = null)
     {
+        $value=implode(',',$value);
         $this->redis->set($key,$value);
 
         // your code
@@ -45,6 +47,8 @@ class EasyRedisCache implements \Psr\SimpleCache\CacheException
 
     public function getMultiple($keys, $default = null)
     {
+        var_dump('getMultiple');exit;
+
         // your code
     }
 
@@ -60,6 +64,8 @@ class EasyRedisCache implements \Psr\SimpleCache\CacheException
 
     public function has($key)
     {
+        $value = $this->redis->get($key);
+        return explode(',',$value);
         // your code
     }
 }
