@@ -1,29 +1,17 @@
-
 <?php
-$jssdk=new \common\helpers\Jssdk(\Yii::$app->params['easywechat']['app_id'],\Yii::$app->params['easywechat']['secret'])
+
+$mpWechat = new \common\vendor\MpWechat([
+    'token' => \Yii::$app->params['WeToken'],
+    'appId' => \Yii::$app->params['AppID'],
+    'appSecret' => \Yii::$app->params['AppSecret'],
+    'encodingAesKey' => \Yii::$app->params['encodingAesKey']
+]);
 ?>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 <script>
-    wx.config(<?=$jssdk->getSignPackage();?>);
+wx.config(<?=json_encode($mpWechat->jsApiConfig(['openTagList'=>['wx-open-launch-weapp']]));?>);
 </script>
 <div class="wrapper appoint_list">
-    <style>.btn { width: 200px; height: 200px }</style>
-
-    <wx-open-launch-weapp
-            id="launch-btn"
-            appid="wx9977e00637216db7"
-            path="pages/lanhu_menzhenzhuye/component.html?id=1556"
-    >
-        <script type="text/wxtag-template">
-            <button class="btn">test2</button>
-        </script>
-    </wx-open-launch-weapp>
-    <style>
-        #launch-btn {
-            width: 100px;
-            height: 100px
-        }
-    </style>
     <div class="content-wrapper">
         <div class="search_box">
             <div class="dropdown">
@@ -85,11 +73,7 @@ $jssdk=new \common\helpers\Jssdk(\Yii::$app->params['easywechat']['app_id'],\Yii
                 </div>
                 <?php if($v['userid'] == 1301729){?>
 
-            <wx-open-launch-weapp
-                    id="launch-btn1"
-                    appid="wx9977e00637216db7"
-                    path="pages/lanhu_menzhenzhuye/component.html?id=1556"
-            >
+
                 <div class="item">
                     <div class="item-content">
                         <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
@@ -102,17 +86,32 @@ $jssdk=new \common\helpers\Jssdk(\Yii::$app->params['easywechat']['app_id'],\Yii
                     <div class="item-button">
                         <div class="phone"><img src="/img/appoint_list_phone.png"
                                                                                  width="18" height="18"/></div>
+                        <wx-open-launch-weapp
+                                id="launch-btn1"
+                                appid="wx9977e00637216db7"
+                                path="pages/lanhu_menzhenzhuye/component.html?id=1556"
+                        >
                         <script type="text/wxtag-template">
-
+                            <style>
+                                .button{    width: 179px;
+                                    height: 41px;
+                                    background: rgba(240,85,70,1);
+                                    border-radius: 20px;
+                                    text-align: center;
+                                    line-height: 41px;
+                                    color: #ffffff;
+                                    border: none;
+                                }
+                            </style>
                             <button class="button">
-                                在线预约1</button>
+                                在线预约</button>
                         </script>
+                        </wx-open-launch-weapp>
 
 
                     </div>
                     <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
                 </div>
-            </wx-open-launch-weapp>
 
                     <div class="item">
                         <div class="item-content">
@@ -126,8 +125,27 @@ $jssdk=new \common\helpers\Jssdk(\Yii::$app->params['easywechat']['app_id'],\Yii
                         <div class="item-button">
                             <div class="phone"><img src="/img/appoint_list_phone.png"
                                                     width="18" height="18"/></div>
-                            <a class="button" href="" onclick="return false;">
-                                在线预约</a>
+                            <wx-open-launch-weapp
+                                    id="launch-btn1"
+                                    appid="wx9977e00637216db7"
+                                    path="pages/lanhu_xuanzejiezhongjigou/component.html?id=1001"
+                            >
+                                <script type="text/wxtag-template">
+                                    <style>
+                                        .button{    width: 179px;
+                                            height: 41px;
+                                            background: rgba(240,85,70,1);
+                                            border-radius: 20px;
+                                            text-align: center;
+                                            line-height: 41px;
+                                            color: #ffffff;
+                                            border: none;
+                                        }
+                                    </style>
+                                    <button class="button">
+                                        在线预约</button>
+                                </script>
+                            </wx-open-launch-weapp>
 
                         </div>
                         <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
@@ -143,8 +161,27 @@ $jssdk=new \common\helpers\Jssdk(\Yii::$app->params['easywechat']['app_id'],\Yii
                         <div class="item-button">
                             <div class="phone"><img src="/img/appoint_list_phone.png"
                                                     width="18" height="18"/></div>
-                            <a class="button" href="" onclick="return false;">
-                                在线预约</a>
+                            <wx-open-launch-weapp
+                                    id="launch-btn1"
+                                    appid="wx9977e00637216db7"
+                                    path="pages/lanhu_xuanzejiezhongjigou/component.html?id=1001"
+                            >
+                                <script type="text/wxtag-template">
+                                    <style>
+                                        .button{    width: 179px;
+                                            height: 41px;
+                                            background: rgba(240,85,70,1);
+                                            border-radius: 20px;
+                                            text-align: center;
+                                            line-height: 41px;
+                                            color: #ffffff;
+                                            border: none;
+                                        }
+                                    </style>
+                                    <button class="button">
+                                        在线预约</button>
+                                </script>
+                            </wx-open-launch-weapp>
 
                         </div>
                         <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
@@ -160,8 +197,27 @@ $jssdk=new \common\helpers\Jssdk(\Yii::$app->params['easywechat']['app_id'],\Yii
                         <div class="item-button">
                             <div class="phone"><img src="/img/appoint_list_phone.png"
                                                     width="18" height="18"/></div>
-                            <a class="button" href="" onclick="return false;">
-                                在线预约</a>
+                            <wx-open-launch-weapp
+                                    id="launch-btn1"
+                                    appid="wx9977e00637216db7"
+                                    path="pages/lanhu_xuanzejiezhongjigou/component.html?id=1001"
+                            >
+                                <script type="text/wxtag-template">
+                                    <style>
+                                        .button{    width: 179px;
+                                            height: 41px;
+                                            background: rgba(240,85,70,1);
+                                            border-radius: 20px;
+                                            text-align: center;
+                                            line-height: 41px;
+                                            color: #ffffff;
+                                            border: none;
+                                        }
+                                    </style>
+                                    <button class="button">
+                                        在线预约</button>
+                                </script>
+                            </wx-open-launch-weapp>
 
                         </div>
                         <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>

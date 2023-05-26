@@ -64,7 +64,6 @@ class MpWechat extends \callmez\wechat\sdk\MpWechat
             'url' => \Yii::$app->request->getAbsoluteUrl()
         ];
         return array_merge([
-            'debug' => YII_DEBUG,
             'appId' => $this->appId,
             'timestamp' => $data['timestamp'],
             'nonceStr' => $data['noncestr'],
