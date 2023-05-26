@@ -1,9 +1,7 @@
 <?php
 $app = \EasyWeChat\Factory::officialAccount(\Yii::$app->params['easywechat']);
 ?>
-<div style="width: 0px;height: 0px">
-    <?php var_dump(\Yii::$app->params['easywechat'])?>
-</div>
+
 <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 
 <script>
