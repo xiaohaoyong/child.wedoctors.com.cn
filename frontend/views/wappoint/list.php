@@ -77,8 +77,8 @@
                     <div class="item-button">
                         <div class="phone"><img src="/img/appoint_list_phone.png"
                                                                                  width="18" height="18"/></div>
-                            <button class="button" href="" onclick="return false;">
-                                在线预约</button>
+                            <button class="button">
+                                在线预约1</button>
 
                     </div>
                     <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
