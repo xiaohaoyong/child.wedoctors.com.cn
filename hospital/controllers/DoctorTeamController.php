@@ -184,6 +184,9 @@ class DoctorTeamController extends Controller
                     }
 
                 }
+                if($i<1){
+                    \Yii::$app->getSession()->setFlash('success', '未查询到儿童请检查上传文件是否正确，需要字段有："儿童姓名，出生日期，母亲姓名"');
+                }
                 \Yii::$app->getSession()->setFlash('success', '处理完成共匹配成功"'.$i.'"个儿童');
 
             } else {
