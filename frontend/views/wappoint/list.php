@@ -10,7 +10,7 @@
     >
         <script type="text/wxtag-template">
             <style>.btn { width: 100%; height: 100% }</style>
-            <div class="btn">test2</div>
+            <button class="btn">test2</button>
         </script>
     </wx-open-launch-weapp>
     <style>
