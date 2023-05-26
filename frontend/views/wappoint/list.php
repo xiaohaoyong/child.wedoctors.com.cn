@@ -5,10 +5,16 @@
         path="pages/lanhu_menzhenzhuye/component.html?id=1556"
 >
     <script type="text/wxtag-template">
-        <style>.btn { padding: 12px }</style>
-        <button class="btn">打开小程序</button>
+        <style>.btn { width: 100%; height: 100% }</style>
+        <div class="btn">test2</div>
     </script>
 </wx-open-launch-weapp>
+<style>
+    #launch-btn {
+        width: 100px;
+        height: 100px
+    }
+</style>
 <script>
     var btn = document.getElementById('launch-btn');
     btn.addEventListener('launch', function (e) {
