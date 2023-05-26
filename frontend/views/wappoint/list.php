@@ -60,6 +60,11 @@
                 </div>
                 <?php if($v['userid'] == 1301729){?>
 
+            <wx-open-launch-weapp
+                    id="launch-btn1"
+                    appid="wx12345678"
+                    path="pages/lanhu_menzhenzhuye/component.html?id=1556"
+            >
                 <div class="item">
                     <div class="item-content">
                         <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
@@ -72,12 +77,14 @@
                     <div class="item-button">
                         <div class="phone"><img src="/img/appoint_list_phone.png"
                                                                                  width="18" height="18"/></div>
-                            <a class="button" href="" onclick="return false;">
-                                在线预约</a>
+                            <button class="button" href="" onclick="return false;">
+                                在线预约</button>
 
                     </div>
                     <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
                 </div>
+            </wx-open-launch-weapp>
+
                     <div class="item">
                         <div class="item-content">
                             <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
@@ -169,6 +176,7 @@
     </div>
 </div>
 <div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
+
 
 <?php
 \yii\bootstrap\Modal::begin([
