@@ -8,6 +8,7 @@
 
 namespace common\vendor;
 
+use Yii;
 
 use yii\base\Event;
 use yii\base\InvalidParamException;
@@ -53,4 +54,58 @@ class MpWechat extends \callmez\wechat\sdk\MpWechat
     public function delCache($name){
         return \Yii::$app->cache->delete($this->getCacheKey($name));
     }
+
+    public function jsApiConfig(array $config = [])
+    {
+        $data = [
+            'jsapi_ticket' => $this->getJsApiTicket(),
+            'noncestr' => Yii::$app->security->generateRandomString(16),
+            'timestamp' => $_SERVER['REQUEST_TIME'],
+            'url' => \Yii::$app->request->getAbsoluteUrl()
+        ];
+        return array_merge([
+            'debug' => YII_DEBUG,
+            'appId' => $this->appId,
+            'timestamp' => $data['timestamp'],
+            'nonceStr' => $data['noncestr'],
+            'signature' => sha1(urldecode(http_build_query($data))),
+            'jsApiList' => [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onRecordEnd',
+                'playVoice',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard'
+            ]
+        ], $config);
+    }
+
 }

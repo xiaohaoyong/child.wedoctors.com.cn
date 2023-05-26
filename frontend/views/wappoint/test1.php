@@ -1,6 +1,6 @@
 <?php
 
-$mpWechat = new \callmez\wechat\sdk\MpWechat([
+$mpWechat = new \common\vendor\MpWechat([
     'token' => \Yii::$app->params['WeToken'],
     'appId' => \Yii::$app->params['AppID'],
     'appSecret' => \Yii::$app->params['AppSecret'],
