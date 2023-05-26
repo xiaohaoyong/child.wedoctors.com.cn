@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header with-border">
-                是否医生团队：
+                是否自动匹配医生团队（如需自定义不需要开启）：
                 <?= \dosamigos\switchinput\SwitchBox::widget([
                     'name' => 'is_team',
                     'checked' => $userDoctor['is_team'],
