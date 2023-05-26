@@ -89,7 +89,7 @@ wx.config(<?=json_encode($mpWechat->jsApiConfig(['openTagList'=>['wx-open-launch
                         <wx-open-launch-weapp
                                 id="launch-btn1"
                                 appid="wx9977e00637216db7"
-                                path="pages/lanhu_menzhenzhuye/component.html?id=1556"
+                                path="pages/lanhu_xuanzejiezhongjigou/component.html?id=11&hospital_id=1556"
                         >
                         <script type="text/wxtag-template">
                             <style>
