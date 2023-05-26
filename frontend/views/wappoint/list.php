@@ -1,3 +1,24 @@
+
+<wx-open-launch-weapp
+        id="launch-btn"
+        appid="wx9977e00637216db7"
+        path="pages/lanhu_menzhenzhuye/component.html?id=1556"
+>
+    <script type="text/wxtag-template">
+        <style>.btn { padding: 12px }</style>
+        <button class="btn">打开小程序</button>
+    </script>
+</wx-open-launch-weapp>
+<script>
+    var btn = document.getElementById('launch-btn');
+    btn.addEventListener('launch', function (e) {
+        console.log('success');
+    });
+    btn.addEventListener('error', function (e) {
+        console.log('fail', e.detail);
+    });
+</script>
+
 <div class="wrapper appoint_list">
     <div class="content-wrapper">
         <div class="search_box">
