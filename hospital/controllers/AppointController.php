@@ -229,6 +229,18 @@ class AppointController extends BaseController
 
                 ];
                 $tmpid='oxn692SYkr2EIGlVIhYbS1C4Qd6FpmeYLbsFtyX45CA';
+            }elseif($state==1){
+                               $data = [
+                    'first' => ['value' => ''],
+                    'keyword1' => array('value' => Appoint::$typeText[$model->type]),
+                    'keyword2' => array('value' => $model->name()),
+                    'keyword3' => array('value' => $model->phone),
+                    'keyword4' => array('value' => date('Y-m-d',$model->appoint_date)),
+                    'keyword5' => array('value' => Appoint::$timeText[$model->appoint_time]),
+                    'remark' => array('value' => "尊敬的用户您好，您的预约已生效，请您按照预约时间前往社区，如有问题请联系在线客服"),
+                ];
+                $tmpid = '83CpoxWB9JCnwdXPr0H7dB66QQnFdJQvBbeMnJ9rdHo';
+
             }
 
             $rs = WechatSendTmp::send($data, $login->openid, $tmpid);
