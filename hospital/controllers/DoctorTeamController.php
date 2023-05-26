@@ -184,7 +184,7 @@ class DoctorTeamController extends Controller
                     }
 
                 }
-                \Yii::$app->getSession()->setFlash('success', '处理完成共匹配成功'.$i.'个儿童');
+                \Yii::$app->getSession()->setFlash('success', '处理完成共匹配成功"'.$i.'"个儿童');
 
             } else {
                 \Yii::$app->getSession()->setFlash('error', '未选择家医团队');
