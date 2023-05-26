@@ -1,9 +1,15 @@
 <?php
-$jssdk=new \common\helpers\Jssdk(\Yii::$app->params['easywechat']['app_id'],\Yii::$app->params['easywechat']['secret'])
+
+$mpWechat = new \callmez\wechat\sdk\MpWechat([
+    'token' => \Yii::$app->params['WeToken'],
+    'appId' => \Yii::$app->params['AppID'],
+    'appSecret' => \Yii::$app->params['AppSecret'],
+    'encodingAesKey' => \Yii::$app->params['encodingAesKey']
+]);
 ?>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 <script>
-    wx.config(<?=$jssdk->getSignPackage();?>);
+    wx.config(<?=json_encode($mpWechat->jsApiConfig(['jsApiList'=>['wx-open-launch-weapp']]));?>);
 </script>
 <wx-open-launch-weapp
         id="launch-btn"
