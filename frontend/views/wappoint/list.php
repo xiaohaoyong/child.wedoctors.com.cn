@@ -1,14 +1,3 @@
-
-<script>
-    var btn = document.getElementById('launch-btn');
-    btn.addEventListener('launch', function (e) {
-        console.log('success');
-    });
-    btn.addEventListener('error', function (e) {
-        console.log('fail', e.detail);
-    });
-</script>
-
 <div class="wrapper appoint_list">
 
     <wx-open-launch-weapp
