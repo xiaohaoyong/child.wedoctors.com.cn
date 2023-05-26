@@ -11,7 +11,7 @@ namespace common\helpers;
 
 use Psr\Cache\CacheException;
 
-class EasyRedisCache implements CacheException
+class EasyRedisCache implements \Psr\SimpleCache\CacheException
 {
     public function __construct()
     {
