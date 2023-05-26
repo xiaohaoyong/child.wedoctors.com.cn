@@ -161,7 +161,7 @@ class DoctorTeamController extends Controller
             $sheetData = $currSheet->toArray(null, true, true, true);
 
             $teamid = $_POST['teamid'];
-
+            $i=0;
             if ($teamid) {
                 foreach ($sheetData as $k => $v) {
                     $child = ChildInfo::find()
@@ -180,8 +180,12 @@ class DoctorTeamController extends Controller
                         $doctorParent = DoctorParent::findOne(['parentid' => $child->userid]);
                         $doctorParent->teamid = $teamid;
                         $doctorParent->save();
+                        $i++;
                     }
+
                 }
+                \Yii::$app->getSession()->setFlash('success', '处理完成共匹配成功'.$i.'个儿童');
+
             } else {
                 \Yii::$app->getSession()->setFlash('error', '未选择家医团队');
             }
