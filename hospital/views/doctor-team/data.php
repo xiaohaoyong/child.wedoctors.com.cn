@@ -98,18 +98,3 @@ $this->title = "家医团队数据同步";
         </div>
     </div>
 </div>
-<?php
-
-$updateJs = <<<JS
-    jQuery("#form").submit(function(){
-        let data = $("#form").serialize();
-        console.log(data);
-        var teamid=jQuery("#teamid").val();
-        if(!teamid){
-            alert('请选择家医团队');
-            return false;
-        }
-    });
-JS;
-$this->registerJs($updateJs);
-?>
