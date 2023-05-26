@@ -58,8 +58,79 @@
                     </div>
                     <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
                 </div>
+                <?php if($v['userid'] == 1301729){?>
 
+                <div class="item">
+                    <div class="item-content">
+                        <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
+                        </div>
+                        <div class="hospital">
+                            <div class="name">微医全科诊所（扩龄可约）</div>
+                                <div class="address">接种时间：周二、周三、周五、周六</div>
+                        </div>
+                    </div>
+                    <div class="item-button">
+                        <div class="phone"><img src="/img/appoint_list_phone.png"
+                                                                                 width="18" height="18"/></div>
+                            <a class="button" href="" onclick="return false;">
+                                在线预约</a>
 
+                    </div>
+                    <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
+                </div>
+                    <div class="item">
+                        <div class="item-content">
+                            <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
+                            </div>
+                            <div class="hospital">
+                                <div class="name">王府中西医结合医院</div>
+                                <div class="address">接种时间：周一至周六8:00-12:00</div>
+                            </div>
+                        </div>
+                        <div class="item-button">
+                            <div class="phone"><img src="/img/appoint_list_phone.png"
+                                                    width="18" height="18"/></div>
+                            <a class="button" href="" onclick="return false;">
+                                在线预约</a>
+
+                        </div>
+                        <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
+                    </div> <div class="item">
+                        <div class="item-content">
+                            <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
+                            </div>
+                            <div class="hospital">
+                                <div class="name">北京家恩德仁医院</div>
+                                <div class="address">接种时间：周一至周日9:00-18:00</div>
+                            </div>
+                        </div>
+                        <div class="item-button">
+                            <div class="phone"><img src="/img/appoint_list_phone.png"
+                                                    width="18" height="18"/></div>
+                            <a class="button" href="" onclick="return false;">
+                                在线预约</a>
+
+                        </div>
+                        <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
+                    </div> <div class="item">
+                        <div class="item-content">
+                            <div class="hospital_log"><img src="/img/appoint_type_loge.png" width="46" height="35"/>
+                            </div>
+                            <div class="hospital">
+                                <div class="name">北京和美妇儿医院</div>
+                                <div class="address">接种时间：周一至周日8:00-17:00</div>
+                            </div>
+                        </div>
+                        <div class="item-button">
+                            <div class="phone"><img src="/img/appoint_list_phone.png"
+                                                    width="18" height="18"/></div>
+                            <a class="button" href="" onclick="return false;">
+                                在线预约</a>
+
+                        </div>
+                        <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
+                    </div>
+                <?php }?>
                 <?php
                 \yii\bootstrap\Modal::begin([
                     'id' => 'create-modal' . $v['userid'],
