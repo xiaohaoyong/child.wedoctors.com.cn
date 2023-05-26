@@ -1,20 +1,4 @@
 
-<wx-open-launch-weapp
-        id="launch-btn"
-        appid="wx9977e00637216db7"
-        path="pages/lanhu_menzhenzhuye/component.html?id=1556"
->
-    <script type="text/wxtag-template">
-        <style>.btn { width: 100%; height: 100% }</style>
-        <div class="btn">test2</div>
-    </script>
-</wx-open-launch-weapp>
-<style>
-    #launch-btn {
-        width: 100px;
-        height: 100px
-    }
-</style>
 <script>
     var btn = document.getElementById('launch-btn');
     btn.addEventListener('launch', function (e) {
@@ -26,6 +10,23 @@
 </script>
 
 <div class="wrapper appoint_list">
+
+    <wx-open-launch-weapp
+            id="launch-btn"
+            appid="wx9977e00637216db7"
+            path="pages/lanhu_menzhenzhuye/component.html?id=1556"
+    >
+        <script type="text/wxtag-template">
+            <style>.btn { width: 100%; height: 100% }</style>
+            <div class="btn">test2</div>
+        </script>
+    </wx-open-launch-weapp>
+    <style>
+        #launch-btn {
+            width: 100px;
+            height: 100px
+        }
+    </style>
     <div class="content-wrapper">
         <div class="search_box">
             <div class="dropdown">
