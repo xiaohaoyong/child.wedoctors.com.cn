@@ -2,6 +2,7 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 
 <div class="wrapper appoint_list">
+    <style>.btn { width: 200px; height: 200px }</style>
 
     <wx-open-launch-weapp
             id="launch-btn"
@@ -9,7 +10,6 @@
             path="pages/lanhu_menzhenzhuye/component.html?id=1556"
     >
         <script type="text/wxtag-template">
-            <style>.btn { width: 100%; height: 100% }</style>
             <button class="btn">test2</button>
         </script>
     </wx-open-launch-weapp>
