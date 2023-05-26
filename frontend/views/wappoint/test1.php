@@ -15,7 +15,7 @@ $app->rebind('cache', $cache);
         path="pages/lanhu_menzhenzhuye/component.html?id=1556"
 >
     <script type="text/wxtag-template">
-        <style>.btn { padding: 12px }</style>
+        <style>.btn { padding: 12px;width: 200px;height: 200px }</style>
         <button class="btn">打开小程序</button>
     </script>
 </wx-open-launch-weapp>
