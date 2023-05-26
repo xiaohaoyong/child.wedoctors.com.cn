@@ -15,12 +15,17 @@ $app->rebind('cache', $cache);
         path="pages/lanhu_menzhenzhuye/component.html?id=1556"
 >
     <script type="text/wxtag-template">
-        <button class="btn">test2</button>
+        <style>.btn { padding: 12px }</style>
+        <button class="btn">打开小程序</button>
     </script>
 </wx-open-launch-weapp>
-<style>
-    #launch-btn {
-        width: 100px;
-        height: 100px
-    }
-</style>
+<script>
+    var btn = document.getElementById('launch-btn');
+    btn.addEventListener('launch', function (e) {
+        console.log('success');
+    });
+    btn.addEventListener('error', function (e) {
+        console.log('fail', e.detail);
+    });
+</script>
+
