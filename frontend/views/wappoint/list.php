@@ -62,7 +62,7 @@
 
             <wx-open-launch-weapp
                     id="launch-btn1"
-                    appid="wx12345678"
+                    appid="wx9977e00637216db7"
                     path="pages/lanhu_menzhenzhuye/component.html?id=1556"
             >
                 <div class="item">
