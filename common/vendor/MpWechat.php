@@ -60,7 +60,7 @@ class MpWechat extends \callmez\wechat\sdk\MpWechat
         $data = [
             'jsapi_ticket' => $this->getJsApiTicket(),
             'noncestr' => Yii::$app->security->generateRandomString(16),
-            'timestamp' => $_SERVER['REQUEST_TIME'],
+            'timestamp' => time(),
             'url' => \Yii::$app->request->getAbsoluteUrl()
         ];
         return array_merge([

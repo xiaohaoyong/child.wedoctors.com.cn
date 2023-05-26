@@ -9,7 +9,7 @@ $mpWechat = new \common\vendor\MpWechat([
 ?>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 <script>
-    wx.config(<?=json_encode($mpWechat->jsApiConfig(['jsApiList'=>['wx-open-launch-weapp']]));?>);
+    wx.config(<?=json_encode($mpWechat->jsApiConfig(['openTagList'=>['wx-open-launch-weapp']]));?>);
 </script>
 <wx-open-launch-weapp
         id="launch-btn"
