@@ -1,9 +1,9 @@
 <?php
-$app = \EasyWeChat\Factory::officialAccount(\Yii::$app->params['easywechat']);
+$jssdk=new \common\helpers\Jssdk(\Yii::$app->params['easywechat']['app_id'],\Yii::$app->params['easywechat']['secret'])
 ?>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 <script>
-    wx.config(<?=$app->jssdk->buildConfig(['wx-open-launch-weapp', true]);?>);
+    wx.config(<?=$jssdk->getSignPackage();?>);
 </script>
 <wx-open-launch-weapp
         id="launch-btn"

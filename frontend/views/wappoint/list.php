@@ -1,3 +1,11 @@
+
+<?php
+$jssdk=new \common\helpers\Jssdk(\Yii::$app->params['easywechat']['app_id'],\Yii::$app->params['easywechat']['secret'])
+?>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+<script>
+    wx.config(<?=$jssdk->getSignPackage();?>);
+</script>
 <div class="wrapper appoint_list">
     <style>.btn { width: 200px; height: 200px }</style>
 
