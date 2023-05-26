@@ -197,7 +197,7 @@
     </div>
 </div>
 <div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
-
+<script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 
 <?php
 \yii\bootstrap\Modal::begin([
