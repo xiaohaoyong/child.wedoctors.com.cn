@@ -122,7 +122,7 @@ $updateJs = <<<JS
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
-                "iDisplayLength":200,
+                "iDisplayLength":500,
                 "bPaginate":false,
                 "bInfo":false
             });
