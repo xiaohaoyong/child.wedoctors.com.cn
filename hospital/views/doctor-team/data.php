@@ -78,7 +78,7 @@ $this->title = "家医团队数据同步";
                                             ?>
                                             <tr>
                                                 <td><?= $v->title ?></td>
-                                                <td><?=\common\models\DoctorParent::find()->where(['itemid'=>$v->id])->count()?></td>
+                                                <td><?=\common\models\DoctorParent::find()->where(['teamid'=>$v->id])->count()?></td>
                                                 
                                             </tr>
                                         <?php } ?>
