@@ -98,7 +98,7 @@ class AppointHpv extends \yii\db\ActiveRecord
                                 ->andWhere(['date' => $d])
                                 ->count();
                             if($weekCount>$endDayCount) {
-                                $this->date = date('Y-m-d', $startDate);
+                                $this->date = $startDate;
                                 break;
                             }
                         }
