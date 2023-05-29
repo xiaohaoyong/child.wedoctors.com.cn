@@ -19,14 +19,15 @@ $this->title='我的预约';
                 <image src="https://api.child.wedoctors.com.cn/image/qr-code?id=<?=$row['id']?>" style="width: 225px;height: 225px;"></image>
             </div>
         </div>
-        <?php }else{?>
+        <?php }elseif($row['state']==6){?>
         <div class="content1">
             <div style="padding: 30px;text-align: center;color: red; line-height: 20px;">
             您的预约已提交，目前排队处理中，系统将在2小时内将预约结果告知您，感谢您的支持
             </div>
         </div>
+        <?php }elseif($row['state'==0]){?>
+            您的预约已提交，社区审核中
         <?php }?>
-
         <div class="zhong">
             <div class="left"></div>
             <div class="middle"></div>

@@ -313,14 +313,16 @@ class AppointController extends Controller
                 $this->pushTmp($v);
                 continue;
             }
-
-            $v->state=1;
+            if($v->doctorid!=38){
+                $v->state = 1;
+            }else {
+                $v->state = 0;
+            }
             $v->save();
             $log->addLog($v->state);
             $log->saveLog();
-            if($v->doctorid!=38){
-                $this->pushTmp($v);
-            }
+            $this->pushTmp($v);
+
         }
     }
     public function pushTmp(Appoint $appoint){
@@ -335,7 +337,7 @@ class AppointController extends Controller
                 'remark' => array('value' => "尊敬的用户您好，您的预约已生效，请您按照预约时间前往社区，如有问题请联系在线客服"),
             ];
             $tmpid = '83CpoxWB9JCnwdXPr0H7dB66QQnFdJQvBbeMnJ9rdHo';
-        }else{
+        }elseif($appoint->state == 3 ){
             $data = [
                 'first' => ['value' => ''],
                 'keyword1' => array('value' => $appoint->name()),
@@ -347,7 +349,9 @@ class AppointController extends Controller
             ];
             $tmpid = 'Osp0A-3RxrPZpyts8GhASy8jOJLGC6y0m_DHlaF-Z3c';
         }
-        $login = UserLogin::findOne(['id' => $appoint->loginid]);
-        return $rs = WechatSendTmp::send($data, $login->openid, $tmpid,'',[],0,0);
+        if($tmpid) {
+            $login = UserLogin::findOne(['id' => $appoint->loginid]);
+            return $rs = WechatSendTmp::send($data, $login->openid, $tmpid, '', [], 0, 0);
+        }
     }
 }

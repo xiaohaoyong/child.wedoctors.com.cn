@@ -211,6 +211,7 @@ class Appoint extends \yii\db\ActiveRecord
 
 
     public static $stateText = [
+        0 => '待审核',
         1 => '进行中',
         2 => '已完成',
         3 => '已取消',
