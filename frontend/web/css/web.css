@@ -13,6 +13,7 @@ button{    border: none;}
 .appoint_list{padding-top: 13px;}
 .appoint_list .dropdown button{background-color:#F8F8F8;}
 .appoint_list .dropdown button{height: 28px;line-height: 16px; }
+.appoint_list .dropdown {font-size: 16px;}
 .appoint_list .search input {
     height: 28px;
     line-height: 22px;
