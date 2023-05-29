@@ -109,8 +109,21 @@ class AppointHpv extends \yii\db\ActiveRecord
                     }
                     //判断法定假日
                     if(!in_array(date('Y-m-d',$d), HospitalAppoint::$holiday)){
-                        $this->date=date('Y-m-d',$d);
-                        break;
+
+                        $week = date('w', strtotime($d));
+                        $key = 'week' . $week;
+
+                        $aw = AppointHpvSetting::find()
+                            ->where(['doctorid' => Yii::$app->user->identity->doctorid])
+                            ->one();
+                        if($aw) {
+                            $weekCount = $aw->$key;
+                            if ($weekCount>0) {
+                                $this->date=date('Y-m-d',$d);
+                                break;
+                            }
+                        }
+                        continue;
                     }else{
                         continue;
                     }
