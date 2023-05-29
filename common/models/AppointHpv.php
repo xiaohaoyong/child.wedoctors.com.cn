@@ -71,7 +71,7 @@ class AppointHpv extends \yii\db\ActiveRecord
             if (($this->date < '1990-01-01' || !$this->date) && $this->state == 1) {
 
                 $aw = AppointHpvSetting::find()
-                    ->where(['doctorid' => Yii::$app->user->identity->doctorid])
+                    ->where(['doctorid' =>$this->doctorid])
                     ->one();
                 if(!$aw) {
                     $this->addError('date','自动分配失败！您没有设置号源');
@@ -93,7 +93,7 @@ class AppointHpv extends \yii\db\ActiveRecord
                         $key = 'week' . $week;
                         $weekCount = $aw->$key;
                         if ($weekCount>0) {
-                            $endDayCount = AppointHpv::find()->where(['doctorid' => Yii::$app->user->identity->doctorid])
+                            $endDayCount = AppointHpv::find()->where(['doctorid' => $this->doctorid])
                                 ->andWhere(['state' => 1])
                                 ->andWhere(['date' => $d])
                                 ->count();
