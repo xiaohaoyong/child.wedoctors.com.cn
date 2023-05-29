@@ -284,7 +284,7 @@ class WappointController extends Controller
 
         $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekr,$cycle);
         if (!$is_appoint) {
-            return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];
+            //return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];
         }
         if ($is_appoint == 2) {
             $d=HospitalAppoint::$cycleNum[$hospitalA->cycle]+$hospitalA->delay;
@@ -574,6 +574,8 @@ class WappointController extends Controller
             return $this->redirect(['wappoint/index']);
         }
 
+
+
         $doctor=UserDoctor::findOne(['userid'=>$post['doctorid']]);
         if($doctor){
             if(strpos($doctor->appoint,',')!==false){
@@ -587,6 +589,40 @@ class WappointController extends Controller
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
         };
         $appoint = HospitalAppoint::findOne(['doctorid' => $post['doctorid'], 'type' => $post['type']]);
+
+
+
+        //判断日期是否可约
+
+        $weekv=[];
+
+        $vid=$post['vaccine'];
+
+        if($vid) {
+            $weekv = HospitalAppointVaccine::find()
+                ->select('week')
+                ->where(['haid' => $appoint->id])
+                ->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0], ['vaccine' => -1]])->groupBy('week')->column();
+        }
+
+
+        $hav = HospitalAppointVaccineDay::findOne(['haid'=>$appoint->id,'vaccine'=>$vid]);
+        if($hav){
+            $cycle = $hav->day;
+        }else{
+            $cycle = $appoint->cycle;
+        }
+
+        $is_appoint = $appoint->is_appoint($post['appoint_date'], $weekv,$cycle);
+        if (!$is_appoint) {
+            \Yii::$app->getSession()->setFlash('error','非线上预约门诊日，请选择其他日期！');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+
+
+        }
+
+
+
 
         $w=date("w",$post['appoint_date']);
         $weeks = HospitalAppointWeek::find()
