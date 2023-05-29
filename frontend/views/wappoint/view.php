@@ -25,8 +25,8 @@ $this->title='我的预约';
             您的预约已提交，目前排队处理中，系统将在2小时内将预约结果告知您，感谢您的支持
             </div>
         </div>
-        <?php }elseif($row['state'==0]){?>
-            您的预约已提交，社区审核中
+        <?php }elseif($row['state']==0){?>
+            您的预约已提交，社区审核中...
         <?php }?>
         <div class="zhong">
             <div class="left"></div>
