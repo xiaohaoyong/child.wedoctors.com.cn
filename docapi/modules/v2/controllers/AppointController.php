@@ -29,8 +29,8 @@ class AppointController extends \docapi\controllers\AppointController
         $appoint=Appoint::findOne(['id'=>$id,'doctorid'=>$userDoctor->userid]);
         $row=[];
         if ($appoint) {
-            $appoint->state = 2;
-            $appoint->save();
+//            $appoint->state = 2;
+//            $appoint->save();
             $row = $appoint->toArray();
             $doctor = UserDoctor::findOne(['userid' => $appoint->doctorid]);
             if ($doctor) {
