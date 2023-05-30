@@ -1,5 +1,6 @@
 <?php
 
+use app\models\AppointImg;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
@@ -28,7 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'image',
                             'format'=>'raw',
                             'value' => function ($e) {
-                                return Html::img($e->image,['class'=>'file-preview-image','style'=>'max-width:300px']);
+                                $imgs=AppointImg::findAll(['aid'=>$e->id]);
+                                $html = '';
+                                foreach($imgs as $k=>$v){
+                                    $html.=Html::img($e->image,['class'=>'file-preview-image','style'=>'max-width:300px']);
+                                }
+                                return $html;
                             }
                         ],
                     ],
