@@ -86,7 +86,7 @@ frontend\assets\DateAsset::register($this);
             <div class="input">
                 <input type='text' id='text-field' class="appoint_input" onclick="document.getElementById('fileName').click()"/>
 
-                <input type="file" name="img" multiple="multiple" id="fileName" style="display: none" onchange="document.getElementById('text-field').value=this.value.substring(this.value.lastIndexOf('\\')+1)"/>
+                <input type="file" name="img[]" multiple="multiple" id="fileName" style="display: none" onchange="document.getElementById('text-field').value=this.value.substring(this.value.lastIndexOf('\\')+1)"/>
                 注：HPV疫苗及带状疱疹疫苗限在白纸坊街道居住、工作或上学的家医签约居民。HPV疫苗预约前需上传凭证，线上完善健康档案，现场签订家医协议或缴纳家医服务费。
             </div>
         </div>
