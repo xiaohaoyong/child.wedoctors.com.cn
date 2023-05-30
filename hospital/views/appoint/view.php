@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $imgs=AppointImg::findAll(['aid'=>$e->id]);
                                 $html = '';
                                 foreach($imgs as $k=>$v){
-                                    $html.=Html::img($e->image,['class'=>'file-preview-image','style'=>'max-width:300px']);
+                                    $html.=Html::img($v->img,['class'=>'file-preview-image','style'=>'max-width:300px']);
                                 }
                                 return $html;
                             }
