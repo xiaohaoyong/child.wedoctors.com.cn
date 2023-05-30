@@ -42,8 +42,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php $form = ActiveForm::begin([
                     'action' => ['appoint/done']                ]); ?>
 <?= $form->field($model,'referrer')->hiddenInput(['value'=>$referrer]) ?>
-<?= $form->field($model,'id')->hiddenInput(['value'=>$model->id]) ?>
-<?= $form->field($model,'state')->radioList([1=>'通过',3=>'不通过'])?>
+<?= $form->field($model,'id')->hiddenInput(['value'=>$model->id])->label(false) ?>
+<?= $form->field($model,'state')->radioList([1=>'通过',3=>'不通过'])->label(false)?>
 
 <div class="form-group">
 <?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
