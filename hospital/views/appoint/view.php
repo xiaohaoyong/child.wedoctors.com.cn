@@ -1,6 +1,6 @@
 <?php
 
-use app\models\AppointImg;
+use common\models\AppointImg;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
