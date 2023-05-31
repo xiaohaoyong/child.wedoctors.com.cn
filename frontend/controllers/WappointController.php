@@ -284,7 +284,7 @@ class WappointController extends Controller
 
         $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekr,$cycle);
         if (!$is_appoint) {
-            //return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];
+            return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];
         }
         if ($is_appoint == 2) {
             $d=HospitalAppoint::$cycleNum[$hospitalA->cycle]+$hospitalA->delay;
