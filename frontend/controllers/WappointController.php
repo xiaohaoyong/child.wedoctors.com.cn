@@ -17,6 +17,7 @@ use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
 use common\models\AppointAdult;
+use common\models\AppointImg;
 use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
@@ -540,16 +541,6 @@ class WappointController extends Controller
 
     public function actionSave(){
         $post=\Yii::$app->request->post();
-
-
-        $imagesFile = UploadedFile::getInstancesByName('img');
-        if($imagesFile) {
-            $upload= new UploadForm();
-            $upload->imageFiles = $imagesFile;
-            $image = $upload->upload();
-        }
-
-
         if(!preg_match("/^1[3456789]\d{9}$/", $post['phone'])){
             \Yii::$app->getSession()->setFlash('error','请填写正确手机号码');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
@@ -672,7 +663,7 @@ class WappointController extends Controller
 
 
         if(!in_array($post['vaccine'],[64,66,46])){
-            $appointA = Appoint::findOne(['phone' => $post['phone'], 'state' => [1,6], 'vaccine' => $post['vaccine']]);
+            $appointA = Appoint::findOne(['phone' => $post['phone'], 'state' => [1,6,0], 'vaccine' => $post['vaccine']]);
         }
         if($appointA){
             \Yii::$app->getSession()->setFlash('error','您有未完成的预约');
@@ -689,13 +680,27 @@ class WappointController extends Controller
             $post['userid'] = $this->login->userid;
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;
-            $post['image'] = $image?$image[0]:'';
             $model->load(["Appoint" => $post]);
             if(!$this->login->phone){
                 $this->login->phone=$post['phone'];
                 $this->login->save();
             }
             if ($model->save()) {
+
+                $imagesFile = UploadedFile::getInstancesByName('img');
+
+                if($imagesFile) {
+                        $upload= new UploadForm();
+                        $upload->imageFiles = $imagesFile;
+                        $image = $upload->upload();
+                        foreach($image as $k=>$v){
+                            $appointImg=new AppointImg();
+                            $appointImg->img=$v;
+                            $appointImg->aid=$model->id;
+                            $appointImg->save();
+                        }
+                }
+    
                 return $this->redirect(['wappoint/view','id'=>$model->id]);
             } else {
                 \Yii::$app->getSession()->setFlash('error','提交失败');
@@ -704,6 +709,8 @@ class WappointController extends Controller
         }
     }
     public function actionTest(){
+        $post=\Yii::$app->request->post();
+
 
 
         return $this->render('test1');

@@ -1,5 +1,6 @@
 <?php
 
+use common\models\AppointImg;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
@@ -28,7 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'image',
                             'format'=>'raw',
                             'value' => function ($e) {
-                                return Html::img($e->image,['class'=>'file-preview-image','style'=>'max-width:300px']);
+                                $imgs=AppointImg::findAll(['aid'=>$e->id]);
+                                $html = '';
+                                foreach($imgs as $k=>$v){
+                                    $html.=Html::img($v->img,['class'=>'file-preview-image','style'=>'max-width:300px']);
+                                }
+                                return $html;
                             }
                         ],
                     ],
@@ -36,8 +42,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php $form = ActiveForm::begin([
                     'action' => ['appoint/done']                ]); ?>
 <?= $form->field($model,'referrer')->hiddenInput(['value'=>$referrer]) ?>
-<?= $form->field($model,'id')->hiddenInput(['value'=>$model->id]) ?>
-<?= $form->field($model,'state')->radioList([1=>'通过',3=>'不通过'])?>
+<?= $form->field($model,'id')->hiddenInput(['value'=>$model->id])->label(false) ?>
+<?= $form->field($model,'state')->radioList([1=>'通过',3=>'不通过'])->label(false)?>
 
 <div class="form-group">
 <?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
