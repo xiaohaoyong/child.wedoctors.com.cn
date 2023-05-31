@@ -21,7 +21,7 @@ use docapi\models\AppointSearch;
 
 class AppointController extends \docapi\controllers\AppointController
 {
-    public function actionView($id)
+    public function actionView($id,$type=0)
     {
         $doctor = Doctors::findOne(['userid' => $this->userid]);
         $userDoctor = UserDoctor::findOne(['hospitalid' => $doctor->hospitalid]);
@@ -29,8 +29,10 @@ class AppointController extends \docapi\controllers\AppointController
         $appoint=Appoint::findOne(['id'=>$id,'doctorid'=>$userDoctor->userid]);
         $row=[];
         if ($appoint) {
-//            $appoint->state = 2;
-//            $appoint->save();
+            if($type==1) {
+                $appoint->state = 2;
+                $appoint->save();
+            }
             $row = $appoint->toArray();
             $doctor = UserDoctor::findOne(['userid' => $appoint->doctorid]);
             if ($doctor) {
