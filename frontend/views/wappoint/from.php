@@ -80,7 +80,7 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
-        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[45 , 57 , 58 , 59 , 97 ,117,114,78,51,50,43,44,54,55,56,98])){ ?>
+        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[45 , 57 , 58 , 59 , 97 ,117,44,54,55,56,98])){ ?>
         <div class="item">
             <div class="title">居住证明</div>
             <div class="input">
@@ -160,8 +160,9 @@ jQuery("#vaccine").change(function(e){
             return false;
         }
     }
-    if(vid==43){
-        if(!confirm("此疫苗接种年龄限制为9至45周岁，接种完全程三针后，不超过46周岁的生日。例如：45周岁5个月也是可以打的，但是一定按照规定时间，三针半年内接种完成，打完不能超过46周岁生日")){
+    const hpvid=['45' , '57' , '58' , '59' , '97' ,'117','114','78','51','50','43','44','54','55','56','98'];
+    if(hpvid.indexOf(vid)>-1){
+        if(!confirm("年龄为9至45周岁，接种完全程三针后，不得超过46周岁生日。例如:45周岁5个月也可接种，但是得按照规定时间，半年内三针接种完成，最后一针不能超过46周岁生日。接种时请您携带医保卡及儿宝宝预约二维码，现场实名扫码核销。二维码中姓名与实际姓名不同或者预约时间不是当天不提供接种服务。")){
             return false;
         }
     }
