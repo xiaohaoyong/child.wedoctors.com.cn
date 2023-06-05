@@ -80,8 +80,8 @@ jQuery(".days .rs").bind("click",function(){
     jQuery('#appoint_time').val(0);
           jQuery('.time').html('加载中...');
 
-  jQuery(".days .rs .day").removeClass('on');
-  jQuery(this).children('.day').addClass('on');
+  jQuery(".days .rs").removeClass('on');
+  jQuery(this).addClass('on');
   var day= jQuery(this).attr('date');
   jQuery('#appoint-appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
