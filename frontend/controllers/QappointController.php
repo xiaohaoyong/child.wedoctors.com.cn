@@ -191,6 +191,9 @@ class QappointController extends Controller
         $dweek = ['日', '一', '二', '三', '四', '五', '六'];
         for ($i = 1; $i <= $cycle; $i++) {
             $day = $day + 86400;
+            if($userid == 4127 && $day > strtotime('2023-10-01')){
+                break;
+            }
             $rs['date'] = $day;
             $rs['day'] = date('m.d', $day);
             $rs['dateStr'] = date('Ymd', $day);
