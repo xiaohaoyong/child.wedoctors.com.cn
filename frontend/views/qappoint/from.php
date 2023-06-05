@@ -15,25 +15,28 @@ $this->title='两癌筛查预约';
     <div class="item">
         温馨提示：筛查人群为预约社区管辖内户籍35-64岁妇女，三年筛查一次（如2019年已筛查，下次筛查时间为2022年），必须携带身份证。注：请务必按照自己的预约时间段前来筛查现场
     </div>
-    <div class="item">
-        <div class="title">请选择日期</div>
-        <div class="days">
-            <?php
-            $dweek=['日','一','二','三','四','五','六'];
-            foreach ($days as $k => $v) { ?>
-                <item class="rs" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
-                    <div class="week"><?= $dweek[$v['week']] ?></div>
-                    <div class="day <?= $day == $v['date'] ? 'on' : '' ?>"><?= $v['day'] ?></div>
-                </item>
-            <?php } ?>
+    <div class="appoint_day">
+
+        <div class="item">
+            <div class="title">请选择日期</div>
+            <div class="days">
+                <?php
+                $dweek=['日','一','二','三','四','五','六'];
+                foreach ($days as $k => $v) { ?>
+                    <item class="rs <?= $day == $v['date'] ? 'on' : '' ?>" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
+                        <div class="week"><?= $dweek[$v['week']] ?></div>
+                        <div class="day"><?= $v['day'] ?></div>
+                    </item>
+                <?php } ?>
+            </div>
+            <?=$form->field($appoint,'appoint_date')->hiddenInput()->label(false)?>
+
+            <div class="time">
+
+            </div>
+            <?=$form->field($appoint,'appoint_time')->hiddenInput()->label(false)?>
+
         </div>
-        <?=$form->field($appoint,'appoint_date')->hiddenInput()->label(false)?>
-
-        <div class="time">
-
-        </div>
-        <?=$form->field($appoint,'appoint_time')->hiddenInput()->label(false)?>
-
     </div>
 
     <div class="form-group">
