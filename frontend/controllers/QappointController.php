@@ -185,7 +185,7 @@ class QappointController extends Controller
         $days=[];
         $weekr = str_split((string)$hospitalA->weeks);
         $cycleType = [0, 7, 14, 30];
-        $cycle = $cycleType[$hospitalA->cycle];
+        $cycle = HospitalAppoint::$cycleNum[$hospitalA->cycle];
         $delay = $hospitalA->delay;
         $day = strtotime(date('Y-m-d',strtotime('+' . $delay . " day")));
         $dweek = ['日', '一', '二', '三', '四', '五', '六'];
