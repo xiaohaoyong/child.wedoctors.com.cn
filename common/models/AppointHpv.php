@@ -36,13 +36,21 @@ class AppointHpv extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'phone', 'userid', 'doctorid', 'vid', 'img'], 'required'],
+            [['name', 'phone', 'userid', 'doctorid', 'vid', 'img','idcard','address'], 'required'],
             [['phone', 'state', 'cratettime', 'userid', 'doctorid', 'vid'], 'integer'],
             [['date', 'img'], 'safe'],
             [['name'], 'string', 'max' => 50],
+            [['idcard'], 'common\helpers\IdcardValidator'],
+            [['phone'], 'validatePhone'],
+
         ];
     }
-
+    public function validatePhone($attribute, $params){
+        preg_match('/^1[3456789]\d{9}$/', $this->phone, $arr);
+        if(!$arr){
+            $this->addError($attribute, '请输入正确手机号码！');
+        }
+    }
     /**
      * {@inheritdoc}
      */
@@ -52,6 +60,8 @@ class AppointHpv extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => '预约人姓名',
             'phone' => '预约人联系电话',
+            'idcard' => '预约人身份证号',
+            'address' => '预约人现住址',
             'date' => '接种日期',
             'state' => '状态',
             'cratettime' => '创建时间',

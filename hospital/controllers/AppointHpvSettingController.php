@@ -88,6 +88,7 @@ class AppointHpvSettingController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update']);
         } else {
+            $model->vid=explode(',',$model->vid);
             return $this->render('update', [
                 'model' => $model,
             ]);

@@ -10,6 +10,8 @@ use yii\helpers\Html;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\components\UploadForm;
+use common\models\AppointHpvSetting;
+use common\models\Vaccine;
 use yii\web\UploadedFile;
 /**
  * AppointHpvController implements the CRUD actions for Appoint model.
@@ -33,6 +35,23 @@ class AppointHpvController extends Controller
 
     public function actionForm($doctorid=206262){
         $model = new AppointHpv();
+        $setting = AppointHpvSetting::findOne(['doctorid'=>$doctorid]);
+        if($setting->vid){
+            $vid = explode(',',$setting->vid);
+            $vids = Vaccine::find()->indexBy('id')->select('name')->where(['id'=>$vid])->column();
+        }else{
+            $vids = [
+                43=> '双价宫颈癌疫苗（第一剂）',
+             50=>'双价宫颈癌疫苗（第二剂）',
+             51=>'双价宫颈癌疫苗（第三剂）',
+             54=>'四价宫颈癌疫苗（第一剂）',
+             55=>'四价宫颈癌疫苗（第二剂）',
+             56=>'四价宫颈癌疫苗（第三剂）',
+             57=>'九价宫颈癌疫苗（第一剂）',
+             58=>'九价宫颈癌疫苗（第二剂）',
+             59=>'九价宫颈癌疫苗（第三剂）',
+         ];
+        }
         if ($model->load(Yii::$app->request->post()) ) {
             $model->userid=$this->login->userid;
             $imagesFile = UploadedFile::getInstancesByName(Html::getInputName($model,'img'));
@@ -44,13 +63,11 @@ class AppointHpvController extends Controller
             }
             if($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
-            }else{
-                var_dump($model->firstErrors);exit;
             }
-
         }
 
         return $this->render('form', [
+            'vids' => $vids,
             'model' => $model,
             'doctorid'=>$doctorid,
         ]);

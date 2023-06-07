@@ -23,19 +23,11 @@ $this->title = 'HPV疫苗接种申请';
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'phone')->textInput() ?>
+        <?= $form->field($model, 'idcard')->textInput() ?>
+        <?= $form->field($model, 'address')->textInput() ?>
 
         <?= $form->field($model, 'vid')->dropDownList([
-            ''=> '请选择',
-               43=> '双价宫颈癌疫苗（第一剂）',
-            50=>'双价宫颈癌疫苗（第二剂）',
-            51=>'双价宫颈癌疫苗（第三剂）',
-            54=>'四价宫颈癌疫苗（第一剂）',
-            55=>'四价宫颈癌疫苗（第二剂）',
-            56=>'四价宫颈癌疫苗（第三剂）',
-            57=>'九价宫颈癌疫苗（第一剂）',
-            58=>'九价宫颈癌疫苗（第二剂）',
-            59=>'九价宫颈癌疫苗（第三剂）',
-        ]) ?>
+            ''=> '请选择']+$vids) ?>
 
         <?= $form->field($model, 'img')->fileInput() ?>
 
