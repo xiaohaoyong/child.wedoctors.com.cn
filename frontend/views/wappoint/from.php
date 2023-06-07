@@ -84,7 +84,7 @@ frontend\assets\DateAsset::register($this);
         <div class="item">
             <div class="title">居住证明</div>
             <div class="input">
-                <input type='text' id='text-field' class="appoint_input" onclick="document.getElementById('fileName').click()"/>
+                <input type='text' id='text-field' name="image" class="appoint_input" readonly="readonly" onclick="document.getElementById('fileName').click()"/>
 
                 <input type="file" name="img[]" multiple="multiple" id="fileName" style="display: none" onchange="document.getElementById('text-field').value=this.value.substring(this.value.lastIndexOf('\\')+1)"/>
                 注：HPV疫苗及带状疱疹疫苗限在白纸坊街道居住、工作或上学的家医签约居民。HPV疫苗预约前需上传凭证，线上完善健康档案，现场签订家医协议或缴纳家医服务费。
@@ -252,7 +252,7 @@ jQuery(".days .rs").bind("click",function(){
   jQuery('#appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
 });
-var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！',img:'请上传预约凭证'};
+var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！',image:'请上传预约凭证'};
 jQuery("#appoint_form").submit(data,function(e){
     var labelMap = e.data;
     var label = '';
