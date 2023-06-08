@@ -709,11 +709,7 @@ class WappointController extends Controller
         }
     }
     public function actionTest(){
-        $post=\Yii::$app->request->post();
-
-
-
-        return $this->render('test1');
+        var_dump($_GET);exit;
 
     }
 }

@@ -21,7 +21,7 @@ class Controller extends \yii\web\Controller
         'wappoint/day-num',
         'wappoint/code',
         'wappoint/vphone',
-        'wappoint/index'
+        'wappoint/test'
     ];
 
     public function beforeAction($action)
@@ -36,6 +36,7 @@ class Controller extends \yii\web\Controller
         {
             return true;
         }
+        //$this->login=UserLogin::findOne(['userid'=>1292985]);
         $config=\Yii::$app->params['wechat'];
         $config['oauth']['callback']=\Yii::$app->request->url;
         $app = Factory::officialAccount($config);
