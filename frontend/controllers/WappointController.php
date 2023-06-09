@@ -245,7 +245,7 @@ class WappointController extends Controller
             $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
         }
 
-        return $this->render('from', [ 'source'=>$source,streets'=>$streets,'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
+        return $this->render('from', [ 'source'=>$source,'streets'=>$streets,'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
     }
     public function actionDayNum($doctorid, $week = 0, $type=4, $day, $vid = 0,$sid=0)
     {
