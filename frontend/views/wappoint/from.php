@@ -19,8 +19,8 @@ frontend\assets\DateAsset::register($this);
                id="_csrf-frontend"
 
                value="<?= Yii::$app->request->csrfToken ?>">
-        <input name="source" type="hidden" value="<?=$source?>">
-        <input name="phone" type="hidden" value="<?=$phone?>">
+        <input name="source" class="appoint_input"  type="hidden" value="<?=$source?>">
+        <input name="phone" class="appoint_input"  type="hidden" value="<?=$phone?>">
 
         <div class="item">
             <div class="title">预约社区</div>
