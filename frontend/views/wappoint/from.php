@@ -282,6 +282,7 @@ jQuery("#appoint_form").submit(data,function(e){
 	    showMessage(label,3500,true,'bounceInUp-hastrans','bounceOutDown-hastrans');
 	    return false;
 	}
+    console.log(formdata);
 	if(!formdata['phone'] || !formdata['vcode'] || formdata['source']!='xiaoxiong'){
 	    var vid=jQuery("#vaccine").val();
 	    if(vid == 64){
