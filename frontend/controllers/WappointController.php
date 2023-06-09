@@ -31,6 +31,7 @@ use common\models\Street;
 use common\models\UserDoctor;
 use common\models\Vaccine;
 use EasyWeChat\Factory;
+use Yii;
 use yii\web\Response;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -104,7 +105,7 @@ class WappointController extends Controller
         ]);
     }
 
-    public function actionFrom($userid,$vid=0,$sid=0)
+    public function actionFrom($userid,$vid=0,$sid=0,$source='',$name='',$birthday='',$phone='',$sex='')
     {
         $dweek = ['日', '一', '二', '三', '四', '五', '六'];
         $dateMsg = ['不可约', '可约', '未放号'];
@@ -236,6 +237,12 @@ class WappointController extends Controller
             $streets = [];
         }
         $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
+        if(!$appointAdult && $source =='xiaoxiong'){
+            $user['phone']=$phone;
+            $user['name']=$name;
+            $user['birthday']=$birthday;
+            $user['gender']=$sex=='男'?1:2;
+        }
 
         return $this->render('from', [ 'streets'=>$streets,'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
     }

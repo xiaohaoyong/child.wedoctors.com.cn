@@ -76,7 +76,7 @@ frontend\assets\DateAsset::register($this);
         <div class="item">
             <div class="title">出生日期</div>
             <div class="input">
-                <input type="text" id="select_0" class="appoint_input"  name="birthday" readonly  placeholder="请选择出生日期"  />
+                <input type="text" id="select_0" class="appoint_input" value="<?=$user['birthday']?>"  name="birthday" readonly  placeholder="请选择出生日期"  />
 
             </div>
         </div>
