@@ -236,12 +236,13 @@ class WappointController extends Controller
         } else {
             $streets = [];
         }
-        $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
-        if(!$appointAdult && $source =='xiaoxiong'){
-            $user['phone']=$phone;
-            $user['name']=$name;
-            $user['birthday']=$birthday;
-            $user['gender']=$sex=='男'?1:2;
+        if($source =='xiaoxiong'){
+            $appointAdult['phone']=$phone;
+            $appointAdult['name']=$name;
+            $appointAdult['birthday']=$birthday;
+            $appointAdult['gender']=$sex=='男'?1:2;
+        }else{
+            $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
         }
 
         return $this->render('from', [ 'streets'=>$streets,'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
