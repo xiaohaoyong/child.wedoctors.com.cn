@@ -288,7 +288,7 @@ class Appoint extends \yii\db\ActiveRecord
 
             [['street','orderid','vaccine','push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
             [['remark','image'], 'string', 'max' => 100],
-            [['date','name'], 'string'],
+            [['date','name','source'], 'string'],
 
         ];
     }
