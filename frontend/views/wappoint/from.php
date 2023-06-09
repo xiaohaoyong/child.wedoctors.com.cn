@@ -283,15 +283,17 @@ jQuery("#appoint_form").submit(data,function(e){
 	    return false;
 	}
     console.log(formdata);
-	if(!formdata['phone'] || !formdata['vcode'] || formdata['source']!='xiaoxiong'){
-	    var vid=jQuery("#vaccine").val();
-	    if(vid == 64){
-	        jQuery("#modle_phone1").modal('show');
-	    }else{
-	        jQuery("#modle_phone").modal('show');
-	    }
-        return false;
-	}
+    if(formdata['source']!='xiaoxiong'){
+        if(!formdata['phone'] || !formdata['vcode']){
+            var vid=jQuery("#vaccine").val();
+            if(vid == 64){
+                jQuery("#modle_phone1").modal('show');
+            }else{
+                jQuery("#modle_phone").modal('show');
+            }
+            return false;
+        }
+    }
 });
 
 
