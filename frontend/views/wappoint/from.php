@@ -19,6 +19,9 @@ frontend\assets\DateAsset::register($this);
                id="_csrf-frontend"
 
                value="<?= Yii::$app->request->csrfToken ?>">
+        <input name="source" type="hidden" value="<?=$source?>">
+        <input name="phone" type="hidden" value="<?=$phone?>">
+
         <div class="item">
             <div class="title">预约社区</div>
             <div class="input">
@@ -279,7 +282,7 @@ jQuery("#appoint_form").submit(data,function(e){
 	    showMessage(label,3500,true,'bounceInUp-hastrans','bounceOutDown-hastrans');
 	    return false;
 	}
-	if(!formdata['phone'] || !formdata['vcode']){
+	if(!formdata['phone'] || !formdata['vcode'] || formdata['source']!='xiaoxiong'){
 	    var vid=jQuery("#vaccine").val();
 	    if(vid == 64){
 	        jQuery("#modle_phone1").modal('show');
