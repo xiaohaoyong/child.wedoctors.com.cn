@@ -6,7 +6,7 @@ namespace databackend\controllers;
 use common\models\AppointComment;
 use common\models\Question;
 use common\models\QuestionComment;
-use common\models\UserDoctor;
+use databackend\models\user\UserDoctor;
 use Yii;
 use yii\web\notFoundHttpException;
 use yii\filters\VerbFilter;
