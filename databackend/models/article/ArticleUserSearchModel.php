@@ -74,7 +74,7 @@ class ArticleUserSearchModel extends ArticleUser
         }else {
             $query->andFilterWhere(['in', 'userid', $doctors]);
         }
-        $query->orderBy([self::primaryKey()[0]=>SORT_DESC]);
+        $query->orderBy('createtime desc');
 
         return $dataProvider;
     }
