@@ -9,7 +9,7 @@ use yii\web\UploadedFile;
 use common\models\User;
 use common\models\UserLogin;
 use Yii;
-use common\models\UserDoctor;
+use databackend\models\user\UserDoctor;
 use common\models\UserDoctorSearchModel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
