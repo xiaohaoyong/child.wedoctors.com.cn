@@ -105,7 +105,7 @@ class WappointController extends Controller
         ]);
     }
 
-    public function actionFrom($userid,$vid=0,$sid=0,$source='erbb',$name='',$birthday='',$phone='',$sex='')
+    public function actionFrom($userid,$vid=0,$sid=0,$source='erbb',$name='',$birthday='',$phone=1,$sex='')
     {
         $dweek = ['日', '一', '二', '三', '四', '五', '六'];
         $dateMsg = ['不可约', '可约', '未放号'];
