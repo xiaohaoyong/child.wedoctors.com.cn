@@ -17,7 +17,7 @@ use yii\filters\VerbFilter;
 class AppointController extends BaseController
 {
     public function actionHospital(){
-        $hospital=UserDoctor::find()->where(['county'=>\Yii::$app->user->identity->county])->all();
+        $hospital=UserDoctor::find()->where(['county'=>\Yii::$app->user->identity->county])->andWhere(['is_guanfang'=>0])->all();
 
 
 
