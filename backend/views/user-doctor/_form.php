@@ -60,7 +60,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($userInfo, 'phone')->textInput() ?>
                 <?= $form->field($userInfo, 'appoints')->checkboxList(\common\models\HospitalAppoint::$typeText, ['prompt' => '请选择']) ?>
                 <?= $form->field($userInfo, 'is_calling')->radioList(['关闭','开通']) ?>
-                <?= $form->field($userInfo, 'is_calling')->radioList(['非官方','官方']) ?>
+                <?= $form->field($userInfo, 'is_guanfang')->radioList(['非官方','官方']) ?>
 
                 <?= $form->field($userInfo, 'longitude')->textInput() ?>
                 <?= $form->field($userInfo, 'latitude')->textInput() ?>
