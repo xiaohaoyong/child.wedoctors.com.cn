@@ -29,6 +29,7 @@ use common\models\HospitalAppointVaccineTimeNum;
 use common\models\HospitalAppointWeek;
 use common\models\Street;
 use common\models\UserDoctor;
+use common\models\UserTo;
 use common\models\Vaccine;
 use EasyWeChat\Factory;
 use Yii;
@@ -105,7 +106,7 @@ class WappointController extends Controller
         ]);
     }
 
-    public function actionFrom($userid,$vid=0,$sid=0,$source='erbb',$name='',$birthday='',$phone=1,$gender_txt='')
+    public function actionFrom($userid,$vid=0,$sid=0,$source='erbb',$name='',$birthday='',$phone=1,$gender_txt='',$xuserid=0,$vaccineId=0)
     {
         $dweek = ['日', '一', '二', '三', '四', '五', '六'];
         $dateMsg = ['不可约', '可约', '未放号'];
@@ -241,11 +242,20 @@ class WappointController extends Controller
             $appointAdult['name']=$name;
             $appointAdult['birthday']=$birthday;
             $appointAdult['gender']=$gender_txt=='男'?1:2;
+            if($xuserid){
+                $userTo=UserTo::findOne(['touserid'=>$xuserid]);
+                $userTo = $userTo?$userTo:new UserTo();
+                $userTo->userid=$this->login->userid;
+                $userTo->touserid=$xuserid;
+                $userTo->vaccineid=$vaccineId;
+                $userTo->source = 'xiaoxiong';
+                $userTo->save();
+            }
         }else{
             $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
         }
 
-        return $this->render('from', [ 'source'=>$source,'streets'=>$streets,'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
+        return $this->render('from', [ 'xuserid'=>$xuserid,'skuid'=>$vaccineId, 'source'=>$source,'streets'=>$streets,'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
     }
     public function actionDayNum($doctorid, $week = 0, $type=4, $day, $vid = 0,$sid=0)
     {
