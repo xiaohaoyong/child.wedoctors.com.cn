@@ -349,6 +349,9 @@ class AppointController extends Controller
             ];
             $tmpid = 'Osp0A-3RxrPZpyts8GhASy8jOJLGC6y0m_DHlaF-Z3c';
         }
+        if($appoint->source=='xiaoxiong'){
+            Appoint::pushState($appoint->id);
+        }
         if($tmpid) {
             $login = UserLogin::findOne(['id' => $appoint->loginid]);
             return $rs = WechatSendTmp::send($data, $login->openid, $tmpid, '', [], 0, 0);
