@@ -18,6 +18,7 @@ use common\helpers\WechatSendTmp;
 use common\models\Appoint;
 use common\models\AppointAdult;
 use common\models\AppointImg;
+use common\models\AppointSku;
 use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
@@ -242,15 +243,7 @@ class WappointController extends Controller
             $appointAdult['name']=$name;
             $appointAdult['birthday']=$birthday;
             $appointAdult['gender']=$gender_txt=='男'?1:2;
-            if($xuserid){
-                $userTo=UserTo::findOne(['touserid'=>$xuserid]);
-                $userTo = $userTo?$userTo:new UserTo();
-                $userTo->userid=$this->login->userid;
-                $userTo->touserid=$xuserid;
-                $userTo->vaccineid=$vaccineId;
-                $userTo->source = 'xiaoxiong';
-                $userTo->save();
-            }
+
         }else{
             $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
         }
@@ -717,6 +710,19 @@ class WappointController extends Controller
                             $appointImg->aid=$model->id;
                             $appointImg->save();
                         }
+                }
+                if($post['xuserid']){
+                    $userTo=UserTo::findOne(['touserid'=>$post['xuserid']]);
+                    $userTo = $userTo?$userTo:new UserTo();
+                    $userTo->userid=$this->login->userid;
+                    $userTo->touserid=$post['xuserid'];
+                    $userTo->vaccineid=$post['skuid'];
+                    $userTo->source = 'xiaoxiong';
+                    $userTo->save();
+                    $appoint_sku = new AppointSku();
+                    $appoint_sku ->aid= $model->aid;
+                    $appoint_sku ->skuid = $post['skuid'];
+                    $appoint_sku->save();
                 }
     
                 return $this->redirect(['wappoint/view','id'=>$model->id]);
