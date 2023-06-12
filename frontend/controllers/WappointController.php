@@ -716,6 +716,7 @@ class WappointController extends Controller
                     $userTo = $userTo?$userTo:new UserTo();
                     $userTo->userid=$this->login->userid;
                     $userTo->touserid=$post['xuserid'];
+                    $userTo->vaccineid=$post['skuid'];
                     $userTo->source = 'xiaoxiong';
                     $userTo->save();
                     $appoint_sku = new AppointSku();
