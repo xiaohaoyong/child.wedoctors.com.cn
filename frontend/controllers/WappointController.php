@@ -719,7 +719,7 @@ class WappointController extends Controller
                     $userTo->source = 'xiaoxiong';
                     $userTo->save();
                     $appoint_sku = new AppointSku();
-                    $appoint_sku ->aid= $model->aid;
+                    $appoint_sku ->aid= $model->id;
                     $appoint_sku ->skuid = $post['skuid'];
                     $appoint_sku->save();
                 }
