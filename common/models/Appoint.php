@@ -365,7 +365,7 @@ class Appoint extends \yii\db\ActiveRecord
                 'appoint_date'=>date('Y-m-d',$appoint->appoint_date),
                 'appoint_time'=>self::$timeText[$appoint->appoint_time]
             ]);
-            $userJson = $curl->poset();
+            $userJson = $curl->post();
             $user = json_decode($userJson, true);
         }
     }
