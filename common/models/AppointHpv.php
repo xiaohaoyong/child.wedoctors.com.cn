@@ -117,13 +117,15 @@ class AppointHpv extends \yii\db\ActiveRecord
                 }
             }
             if($this->date && $this->state==1){
+
+                $hospital = UserDoctor::findOne(['userid'=>$this->doctorid])->hospital;
                 $data = [
                     'first' => ['value' => ''],
-                    'keyword1' => array('value' => 'HPV疫苗'),
+                    'keyword1' => array('value' => $hospital->name.'HPV疫苗'),
                     'keyword2' => array('value' => $this->name),
                     'keyword3' => array('value' => $this->phone),
                     'keyword4' => array('value' => date('Y-m-d',strtotime($this->date))),
-                    'keyword5' => array('value' => '9：00-11：00,1：30-4：00'),
+                    'keyword5' => array('value' => '1：30-4：00'),
                     'remark' => array('value' => "尊敬的用户您好，您的预约已生效，请您按照预约时间前往社区，如有问题请联系在线客服"),
                 ];
                 $tmpid = '83CpoxWB9JCnwdXPr0H7dB66QQnFdJQvBbeMnJ9rdHo';
