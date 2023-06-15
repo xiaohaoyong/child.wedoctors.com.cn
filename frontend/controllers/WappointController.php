@@ -471,7 +471,7 @@ class WappointController extends Controller
 
     public function actionView($id){
 
-        $appoint=Appoint::findOne(['id'=>$id]);
+        $appoint=Appoint::findOne(['id'=>$id,'start'=>1]);
 
         $row=$appoint->toArray();
         $doctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
