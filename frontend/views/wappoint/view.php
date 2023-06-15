@@ -79,11 +79,7 @@ $this->title='我的预约';
 <div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 <?php
 $updateJs = <<<JS
-            
-
-        	//页面加载事件 
-			$(function() {
-			    function showTime() {
+           function showTime() {
                     var time = new Date(); /*获取当前时间 年月日时分秒*/
                     var y = time.getFullYear();
                     var mon = time.getMonth() + 1; //0-11 
@@ -96,9 +92,6 @@ $updateJs = <<<JS
                 }
 				//定时器 
 				var clock1 = window.setInterval("showTime()", 1000);
-				
-			});
-
 JS;
 $this->registerJs($updateJs);
 
