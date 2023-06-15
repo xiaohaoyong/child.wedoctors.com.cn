@@ -79,20 +79,21 @@ $this->title='我的预约';
 <div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 <?php
 $updateJs = <<<JS
-            function showTime() {
-				var time = new Date(); /*获取当前时间 年月日时分秒*/
-				var y = time.getFullYear();
-				var mon = time.getMonth() + 1; //0-11 
-				var d = time.getDate();
-				var h = time.getHours();
-				var m = time.getMinutes();
-				var s = time.getSeconds();
-				/*向div中插入内容   年月日时分秒  val()只能用在表单中*/
-				$("#myTime").html(y + "年" + mon + "月" + d + "日 " + h + ":" + m + ":" + s);
-			}
+            
 
         	//页面加载事件 
 			$(function() {
+			    function showTime() {
+                    var time = new Date(); /*获取当前时间 年月日时分秒*/
+                    var y = time.getFullYear();
+                    var mon = time.getMonth() + 1; //0-11 
+                    var d = time.getDate();
+                    var h = time.getHours();
+                    var m = time.getMinutes();
+                    var s = time.getSeconds();
+                    /*向div中插入内容   年月日时分秒  val()只能用在表单中*/
+                    $("#myTime").html(y + "年" + mon + "月" + d + "日 " + h + ":" + m + ":" + s);
+                }
 				//定时器 
 				var clock1 = window.setInterval("showTime()", 1000);
 				
