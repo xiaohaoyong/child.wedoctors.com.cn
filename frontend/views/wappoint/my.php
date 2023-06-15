@@ -61,7 +61,7 @@ $this->title="我的成人预约";
             </div>
         </div>
         <?php }
-        }else{echo $userid;}?>
+        }else{}?>
     </div>
 
 </div>
