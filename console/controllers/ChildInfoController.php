@@ -89,7 +89,7 @@ class ChildInfoController extends \yii\console\Controller
             ->andWhere(['`doctor_parent`.`doctorid`' => $doctorid])
             ->andWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
             ->andWhere(['child_info.admin'=>$userDoctor->hospitalid])
-            ->all();
+            ->createCommand()->queryAll();
         var_dump(count($data));exit;
 //写入内容
 
