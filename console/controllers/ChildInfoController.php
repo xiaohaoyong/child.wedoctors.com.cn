@@ -88,7 +88,7 @@ class ChildInfoController extends \yii\console\Controller
             ->andFilterWhere(['`doctor_parent`.`level`' => 1])
             ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
             ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
-            ->andFilterWhere(['child_info.admin'=>\Yii::$app->user->identity->hospitalid])
+            ->andFilterWhere(['child_info.admin'=>$userDoctor->hospitalid])
             ->all();
         var_dump(count($data));exit;
 //写入内容
