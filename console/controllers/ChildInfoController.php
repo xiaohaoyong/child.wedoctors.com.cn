@@ -85,10 +85,10 @@ class ChildInfoController extends \yii\console\Controller
         $userDoctor=UserDoctor::findOne(['userid'=>$doctorid]);
         $data=ChildInfo::find()
             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-            ->andFilterWhere(['`doctor_parent`.`level`' => 1])
-            ->andFilterWhere(['`doctor_parent`.`doctorid`' => $doctorid])
-            ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
-            ->andFilterWhere(['child_info.admin'=>$userDoctor->hospitalid])
+            ->andWhere(['`doctor_parent`.`level`' => 1])
+            ->andWhere(['`doctor_parent`.`doctorid`' => $doctorid])
+            ->andWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
+            ->andWhere(['child_info.admin'=>$userDoctor->hospitalid])
             ->all();
         var_dump($data);exit;
 //写入内容
