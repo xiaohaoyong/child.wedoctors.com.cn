@@ -90,7 +90,7 @@ class ChildInfoController extends \yii\console\Controller
             ->andWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
             ->andWhere(['child_info.admin'=>$userDoctor->hospitalid])
             ->createCommand()->queryAll();
-        var_dump(count($data));exit;
+        var_dump($data);exit;
 //写入内容
 
         foreach($data as $k=>$v) {
