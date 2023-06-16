@@ -90,8 +90,8 @@ class ChildInfoController extends \yii\console\Controller
             ->andFilterWhere(['>', '`child_info`.birthday', strtotime('-3 year')])
             ->andFilterWhere(['child_info.admin'=>$userDoctor->hospitalid])
             ->count();
-        var_dump(count($data));exit;
-//写入内容
+        var_dump($data);exit;
+//写入内容[h[
 
         foreach($data as $k=>$v) {
             echo "==".$v['userid']."===";
