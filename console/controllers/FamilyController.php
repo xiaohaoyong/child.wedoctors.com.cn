@@ -40,6 +40,7 @@ class FamilyController extends Controller
             }
         }else {
             $this->$act($doctorid,$type);
+        }
         
     }
     
