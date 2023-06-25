@@ -40,9 +40,9 @@ class FamilyController extends Controller
             }
         }else {
             $this->$act($doctorid,$type);
-        }
+        
     }
-
+    
     public function setDownExcel($doctorid,$type)
     {
         $spreadsheet = new Spreadsheet();
@@ -63,7 +63,10 @@ class FamilyController extends Controller
 
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
-        $spreadsheet->getActiveSheet()->getStyle('E')->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(30);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(30);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(30);
+
 
         $spreadsheet->getActiveSheet()->mergeCells('A1:X2');
         $worksheet->getCellByColumnAndRow(1,3)->setValue('区');
@@ -268,7 +271,7 @@ class FamilyController extends Controller
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
                         $gender = $v->gender?$v->gender:1;
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->name);
-                        $worksheet->getCellByColumnAndRow(5, $i)->setValue($idcard);
+                        $worksheet->getCellByColumnAndRow(5, $i)->setValue($idcard."\t");
                         $worksheet->getCellByColumnAndRow(6, $i)->setValue(date('Y-m-d', $au->createtime));
                         $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
                         $worksheet->getCellByColumnAndRow(8, $i)->setValue($userDoctor->name);
@@ -307,7 +310,6 @@ class FamilyController extends Controller
 
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
-        $spreadsheet->getActiveSheet()->getStyle('E')->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
         $spreadsheet->getActiveSheet()->mergeCells('A1:X2');
         $worksheet->getCellByColumnAndRow(1,3)->setValue('区');
@@ -488,7 +490,7 @@ class FamilyController extends Controller
                         $worksheet->getCellByColumnAndRow(2, $i)->setValue('');
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->field1);
-                        $worksheet->getCellByColumnAndRow(5, $i)->setValue($v->field4);
+                        $worksheet->getCellByColumnAndRow(5, $i)->setValue($v->field4."\t");
                         $worksheet->getCellByColumnAndRow(6, $i)->setValue($userDoctor->name);
                         $au = Autograph::findOne(['userid' => $v->familyid]);
                         $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', $au->createtime));
