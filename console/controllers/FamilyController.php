@@ -16,6 +16,9 @@ use common\models\Hospital;
 use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
+use PHPExcel;
+use PHPExcel_Style;
+use PHPExcel_Style_NumberFormat;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use yii\console\Controller;
 
@@ -58,16 +61,17 @@ class FamilyController extends Controller
 
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getStyle('E')->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
         $spreadsheet->getActiveSheet()->mergeCells('A1:X2');
-        $worksheet->getCellByColumnAndRow(1,3)->setValue('序号');
-        $worksheet->getCellByColumnAndRow(2,3)->setValue('签约医生姓名');
-        $worksheet->getCellByColumnAndRow(3,3)->setValue('签约居民姓名');
-        $worksheet->getCellByColumnAndRow(4,3)->setValue('性别');
-        $worksheet->getCellByColumnAndRow(5,3)->setValue('签约居民住址');
-        $worksheet->getCellByColumnAndRow(6,3)->setValue('签约居民身份证号');
-        $worksheet->getCellByColumnAndRow(7,3)->setValue('首次签约日期');
-        $worksheet->getCellByColumnAndRow(8,3)->setValue('续约日期');
+        $worksheet->getCellByColumnAndRow(1,3)->setValue('区');
+        $worksheet->getCellByColumnAndRow(2,3)->setValue('机构编码');
+        $worksheet->getCellByColumnAndRow(3,3)->setValue('机构名称');
+        $worksheet->getCellByColumnAndRow(4,3)->setValue('签约居民姓名');
+        $worksheet->getCellByColumnAndRow(5,3)->setValue('身份证号');
+        $worksheet->getCellByColumnAndRow(6,3)->setValue('签约日期');
+        $worksheet->getCellByColumnAndRow(7,3)->setValue('续约日期');
+        $worksheet->getCellByColumnAndRow(8,3)->setValue('签约医生');
         $worksheet->getCellByColumnAndRow(9,3)->setValue('联系电话1');
         $worksheet->getCellByColumnAndRow(10,3)->setValue('联系电话2');
         $worksheet->getCellByColumnAndRow(11,3)->setValue('联系电话3');
@@ -175,10 +179,10 @@ class FamilyController extends Controller
 
         }elseif($type==4){
             $auto = Autograph::find()->select('userid')
-                ->where(['<','createtime',strtotime('2023-01-01')])
+                ->where(['<','createtime',strtotime('2023-06-26')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
-            $birthday = strtotime('- 7 year',strtotime('2023-01-01'));
+            $birthday = strtotime('- 7 year',strtotime('2023-06-26'));
 
 
         }elseif($type==5){
@@ -254,23 +258,21 @@ class FamilyController extends Controller
                         if(strlen($idcard)<10 || !$phone){
                             continue;
                         }
+                        $au = Autograph::findOne(['userid' => $v->userid]);
 
                         $worksheet->getStyle('A' . $i . ':X' . $i)->applyFromArray($styleArray);
-                        $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
-                        $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
-                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->name);
+                        $worksheet->getCellByColumnAndRow(1, $i)->setValue('丰台区');
+                        $worksheet->getCellByColumnAndRow(2, $i)->setValue('');
+                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
                         $gender = $v->gender?$v->gender:1;
-                        $worksheet->getCellByColumnAndRow(4, $i)->setValue(ChildInfo::$genderText[$gender]);
-                        $worksheet->getCellByColumnAndRow(5, $i)->setValue($userParent->fieldu46);
-                        $worksheet->getCellByColumnAndRow(6, $i)->setValue("\t" . $idcard);
-                        $au = Autograph::findOne(['userid' => $v->userid]);
-                        $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', $au->createtime));
-                        $worksheet->getCellByColumnAndRow(8, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
+                        $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->name);
+                        $worksheet->getCellByColumnAndRow(5, $i)->setValue($idcard);
+                        $worksheet->getCellByColumnAndRow(6, $i)->setValue(date('Y-m-d', $au->createtime));
+                        $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
+                        $worksheet->getCellByColumnAndRow(8, $i)->setValue($userDoctor->name);
                         $worksheet->getCellByColumnAndRow(9, $i)->setValue($phone);
-                        $worksheet->getCellByColumnAndRow(10, $i)->setValue($v->birthday?date('Y-m-d',$v->birthday):'');
-
-                        $worksheet->getCellByColumnAndRow(20, $i)->setValue('✅');
-
+                        $worksheet->getCellByColumnAndRow(10, $i)->setValue($userParent->mother_phone);
+                        $worksheet->getCellByColumnAndRow(11, $i)->setValue($userParent->father_phone);
                         $i++;
                     }
                 }
@@ -286,7 +288,7 @@ class FamilyController extends Controller
         echo $doctorid."\n";
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
-        $worksheet->getCellByColumnAndRow(1,1)->setValue('家庭医生签约服务签约居民基本信息汇总表');
+        $worksheet->getCellByColumnAndRow(1,1)->setValue('家庭医生签约服务签约居民基本信息汇总表（截至2023年6月25日）');
         $styleArray = [
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -303,15 +305,16 @@ class FamilyController extends Controller
 
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getStyle('E')->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
         $spreadsheet->getActiveSheet()->mergeCells('A1:X2');
-        $worksheet->getCellByColumnAndRow(1,3)->setValue('序号');
-        $worksheet->getCellByColumnAndRow(2,3)->setValue('签约医生姓名');
-        $worksheet->getCellByColumnAndRow(3,3)->setValue('签约居民姓名');
-        $worksheet->getCellByColumnAndRow(4,3)->setValue('性别');
-        $worksheet->getCellByColumnAndRow(5,3)->setValue('签约居民住址');
-        $worksheet->getCellByColumnAndRow(6,3)->setValue('签约居民身份证号');
-        $worksheet->getCellByColumnAndRow(7,3)->setValue('首次签约日期');
+        $worksheet->getCellByColumnAndRow(1,3)->setValue('区');
+        $worksheet->getCellByColumnAndRow(2,3)->setValue('机构编码');
+        $worksheet->getCellByColumnAndRow(3,3)->setValue('机构名称');
+        $worksheet->getCellByColumnAndRow(4,3)->setValue('签约居民姓名');
+        $worksheet->getCellByColumnAndRow(5,3)->setValue('身份证号');
+        $worksheet->getCellByColumnAndRow(6,3)->setValue('签约医生');
+        $worksheet->getCellByColumnAndRow(7,3)->setValue('签约日期');
         $worksheet->getCellByColumnAndRow(8,3)->setValue('续约日期');
         $worksheet->getCellByColumnAndRow(9,3)->setValue('联系电话1');
         $worksheet->getCellByColumnAndRow(10,3)->setValue('联系电话2');
@@ -420,7 +423,7 @@ class FamilyController extends Controller
 
         }elseif($type==4){
             $auto = Autograph::find()->select('userid')
-                ->where(['<','createtime',strtotime('2023-01-01')])
+                ->where(['<','createtime',strtotime('2023-07-01')])
                 ->andWhere(['doctorid' => $doctorid])
                 ->column();
             $birthday = strtotime('- 7 year',strtotime('2023-01-01'));
@@ -479,12 +482,12 @@ class FamilyController extends Controller
                         $hospital = Hospital::findOne($userDoctor->hospitalid);
 
                         $worksheet->getStyle('A' . $i . ':X' . $i)->applyFromArray($styleArray);
-                        $worksheet->getCellByColumnAndRow(1, $i)->setValue($i-5);
-                        $worksheet->getCellByColumnAndRow(2, $i)->setValue($hospital->name);
-                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($v->field1);
-                        $worksheet->getCellByColumnAndRow(4, $i)->setValue('女');
-                        $worksheet->getCellByColumnAndRow(5, $i)->setValue("\t" . $v->field10);
-                        $worksheet->getCellByColumnAndRow(6, $i)->setValue("\t" . $v->field4);
+                        $worksheet->getCellByColumnAndRow(1, $i)->setValue('丰台区');
+                        $worksheet->getCellByColumnAndRow(2, $i)->setValue('');
+                        $worksheet->getCellByColumnAndRow(3, $i)->setValue($hospital->name);
+                        $worksheet->getCellByColumnAndRow(4, $i)->setValue($v->field1);
+                        $worksheet->getCellByColumnAndRow(5, $i)->setValue($v->field4);
+                        $worksheet->getCellByColumnAndRow(6, $i)->setValue($userDoctor->name);
                         $au = Autograph::findOne(['userid' => $v->familyid]);
                         $worksheet->getCellByColumnAndRow(7, $i)->setValue(date('Y-m-d', $au->createtime));
                         $worksheet->getCellByColumnAndRow(8, $i)->setValue(date('Y-m-d',strtotime($au->starttime)));
@@ -497,6 +500,7 @@ class FamilyController extends Controller
                         }
                         $worksheet->getCellByColumnAndRow(9, $i)->setValue($phone);
                         $worksheet->getCellByColumnAndRow(19, $i)->setValue('✅');
+
                         $i++;
                     }
                 }
