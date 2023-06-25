@@ -471,8 +471,12 @@ class WappointController extends Controller
 
     public function actionView($id){
 
-        $appoint=Appoint::findOne(['id'=>$id]);
+        $appoint=Appoint::findOne(['id'=>$id,'state'=>1]);
 
+        if(!$appoint){
+            \Yii::$app->getSession()->setFlash('error','预约不存在或已被取消！');
+            return $this->redirect(['wappoint/index']);
+        }
         $row=$appoint->toArray();
         $doctor=UserDoctor::findOne(['userid'=>$appoint->doctorid]);
         if($doctor){

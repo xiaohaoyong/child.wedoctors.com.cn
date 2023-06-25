@@ -68,7 +68,7 @@ class AppointHpv extends \yii\db\ActiveRecord
             'userid' => '用户ID',
             'doctorid' => '预约社区',
             'vid' => '预约疫苗',
-            'img' => '所属辖区的本人居委会证明'
+            'img' => '限本市常住居民预约，上传本市常住证明（可为身份证、户口本、工作证、居住证）'
         ];
     }
 
@@ -125,7 +125,7 @@ class AppointHpv extends \yii\db\ActiveRecord
                     'keyword2' => array('value' => $this->name),
                     'keyword3' => array('value' => $this->phone),
                     'keyword4' => array('value' => date('Y-m-d',strtotime($this->date))),
-                    'keyword5' => array('value' => '1：30-4：00'),
+                    'keyword5' => array('value' => '13：30-15：00'),
                     'remark' => array('value' => "尊敬的用户您好，您的预约已生效，请您按照预约时间前往社区，如有问题请联系在线客服"),
                 ];
                 $tmpid = '83CpoxWB9JCnwdXPr0H7dB66QQnFdJQvBbeMnJ9rdHo';
