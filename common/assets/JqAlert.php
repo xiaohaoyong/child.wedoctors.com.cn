@@ -9,12 +9,14 @@ namespace common\assets;
 use yii\web\AssetBundle;
 class JqAlert extends AssetBundle
 {
+
+    
     public $css=[
-        'http://web.child.wedoctors.com.cn/js/jq_alert/jquery-confirm.css',
+        'https://web.child.wedoctors.com.cn/js/jq_alert/jquery-confirm.css',
     ];
     public $js=[
         //'http://static.j.wedoctors.com.cn/metronic/plugins/jquery.min.js',
-        'http://web.child.wedoctors.com.cn/js/jq_alert/jquery-confirm.js' ,
+        'https://web.child.wedoctors.com.cn/js/jq_alert/jquery-confirm.js' ,
     ];
     public $depends = [
         'yii\web\JqueryAsset',
