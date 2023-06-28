@@ -700,21 +700,19 @@ class WappointController extends Controller
                 $this->login->phone=$post['phone'];
                 $this->login->save();
             }
+            var_dump($post['img']);exit;
             if ($model->save()) {
 
-                $imagesFile = UploadedFile::getInstancesByName('img');
-
-                if($imagesFile) {
-                        $upload= new UploadForm();
-                        $upload->imageFiles = $imagesFile;
-                        $image = $upload->upload();
-                        foreach($image as $k=>$v){
-                            $appointImg=new AppointImg();
-                            $appointImg->img=$v;
-                            $appointImg->aid=$model->id;
-                            $appointImg->save();
-                        }
+                
+                if($post['img']){
+                    foreach($post['img'] as $k=>$v){
+                        $appointImg=new AppointImg();
+                        $appointImg->img=$v;
+                        $appointImg->aid=$model->id;
+                        $appointImg->save();
+                    }
                 }
+
                 if($post['xuserid']){
                     $userTo=UserTo::findOne(['touserid'=>$post['xuserid']]);
                     $userTo = $userTo?$userTo:new UserTo();
@@ -738,5 +736,17 @@ class WappointController extends Controller
     public function actionTest(){
         var_dump($_GET);exit;
 
+    }
+    public function actionUpload(){
+        \Yii::$app->response->format=Response::FORMAT_JSON;
+
+        $imagesFile = UploadedFile::getInstancesByName('img');
+
+        if($imagesFile) {
+                $upload= new UploadForm();
+                $upload->imageFiles = $imagesFile;
+                $image = $upload->upload();
+        }
+        return ['code' => 200, 'src' =>$image];
     }
 }
