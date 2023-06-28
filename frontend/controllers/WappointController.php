@@ -700,10 +700,7 @@ class WappointController extends Controller
                 $this->login->phone=$post['phone'];
                 $this->login->save();
             }
-            var_dump($post['img']);exit;
             if ($model->save()) {
-
-                
                 if($post['img']){
                     foreach($post['img'] as $k=>$v){
                         $appointImg=new AppointImg();
