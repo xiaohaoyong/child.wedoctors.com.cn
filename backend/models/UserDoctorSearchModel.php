@@ -47,6 +47,7 @@ class UserDoctorSearchModel extends UserDoctor
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination'=>['pageSize'=>300]
         ]);
 
         $this->load($params);
