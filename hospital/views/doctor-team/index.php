@@ -59,6 +59,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'title',
             'intro',
+            [
+                'attribute' => 'type',
+                'value' => function ($e) {
+                    return $e->type==1?'儿保团队':'孕产妇团队';
+                }
+            ],
+
 
                             [
                             'class' => 'common\components\grid\ActionColumn',
