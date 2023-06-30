@@ -44,11 +44,11 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'idnum') ?>
 
-    <?php // echo $form->field($model, 'province') ?>
+    <?php  echo $form->field($model, 'province') ?>
 
-    <?php // echo $form->field($model, 'county') ?>
+    <?php  echo $form->field($model, 'county') ?>
 
-    <?php // echo $form->field($model, 'city') ?>
+    <?php  echo $form->field($model, 'city') ?>
 
     <?php // echo $form->field($model, 'atitle') ?>
 
