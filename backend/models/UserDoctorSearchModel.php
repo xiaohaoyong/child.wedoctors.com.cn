@@ -18,7 +18,7 @@ class UserDoctorSearchModel extends UserDoctor
     public function rules()
     {
         return [
-            [['userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype'], 'integer'],
+            [['userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype','is_guanfang'], 'integer'],
             [['name', 'intro', 'avatar', 'skilful', 'idnum', 'authimg', 'qrcode'], 'safe'],
         ];
     }
