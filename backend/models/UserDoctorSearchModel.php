@@ -74,6 +74,8 @@ class UserDoctorSearchModel extends UserDoctor
             'city' => $this->city,
             'atitle' => $this->atitle,
             'otype' => $this->otype,
+                        'is_guanfang' => $this->is_guanfang,
+
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
