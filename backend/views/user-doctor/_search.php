@@ -19,13 +19,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'userid') ?>
 
     <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'sex') ?>
-
-    <?= $form->field($model, 'age') ?>
-
-    <?= $form->field($model, 'birthday') ?>
-
     <?php  echo $form->field($model, 'is_guanfang') ?>
 
     <?php // echo $form->field($model, 'hospitalid') ?>
