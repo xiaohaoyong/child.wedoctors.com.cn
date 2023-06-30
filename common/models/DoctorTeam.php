@@ -28,7 +28,7 @@ class DoctorTeam extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'intro', 'doctorid'], 'required'],
+            [['title', 'intro', 'doctorid','type'], 'required'],
             [['doctorid'], 'integer'],
             [['title'], 'string', 'max' => 50],
             [['intro'], 'string', 'max' => 255],
@@ -45,6 +45,7 @@ class DoctorTeam extends \yii\db\ActiveRecord
             'title' => '团队名称',
             'intro' => '团队简介',
             'doctorid' => '关联社区',
+            'type'=>'类型'
         ];
     }
 }
