@@ -62,7 +62,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'type',
                 'value' => function ($e) {
-                    return $e->type==1?'儿保团队':'孕产妇团队';
+                    $type=[0=>'全部',1=>'儿保团队',2=>'孕产妇团队'];
+                    return $type[$e->type];
                 }
             ],
 

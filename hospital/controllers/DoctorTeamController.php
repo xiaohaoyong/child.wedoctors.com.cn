@@ -7,6 +7,8 @@ use common\models\DoctorParent;
 use common\models\UserDoctor;
 use Yii;
 use common\models\DoctorTeam;
+use common\models\Pregnancy;
+use common\models\UserParent;
 use hospital\models\DoctorTeamSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -149,6 +151,13 @@ class DoctorTeamController extends Controller
 
     public function actionDataEx()
     {
+        $filed=[
+            'name'=>'姓名',
+            'birthday'=>'出生日期',
+            'idcard'=>'身份证号',
+            'arae'=>'现住址',
+            'phone'=>'联系电话'
+        ];
 
         if($_FILES['team-file']['tmp_name']) {
             $objRead = new Xlsx();   //建立reader对象
@@ -161,28 +170,80 @@ class DoctorTeamController extends Controller
             $sheetData = $currSheet->toArray(null, true, true, true);
 
             $teamid = $_POST['teamid'];
+            $type = $_POST['type'];
+
             $i=0;
             if ($teamid) {
                 foreach ($sheetData as $k => $v) {
-                    $child = ChildInfo::find()
-//                ->select('user_login.phone')
-//                ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
-//                ->andWhere(['`user_login`.`phone`' => $phone])
-                        ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                        ->andWhere(['doctor_parent.doctorid' => Yii::$app->user->identity->doctorid])
-                        ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                        ->andWhere(['user_parent.mother' => $v[2]])
-//                ->orWhere(['pregnancy.field4'=>$phone])
-                        ->andWhere(['child_info.name' => $v[0]])
-                        ->andWhere(['child_info.birthday' => strtotime($v[1])])
-                        ->one();
-                    if ($child) {
-                        $doctorParent = DoctorParent::findOne(['parentid' => $child->userid]);
-                        $doctorParent->teamid = $teamid;
-                        $doctorParent->save();
-                        $i++;
+                    if($k==1){
+                        foreach($v as $vk=>$vv){
+                            if($fk = array_search($vv, $filed)){
+                                $$fk = $vk;
+                            }
+                        }
+                        continue;
                     }
+                    if($type==1){
+                        $query = ChildInfo::find()
+    //                ->select('user_login.phone')
+    //                ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+    //                ->andWhere(['`user_login`.`phone`' => $phone])
+                            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                            ->andWhere(['doctor_parent.doctorid' => Yii::$app->user->identity->doctorid])
+                            //->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                            //->andWhere(['user_parent.mother' => $v[2]])
+    //                ->orWhere(['pregnancy.field4'=>$phone])
+                            ->andWhere(['child_info.name' => $v[$name]]);
+                            if($v[$birthday]){
+                                $query->andWhere(['child_info.birthday' => strtotime($v[$birthday])]);
+                            }
+                            if($v[$phone]){
+                                $query->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`');
+                                $query->andWhere(['`user_login`.`phone`' => $v[$phone]]);
+                            }
+                            $child=$query->one();
+                        if ($child) {
+                            $child->teamid=$teamid;
 
+                            if($v[$idcard]){
+                                $child->idcard = $v[$idcard];
+                            }
+                            $child->save();
+
+                            if($v[$arae]){
+                                $userParent = UserParent::findOne(['userid'=>$child->userid]);
+                                if($userParent){
+                                    $userParent->fieldu46 = $v[$arae];
+                                    $userParent->save();
+                                }
+                            }
+                            $i++;
+                        }
+                    }elseif($type==2){
+                        $pregnancy=Pregnancy::find()
+                            ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+                            ->andWhere(['doctor_parent.doctorid'=>Yii::$app->user->identity->doctorid])
+                            ->andWhere(['pregnancy.field1'=>$v[$name]])
+                            //->andWhere(['pregnancy.field11'=>strtotime($rs[12])])
+            
+                            //->andWhere(['pregnancy.field4'=>''])
+                            //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
+            
+                            //->andWhere(['pregnancy.field2'=>strtotime($v[$birthday])])
+                            ->one();
+                        if($pregnancy){
+                            if($v[$idcard]){
+                                $pregnancy->field4 = $v[$idcard];
+                            }
+                            if($v[$arae]){
+                                $pregnancy->field10 = $v[$arae];
+                            }
+                            $pregnancy->teamid = $teamid;
+                            $pregnancy->save();
+                            $i++;
+                        }
+                        
+                    }
                 }
                 if($i<1){
                     \Yii::$app->getSession()->setFlash('error', '未查询到儿童请检查上传文件是否正确，需要字段有："儿童姓名，出生日期，母亲姓名"');
