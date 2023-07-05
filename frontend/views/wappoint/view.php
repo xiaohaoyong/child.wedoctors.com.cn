@@ -25,7 +25,7 @@ $this->title='我的预约';
         <?php }elseif($row['state']==6){?>
         <div class="content1">
             <div style="padding: 30px;text-align: center;color: red; line-height: 20px;">
-            您的预约已提交，目前排队处理中，系统将在及时将预约结果告知您，感谢您的支持
+            您的预约已提交，目前排队处理中，系统将及时将预约结果告知您，感谢您的支持
             </div>
         </div>
         <?php }elseif($row['state']==0){?>
