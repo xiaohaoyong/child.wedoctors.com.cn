@@ -42,6 +42,7 @@ use yii\widgets\ActiveForm;
                 <?php $form = ActiveForm::begin(); ?>
 
                 <?= $form->field($userInfo, 'name')->textInput() ?>
+                <?= $form->field($userInfo, 'name1')->textInput() ?>
 
                 <?php
                 if ($userInfo->avatar) {
