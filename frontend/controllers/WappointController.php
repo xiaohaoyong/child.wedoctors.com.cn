@@ -68,7 +68,9 @@ class WappointController extends Controller
             $doctorids=HospitalAppoint::find()->select('doctorid')->where(['in','id',$haids])->column();
             $query->andWhere(['in','userid',$doctorids]);
         }
-        if ($search || $county || $type) {
+        if($vaccine == 3){
+            $doctors = $query->andWhere(['!=','userid',47156])->orderBy("field userid '1301729','807791'")->all();
+        }elseif ($search || $county || $type) {
             $doctors = $query->orderBy('appoint desc')->all();
         } else {
             $doctors = $query->andWhere(['!=','userid',47156])->orderBy('appoint desc')->limit(50)->all();
