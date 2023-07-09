@@ -69,7 +69,7 @@ class WappointController extends Controller
             $query->andWhere(['in','userid',$doctorids]);
         }
         if($vaccine == 3){
-            $doctors = $query->andWhere(['!=','userid',47156])->orderBy(['userid'=>'desc',"FIELD(`userid`,1301729,807791)"=>true])->all();
+            $doctors = $query->andWhere(['!=','userid',47156])->orderBy(["FIELD(`userid`,1301729,807791)"=>true])->all();
         }elseif ($search || $county || $type) {
             $doctors = $query->orderBy('appoint desc')->all();
         } else {
