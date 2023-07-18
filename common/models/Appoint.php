@@ -253,6 +253,12 @@ class Appoint extends \yii\db\ActiveRecord
         4 => '其他',
         5 => '预约失败'
     ];
+    public static $hospital_cancel=[
+        1=>'不属于管辖街道',
+        2=>'居住等资料不完整或者不合格，请您上传资料重新预约',
+        3=>'请持医保卡等现场登记预约',
+        4=>'重复预约',
+    ];
     public  static $push_stateText=[
         1=>'发送中',
         2=>'微信模板发送成功',

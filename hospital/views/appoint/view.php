@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Appoint;
 use common\models\AppointImg;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -44,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $form->field($model,'referrer')->hiddenInput(['value'=>$referrer]) ?>
 <?= $form->field($model,'id')->hiddenInput(['value'=>$model->id])->label(false) ?>
 <?= $form->field($model,'state')->radioList([1=>'通过',3=>'不通过'])->label(false)?>
+<?= $form->field($model,'cancel_type')->dropDownList(Appoint::$hospital_cancel)->label(false)?>
 
 <div class="form-group">
 <?= Html::submitButton($model->isNewRecord ? '提交': '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
