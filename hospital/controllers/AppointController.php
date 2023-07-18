@@ -220,7 +220,6 @@ class AppointController extends BaseController
                    'keyword2' => ARRAY('value' => Appoint::$typeText[$model->type]),
                    'keyword3' => ARRAY('value' => Appoint::$timeText[$model->appoint_time]),
                    'keyword4' => ARRAY('value' => Appoint::$hospital_cancel[$model->cancel_type]),
-                   'remark' => ARRAY('value' => "尊敬的用户您好，系统已取消您当前预约".$hospital."的疫苗，请上传正确的图片，如有需求，您可重新预约"),
                ];
                $tmpid='t-fxuMyA77Xx71OA4_3y528hOSWXk_2rDjvN1zgefbk';
             }elseif($state==2){
