@@ -89,7 +89,7 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
-        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[45 , 57 , 58 , 59 , 97,44,54,55,56,98])){ ?>
+        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[45 , 57 , 58 , 59 , 97])){ ?>
         <div class="item">
             <div class="title">居住证明</div>
             <input type='hidden'name="image" class="appoint_input"  id='text-field'  />
