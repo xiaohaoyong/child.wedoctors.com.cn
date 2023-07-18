@@ -448,7 +448,7 @@ $this->registerJs($updateJs);
                 <input name="phone" class="inputa appoint_phone" id="phone" placeholder="请填写手机号" value="<?=$user['phone']?>">
                 <div class="vcode-model">
                     <div class="vcode">
-                        <input name="vcode" class="inputa appoint_phone" placeholder="请填写验证码" value="">
+                        <input name="vcode" class="inputa appoint_phone" maxlength="6" placeholder="请填写验证码" value="">
                     </div>
                     <div class="botton">
                         <?= \yii\bootstrap\Html::buttonInput(Yii::t('app', '获取验证码'), ['class' => 'btn btn-warning', 'name' => 'signup-button', 'id' => 'second']) ?>
