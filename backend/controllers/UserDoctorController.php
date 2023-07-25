@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\UserDoctorSearchModel as ModelsUserDoctorSearchModel;
 use common\components\UploadForm;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
@@ -9,7 +10,7 @@ use common\models\User;
 use common\models\UserLogin;
 use Yii;
 use common\models\UserDoctor;
-use common\models\UserDoctorSearchModel;
+use backend\models\UserDoctorSearchModel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,14 +41,10 @@ class UserDoctorController extends BaseController
      */
     public function actionList()
     {
-        $params = Yii::$app->request->queryParams;
+        $searchModel = new UserDoctorSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-
-        $doctor = UserDoctor::find()->andFilterWhere(['>', 'userid', 37])->all();
-
-        return $this->render('list', [
-            'doctor' => $doctor,
-        ]);
+        return $this->render('list', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider,]);
     }
 
 

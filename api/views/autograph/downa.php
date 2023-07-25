@@ -49,9 +49,9 @@
         </div>
         <div>手机：<?=$userParent['mother_phone']?$userParent['mother_phone']:''?></div>
         <div>住址：<?=$userParent['fieldp47']?></div>
-        <div>紧急联系人：<?=$userParent['father']?></div>
+        <!-- <div>紧急联系人：<?=$userParent['father']?></div>
         <div>关系：<?=$userParent['mother']?'夫妻':''?></div>
-        <div>紧急联系人电话：<?=$userParent['father_phone']?$userParent['father_phone']:''?></div>
+        <div>紧急联系人电话：<?=$userParent['father_phone']?$userParent['father_phone']:''?></div> -->
         <div>签订协议本着平等、尊重和自愿的原则，您可以根据自身需要选择一个或多个签约服务包，团队成员将按照协议提供相应服务，服务内容详见附表。您所选择的签约服务包包括：</div>
         <div style="font-weight: bolder;">一、基本服务包（必选）</div>
         <div style="font-weight: bolder;">二、个性服务包（请在您选择的相应服务包前划√）</div>

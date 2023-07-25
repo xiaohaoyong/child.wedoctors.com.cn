@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 <div class="user-doctor-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['list'],
         'method' => 'get',
         'options' => ['class' => 'form-inline'],
     ]); ?>
@@ -19,14 +19,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'userid') ?>
 
     <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'sex') ?>
-
-    <?= $form->field($model, 'age') ?>
-
-    <?= $form->field($model, 'birthday') ?>
-
-    <?php // echo $form->field($model, 'phone') ?>
+    <?php  echo $form->field($model, 'is_guanfang') ?>
 
     <?php // echo $form->field($model, 'hospitalid') ?>
 
@@ -44,11 +37,11 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'idnum') ?>
 
-    <?php // echo $form->field($model, 'province') ?>
+    <?php  echo $form->field($model, 'province') ?>
 
-    <?php // echo $form->field($model, 'county') ?>
+    <?php  echo $form->field($model, 'county') ?>
 
-    <?php // echo $form->field($model, 'city') ?>
+    <?php  echo $form->field($model, 'city') ?>
 
     <?php // echo $form->field($model, 'atitle') ?>
 

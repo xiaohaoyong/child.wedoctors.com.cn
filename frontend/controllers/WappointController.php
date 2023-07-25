@@ -68,7 +68,9 @@ class WappointController extends Controller
             $doctorids=HospitalAppoint::find()->select('doctorid')->where(['in','id',$haids])->column();
             $query->andWhere(['in','userid',$doctorids]);
         }
-        if ($search || $county || $type) {
+        if($vaccine == 3){
+            $doctors = $query->andWhere(['!=','userid',47156])->orderBy(["FIELD(userid,1301729,807791,".implode(',',$doctorids).")"=>true])->all();
+        }elseif ($search || $county || $type) {
             $doctors = $query->orderBy('appoint desc')->all();
         } else {
             $doctors = $query->andWhere(['!=','userid',47156])->orderBy('appoint desc')->limit(50)->all();
@@ -471,7 +473,7 @@ class WappointController extends Controller
 
     public function actionView($id){
 
-        $appoint=Appoint::findOne(['id'=>$id,'state'=>1]);
+        $appoint=Appoint::findOne(['id'=>$id]);
 
         if(!$appoint){
             \Yii::$app->getSession()->setFlash('error','预约不存在或已被取消！');
@@ -701,20 +703,15 @@ class WappointController extends Controller
                 $this->login->save();
             }
             if ($model->save()) {
-
-                $imagesFile = UploadedFile::getInstancesByName('img');
-
-                if($imagesFile) {
-                    $upload= new UploadForm();
-                    $upload->imageFiles = $imagesFile;
-                    $image = $upload->upload();
-                    foreach($image as $k=>$v){
+                if($post['img']){
+                    foreach($post['img'] as $k=>$v){
                         $appointImg=new AppointImg();
                         $appointImg->img=$v;
                         $appointImg->aid=$model->id;
                         $appointImg->save();
                     }
                 }
+
                 if($post['xuserid']){
                     $userTo=UserTo::findOne(['touserid'=>$post['xuserid']]);
                     $userTo = $userTo?$userTo:new UserTo();
@@ -738,5 +735,17 @@ class WappointController extends Controller
     public function actionTest(){
         var_dump($_GET);exit;
 
+    }
+    public function actionUpload(){
+        \Yii::$app->response->format=Response::FORMAT_JSON;
+
+        $imagesFile = UploadedFile::getInstancesByName('img');
+
+        if($imagesFile) {
+                $upload= new UploadForm();
+                $upload->imageFiles = $imagesFile;
+                $image = $upload->upload();
+        }
+        return ['code' => 200, 'src' =>$image];
     }
 }

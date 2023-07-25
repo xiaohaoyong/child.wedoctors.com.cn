@@ -253,6 +253,12 @@ class Appoint extends \yii\db\ActiveRecord
         4 => '其他',
         5 => '预约失败'
     ];
+    public static $hospital_cancel=[
+        6=>'不属于管辖街道',
+        7=>'资料不完整/不合格,请上传资料重新预约',
+        8=>'请持医保卡等现场登记预约',
+        9=>'重复预约',
+    ];
     public  static $push_stateText=[
         1=>'发送中',
         2=>'微信模板发送成功',
@@ -288,7 +294,7 @@ class Appoint extends \yii\db\ActiveRecord
             ['appoint_date','required','message'=>'请选择预约日期'],
 
             [['street','orderid','vaccine','push_state','mode','cancel_type','loginid', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone', 'state'], 'integer'],
-            [['remark','image'], 'string', 'max' => 100],
+            [['remark'], 'string', 'max' => 100],
             [['date','name','source'], 'string'],
 
         ];
@@ -316,7 +322,7 @@ class Appoint extends \yii\db\ActiveRecord
             'cancel_type'=>'取消原因',
             'push_state'=>'推送状态',
             'mode'=>'来源',
-            'image'=>'凭证',
+            //'image'=>'凭证',
             'vaccine'=>'疫苗'
         ];
     }

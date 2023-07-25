@@ -24,7 +24,7 @@ use yii\console\Controller;
 
 
 
-class FamilyController extends Controller
+class WeiController extends Controller
 {
     public function actionDown($doctorid=0,$action='Excel',$type=1)
     {

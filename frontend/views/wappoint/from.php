@@ -7,6 +7,8 @@
  */
 $this->title = '成人疫苗接种预约';
 frontend\assets\DateAsset::register($this);
+\common\assets\JqFileUpload::register($this);
+\common\assets\JqAlert::register($this);
 
 ?>
 
@@ -87,14 +89,14 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
-        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[45 , 57 , 58 , 59 , 97 ,117,44,54,55,56,98])){ ?>
+        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[45 , 57 , 58 , 59 , 97])){ ?>
         <div class="item">
             <div class="title">居住证明</div>
-            <div class="input">
-                <input type='text' id='text-field' name="image" class="appoint_input" readonly="readonly" onclick="document.getElementById('fileName').click()"/>
+            <input type='hidden'name="image" class="appoint_input"  id='text-field'  />
 
-                <input type="file" name="img[]" multiple="multiple" id="fileName" style="display: none" onchange="document.getElementById('text-field').value=this.value.substring(this.value.lastIndexOf('\\')+1)"/>
-                注：HPV及带状疱疹疫苗限在白纸坊街道居住、工作或上学的家医签约居民。四价、九价HPV疫苗预约前需上传本人有效凭证。可线上完善健康档案，现场签订家医协议或缴纳家医服务费
+            <div class="upload-box1"></div>
+            <div class="input">
+                注：四价、九价HPV疫苗线上预约限在白纸坊街道居住、工作或上学的家医签约居民。预约前需上传本人有效凭证（注意：工作单位，本人户口本或房本或租房合同等等需要显示出具体的地址）。可线上完善健康档案，现场签订家医协议或缴纳家医服务费
             </div>
         </div>
         <?php }?>
@@ -148,60 +150,85 @@ $updateJs = <<<JS
 
      jQuery.selectYY_MM_DD("#select_0");
 
+jQuery(".upload-box1").ajaxImageUpload({
+    fileInput: 'img', //上传按钮名，即input[type=file]的name值
+    postUrl: '/wappoint/upload', //上传的服务器地址
+    error:function(e){
+        jQuery.alert(e.msg)
+    },
+    success:function(e){
+        jQuery("#text-field").val(e.src);
+    },
+    delete:function(e){
+        jQuery("#text-field").val('');
+    }
+});
+
 jQuery("#vaccine").change(function(e){
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
     
     if(vid==64){
-        if(!confirm("此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1962年12月31日前）预约通道，请确认")){
-            return false;
-        }
+        var content = "此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1962年12月31日前）预约通道，请确认";       
     }
     if(vid==73){
-        if(!confirm("此预约通道为本市户籍65岁以上老年人免费流感疫苗与23价肺炎疫苗（如预约日期为2021年10月1日则出生日期需在1956年10月1日前）预约通道，请确认")){
-            return false;
-        }
+        var content = "此预约通道为本市户籍65岁以上老年人免费流感疫苗与23价肺炎疫苗（如预约日期为2021年10月1日则出生日期需在1956年10月1日前）预约通道，请确认";
     }
     if(vid==67){
-        if(!confirm("此预约通道为本市户籍65岁以上老年人免费23价肺炎疫苗（如预约日期为2021年10月1日则出生日期需在1956年10月1日前）预约通道，请确认")){
-            return false;
-        }
+        var content = "此预约通道为本市户籍65岁以上老年人免费23价肺炎疫苗（如预约日期为2021年10月1日则出生日期需在1956年10月1日前）预约通道，请确认";
     }
     const hpvid=['45' , '57' , '58' , '59' , '97' ,'117','114','78','51','50','43','44','54','55','56','98'];
     if(hpvid.indexOf(vid)>-1){
-        if(!confirm("年龄为9至45周岁，接种完全程三针后，不得超过46周岁生日。例如:45周岁5个月也可接种，但是得按照规定时间，半年内三针接种完成，最后一针不能超过46周岁生日。接种时请您携带医保卡及儿宝宝预约二维码，现场实名扫码核销。二维码中姓名与实际姓名不同或者预约时间不是当天不提供接种服务。")){
-            return false;
-        }
+        var content = "年龄为9至45周岁，接种完全程三针后，不得超过46周岁生日。例如:45周岁5个月也可接种，但是得按照规定时间，半年内三针接种完成，最后一针不能超过46周岁生日。接种时请您携带医保卡及儿宝宝预约二维码，现场实名扫码核销。二维码中姓名与实际姓名不同或者预约时间不是当天不提供接种服务。";
     }
     if(vid==80){
-        if(!confirm("此疫苗接种年龄限制为3岁以内，超过三岁清选择三岁以上疫苗接种，成人请勿预约")){
-            return false;
-        }
+        var content = "此疫苗接种年龄限制为3岁以内，超过三岁清选择三岁以上疫苗接种，成人请勿预约";
     }
 
     const xinguan = ['86','87','88','89','90','91','92','93','94','95','96','104','105','106','107','108','109','110','111','112','113','117'];
 
     if(xinguan.indexOf(vid)>-1){
-        if(!confirm("按照目前免疫要求，感染过新冠病毒（阳过），且已经完成基础免疫（接种过两针科兴、北京生物等的灭活疫苗或3针智飞龙科马重组疫苗或1针康希诺肌注式疫苗），不再进行加强免疫（不再打第三针或者第四针）"))
-        {
-            return false;
-        }
+        var content = "按照目前免疫要求，感染过新冠病毒（阳过），且已经完成基础免疫（接种过两针科兴、北京生物等的灭活疫苗或3针智飞龙科马重组疫苗或1针康希诺肌注式疫苗），不再进行加强免疫（不再打第三针或者第四针）";
     }
 
     const arr = ['45','57','58','59','97'];
 
     if(arr.indexOf(vid)>-1){
-        if(!confirm("接种时请您携带医保卡及儿宝宝预约二维码。为防止倒号行为，现场将实名扫码核销二维码。二维码中姓名与实际姓名不同者或者预约时间不是当天者不提供接种服务。"))
-        {
-            return false;
+        var content = "接种时请您携带医保卡及儿宝宝预约二维码。为防止倒号行为，现场将实名扫码核销二维码。二维码中姓名与实际姓名不同者或者预约时间不是当天者不提供接种服务。";
+    }
+    if(content){
+        jQuery.confirm({
+            title: '请确认您已知晓！',
+            content: content,
+            type: 'green',
+            buttons: {
+                ok: {
+                    text: "确认知晓",
+                    btnClass: 'btn-success',
+                    keys: ['enter'],
+                    action: function(){
+                        if(vid && sid && jQuery("#street").length  > 0){
+                            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+                        }else if(vid && jQuery("#street").length  < 1 ){
+                            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
+                        }
+                    }
+                },
+                cancel: {
+                    text: "取消",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                },
+            }
+        });
+        return false;
+    }else{
+        if(vid && sid && jQuery("#street").length  > 0){
+            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+        }else if(vid && jQuery("#street").length  < 1 ){
+            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
         }
-    }
-    console.log( jQuery("#street").length);
-    if(vid && sid && jQuery("#street").length  > 0){
-        window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
-    }else if(vid && jQuery("#street").length  < 1 ){
-        window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
-    }
+    }    
 })
 
 
@@ -221,6 +248,7 @@ var type=[
     ];
 
 function select_time(day){
+    jQuery('.button,button').attr('disabled','disabled')
     jQuery.get('/wappoint/day-num?doctorid={$doctor['userid']}&day='+day+'&vid={$vid}'+'&sid={$sid}',function(e) {
       var times=e.list;
       
@@ -246,6 +274,8 @@ function select_time(day){
           jQuery(this).addClass('a');
             jQuery('#appoint_time').val(jQuery(this).attr('id'));
       });
+      jQuery('.button,button').attr('disabled',false)
+
     });
 }
 select_time('{$date_day}');
@@ -259,7 +289,7 @@ jQuery(".days .rs").bind("click",function(){
   jQuery('#appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
 });
-var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！',image:'请上传预约凭证'};
+var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！',image:'请上传居住证明'};
 jQuery("#appoint_form").submit(data,function(e){
     var labelMap = e.data;
     var label = '';
@@ -418,7 +448,7 @@ $this->registerJs($updateJs);
                 <input name="phone" class="inputa appoint_phone" id="phone" placeholder="请填写手机号" value="<?=$user['phone']?>">
                 <div class="vcode-model">
                     <div class="vcode">
-                        <input name="vcode" class="inputa appoint_phone" placeholder="请填写验证码" value="">
+                        <input name="vcode" class="inputa appoint_phone" maxlength="6" placeholder="请填写验证码" value="">
                     </div>
                     <div class="botton">
                         <?= \yii\bootstrap\Html::buttonInput(Yii::t('app', '获取验证码'), ['class' => 'btn btn-warning', 'name' => 'signup-button', 'id' => 'second']) ?>

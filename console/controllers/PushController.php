@@ -124,8 +124,7 @@ class PushController extends Controller
         $articleids = [];
 //        push
 
-        $hospitals = UserDoctor::find()->where(['county' => 1106])->select('hospitalid')->column();
-
+        $hospitals = UserDoctor::find()->select('hospitalid')->where(['county'=>1102])->andWhere(['is_guanfang'=>0])->column();
         foreach($hospitals as $hk=>$hv) {
             $doctor = UserDoctor::findOne(['hospitalid' => $hv]);
             $childs=ChildInfo::find()

@@ -18,6 +18,7 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'intro')->textarea() ?>
+    <?= $form->field($model,'type')->radioList([1=>'儿保团队',2=>'妇保团队',0=>'全部'])?>
 
     <?= $form->field($model, 'doctorid')->hiddenInput()->label(false) ?>
 

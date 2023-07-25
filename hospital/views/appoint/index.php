@@ -161,7 +161,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     'attribute' => 'cancel_type',
                                     'value' => function ($e) {
-                                        return \common\models\Appoint::$cancel_typeText[$e->cancel_type];
+                                        $cancel_typeText=\common\models\Appoint::$cancel_typeText+\common\models\Appoint::$hospital_cancel;
+                                        return $cancel_typeText[$e->cancel_type];
                                     }
                                 ],
 

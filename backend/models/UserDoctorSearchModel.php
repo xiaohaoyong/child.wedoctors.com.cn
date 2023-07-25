@@ -18,7 +18,7 @@ class UserDoctorSearchModel extends UserDoctor
     public function rules()
     {
         return [
-            [['userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype'], 'integer'],
+            [['userid', 'sex', 'age', 'birthday', 'phone', 'hospitalid', 'subject_b', 'subject_s', 'title', 'province', 'county', 'city', 'atitle', 'otype','is_guanfang'], 'integer'],
             [['name', 'intro', 'avatar', 'skilful', 'idnum', 'authimg', 'qrcode'], 'safe'],
         ];
     }
@@ -47,6 +47,7 @@ class UserDoctorSearchModel extends UserDoctor
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination'=>['pageSize'=>300]
         ]);
 
         $this->load($params);
@@ -73,6 +74,8 @@ class UserDoctorSearchModel extends UserDoctor
             'city' => $this->city,
             'atitle' => $this->atitle,
             'otype' => $this->otype,
+                        'is_guanfang' => $this->is_guanfang,
+
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

@@ -35,8 +35,12 @@ $this->title = "家医团队数据同步";
                                 <label class="control-label" for="article-subject">选择团队</label>
                                     <?=Html::dropDownList('teamid',null,\common\models\DoctorTeam::find()->select('title')->indexBy('id')->where(['doctorid'=>$doctorid])->column(), ['prompt'=>'请选择团队','class'=>'form-control','id'=>'teamid'])?>
                                 </div>
+                                <div class="form-group field-article-subject required ">
+                                <label class="control-label" for="article-subject">选择文件类型</label>
+                                    <?=Html::radioList('type',null,[1=>'儿童',2=>'孕妇'])?>
+                                </div>
                                 <div class="form-group field-article-subject required">
-                                <label class="control-label" for="article-subject">上传图片</label>
+                                <label class="control-label" for="article-subject">上传文件</label>
 
                                <input type="file" name="team-file">
                                 </div>
@@ -78,8 +82,20 @@ $this->title = "家医团队数据同步";
                                             ?>
                                             <tr>
                                                 <td><?= $v->title ?></td>
-                                                <td><?=\common\models\DoctorParent::find()->where(['teamid'=>$v->id])->count()?></td>
-                                                
+                                                <?php if($v->type==1){?>
+                                                <td><?=\common\models\ChildInfo::find()->where(['teamid'=>$v->id])->count()?></td>
+                                                <?php }elseif($v->type==2){?>
+                                                    <td><?=\common\models\Pregnancy::find()->where(['teamid'=>$v->id])->count()?></td>
+
+                                                    <?php }else{?>
+                                                        <td>
+                                                            <?php 
+                                                             $child=\common\models\ChildInfo::find()->where(['teamid'=>$v->id])->count();
+                                                             $preg=\common\models\Pregnancy::find()->where(['teamid'=>$v->id])->count();
+                                                             echo $child+$preg;
+                                                            ?>
+                                                        </td>
+                                                        <?php }?>
                                             </tr>
                                         <?php } ?>
                                         </tbody>
