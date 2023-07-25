@@ -308,7 +308,7 @@ class WappointController extends Controller
         $vaccine_count=Appoint::find()->where(['vaccine'=>$vid,'appoint_date'=>strtotime($day),'doctorid'=>$doctorid])->andWhere(['<','state',3])->count();
         $hospitalAppointVaccineNum=HospitalAppointVaccineNum::findOne(['haid'=>$hospitalA->id,'week'=>$week,'vaccine'=>$vid]);
         if($hospitalAppointVaccineNum && $hospitalAppointVaccineNum->num-$vaccine_count<=0){
-            return ['list' => [], 'is_appoint' => 0, 'text' =>'此疫苗'.date('Y年m月d日',strtotime($day))."已约满，请选择其他日期".($hospitalAppointVaccineNum->num-$vaccine_count)];
+            return ['list' => [], 'is_appoint' => 0, 'text' =>'此疫苗'.date('Y年m月d日',strtotime($day))."已约满，请选择其他日期"];
 
         }
 
@@ -705,15 +705,15 @@ class WappointController extends Controller
                 $imagesFile = UploadedFile::getInstancesByName('img');
 
                 if($imagesFile) {
-                        $upload= new UploadForm();
-                        $upload->imageFiles = $imagesFile;
-                        $image = $upload->upload();
-                        foreach($image as $k=>$v){
-                            $appointImg=new AppointImg();
-                            $appointImg->img=$v;
-                            $appointImg->aid=$model->id;
-                            $appointImg->save();
-                        }
+                    $upload= new UploadForm();
+                    $upload->imageFiles = $imagesFile;
+                    $image = $upload->upload();
+                    foreach($image as $k=>$v){
+                        $appointImg=new AppointImg();
+                        $appointImg->img=$v;
+                        $appointImg->aid=$model->id;
+                        $appointImg->save();
+                    }
                 }
                 if($post['xuserid']){
                     $userTo=UserTo::findOne(['touserid'=>$post['xuserid']]);
