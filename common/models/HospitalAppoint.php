@@ -66,11 +66,12 @@ class HospitalAppoint extends \yii\db\ActiveRecord
         return [
             [['cycle', 'delay', 'week','interval','phone'], 'required'],
             [['is_month','doctorid', 'cycle', 'delay', 'weeks', 'interval', 'updateInterval', 'phone','release_time'], 'integer'],
-            [['info'], 'string', 'max' => 350],
+            [['info'], 'string', 'max' => 500],
             [['sure_date','non_date'],'dateNumValidation']
         ];
     }
 
+    
     public function dateNumValidation($attribute,$params){
 
         if(isset($this->$attribute)){
