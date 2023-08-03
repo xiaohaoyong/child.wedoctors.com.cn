@@ -21,6 +21,8 @@ use Yii;
 class Vaccine extends \yii\db\ActiveRecord
 {
     public static $typeText=[0=>'一类',1=>'二类'];
+    public static $alltype=[0=>'是',1=>'否'];
+
     /**
      * @inheritdoc
      */
@@ -37,7 +39,7 @@ class Vaccine extends \yii\db\ActiveRecord
         return [
             [['disease', 'adverseReactions', 'contraindications', 'diseaseHarm', 'dealFlow'], 'required'],
             [['disease', 'adverseReactions', 'contraindications', 'diseaseHarm', 'dealFlow'], 'string'],
-            [['source','type','adult'], 'integer'],
+            [['alltype','source','type','adult'], 'integer'],
             [['name', 'intervalName'], 'string', 'max' => 50],
         ];
     }
@@ -58,6 +60,8 @@ class Vaccine extends \yii\db\ActiveRecord
             'intervalName' => '建议接种时间',
             'source' => '顺序',
             'type'=>'类型',
+            'alltype'=>'是否为包含在全部中',
+
             'adult'=>'成人'
         ];
     }

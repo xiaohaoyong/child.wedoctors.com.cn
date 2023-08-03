@@ -31,6 +31,7 @@ use yii\widgets\ActiveForm;
 
                     <?= $form->field($model, 'source')->textInput() ?>
                 <?= $form->field($model, 'type')->radioList(\common\models\Vaccine::$typeText) ?>
+                <?= $form->field($model, 'alltype')->radioList(\common\models\Vaccine::$alltypeText) ?>
 
                 <?= $form->field($model, 'adult')->checkbox() ?>
 
