@@ -179,7 +179,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             if ($hospitalV) {
 
                 if (in_array(0, $hospitalV) && in_array(-1, $hospitalV)) {
-                    $vQuery = Vaccine::find()->select('id,name,type')->andwhere(['adult' => 0]);
+                    $vQuery = Vaccine::find()->select('id,name,type')->andwhere(['adult' => 0])->andWhere(['alltype'=>0]);
                 } else {
                     $vQuery = Vaccine::find()->select('id,name,type')->andWhere(['in', 'id', $hospitalV]);
                     if (in_array(-1, $hospitalV)) {
@@ -188,7 +188,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                     }
                     if (in_array(0, $hospitalV)) {
                         //查询所有一类类疫苗
-                        $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0]);
+                        $Va = Vaccine::find()->select('id,name,type')->andWhere(['type' => 0])->andWhere(['alltype'=>0]);
                     }
                     if ($Va) {
                         $vQuery->union($Va);
