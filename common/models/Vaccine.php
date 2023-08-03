@@ -21,7 +21,7 @@ use Yii;
 class Vaccine extends \yii\db\ActiveRecord
 {
     public static $typeText=[0=>'一类',1=>'二类'];
-    public static $alltype=[0=>'是',1=>'否'];
+    public static $alltypeText=[0=>'是',1=>'否'];
 
     /**
      * @inheritdoc
