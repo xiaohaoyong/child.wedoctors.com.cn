@@ -8,6 +8,7 @@
 
 namespace common\helpers;
 
+use common\components\HttpRequest;
 
 class SmsSend
 {
@@ -19,19 +20,40 @@ class SmsSend
         if (empty($code)) {
             $str = StringHelper::getRandStr(6, 1);
         }
-        $response = \Yii::$app->aliyun->sendSms(
-            "儿宝宝", // 短信签名
-            $templatecode, // 短信模板编号
-            $mobile, // 短信接收者
-            Array(  // 短信模板中字段的值
-                "code"=>$str,
-            )
-        );
-        $response=json_decode($response,true);
+        // $response = \Yii::$app->aliyun->sendSms(
+        //     "儿宝宝", // 短信签名
+        //     $templatecode, // 短信模板编号
+        //     $mobile, // 短信接收者
+        //     Array(  // 短信模板中字段的值
+        //         "code"=>$str,
+        //     )
+        // );
 
+        $curl = new HttpRequest('https://api.mix2.zthysms.com/v2/sendSmsTp', true, 10);
+        $time = time();
+        $curl->setData(json_encode([
+            'username'=>'ebbyx',
+            'password'=>md5(md5('307476qiW').$time),
+            'tKey' =>$time,
+            'signature'=>'【儿宝宝】',
+            'tpId'=>'114707',
+            'ext'=>'',
+            'records'=>[
+                'mobile'=>$mobile,
+                'tpContent'=>[
+                    'code'=>$str
+                ],
+            ],
+        ]));
+        $curl->setHeader('Content-Type','application/json');
+        $response = $curl->post();
+        //$user = json_decode($userJson, true);
+
+        $response=json_decode($response,true);
         if ($response['code']==200) {
             //该验证码存cache
-            \Yii::$app->cache->set($mobile, $str, 900);
+            $r=\Yii::$app->cache->set($mobile, $str, 900);
+            var_dump($r);exit;
             \Yii::$app->cache->set("yz_" . $mobile, $str, 60);
         }
         return $response['code']==200?true:false;
