@@ -53,7 +53,6 @@ class SmsSend
         if ($response['code']==200) {
             //该验证码存cache
             $r=\Yii::$app->cache->set($mobile, $str, 900);
-            var_dump($r);exit;
             \Yii::$app->cache->set("yz_" . $mobile, $str, 60);
         }
         return $response['code']==200?true:false;
