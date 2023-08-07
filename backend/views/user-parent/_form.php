@@ -20,8 +20,9 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'mother_id')->textInput() ?>
                 <?= $form->field($model, 'fieldu46')->textInput() ?>
                 <?= $form->field($model, 'fieldp47')->textInput() ?>
+                <?= $form->field($model, 'mother_phone')->textInput() ?>
 
-
+                
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交'                    : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
                     'btn btn-primary']) ?>
