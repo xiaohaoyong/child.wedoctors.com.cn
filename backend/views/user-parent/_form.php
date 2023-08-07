@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'userid')->textInput() ?>
                 <?= $form->field($model, 'mother')->textInput() ?>
                 <?= $form->field($model, 'mother_id')->textInput() ?>
-                <?= $form->field($model, 'fieldu46')->textInput() ?>
+                <?= $form->field($model, 'fieldp47')->textInput() ?>
 
 
                 <div class="form-group">
