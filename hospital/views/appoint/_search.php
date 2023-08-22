@@ -37,7 +37,16 @@ use yii\widgets\ActiveForm;
 
     <?php echo $form->field($model, 'phone') ?>
     <?php echo $form->field($model, 'mode') ?>
-
+    <?= $form->field($model, 'createtimes')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
+    <?= $form->field($model, 'createtimes_end')->widget(\kartik\date\DatePicker::className(), ['pluginOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autocomplete'=>'off',
+        'todayHighlight' => true
+    ]]) ?>
     <div class="form-group">
         <?= Html::submitButton('搜索', ['id' => 'search', 'class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>

@@ -24,7 +24,7 @@ class AppointSearchModels extends Appoint
     {
         return [
             [['mode','vaccine','state','cancel_type','id', 'userid', 'doctorid', 'createtime', 'appoint_time', 'appoint_date', 'type', 'childid', 'phone'], 'integer'],
-            [['appoint_dates_end','child_name', 'appoint_dates'], 'string']
+            [['appoint_dates_end','child_name', 'appoint_dates', 'createtimes', 'createtimes_end'], 'string']
         ];
     }
     /**
@@ -45,7 +45,8 @@ class AppointSearchModels extends Appoint
         $return ['child_name'] = '儿童姓名';
         $return ['appoint_dates'] = '预约日期';
         $return ['appoint_dates_end'] = '~';
-
+        $return ['createtimes'] = '创建时间';
+        $return ['createtimes_end'] = '~';
         return $return;
     }
 
@@ -95,6 +96,12 @@ class AppointSearchModels extends Appoint
         }
         if($this->appoint_dates_end){
             $query->andFilterWhere(['<=', 'appoint_date', strtotime($this->appoint_dates_end)]);
+        }
+        if($this->createtimes){
+            $query->andFilterWhere(['>=', 'createtime', strtotime($this->createtimes)]);
+        }
+        if($this->createtimes_end){
+            $query->andFilterWhere(['<=', 'createtime', strtotime($this->createtimes_end)]);
         }
         if($this->appoint_date){
             $query->andWhere(['appoint_date'=>$this->appoint_date]);
