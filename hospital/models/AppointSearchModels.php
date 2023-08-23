@@ -15,6 +15,9 @@ class AppointSearchModels extends Appoint
 {
     public $child_name;
     public $appoint_dates = '';
+    public $createtimes = '';
+    public $createtimes_end = '';
+
     public $appoint_dates_end = '';
 
     /**
