@@ -42,18 +42,22 @@ class BabyController extends Controller
 
         $list = BabyTool::findAll(['period' => $period]);
         $nlist = BabyGuide::findAll(['period' => $period]);
-        $like = BabyToolLike::findOne(['bid' => $period, 'loginid' => $this->userLogin->id, 'type' => 1]);
-        $isCollection = BabyToolLike::findOne(['bid' => $period, 'loginid' => $this->userLogin->id, 'type' => 2]);
         $likeCount = BabyToolLike::find()->where(['bid' => $period, 'type' => 1])->count();
 
-        $visit = BabyToolLike::find()->where(['bid' => $period, 'type' => 3, 'loginid' => $this->userLogin->id])->count();
-        if (!$visit) {
-            $visit = new BabyToolLike();
-            $visit->bid = $period;
-            $visit->userid = $this->userid;
-            $visit->loginid = $this->userLogin->id;
-            $visit->type = 3;
-            $visit->save();
+        if($this->userid){
+            $like = BabyToolLike::findOne(['bid' => $period, 'loginid' => $this->userLogin->id, 'type' => 1]);
+            $isCollection = BabyToolLike::findOne(['bid' => $period, 'loginid' => $this->userLogin->id, 'type' => 2]);
+
+            $visit = BabyToolLike::find()->where(['bid' => $period, 'type' => 3, 'loginid' => $this->userLogin->id])->count();
+        
+            if (!$visit) {
+                $visit = new BabyToolLike();
+                $visit->bid = $period;
+                $visit->userid = $this->userid;
+                $visit->loginid = $this->userLogin->id;
+                $visit->type = 3;
+                $visit->save();
+            }
         }
 
         return ['list' => $list, 'nlist' => $nlist, 'isLike' => $like ? true : false, 'likeCount' => $likeCount, 'isCollection' => $isCollection ? true : false];

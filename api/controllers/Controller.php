@@ -25,7 +25,10 @@ use yii\web\Response;
 
 class Controller extends \yii\web\Controller
 {
-    private $result = ['user/login','user/code','user/phone-login', 'user/wx-user-info', 'article/view', 'baby/collection-list', 'text/text','doctor/row'];
+    private $result = ['user/login','user/code','user/phone-login', 'user/wx-user-info', 
+                        'article/view', 'baby/collection-list', 'text/text','doctor/row','child/new-list'
+                        ,'notice/index','family-doctor-services/index','doctor/view','clock-in/user','article/list','article/new-index','article/new-list'
+                        ,'article/index','article/view','comment/list','data/article-view','baby/vlist','baby/list-new','baby/tag','baby/vview','data/vaccine'];
     private $autoResult = ['user/save-image', 'user/login'];
     protected $userid = 0;
     protected $user;
@@ -63,14 +66,14 @@ class Controller extends \yii\web\Controller
                 if (!$userLogin && !in_array($controllerID . "/" . $actionID, $this->result)) {
                     $cache = \Yii::$app->rdmp;
                     $cache->lpush("user_login_error", $session[0]);
-                    \Yii::$app->response->data = ['code' => 30003, 'msg' => '未授权访问'];
+                    \Yii::$app->response->data = ['code' => 30001, 'msg' => '未授权访问'];
                     return false;
+                }else{
+                    $this->userid = $userLogin->userid;
+                    $this->user = $userLogin->user;
+                    $this->appToken = $session;
+                    $this->userLogin = $userLogin;
                 }
-                $this->userid = $userLogin->userid;
-                $this->user = $userLogin->user;
-                $this->appToken = $session;
-                $this->userLogin = $userLogin;
-
                 //判断是否签名
                 if ($this->userid && !in_array($controllerID . "/" . $actionID, $this->autoResult)) {
                     $doctorParent = DoctorParent::findOne(['parentid' => $this->userid]);
