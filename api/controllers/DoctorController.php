@@ -12,6 +12,7 @@ use api\controllers\Controller;
 
 use common\helpers\HuanxinUserHelper;
 use common\models\Area;
+use common\models\ChildInfo;
 use common\models\DoctorParent;
 use common\models\DoctorTeam;
 use common\models\Hospital;
@@ -31,8 +32,9 @@ class DoctorController extends Controller
             $doctor = UserDoctor::findOne(['userid' => $doctorParent->doctorid]);
 
         }
-        if ($doctorParent->teamid) {
-            $doctorTeam = DoctorTeam::findOne($doctorParent->teamid);
+        $child = ChildInfo::findOne(['userid'=>$this->userid]);
+        if ($child->teamid) {
+            $doctorTeam = DoctorTeam::findOne($child->teamid);
         }
 
 

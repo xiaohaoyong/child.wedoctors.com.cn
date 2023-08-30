@@ -21,7 +21,7 @@ use common\models\UserLogin;
 class MyController extends Controller
 {
     public function actionIndex(){
-        $doctorParent=DoctorParent::findOne(['parentid'=>$this->userid]);
+        $doctorParent=ChildInfo::findOne(['userid'=>$this->userid]);
         if($doctorParent->teamid){
             $doctorTeam=DoctorTeam::findOne($doctorParent->teamid);
             $name=$doctorTeam->title;
