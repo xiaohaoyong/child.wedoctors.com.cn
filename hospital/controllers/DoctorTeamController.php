@@ -17,6 +17,7 @@ use yii\web\UploadedFile;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use udokmeci\yii2beanstalk\BeanstalkController;
+use common\helpers\IdcardValidator;
 
 /**
  * DoctorTeamController implements the CRUD actions for DoctorTeam model.
@@ -183,6 +184,11 @@ class DoctorTeamController extends Controller
                         }
                         continue;
                     }
+                    $IdV=new IdcardValidator();
+                    $return=$IdV->idCardVerify($v[$idcard]);
+                    if(!$return){
+                        continue;
+                    }
                     if($type==1){
                         $query = ChildInfo::find()
     //                ->select('user_login.phone')
@@ -202,6 +208,8 @@ class DoctorTeamController extends Controller
                                 $query->andWhere(['`user_login`.`phone`' => $v[$phone]]);
                             }
                             $child=$query->one();
+
+
                         if ($child) {
                             $child->teamid=$teamid;
 
