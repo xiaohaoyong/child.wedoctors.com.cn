@@ -558,6 +558,13 @@ class WappointController extends Controller
 
     public function actionSave(){
         $post=\Yii::$app->request->post();
+
+        if($post['doctorid']=38 && in_array($post['vaccine'],[45,57,58,59,97]) && $post['birthday']<date('Y-m-d',strtotime('-14 year'))){
+            \Yii::$app->getSession()->setFlash('error','14周岁以下儿童预约HPV、乙肝等疫苗请在工作日周四上午的儿童门诊预约，儿童接种须携带接种本。14周岁以上居民请不要在儿童门诊预约');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        }
+
+
         if(!preg_match("/^1[3456789]\d{9}$/", $post['phone'])){
             \Yii::$app->getSession()->setFlash('error','请填写正确手机号码');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
