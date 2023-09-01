@@ -4,7 +4,6 @@ defined('__LOG__') or define('__LOG__', dirname(dirname(dirname(__ROOT__)))."/ww
 
 $url="http://we.child.wedoctors.com.cn";
 
-$AppSecret = "98001ba41e010dea2861f3e0d95cbb15";
 $AppID="wx1147c2e491dfdf1d";
 $htmlurl="$url/site/childs?we=new";
 $site_url="$url/site/child?we=new";
@@ -16,14 +15,12 @@ $chenggong = "KJKgdarbimWIeuVMAYu1VyurMUOuPve48ywc3RT6uxY";
 $push="HxqZZEXIH8LsPDXu-rYbojEGHvZvFV11WfllXaY2OaI";
 return [
     'wxXAppId'=>'wx240286cc3d77ba35',
-    'wxXAppSecret'=>'cf1af7d0e91ccaedff5e7a2d57ba64ff',
 
     'wxUrl'=>'https://api.weixin.qq.com',
     'url'=>$url,
     'index_url'=>$index_url,
     'site_url' => $site_url,
     'passwordKey' => '2QH@6%3(87',
-    'AppSecret'=>$AppSecret,
     'AppID'=>$AppID,
     'WeToken'=>'UWCE9B33CYcjaHFodunQPGCFFvfbd2Yz',
     'encodingAesKey'=>'1ktMUR9QDYv4TZNh3dr7x6KWiymVXJRysSSrZ4oWMW7',
