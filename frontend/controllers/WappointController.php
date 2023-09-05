@@ -558,9 +558,18 @@ class WappointController extends Controller
 
     public function actionSave(){
         $post=\Yii::$app->request->post();
+        $week = date('w', strtotime($post['appoint_date']));
 
-        if($post['doctorid']==38 && in_array($post['vaccine'],[45,57,58,59,97]) && $post['birthday']>date('Y-m-d',strtotime('-14 year'))){
-            \Yii::$app->getSession()->setFlash('error','14周岁以下儿童预约HPV、乙肝等疫苗请在工作日周四上午的儿童门诊预约，儿童接种须携带接种本。14周岁以上居民请不要在儿童门诊预约');
+        if($post['doctorid']==38 && in_array($post['vaccine'],[45,57,58,59,97]) && $post['birthday']>date('Y-m-d',strtotime('-14 year')) && $week==2){
+            \Yii::$app->getSession()->setFlash('error','14周岁以下儿童预约HPV、乙肝等疫苗请在工作日周四上午的儿童门诊预约，儿童接种须携带接种本。');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        }
+
+
+
+
+        if($post['doctorid']==38 && in_array($post['vaccine'],[45,57,58,59,97]) && $post['birthday']<date('Y-m-d',strtotime('-14 year')) && $week==4){
+            \Yii::$app->getSession()->setFlash('error','14周岁以上成人HPV，请选择周二下午成人HPV疫苗门诊');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
         }
 
