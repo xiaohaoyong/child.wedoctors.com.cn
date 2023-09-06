@@ -513,7 +513,12 @@ class WappointController extends Controller
     }
 
     public function actionMy($type=1){
-        $appoints = Appoint::findAll(['userid' => $this->login->userid,'type'=>4,'state'=>$type]);
+        if($type==6){
+            $types=[6,0];
+        }else{
+            $types=$type;
+        }
+        $appoints = Appoint::findAll(['userid' => $this->login->userid,'type'=>4,'state'=>$types]);
         $list=[];
         foreach($appoints as $k=>$v){
             $row=$v->toArray();
@@ -565,7 +570,7 @@ class WappointController extends Controller
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
         }
 
-
+       
 
 
         if($post['doctorid']==38 && in_array($post['vaccine'],[45,57,58,59,97]) && $post['birthday']<date('Y-m-d',strtotime('-14 year')) && $week==4){
