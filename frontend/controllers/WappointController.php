@@ -573,8 +573,8 @@ class WappointController extends Controller
        
 
 
-        if($post['doctorid']==38 && in_array($post['vaccine'],[45,57,58,59,97]) && $post['birthday']<date('Y-m-d',strtotime('-14 year')) && $week==4){
-            \Yii::$app->getSession()->setFlash('error','14周岁以上成人HPV，请选择周二下午成人HPV疫苗门诊');
+        if($post['doctorid']==38  && $post['birthday']<date('Y-m-d',strtotime('-14 year')) && $week==4){
+            \Yii::$app->getSession()->setFlash('error','周四为儿童疫苗接种时间，成人请预约其他时间');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
         }
 
