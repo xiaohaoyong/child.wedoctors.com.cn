@@ -7,6 +7,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Appoint;
+use common\models\UserDoctor;
 
 /**
  * AppointSearchModels represents the model behind the search form about `\common\models\Appoint`.
@@ -105,6 +106,12 @@ class AppointSearchModels extends Appoint
             $query->andFilterWhere(['in','id',explode(',',$this->ids)]);
         }
 
+        if($this->county && !$this->doctorid)
+        {
+            $doctorids=UserDoctor::find()->select('userid')->where(['county'=>$this->county])->column();
+            $query->andFilterWhere(['in','doctorid',$doctorids]);
+
+        }
 
         // grid filtering conditions
         $query->andFilterWhere([
