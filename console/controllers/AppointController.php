@@ -36,7 +36,12 @@ class AppointController extends Controller
         Appoint::updateAll(['state' => 4], 'state=1 and appoint_date <=' . $day);
 
     }
+    public function actionStatec()
+    {
 
+        Appoint::updateAll(['state' => 3], 'state=7 ');
+
+    }
     public function actionNotice()
     {
         exit;
