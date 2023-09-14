@@ -515,6 +515,8 @@ class WappointController extends Controller
     public function actionMy($type=1){
         if($type==6){
             $types=[6,0];
+        }elseif($type==3){
+            $types=[3,7];
         }else{
             $types=$type;
         }
