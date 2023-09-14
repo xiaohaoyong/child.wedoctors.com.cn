@@ -549,7 +549,7 @@ class WappointController extends Controller
         }else{
 
             if($type==1){
-                $model->state=3;
+                $model->state=7;
             }elseif($type==2){
                 $model->state=1;
             }
