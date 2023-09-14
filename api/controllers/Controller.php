@@ -28,7 +28,7 @@ class Controller extends \yii\web\Controller
     private $result = ['user/login','user/code','user/phone-login', 'user/wx-user-info', 
                         'article/view', 'baby/collection-list', 'text/text','doctor/row','child/new-list'
                         ,'notice/index','family-doctor-services/index','doctor/view','clock-in/user','article/list','article/new-index','article/new-list'
-                        ,'article/index','article/view','comment/list','data/article-view','baby/vlist','baby/list-new','baby/tag','baby/vview','data/vaccine'];
+                        ,'article/index','article/view','comment/list','data/article-view','baby/vlist','baby/list-new','baby/tag','baby/vview','data/vaccine','my/index'];
     private $autoResult = ['user/save-image', 'user/login'];
     protected $userid = 0;
     protected $user;
