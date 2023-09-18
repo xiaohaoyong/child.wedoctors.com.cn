@@ -66,7 +66,7 @@ class HospitalAppoint extends \yii\db\ActiveRecord
         return [
             [['cycle', 'delay', 'week','interval','phone'], 'required'],
             [['is_month','doctorid', 'cycle', 'delay', 'weeks', 'interval', 'updateInterval', 'phone','release_time'], 'integer'],
-            [['info'], 'string', 'max' => 500],
+            [['info'], 'string', 'max' => 800],
             [['sure_date','non_date'],'dateNumValidation']
         ];
     }
