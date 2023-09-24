@@ -135,6 +135,8 @@ class WappointController extends Controller
                 $vaccineWeek = $query->groupBy('week')->column();
                 //如该疫苗无法获取周几可约则视为非法访问
                 if (!$vaccineWeek) {
+                    \Yii::$app->response->format = Response::FORMAT_JSON;
+
                     return new Code(20010, '社区医院暂未开通服务！');
                 }
             }
@@ -153,6 +155,8 @@ class WappointController extends Controller
                 $streetWeek = $query->groupBy('week')->column();
                 //如该疫苗无法获取周几可约则视为非法访问
                 if (!$streetWeek) {
+                    \Yii::$app->response->format = Response::FORMAT_JSON;
+
                     return new Code(20010, '社区医院暂未开通服务！');
                 }
             }
