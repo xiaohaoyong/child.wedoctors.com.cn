@@ -36,12 +36,12 @@ class Controller extends \yii\web\Controller
         {
             return true;
         }
-        //$this->login=UserLogin::findOne(['userid'=>1292985]);
+        $this->login=UserLogin::findOne(['userid'=>1292985]);
         $config=\Yii::$app->params['wechat'];
         $config['oauth']['callback']=\Yii::$app->request->url;
         $app = Factory::officialAccount($config);
         $oauth = $app->oauth;
-        if(\Yii::$app->request->get('code') && !$_SESSION['wechat_user']) {
+        if(\Yii::$app->request->get('code') && !$_SESSION['wechat_user'] && $path!='wappoint/index') {
             $wechat_user=$oauth->user();
             if($wechat_user){
                 $_SESSION['wechat_user']=$wechat_user;
