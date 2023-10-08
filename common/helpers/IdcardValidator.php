@@ -37,7 +37,7 @@ class IdcardValidator extends Validator
      */
     function gapassport_verify($content)
     {
-        $pattern = "/^\d{7}$|^[W|C]\d{8}$/";
+        $pattern = "/^\d{7}$|^[W|C|H|M]\d{8}$/";
         if (!preg_match($pattern, $content)) {
             return false;
         }
