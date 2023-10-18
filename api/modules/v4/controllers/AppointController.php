@@ -423,11 +423,11 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $rows['num'] = $num;
                 $rows['num1']=$rs_num[$k];
                 if($rows['num1']==0){
-                    $row['txt']='无号';
+                    $rows['txt']='无号';
                 }else if($rows['num1']>0 && $rows['num']<1){
-                    $row['txt']='约满';
+                    $rows['txt']='约满';
                 }else if($rows['num']>0){
-                    $row['txt']='有号';
+                    $rows['txt']='有号';
                 }
 
                 $times[] = $rows;
