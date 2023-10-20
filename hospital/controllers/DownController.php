@@ -194,6 +194,7 @@ class DownController extends BaseController
                         $zip->addFile($file, $child->name . ".xlsx");
                     }
                 }
+                
                 if(count($list)>0) {
                     \ZipArchive::CREATE;
                     //Begin writing headers
@@ -211,10 +212,13 @@ class DownController extends BaseController
                     //Force the download
                     $header = "Content-Disposition: attachment; filename=中医儿童健康管理宣教记录.zip;";
                     header($header);
-                    header("Content-Transfer-Encoding: binary");
-                    header("Content-Length: " . filesize($zipname));
+
+                    // header("Content-Transfer-Encoding: binary");
+                    // header("Content-Length: " . filesize($zipname));
+                    
                     ob_end_clean();
                     @readfile($zipname);
+
                 }else{
                 }
         }
