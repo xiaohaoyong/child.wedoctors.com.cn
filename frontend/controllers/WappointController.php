@@ -685,7 +685,7 @@ class WappointController extends Controller
 
         if($post['place']){
             $IdV=new IdcardValidator();
-            $return=$IdV->idCardVerify($post['place']);
+            //$return=$IdV->idCardVerify($post['place']);
             if(!$return)
             {
                 \Yii::$app->getSession()->setFlash('error','证件号验证失败');
