@@ -14,6 +14,7 @@ use hospital\models\user\Hospital;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yii;
 use common\models\Appoint;
+use common\models\Vaccine;
 use hospital\models\AppointSearchModels;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -70,7 +71,7 @@ class AppointController extends BaseController
                 $model->setCellValue(chr($key) . $key1, $v);
             }
         }else{
-            $fields = ['姓名', '性别', '生日', '身份证号', '联系电话', '户籍地', '预约日期', '预约时间', '预约状态', '预约项目', '取消原因', '推送状态', '来源','备注','预约社区'];
+            $fields = ['姓名', '性别', '生日', '身份证号', '联系电话', '户籍地', '预约日期', '预约时间', '预约状态', '预约项目', '取消原因', '推送状态', '来源','备注','预约社区','预约疫苗'];
             $model=$objPHPExcel->setActiveSheetIndex(0);
             foreach($fields as $k=>$v){
                 $key=65+$k;
@@ -175,7 +176,8 @@ class AppointController extends BaseController
                     ->setCellValue('L' . $key1, \common\models\Appoint::$push_stateText[$e->push_state])
                     ->setCellValue('M' . $key1, \common\models\Appoint::$modeText[$e->mode])
                     ->setCellValue('N' . $key1, $v['remark'])
-                    ->setCellValue('O' . $key1, $hospital->name);
+                    ->setCellValue('O' . $key1, $hospital->name)
+                    ->setCellValue('P' . $key1, Vaccine::findOne($v['vaccine'])->name);
 
 
 
