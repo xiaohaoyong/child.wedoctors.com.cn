@@ -13,6 +13,7 @@ use yii\helpers\Html;
 use common\components\UploadForm;
 use api\models\ChildInfo;
 use common\components\Code;
+use common\helpers\IdcardValidator;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
@@ -681,6 +682,17 @@ class WappointController extends Controller
         $appointAdult->phone=$post['phone'];
         $appointAdult->gender=$post['sex'];
         $appointAdult->birthday=$post['birthday'];
+
+        if($post['place']){
+            $IdV=new IdcardValidator();
+            $return=$IdV->idCardVerify($post['place']);
+            if(!$return)
+            {
+                \Yii::$app->getSession()->setFlash('error','证件号验证失败');
+                return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+            }
+        }
+        $appointAdult->place=$post['place'];
         if(!$appointAdult->save()){
             \Yii::$app->getSession()->setFlash('error','联系人信息保存失败');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);

@@ -100,6 +100,15 @@ frontend\assets\DateAsset::register($this);
             </div>
         </div>
         <?php }?>
+        <?php if($doctor['userid']==747897 ){ ?>
+        <div class="item">
+            <div class="title">身份证号</div>
+
+            <div class="input">
+                <input name="place" class="appoint_input" value="<?= $user['place'] ?>" placeholder="请输入身份证号">
+            </div>
+        </div>
+        <?php }?>
         <?php
         if (!$vaccines || Yii::$app->request->get('vid')) {
             ?>
@@ -289,7 +298,7 @@ jQuery(".days .rs").bind("click",function(){
   jQuery('#appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
 });
-var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！',image:'请上传居住证明'};
+var data={appoint_name:'请填写预约人姓名！',doctorid:'请填写预约社区！',place:'请填写身份证号码！',phone:'请填写正确预约人电话!',birthday:'请填写预约人生日!',sex:'请选择预约人性别！',street:'请选择街道/社区',vaccine:'请选择疫苗！',appoint_date:'请选择预约时间！',appoint_time:'请选择预约时间段！',image:'请上传居住证明'};
 jQuery("#appoint_form").submit(data,function(e){
     var labelMap = e.data;
     var label = '';
