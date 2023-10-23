@@ -685,14 +685,14 @@ class WappointController extends Controller
 
         if($post['place']){
             $IdV=new IdcardValidator();
-            //$return=$IdV->idCardVerify($post['place']);
+            $return=$IdV->idCardVerify($post['place']);
             if(!$return)
             {
                 \Yii::$app->getSession()->setFlash('error','证件号验证失败');
                 return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
             }
+            $appointAdult->place=$post['place'];
         }
-        $appointAdult->place=$post['place'];
         if(!$appointAdult->save()){
             \Yii::$app->getSession()->setFlash('error','联系人信息保存失败');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
