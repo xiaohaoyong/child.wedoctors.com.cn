@@ -19,6 +19,7 @@ use hospital\models\AppointSearchModels;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -165,8 +166,8 @@ class AppointController extends BaseController
                     ->setCellValue('A' . $key1, $row->name)
                     ->setCellValue('B' . $key1, \common\models\AppointAdult::$genderText[$row->gender])
                     ->setCellValue('C' . $key1, $row->birthday)
-                    ->setCellValue('D' . $key1, $row->id_card."  ")
-                    ->setCellValue('E' . $key1, $row->phone)
+                    ->setCellValue('D' . $key1, $row->id_card,DataType::TYPE_STRING2)
+                    ->setCellValue('E' . $key1, $row->phone,DataType::TYPE_STRING2)
                     ->setCellValue('F' . $key1, $row->place)
                     ->setCellValue('G' . $key1, date('Y-m-d', $v['appoint_date']))
                     ->setCellValue('H' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
