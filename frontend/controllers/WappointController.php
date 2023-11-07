@@ -570,6 +570,13 @@ class WappointController extends Controller
 
     public function actionSave(){
         $post=\Yii::$app->request->post();
+
+
+        if($this->login->userid==1292985){
+            \Yii::$app->getSession()->setFlash('error','请填写正确手机号码');
+            return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
+        }
+
         $week = date('w', $post['appoint_date']);
 
         if($post['doctorid']==38 && in_array($post['vaccine'],[45,57,58,59,97]) && $post['birthday']>date('Y-m-d',strtotime('-14 year')) && $week==2){
