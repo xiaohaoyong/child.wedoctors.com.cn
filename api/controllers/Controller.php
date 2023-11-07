@@ -86,7 +86,7 @@ class Controller extends \yii\web\Controller
                                 $child = ChildInfo::findOne(['userid' => $this->userid]);
                                 $preg = Pregnancy::findOne(['familyid' => $this->userid]);
                                 if ($child || $preg) {
-                                    \Yii::$app->response->data = ['code' => 30002, 'msg' => '已签约未签字'];
+                                    \Yii::$app->response->data = ['code' => 30002, 'msg' => '已签约未签字'.$this->userid];
                                     return false;
                                 }
                             }
