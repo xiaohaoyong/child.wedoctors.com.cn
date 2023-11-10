@@ -32,7 +32,7 @@ frontend\assets\DateAsset::register($this);
             <div class="title">预约社区</div>
             <div class="input">
                 <input disabled="disabled" placeholder="<?= $doctor['hospital'] ?>">
-                <input type="hidden" class="appoint_input" value="<?= $doctor['userid'] ?>" name="doctorid">
+                <input type="hidden" class="appoint_input" value="<?= $doctor['userid'] ?>" name="doctorid" id="doctorid">
                 <input type="hidden" class="appoint_input" value="4" name="type">
                 <input type="hidden" class="appoint_input" id="appoint_time" value="0" name="appoint_time">
                 <input type="hidden" class="appoint_input" value="<?= $firstday ?>" name="appoint_date" id="appoint_date">
