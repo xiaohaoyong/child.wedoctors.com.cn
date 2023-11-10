@@ -239,7 +239,35 @@ jQuery("#vaccine").change(function(e){
         }
     }    
 })
+    const arr = ['45','57','58','59','97'];
+     var vid=jQuery("#vaccine").val();
+    var sid=jQuery("#street").val();
+        var doctorid=jQuery("#doctorid").val();
 
+    if(arr.indexOf(vid)>-1 && doctorid==184741){
+        var content = "本通道为九价HPV疫苗预约通道，接种年龄为9-45岁，接种时间为周三下午1-4点，可通过电话、马家堡社区卫生服务中心公众号和现场提前14天进行预约，接种日请携带身份证原件前往保健科（马家堡西里53号）接种，预约咨询电话：010-67527884，请工作日周一到周五下午1-4点拨打。";
+        vaccineConfirm(content,vid,sid);
+    }
+
+function vaccineConfirm(content,vid,sid){
+    jQuery.confirm({
+            title: '请确认您已知晓！',
+            content: content,
+            type: 'green',
+            buttons: {
+                ok: {
+                    text: "确认知晓",
+                    btnClass: 'btn-success',
+                    keys: ['enter']
+                },
+                cancel: {
+                    text: "取消",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                },
+            }
+        });
+}
 
 
 jQuery("#street").change(function(e){
