@@ -251,7 +251,7 @@ jQuery("#vaccine").change(function(e){
 
 function vaccineConfirm(content,vid,sid){
     jQuery.confirm({
-            title: '请确认您已知晓！',
+            title: '温馨提醒',
             content: content,
             type: 'green',
             buttons: {
