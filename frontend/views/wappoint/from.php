@@ -176,8 +176,7 @@ jQuery(".upload-box1").ajaxImageUpload({
 jQuery("#vaccine").change(function(e){
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
-    var doctorid=jQuery("#doctorid").val();
-
+    
     if(vid==64){
         var content = "此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1963年12月31日前）预约通道，请确认";       
     }
@@ -203,7 +202,7 @@ jQuery("#vaccine").change(function(e){
 
     const arr = ['45','57','58','59','97'];
 
-    if(arr.indexOf(vid)>-1 && doctorid=!184741){
+    if(arr.indexOf(vid)>-1){
         var content = "接种时请您携带身份证及儿宝宝预约二维码，幼儿园及学校学生接种须携带接种本。为防止倒号行为，现场将实名扫码核销二维码。二维码中姓名与实际姓名不同者或者预约时间不是当天者不提供接种服务。";
     }
     if(content){
