@@ -303,22 +303,22 @@ class SuiteController extends Controller
             ['type' => 'view', 'name' => '成人预约', 'sub_button' => [
                 [
                     'type' => 'view',
-                    'name' => '预约HPV国产双价疫苗',
+                    'name' => '国产HPV二价预约',
                     'url' => 'http://web.child.wedoctors.com.cn/wappoint/index?type=1',
                 ],
                 [
                     'type' => 'view',
-                    'name' => '预约HPV九价疫苗',
+                    'name' => 'HPV九价预约',
                     'url' => 'http://web.child.wedoctors.com.cn/wappoint/index?vaccine=3',
                 ],
                 [
                     'type' => 'view',
-                    'name' => '预约成人疫苗接种疫苗',
+                    'name' => '成人疫苗预约',
                     'url' => 'http://web.child.wedoctors.com.cn/wappoint/index',
                 ],
                 [
                     'type' => 'view',
-                    'name' => '预约两癌筛查',
+                    'name' => '两癌筛查预约',
                     'url' => 'http://web.child.wedoctors.com.cn/qappoint/index',
                 ],
                 [
@@ -329,11 +329,11 @@ class SuiteController extends Controller
 
             ]],
             ['type' => 'view', 'name' => '我的', 'sub_button' => [
-                [
-                    'type' => 'view',
-                    'name' => '流行病学调查表',
-                    'url' => 'http://web.child.wedoctors.com.cn/question-naire/form?id=1',
-                ],
+                // [
+                //     'type' => 'view',
+                //     'name' => '流行病学调查表',
+                //     'url' => 'http://web.child.wedoctors.com.cn/question-naire/form?id=1',
+                // ],
 //                [
 //                    'type' => 'view',
 //                    'name' => '问医生',
@@ -342,10 +342,15 @@ class SuiteController extends Controller
 
                 [
                     'type' => 'miniprogram',
-                    'name' => '我的宝宝预约',
+                    'name' => '宝宝预约记录',
                     'url' => Yii::$app->params['index_url'],
                     'appid' => \Yii::$app->params['wxXAppId'],
                     'pagepath' => 'pages/appoint/my'
+                ],
+                                [
+                    'type' => 'view',
+                    'name' => '成人预约记录',
+                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/my',
                 ],
 //                    [
 //                        'type' => 'miniprogram',
@@ -361,13 +366,13 @@ class SuiteController extends Controller
                     'appid' => "wx6835027c46b29cab",
                     'pagepath' => 'pages/index/index'
                 ],
-                [
-                    'type' => 'miniprogram',
-                    'name' => '我的福利',
-                    'url' => Yii::$app->params['index_url'],
-                    'appid' => 'wx6c33bfd66eb0a4f0',
-                    'pagepath' => 'pages/index/index'
-                ],
+                // [
+                //     'type' => 'miniprogram',
+                //     'name' => '我的福利',
+                //     'url' => Yii::$app->params['index_url'],
+                //     'appid' => 'wx6c33bfd66eb0a4f0',
+                //     'pagepath' => 'pages/index/index'
+                // ],
                 [
                     'type' => 'view',
                     'name' => '24小时视频医生',
