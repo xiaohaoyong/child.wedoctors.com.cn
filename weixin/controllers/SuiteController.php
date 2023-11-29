@@ -382,6 +382,8 @@ class SuiteController extends Controller
 
         ];
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $accessToken = $app->access_token; // EasyWeChat\Core\AccessToken 实例
+        $token = $accessToken->getToken(true); // 强制重新从微信服务器获取 token.        
         $a = $app->menu->create($buttons);
         var_dump($a);
         exit;
