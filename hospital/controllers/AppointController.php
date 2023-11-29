@@ -168,7 +168,7 @@ class AppointController extends BaseController
                     ->setCellValue('C' . $key1, $row->birthday)
                     ->setCellValue('D' . $key1, $row->id_card,DataType::TYPE_STRING2)
                     ->setCellValue('E' . $key1, $row->phone,DataType::TYPE_STRING2)
-                    ->setCellValue('F' . $key1, $row->place)
+                    ->setCellValue('F' . $key1, $row->place,DataType::TYPE_STRING2)
                     ->setCellValue('G' . $key1, date('Y-m-d', $v['appoint_date']))
                     ->setCellValue('H' . $key1, \common\models\Appoint::$timeText[$v['appoint_time']])
                     ->setCellValue('I' . $key1, \common\models\Appoint::$stateText[$e->state])
