@@ -57,7 +57,7 @@ class SynchronizationController extends BaseController
     public function actionData(){
 
 
-        $row['accesskeyid']='LTAIteFpOZnX3aoE';
+        $row['accesskeyid']=\Yii::$app->params['aliak'];
         $row['key']=\Yii::$app->user->identity->hospitalid;
         $row['success_action_redirect']='http://hospital.child.wedoctors.com.cn/synchronization/';
         $row['success_action_status']=201;
@@ -68,7 +68,7 @@ class SynchronizationController extends BaseController
                 ["content-length-range", 0, 104857600]
             ],
         ]));
-        $signature = base64_encode(hash_hmac('sha1', $row['policy'], 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', true));//生成认证签名
+        $signature = base64_encode(hash_hmac('sha1', $row['policy'], \Yii::$app->params['aliaks'], true));//生成认证签名
         $row['signature']=$signature;
         $callback=[
             'callbackUrl'=>'http://hospital.child.wedoctors.com.cn/synchronization/data-callback',

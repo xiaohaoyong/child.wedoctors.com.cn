@@ -53,7 +53,7 @@ class DataUpdateController extends BeanstalkController
 
         $bucket= "wedoctorschild";
         try{
-            $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-beijing.aliyuncs.com');
+            $ossClient = new OssClient(\Yii::$app->params['aliak'], \Yii::$app->params['aliaks'], 'oss-cn-beijing.aliyuncs.com');
             $prefix = $hospitalid.'/';
             $delimiter = '/';
             $nextMarker = '';

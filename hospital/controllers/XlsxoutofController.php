@@ -23,7 +23,7 @@ class XlsxoutofController extends BaseController
         
         $row=$row2=array();
         
-        $row['accesskeyid']='LTAIteFpOZnX3aoE';
+        $row['accesskeyid']=\Yii::$app->params['aliak'];
         $row['key']=\Yii::$app->user->identity->hospitalid;
         $row['success_action_redirect']='http://test.hospital.child.wedoctors.com.cn/xlsxoutof/';
         $row['success_action_status']=201;
@@ -34,7 +34,7 @@ class XlsxoutofController extends BaseController
                 ["content-length-range", 0, 104857600]
             ],
         ]));
-        $signature = base64_encode(hash_hmac('sha1', $row['policy'], 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', true));//生成认证签名
+        $signature = base64_encode(hash_hmac('sha1', $row['policy'], \Yii::$app->params['aliaks'], true));//生成认证签名
         $row['signature']=$signature;
         $callback=[
             'callbackUrl'=>'http://test.hospital.child.wedoctors.com.cn/xlsxoutof/data-callback/',
@@ -43,7 +43,7 @@ class XlsxoutofController extends BaseController
         $row['callback']=base64_encode(json_encode($callback));
         
         
-        $row2['accesskeyid']='LTAIteFpOZnX3aoE';
+        $row2['accesskeyid']=\Yii::$app->params['aliak'];
         $row2['key']=\Yii::$app->user->identity->hospitalid;
         $row2['success_action_redirect']='http://test.hospital.child.wedoctors.com.cn/xlsxoutof/';
         $row2['success_action_status']=201;
@@ -54,7 +54,7 @@ class XlsxoutofController extends BaseController
                 ["content-length-range", 0, 104857600]
             ],
         ]));
-        $signature = base64_encode(hash_hmac('sha1', $row2['policy'], 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', true));//生成认证签名
+        $signature = base64_encode(hash_hmac('sha1', $row2['policy'], \Yii::$app->params['aliaks'], true));//生成认证签名
         $row2['signature']=$signature;
         $callback=[
             'callbackUrl'=>'http://test.hospital.child.wedoctors.com.cn/xlsxoutof/data-callback/?',

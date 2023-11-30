@@ -30,7 +30,7 @@ class ImageUploadAction extends \yii\base\Action
             $images='http://static.i.wedoctors.com.cn/redactor/'.$filen;
 
             try{
-                $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
+                $ossClient = new OssClient(\Yii::$app->params['aliak'], \Yii::$app->params['aliaks'], 'oss-cn-qingdao.aliyuncs.com');
                 $ossClient->uploadFile('childimage', 'redactor/'.$filen, $image->tempName);
 
                 return [

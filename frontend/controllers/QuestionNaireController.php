@@ -193,7 +193,7 @@ class QuestionNaireController extends QnController
                 $time = time();
                 $filen = substr(md5($time . rand(10, 100)), 4, 14);
                 $images = \Yii::$app->params['imageUrl'] . $filen . '.' . UploadForm::filetype2($baseimage);
-                $ossClient = new OssClient('LTAIteFpOZnX3aoE', 'lYWI5AzSjQiZWBhC2d7Ttt06bnoDFF', 'oss-cn-qingdao.aliyuncs.com');
+                $ossClient = new OssClient(\Yii::$app->params['aliak'], \Yii::$app->params['aliaks'], 'oss-cn-qingdao.aliyuncs.com');
                 $ossClient->putObject('childimage', 'upload/' . $filen . '.' . UploadForm::filetype2($baseimage), $baseimage);
                 $qnf->sign = $images;
                 $qnf->save();

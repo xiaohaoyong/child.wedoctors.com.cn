@@ -80,9 +80,68 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use Cache\Adapter\Redis\RedisCachePool;
 use Cache\Bridge\SimpleCache\SimpleCacheBridge;
+use common\models\DoctorTeam;
 
 class DataController extends \yii\console\Controller
 {
+    function getIDCardInfo($IDCard,$format=1){
+        $result['error']=0;//0：未知错误，1：身份证格式错误，2：无错误
+        $result['flag']='';//0标示成年，1标示未成年
+        $result['tdate']='';//生日，格式如：2012-11-15
+        if(false){
+         $result['error']=1;
+         return $result;
+        }else{
+         if(strlen($IDCard)==18)
+         {
+          $tyear=intval(substr($IDCard,6,4));
+          $tmonth=intval(substr($IDCard,10,2));
+          $tday=intval(substr($IDCard,12,2));
+         }
+         elseif(strlen($IDCard)==15)
+         {
+          $tyear=intval("19".substr($IDCard,6,2));
+          $tmonth=intval(substr($IDCard,8,2));
+          $tday=intval(substr($IDCard,10,2));
+         }
+           
+         if($tyear>date("Y")||$tyear<(date("Y")-100))
+         {
+           $flag=0;
+          }
+          elseif($tmonth<0||$tmonth>12)
+          {
+           $flag=0;
+          }
+          elseif($tday<0||$tday>31)
+          {
+           $flag=0;
+          }else
+          {
+           if($format)
+           {
+            $tdate=$tyear."-".$tmonth."-".$tday;
+           }
+           else
+           {
+            $tdate=$tmonth."-".$tday;
+           }
+             
+           if((time()-mktime(0,0,0,$tmonth,$tday,$tyear))>18*365*24*60*60)
+           {
+            $flag=0;
+           }
+           else
+           {
+            $flag=1;
+           }
+          } 
+        }
+        $result['error']=2;//0：未知错误，1：身份证格式错误，2：无错误
+        $result['isAdult']=$flag;//0标示成年，1标示未成年
+        $result['birthday']=$tdate;//生日日期
+        return $tdate;
+       }
     function getfiles($path, $allowFiles = '', $depth = 1, $substart = 0, &$files = array()){
         $depth--;
         $path = realpath($path) . '/';
@@ -107,8 +166,157 @@ class DataController extends \yii\console\Controller
         sort($files);
         return $files;
     }
-    public function actionTesta($num=0)
+    public function actionTesta($doctorid=0)
     {
+        // $article = ArticleUser::findAll(['touserid' => $v['userid']]);
+
+        
+        // $userDoctor=UserDoctor::findAll(['is_team'=>1]);
+        // foreach($userDoctor as $k=>$v){
+        //     echo $v->name."\n";
+        //     $childTeam=DoctorTeam::find()->select('id')->where(['doctorid'=>$v->userid])->andWhere(['in','type',[0,1]])->column();
+        //     if($childTeam){
+        //         $teamCount = ChildInfo::find()
+        //             ->select('count(*)')
+        //             ->indexBy('child_info.teamid')
+        //             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+        //             ->andWhere(['doctor_parent.doctorid'=>$v->userid])
+        //             ->andWhere(['in', 'child_info.teamid', $childTeam])
+        //             ->groupBy('child_info.teamid')
+        //             ->column();
+        //         if(!$teamCount){
+        //             $teamCount=array_fill_keys($childTeam,0);
+        //         }
+
+        //         $childs = ChildInfo::find()
+        //             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+        //             ->andWhere(['doctor_parent.doctorid'=>$v->userid])
+        //             ->andWhere(['child_info.teamid'=>0])
+        //             ->all();
+        //         foreach($childs as $dv){
+        //             asort($teamCount);
+        //             $key = array_key_first($teamCount);
+        //             $dv->teamid = $key;
+        //             $dv->save();
+        //             $teamCount[$key]++;
+        //             printf("progress: %s", implode(',',$teamCount));
+        //             echo "\n";
+        //         }
+        //     }
+        //     $pTeam=DoctorTeam::find()->select('id')->where(['doctorid'=>$v->userid])->andWhere(['in','type',[0,2]])->column();
+        //     var_dump($pTeam);
+        //     if($pTeam){
+        //             $teamCount = Pregnancy::find()
+        //             ->select('count(*)')
+        //             ->indexBy('pregnancy.teamid')
+        //             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+        //             ->andWhere(['doctor_parent.doctorid'=>$v->userid])
+        //             ->andWhere(['in', 'pregnancy.teamid', $pTeam])
+        //             ->groupBy('pregnancy.teamid')
+        //             ->column();
+        //             if(!$teamCount ){
+        //                 $teamCount=array_fill_keys($pTeam,0);
+        //             }
+        //         $pregnancys = Pregnancy::find()
+        //             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+        //             ->andWhere(['doctor_parent.doctorid'=>$v->userid])
+        //             ->andWhere(['pregnancy.teamid'=>0])
+        //             ->all();
+        //         foreach($pregnancys as $dk=>$dv){
+        //             asort($teamCount);
+        //             $key = array_key_first($teamCount);
+        //             $dv->teamid = $key;
+        //             $dv->save();
+        //             $teamCount[$key]++;
+        //             printf("progress: %s", implode(',',$teamCount));
+        //             echo "\n";
+        //         }
+        //     }
+
+
+            // $doctorTeam=DoctorTeam::findOne(['doctorid'=>$v->userid]);
+            // if($doctorTeam) {
+            //     $doctor = $v;
+            //     if ($doctor && $doctor->is_team) {
+            //         $doctorParent = DoctorParent::find()->select('count(*) as a,teamid')->where(['doctorid' => $this->doctorid])->andWhere(['>', 'teamid', 0])->groupBy('teamid')->orderBy('a asc')->one();
+            //         if (!$doctorParent) {
+            //             $this->teamid = $doctorTeam->id;
+            //         } else {
+            //             $this->teamid = $doctorParent->teamid;
+            //         }
+            //     }
+            // }
+            
+        
+
+        $file = fopen('3321.csv', 'r');
+        $i=0;
+        while (($line = fgets($file)) !== false) {
+            $rs = explode(',',trim($line));
+            $child=ChildInfo::find()
+            //    ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+            //     ->andWhere(['`user_login`.`phone`' => $rs[2]])
+//                ->leftJoin('user_parent', '`user_parent`.`userid` = `pregnancy`.`familyid`')
+//                ->andWhere(['user_parent.mother_id'=>$phone])
+//                ->orWhere(['pregnancy.field4'=>$phone])
+                    //->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                    //->andWhere(['user_parent.mother'=>$rs[6]])
+                    //->andWhere(['doctor_parent.doctorid'=>175877])
+                     ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                     ->andWhere(['doctor_parent.doctorid'=>190922])
+                    ->andWhere(['child_info.name'=>$rs[0]])
+                    //->andWhere(['child_info.birthday'=>strtotime($rs[4])])
+
+                    ->one();
+            //echo "\t".$phone.",";
+            //var_dump($child);
+           if($child){
+                $phone= UserLogin::getPhone($child->userid);
+                $rs[7]=$phone;
+           }
+           echo implode(',',$rs);
+           echo "\n";
+           
+        }
+        exit;
+
+        $file = fopen('121212.csv', 'r');
+        $i=0;
+        while (($line = fgets($file)) !== false) {
+            $rs=explode(',',trim($line));
+            $child=Pregnancy::find()
+                ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `pregnancy`.`familyid`')
+                ->andWhere(['doctor_parent.doctorid'=>175877])
+                ->andWhere(['pregnancy.field1'=>$rs[0]])
+                //->andWhere(['pregnancy.field11'=>strtotime($rs[12])])
+
+                //->andWhere(['pregnancy.field4'=>''])
+                //->andWhere(['>','pregnancy.field11',strtotime('-43 week')])
+ 
+                //->andWhere(['pregnancy.field2'=>strtotime($rs[5])])
+                ->one();
+                if($child){
+                    $child->field4 = $rs[1];
+                    $child->save();
+                    echo $rs[0];
+                    echo "\n";
+                }
+                // if(!$child){
+                //     $i++;
+                // }
+                // $rs[]=$child?'已签约':'未签约';
+                // $rs[]="\n";
+                // $l = implode(',',$rs);
+                // //file_put_contents("333333.csv",$l,FILE_APPEND);
+        }
+        echo $i;
+        exit;
+
+        $IdV=new IdcardValidator();
+
+
+        $return=$IdV->idCardVerify('110103198805060024');
+        var_dump($return);exit;
 
         $totle = 507593;
         $limit = ceil($totle / 20);
