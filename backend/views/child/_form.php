@@ -25,6 +25,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'gender')->textInput() ?>
                 <?= $form->field($model, 'idcard')->textInput() ?>
                 <?= $form->field($model, 'field27')->textInput() ?>
+                <?= $form->field($model, 'doctorid')->textInput() ?>
 
 
                 <div class="form-group">
