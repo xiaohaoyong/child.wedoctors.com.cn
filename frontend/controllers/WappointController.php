@@ -48,7 +48,7 @@ class WappointController extends Controller
         $vType=[
             1=>[43,50,51,78],
             2=>[44,54,55,56,98],
-            3=>[97,45,57,58,59],
+            3=>[97,45,57,58,59,145,144],
         ];
 
         //$hospitalAppoint=HospitalAppoint::find()->select('doctorid')->where(['type'=>4])->column();
@@ -70,7 +70,9 @@ class WappointController extends Controller
             $query->andWhere(['in','userid',$doctorids]);
         }
         if($vaccine == 3){
-            $doctors = $query->andWhere(['!=','userid',47156])->orderBy(["FIELD(userid,1301729,807791,".implode(',',$doctorids).")"=>true])->all();
+            $doctors = $query->andWhere(['!=','userid',47156])->orderBy(["FIELD(userid,1301729,807791,".implode(',',$doctorids).")"=>true]);
+            echo $doctors->createCommand()->getSql();
+            exit;
         }elseif ($search || $county || $type) {
             $doctors = $query->orderBy('appoint desc')->all();
         } else {
