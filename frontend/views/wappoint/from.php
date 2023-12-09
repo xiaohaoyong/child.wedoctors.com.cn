@@ -200,8 +200,8 @@ jQuery("#vaccine").change(function(e){
     if(xinguan.indexOf(vid)>-1){
          content = "按照目前免疫要求，感染过新冠病毒（阳过），且已经完成基础免疫（接种过两针科兴、北京生物等的灭活疫苗或3针智飞龙科马重组疫苗或1针康希诺肌注式疫苗），不再进行加强免疫（不再打第三针或者第四针）";
     }
-    const xinguan = ['94','111','146'];
-    if(xinguan.indexOf(vid)>-1 && doctorid==4119){
+    const xinguan1 = ['94','111','146'];
+    if(xinguan1.indexOf(vid)>-1 && doctorid==4119){
          content = "如果您最后一剂新冠疫苗接种时间晚于最后一次感染时间，则需要跟接种时间间隔3-6个月；如果您最后一剂新冠疫苗接种时间早于最后一次感染时间，则需要跟感染时间间隔6个月才可接种。优先推荐含有XBB成份的新冠疫苗进行接种。";
     }
 
