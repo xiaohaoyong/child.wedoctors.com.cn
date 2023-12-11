@@ -124,7 +124,7 @@ class PushController extends Controller
         $articleids = [];
 //        push
 
-        $hospitals = UserDoctor::find()->select('hospitalid')->where(['county'=>1102])->andWhere(['is_guanfang'=>0])->column();
+        $hospitals = UserDoctor::find()->select('hospitalid')->andWhere(['is_guanfang'=>0])->column();
         foreach($hospitals as $hk=>$hv) {
             $doctor = UserDoctor::findOne(['hospitalid' => $hv]);
             $childs=ChildInfo::find()
@@ -162,6 +162,31 @@ class PushController extends Controller
                                 var_dump($au->firstErrors);
                             }
                         }
+                        if(!$au->firstErrors) {
+                            $typename = Article::$childText[$key];
+                            $url = \Yii::$app->params['site_url'] . "#/mission-read";
+                            $miniprogram = [
+                                "appid" => \Yii::$app->params['wxXAppId'],
+                                "pagepath" => "pages/article/guidance/index?t=0",
+                            ];
+                            $data = [
+                                'first' => array('value' => "您好！医生给您发来了{$typename}儿童中医药健康指导。\n"),
+                                'keyword1' => array('value' => date('Y年m月d H:i')),
+                                'keyword2' => array('value' => $doctor->hospital->name),
+                                'keyword3' => array('value' => $doctor->name),
+                                'keyword4' => array('value' => $cv->name),
+                                'keyword5' => array('value' => "{$typename}儿童中医药健康指导"),
+                                'remark' => array('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),
+                            ];
+                            $touser = UserLogin::find()->where(['userid' => $cv->userid])->andWhere(['!=', 'openid', ''])->one();
+                            WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
+                            //小程序首页推送
+                            Notice::setList($cv->userid, 4, [
+                                'title' => "{$typename}儿童中医药健康指导。",
+                                'ftitle' => $doctor->name . '提醒您及时查看',
+                                'id' => '/article/guidance/index?t=0'
+                            ]);
+                        }
                     }
                }
 //                if($child_type){
@@ -185,31 +210,7 @@ class PushController extends Controller
 //                                var_dump($au->firstErrors);
 //                            }
 //                        }
-////                        if(!$au->firstErrors) {
-////                            $typename = Article::$childText[$key];
-////                            $url = \Yii::$app->params['site_url'] . "#/mission-read";
-////                            $miniprogram = [
-////                                "appid" => \Yii::$app->params['wxXAppId'],
-////                                "pagepath" => "pages/article/guidance/index?t=0",
-////                            ];
-////                            $data = [
-////                                'first' => array('value' => "您好！医生给您发来了{$typename}儿童中医药健康指导。\n"),
-////                                'keyword1' => array('value' => date('Y年m月d H:i')),
-////                                'keyword2' => array('value' => $doctor->hospital->name),
-////                                'keyword3' => array('value' => $doctor->name),
-////                                'keyword4' => array('value' => $cv->name),
-////                                'keyword5' => array('value' => "{$typename}儿童中医药健康指导"),
-////                                'remark' => array('value' => "\n为了您宝宝健康，请仔细阅读哦。", 'color' => '#221d95'),
-////                            ];
-////                            $touser = UserLogin::find()->where(['userid' => $cv->userid])->andWhere(['!=', 'openid', ''])->one();
-////                            WechatSendTmp::send($data, $touser->openid, \Yii::$app->params['zhidao'], $url, $miniprogram);
-////                            //小程序首页推送
-////                            Notice::setList($cv->userid, 4, [
-////                                'title' => "{$typename}儿童中医药健康指导。",
-////                                'ftitle' => $doctor->name . '提醒您及时查看',
-////                                'id' => '/article/guidance/index?t=0'
-////                            ]);
-////                        }
+////                        
 //                    }
 //                }
             }
