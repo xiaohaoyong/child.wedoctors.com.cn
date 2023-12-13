@@ -16,6 +16,9 @@ use Yii;
 use common\models\Appoint;
 use common\models\Vaccine;
 use hospital\models\AppointSearchModels;
+use PHPExcel;
+use PHPExcel_Style;
+use PHPExcel_Style_NumberFormat;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -166,7 +169,7 @@ class AppointController extends BaseController
                     ->setCellValue('A' . $key1, $row->name)
                     ->setCellValue('B' . $key1, \common\models\AppointAdult::$genderText[$row->gender])
                     ->setCellValue('C' . $key1, $row->birthday)
-                    ->setCellValue('D' . $key1, $row->place,DataType::TYPE_STRING)
+                    ->setCellValue('D' . $key1, $row->place,PHPExcel_Style_NumberFormat::FORMAT_TEXT)
                     ->setCellValue('E' . $key1, $row->phone,DataType::TYPE_STRING)
                     ->setCellValue('F' . $key1, '')
                     ->setCellValue('G' . $key1, date('Y-m-d', $v['appoint_date']))
