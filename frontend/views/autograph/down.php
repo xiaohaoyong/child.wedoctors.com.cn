@@ -75,9 +75,9 @@
     </div>
     <div style="text-indent: 2em; padding-top:40px; height: 200px; line-height: 60px;">
         <div style="float: left; width: 450px;">
-            <div>签约医生：<?=$userDoctor['name']?></div>
+            <div>签约医生：<?=$_GET['name']?></div>
             <div>团队服务电话：<?=$userDoctor['phone']?></div>
-            <div>医生签字：<?=$userDoctor['name']?></div>
+           
             <div>日期：<?=date('Y年m月d日',strtotime($autograph->starttime))?></div>
         </div>
         <div style="float: left;">
