@@ -88,7 +88,6 @@
                     echo $autograph->img;
                 }
                 ?>" style="width: 200px; position: absolute; top: -30px; "></image></div>
-            <div>日期：<?=date('Y年m月d日',strtotime($autograph->starttime))?></div>
         </div>
     </div>
 </div>
