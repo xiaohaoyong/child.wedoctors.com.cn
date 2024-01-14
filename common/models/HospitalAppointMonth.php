@@ -15,6 +15,7 @@ use Yii;
 class HospitalAppointMonth extends \yii\db\ActiveRecord
 {
     public static $typeText=[
+        '满月体检',
         '3月龄体检',
         '5-6月龄体检',
         '8-9月龄体检',
@@ -25,6 +26,7 @@ class HospitalAppointMonth extends \yii\db\ActiveRecord
         '3岁体检',
     ];
     public static $monthText=[
+        [1 => '满月'],
         [2 => '2个月', 3 => '3个月'],
         [5 => '5个月', 6 => '6个月'],
         [8 => '8个月', 9 => '9个月'],
