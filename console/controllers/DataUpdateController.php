@@ -166,6 +166,9 @@ class DataUpdateController extends BeanstalkController
                         case '\common\models\Pregnancy':
                             $to_object="Pregnancy";
                             break;
+                        case '\common\models\PublicHealth':
+                            $to_object="PublicHealth";
+                            break;
                     }
                     $ossClient->copyObject($bucket, $object, $bucket, $hospitalid."list/".$to_object.date('Ymd')."xlsx");
                     $log->addLog("另存文件");
@@ -209,7 +212,12 @@ class DataUpdateController extends BeanstalkController
             $dur->save();
             return "\common\models\ChildInfo";
         }
-
+        $field_ChildInfo=ChildInfo::$field;
+        if((array_search('所属社区站',$rs) && array_search('本年度是否收取家医服务费',$rs))){
+            $dur->type=4;
+            $dur->save();
+            return "\common\models\PublicHealth";
+        }
         return false;
     }
 }
