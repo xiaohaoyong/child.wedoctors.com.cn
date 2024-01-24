@@ -89,14 +89,14 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
-        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[45 , 57 , 58 , 59 , 97])){ ?>
+        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[142,140,139,138,137,136,135,133,80,74,73,70,69,66,65,64,63,46])){ ?>
         <div class="item">
             <div class="title">居住证明</div>
             <input type='hidden'name="image" class="appoint_input"  id='text-field'  />
 
             <div class="upload-box1"></div>
             <div class="input">
-                注：四价、九价HPV疫苗线上预约限在白纸坊街道居住、工作或上学的家医签约居民。预约前需上传本人有效凭证（注意：工作单位，本人户口本或房本或租房合同等等需要显示出具体的地址）。可线上完善健康档案，现场签订家医协议或缴纳家医服务费
+                注：流感疫苗线上预约限在白纸坊街道居住、工作或上学的家医签约居民。预约前需上传本人有效凭证（注意：工作单位，本人户口本或房本或租房合同等等需要显示出具体的地址）。可线上完善健康档案，现场签订家医协议或缴纳家医服务费
             </div>
         </div>
         <?php }?>
