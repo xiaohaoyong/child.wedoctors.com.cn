@@ -231,8 +231,16 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
             $monthType=[];
             if($appoint->type==1 && $appoint->is_month){
-                $hospitalAppointMonth=HospitalAppointMonth::findAll(['haid'=>$appoint->id]);
-                $monthType=HospitalAppointMonth::$typeText;
+                $mt=HospitalAppointMonth::$typeText;
+
+                $hospitalAppointMonth=HospitalAppointMonth::find()->select('type')->where(['haid'=>$appoint->id])->column();
+                foreach($hospitalAppointMonth as $k=>$v){
+                    if($mt[$v]){
+                        $mrs['id']=$v;
+                        $mrs['text']=$mt[$v];
+                        $monthType[]=$mrs;
+                    }
+                }
             }
 
 
