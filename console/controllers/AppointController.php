@@ -318,7 +318,7 @@ class AppointController extends Controller
                 $this->pushTmp($v);
                 continue;
             }
-            if($v->doctorid==38 && in_array($v->vaccine,[45 , 57 , 58 , 59 , 97])){
+            if($v->doctorid==38 && in_array($v->vaccine,[142,140,139,138,137,136,135,133,80,74,73,70,69,66,65,64,63,46])){
                 $v->state = 0;
             }else {
                 $v->state = 1;
