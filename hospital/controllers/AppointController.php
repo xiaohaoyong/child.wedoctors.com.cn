@@ -462,4 +462,18 @@ class AppointController extends BaseController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    public function actionGetNum($date,$time,$vaccine,$type){
+        $query = Appoint::find()->where(['appoint_date'=>strtotime($date),]);
+        if($time){
+            $query->andWhere(['appoint_time'=>$time]);
+        }
+        if($vaccine){
+            $query->andWhere(['vaccine'=>$vaccine]);
+        }
+        if($type){
+            $query->andWhere(['type'=>$type]);
+        }
+        $appoint= $query->count();
+        return $appoint;
+    }
 }

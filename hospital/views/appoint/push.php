@@ -54,11 +54,13 @@ $this->title ='加号';
                         echo $form->field($model, 'vaccine')->widget('\kartik\select2\Select2',[
                             'data' => $data,
                             'options' => ['placeholder' => '请选择'],
-                            'value' => '',
+                            'value' => ''
 
                         ])?></td>
                     </tr>
                     <tr><th>备注</th><td><?= $form->field($model, 'remark')->textarea() ?></td></tr>
+                    <tr><th>当前预约人数</th><td><span id="num"></span></td></tr>
+
                     </tbody></table>
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' :
@@ -70,3 +72,45 @@ $this->title ='加号';
         </div>
     </div>
 </div>
+
+<?php
+$date_day = date('Y-m-d', $firstday);
+$vid = Yii::$app->request->get('vid');
+$sid = Yii::$app->request->get('sid');
+
+$updateJs = <<<JS
+    jQuery("#appoint-appoint_time").on('change',function(e){
+        var time = $('#appoint-appoint_time').val();
+        var date = $('#appoint-date').val();
+        var type = $('#appoint-type').val();
+        var vaccine = $('#appoint-vaccine').val();
+
+        $.get('/appoint/get-num',{'vaccine':vaccine,'time':time,'date':date,'type':type},function(e){
+            $("#num").html(e);
+        })
+    })
+    jQuery("#appoint-type").change(function(e){
+        var time = $('#appoint-appoint_time').val();
+        var date = $('#appoint-date').val();
+        var type = $('#appoint-type').val();
+        var vaccine = $('#appoint-vaccine').val();
+
+        $.get('/appoint/get-num',{'vaccine':vaccine,'time':time,'date':date,'type':type},function(e){
+            $("#num").html(e);
+
+        })
+    })
+
+    jQuery("#appoint-vaccine").on('select2:select',function(e){
+        var vaccine = $(this).val();
+        var time = $('#appoint-appoint_time').val();
+        var date = $('#appoint-date').val();
+        var type = $('#appoint-type').val();
+        $.get('/appoint/get-num',{'vaccine':vaccine,'time':time,'date':date,'type':type},function(e){
+            $("#num").html(e);
+
+        })
+    })
+JS;
+$this->registerJs($updateJs);
+?>
