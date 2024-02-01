@@ -463,7 +463,9 @@ class AppointController extends BaseController
         }
     }
     public function actionGetNum($date,$time,$vaccine,$type){
-        $query = Appoint::find()->where(['appoint_date'=>strtotime($date)])->andWhere(['state'=>[0,1,5]]);
+        $doctor = UserDoctor::findOne(['hospitalid' => Yii::$app->user->identity->hospital]);
+
+        $query = Appoint::find()->where(['appoint_date'=>strtotime($date)])->andWhere(['state'=>[0,1,5,2]])->andWhere(['doctorid'=>$doctor->userid]);
         if($time){
             $query->andWhere(['appoint_time'=>$time]);
         }
