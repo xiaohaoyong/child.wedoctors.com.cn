@@ -463,7 +463,7 @@ class AppointController extends BaseController
         }
     }
     public function actionGetNum($date,$time,$vaccine,$type){
-        $query = Appoint::find()->where(['appoint_date'=>strtotime($date),]);
+        $query = Appoint::find()->where(['appoint_date'=>strtotime($date)])->andWhere(['state'=>[0,1,5]]);
         if($time){
             $query->andWhere(['appoint_time'=>$time]);
         }
