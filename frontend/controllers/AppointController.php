@@ -271,7 +271,7 @@ class AppointController extends Controller
 
                         $appointCallingListModel->time = $timeType;
                         if ($appointCallingListModel->save()) {
-                            $queue = new Queue($doctorid, $appoint->type, $timeType, $fenzhen);
+                            $queue = new Queue($doctorid, $type, $timeType, $fenzhen);
                             $queueNum = $queue->lpush($appointCallingListModel->id);
                             $userDoctor = UserDoctor::findOne(['userid' => $appoint->doctorid]);
                             $hospital = Hospital::findOne(['id' => $userDoctor->hospitalid]);
@@ -280,7 +280,7 @@ class AppointController extends Controller
                                     'name' => $appoint->name(),
                                     'type' => Appoint::$typeText[$type],
                                     'hospital' => $hospital->name,
-                                    'num' => $timeType . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $appoint->type, $timeType),
+                                    'num' => $timeType . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $type, $timeType),
                                     'deng' => ($queueNum - 1),
                                     'date' => date('Y年m月d日') . " " . Appoint::$timeText[$timeType]]];
                         } else {
@@ -328,7 +328,7 @@ class AppointController extends Controller
                         'name' => $appoint->name(),
                         'type' => Appoint::$typeText[$type],
                         'hospital' => $hospital->name,
-                        'num' => $timeType . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $appoint->type, $timeType),
+                        'num' => $timeType . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $type, $timeType),
                         'deng' => ($queueNum - 1),
                         'date' => date('Y年m月d日') . " " . Appoint::$timeText[$timeType]]];
             }
