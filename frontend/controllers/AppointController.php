@@ -251,6 +251,9 @@ class AppointController extends Controller
             $appoint = Appoint::findOne(['state'=>1,'doctorid'=>$doctorid,'id'=>$id,'appoint_date'=>strtotime(date('Y-m-d 00:00:00'))]);
             if($appoint) {
                 $type = $appoint->type;
+                if($type==1){
+                    $type=2;
+                }
                 $aid = $appoint->id;
                 $appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
                 //判断用户是否已经排队
@@ -275,7 +278,7 @@ class AppointController extends Controller
                             return ['code' => 10000, 'msg' => '您的排队已过期，重新出号',
                                 'data' => [
                                     'name' => $appoint->name(),
-                                    'type' => Appoint::$typeText[$appoint->type],
+                                    'type' => Appoint::$typeText[$type],
                                     'hospital' => $hospital->name,
                                     'num' => $timeType . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $appoint->type, $timeType),
                                     'deng' => ($queueNum - 1),
