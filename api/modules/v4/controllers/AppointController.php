@@ -490,7 +490,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                     $end = $hospitalAppointMonth[count($hospitalAppointMonth) - 1];
                     $daytime =strtotime($post['appoint_date']);
                     if (strtotime("-$first month", $daytime) < $child->birthday || strtotime("-" . ($end + 1) . " month", $daytime) > $child->birthday) {
-                        return new Code(21000,date('Y年m月d日',$daytime).HospitalAppointMonth::$typeText[$post['month']]
+                        return new Code(21000,HospitalAppointMonth::$typeText[$post['month']]
                             ."，需宝宝在预约日期时满".$first."个月且小于".($end + 1)."个月");
                     }
                 }
