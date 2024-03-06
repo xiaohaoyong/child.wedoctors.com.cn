@@ -1,5 +1,7 @@
 <?php
 $this->title='我的预约';
+\common\assets\JqAlert::register($this);
+
 ?>
 <div class="body">
     <div class="logo">
@@ -79,7 +81,21 @@ $this->title='我的预约';
 <div class="appoint_my"><a href="/wappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 <?php
 $updateJs = <<<JS
-           
+    var doctorid={$row['doctorid']};
+    if(doctorid == 38){
+               jQuery.confirm({
+                    title: '温馨提醒',
+                    content: "请您务必注意保健科地址：建功北里三区3号楼1层北侧白纸坊社区卫生服务中心预防保健区（一定注意：保健科在菜园街街边上，不在中心院内）成人常态化门诊时间：工作日周二13:30-15:00",
+                    type: 'green',
+                    buttons: {
+                        ok: {
+                            text: "确认知晓",
+                            btnClass: 'btn-success',
+                            keys: ['enter']
+                        }
+                    }
+                });
+            }
 				//定时器 
 				var clock1 = window.setInterval(function showTime() {
                     var time = new Date(); /*获取当前时间 年月日时分秒*/
