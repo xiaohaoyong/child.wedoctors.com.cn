@@ -177,7 +177,7 @@ class DataController extends \yii\console\Controller
             'first' => array('value' => "大红门社区卫生服务中心邀请您参与周末儿童门诊满意度调查\n",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
             'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-            'keyword3' => ARRAY('value' => '大红门社区邀请您参与周末儿童门诊满意度调查'),
+            'keyword3' => ARRAY('value' => '大红门邀请您参与周末儿童门诊满意度调查'),
 
             'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
         ];
