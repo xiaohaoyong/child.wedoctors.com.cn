@@ -185,9 +185,9 @@ class DataController extends \yii\console\Controller
         $file = fopen('123.csv', 'r');
         $i=0;
         while (($line = fgets($file)) !== false) {
-            var_dump(trim($line));
-            // $rs = WechatSendTmp::send($data,trim($line), $temp,'https://www.wjx.cn/vm/PfMtaGW.aspx# ');
-            // var_dump($rs);
+            sleep(1);
+            $rs = WechatSendTmp::send($data,trim($line), $temp,'https://www.wjx.cn/vm/PfMtaGW.aspx# ');
+            var_dump($rs);
         }
 exit;
 
