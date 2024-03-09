@@ -81,6 +81,7 @@ use yii\helpers\ArrayHelper;
 use Cache\Adapter\Redis\RedisCachePool;
 use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 use common\models\DoctorTeam;
+use TCPDF;
 
 class DataController extends \yii\console\Controller
 {
@@ -166,8 +167,59 @@ class DataController extends \yii\console\Controller
         sort($files);
         return $files;
     }
+    const domain = "http://127.0.0.1:8080";
+    const defaultUsername = "doctron";
+    const defaultPassword = "lampnick";
+    const pathPrefix = "";
     public function actionTesta($doctorid=0)
     {
+        $data = [
+            'first' => array('value' => "大红门社区卫生服务中心邀请您参与周末儿童门诊满意度调查\n",),
+            'keyword1' => ARRAY('value' => "儿宝宝用户"),
+            'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
+            'keyword3' => ARRAY('value' => '大红门社区卫生服务中心邀请您参与周末儿童门诊满意度调查'),
+
+            'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
+        ];
+
+        $temp='VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0';
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $temp);
+exit;
+
+        $file = fopen('3321.csv', 'r');
+        $i=0;
+        while (($line = fgets($file)) !== false) {
+            $rs = explode(',',trim($line));
+            $child=ChildInfo::find()
+            //    ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+            //     ->andWhere(['`user_login`.`phone`' => $rs[2]])
+//                ->leftJoin('user_parent', '`user_parent`.`userid` = `pregnancy`.`familyid`')
+//                ->andWhere(['user_parent.mother_id'=>$phone])
+//                ->orWhere(['pregnancy.field4'=>$phone])
+                    //->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                    //->andWhere(['user_parent.mother'=>$rs[6]])
+                    //->andWhere(['doctor_parent.doctorid'=>175877])
+                      ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                      ->andWhere(['doctor_parent.doctorid'=>206260])
+                     ->andWhere(['child_info.name'=>$rs[0]])
+                    //->andWhere(['child_info.birthday'=>strtotime($rs[4])])
+                    // ->where(['or',['field27'=>$rs[2],'idcard'=>$rs[2]]])
+                    ->one();
+            //echo "\t".$phone.",";
+            //var_dump($child);
+            if($child){
+                $rs[12]="已签约";
+            }
+            echo implode(',',$rs)."\n";
+        }
+        exit;
+
+
+
+        
+
+exit;
+
         // $article = ArticleUser::findAll(['touserid' => $v['userid']]);
 
         
