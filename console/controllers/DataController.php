@@ -181,9 +181,16 @@ class DataController extends \yii\console\Controller
 
             'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
         ];
-
         $temp='VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0';
-        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $temp);
+        $rs = WechatSendTmp::send($data,'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $temp,'https://www.wjx.cn/vm/PfMtaGW.aspx# ');
+            var_dump($rs);
+            exit;
+        $file = fopen('123.csv', 'r');
+        $i=0;
+        while (($line = fgets($file)) !== false) {
+            $rs = WechatSendTmp::send($data,trim($line), $temp,'https://www.wjx.cn/vm/PfMtaGW.aspx# ');
+            var_dump($rs);
+        }
 exit;
 
         $file = fopen('3321.csv', 'r');
