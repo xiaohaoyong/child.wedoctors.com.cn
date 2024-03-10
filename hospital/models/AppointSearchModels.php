@@ -127,7 +127,6 @@ class AppointSearchModels extends Appoint
             $query->andWhere(['doctorid' => $doctorid->userid]);
         }
         $query->orderBy([self::primaryKey()[0] => SORT_DESC]);
-
         return $dataProvider;
     }
 }
