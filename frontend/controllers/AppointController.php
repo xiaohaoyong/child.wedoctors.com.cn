@@ -44,6 +44,7 @@ class AppointController extends Controller
         '91e43c3'=>89154,
         'b78e2b6'=>925348,
         'c04d4156'=>1511688,
+        'ds843j32'=>1550005	,
     ];
 
 
@@ -253,6 +254,7 @@ class AppointController extends Controller
                 $type = $appoint->type;
                 if($type==1){
                     $type=2;
+                    $typetpme=1;
                 }
                 $aid = $appoint->id;
                 $appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
@@ -317,7 +319,7 @@ class AppointController extends Controller
                 return ['code' => 10000, 'msg' => '成功',
                     'data' => [
                         'name' => '临时',
-                        'type' => Appoint::$typeText[$type],
+                        'type' => Appoint::$typeText[$typetpme],
                         'hospital' => $hospital->name,
                         'num' => '临时' . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $type, 0),
                         'deng' => "(临时号排在预约号之后)",
@@ -326,7 +328,7 @@ class AppointController extends Controller
                 return ['code' => 10000, 'msg' => '成功',
                     'data' => [
                         'name' => $appoint->name(),
-                        'type' => Appoint::$typeText[$type],
+                        'type' => Appoint::$typeText[$typetpme],
                         'hospital' => $hospital->name,
                         'num' => $timeType . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $type, $timeType),
                         'deng' => ($queueNum - 1),
