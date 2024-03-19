@@ -44,7 +44,7 @@ class AppointController extends Controller
         '91e43c3'=>89154,
         'b78e2b6'=>925348,
         'c04d4156'=>1511688,
-        'ds843j32'=>1550005	,
+        'ds843j32'=>1550005,
     ];
 
 
@@ -255,6 +255,8 @@ class AppointController extends Controller
                 if($type==1){
                     $type=2;
                     $typetpme=1;
+                }else{
+                    $typetpme=$type;
                 }
                 $aid = $appoint->id;
                 $appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
