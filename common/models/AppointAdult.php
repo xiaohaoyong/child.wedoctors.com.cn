@@ -37,6 +37,8 @@ class AppointAdult extends \yii\db\ActiveRecord
             's' => ['userid', 'name', 'gender','phone','id_card'],
 
             'default'=>['userid', 'name', 'gender','phone'],
+            'z'=>['userid', 'name', 'id_card','phone'],
+
         ];
     }
     /**

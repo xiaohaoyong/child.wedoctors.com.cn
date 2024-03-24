@@ -136,7 +136,7 @@ class ChildInfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idtype','userid', 'birthday', 'createtime', 'gender', 'source', 'admin', 'doctorid','eid','jid'], 'integer'],
+            [['idtype','userid', 'birthday', 'createtime', 'gender', 'source', 'admin', 'doctorid','eid','jid','is_ph'], 'integer'],
             [['fieldu47','idcard','name', 'field54', 'field53', 'field52', 'field51', 'field50', 'field49', 'field48', 'field47', 'field46', 'field45', 'field44', 'field43', 'field42', 'field41', 'field40', 'field39', 'field38', 'field37', 'field27', 'field26', 'field25', 'field24', 'field23', 'field22', 'field21', 'field20', 'field19', 'field18', 'field17', 'field16', 'field15', 'field14', 'field13', 'field7', 'field6', 'field0'], 'string', 'max' => 100],
         ];
     }

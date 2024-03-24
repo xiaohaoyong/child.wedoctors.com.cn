@@ -235,6 +235,7 @@ class Appoint extends \yii\db\ActiveRecord
         10 => '盆底功能筛查及治疗',
         11 => '冬病夏治三伏贴',
         12 => '儿童推拿门诊',
+        13 => '专病预约',
 
     ];
 
@@ -284,12 +285,22 @@ class Appoint extends \yii\db\ActiveRecord
         return 'appoint';
     }
 
+
+    public function scenarios()
+    {
+        return [
+            'z'=>['vaccine','appoint_time','appoint_date','type','userid','doctorid',],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
+
+            [['vaccine'],'required','message'=>'专病不能为空','on'=>['z']],
+
             [['appoint_date','type'], 'required'],
             ['appoint_time','required','message'=>'请选择预约时间'],
             ['appoint_date','required','message'=>'请选择预约日期'],

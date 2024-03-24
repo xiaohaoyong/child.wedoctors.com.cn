@@ -51,11 +51,11 @@ class HospitalAppoint extends \yii\db\ActiveRecord
     ];
     public static $typeTmpText=[
         13=>[
-            '眼科（眼底镜筛查）',
-            '脑卒中专病',
-            '骨质疏松专病',
-            '耳鼻喉科',
-            '消化科'
+            1=>'眼科（眼底镜筛查）',
+            2=>'脑卒中专病',
+            3=>'骨质疏松专病',
+            4=>'耳鼻喉科',
+            5=>'消化科'
         ]
     ];
 
