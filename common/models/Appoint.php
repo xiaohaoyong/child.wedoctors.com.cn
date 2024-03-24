@@ -288,9 +288,9 @@ class Appoint extends \yii\db\ActiveRecord
 
     public function scenarios()
     {
-        return [
-            'z'=>['vaccine','appoint_time','appoint_date','type','userid','doctorid',],
-        ];
+        $scenarios = parent::scenarios();
+        $scenarios['z'] = ['vaccine','appoint_time','appoint_date','type','userid','doctorid',];
+        return $scenarios;
     }
     /**
      * {@inheritdoc}
