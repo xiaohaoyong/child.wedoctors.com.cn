@@ -14,7 +14,7 @@ $this->title='专病预约';
     <?= $form->field($user, 'id_card')->textInput(['maxlength' => true]) ?>
     <?= $form->field($user, 'phone')->textInput(['maxlength' => true]) ?>
    
-    <?=$form->field($appoint,'vaccine')->dropDownList([''=>'请选择']+HospitalAppoint::$typeTmpText[13])->label('专病')?>
+    <?=$form->field($appoint,'vaccine')->dropDownList([''=>'请选择']+HospitalAppoint::$typeTmpText[13])->label('预约项目')?>
 
     <div class="appoint_day">
 
