@@ -155,9 +155,9 @@ class DoctorTeamController extends Controller
         $filed=[
             'name'=>'姓名',
             'birthday'=>'出生日期',
-            'idcard'=>'身份证号',
-            'arae'=>'现住址',
-            'phone'=>'联系电话'
+            'mother'=>'母亲姓名',
+            // 'arae'=>'现住址',
+            // 'phone'=>'联系电话'
         ];
 
         if($_FILES['team-file']['tmp_name']) {
@@ -196,8 +196,8 @@ class DoctorTeamController extends Controller
     //                ->andWhere(['`user_login`.`phone`' => $phone])
                             ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
                             ->andWhere(['doctor_parent.doctorid' => Yii::$app->user->identity->doctorid])
-                            //->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                            //->andWhere(['user_parent.mother' => $v[2]])
+                            ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                            ->andWhere(['user_parent.mother' => $v[$mother]])
     //                ->orWhere(['pregnancy.field4'=>$phone])
                             ->andWhere(['child_info.name' => $v[$name]]);
                             if($v[$birthday]){
