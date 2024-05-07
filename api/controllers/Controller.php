@@ -25,7 +25,7 @@ use yii\web\Response;
 
 class Controller extends \yii\web\Controller
 {
-    private $result = ['user/login','user/code','user/phone-login', 'user/wx-user-info', 
+    private $result = ['agreement/content','user/login','user/code','user/phone-login', 'user/wx-user-info', 
                         'article/view', 'baby/collection-list', 'text/text','doctor/row','child/new-list'
                         ,'notice/index','family-doctor-services/index','doctor/view','clock-in/user','article/list','article/new-index','article/new-list'
                         ,'article/index','article/view','comment/list','data/article-view','baby/vlist','baby/list-new','baby/tag','baby/vview','data/vaccine','my/index'];
