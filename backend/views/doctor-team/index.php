@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\DoctorParentSearch */
+/* @var $searchModel backend\models\DoctorTeamSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '管理列表';
@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 0=>['name'=>'添加','url'=>['create']]
 ];
 ?>
-<div class="doctor-parent-index">
+<div class="doctor-team-index">
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header with-border">
@@ -35,18 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\SerialColumn'],
 
                                         'id',
-            [
-
-                'attribute' => 'doctorid',
-                'value' => function ($e) {
-                    $doctor=\common\models\UserDoctor::findOne(['userid'=>$e->doctorid]);
-                    $hospital=\common\models\Hospital::findOne(['id'=>$doctor->hospitalid]);
-                    return $hospital->name;
-                }
-            ],
-            'parentid',
-            'createtime:datetime',
-            'level',
+            'title',
+            'intro',
+            'doctorid',
+            'type',
 
                             [
                             'class' => 'common\components\grid\ActionColumn',
