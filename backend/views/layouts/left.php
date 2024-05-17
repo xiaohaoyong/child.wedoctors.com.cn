@@ -32,7 +32,7 @@
                             ['label' => '账户管理', 'icon' => 'user', 'url' => ['/user'],],
                             ['label' => '用户登录信息', 'icon' => 'sign-in', 'url' => ['/user-login'],],
                             ['label' => '扫码记录', 'icon' => 'wechat', 'url' => ['/we-openid'],],
-
+                            ['label' => '协议管理', 'icon' => 'wechat', 'url' => ['/agreement'],],
 
                         ],
                     ],
