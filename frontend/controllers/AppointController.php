@@ -334,7 +334,7 @@ class AppointController extends Controller
                         'type' => Appoint::$typeText[$typetpme],
                         'hospital' => $hospital->name,
                         'num' => $timeType . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $type, $timeType),
-                        'deng' => ($queueNum - 1),
+                        'deng' => $timeType . AppointCallingList::listName($appointCallingListModel->id, $doctorid, $type, $timeType),
                         'date' => date('Y年m月d日') . " " . Appoint::$timeText[$timeType]]];
             }
         }else{
