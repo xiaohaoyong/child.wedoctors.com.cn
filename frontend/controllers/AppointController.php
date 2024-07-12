@@ -157,7 +157,10 @@ class AppointController extends Controller
                 $time = explode('-',$rs['time']);
                 $rs['start'] = date('Y-m-d '.$time[0].':00');
                 $rs['end'] = date('Y-m-d '.$time[1].':00');
+                $rs['appointid'] = $v->id;
+                $rs['userid'] = $v->userid;
                 $arr[] = $rs;
+                
             }
         } else {
             $code = 20010;
