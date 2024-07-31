@@ -86,7 +86,7 @@ class AppointSearchModels extends Appoint
 
         $hospitalid = Yii::$app->user->identity->hospital;
         if ($this->child_name) {
-            $childids = ChildInfo::find()->select('id')->andWhere(['source' => $hospitalid])->andWhere(['name' => $this->child_name])->column();
+            $childids = ChildInfo::find()->select('id')->andWhere(['name' => $this->child_name])->column();
             if ($childids) {
                 $query->andFilterWhere(['in', 'childid', $childids]);
             } else {
