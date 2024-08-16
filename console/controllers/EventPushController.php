@@ -36,10 +36,11 @@ class EventPushController extends Controller
             //113890=>[2=>2228,3=>2229],
             110623=>[2=>2227,3=>2280]
         ];
-        $weopenid = MpEventPush::find()
-            ->andWhere(['>', 'createtime', strtotime('-2 hours')])
-            //->andWhere(['openid'=>'o5ODa0451fMb_sJ1D1T4YhYXDOcg'])
-            ->all();
+        // $weopenid = MpEventPush::find()
+        //     ->andWhere(['>', 'createtime', strtotime('-2 hours')])
+        //     //->andWhere(['openid'=>'o5ODa0451fMb_sJ1D1T4YhYXDOcg'])
+        //     ->all();
+        $weopenid = [];
         foreach ($weopenid as $k => $v) {
             list($type,$doctorid)=$this->level($v->openid);
             if ($type && $doctorid) {
