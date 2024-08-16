@@ -76,7 +76,7 @@ class SynchronizationController extends BaseController
         ];
         $row['callback']=base64_encode(json_encode($callback));
 
-        $dur0=DataUpdateRecord::find()->where(['hospitalid'=>\Yii::$app->user->identity->hospitalid])->andWhere(['!=','state',3])->orderby('id')->all();
+        $dur0=DataUpdateRecord::find()->where(['hospitalid'=>\Yii::$app->user->identity->hospitalid])->andWhere(['!=','state',3])->orderby('id desc')->all();
         $dur1=DataUpdateRecord::findAll(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>1]);
         $dur2=DataUpdateRecord::findAll(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>2]);
         $dur3=DataUpdateRecord::findAll(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>3]);
