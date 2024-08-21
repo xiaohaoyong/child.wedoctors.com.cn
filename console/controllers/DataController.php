@@ -173,6 +173,14 @@ class DataController extends \yii\console\Controller
     const pathPrefix = "";
     public function actionTesta($doctorid=0)
     {
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $accessToken = $app->access_token; // EasyWeChat\Core\AccessToken 实例
+        $http="POST https://api.weixin.qq.com/wxa/generate_urllink?access_token=$accessToken";
+
+        $curl = new HttpRequest($http, true, 10);
+        $userJson = $curl->post();
+        exit;
+
         $data = [
             'first' => array('value' => "大红门社区卫生服务中心邀请您参与周末儿童门诊满意度调查\n",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),
