@@ -173,8 +173,16 @@ class DataController extends \yii\console\Controller
     const pathPrefix = "";
     public function actionTesta($doctorid=0)
     {
-        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-        $accessToken = $app->access_token; // EasyWeChat\Core\AccessToken 实例
+
+        $ew=[
+            'app_id' => 'wx240286cc3d77ba35',
+            'secret' => 'd8fb7250e73c41de34c6a7edb78bf4c2',
+            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+            'response_type' => 'array',
+        ];
+        $app = Factory::officialAccount($ew);
+        $accessToken = $app->access_token;
+        $accessToken = $accessToken->getToken()['access_token']; // EasyWeChat\Core\AccessToken 实例
         $http="POST https://api.weixin.qq.com/wxa/generate_urllink?access_token=$accessToken";
 
         $curl = new HttpRequest($http, true, 10);
