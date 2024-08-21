@@ -179,6 +179,7 @@ class DataController extends \yii\console\Controller
 
         $curl = new HttpRequest($http, true, 10);
         $userJson = $curl->post();
+        var_dump($userJson);
         exit;
 
         $data = [
