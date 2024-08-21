@@ -182,7 +182,7 @@ class DataController extends \yii\console\Controller
         ];
         $app = Factory::officialAccount($ew);
         $accessToken = $app->access_token;
-        $accessToken = $accessToken->getToken()['access_token']; // EasyWeChat\Core\AccessToken 实例
+        $accessToken = $accessToken->getToken(true)['access_token']; // EasyWeChat\Core\AccessToken 实例
         $http="https://api.weixin.qq.com/wxa/generate_urllink";
 
 
