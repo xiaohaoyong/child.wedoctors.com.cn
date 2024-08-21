@@ -187,7 +187,8 @@ class DataController extends \yii\console\Controller
 
 
         $curl = new HttpRequest($http, true, 10);
-        $curl->setData(['path'=>'/pages/index/index']);
+        $curl->setData(json_encode(['path'=>'/pages/index/index']));
+        $curl->setHeader('Content-Type','application/json');
         $userJson = $curl->post();
         var_dump($userJson);
         exit;
