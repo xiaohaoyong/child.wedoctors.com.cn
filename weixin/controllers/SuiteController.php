@@ -175,7 +175,8 @@ class SuiteController extends Controller
                                     'remark' => ARRAY('value' => "\n ﻿点击查看详情，如果想变更签约社区请联系小助手核实信息，感谢！小助手微信号（erbbzs）", 'color' => '#221d95'),
                                 ];
                                 WechatSendTmp::send($data, $openid, "H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY", "", ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
-                                return '';
+                                $return = self::sendText($openid, $xml['ToUserName'], '您已签约了“'.$doctorName.'”'."，如需更换签约社区请联系在线客服");
+                                return $return;
                             }
                             //$doctorParent = DoctorParent::findOne(['doctorid' => $doctor_id, "parentid" => $userid]);
 
@@ -216,7 +217,8 @@ class SuiteController extends Controller
                         if ($doctor->county == 1114) {
                             return self::sendText($xml['FromUserName'], $xml['ToUserName'], '昌平区用户您好，如果您有其他服务需求，推荐您下载使用昌平健康云APP');
                         }
-                        return '';
+                        $return = self::sendText($openid, $xml['ToUserName'], "签约成功，请点击卡片进入小程序添加宝宝/孕妇完善签约");
+                        return $return;
                     } else {
                         $url = \Yii::$app->params['htmlUrl'] . "#/sign?usertype=parent";
                         $url_doctor = \Yii::$app->params['htmlUrl'] . "#/accountdocter?usertype=docter";
