@@ -166,15 +166,15 @@ class SuiteController extends Controller
                                 $child = ChildInfo::findOne(['userid' => $userid]);
                                 $childName = $child->name;
 
-                                $data = [
-                                    'first' => array('value' => "﻿您已经签约了" . $doctorName . "\n"),
-                                    'keyword1' => ARRAY('value' => $doctorName,),
-                                    'keyword2' => ARRAY('value' => $childName ? $childName : "未添加宝宝"),
-                                    'keyword3' => ARRAY('value' => date('Y年m月d日', $doctorParent->createtime)),
-                                    'keyword4' => ARRAY('value' => "﻿儿童中医药健康指导"),
-                                    'remark' => ARRAY('value' => "\n ﻿点击查看详情，如果想变更签约社区请联系小助手核实信息，感谢！小助手微信号（erbbzs）", 'color' => '#221d95'),
-                                ];
-                                WechatSendTmp::send($data, $openid, "H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY", "", ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                                // $data = [
+                                //     'first' => array('value' => "﻿您已经签约了" . $doctorName . "\n"),
+                                //     'keyword1' => ARRAY('value' => $doctorName,),
+                                //     'keyword2' => ARRAY('value' => $childName ? $childName : "未添加宝宝"),
+                                //     'keyword3' => ARRAY('value' => date('Y年m月d日', $doctorParent->createtime)),
+                                //     'keyword4' => ARRAY('value' => "﻿儿童中医药健康指导"),
+                                //     'remark' => ARRAY('value' => "\n ﻿点击查看详情，如果想变更签约社区请联系小助手核实信息，感谢！小助手微信号（erbbzs）", 'color' => '#221d95'),
+                                // ];
+                                // WechatSendTmp::send($data, $openid, "H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY", "", ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                                 $return = self::sendText($openid, $xml['ToUserName'], '您已签约了“'.$doctorName.'”'."，如需更换签约社区请联系在线客服");
                                 return $return;
                             }
