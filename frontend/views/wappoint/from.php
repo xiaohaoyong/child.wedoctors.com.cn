@@ -174,12 +174,17 @@ jQuery(".upload-box1").ajaxImageUpload({
 });
 
 jQuery("#vaccine").change(function(e){
-
+    
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
     var doctorid=jQuery("#doctorid").val();
+    alert("http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
     window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
 
+
+
+
+    
     // var content='';
     // if(vid==64){
     //      content = "此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1963年12月31日前）预约通道，请确认";       
