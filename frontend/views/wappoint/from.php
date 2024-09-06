@@ -163,10 +163,6 @@ jQuery("#vaccine").change(function(e){
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
     var doctorid=jQuery("#doctorid").val();
-
-
-
-    
     var content='';
     if(vid==64){
          content = "此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1963年12月31日前）预约通道，请确认";       
@@ -218,9 +214,9 @@ jQuery("#vaccine").change(function(e){
                     keys: ['enter'],
                     action: function(){
                         if(vid && sid && jQuery("#street").length  > 0){
-                            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+                            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
                         }else if(vid && jQuery("#street").length  < 1 ){
-                            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
+                            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid;
                         }
                     }
                 },
@@ -234,9 +230,9 @@ jQuery("#vaccine").change(function(e){
         return false;
     }else{
         if(vid && sid && jQuery("#street").length  > 0){
-            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
         }else if(vid && jQuery("#street").length  < 1 ){
-            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
+            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid;
         }
     }    
 })
