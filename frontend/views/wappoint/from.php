@@ -157,7 +157,9 @@ $sid = Yii::$app->request->get('sid');
 
 $updateJs = <<<JS
 
+alert(1);
      jQuery.selectYY_MM_DD("#select_0");
+     alert(2);
 
 jQuery(".upload-box1").ajaxImageUpload({
     fileInput: 'img', //上传按钮名，即input[type=file]的name值
@@ -172,13 +174,16 @@ jQuery(".upload-box1").ajaxImageUpload({
         jQuery("#text-field").val('');
     }
 });
+alert(3);
 
 jQuery("#vaccine").change(function(e){
-    
+    alert(4);
+
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
     var doctorid=jQuery("#doctorid").val();
     alert("http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+    window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
 
 
 
