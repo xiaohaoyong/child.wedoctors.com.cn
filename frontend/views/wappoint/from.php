@@ -178,7 +178,7 @@ jQuery("#vaccine").change(function(e){
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
     var doctorid=jQuery("#doctorid").val();
-    window.location.replace("http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+    window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
 
     // var content='';
     // if(vid==64){
