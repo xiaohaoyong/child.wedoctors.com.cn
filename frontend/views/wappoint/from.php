@@ -157,12 +157,29 @@ $sid = Yii::$app->request->get('sid');
 
 $updateJs = <<<JS
 
-jQuery.selectYY_MM_DD("#select_0");
+     jQuery.selectYY_MM_DD("#select_0");
+
+jQuery(".upload-box1").ajaxImageUpload({
+    fileInput: 'img', //上传按钮名，即input[type=file]的name值
+    postUrl: '/wappoint/upload', //上传的服务器地址
+    error:function(e){
+        jQuery.alert(e.msg)
+    },
+    success:function(e){
+        jQuery("#text-field").val(e.src);
+    },
+    delete:function(e){
+        jQuery("#text-field").val('');
+    }
+});
 
 jQuery("#vaccine").change(function(e){
+    
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
     var doctorid=jQuery("#doctorid").val();
+  
+    
     var content='';
     if(vid==64){
          content = "此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1963年12月31日前）预约通道，请确认";       
@@ -203,42 +220,36 @@ jQuery("#vaccine").change(function(e){
     }
     console.log(content);
     if(content){
-        alert(content);
-        if(vid && sid && jQuery("#street").length  > 0){
-            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
-        }else if(vid && jQuery("#street").length  < 1 ){
-            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid;
-        }
-        // jQuery.confirm({
-        //     title: '请确认您已知晓！',
-        //     content: content,
-        //     type: 'green',
-        //     buttons: {
-        //         ok: {
-        //             text: "确认知晓",
-        //             btnClass: 'btn-success',
-        //             keys: ['enter'],
-        //             action: function(){
-        //                 if(vid && sid && jQuery("#street").length  > 0){
-        //                     window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
-        //                 }else if(vid && jQuery("#street").length  < 1 ){
-        //                     window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid;
-        //                 }
-        //             }
-        //         },
-        //         cancel: {
-        //             text: "取消",
-        //             btnClass: 'btn-danger',
-        //             keys: ['enter'],
-        //         },
-        //     }
-        // });
-        // return false;
+        jQuery.confirm({
+            title: '请确认您已知晓！',
+            content: content,
+            type: 'green',
+            buttons: {
+                ok: {
+                    text: "确认知晓",
+                    btnClass: 'btn-success',
+                    keys: ['enter'],
+                    action: function(){
+                        if(vid && sid && jQuery("#street").length  > 0){
+                            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+                        }else if(vid && jQuery("#street").length  < 1 ){
+                            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
+                        }
+                    }
+                },
+                cancel: {
+                    text: "取消",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                },
+            }
+        });
+        return false;
     }else{
         if(vid && sid && jQuery("#street").length  > 0){
-            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
+            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
         }else if(vid && jQuery("#street").length  < 1 ){
-            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid;
+            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
         }
     }    
 })
