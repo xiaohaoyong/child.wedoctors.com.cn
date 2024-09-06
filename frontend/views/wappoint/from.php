@@ -159,81 +159,89 @@ $updateJs = <<<JS
 
 jQuery.selectYY_MM_DD("#select_0");
 jQuery("#vaccine").change(function(e){
+    alert(1);
     var vid=jQuery("#vaccine").val();
     var sid=jQuery("#street").val();
-    var doctorid=jQuery("#doctorid").val();    
-    var content='';
-    if(vid==64){
-         content = "此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1963年12月31日前）预约通道，请确认";       
-    }
-    if(vid==72){
-         content = "此预约通道为50周岁以上人群预约通道，请确认";       
-    }
-    if(vid==73){
-         content = "此预约通道为本市户籍65岁以上老年人免费流感疫苗与23价肺炎疫苗（如预约日期为2021年10月1日则出生日期需在1956年10月1日前）预约通道，请确认";
-    }
-    if(vid==67){
-         content = "此预约通道为本市户籍65岁以上老年人免费23价肺炎疫苗（如预约日期为2021年10月1日则出生日期需在1956年10月1日前）预约通道，请确认";
-    }
-    const hpvid=['45' , '57' , '58' , '59' , '97' ,'117','114','78','51','50','43','44','54','55','56','98'];
-    if(hpvid.indexOf(vid)>-1 && doctorid!=184741){
-         content = "年龄为9至45周岁，接种完全程三针后，不得超过46周岁生日。例如:45周岁5个月也可接种，但是得按照规定时间，半年内三针接种完成，最后一针不能超过46周岁生日。接种时请您携带医保卡及儿宝宝预约二维码，现场实名扫码核销。二维码中姓名与实际姓名不同或者预约时间不是当天不提供接种服务。";
-    }
-    if(vid==80){
-         content = "此疫苗接种年龄限制为3岁以内，超过三岁清选择三岁以上疫苗接种，成人请勿预约";
-    }
-
-    const xinguan = ['86','87','88','89','90','91','92','93','94','95','96','104','105','106','107','108','109','110','111','112','113','117','147'];
-
-    if(xinguan.indexOf(vid)>-1 && doctorid!=38){
-         content = "按照目前免疫要求，感染过新冠病毒（阳过），且已经完成基础免疫（接种过两针科兴、北京生物等的灭活疫苗或3针智飞龙科马重组疫苗或1针康希诺肌注式疫苗），不再进行加强免疫（不再打第三针或者第四针）";
-    }
-    const xinguan1 = ['94','111','146'];
-    if(xinguan1.indexOf(vid)>-1 && doctorid==4119){
-         content = "如果您最后一剂新冠疫苗接种时间晚于最后一次感染时间，则需要跟接种时间间隔3-6个月；如果您最后一剂新冠疫苗接种时间早于最后一次感染时间，则需要跟感染时间间隔6个月才可接种。优先推荐含有XBB成份的新冠疫苗进行接种。";
-    }
+    var doctorid=jQuery("#doctorid").val();
+    alert("http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+    window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
 
 
 
-    const arr = ['45','57','58','59','97','144','145'];
 
-    if(arr.indexOf(vid)>-1 && doctorid!=184741){
-         content = "接种时请您携带身份证及儿宝宝预约二维码，幼儿园及学校学生接种须携带接种本。为防止倒号行为，现场将实名扫码核销二维码。二维码中姓名与实际姓名不同者或者预约时间不是当天者不提供接种服务。";
-    }
-    console.log(content);
-    if(content){
-        jQuery.confirm({
-            title: '请确认您已知晓！',
-            content: content,
-            type: 'green',
-            buttons: {
-                ok: {
-                    text: "确认知晓",
-                    btnClass: 'btn-success',
-                    keys: ['enter'],
-                    action: function(){
-                        if(vid && sid && jQuery("#street").length  > 0){
-                            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
-                        }else if(vid && jQuery("#street").length  < 1 ){
-                            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
-                        }
-                    }
-                },
-                cancel: {
-                    text: "取消",
-                    btnClass: 'btn-danger',
-                    keys: ['enter'],
-                },
-            }
-        });
-        return false;
-    }else{
-        if(vid && sid && jQuery("#street").length  > 0){
-            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
-        }else if(vid && jQuery("#street").length  < 1 ){
-            window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
-        }
-    }    
+    
+    // var content='';
+    // if(vid==64){
+    //      content = "此预约通道为本市户籍60岁以上老年人免费流感疫苗（出生日期需在1963年12月31日前）预约通道，请确认";       
+    // }
+    // if(vid==72){
+    //      content = "此预约通道为50周岁以上人群预约通道，请确认";       
+    // }
+    // if(vid==73){
+    //      content = "此预约通道为本市户籍65岁以上老年人免费流感疫苗与23价肺炎疫苗（如预约日期为2021年10月1日则出生日期需在1956年10月1日前）预约通道，请确认";
+    // }
+    // if(vid==67){
+    //      content = "此预约通道为本市户籍65岁以上老年人免费23价肺炎疫苗（如预约日期为2021年10月1日则出生日期需在1956年10月1日前）预约通道，请确认";
+    // }
+    // const hpvid=['45' , '57' , '58' , '59' , '97' ,'117','114','78','51','50','43','44','54','55','56','98'];
+    // if(hpvid.indexOf(vid)>-1 && doctorid!=184741){
+    //      content = "年龄为9至45周岁，接种完全程三针后，不得超过46周岁生日。例如:45周岁5个月也可接种，但是得按照规定时间，半年内三针接种完成，最后一针不能超过46周岁生日。接种时请您携带医保卡及儿宝宝预约二维码，现场实名扫码核销。二维码中姓名与实际姓名不同或者预约时间不是当天不提供接种服务。";
+    // }
+    // if(vid==80){
+    //      content = "此疫苗接种年龄限制为3岁以内，超过三岁清选择三岁以上疫苗接种，成人请勿预约";
+    // }
+
+    // const xinguan = ['86','87','88','89','90','91','92','93','94','95','96','104','105','106','107','108','109','110','111','112','113','117','147'];
+
+    // if(xinguan.indexOf(vid)>-1 && doctorid!=38){
+    //      content = "按照目前免疫要求，感染过新冠病毒（阳过），且已经完成基础免疫（接种过两针科兴、北京生物等的灭活疫苗或3针智飞龙科马重组疫苗或1针康希诺肌注式疫苗），不再进行加强免疫（不再打第三针或者第四针）";
+    // }
+    // const xinguan1 = ['94','111','146'];
+    // if(xinguan1.indexOf(vid)>-1 && doctorid==4119){
+    //      content = "如果您最后一剂新冠疫苗接种时间晚于最后一次感染时间，则需要跟接种时间间隔3-6个月；如果您最后一剂新冠疫苗接种时间早于最后一次感染时间，则需要跟感染时间间隔6个月才可接种。优先推荐含有XBB成份的新冠疫苗进行接种。";
+    // }
+
+
+
+    // const arr = ['45','57','58','59','97','144','145'];
+
+    // if(arr.indexOf(vid)>-1 && doctorid!=184741){
+    //      content = "接种时请您携带身份证及儿宝宝预约二维码，幼儿园及学校学生接种须携带接种本。为防止倒号行为，现场将实名扫码核销二维码。二维码中姓名与实际姓名不同者或者预约时间不是当天者不提供接种服务。";
+    // }
+    // console.log(content);
+    // if(content){
+    //     jQuery.confirm({
+    //         title: '请确认您已知晓！',
+    //         content: content,
+    //         type: 'green',
+    //         buttons: {
+    //             ok: {
+    //                 text: "确认知晓",
+    //                 btnClass: 'btn-success',
+    //                 keys: ['enter'],
+    //                 action: function(){
+    //                     if(vid && sid && jQuery("#street").length  > 0){
+    //                         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+    //                     }else if(vid && jQuery("#street").length  < 1 ){
+    //                         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
+    //                     }
+    //                 }
+    //             },
+    //             cancel: {
+    //                 text: "取消",
+    //                 btnClass: 'btn-danger',
+    //                 keys: ['enter'],
+    //             },
+    //         }
+    //     });
+    //     return false;
+    // }else{
+    //     if(vid && sid && jQuery("#street").length  > 0){
+    //         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid);
+    //     }else if(vid && jQuery("#street").length  < 1 ){
+    //         window.location.replace("/wappoint/from?userid={$doctor['userid']}&vid="+vid);
+    //     }
+    // }    
 })
     const arr = ['45','57','58','59','97'];
      var vid=jQuery("#vaccine").val();
