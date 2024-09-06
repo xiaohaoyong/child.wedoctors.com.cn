@@ -203,6 +203,7 @@ jQuery("#vaccine").change(function(e){
     }
     console.log(content);
     if(content){
+        alert(content);
         if(vid && sid && jQuery("#street").length  > 0){
             window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
         }else if(vid && jQuery("#street").length  < 1 ){
