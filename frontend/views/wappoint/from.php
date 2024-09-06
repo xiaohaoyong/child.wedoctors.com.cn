@@ -203,31 +203,36 @@ jQuery("#vaccine").change(function(e){
     }
     console.log(content);
     if(content){
-        jQuery.confirm({
-            title: '请确认您已知晓！',
-            content: content,
-            type: 'green',
-            buttons: {
-                ok: {
-                    text: "确认知晓",
-                    btnClass: 'btn-success',
-                    keys: ['enter'],
-                    action: function(){
-                        if(vid && sid && jQuery("#street").length  > 0){
-                            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
-                        }else if(vid && jQuery("#street").length  < 1 ){
-                            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid;
-                        }
-                    }
-                },
-                cancel: {
-                    text: "取消",
-                    btnClass: 'btn-danger',
-                    keys: ['enter'],
-                },
-            }
-        });
-        return false;
+        if(vid && sid && jQuery("#street").length  > 0){
+            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
+        }else if(vid && jQuery("#street").length  < 1 ){
+            window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid;
+        }
+        // jQuery.confirm({
+        //     title: '请确认您已知晓！',
+        //     content: content,
+        //     type: 'green',
+        //     buttons: {
+        //         ok: {
+        //             text: "确认知晓",
+        //             btnClass: 'btn-success',
+        //             keys: ['enter'],
+        //             action: function(){
+        //                 if(vid && sid && jQuery("#street").length  > 0){
+        //                     window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
+        //                 }else if(vid && jQuery("#street").length  < 1 ){
+        //                     window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid;
+        //                 }
+        //             }
+        //         },
+        //         cancel: {
+        //             text: "取消",
+        //             btnClass: 'btn-danger',
+        //             keys: ['enter'],
+        //         },
+        //     }
+        // });
+        // return false;
     }else{
         if(vid && sid && jQuery("#street").length  > 0){
             window.location.href ="http://web.child.wedoctors.com.cn/wappoint/from?userid={$doctor['userid']}&vid="+vid+"&sid="+sid;
