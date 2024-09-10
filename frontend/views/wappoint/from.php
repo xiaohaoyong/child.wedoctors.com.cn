@@ -89,17 +89,6 @@ frontend\assets\DateAsset::register($this);
 
             </div>
         </div>
-        <?php if($doctor['userid'] == 38 && in_array(Yii::$app->request->get('vid'),[142,140,139,138,137,136,135,133,80,74,73,70,69,66,65,64,63,46])){ ?>
-        <div class="item">
-            <div class="title">居住证明</div>
-            <input type='hidden'name="image" class="appoint_input"  id='text-field'  />
-
-            <div class="upload-box1"></div>
-            <div class="input">
-                注：成人自费流感线上预约途径限在白纸坊街道居住、工作或上学的居民，预约前需上传本人有效凭证。非白纸坊居民可持本人医保卡等有效证件至现场进行登记预约。
-            </div>
-        </div>
-        <?php }?>
         <?php if($doctor['userid']==747897 ){ ?>
         <div class="item">
             <div class="title">身份证号</div>
