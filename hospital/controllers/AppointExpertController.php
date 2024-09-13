@@ -35,9 +35,12 @@ return [
 */
 public function actionIndex()
 {
-    $searchModel = new AppointExpertSearch();
+
+
+    $post=Yii::$app->request->queryParams;
     $post['AppointExpertSearch']['doctorid']=Yii::$app->user->identity->doctorid;
-    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    $searchModel = new AppointExpertSearch();
+    $dataProvider = $searchModel->search($post);
 
     return $this->render('index', [
     'searchModel' => $searchModel,
