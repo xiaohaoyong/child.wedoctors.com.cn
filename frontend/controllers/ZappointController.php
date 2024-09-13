@@ -13,12 +13,17 @@ use common\components\Code;
 use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Appoint;
+use common\models\AppointExpert;
+
 use common\models\AppointAdult;
 use common\models\AppointOrder;
 use common\models\DoctorParent;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointVaccine;
+use common\models\HospitalAppointExpert;
+use common\models\HospitalAppointExpertNum;
+
 use common\models\HospitalAppointWeek;
 use common\models\UserDoctor;
 use common\models\Vaccine;
@@ -81,6 +86,7 @@ class ZappointController extends Controller
     {
         $appoint=new Appoint();
         $appoint->scenario='z';
+        $appoint->vaccine=$vid;
 
         $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
         $appointAdult=$appointAdult?$appointAdult:new AppointAdult();
@@ -170,10 +176,26 @@ class ZappointController extends Controller
             }
         }
 
+ //判断所选疫苗都有周几可约
+ if ($vid) {
+    $expert = AppointExpert::findOne($vid);
+    if ($expert) {
+        $query = HospitalAppointExpert::find()
+            ->select('week')
+            ->where(['haid' => $hospitalA->id])
+            ->andWhere(['expert'=>$vid]);
+        $vaccineWeek = $query->groupBy('week')->column();
+        //如该疫苗无法获取周几可约则视为非法访问
+        if (!$vaccineWeek) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
 
+            return new Code(20010, '社区医院暂未开通服务！');
+        }
+    }
+}
 
         $days=[];
-        $weekr = str_split((string)$hospitalA->weeks);
+        $weekr = $vaccineWeek?$vaccineWeek:str_split((string)$hospitalA->weeks);
         $cycleType = [0, 7, 14, 30];
         $cycle = HospitalAppoint::$cycleNum[$hospitalA->cycle];
         $delay = $hospitalA->delay;
@@ -193,27 +215,95 @@ class ZappointController extends Controller
             }
 
         }
+        $experts = AppointExpert::find()->select('name')->indexBy('id')->where(['doctorid'=>$userid])->column();
         if($days){
             $firstDay = $days[0]['date'];
         }else{
             $firstDay = $day + 86400;
         }
 
-        return $this->render('from', [ 'day'=>$firstDay,'days' => $days,'appoint'=>$appoint,'doctor'=>$doctorRow,'user'=>$appointAdult]);
+        return $this->render('from', [ 'day'=>$firstDay,'days' => $days,'appoint'=>$appoint,'doctor'=>$doctorRow,'user'=>$appointAdult,'experts'=>$experts,'vid'=>$vid,'firstday'=>$days[0]['date']]);
     }
-    public function actionDayNum($doctorid, $day)
+    public function actionExpert($e){
+
+        $expert=AppointExpert::findOne($e);
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return ['view'=>$expert->info];
+    }
+    public function actionDayNum($doctorid, $week = 0, $type=13, $day, $vid = 0,$sid=0)
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        $rs = [];
-        $times=[];
-        $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => 13]);
-        $week=date('w',strtotime($day));
 
-        $weeks = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id])->andWhere(['<','time_type','19'])->orderBy('time_type asc')->all();
+        $rs = [];
+        $times = [];
+        $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
+
+        $weekv=[];
+        if($vid) {
+            $weekv = HospitalAppointExpert::find()
+                ->select('week')
+                ->where(['haid' => $hospitalA->id])
+                ->andWhere(['expert' => $vid])->groupBy('week')->column();
+        }
+
+        if($weekv && $streetWeek){
+            $weekr=array_intersect($weekv,$streetWeek);
+        }elseif($streetWeek || $weekv){
+            $weekr=$streetWeek?$streetWeek:$weekv;
+        }
+
+
+        $is_appoint = $hospitalA->is_appoint(strtotime($day), $weekr);
+        if (!$is_appoint) {
+            return ['list' => [], 'is_appoint' => $is_appoint, 'text' => '非线上预约门诊日，请选择其他日期！'];
+        }
+        if ($is_appoint == 2) {
+            $d=HospitalAppoint::$cycleNum[$hospitalA->cycle]+$hospitalA->delay;
+            $date = date('Y年m月d日', strtotime('-' .$d. ' day', strtotime($day)));
+            return ['list' => [], 'is_appoint' => $is_appoint, 'text' =>"放号时间：". $date . " " . HospitalAppoint::$rtText[$hospitalA->release_time]];
+        }
+        $week = date('w', strtotime($day));
+
+        $vaccine_count=Appoint::find()->where(['vaccine'=>$vid,'appoint_date'=>strtotime($day),'doctorid'=>$doctorid])->andWhere(['<','state',3])->count();
+        $hospitalAppointExpertNum=HospitalAppointExpertNum::findOne(['haid'=>$hospitalA->id,'week'=>$week,'expert'=>$vid]);
+        if($hospitalAppointExpertNum && $hospitalAppointExpertNum->num-$vaccine_count<=0){
+            return ['list' => [], 'is_appoint' => 0, 'text' =>'此科室'.date('Y年m月d日',strtotime($day))."已约满，请选择其他日期"];
+
+        }
+
+        $firstAppoint = Appoint::find()
+            ->andWhere(['type' => $type])
+            ->andWhere(['doctorid' => $doctorid])
+            ->andWhere(['appoint_date' => strtotime($day)])
+            ->andWhere(['!=', 'state', 3])
+            ->andWhere(['mode' => 0])
+            ->orderBy('createtime desc')
+            ->one();
+        $wquery = HospitalAppointWeek::find()->andWhere(['week' => $week])->andWhere(['haid' => $hospitalA->id]);
+
+        if($firstAppoint) {
+            if ($firstAppoint->appoint_time < 7) {
+                $wquery->andWhere(['<', 'time_type', 7]);
+            }
+            if ($firstAppoint->appoint_time > 6) {
+                $wquery->andWhere(['>', 'time_type', 6]);
+            }
+        }else{
+            if($hospitalA->interval==1){
+                $wquery->andWhere(['<', 'time_type', 7]);
+
+            }
+            if($hospitalA->interval==2){
+                $wquery->andWhere(['>', 'time_type', 6]);
+            }
+        }
+        $weeks=$wquery->all();
+
         if ($weeks) {
             $appoints = Appoint::find()
                 ->select('count(*)')
-                ->andWhere(['type' => 13])
+                ->andWhere(['type' => $type])
                 ->andWhere(['doctorid' => $doctorid])
                 ->andWhere(['appoint_date' => strtotime($day)])
                 ->andWhere(['!=', 'state', 3])
@@ -228,37 +318,25 @@ class ZappointController extends Controller
                 } else {
                     $rs[$v->time_type] = $v->num;
                 }
+                $rs_num[$v->time_type] = $v->num;
             }
-            $firstAppoint=Appoint::find()
-                ->andWhere(['type' => 13])
-                ->andWhere(['doctorid' => $doctorid])
-                ->andWhere(['appoint_date' => strtotime($day)])
-                ->andWhere(['!=', 'state', 3])
-                ->andWhere(['mode' => 0])
-                ->orderBy('createtime desc')
-                ->one();
-            if($firstAppoint){
-                foreach($rs as $k=>$v){
-                    if($firstAppoint->appoint_time>6 && $k>6){
-                        $times[$k]=$v;
-                    }
-                    if($firstAppoint->appoint_time<7 && $k<7){
-                        $times[$k]=$v;
-                    }
-                }
-            }else{
-                foreach($rs as $k=>$v){
-                    if($hospitalA->interval==2 && $k>6){
-                        $times[$k]=$v;
-                    }
-                    if($hospitalA->interval==1 && $k<7){
-                        $times[$k]=$v;
-                    }
-                }
+            if ($doctorid != 176156) {
+                unset($rs[19]); unset($rs[20]);
             }
+            
+            foreach ($rs as $k => $v) {
+                
+                $num=$v;
+                $rows['time'] = Appoint::$timeText[$k];
+                $rows['appoint_time'] = $k;
+                $rows['num'] = $num;
+                $rows['num1']=$rs_num[$k];
+                $times[] = $rows;
+            }
+            return ['list' => $times, 'is_appoint' => $is_appoint, 'text' => ''];
 
         }
-        return ['times'=>$times];
+        return new Code(20020, '未设置');
     }
 
     public function actionView($id){
