@@ -200,6 +200,8 @@ class FamilyDoctorController extends Controller
         $birthday = strtotime('- 7 year');
         $auto = Autograph::find()->select('userid')
                 ->andWhere(['doctorid' => $doctorid])
+                ->andFilterWhere(['>', 'createtime',strtotime('2024-06-20')])
+                ->andFilterWhere(['>', 'createtime',strtotime('2024-09-20')])
                 ->column();
 
         $styleArray = [
