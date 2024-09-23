@@ -736,9 +736,10 @@ class WappointController extends Controller
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
 
         } else{
+        
 
             $model = new Appoint();
-            $post['state'] = $post['vaccine']==64?1:6;
+            $post['state'] = 1;
             $post['userid'] = $this->login->userid;
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;
