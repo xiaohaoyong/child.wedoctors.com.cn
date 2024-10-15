@@ -441,6 +441,122 @@ use common\models\Vaccine;
                                         <?php } ?>
                                     </tr>
                                 <?php } ?>
+                                <?php if(in_array($type, [13])){
+                                    
+                                    
+                                    ?>
+                                    
+                                    <tr>
+                                        <td>设置专家</td>
+                                        <?php 
+                                        $edata = \common\models\AppointExpert::find()->select('name')->where(['doctorid' => Yii::$app->user->identity->doctorid])->indexBy('id')->column();
+
+                                        foreach ($weeks as $wk => $wv) { 
+                                            $expert = \common\models\HospitalAppointExpert::find()->select('expert')->where(['haid' => $model->id])->andWhere(['week' => $wv])->column();
+
+                                            ?>
+                                        
+                                            <td>
+                                                <?php
+                                            
+                                                echo Html::a('展开', '#', [
+                                                    'data-target' => '#modal' . $wv,//关联模拟框(模拟框的ID)
+                                                    'data-toggle' => "modal", //定义为模拟框 触发按钮
+                                                    'data-id' => $wv,
+                                                ]);
+                                                Modal::begin([
+                                                    'class' => 'modal',
+                                                    'id' => 'modal' . $wv,
+                                                    'header' => '<h5>设置专家</h5>',
+                                                ]);
+                                                    ?>
+                                                    <table class="table table-striped table-bordered detail-view">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td colspan="3" style="font-weight: bold;">选择专家:</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <?= \kartik\select2\Select2::widget([
+                                                                    'name' => 'expert[' . $wv . ']',
+                                                                    'data' => $edata,
+                                                                    'language' => 'de',
+                                                                    'options' => ['placeholder' => '请选择', 'multiple' => 'multiple'],
+                                                                    'showToggleAll' => false,
+                                                                    'value' => $expert,
+                                                                    'pluginOptions' => [
+                                                                        'allowClear' => true
+                                                                    ],
+                                                                ]) ?>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                        <?php
+                                                        $hospitalV = \common\models\HospitalAppointExpert::find()
+                                                            ->select('expert')
+                                                            ->where(['haid' => $model->id, 'week' => $wv])->groupBy('expert')->column();
+                                                        if ($hospitalV) {
+                                                            $vQuery = \common\models\AppointExpert::find()->select('id,name')->andWhere(['in', 'id', $hospitalV]);
+                                                            $experts = $vQuery->all();
+                                                        } else {
+                                                            $experts = [];
+                                                        }
+                                                        ?>
+                                                        <tr>
+                                                            <td>数量</td>
+                                                            <td>专家</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <?php
+
+
+                                                        foreach ($experts as $hak => $hav) {
+                                                            $havn = \common\models\HospitalAppointExpertNum::findOne(['haid' => $model->id, 'week' => $wv, 'expert' => $hav->id]);
+                                                            ?>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control"
+                                                                           name="expert_num[<?= $wv ?>][<?= $hav->id ?>]"
+                                                                           value="<?= is_numeric($havn->num) ? $havn->num : '' ?>"
+                                                                           style="width: 50px;">
+                                                                </td>
+                                                                <td>
+                                                                    <?= $hav->name ?>
+                                                                </td>
+                                                                <td>
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
+
+
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">关闭
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3" class="text-red">关闭后点击"提交"保存设置</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                <?php
+                                                Modal::end();
+                                                ?>
+
+
+                                            </td>
+                                        <?php } ?>
+                                    </tr>
+                                    
+                                
+                                
+                                
+                                <?php } ?>
+
+
 
                                 <tr>
                                     <td>选择街道</td>

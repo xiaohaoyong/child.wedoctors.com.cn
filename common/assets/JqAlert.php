@@ -12,11 +12,11 @@ class JqAlert extends AssetBundle
 
     
     public $css=[
-        'https://web.child.wedoctors.com.cn/js/jq_alert/jquery-confirm.css',
+        'http://web.child.wedoctors.com.cn/js/jq_alert/jquery-confirm.css',
     ];
     public $js=[
         //'http://static.j.wedoctors.com.cn/metronic/plugins/jquery.min.js',
-        'https://web.child.wedoctors.com.cn/js/jq_alert/jquery-confirm.js' ,
+        'http://web.child.wedoctors.com.cn/js/jq_alert/jquery-confirm.js' ,
     ];
     public $depends = [
         'yii\web\JqueryAsset',

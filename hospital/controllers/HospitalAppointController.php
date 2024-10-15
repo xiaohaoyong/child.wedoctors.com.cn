@@ -5,6 +5,9 @@ namespace hospital\controllers;
 use common\models\HospitalAppointMonth;
 use common\models\HospitalAppointStreet;
 use common\models\HospitalAppointVaccine;
+use common\models\HospitalAppointExpert;
+use common\models\HospitalAppointExpertNum;
+
 use common\models\HospitalAppointVaccineDay;
 use common\models\HospitalAppointVaccineNum;
 use common\models\HospitalAppointVaccineTimeNum;
@@ -115,7 +118,7 @@ class HospitalAppointController extends BaseController
         if($post['HospitalAppoint']['sure_date']){
             $post['HospitalAppoint']['sure_date']=implode(',',$post['HospitalAppoint']['sure_date']);
         }
-
+        //print_r($post);exit;
 
         if ($model->load($post) && $model->save()) {
             HospitalAppointWeek::deleteAll('haid='.$model->id);
@@ -194,6 +197,36 @@ class HospitalAppointController extends BaseController
                     }
                 }
             }
+            HospitalAppointExpert::deleteAll('haid='.$model->id);
+            if($post['expert']){
+
+                foreach($post['expert'] as $vk=>$vv){
+                    foreach ($vv as $vvk=>$vvv) {
+                        $hav = new HospitalAppointExpert();
+                        $hav->expert = $vvv;
+                        $hav->haid = $model->id;
+                        $hav->week = $vk;
+                        $hav->save();
+                    }
+                }
+            }
+
+            if($post['expert_num']){
+                HospitalAppointExpertNum::deleteAll('haid='.$model->id);
+                foreach($post['expert_num'] as $vk=>$vv){
+                    foreach ($vv as $vvk=>$vvv) {
+                        if(is_numeric($vvv)) {
+                            $hav = new HospitalAppointExpertNum();
+                            $hav->expert = $vvk;
+                            $hav->haid = $model->id;
+                            $hav->week = $vk;
+                            $hav->num = $vvv;
+                            $hav->save();
+                        }
+                    }
+                }
+            }
+
             if($post['month']){
                 HospitalAppointMonth::deleteAll(['haid'=>$model->id]);
                 foreach($post['month'] as $k=>$v){

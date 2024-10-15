@@ -173,6 +173,31 @@ class DataController extends \yii\console\Controller
     const pathPrefix = "";
     public function actionTesta($doctorid=0)
     {
+
+        $ew=[
+            'app_id' => 'wx240286cc3d77ba35',
+            'secret' => 'd8fb7250e73c41de34c6a7edb78bf4c2',
+            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+            'response_type' => 'array',
+        ];
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $accessToken = $app->access_token;
+        $accessToken = $accessToken->getToken(true)['access_token']; // EasyWeChat\Core\AccessToken 实例
+        $http="https://api.weixin.qq.com/cgi-bin/wxopen/qrcodejumppublish?access_token=$accessToken";
+
+        $data=[
+            'prefix'=>'http://weixin.qq.com/q/02HQn8Y7Awfqj100000038',
+            // 'appid'=>'wx240286cc3d77ba35',
+            // 'path'=>'/pages/index/index',
+            // 'is_edit'=>0,
+        ];
+        $curl = new HttpRequest($http, true, 10);
+        $curl->setData(json_encode($data));
+        $curl->setHeader('Content-Type','application/json');
+        $userJson = $curl->post();
+        var_dump($userJson);
+        exit;
+
         $data = [
             'first' => array('value' => "大红门社区卫生服务中心邀请您参与周末儿童门诊满意度调查\n",),
             'keyword1' => ARRAY('value' => "儿宝宝用户"),

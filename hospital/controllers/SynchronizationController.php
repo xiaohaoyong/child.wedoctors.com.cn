@@ -76,10 +76,10 @@ class SynchronizationController extends BaseController
         ];
         $row['callback']=base64_encode(json_encode($callback));
 
-        $dur0=DataUpdateRecord::find()->where(['hospitalid'=>\Yii::$app->user->identity->hospitalid])->andWhere(['!=','state',3])->all();
-        $dur1=DataUpdateRecord::findAll(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>1]);
-        $dur2=DataUpdateRecord::findAll(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>2]);
-        $dur3=DataUpdateRecord::findAll(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>3]);
+        $dur0=DataUpdateRecord::find()->where(['hospitalid'=>\Yii::$app->user->identity->hospitalid])->andWhere(['!=','state',3])->orderby('id desc')->all();
+        $dur1=DataUpdateRecord::find()->where(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>1])->orderby('id desc')->all();
+        $dur2=DataUpdateRecord::find()->where(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>2])->orderby('id desc')->all();
+        $dur3=DataUpdateRecord::find()->where(['hospitalid'=>\Yii::$app->user->identity->hospitalid,'type'=>3])->orderby('id desc')->all();
 
         return $this->render('data',[
             'row'=>$row,

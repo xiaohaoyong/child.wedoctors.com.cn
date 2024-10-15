@@ -2,6 +2,7 @@
 /* @var $form yii\widgets\ActiveForm */
 
 use common\models\HospitalAppoint;
+\common\assets\JqAlert::register($this);
 
 $this->title='专病预约';
 ?>
@@ -10,32 +11,32 @@ $this->title='专病预约';
     <?=$form->field($appoint,'type')->hiddenInput(['value'=>13])->label(false)?>
     <?=$form->field($appoint,'doctorid')->hiddenInput(['value'=>$doctor['userid']])->label(false)?>
 
-    <?= $form->field($user, 'name')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($user, 'id_card')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($user, 'phone')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($user, 'name',['options'=>['class'=>'item']])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($user, 'id_card',['options'=>['class'=>'item']])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($user, 'phone',['options'=>['class'=>'item']])->textInput(['maxlength' => true]) ?>
    
-    <?=$form->field($appoint,'vaccine')->dropDownList([''=>'请选择']+HospitalAppoint::$typeTmpText[13])->label('预约项目')?>
+    <?=$form->field($appoint,'vaccine',['options'=>['class'=>'item']])->dropDownList([''=>'请选择']+$experts)->label('请选择科室')?>
+
+
 
     <div class="appoint_day">
-
         <div class="item">
             <div class="title">请选择日期</div>
             <div class="days">
                 <?php
-                $dweek=['日','一','二','三','四','五','六'];
+                $dweek = ['日', '一', '二', '三', '四', '五', '六'];
                 foreach ($days as $k => $v) { ?>
-                    <item class="rs <?= $day == $v['date'] ? 'on' : '' ?>" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
+                    <div class="rs <?= $firstday == $v['date'] && $v['dateState']==1 ? 'on' : '' ?><?= !$v['dateState'] ? 'notOp' : '' ?>" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
                         <div class="week"><?= $dweek[$v['week']] ?></div>
                         <div class="day"><?= $v['day'] ?></div>
-                    </item>
+                        <div class="msg"><?=$v['dateMsg']?></div>
+
+                    </div>
                 <?php } ?>
             </div>
-            <?=$form->field($appoint,'appoint_date')->hiddenInput()->label(false)?>
-
             <div class="time">
 
             </div>
-            <?=$form->field($appoint,'appoint_time')->hiddenInput()->label(false)?>
 
         </div>
     </div>
@@ -50,7 +51,7 @@ $this->title='专病预约';
 <div class="appoint_my"><a href="/zappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 
 <?php
-$date_day = date('Y-m-d', $day);
+$date_day = date('Y-m-d', $firstday);
 $updateJs = <<<JS
 
   jQuery('#appoint-appoint_date').val({$day});
@@ -62,18 +63,33 @@ var type=[
     ];
 
 function select_time(day){
-    jQuery.get('/zappoint/day-num?doctorid={$doctor['userid']}&day='+day,function(e) {
-      var times=e.times;
-      var html='';
-      jQuery.each(times,function(i,item){
-          html=html+'<div class="rs '+(item>0?'ton':'')+'" id="'+i+'">'+type[parseInt(i)-1]+'  '+(item>0?'有号':'无号')+'</div>';
-      });
+    jQuery.get('/zappoint/day-num?doctorid={$doctor['userid']}&day='+day+'&vid={$vid}',function(e) {
+        var times=e.list;
+      
+      if(times.length<1){
+          var html=e.text;
+      }else{
+          var html='';
+          jQuery.each(times,function(i,item){
+              var txt="";
+              if(item.num1==0){
+                  txt='无号';
+              }else if(item.num1>0 && item.num<1){
+                  txt='约满';
+              }else if(item.num>0){
+                  txt='有号';
+              }
+              html=html+'<div class="rs '+(item.num>0?'ton':'')+'" id="'+item.appoint_time+'">'+item.time+'  '+txt+'</div>';
+          });
+      }
       jQuery('.time').html(html);
       jQuery(".ton").bind("click",function(){
           jQuery(".ton").removeClass('a');
           jQuery(this).addClass('a');
-            jQuery('#appoint-appoint_time').val(jQuery(this).attr('id'));
+            jQuery('#appoint_time').val(jQuery(this).attr('id'));
       });
+      jQuery('.button,button').attr('disabled',false)
+
     });
 }
 select_time('{$date_day}');
@@ -87,6 +103,39 @@ jQuery(".days .rs").bind("click",function(){
   jQuery('#appoint-appoint_date').val(jQuery(this).attr('time'));
   select_time(day);
 });
+
+
+jQuery("#appoint-vaccine").change(function(e){
+    
+    var vid=jQuery("#appoint-vaccine").val();
+    jQuery.get('/zappoint/expert?e='+vid,function(e) {
+        
+        jQuery.confirm({
+            title: '预约科室介绍',
+            content: e.view,
+            type: 'green',
+            buttons: {
+                ok: {
+                    text: "确认",
+                    btnClass: 'btn-success',
+                    keys: ['enter'],
+                    action: function(){
+                        window.location.replace("/zappoint/from?userid={$doctor['userid']}&vid="+vid);
+                    }
+                },
+                cancel: {
+                    text: "取消",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                },
+            }
+        });
+    })
+
+    
+
+
+})
 
 JS;
 $this->registerJs($updateJs);

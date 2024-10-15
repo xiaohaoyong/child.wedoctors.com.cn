@@ -10,11 +10,11 @@ use yii\web\AssetBundle;
 class JqFileUpload extends AssetBundle
 {
     public $css=[
-        'https://web.child.wedoctors.com.cn/js/jq_file_upload/css/jquery.upload.css',
+        'http://web.child.wedoctors.com.cn/js/jq_file_upload/css/jquery.upload.css',
     ];
     public $js=[
         //'http://static.j.wedoctors.com.cn/metronic/plugins/jquery.min.js',
-        'https://web.child.wedoctors.com.cn/js/jq_file_upload/js/jquery.upload.js' ,
+        'http://web.child.wedoctors.com.cn/js/jq_file_upload/js/jquery.upload.js' ,
     ];
     public $depends = [
         'yii\web\JqueryAsset',

@@ -725,8 +725,9 @@ class WappointController extends Controller
 
 
         if(!in_array($post['vaccine'],[64,66,46])){
-            $appointA = Appoint::findOne(['phone' => $post['phone'], 'state' => [1,6,0], 'vaccine' => $post['vaccine']]);
+            //$appointA = Appoint::findOne(['phone' => $post['phone'], 'state' => [1,6,0], 'vaccine' => $post['vaccine']]);
         }
+        $appointA = 0;
         if($appointA){
             \Yii::$app->getSession()->setFlash('error','您有未完成的预约');
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
@@ -736,9 +737,10 @@ class WappointController extends Controller
             return $this->redirect(['wappoint/from','userid'=>$post['doctorid']]);
 
         } else{
+        
 
             $model = new Appoint();
-            $post['state'] = $post['vaccine']==64?1:6;
+            $post['state'] = 1;
             $post['userid'] = $this->login->userid;
             $post['loginid']=$this->login->id;
             $post['childid']=$appointAdult->id;
