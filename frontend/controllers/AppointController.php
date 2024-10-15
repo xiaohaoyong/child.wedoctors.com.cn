@@ -19,6 +19,7 @@ use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointWeek;
 use common\models\UserDoctor;
+use common\models\Vaccine;
 use yii\base\Application;
 use yii\base\Model;
 use yii\web\Controller;
@@ -160,6 +161,7 @@ class AppointController extends Controller
                 $rs['end'] = date('Y-m-d '.$time[1].':00');
                 $rs['appointid'] = $v->id;
                 $rs['userid'] = $v->userid;
+                $rs['project'] = $v->type == 2 || $v->type == 4?Vaccine::findOne($v->vaccine_id)->name:Appoint::$typeText[$v->type];
                 $arr[] = $rs;
                 
             }
