@@ -154,7 +154,8 @@ class HospitalAppoint extends \yii\db\ActiveRecord
         '2024-10-05',
         '2024-10-06',
         '2024-10-07',
-       
+        '2025-01-01',
+
     ];
 
     /**

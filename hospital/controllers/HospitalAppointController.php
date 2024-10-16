@@ -315,9 +315,10 @@ class HospitalAppointController extends BaseController
         $doctor=\common\models\UserDoctor::findOne(['hospitalid'=>\Yii::$app->user->identity->hospital]);
 
         $post=Yii::$app->request->post();
+        
         HospitalAppointVaccineTimeNum::deleteAll(['vaccine'=>$post['vaccine'],'week'=>$post['week'],'type'=>$post['type'],'doctorid'=>$doctor->userid]);
         foreach($post['vaccine_num'] as $k=>$v){
-            if($v>0) {
+            if($v!=='') {
                 $hospitalAppointMonth = new HospitalAppointVaccineTimeNum();
                 $hospitalAppointMonth->type = $post['type'];
                 $hospitalAppointMonth->doctorid = $doctor->userid;

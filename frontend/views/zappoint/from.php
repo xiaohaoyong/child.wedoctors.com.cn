@@ -2,51 +2,56 @@
 /* @var $form yii\widgets\ActiveForm */
 
 use common\models\HospitalAppoint;
+
 \common\assets\JqAlert::register($this);
 
-$this->title='专病预约';
+$this->title = '专病预约';
 ?>
 <div class="appoint">
-    <?php $form = \yii\widgets\ActiveForm::begin(['action'=>['userid'=>$doctor['userid']]]); ?>
-    <?=$form->field($appoint,'type')->hiddenInput(['value'=>13])->label(false)?>
-    <?=$form->field($appoint,'doctorid')->hiddenInput(['value'=>$doctor['userid']])->label(false)?>
+    <?php $form = \yii\widgets\ActiveForm::begin(['action' => ['userid' => $doctor['userid']]]); ?>
+    <?= $form->field($appoint, 'type')->hiddenInput(['value' => 13])->label(false) ?>
+    <?= $form->field($appoint, 'doctorid')->hiddenInput(['value' => $doctor['userid']])->label(false) ?>
+    <?= $form->field($appoint, 'appoint_date')->hiddenInput()->label(false) ?>
+    <?= $form->field($appoint, 'appoint_time')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($user, 'name',['options'=>['class'=>'item']])->textInput(['maxlength' => true]) ?>
-    <?= $form->field($user, 'id_card',['options'=>['class'=>'item']])->textInput(['maxlength' => true]) ?>
-    <?= $form->field($user, 'phone',['options'=>['class'=>'item']])->textInput(['maxlength' => true]) ?>
-   
-    <?=$form->field($appoint,'vaccine',['options'=>['class'=>'item']])->dropDownList([''=>'请选择']+$experts)->label('请选择科室')?>
+    <?= $form->field($user, 'name', ['options' => ['class' => 'item']])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($user, 'id_card', ['options' => ['class' => 'item']])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($user, 'phone', ['options' => ['class' => 'item']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($appoint, 'vaccine', ['options' => ['class' => 'item']])->dropDownList(['' => '请选择'] + $experts)->label('选择科室专家') ?>
 
 
 
-    <div class="appoint_day">
-        <div class="item">
-            <div class="title">请选择日期</div>
-            <div class="days">
-                <?php
-                $dweek = ['日', '一', '二', '三', '四', '五', '六'];
-                foreach ($days as $k => $v) { ?>
-                    <div class="rs <?= $firstday == $v['date'] && $v['dateState']==1 ? 'on' : '' ?><?= !$v['dateState'] ? 'notOp' : '' ?>" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
-                        <div class="week"><?= $dweek[$v['week']] ?></div>
-                        <div class="day"><?= $v['day'] ?></div>
-                        <div class="msg"><?=$v['dateMsg']?></div>
+    <?php if ($days) { ?>
+        <div class="appoint_day">
+            <div class="item">
+                <div class="title">请选择日期</div>
+                <div class="days">
+                    <?php
+                    $dweek = ['日', '一', '二', '三', '四', '五', '六'];
+                    foreach ($days as $k => $v) { ?>
+                        <div class="rs <?= $firstday == $v['date'] && $v['dateState'] == 1 ? 'on' : '' ?><?= !$v['dateState'] ? 'notOp' : '' ?>" date="<?= date('Y-m-d', $v['date']) ?>" time="<?= $v['date'] ?>">
+                            <div class="week"><?= $dweek[$v['week']] ?></div>
+                            <div class="day"><?= $v['day'] ?></div>
+                            <div class="msg"><?= $v['dateMsg'] ?></div>
 
-                    </div>
-                <?php } ?>
+                        </div>
+                    <?php } ?>
+                </div>
+                <div class="time">
+
+                </div>
+
             </div>
-            <div class="time">
-
-            </div>
-
         </div>
-    </div>
+    <?php } ?>
 
     <div class="form-group">
-        <?= \yii\helpers\Html::submitButton($model->isNewRecord ? '提交' : '提交', ['id'=>'but','class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= \yii\helpers\Html::submitButton($model->isNewRecord ? '提交' : '提交', ['id' => 'but', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
 
-   <?php \yii\widgets\ActiveForm::end()?>
+    <?php \yii\widgets\ActiveForm::end() ?>
 </div>
 <div class="appoint_my"><a href="/zappoint/my"><img src="/img/appoint_my.png" width="56" height="56"></a></div>
 
@@ -86,7 +91,7 @@ function select_time(day){
       jQuery(".ton").bind("click",function(){
           jQuery(".ton").removeClass('a');
           jQuery(this).addClass('a');
-            jQuery('#appoint_time').val(jQuery(this).attr('id'));
+            jQuery('#appoint-appoint_time').val(jQuery(this).attr('id'));
       });
       jQuery('.button,button').attr('disabled',false)
 
@@ -94,7 +99,7 @@ function select_time(day){
 }
 select_time('{$date_day}');
 jQuery(".days .rs").bind("click",function(){
-    jQuery('#appoint_time').val(0);
+    jQuery('#appoint-appoint_time').val(0);
           jQuery('.time').html('加载中...');
 
   jQuery(".days .rs").removeClass('on');
@@ -111,7 +116,7 @@ jQuery("#appoint-vaccine").change(function(e){
     jQuery.get('/zappoint/expert?e='+vid,function(e) {
         
         jQuery.confirm({
-            title: '预约科室介绍',
+            title: '预约专家介绍',
             content: e.view,
             type: 'green',
             buttons: {
