@@ -47,7 +47,10 @@ $this->title = '专病预约';
     <?php } ?>
 
     <div class="form-group">
+    <div class="button">
+
         <?= \yii\helpers\Html::submitButton($model->isNewRecord ? '提交' : '提交', ['id' => 'but', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
     </div>
 
 
