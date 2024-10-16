@@ -115,7 +115,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             $day = strtotime(date('Y-m-d', strtotime('+' . $delay . " day")));
 
             $dweek = ['日', '一', '二', '三', '四', '五', '六'];
-            $dateMsg = ['不可约', '可约', '未放号'];
+            $dateMsg = ['不可约', '可约', '未放号','约满'];
 
 
             //判断所选疫苗都有周几可约
@@ -161,15 +161,33 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             }
 
 
-            for ($i = 1; $i <= 60; $i++) {
+            for ($i = 1; $i <= 40; $i++) {
                 $day = $day + 86400;
+                $w = date('w', $day);
+                $totle = Appoint::find()
+                ->andWhere(['type' => $type])
+                ->andWhere(['doctorid' => $id])
+                ->andWhere(['appoint_date' => $day])
+                ->andWhere(['!=', 'state', 3])
+                ->andWhere(['mode' => 0])
+                ->count();
+                $weekTotle = HospitalAppointWeek::find()
+                    ->where(['week'=>$w,'haid'=>$appoint->id])
+                    ->sum('num');
+
+                if($totle>=$weekTotle){
+                    $rs['dateState'] = 0;
+                    $rs['dateMsg'] = "约满";
+                }else{
+                    $rs['dateState'] = $appoint->is_appoint($day, $weekr);
+                    $rs['dateMsg'] = $dateMsg[$rs['dateState']];
+                }
                 $rs['date'] = $day;
                 $rs['day'] = date('m.d', $day);
                 $rs['dateStr'] = date('Ymd', $day);
                 $rs['week'] = date('w', $day);
                 $rs['weekStr'] = $dweek[$rs['week']];
-                $rs['dateState'] = $appoint->is_appoint($day, $weekr);
-                $rs['dateMsg'] = $dateMsg[$rs['dateState']];
+                
                 $days[] = $rs;
             }
 
@@ -481,15 +499,24 @@ class AppointController extends \api\modules\v3\controllers\AppointController
 
         //体检限制月龄预约
         if($post['type']==1 && $post['childid']){
-            $hospitalAppointMonth = HospitalAppointMonth::find()->select('month')->where(['type' => $post['month']])->andWhere(['haid'=>$appoint->id])->orderBy('month asc')->column();
+            //获取社区设置 ：[2,3]表示社区设置的3月龄体检限制为大于2个月小于4个月
+            $hospitalAppointMonth = HospitalAppointMonth::find()->select('month')
+            ->where(['type' => $post['month']])->andWhere(['haid'=>$appoint->id])->orderBy('month asc')->column();
 
+            //判断是否开通
             if($hospitalAppointMonth && $appoint->is_month) {
+                //获取儿童生日
                 $child = ChildInfo::findOne($post['childid']);
                 if ($child) {
+                    //提取社区设置最小月 first=2个月
                     $first = $hospitalAppointMonth[0];
+                    //提取最大月龄 end=3个月
                     $end = $hospitalAppointMonth[count($hospitalAppointMonth) - 1];
                     $daytime =strtotime($post['appoint_date']);
-                    if (strtotime("-$first month", $daytime) < $child->birthday || strtotime("-" . ($end + 1) . " month", $daytime) > $child->birthday) {
+                    //判断是否不在范围内  if((【体检日期减去最小月龄】小于 儿童生日) or 
+                    //(【体检月龄减去最大月龄（+1表示 3-4个月之间都可以）】大于 儿童生日)) 如果不在则提示不符合条件
+                    if (strtotime("-$first month", $daytime) < $child->birthday
+                    || strtotime("-" . ($end + 1) . " month", $daytime) > $child->birthday) {
                         return new Code(20000,HospitalAppointMonth::$typeText[$post['month']]
                             ."，需宝宝在预约日期时满".$first."个月且小于".($end + 1)."个月");
                     }
