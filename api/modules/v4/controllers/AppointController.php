@@ -164,23 +164,26 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             for ($i = 1; $i <= 40; $i++) {
                 $day = $day + 86400;
                 $w = date('w', $day);
-                $totle = Appoint::find()
-                ->andWhere(['type' => $type])
-                ->andWhere(['doctorid' => $id])
-                ->andWhere(['appoint_date' => $day])
-                ->andWhere(['!=', 'state', 3])
-                ->andWhere(['mode' => 0])
-                ->count();
-                $weekTotle = HospitalAppointWeek::find()
-                    ->where(['week'=>$w,'haid'=>$appoint->id])
-                    ->sum('num');
 
-                if($totle>=$weekTotle){
-                    $rs['dateState'] = 0;
-                    $rs['dateMsg'] = "约满";
-                }else{
-                    $rs['dateState'] = $appoint->is_appoint($day, $weekr);
-                    $rs['dateMsg'] = $dateMsg[$rs['dateState']];
+
+                $rs['dateState'] = $appoint->is_appoint($day, $weekr);
+                $rs['dateMsg'] = $dateMsg[$rs['dateState']];
+                if($rs['dateState']==1){
+                    $totle = Appoint::find()
+                    ->andWhere(['type' => $type])
+                    ->andWhere(['doctorid' => $id])
+                    ->andWhere(['appoint_date' => $day])
+                    ->andWhere(['!=', 'state', 3])
+                    ->andWhere(['mode' => 0])
+                    ->count();
+                    $weekTotle = HospitalAppointWeek::find()
+                        ->where(['week'=>$w,'haid'=>$appoint->id])
+                        ->sum('num');
+
+                    if($totle>=$weekTotle){
+                        $rs['dateState'] = 0;
+                        $rs['dateMsg'] = "约满";
+                    }
                 }
                 $rs['date'] = $day;
                 $rs['day'] = date('m.d', $day);
