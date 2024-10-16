@@ -210,7 +210,7 @@ button{    border: none;}
     background:rgba(240,85,70,1);
     border-radius:26px; font-size:18px;
     color:rgba(255,255,255,1);
-    border-color:"";
+    border-color:rgba(240,85,70,1);
 }
 
 
