@@ -265,7 +265,7 @@ class ZappointController extends Controller
         $vaccine_count = Appoint::find()->where(['vaccine' => $vid, 'appoint_date' => strtotime($day), 'doctorid' => $doctorid])->andWhere(['<', 'state', 3])->count();
         $hospitalAppointExpertNum = HospitalAppointVaccineTimeNum::find()->where(['type' => $hospitalA->type, 'week' => $week,'vaccine'=>$vid,'doctorid'=>$doctorid])->sum('num');
         if ($hospitalAppointExpertNum && $hospitalAppointExpertNum - $vaccine_count <= 0) {
-            return ['list' => [], 'is_appoint' => 0, 'text' => '此科室' . date('Y年m月d日', strtotime($day)) . "已约满，请选择其他日期"];
+            return ['list' => [], 'is_appoint' => 0, 'text' => '此科室专家' . date('Y年m月d日', strtotime($day)) . "已约满，请选择其他日期"];
         }
 
         $firstAppoint = Appoint::find()
@@ -342,6 +342,8 @@ class ZappointController extends Controller
                         ->indexBy('appoint_time')
                         ->groupBy('appoint_time')
                         ->column();
+                }else{
+                    return ['list' => [], 'is_appoint' => 0, 'text' => "当前日期暂无号源"];
                 }
             }
             foreach ($rs as $k => $v) {
