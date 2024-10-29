@@ -65,6 +65,8 @@ class WeOpenid extends \yii\db\ActiveRecord
             $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
             $accessToken = $app->access_token;
             $token = $accessToken->getToken(true);
+            throw new \Exception(json_encode($token),12);
+
             $app['access_token']->setToken($token, 7200);
 
             $user = $app->user->get($openid);
