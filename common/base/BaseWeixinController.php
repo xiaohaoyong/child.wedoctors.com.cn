@@ -91,36 +91,36 @@ class BaseWeixinController extends \yii\web\Controller {
      */
     public function beforeAction($action) {
 
-        if(\Yii::$app->request->get('we')=="new" || \Yii::$app->request->get('we')=='new')
-        {
-            $cookies = \Yii::$app->response->cookies;
-            $cookies->add(new \yii\web\Cookie([
-                'name' => 'we',
-                'value' => 'new',
-                'expire' =>time()+800000,
-            ]));
-        }
-
-        $this->mpWechat = $this->newMpWechat();
-        $openid = $this->getCookie('openid');
-        //验证cookie
-        if (empty($openid)) {
-            if ($this->request->isGet) {
-                $_code = Yii::$app->request->get('code');
-                if (empty($_code)) {
-                    $this->redirectOauth2Url();
-                } else {
-                    $getOauth2AccessToken = $this->mpWechat->getOauth2AccessToken($_code);
-                    if (empty($getOauth2AccessToken['openid'])) {
-                        echo $this->redirectMessage('openid获取失败!！');
-                        exit;
-                    }
-                    $openid = $getOauth2AccessToken['openid'];
-                }
-                $this->addCookie('openid', $openid, 2592000);
-            }
-        }
-        $this->userData = UserLogin::getInfo($openid);
+//        if(\Yii::$app->request->get('we')=="new" || \Yii::$app->request->get('we')=='new')
+//        {
+//            $cookies = \Yii::$app->response->cookies;
+//            $cookies->add(new \yii\web\Cookie([
+//                'name' => 'we',
+//                'value' => 'new',
+//                'expire' =>time()+800000,
+//            ]));
+//        }
+//
+//        $this->mpWechat = $this->newMpWechat();
+//        $openid = $this->getCookie('openid');
+//        //验证cookie
+//        if (empty($openid)) {
+//            if ($this->request->isGet) {
+//                $_code = Yii::$app->request->get('code');
+//                if (empty($_code)) {
+//                    $this->redirectOauth2Url();
+//                } else {
+//                    $getOauth2AccessToken = $this->mpWechat->getOauth2AccessToken($_code);
+//                    if (empty($getOauth2AccessToken['openid'])) {
+//                        echo $this->redirectMessage('openid获取失败!！');
+//                        exit;
+//                    }
+//                    $openid = $getOauth2AccessToken['openid'];
+//                }
+//                $this->addCookie('openid', $openid, 2592000);
+//            }
+//        }
+//        $this->userData = UserLogin::getInfo($openid);
         return TRUE;
     }
 
