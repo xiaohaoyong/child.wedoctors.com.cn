@@ -52,7 +52,6 @@ class SuiteController extends Controller
                         }catch (\Exception $e){
                             return  $e->getMessage();
                         }
-                        return $weOpenid;
                         if ($doctor_id) {
                             //扫描社区医院二维码操作
                             $userid = UserLogin::findOne(['openid' => $openid])->userid;
