@@ -163,7 +163,9 @@ class UserDoctorController extends BaseController
         $userInfo=\common\models\UserDoctor::findOne(['userid'=>$id]);
         $userInfo=$userInfo?$userInfo:new \common\models\UserDoctor;
 
-        $model->loadDefaultValues();
+        if($model) {
+            $model->loadDefaultValues();
+        }
         $userInfo->loadDefaultValues();
         if(Yii::$app->request->isPost){
             $model->load(Yii::$app->request->post());
