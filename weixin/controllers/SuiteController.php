@@ -39,6 +39,8 @@ class SuiteController extends Controller
     public function actionIndex()
     {
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $accessToken = $app->access_token;
+        $token = $accessToken->getToken(true);
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
