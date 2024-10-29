@@ -38,13 +38,65 @@ class SuiteController extends Controller
 
     public function actionIndex()
     {
-//        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-//        $app->server->push(function ($message) {
-//
-//        });
-//        $response = $app->server->serve();
-//        $response->send();
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $app->server->push(function ($message) {
+            switch ($message['MsgType']) {
+                case 'event':
+                    return '收到事件消息';
+                    break;
+                case 'text':
 
+                    $str = strtolower(mb_substr($message['Content'], 0, 2, 'utf-8'));
+                    if($str == 'sq'){
+                        $docName = substr($message['Content'], 2);
+                        if ($docName) {
+                            $query = UserDoctor::find();
+                            if ($docName) {
+                                $query->andFilterWhere(['like', 'name', $docName]);
+                            }
+                            $doctors = $query->orderBy('appoint desc')->all();
+                            $docName = urlencode($docName);
+
+                            if (count($doctors) > 1) {
+                                $text = "查询到多个结果请访问链接查看:http://child.wedoctors.com.cn/doctors?search={$docName}";
+                            } else {
+                                $text = "请访问：http://child.wedoctors.com.cn/doctors?search={$docName} 查询结果";
+
+                            }
+                        }
+                    }elseif ($message['Content'] == '成人疫苗') {
+                        $text = "预约成人疫苗请点击下方链接，选择社区后预约:http://web.child.wedoctors.com.cn/wappoint";
+                    }else{
+                        $text = "宝宝家长，您在社区医院遇到体检查看问题，疫苗预约、体检预约、健康指导等问题时。可以点击公众号底栏进入儿宝宝小程序，点击我的，找到在线客服帮您进行解答。";
+                    }
+                    return $text;
+                    break;
+                case 'image':
+                    return '收到图片消息';
+                    break;
+                case 'voice':
+                    return '收到语音消息';
+                    break;
+                case 'video':
+                    return '收到视频消息';
+                    break;
+                case 'location':
+                    return '收到坐标消息';
+                    break;
+                case 'link':
+                    return '收到链接消息';
+                    break;
+                case 'file':
+                    return '收到文件消息';
+                // ... 其它消息
+                default:
+                    return '收到其它消息';
+                    break;
+            }
+        });
+        $response = $app->server->serve();
+        $response->send();
+        exit;
         $log = new Log('suite_index');
         $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
         if (isset($_GET['echostr'])) {
