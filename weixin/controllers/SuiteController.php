@@ -41,6 +41,7 @@ class SuiteController extends Controller
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
         $accessToken = $app->access_token;
         $token = $accessToken->getToken(true);
+        $app['access_token']->setToken($token['access_token'], 7200);
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':

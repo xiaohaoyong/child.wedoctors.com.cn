@@ -64,9 +64,9 @@ class WeOpenid extends \yii\db\ActiveRecord
             $openid=$this->openid;
             $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
             $user = $app->user->get($openid);
-            if(!$user['errcode']) {
+            if(!$user['errcode']){
                 $this->unionid = $user['unionid'];
-            }
+                }
 //            }else{
 //                throw new \Exception($user['errmsg'],$user['errcode']);
 //            }
