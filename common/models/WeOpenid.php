@@ -63,17 +63,13 @@ class WeOpenid extends \yii\db\ActiveRecord
         if(!$this->unionid) {
             $openid=$this->openid;
             $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-            $accessToken = $app->access_token;
-            $token = $accessToken->getToken(true);
-
-            $app['access_token']->setToken($token['access_token'], 7200);
-
             $user = $app->user->get($openid);
-            if(!$user['errcode']){
+            if(!$user['errcode']) {
                 $this->unionid = $user['unionid'];
-            }else{
-                throw new \Exception($user['errmsg'],$user['errcode']);
             }
+//            }else{
+//                throw new \Exception($user['errmsg'],$user['errcode']);
+//            }
         }
         if(!$this->createtime)
         {
