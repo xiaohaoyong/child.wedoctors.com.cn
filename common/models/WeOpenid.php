@@ -5,6 +5,7 @@ namespace common\models;
 use callmez\wechat\sdk\MpWechat;
 use common\components\HttpRequest;
 use EasyWeChat\Factory;
+use PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use Yii;
 
 /**
@@ -63,8 +64,10 @@ class WeOpenid extends \yii\db\ActiveRecord
             $openid=$this->openid;
             $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
             $user = $app->user->get($openid);
-            if($user){
+            if(!$user['errcode']){
                 $this->unionid = $user['unionid'];
+            }else{
+                throw new \Exception($user['errmsg'],$user['errcode']);
             }
         }
         if(!$this->createtime)
