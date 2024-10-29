@@ -47,6 +47,7 @@ class SuiteController extends Controller
                         $scene = str_replace('qrscene_', '', $message['EventKey']);
                         $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene]);
                         $doctor_id = $qrcodeid->mappingid;
+                        return $doctor_id;
                         $weOpenid = WeOpenid::action($message);
                         if ($doctor_id) {
                             //扫描社区医院二维码操作
