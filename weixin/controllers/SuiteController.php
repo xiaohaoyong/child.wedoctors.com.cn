@@ -42,7 +42,55 @@ class SuiteController extends Controller
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
-                    return '收到事件消息';
+                    if($message['Event'] == 'subscribe' || $message['Event'] == 'SCAN'){
+                        $openid = $message['FromUserName'];
+                        $scene = str_replace('qrscene_', '', $message['EventKey']);
+                        $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene]);
+                        $doctor_id = $qrcodeid->mappingid;
+                        $weOpenid = WeOpenid::action($message);
+                        if ($doctor_id) {
+                            //扫描社区医院二维码操作
+                            $userid = UserLogin::findOne(['openid' => $openid])->userid;
+                            if ($userid) {
+                                $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
+
+                                //已签约 并且签约的医院不是互联网社区医院则 发送提醒
+                                if ($doctorParent->level == 1 && $doctorParent->doctorid != 47156) {
+                                    $doctorName = UserDoctor::findOne(['userid' => $doctorParent->doctorid])->name;
+                                    return '您已签约了“'.$doctorName.'”'."，如需更换签约社区请联系在线客服";
+                                }
+
+                                //未签约 或 签约了互联网社区医院（修改签约对象）
+                                $doctorParent = $doctorParent ? $doctorParent : new DoctorParent();
+                                $doctorParent->doctorid = $doctor_id;
+                                $doctorParent->parentid = $userid;
+                                $doctorParent->level = 1;
+                                $doctorParent->createtime = time();
+                                $doctorParent->save();
+                                //已注册用户直接签约成功
+
+                            }
+
+
+                            //发送签约成功消息
+                            $doctor = UserDoctor::findOne($doctor_id);
+                            //微信模板消息
+
+                            $data = [
+                                'first' => array('value' => "\n预签约已成功，点击完成正式签约"),
+                                'keyword1' => ARRAY('value' => $doctor->name,),
+                                'keyword2' => ARRAY('value' => $doctor->hospital->name),
+                                'keyword3' => ARRAY('value' => date('Y年m月d日')),
+                                'remark' => ARRAY('value' => "请务必点击此信息授权进入，如果宝宝信息自动显示，就可以免费享受个性化儿童中医药健康指导服务啦，如果不显示，请正常添加宝宝信息即可", 'color' => '#221d95'),
+                            ];
+                            $url = \Yii::$app->params['site_url'] . "#/add-docter";
+                            WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                            //$this->custom_send($openid);
+
+                            return "签约成功，请点击卡片进入小程序添加宝宝/孕妇完善签约";
+                        }
+                    }
+                    return "您好，感谢关注儿宝宝！\n\n如果管辖社区卫生服务中心已经开通签约儿保医生服务，回复SQ+社区名称即可获取社区二维码（如：“SQ小红门”，）长按并识别二维码即可签约成功并享受中医儿童健康指导，查看健康体检信息及通知，咨询儿保医生等服务\n\n如需要查询社区名称请访问：http://child.wedoctors.com.cn/doctors 查询社区后长按并识别二维码即可\n\n如果社区还没开通此项服务，点击菜单栏 -- 育儿服务 -- 添加宝宝信息,授权成功即可优先免费享有中医儿童健康指导服务";
                     break;
                 case 'text':
 
@@ -133,76 +181,9 @@ class SuiteController extends Controller
 //                    $loga->saveLog();
 
                     $scene = str_replace('qrscene_', '', $xml['EventKey']);
+                    $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene]);
+                    $doctor_id = $qrcodeid->mappingid;
 
-                    if ($scene) {
-                        $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene]);
-                        if ($qrcodeid->type == 0) {
-                            $doctor_id = $qrcodeid->mappingid;
-                        } elseif ($qrcodeid->type == 1) {
-                            //线上叫号系统
-                            $user = UserLogin::findOne(['openid' => $openid]);
-                            $appoint = Appoint::find()->where(['doctorid' => $qrcodeid->mappingid, 'userid' => $user->userid, 'appoint_date' => strtotime('today')])
-                                ->andWhere(['!=', 'state', 3])->one();
-                            if (!$appoint) {
-                                return self::sendText($xml['FromUserName'], $xml['ToUserName'], "未查询到您的预约信息，请点击链接输入您的预约码：:http://web.child.wedoctors.com.cn/wappoint");
-                            } else {
-                                $appointCallingListModel = AppointCallingList::findOne(['aid' => $appoint->id]);
-                                //判断用户是否已经排队
-                                if ($appointCallingListModel) {
-                                    if ($appointCallingListModel->state == 1) {
-                                        $queue = new Queue($qrcodeid->mappingid, $appoint->type, $appoint->appoint_time);
-                                        $num2 = $queue->search($appointCallingListModel->id);
-                                        $text[] = "日期：" . date('Y年m月d日 H:i');
-                                        $text[] = "号码：" . AppointCallingList::listName($appointCallingListModel->id, $qrcodeid->mappingid, $appoint->type);
-                                        $text[] = "前方等待：" . $num2 . "位";
-                                        $text[] = "叫号会通过微信公众号发送，请时刻关注，以免错过!";
-                                        $txt = implode("\n", $text);
-                                        return self::sendText($xml['FromUserName'], $xml['ToUserName'], $txt);
-                                    } elseif ($appointCallingListModel->state == 3) {
-                                        return self::sendText($xml['FromUserName'], $xml['ToUserName'], '您的预约已完成');
-                                    } elseif ($appointCallingListModel->state == 2) {
-
-
-                                        //过期重排
-                                        $hospitalAppoint = HospitalAppoint::findOne(['doctorid' => $qrcodeid->mappingid, 'type' => $appoint->type]);
-                                        $timeType = Appoint::getTimeType($hospitalAppoint->interval, date('H:i'));
-                                        $appointCallingListModel->time = $timeType;
-                                        if ($appointCallingListModel->save()) {
-                                            $queue = new Queue($qrcodeid->mappingid, $appoint->type, $appoint->appoint_time);
-                                            $queueNum = $queue->lpush($appointCallingListModel->id);
-                                            $text[] = "您的预约已过期，系统已为您重新排号：";
-                                            $text[] = "日期：" . date('Y年m月d日 H:i');
-                                            $text[] = "号码：" . AppointCallingList::listName($appointCallingListModel->id, $qrcodeid->mappingid, $appoint->type);
-                                            $text[] = "前方等待：" . ($queueNum - 1) . "位";
-                                            $txt = implode("\n", $text);
-                                            return self::sendText($xml['FromUserName'], $xml['ToUserName'], $txt . "\n 叫号会通过微信公众号发送，请时刻关注，以免错过叫号!");
-                                        }
-
-                                    }
-                                } else {
-                                    //排队
-                                    $appointCallingListModel = new AppointCallingList();
-                                    $appointCallingListModel->aid = $appoint->id;
-                                    $appointCallingListModel->openid = $openid;
-                                    $appointCallingListModel->doctorid = $qrcodeid->mappingid;
-                                    $appointCallingListModel->time = $appoint->appoint_time;
-                                    $appointCallingListModel->type = $appoint->type;
-                                    if ($appointCallingListModel->save()) {
-                                        $queue = new Queue($qrcodeid->mappingid, $appoint->type, $appoint->appoint_time);
-                                        $queueNum = $queue->lpush($appointCallingListModel->id);
-
-                                        $text[] = "日期：" . date('Y年m月d日 H:i');
-                                        $text[] = "号码：" . AppointCallingList::listName($appointCallingListModel->id, $qrcodeid->mappingid, $appoint->type);
-                                        $text[] = "前方等待：" . ($queueNum - 1) . "位";
-                                        $txt = implode("\n", $text);
-                                        return self::sendText($xml['FromUserName'], $xml['ToUserName'], $txt . "\n 叫号会通过微信公众号发送，请时刻关注，以免错过叫号!");
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        $doctor_id = 0;
-                    }
 
                     $weOpenid = WeOpenid::action($xml);
                     if ($doctor_id) {
