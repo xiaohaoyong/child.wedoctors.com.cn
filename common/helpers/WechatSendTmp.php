@@ -30,6 +30,9 @@ class WechatSendTmp
             $push_data['miniprogram']=$miniprogram;
         }
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $accessToken = $app->access_token;
+        $token = $accessToken->getToken();
+        $app['access_token']->setToken($token['access_token'], 7200);
         $app->template_message->send($push_data);
     }
 
