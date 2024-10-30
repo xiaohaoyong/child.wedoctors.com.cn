@@ -24,7 +24,14 @@ class EasyWechat
     public static function officialAccount()
     {
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-        $cache = new RedisAdapter(\Yii::$app->rd5);
+        $client = new \Redis([
+            'host' => 'r-m5eplvkkblhixciozhpd.redis.rds.aliyuncs.com',
+            'port' => 6379,
+            'timeout' => 7200
+        ]);
+        $client->select(5);
+        $client->auth('307476645z!!');
+        $cache = new RedisAdapter($client);
         $app->rebind('cache', $cache);
         return $app;
     }
