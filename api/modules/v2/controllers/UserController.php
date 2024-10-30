@@ -89,8 +89,8 @@ class UserController extends \api\modules\v1\controllers\UserController
         $log->addLog("userid:" . $userid);
         //更新登陆状态
         $userLogin = $userLogin ? $userLogin : new UserLogin();
-        $userLogin->xopenid = $openid;
-        $userLogin->unionid = $unionid;
+        $userLogin->xopenid = $openid?$openid:'';
+        $userLogin->unionid = $unionid?$unionid:'';
         $userLogin->logintime = time();
         $userLogin->hxusername = $this->hxusername;
         $userLogin->userid = $userid;
