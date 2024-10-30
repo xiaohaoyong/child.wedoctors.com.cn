@@ -24,7 +24,7 @@ class EasyWechat
     public static function officialAccount()
     {
         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-        $cache = new RedisAdapter(\Yii::$app->redis);
+        $cache = new RedisAdapter(\Yii::$app->rd5);
         $app->rebind('cache', $cache);
         return $app;
     }
