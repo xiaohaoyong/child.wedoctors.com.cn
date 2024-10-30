@@ -24,6 +24,7 @@ use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\WeOpenid;
+use EasyWeChat\Factory;
 
 class UserController extends \api\modules\v1\controllers\UserController
 {
@@ -47,6 +48,14 @@ class UserController extends \api\modules\v1\controllers\UserController
         $cache = \Yii::$app->rdmp;
         $session = $cache->get($this->seaver_token);
         if (!$session) {
+
+            $app = Factory::miniProgram(\Yii::$app->params['easyX']);
+            $wxUser = $app->auth->session($wxCode);
+            if(!$wxUser || $wxUser['errcode'])
+            {
+                return $wxUser;
+            }
+
             //获取用户微信信息如与库不同则更新登录信息，
             $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $wxCode . "&grant_type=authorization_code";
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
