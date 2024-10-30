@@ -50,7 +50,6 @@ class UserController extends \api\modules\v1\controllers\UserController
         $session = $cache->get($this->seaver_token);
         if (!$session) {
             if($test) {
-                return \Yii::$app->params['easyX'];
                 $app = Factory::miniProgram(\Yii::$app->params['easyX']);
                 $wxUser = $app->auth->session($wxCode);
                 if (!$wxUser || $wxUser['errcode']) {
