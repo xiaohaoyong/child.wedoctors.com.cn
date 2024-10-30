@@ -9,36 +9,20 @@
 namespace console\controllers;
 
 
-use api\modules\v2\controllers\ExaController;
-use app\models\Login;
-use callmez\wechat\sdk\components\BaseWechat;
-use callmez\wechat\sdk\MpWechat;
-use callmez\wechat\sdk\Wechat;
 use common\components\HttpRequest;
-use common\components\wx\WxBizDataCrypt;
+use common\helpers\EasyWechat;
 use common\helpers\IdcardValidator;
-use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Access;
 use common\models\Appoint;
 use common\models\AppointAdult;
 use common\models\AppointList;
-use common\models\AppointOrder;
 use common\models\AppointOrder1;
 use common\models\Area;
-use common\models\Article;
-use common\models\ArticleComment;
-use common\models\ArticleInfo;
 use common\models\ArticlePushVaccine;
 use common\models\ArticleUser;
 use common\models\Autograph;
-use common\models\BabyGuide;
-use common\models\BabyTool;
-use common\models\BabyToolTag;
-use common\models\ChatRecord;
 use common\models\ChildInfo;
-use common\models\DataUpdateRecord;
-use common\models\DataUser;
 use common\models\DoctorHospital;
 use common\models\DoctorParent;
 use common\models\Doctors;
@@ -48,40 +32,21 @@ use common\models\HealthRecordsSchool;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointVaccine;
-use common\models\HospitalAppointWeek;
 use common\models\HospitalForm;
-use common\models\Interview;
-use common\models\Log;
+use common\models\MoveChild;
 use common\models\Notice;
 use common\models\Points;
 use common\models\Pregnancy;
 use common\models\Test;
-use common\models\Test1;
 use common\models\TmpLog;
 use common\models\User;
 use common\models\UserDoctor;
-use common\models\UserDoctorAppoint;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\Vaccine;
-use common\models\MoveChild;
-use common\models\WeOpenid;
 use EasyWeChat\Factory;
-use Faker\Provider\File;
-use OSS\Core\OssException;
-use OSS\OssClient;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use saviorlv\aliyun\Sms;
-use yii\base\Controller;
-use yii\helpers\FileHelper;
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
-use Cache\Adapter\Redis\RedisCachePool;
-use Cache\Bridge\SimpleCache\SimpleCacheBridge;
-use common\models\DoctorTeam;
 use TCPDF;
+use yii\helpers\FileHelper;
 
 class DataController extends \yii\console\Controller
 {
@@ -192,6 +157,7 @@ class DataController extends \yii\console\Controller
     const pathPrefix = "";
     public function actionTesta($doctorid=0)
     {
+        $app = EasyWechat::officialAccount();
 
         $data = [
             'first' => array('value' => "\n预签约已成功，点击完成正式签约"),
@@ -208,10 +174,8 @@ class DataController extends \yii\console\Controller
         //$push_data['url'] = $url;
 
             $push_data['miniprogram']=['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',];
-
-        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-        $app->template_message->send($push_data);
-       // WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+            $app->template_message->send($push_data);
+        //WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
         exit;
 
 
