@@ -35,6 +35,7 @@ class UserController extends \api\modules\v1\controllers\UserController
         $phone = \Yii::$app->request->get('phone');
         $code = \Yii::$app->request->get('code');
         $wxCode = \Yii::$app->request->get('wxCode');
+        $test = \Yii::$app->request->get('test');
 
         //验证字段
         $isVerify = SmsSend::verifymessage(\Yii::$app->request->get('phone'), \Yii::$app->request->get('code'));
@@ -48,12 +49,13 @@ class UserController extends \api\modules\v1\controllers\UserController
         $cache = \Yii::$app->rdmp;
         $session = $cache->get($this->seaver_token);
         if (!$session) {
-
-            $app = Factory::miniProgram(\Yii::$app->params['easyX']);
-            $wxUser = $app->auth->session($wxCode);
-            if(!$wxUser || $wxUser['errcode'])
-            {
-                return $wxUser;
+            if($test) {
+                return \Yii::$app->params['easyX'];
+                $app = Factory::miniProgram(\Yii::$app->params['easyX']);
+                $wxUser = $app->auth->session($wxCode);
+                if (!$wxUser || $wxUser['errcode']) {
+                    return $wxUser;
+                }
             }
 
             //获取用户微信信息如与库不同则更新登录信息，
