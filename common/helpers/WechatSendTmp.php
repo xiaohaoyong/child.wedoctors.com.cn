@@ -29,8 +29,8 @@ class WechatSendTmp
         {
             $push_data['miniprogram']=$miniprogram;
         }
-//        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-//        $app->template_message->send($push_data);
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $app->template_message->send($push_data);
     }
 
     public static function sendMessage($data)
