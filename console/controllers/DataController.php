@@ -174,8 +174,10 @@ class DataController extends \yii\console\Controller
         //$push_data['url'] = $url;
 
             $push_data['miniprogram']=['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',];
-            $app->template_message->send($push_data);
-        //WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $app->template_message->send($push_data);
+       // WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
         exit;
 
 
