@@ -157,7 +157,7 @@ class DataController extends \yii\console\Controller
     const pathPrefix = "";
     public function actionTesta($doctorid=0)
     {
-        $app = EasyWechat::officialAccount();
+        //$app = EasyWechat::officialAccount();
 
         $data = [
             'first' => array('value' => "\n预签约已成功，点击完成正式签约"),
