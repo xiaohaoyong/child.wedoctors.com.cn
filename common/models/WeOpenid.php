@@ -4,8 +4,6 @@ namespace common\models;
 
 use callmez\wechat\sdk\MpWechat;
 use common\components\HttpRequest;
-use EasyWeChat\Factory;
-use PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use Yii;
 
 /**
@@ -61,18 +59,48 @@ class WeOpenid extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if(!$this->unionid) {
-            $openid=$this->openid;
-            $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-            $accessToken = $app->access_token;
-            $token = $accessToken->getToken();
-            $app['access_token']->setToken($token['access_token'], 7200);
-            $user = $app->user->get($openid);
-            if(!$user['errcode']){
-                $this->unionid = $user['unionid'];
+            $mpWechat = new \common\vendor\MpWechat([
+                'token' => \Yii::$app->params['WeToken'],
+                'appId' => \Yii::$app->params['AppID'],
+                'appSecret' => \Yii::$app->params['AppSecret'],
+                'encodingAesKey' => \Yii::$app->params['encodingAesKey']
+            ]);
+            $access_token = $mpWechat->getAccessToken();
+
+            if ($access_token) {
+
+                $path = '/cgi-bin/user/info?access_token=' . $access_token . "&openid=" . $this->openid . "&lang=zh_CN";
+                $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 2);
+                $userJson = $curl->get();
+                $userInfo = json_decode($userJson, true);
+                if ($userInfo['unionid']) {
+                    $this->unionid = $userInfo['unionid'];
+                }else{
+                    $mpWechat->delCache('access_token');
+                    $access_token=$mpWechat->getAccessToken();
+                    $path = '/cgi-bin/user/info?access_token=' . $access_token . "&openid=" . $this->openid . "&lang=zh_CN";
+                    $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 2);
+                    $userJson = $curl->get();
+                    $userInfo = json_decode($userJson, true);
+                    if ($userInfo['unionid']) {
+                        $this->unionid = $userInfo['unionid'];
+                    }else{
+                        $this->unionid=$userJson;
+                    }
                 }
-//            }else{
-//                throw new \Exception($user['errmsg'],$user['errcode']);
-//            }
+            }else{
+                $mpWechat->delCache('access_token');
+                $access_token=$mpWechat->getAccessToken();
+                $path = '/cgi-bin/user/info?access_token=' . $access_token . "&openid=" . $this->openid . "&lang=zh_CN";
+                $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 2);
+                $userJson = $curl->get();
+                $userInfo = json_decode($userJson, true);
+                if ($userInfo['unionid']) {
+                    $this->unionid = $userInfo['unionid'];
+                }else{
+                    $this->unionid=$userJson;
+                }
+            }
         }
         if(!$this->createtime)
         {
