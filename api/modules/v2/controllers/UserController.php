@@ -24,6 +24,7 @@ use common\models\UserDoctor;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\WeOpenid;
+use EasyWeChat\Factory;
 
 class UserController extends \api\modules\v1\controllers\UserController
 {
@@ -34,6 +35,7 @@ class UserController extends \api\modules\v1\controllers\UserController
         $phone = \Yii::$app->request->get('phone');
         $code = \Yii::$app->request->get('code');
         $wxCode = \Yii::$app->request->get('wxCode');
+        $test = \Yii::$app->request->get('test');
 
         //验证字段
         $isVerify = SmsSend::verifymessage(\Yii::$app->request->get('phone'), \Yii::$app->request->get('code'));
@@ -47,6 +49,14 @@ class UserController extends \api\modules\v1\controllers\UserController
         $cache = \Yii::$app->rdmp;
         $session = $cache->get($this->seaver_token);
         if (!$session) {
+            if($test) {
+                $app = Factory::miniProgram(\Yii::$app->params['easyX']);
+                $wxUser = $app->auth->session($wxCode);
+                if (!$wxUser || $wxUser['errcode']) {
+                    return $wxUser;
+                }
+            }
+
             //获取用户微信信息如与库不同则更新登录信息，
             $path = "/sns/jscode2session?appid=" . \Yii::$app->params['wxXAppId'] . "&secret=" . \Yii::$app->params['wxXAppSecret'] . "&js_code=" . $wxCode . "&grant_type=authorization_code";
             $curl = new HttpRequest(\Yii::$app->params['wxUrl'] . $path, true, 10);
@@ -89,8 +99,8 @@ class UserController extends \api\modules\v1\controllers\UserController
         $log->addLog("userid:" . $userid);
         //更新登陆状态
         $userLogin = $userLogin ? $userLogin : new UserLogin();
-        $userLogin->xopenid = $openid;
-        $userLogin->unionid = $unionid;
+        $userLogin->xopenid = $openid?$openid:'';
+        $userLogin->unionid = $unionid?$unionid:'';
         $userLogin->logintime = time();
         $userLogin->hxusername = $this->hxusername;
         $userLogin->userid = $userid;

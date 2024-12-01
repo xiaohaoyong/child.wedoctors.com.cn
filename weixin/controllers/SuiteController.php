@@ -59,10 +59,13 @@ class SuiteController extends Controller
             $log->addLog($postStr);
             $log->saveLog();
             if (!empty($postStr)) {
-                $xml = $this->mpWechat->parseRequestXml($postStr, $_GET['msg_signature'], $_GET['timestamp'], $nonce = $_GET['nonce'], $_GET['encrypt_type']);
-                $log->addLog($_GET['timestamp']);
-                $log->addLog(implode(',', $xml));
-                $log->saveLog();
+                $msg_sign = isset($_GET['msg_signature'])?isset($_GET['msg_signature']):"";
+                $timestamp = isset($_GET['timestamp'])?isset($_GET['timestamp']):"";
+                $nonce = isset($_GET['nonce'])?isset($_GET['nonce']):"";
+                $encrypt_type = isset($_GET['encrypt_type'])?isset($_GET['encrypt_type']):"";
+
+
+                $xml = $this->mpWechat->parseRequestXml($postStr, $msg_sign, $timestamp,$nonce, $encrypt_type);
 
                 // $loga = new Log('subscribe');
                 //分享是的二维码
@@ -84,9 +87,9 @@ class SuiteController extends Controller
 
                     if ($scene) {
                         $qrcodeid = Qrcodeid::findOne(['qrcodeid' => $scene]);
-                        if ($qrcodeid->type == 0) {
+                        if ($qrcodeid && $qrcodeid->type == 0) {
                             $doctor_id = $qrcodeid->mappingid;
-                        } elseif ($qrcodeid->type == 1) {
+                        } elseif ($qrcodeid && $qrcodeid->type == 1) {
                             //线上叫号系统
                             $user = UserLogin::findOne(['openid' => $openid]);
                             $appoint = Appoint::find()->where(['doctorid' => $qrcodeid->mappingid, 'userid' => $user->userid, 'appoint_date' => strtotime('today')])
@@ -155,17 +158,14 @@ class SuiteController extends Controller
                     $weOpenid = WeOpenid::action($xml);
                     if ($doctor_id) {
                         //扫描社区医院二维码操作
-                        $userid = UserLogin::findOne(['openid' => $openid])->userid;
+                        $user = UserLogin::findOne(['openid' => $openid]);
+                        $userid = $user?$user->userid:'';
                         if ($userid) {
                             $doctorParent = DoctorParent::findOne(['parentid' => $userid]);
 
                             //已签约 并且签约的医院不是互联网社区医院则 发送提醒
                             if ($doctorParent->level == 1 && $doctorParent->doctorid != 47156) {
                                 $doctorName = UserDoctor::findOne(['userid' => $doctorParent->doctorid])->name;
-
-                                $child = ChildInfo::findOne(['userid' => $userid]);
-                                $childName = $child->name;
-
                                 // $data = [
                                 //     'first' => array('value' => "﻿您已经签约了" . $doctorName . "\n"),
                                 //     'keyword1' => ARRAY('value' => $doctorName,),
@@ -257,6 +257,10 @@ class SuiteController extends Controller
                                 }
                             }
                             break;
+                        case "cx":
+                            return self::sendText($xml['FromUserName'], $xml['ToUserName'], $xml['FromUserName'].$xml['ToUserName']);
+                            break;
+
                     }
                     if ($xml['Content'] == '成人疫苗') {
                         return self::sendText($xml['FromUserName'], $xml['ToUserName'], "预约成人疫苗请点击下方链接，选择社区后预约:http://web.child.wedoctors.com.cn/wappoint");

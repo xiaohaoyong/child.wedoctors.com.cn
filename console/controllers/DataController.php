@@ -9,36 +9,20 @@
 namespace console\controllers;
 
 
-use api\modules\v2\controllers\ExaController;
-use app\models\Login;
-use callmez\wechat\sdk\components\BaseWechat;
-use callmez\wechat\sdk\MpWechat;
-use callmez\wechat\sdk\Wechat;
 use common\components\HttpRequest;
-use common\components\wx\WxBizDataCrypt;
+use common\helpers\EasyWechat;
 use common\helpers\IdcardValidator;
-use common\helpers\SmsSend;
 use common\helpers\WechatSendTmp;
 use common\models\Access;
 use common\models\Appoint;
 use common\models\AppointAdult;
 use common\models\AppointList;
-use common\models\AppointOrder;
 use common\models\AppointOrder1;
 use common\models\Area;
-use common\models\Article;
-use common\models\ArticleComment;
-use common\models\ArticleInfo;
 use common\models\ArticlePushVaccine;
 use common\models\ArticleUser;
 use common\models\Autograph;
-use common\models\BabyGuide;
-use common\models\BabyTool;
-use common\models\BabyToolTag;
-use common\models\ChatRecord;
 use common\models\ChildInfo;
-use common\models\DataUpdateRecord;
-use common\models\DataUser;
 use common\models\DoctorHospital;
 use common\models\DoctorParent;
 use common\models\Doctors;
@@ -48,40 +32,21 @@ use common\models\HealthRecordsSchool;
 use common\models\Hospital;
 use common\models\HospitalAppoint;
 use common\models\HospitalAppointVaccine;
-use common\models\HospitalAppointWeek;
 use common\models\HospitalForm;
-use common\models\Interview;
-use common\models\Log;
+use common\models\MoveChild;
 use common\models\Notice;
 use common\models\Points;
 use common\models\Pregnancy;
 use common\models\Test;
-use common\models\Test1;
 use common\models\TmpLog;
 use common\models\User;
 use common\models\UserDoctor;
-use common\models\UserDoctorAppoint;
 use common\models\UserLogin;
 use common\models\UserParent;
 use common\models\Vaccine;
-use common\models\MoveChild;
-use common\models\WeOpenid;
 use EasyWeChat\Factory;
-use Faker\Provider\File;
-use OSS\Core\OssException;
-use OSS\OssClient;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use saviorlv\aliyun\Sms;
-use yii\base\Controller;
-use yii\helpers\FileHelper;
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
-use Cache\Adapter\Redis\RedisCachePool;
-use Cache\Bridge\SimpleCache\SimpleCacheBridge;
-use common\models\DoctorTeam;
 use TCPDF;
+use yii\helpers\FileHelper;
 
 class DataController extends \yii\console\Controller
 {
@@ -143,6 +108,25 @@ class DataController extends \yii\console\Controller
         $result['birthday']=$tdate;//生日日期
         return $tdate;
        }
+    function months($s,$e){
+                // 假设儿童的出生日期是2022年5月15日
+        $birthDate = $s;
+
+        // 获取当前日期
+        $currentDate = new \DateTime($e);
+
+        // 将出生日期转换为DateTime对象
+        $birthDateObj = new \DateTime($birthDate);
+
+        // 计算两个日期之间的差异
+        $diff = $birthDateObj->diff($currentDate);
+
+        // 获取年份差异和月份差异
+        $years = $diff->y;
+        $months = $diff->m;
+        $months = $years * 12 + $months;
+        return $months;
+    }
     function getfiles($path, $allowFiles = '', $depth = 1, $substart = 0, &$files = array()){
         $depth--;
         $path = realpath($path) . '/';
@@ -173,74 +157,155 @@ class DataController extends \yii\console\Controller
     const pathPrefix = "";
     public function actionTesta($doctorid=0)
     {
-
-        $ew=[
-            'app_id' => 'wx240286cc3d77ba35',
-            'secret' => 'd8fb7250e73c41de34c6a7edb78bf4c2',
-            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
-            'response_type' => 'array',
-        ];
-        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-        $accessToken = $app->access_token;
-        $accessToken = $accessToken->getToken(true)['access_token']; // EasyWeChat\Core\AccessToken 实例
-        $http="https://api.weixin.qq.com/cgi-bin/wxopen/qrcodejumppublish?access_token=$accessToken";
-
-        $data=[
-            'prefix'=>'http://weixin.qq.com/q/02HQn8Y7Awfqj100000038',
-            // 'appid'=>'wx240286cc3d77ba35',
-            // 'path'=>'/pages/index/index',
-            // 'is_edit'=>0,
-        ];
-        $curl = new HttpRequest($http, true, 10);
-        $curl->setData(json_encode($data));
-        $curl->setHeader('Content-Type','application/json');
-        $userJson = $curl->post();
-        var_dump($userJson);
-        exit;
+        //$app = EasyWechat::officialAccount();
 
         $data = [
-            'first' => array('value' => "大红门社区卫生服务中心邀请您参与周末儿童门诊满意度调查\n",),
-            'keyword1' => ARRAY('value' => "儿宝宝用户"),
-            'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-            'keyword3' => ARRAY('value' => '大红门邀请您参与周末儿童门诊满意度调查'),
-
-            'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
+            'first' => array('value' => "\n预签约已成功，点击完成正式签约"),
+            'keyword1' => ARRAY('value' => '$doctor->name',),
+            'keyword2' => ARRAY('value' => '$doctor->hospital->name'),
+            'keyword3' => ARRAY('value' => date('Y年m月d日')),
+            'remark' => ARRAY('value' => "请务必点击此信息授权进入，如果宝宝信息自动显示，就可以免费享受个性化儿童中医药健康指导服务啦，如果不显示，请正常添加宝宝信息即可", 'color' => '#221d95'),
         ];
-        $temp='VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0';
-        $file = fopen('123.csv', 'r');
-        $i=0;
-        while (($line = fgets($file)) !== false) {
-            sleep(1);
-            $rs = WechatSendTmp::send($data,trim($line), $temp,'https://www.wjx.cn/vm/PfMtaGW.aspx# ');
-            var_dump($rs);
-        }
-exit;
+        $url = "";
 
-        $file = fopen('3321.csv', 'r');
-        $i=0;
-        while (($line = fgets($file)) !== false) {
-            $rs = explode(',',trim($line));
-            $child=ChildInfo::find()
-            //    ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
-            //     ->andWhere(['`user_login`.`phone`' => $rs[2]])
-//                ->leftJoin('user_parent', '`user_parent`.`userid` = `pregnancy`.`familyid`')
-//                ->andWhere(['user_parent.mother_id'=>$phone])
-//                ->orWhere(['pregnancy.field4'=>$phone])
-                    //->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                    //->andWhere(['user_parent.mother'=>$rs[6]])
-                    //->andWhere(['doctor_parent.doctorid'=>175877])
-                      ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
-                      ->andWhere(['doctor_parent.doctorid'=>206260])
-                     ->andWhere(['child_info.name'=>$rs[0]])
-                    //->andWhere(['child_info.birthday'=>strtotime($rs[4])])
-                    // ->where(['or',['field27'=>$rs[2],'idcard'=>$rs[2]]])
-                    ->one();
-            //echo "\t".$phone.",";
-            //var_dump($child);
-            if($child){
-                $rs[12]="已签约";
+        $push_data['data'] = $data;
+        $push_data['touser'] = 'o5ODa0451fMb_sJ1D1T4YhYXDOcg';
+        $push_data['template_id'] = \Yii::$app->params['chenggong'];
+        //$push_data['url'] = $url;
+
+            $push_data['miniprogram']=['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',];
+
+        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+        $app->template_message->send($push_data);
+       // WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+        exit;
+
+
+        $appoints = Appoint::find()->where([
+            'doctorid'=>386661,
+            'state'=>[1,2,4],
+            'type'=>1,
+            ])
+            //->groupBy('childid')
+            ->all();
+        foreach($appoints as $k=>$e){
+            $v = $e->toArray();
+            $child = \common\models\ChildInfo::findOne(['id' => $v['childid']]);
+            if($child) {
+                $userParent = \common\models\UserParent::findOne(['userid' => $v['userid']]);
+
+                $vaccine = $e->vaccine ? \common\models\Vaccine::findOne($e->vaccine)->name : "";
+                $rs = [];
+                $rs[] = $child ? $child->name : '已删除';
+                $rs[] = \common\models\ChildInfo::$genderText[$child->gender];
+                $rs[] = date('Y-m-d', $child->birthday);
+                $rs[] = date('Y-m-d', $v['appoint_date']);
+                $rs[] = \common\models\Appoint::$timeText[$v['appoint_time']];
+                $rs[] = $e->phone;
+                $rs[] = \common\models\Appoint::$stateText[$e->state];
+                $rs[] = \common\models\Appoint::$typeText[$e->type];
+                $rs[]=$vaccine;
+                //$rs[]=\common\models\Appoint::$cancel_typeText[$e->cancel_type];
+                //$rs[]=\common\models\Appoint::$push_stateText[$e->push_state];
+                //$rs[]=\common\models\Appoint::$modeText[$e->mode];
+                echo implode(',', $rs);
+                echo "\n";
             }
-            echo implode(',',$rs)."\n";
+        }
+        exit;
+//         $ew=[
+//             'app_id' => 'wx240286cc3d77ba35',
+//             'secret' => 'd8fb7250e73c41de34c6a7edb78bf4c2',
+//             // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+//             'response_type' => 'array',
+//         ];
+//         $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+//         $accessToken = $app->access_token;
+//         $accessToken = $accessToken->getToken(true)['access_token']; // EasyWeChat\Core\AccessToken 实例
+//         $http="https://api.weixin.qq.com/cgi-bin/wxopen/qrcodejumppublish?access_token=$accessToken";
+
+//         $data=[
+//             'prefix'=>'http://weixin.qq.com/q/02HQn8Y7Awfqj100000038',
+//             // 'appid'=>'wx240286cc3d77ba35',
+//             // 'path'=>'/pages/index/index',
+//             // 'is_edit'=>0,
+//         ];
+//         $curl = new HttpRequest($http, true, 10);
+//         $curl->setData(json_encode($data));
+//         $curl->setHeader('Content-Type','application/json');
+//         $userJson = $curl->post();
+//         var_dump($userJson);
+//         exit;
+
+//         $data = [
+//             'first' => array('value' => "大红门社区卫生服务中心邀请您参与周末儿童门诊满意度调查\n",),
+//             'keyword1' => ARRAY('value' => "儿宝宝用户"),
+//             'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
+//             'keyword3' => ARRAY('value' => '大红门邀请您参与周末儿童门诊满意度调查'),
+
+//             'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
+//         ];
+//         $temp='VXAAPM2bzk1zGHAOnj8cforjriNp3wsg4ZewGEUck_0';
+//         $file = fopen('123.csv', 'r');
+//         $i=0;
+//         while (($line = fgets($file)) !== false) {
+//             sleep(1);
+//             $rs = WechatSendTmp::send($data,trim($line), $temp,'https://www.wjx.cn/vm/PfMtaGW.aspx# ');
+//             var_dump($rs);
+//         }
+// exit;
+
+        $file = fopen('190922.csv', 'r');
+        $i=0;
+        $names=[];
+        while (($line = fgets($file)) !== false) {
+            $i++;
+            $row = [];
+            $rs = explode(',',trim($line));
+            if($rs[3]) {
+                echo implode(',',$rs)."\n";
+                continue;
+            }
+
+            //if(!$rs[3]){
+                $child=ChildInfo::find()
+                //    ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+                //     ->andWhere(['`user_login`.`phone`' => $rs[2]])
+    //                ->leftJoin('user_parent', '`user_parent`.`userid` = `pregnancy`.`familyid`')
+    //                ->andWhere(['user_parent.mother_id'=>$phone])
+    //                ->orWhere(['pregnancy.field4'=>$phone])
+                        //->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                        //->andWhere(['user_parent.mother'=>$rs[6]])
+                        //->andWhere(['doctor_parent.doctorid'=>175877])
+                            //  ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                            //  ->andWhere(['doctor_parent.doctorid'=>190922])
+                        ->andWhere(['child_info.name'=>$rs[1]])
+                        ->andWhere(['child_info.source'=>110594])
+
+                        //->andWhere(['child_info.birthday'=>strtotime($rs[2])])
+                        // ->where(['or',['field27'=>$rs[2],'idcard'=>$rs[2]]])
+                        ->one();
+                        // if(!$child) {
+                        //     echo implode(',',$rs)."\n";
+                        //  }
+                
+                        $row[0] = $i;
+                        $row[1] = $rs[1];
+                        $row[2] = $rs[2];
+
+                        $row[3] = '';
+                        $row[4] = $rs[4];
+                if($child){
+                    $phone = UserLogin::getPhone($child->userid);
+                    $row[3] = $phone;
+                }
+            // }else{
+            //     $row = $rs;
+            // }
+
+
+            
+            echo implode(',',$row)."\n";
         }
         exit;
 
