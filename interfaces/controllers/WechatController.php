@@ -12,6 +12,6 @@ class WechatController extends Controller
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
-        return $mpWechat->getAccessToken();
+        return ['token'=>$mpWechat->getAccessToken()];
     }
 }
