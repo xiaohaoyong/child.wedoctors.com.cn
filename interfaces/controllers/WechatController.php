@@ -1,6 +1,6 @@
 <?php
 
-namespace api\controllers;
+namespace interfaces\controllers;
 
 use callmez\wechat\sdk\MpWechat;
 use yii\web\Controller;
