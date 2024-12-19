@@ -66,8 +66,9 @@ class AppointController extends \api\modules\v3\controllers\AppointController
             $rs['id'] = $k;
             $rs['name'] = $v;
             $rs['info'] = $typeInfo[$k];
+            $hospitalAppointis = HospitalAppoint::find()->where(['doctorid' => $id,'type'=>$k])->one();
 
-            $rs['is_type'] = in_array($k, $types) ? 1 : 0;
+            $rs['is_type'] = in_array($k, $types) && $hospitalAppointis ? 1 : 0;
             $typel[] = $rs;
         }
         $row['types'] = $typel;
