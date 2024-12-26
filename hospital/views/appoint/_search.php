@@ -29,7 +29,13 @@ use yii\widgets\ActiveForm;
 
     <?php echo $form->field($model, 'appoint_time')->dropDownList(\common\models\Appoint::$timeText, ['prompt' => '请选择']) ?>
 
-    <?php echo $form->field($model, 'state')->dropDownList(\common\models\Appoint::$stateText, ['prompt' => '请选择']) ?>
+    <?php echo $form->field($model, 'state')->dropDownList([1 => '进行中',
+        2 => '已完成',
+        3 => '已取消',
+        4 => '已过期',
+        5 => '待确认（加号）',
+        6 => '待确认（排队）',
+        7 => '已取消'], ['prompt' => '请选择']) ?>
     <?php echo $form->field($model, 'type')->dropDownList(\common\models\Appoint::$typeText, ['prompt' => '请选择']) ?>
     <?php echo $form->field($model, 'vaccine')->dropDownList(\common\models\Vaccine::find()->select('name')->indexBy('id')->column(), ['prompt' => '请选择']) ?>
 
