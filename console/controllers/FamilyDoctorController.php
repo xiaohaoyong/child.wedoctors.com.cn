@@ -47,7 +47,8 @@ class FamilyDoctorController extends Controller
         314896=>'060066',
         184741=>'0614',
         323716=>'0620',
-        552186=>'060011'
+        552186=>'060011',
+        620543=>'',
     ];
 
     public $data=[
@@ -72,7 +73,8 @@ class FamilyDoctorController extends Controller
 		257888=>['玉泉营派出所',	100070],
 		216593=>['西局派出所',	100161],
 		184741=>['马家堡派出所',	100068],
-        552186=>['樊家村派出所',100070]
+        552186=>['樊家村派出所',100070],
+        620543=>["",""]
 
     ];
     public function actionDown($doctorid=0,$action='Excel',$type=1)
@@ -94,6 +96,7 @@ class FamilyDoctorController extends Controller
 
     public function setDownExcel($doctorid,$type)
     {
+        error_reporting(0);
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
         $worksheet->getCellByColumnAndRow(1,1)->setValue('家庭医生签约服务签约居民基本信息汇总表');
@@ -128,10 +131,10 @@ class FamilyDoctorController extends Controller
         $worksheet->getCellByColumnAndRow(6,4)->setValue('签约居民姓名');
         $worksheet->getCellByColumnAndRow(7,4)->setValue('签约居民身份证号');
         $worksheet->getCellByColumnAndRow(8,4)->setValue('出生日期');
-        $worksheet->getCellByColumnAndRow(9,4)->setValue('签约日期');
-        $worksheet->getCellByColumnAndRow(10,4)->setValue('联系电话1');
-        $worksheet->getCellByColumnAndRow(11,4)->setValue('联系电话2');
-        $worksheet->getCellByColumnAndRow(12,4)->setValue('联系电话3');
+        $worksheet->getCellByColumnAndRow(9,4)->setValue('首次签约日期');
+        $worksheet->getCellByColumnAndRow(10,4)->setValue('续签日期');
+        $worksheet->getCellByColumnAndRow(11,4)->setValue('联系电话1');
+        $worksheet->getCellByColumnAndRow(12,4)->setValue('联系电话2');
         $worksheet->getCellByColumnAndRow(13,4)->setValue('现住址');
         $worksheet->getCellByColumnAndRow(14,4)->setValue('派出所');
         $worksheet->getCellByColumnAndRow(15,4)->setValue('签约服务包');
@@ -200,8 +203,8 @@ class FamilyDoctorController extends Controller
         $birthday = strtotime('- 7 year');
         $auto = Autograph::find()->select('userid')
                 ->andWhere(['doctorid' => $doctorid])
-                ->andFilterWhere(['>', 'createtime',strtotime('2024-06-20')])
-                ->andFilterWhere(['>', 'createtime',strtotime('2024-09-20')])
+//                ->andFilterWhere(['>', 'starttime','20240920'])
+//                ->andFilterWhere(['<', 'starttime','20241204'])
                 ->column();
 
         $styleArray = [
@@ -231,7 +234,7 @@ class FamilyDoctorController extends Controller
                 if($child) {
                     foreach ($child as $k => $v) {
 
-                        if($names[$v->name] && $names[$v->name] == $v->birthday) continue;
+                        if(isset($names[$v->name]) && $names[$v->name] == $v->birthday) continue;
                         $names[$v->name] =  $v->birthday;
 
 
@@ -260,7 +263,8 @@ class FamilyDoctorController extends Controller
                         $worksheet->getCellByColumnAndRow(2, $i)->setValue($this->num[$doctorid]);
                         $worksheet->getCellByColumnAndRow(3, $i)->setValue($this->num[$doctorid]);
                         $worksheet->getCellByColumnAndRow(4, $i)->setValue($hospital->name);
-                        $worksheet->getCellByColumnAndRow(5, $i)->setValue(DoctorTeam::findOne($v->teamid)->title);
+                        $team = DoctorTeam::findOne($v->teamid);
+                        $worksheet->getCellByColumnAndRow(5, $i)->setValue($team?DoctorTeam::findOne($v->teamid)->title:"");
                         $worksheet->getCellByColumnAndRow(6, $i)->setValue($v->name);
                         $au = Autograph::findOne(['userid' => $v->userid]);
                 
