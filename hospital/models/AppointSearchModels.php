@@ -95,16 +95,16 @@ class AppointSearchModels extends Appoint
         }
 
         if($this->appoint_dates){
-            $query->andFilterWhere(['>=', 'appoint_date', strtotime($this->appoint_dates)]);
+            $query->andFilterWhere(['>=', 'appoint_date', strtotime($this->appoint_dates." 00:00:00")]);
         }
         if($this->appoint_dates_end){
-            $query->andFilterWhere(['<=', 'appoint_date', strtotime($this->appoint_dates_end)]);
+            $query->andFilterWhere(['<=', 'appoint_date', strtotime($this->appoint_dates_end." 23:59:59")]);
         }
         if($this->createtimes){
-            $query->andFilterWhere(['>=', 'createtime', strtotime($this->createtimes)]);
+            $query->andFilterWhere(['>=', 'createtime', strtotime($this->createtimes." 00:00:00")]);
         }
         if($this->createtimes_end){
-            $query->andFilterWhere(['<=', 'createtime', strtotime($this->createtimes_end)]);
+            $query->andFilterWhere(['<=', 'createtime', strtotime($this->createtimes_end." 23:59:59")]);
         }
         if($this->appoint_date){
             $query->andWhere(['appoint_date'=>$this->appoint_date]);
