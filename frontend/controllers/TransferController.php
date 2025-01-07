@@ -31,12 +31,31 @@ use common\models\queuing\Queue;
 
 class TransferController extends Controller
 {
-   public function actionIndex($p)
+   public function actionIndex()
    {
        \Yii::$app->response->format = Response::FORMAT_JSON;
-       $path = 'http://ebbhospital.binglang6.com/'.$p;
-       $curl = new HttpRequest($path, true, 2);
-       $userJson = $curl->get();
-       return $userJson;
+       $params = \Yii::$app->request->queryParams;
+       $authorization = \Yii::$app->request->headers->get('Authorization');
+
+       $p = $params['p'];
+       $method = $params['method'];
+       unset($params['p']);
+       unset($params['method']);
+
+
+       if($method == 'get'){
+           $url = http_build_query($params);
+           $path = 'http://ebbhospital.binglang6.com/'.$p.'?'.$url;
+           $curl = new HttpRequest($path, true, 2);
+       }else{
+           $path = 'http://ebbhospital.binglang6.com/'.$p;
+           $curl = new HttpRequest($path, true, 2);
+           $curl->setData($params);
+       }
+       if($authorization) {
+           $curl->setHeader('Authorization', $authorization);
+       }
+       $userJson = $curl->$method();
+       return json_decode($userJson,true);
    }
 }
