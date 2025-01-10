@@ -45,10 +45,10 @@ class TransferController extends Controller
 
        if($method == 'get'){
            $url = http_build_query($params);
-           $path = 'http://ebbhospital.binglang6.com/'.$p.'?'.$url;
+           $path = 'http://interface.ebb.wedoctors.com.cn/'.$p.'?'.$url;
            $curl = new HttpRequest($path, true, 2);
        }else{
-           $path = 'http://ebbhospital.binglang6.com/'.$p;
+           $path = 'http://interface.ebb.wedoctors.com.cn/'.$p;
            $curl = new HttpRequest($path, true, 2);
            $curl->setData($params);
        }
