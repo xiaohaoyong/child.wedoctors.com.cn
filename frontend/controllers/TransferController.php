@@ -52,6 +52,7 @@ class TransferController extends Controller
            $curl = new HttpRequest($path, true, 2);
            $curl->setData($params);
        }
+
        if($authorization) {
            $curl->setHeader('Authorization', $authorization);
        }
