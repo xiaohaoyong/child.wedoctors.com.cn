@@ -55,7 +55,6 @@ class TransferController extends Controller
        if($authorization) {
            $curl->setHeader('Authorization', $authorization);
        }
-       echo $path;exit;
        $userJson = $curl->$method();
        return json_decode($userJson,true);
    }
