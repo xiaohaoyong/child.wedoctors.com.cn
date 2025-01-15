@@ -287,7 +287,7 @@ class AppointController extends Controller
             $hospital = Hospital::findOne($doctor->hospitalid);
         }
         $row['hospital'] = $hospital->name;
-        $row['county'] = 1109;
+        $row['county'] = $doctor->county;
 
         $row['type'] = Appoint::$typeText[$appoint->type];
         $row['time'] = date('Y.m.d', $appoint->appoint_date) . "  " . Appoint::$timeText[$appoint->appoint_time];
