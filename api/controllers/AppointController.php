@@ -287,6 +287,8 @@ class AppointController extends Controller
             $hospital = Hospital::findOne($doctor->hospitalid);
         }
         $row['hospital'] = $hospital->name;
+        $row['county'] = $doctor->county;
+
         $row['type'] = Appoint::$typeText[$appoint->type];
         $row['time'] = date('Y.m.d', $appoint->appoint_date) . "  " . Appoint::$timeText[$appoint->appoint_time];
         if ($appoint->type == 5 || $appoint->type == 6) {
@@ -328,15 +330,18 @@ class AppointController extends Controller
         }
         $row['is_show'] = 0;
         $row['jihui'] = 0;
-        if($appoint->type==2) {
+        if($appoint->type==2 || $appoint->type==1) {
             $row['is_show'] = 1;
             $child=ChildInfo::findOne($appoint->childid);
-            if(($child->birthday>strtotime('-74 day'))
-                || $appoint->vaccine==1
-                || $appoint->vaccine==2
-                || $appoint->vaccine==3
-                || $appoint->vaccine==6)
-            {
+//            if(($child->birthday>strtotime('-74 day'))
+//                || $appoint->vaccine==1
+//                || $appoint->vaccine==2
+//                || $appoint->vaccine==3
+//                || $appoint->vaccine==6)
+//            {
+//                $row['jihui'] = 1;
+//            }
+            if($child->birthday>strtotime('2024-04-01')){
                 $row['jihui'] = 1;
             }
 
