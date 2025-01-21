@@ -157,6 +157,67 @@ class DataController extends \yii\console\Controller
     const pathPrefix = "";
     public function actionTesta($doctorid=0)
     {
+        $childs = ChildInfo::find()
+            ->where(['gender'=>0])
+            ->all();
+        foreach($childs as $k=>$v){
+            var_dump($v->id);
+            $idCard = $v->idcard;
+            // 检查身份证号码长度是否为18位
+            if (strlen($idCard) != 18) {
+                continue;
+            }
+
+            // 提取身份证号码的第17位（索引从0开始则为第16位）
+            $genderDigit = substr($idCard, 16, 1);
+
+            // 判断性别
+            if ($genderDigit % 2 == 0) {
+                $gender=2;
+            } else {
+                $gender = 1;
+            }
+            $v->gender = $gender;
+            $v->save();
+        }
+        exit;
+        $file = fopen('banqiao.csv', 'r');
+        $i=0;
+        $names=[];
+        while (($line = fgets($file)) !== false) {
+            $i++;
+            $row = [];
+            $rs = explode(',',trim($line));
+            //if(!$rs[3]){
+            $child=ChildInfo::find()
+                //    ->leftJoin('user_login', '`user_login`.`userid` = `child_info`.`userid`')
+                //     ->andWhere(['`user_login`.`phone`' => $rs[2]])
+                //                ->leftJoin('user_parent', '`user_parent`.`userid` = `pregnancy`.`familyid`')
+                //                ->andWhere(['user_parent.mother_id'=>$phone])
+                //                ->orWhere(['pregnancy.field4'=>$phone])
+                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+                ->andWhere(['user_parent.mother'=>$rs[4]])
+                //->andWhere(['doctor_parent.doctorid'=>175877])
+                  ->leftJoin('doctor_parent', '`doctor_parent`.`parentid` = `child_info`.`userid`')
+                  ->andWhere(['doctor_parent.doctorid'=>620543])
+                ->andWhere(['child_info.name'=>$rs[0]])
+                //->andWhere(['child_info.source'=>110594])
+
+                ->andWhere(['child_info.birthday'=>strtotime($rs[2])])
+                // ->where(['or',['field27'=>$rs[2],'idcard'=>$rs[2]]])
+                ->one();
+
+            if($child){
+                $rs[5] = '已签约';
+            }
+            echo implode(',',$rs)."\n";
+
+        }
+        exit;
+
+
+
+
         //$app = EasyWechat::officialAccount();
 
         $data = [
