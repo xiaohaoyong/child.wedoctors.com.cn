@@ -50,8 +50,8 @@ class WorkerController extends BeanstalkController
                 $data = [
                     'first' => array('value' => $article->info->title."\n",),
                     'keyword1' => ARRAY('value' => "儿宝宝用户"),
-                    //'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
-                    'keyword2' => ARRAY('value' => strip_tags($article->info->ftitle)),
+                    'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
+                    'keyword3' => ARRAY('value' => strip_tags($article->info->title)),
 
                     'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
                 ];
