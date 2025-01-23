@@ -157,6 +157,21 @@ class DataController extends \yii\console\Controller
     const pathPrefix = "";
     public function actionTesta($doctorid=0)
     {
+        $data = [
+            'first' => array('value' => "121212121212"."\n",),
+            'keyword1' => ARRAY('value' => "儿宝宝用户"),
+            //'keyword2' => ARRAY('value' => date('Y年m月d H:i')),
+            'keyword2' => ARRAY('value' => "121212"),
+            'remark' => ARRAY('value' => "\n 点击查看社区官方通知详情", 'color' => '#221d95'),
+        ];
+
+        $temp='_W9A8aHaqyBmY3v_RPh8a6HygmqGnaVZGmCflNSPNnw';
+        $miniprogram=[
+            "appid"=>\Yii::$app->params['wxXAppId'],
+            "pagepath"=>"/pages/article/view/index?id=123"
+        ];
+        $rs = WechatSendTmp::send($data, 'o5ODa0451fMb_sJ1D1T4YhYXDOcg', $temp, "", $miniprogram);
+exit;
         $childs = ChildInfo::find()
             ->where(['gender'=>0])
             ->all();
