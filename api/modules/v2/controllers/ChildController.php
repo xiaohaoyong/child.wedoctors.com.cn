@@ -16,6 +16,7 @@ use common\models\DoctorParent;
 use common\models\Interview;
 use common\models\Points;
 use common\models\Pregnancy;
+use common\models\TempUserid;
 use common\models\UserDoctor;
 use common\models\UserParent;
 
@@ -51,9 +52,16 @@ class ChildController extends \api\modules\v1\controllers\ChildController
                 }
 
             }
+            $tempUserid = TempUserid::findOne(['userid'=>$this->userid]);
+            if($tempUserid){
+                $tempUser = 1;
+            }else{
+                $tempUser = 0;
+            }
         }
 
-        return ['list'=>$data,'gravida'=>$gravida];
+
+        return ['list'=>$data,'gravida'=>$gravida,'tempUser'=>$tempUser];
     }
     /**
      * 五项添加/查询儿童
