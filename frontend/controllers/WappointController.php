@@ -266,14 +266,16 @@ class WappointController extends Controller
         $hospitalA = HospitalAppoint::findOne(['doctorid' => $doctorid, 'type' => $type]);
 
         $weekv=[];
+        //判断疫苗可约周
         if($vid) {
             $weekv = HospitalAppointVaccine::find()
                 ->select('week')
                 ->where(['haid' => $hospitalA->id])
                 ->andWhere(['or', ['vaccine' => $vid], ['vaccine' => 0], ['vaccine' => -1]])->groupBy('week')->column();
         }
+    
 
-        //判断所选社区都有周几可约
+        //判断街道可约周
         if ($sid) {
             $streetView = Street::findOne($sid);
             if ($streetView) {
@@ -780,8 +782,7 @@ class WappointController extends Controller
         }
     }
     public function actionTest(){
-        var_dump($_GET);exit;
-
+        return $this->render('test1');
     }
     public function actionUpload(){
         \Yii::$app->response->format=Response::FORMAT_JSON;

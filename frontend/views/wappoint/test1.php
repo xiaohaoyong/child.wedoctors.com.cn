@@ -1,12 +1,35 @@
-<form name="appoint" id="appoint_form" method="post" enctype="multipart/form-data">
-<input name="_csrf-frontend"
 
-type="hidden"
 
-id="_csrf-frontend"
+<div class="wrapper appoint_list">
+    <div class="content-wrapper">
+        <style>
+            .modal_title text {
+                font-weight: bold;
+                font-size: 16px
+            }
+            .modal_body{line-height: 24px;}
+            .rad{color: rgba(240,85,70,1); font-size: 14px; margin-top: 10px;}
+            .button{
+                width:179px;
+                height:41px;
+                background:rgba(240,85,70,1);
+                border-radius:20px;
+                text-align: center;
+                line-height: 41px;
+                color: #ffffff;
+                display: block;
+                margin: 0 auto;
+                margin-top: 20px;
+            }
+        </style>
 
-value="<?= Yii::$app->request->csrfToken ?>">
-<input type="file" name="img[]" multiple="multiple" id="fileName"/>
-<button type="submit">确定预约</button>
-
-</form>
+        <div class="fo" style="margin-top: 100px">
+            <a class="button" href="weixin://dl/business/?appid=wx240286cc3d77ba35&path=pages/appoint/list" >
+                点击进入小程序预约
+            </a>
+            <a class="button" href="/wappoint/my" >
+                查看历史预约记录
+            </a>
+        </div>
+    </div>
+</div>
