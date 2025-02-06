@@ -70,6 +70,11 @@ class AppointController extends Controller
             $rs = $v->toArray();
             $rs['name'] = Hospital::findOne($v->hospitalid)->name;
             $rs['appoint']=$v->appoint?1:0;
+            if(in_array($v->userid,[184793,176156])){
+                $rs['is_new'] = 1;
+            }else{
+                $rs['is_new'] = 0;
+            }
             $docs[] = $rs;
             if ($doctorid == $v->userid) {
                 $doc = $rs;
