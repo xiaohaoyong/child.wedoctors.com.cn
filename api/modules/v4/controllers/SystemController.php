@@ -6,7 +6,7 @@
  * Time: 4:23 PM
  */
 
-namespace backend\modules\v4\controllers;
+namespace api\modules\v4\controllers;
 
 
 use api\controllers\Controller;
