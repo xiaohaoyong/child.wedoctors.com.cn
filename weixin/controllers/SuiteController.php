@@ -176,6 +176,7 @@ class SuiteController extends Controller
                                 // ];
                                 // WechatSendTmp::send($data, $openid, "H2rXcOpYlL7oT3ECpyvKaLjMq9QqMMPWuLPle3Y4mbY", "", ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
                                 $return = self::sendText($openid, $xml['ToUserName'], '您已签约了“'.$doctorName.'”'."，如需更换签约社区请联系在线客服");
+
                                 return $return;
                             }
                             //$doctorParent = DoctorParent::findOne(['doctorid' => $doctor_id, "parentid" => $userid]);
@@ -211,7 +212,11 @@ class SuiteController extends Controller
                             'remark' => ARRAY('value' => "请务必点击此信息授权进入，如果宝宝信息自动显示，就可以免费享受个性化儿童中医药健康指导服务啦，如果不显示，请正常添加宝宝信息即可", 'color' => '#221d95'),
                         ];
                         $url = \Yii::$app->params['site_url'] . "#/add-docter";
-                        WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                        if(!in_array($doctor_id,[184793,176156])) {
+                            WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                        }else{
+                            WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['doctor_AppID'], 'pagepath' => 'pages/index/index',]);
+                        }
                         $this->custom_send($openid);
 
                         if ($doctor->county == 1114) {
@@ -353,11 +358,11 @@ class SuiteController extends Controller
                     'appid' => \Yii::$app->params['wxXAppId'],
                     'pagepath' => 'pages/appoint/my'
                 ],
-                                [
-                    'type' => 'view',
-                    'name' => '成人预约记录',
-                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/my',
-                ],
+//                                [
+//                    'type' => 'view',
+//                    'name' => '成人预约记录',
+//                    'url' => 'http://web.child.wedoctors.com.cn/wappoint/my',
+//                ],
 //                    [
 //                        'type' => 'miniprogram',
 //                        'name' => '我是家长',
@@ -366,11 +371,11 @@ class SuiteController extends Controller
 //                        'pagepath' => 'pages/user/index/index'
 //                    ],
                 [
-                    'type' => 'miniprogram',
+                    'type' => 'view',
                     'name' => '我是医生',
-                    'url' => "http://hospital.child.wedoctors.com.cn",
-                    'appid' => "wx6835027c46b29cab",
-                    'pagepath' => 'pages/index/index'
+                    'url' => "http://hospital.web.wedoctors.com.cn",
+//                    'appid' => "wx6835027c46b29cab",
+//                    'pagepath' => 'pages/index/index'
                 ],
                 // [
                 //     'type' => 'miniprogram',
@@ -387,13 +392,16 @@ class SuiteController extends Controller
             ]],
 
         ];
-        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
-        // $accessToken = $app->access_token; // EasyWeChat\Core\AccessToken 实例
-        // $token = $accessToken->getToken(true); // 强制重新从微信服务器获取 token.        
-        // $app->access_token->setToken((string)$token);
 
-        $a = $app->menu->create($buttons);
-        var_dump($a);
+        $this->mpWechat = new MpWechat(['token' => \Yii::$app->params['WeToken'], 'appId' => \Yii::$app->params['AppID'], 'appSecret' => \Yii::$app->params['AppSecret'], 'encodingAesKey' => \Yii::$app->params['encodingAesKey']]);
+        $this->mpWechat->createMenu($buttons);
+////        $app = Factory::officialAccount(\Yii::$app->params['easywechat']);
+////        // $accessToken = $app->access_token; // EasyWeChat\Core\AccessToken 实例
+////        // $token = $accessToken->getToken(true); // 强制重新从微信服务器获取 token.
+////        // $app->access_token->setToken((string)$token);
+//
+//        $a = $app->menu->create($buttons);
+        //var_dump($a);
         exit;
     }
 
