@@ -213,7 +213,9 @@ class SuiteController extends Controller
                         ];
                         $url = \Yii::$app->params['site_url'] . "#/add-docter";
                         if(!in_array($doctor_id,[184793,176156])) {
-                            WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                            //WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['wxXAppId'], 'pagepath' => 'pages/index/index',]);
+                            WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['doctor_AppID'], 'pagepath' => 'pages/index/index',]);
+
                         }else{
                             WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['doctor_AppID'], 'pagepath' => 'pages/index/index',]);
                         }
