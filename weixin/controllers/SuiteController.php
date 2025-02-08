@@ -218,7 +218,6 @@ class SuiteController extends Controller
                             WechatSendTmp::send($data, $openid, \Yii::$app->params['chenggong'], $url, ['appid' => \Yii::$app->params['doctor_AppID'], 'pagepath' => 'pages/index/index',]);
                         }
                         $this->custom_send($openid);
-
                         if ($doctor->county == 1114) {
                             return self::sendText($xml['FromUserName'], $xml['ToUserName'], '昌平区用户您好，如果您有其他服务需求，推荐您下载使用昌平健康云APP');
                         }
