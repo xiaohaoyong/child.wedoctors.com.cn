@@ -24,7 +24,7 @@
         </style>
 
         <div class="fo" style="margin-top: 100px">
-            <a class="button" href="weixin://dl/business/?appid=<?=\Yii::$app->params['doctor_AppID']?>&path=subpackage/reservation/index" >
+            <a class="button" href="weixin://dl/business/?appid=<?=\Yii::$app->params['doctor_AppID']?>&path=subpackage/reservation/vaccine?type=13&hospitalId=184793" >
                 点击进入小程序预约
             </a>
             <a class="button" href="/wappoint/my" >
