@@ -71,7 +71,7 @@ wx.config(<?=json_encode($mpWechat->jsApiConfig(['openTagList'=>['wx-open-launch
                     </div>
                     <div class="rad">注：请仔细阅读温馨提示，并确认是否可在本社区接种后预约</div>
                 </div>
-                
+
                 <?php
                 \yii\bootstrap\Modal::begin([
                     'id' => 'create-modal' . $v['userid'],
@@ -91,7 +91,13 @@ wx.config(<?=json_encode($mpWechat->jsApiConfig(['openTagList'=>['wx-open-launch
                     </div>
                     <?= str_replace("\n", "<br>", $v['appoint_intro']) ?>
                     <?php if ($v['week']) { ?>
-                        <?= \yii\bootstrap\Html::a('去预约', ['wappoint/from', 'userid' => $v['userid']], ['class' => 'button']) ?>
+
+                        <?php if(in_array($v['userid'],[184793,176156])){?>
+                            <a class="button" href="weixin://dl/business/?appid=<?=\Yii::$app->params['doctor_AppID']?>&path=subpackage/reservation/vaccine&query=<?=urlencode('type=13&hospitalId='.$v['userid'])?>" >去预约</a>
+                        <?php }else{?>
+                            <?= \yii\bootstrap\Html::a('去预约', ['wappoint/from', 'userid' => $v['userid']], ['class' => 'button']) ?>
+
+                        <?php }?>
                     <?php } else { ?>
                         <div class="button on">暂未开通</div>
                     <?php } ?>
