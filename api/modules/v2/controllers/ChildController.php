@@ -117,24 +117,24 @@ class ChildController extends \api\modules\v1\controllers\ChildController
         if($childid){
             $child=ChildInfo::findOne($childid);
         }else{
-            $child = ChildInfo::find()
-                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
-                ->andWhere(['user_parent.mother' => $params['mother']])
-                //->andWhere(['user_parent.mother_id' => $params['mother_id']])
-                ->andWhere(['child_info.name' => $params['name']])
-                ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
-                ->andWhere(['child_info.gender' => $params['sex']])
-                ->one();
-            if($child) {
-                if ($child->userid == $this->userLogin->userid) {
-                    return new Code(21000, '请勿重复添加宝宝！');
-                }
-                if($child->userid) {
-                    $this->userLogin->userid = $child->userid;
-                    $this->userLogin->save();
-                }
-                //return ['childid'=>$child->id,'userid'=>$child->userid];
-            }
+//            $child = ChildInfo::find()
+//                ->leftJoin('user_parent', '`user_parent`.`userid` = `child_info`.`userid`')
+//                ->andWhere(['user_parent.mother' => $params['mother']])
+//                //->andWhere(['user_parent.mother_id' => $params['mother_id']])
+//                ->andWhere(['child_info.name' => $params['name']])
+//                ->andWhere(['child_info.birthday' => strtotime($params['birthday'])])
+//                ->andWhere(['child_info.gender' => $params['sex']])
+//                ->one();
+//            if($child) {
+//                if ($child->userid == $this->userLogin->userid) {
+//                    return new Code(21000, '请勿重复添加宝宝！');
+//                }
+//                if($child->userid) {
+//                    $this->userLogin->userid = $child->userid;
+//                    $this->userLogin->save();
+//                }
+//                //return ['childid'=>$child->id,'userid'=>$child->userid];
+//            }
         }
 
 
