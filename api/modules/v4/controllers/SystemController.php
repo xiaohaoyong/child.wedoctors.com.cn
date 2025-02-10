@@ -23,6 +23,8 @@ class SystemController extends Controller
 {
     public function actionDisable()
     {
+        return ['visible'=>0];
+
         $userid = $this->userid;
         $tempUserid=TempUserid::findOne(['userid'=>$userid]);
         if($tempUserid){
