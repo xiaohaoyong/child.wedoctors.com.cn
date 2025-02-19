@@ -22,11 +22,7 @@ frontend\assets\DateAsset::register($this);
 
                value="<?= Yii::$app->request->csrfToken ?>">
         <input name="source" class="appoint_input"  type="hidden" value="<?=$source?>">
-        <?php if($source=='xiaoxiong'){?>
-            <input name="phone" type="hidden" value="<?=$user['phone']?$user['phone']:1?>">
-            <input name="xuserid" type="hidden" value="<?=$xuserid?>">
-            <input name="skuid" type="hidden" value="<?=$skuid?>">
-        <?php }?>
+
 
         <div class="item">
             <div class="title">预约社区</div>
@@ -358,8 +354,7 @@ jQuery("#appoint_form").submit(data,function(e){
 	    return false;
 	}
     console.log(formdata);
-    if(formdata['source']!='xiaoxiong'){
-        if(!formdata['phone'] || !formdata['vcode']){
+    if(!formdata['phone'] || !formdata['vcode']){
             var vid=jQuery("#vaccine").val();
             if(vid == 64){
                 jQuery("#modle_phone1").modal('show');
@@ -368,7 +363,6 @@ jQuery("#appoint_form").submit(data,function(e){
             }
             return false;
         }
-    }
 });
 
 

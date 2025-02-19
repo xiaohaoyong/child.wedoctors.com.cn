@@ -245,15 +245,8 @@ class WappointController extends Controller
         } else {
             $streets = [];
         }
-        if($source =='xiaoxiong'){
-            $appointAdult['phone']=$phone;
-            $appointAdult['name']=$name;
-            $appointAdult['birthday']=$birthday;
-            $appointAdult['gender']=$gender_txt=='男'?1:2;
+        $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
 
-        }else{
-            $appointAdult=AppointAdult::findOne(['userid'=>$this->login->userid]);
-        }
 
         return $this->render('from', [ 'xuserid'=>$xuserid,'skuid'=>$vaccineId, 'source'=>$source,'streets'=>$streets,'firstday'=>$days[0]['date'],'doctorRow'=>$doctorRow,'appointAdult'=>$appointAdult,'vaccines' => $vaccines,'days' => $days,'doctor'=>$doctorRow,'user'=>$appointAdult]);
     }
@@ -761,18 +754,7 @@ class WappointController extends Controller
                     }
                 }
 
-                if($post['xuserid']){
-                    $userTo=UserTo::findOne(['touserid'=>$post['xuserid']]);
-                    $userTo = $userTo?$userTo:new UserTo();
-                    $userTo->userid=$this->login->userid;
-                    $userTo->touserid=$post['xuserid'];
-                    $userTo->source = 'xiaoxiong';
-                    $userTo->save();
-                    $appoint_sku = new AppointSku();
-                    $appoint_sku ->aid= $model->id;
-                    $appoint_sku ->skuid = $post['skuid'];
-                    $appoint_sku->save();
-                }
+
     
                 return $this->redirect(['wappoint/view','id'=>$model->id]);
             } else {
