@@ -17,7 +17,7 @@ $config= [
         ],
         'beanstalk' => [
             'class' => 'udokmeci\yii2beanstalk\Beanstalk',
-            'host' => '139.129.230.99', // default host
+            'host' => '47.93.25.40', // default host
             'port' => 11345,
             'connectTimeout' => 1,
             'sleep' => false, // or int for usleep after every job
