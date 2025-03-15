@@ -16,7 +16,7 @@ use Da\QrCode\QrCode;
 class ImageController extends \yii\web\Controller
 {
     public function actionQrCode($id){
-        QrCode::png('appoint:'.$id,false,Enum::QR_ECLEVEL_H,10);
+        //QrCode::png('appoint:'.$id,false,Enum::QR_ECLEVEL_H,10);
         $qrCode = (new QrCode('appoint:'.$id))
             ->setSize(10);
         echo $qrCode->writeDataUri();
