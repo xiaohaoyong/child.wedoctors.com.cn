@@ -10,13 +10,16 @@ namespace api\controllers;
 
 
 use common\models\UserDoctor;
-use dosamigos\qrcode\lib\Enum;
-use dosamigos\qrcode\QrCode;
+use Da\QrCode\QrCode;
+
 
 class ImageController extends \yii\web\Controller
 {
     public function actionQrCode($id){
-        QrCode::png('appoint:'.$id,false,Enum::QR_ECLEVEL_H,10);exit;
+        QrCode::png('appoint:'.$id,false,Enum::QR_ECLEVEL_H,10);
+        $qrCode = (new QrCode('appoint:'.$id))
+            ->setSize(10);
+        echo $qrCode->writeDataUri();
     }
 
     public function actionDoctor($id){
