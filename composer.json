@@ -36,7 +36,7 @@
     "callmez/yii2-wechat-sdk": "dev-master",
     "gmars/yii2-sms": "dev-master",
     "moonlandsoft/yii2-phpexcel": "*",
-    "2amigos/qrcode-library": "1.0.3",
+    "2amigos/qrcode-library": "^2.0",
     "kartik-v/yii2-widget-datepicker": "@dev",
     "yiisoft/yii2-redis": "^2.0",
     "yiidoc/yii2-redactor": "*",
