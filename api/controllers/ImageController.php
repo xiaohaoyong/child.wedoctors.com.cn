@@ -26,8 +26,8 @@ class ImageController extends \yii\web\Controller
             'backgroundColor' => ['r' => 255, 'g' => 255, 'b' => 255], // 背景色（白色）
         ]);
 
-        $qrCode = new QRCode('appoint:'.$id);
-        $data = '这是一个二维码内容';
+        $qrCode = new QRCode($options);
+        $data = 'appoint:'.$id;
 
 // 输出二维码图像
         header('Content-Type: image/png');
