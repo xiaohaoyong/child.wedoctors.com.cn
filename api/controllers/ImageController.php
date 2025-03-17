@@ -22,7 +22,7 @@ class ImageController extends \yii\web\Controller
         // 创建 QRCode 对象
         $options = new QROptions([
             'eccLevel' => QRCode::ECC_L, // 容错率
-            'scale' => 5, // 每个点的大小
+            'scale' => 10, // 每个点的大小
             'outputType' => QRCode::OUTPUT_IMAGE_PNG, // 输出类型
             'foregroundColor' => ['r' => 0, 'g' => 0, 'b' => 0], // 前景色（黑色）
             'backgroundColor' => ['r' => 255, 'g' => 255, 'b' => 255], // 背景色（白色）
