@@ -19,8 +19,10 @@ class ImageController extends \yii\web\Controller
 
         //QrCode::png('appoint:'.$id,false,Enum::QR_ECLEVEL_H,10);
         $qrCode = (new QrCode('appoint:'.$id))
-            ->setSize(250)
-        ->setEncoding('BINARY'); // 强制二进制编码
+            ->setSize(250);
+        $qrCode->setWriterOptions([
+            'mode' => 'byte'  // 直接存储原始字节，不添加 ECI 头
+        ]);
 
 
         // 获取Base64编码的图片数据（假设通过GET参数传递）
