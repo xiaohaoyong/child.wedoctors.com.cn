@@ -182,7 +182,7 @@ class DataUpdateController extends BeanstalkController
             $log->addLog("导入完成");
 
             $log->saveLog();
-        } catch (OssException $e) {
+        } catch (\Exception $e) {
             var_dump($e->getMessage());
             return self::DELETE;
         }
