@@ -28,33 +28,31 @@ class DataUpdateController extends BeanstalkController
     }
 
 
-
-
     /**
      * 采集数据
      * @param $job Job
      * @return string
      */
-    public function actionDataupdate($job='')
+    public function actionDataupdate($job = '')
     {
         /** @var object $sentData */
         $sentData = $job->getData();
-        $hospitalid=$sentData->hospitalid;
-        $date=$sentData->date;
-        $id= $sentData->id;
+        $hospitalid = $sentData->hospitalid;
+        $date = $sentData->date;
+        $id = $sentData->id;
 
-        $dur=DataUpdateRecord::findOne($id);
-        $dur->state=1;
+        $dur = DataUpdateRecord::findOne($id);
+        $dur->state = 1;
         $dur->save();
 
-        $log=new \common\components\Log('datacallback',true);
+        $log = new \common\components\Log('datacallback', true);
         $log->addLog('异步任务');
-        $log->addLog(json_encode([$hospitalid,$date]));
+        $log->addLog(json_encode([$hospitalid, $date]));
 
-        $bucket= "wedoctorschild";
-        try{
+        $bucket = "wedoctorschild";
+        try {
             $ossClient = new OssClient(\Yii::$app->params['aliak'], \Yii::$app->params['aliaks'], 'oss-cn-beijing.aliyuncs.com');
-            $prefix = $hospitalid.'/';
+            $prefix = $hospitalid . '/';
             $delimiter = '/';
             $nextMarker = '';
             $maxkeys = 100;
@@ -66,7 +64,7 @@ class DataUpdateController extends BeanstalkController
             );
             $listObjectInfo = $ossClient->listObjects($bucket, $options);
             $objectList = $listObjectInfo->getObjectList(); // object list
-            if($objectList[0]) {
+            if ($objectList[0]) {
                 $object = $objectList[0]->getKey();
                 // 指定文件下载路径。
                 $localfile = "/tmp/" . $hospitalid . ".xlsx";
@@ -76,146 +74,144 @@ class DataUpdateController extends BeanstalkController
                 $ossClient->getObject($bucket, $object, $options);
                 $log->addLog("下载成功");
                 $log->saveLog();
-            }else {
+            } else {
                 $log->addLog("未找到文件");
                 $log->saveLog();
                 return self::DELETE;
             }
 
-        } catch(OssException $e) {
-            $log->addLog("下载失败");
-            $log->saveLog();
-            return self::DELETE;
-        }
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
 
+            if (empty($localfile) or !file_exists($localfile)) {
 
-        if (empty($localfile) OR !file_exists($localfile)) {
+                $log->addLog($localfile . "文件不存在");
+                $log->saveLog();
 
-            $log->addLog($localfile."文件不存在");
-            $log->saveLog();
-
-            return self::DELETE;
-        }
-        ini_set('memory_limit','1500M');
-
-        $objRead = new Xlsx();   //建立reader对象
-        $objRead->setReadDataOnly(true);
-        $obj = $objRead->load($localfile);  //建立excel对象
-        $currSheet = $obj->getSheet(0);   //获取指定的sheet表
-        $columnH = $currSheet->getHighestColumn();   //取得最大的列号
-        $highestColumnNum = Coordinate::columnIndexFromString($columnH);
-        $rowCnt = $currSheet->getHighestRow();   //获取总行数
-        $log->addLog("文件解析成功");
-
-        $dur->state=2;
-        $dur->num=$rowCnt-1;
-        $dur->save();
-
-        $field_index=[];
-        for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
-            $rs = [];
-            for ($_column = 0; $_column < $highestColumnNum; $_column++) {
-                $a = "";
-                $b = $_column % 26;
-                $c = floor($_column / 26);
-                if ($c > 0) {
-                    $a = chr($c - 1 + 65);
-                }
-                $a = $a . chr($b + 65);
-                $cellId = $a . $_row;
-                $cellValue = $currSheet->getCell($cellId)->getValue();
-
-                if ($_row == 1) {
-                    $fields[$_column]=$cellValue;
-                } else {
-                    if (isset($field_index[$_column]) && $cellValue !== '') {
-                        $rs[$field_index[$_column]] = $cellValue ? (string)$cellValue : 0;
-                    }
-                }
+                return self::DELETE;
             }
-            if ($_row != 1) {
-                var_dump($rs);
-                $return = $table::inputData($rs, $hospitalid);
-                if($return==2){
-                    $dur->new_num=$dur->new_num+1;
-                    $dur->save();
-                }
-            }else{
-                $table=self::type($fields,$dur);
-                if($table) {
-                    $log->addLog($table);
-                    foreach ($fields as $k => $v) {
-                        $fk = array_search($v, $table::$field);
-                        if ($fk !== false) {
-                            if ($table != '\common\models\ChildInfo') {
-                                $field_index[$k] = 'field' . $fk;
-                            } else {
-                                $field_index[$k] = $fk;
-                            }
+            ini_set('memory_limit', '1500M');
+
+            $objRead = new Xlsx();   //建立reader对象
+            $objRead->setReadDataOnly(true);
+            $obj = $objRead->load($localfile);  //建立excel对象
+            $currSheet = $obj->getSheet(0);   //获取指定的sheet表
+            $columnH = $currSheet->getHighestColumn();   //取得最大的列号
+            $highestColumnNum = Coordinate::columnIndexFromString($columnH);
+            $rowCnt = $currSheet->getHighestRow();   //获取总行数
+            $log->addLog("文件解析成功");
+
+            $dur->state = 2;
+            $dur->num = $rowCnt - 1;
+            $dur->save();
+
+            $field_index = [];
+            for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
+                $rs = [];
+                for ($_column = 0; $_column < $highestColumnNum; $_column++) {
+                    $a = "";
+                    $b = $_column % 26;
+                    $c = floor($_column / 26);
+                    if ($c > 0) {
+                        $a = chr($c - 1 + 65);
+                    }
+                    $a = $a . chr($b + 65);
+                    $cellId = $a . $_row;
+                    $cellValue = $currSheet->getCell($cellId)->getValue();
+
+                    if ($_row == 1) {
+                        $fields[$_column] = $cellValue;
+                    } else {
+                        if (isset($field_index[$_column]) && $cellValue !== '') {
+                            $rs[$field_index[$_column]] = $cellValue ? (string)$cellValue : 0;
                         }
                     }
-                    switch ($table){
-                        case '\common\models\ChildInfo':
-                            ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);
-                            $to_object="ChildInfo";
-                            break;
-                        case '\common\models\Examination':
-                            $to_object="Examination";
-                            break;
-                        case '\common\models\Pregnancy':
-                            $to_object="Pregnancy";
-                            break;
-                        case '\common\models\PublicHealth':
-                            $to_object="PublicHealth";
-                            break;
+                }
+                if ($_row != 1) {
+                    var_dump($rs);
+                    $return = $table::inputData($rs, $hospitalid);
+                    if ($return == 2) {
+                        $dur->new_num = $dur->new_num + 1;
+                        $dur->save();
                     }
-                    $ossClient->copyObject($bucket, $object, $bucket, $hospitalid."list/".$to_object.date('Ymd')."xlsx");
-                    $log->addLog("另存文件");
-                    $log->saveLog();
-                }else{
-                    $ossClient->deleteObject($bucket, $object);
-                    $dur->state=4;
-                    $dur->save();
-                    return self::DELETE;
+                } else {
+                    $table = self::type($fields, $dur);
+                    if ($table) {
+                        $log->addLog($table);
+                        foreach ($fields as $k => $v) {
+                            $fk = array_search($v, $table::$field);
+                            if ($fk !== false) {
+                                if ($table != '\common\models\ChildInfo') {
+                                    $field_index[$k] = 'field' . $fk;
+                                } else {
+                                    $field_index[$k] = $fk;
+                                }
+                            }
+                        }
+                        switch ($table) {
+                            case '\common\models\ChildInfo':
+                                ChildInfo::updateAll(['admin' => 0], 'source =' . $hospitalid);
+                                $to_object = "ChildInfo";
+                                break;
+                            case '\common\models\Examination':
+                                $to_object = "Examination";
+                                break;
+                            case '\common\models\Pregnancy':
+                                $to_object = "Pregnancy";
+                                break;
+                            case '\common\models\PublicHealth':
+                                $to_object = "PublicHealth";
+                                break;
+                        }
+                        $ossClient->copyObject($bucket, $object, $bucket, $hospitalid . "list/" . $to_object . date('Ymd') . "xlsx");
+                        $log->addLog("另存文件");
+                        $log->saveLog();
+                    } else {
+                        $ossClient->deleteObject($bucket, $object);
+                        $dur->state = 4;
+                        $dur->save();
+                        return self::DELETE;
+                    }
                 }
             }
+            $obj->disconnectWorksheets();
+            $log->saveLog();
+
+            $dur->state = 3;
+            $dur->save();
+            $ossClient->deleteObject($bucket, $object);
+            $log->addLog("删除源文件");
+            $log->addLog("导入完成");
+
+            $log->saveLog();
+        } catch (OssException $e) {
+            var_dump($e->getMessage());
+            return self::DELETE;
         }
-        $obj->disconnectWorksheets();
-        $log->saveLog();
-
-        $dur->state=3;
-        $dur->save();
-        $ossClient->deleteObject($bucket, $object);
-        $log->addLog("删除源文件");
-        $log->addLog("导入完成");
-
-        $log->saveLog();
         return self::DELETE;
     }
-    public static function type($rs,DataUpdateRecord $dur){
-        $field_Examination=Examination::$field;
-        if(!array_diff($field_Examination,$rs) || array_search('体检日期',$rs)){
-            $dur->type=1;
+
+    public static function type($rs, DataUpdateRecord $dur)
+    {
+        $field_Examination = Examination::$field;
+        if (!array_diff($field_Examination, $rs) || array_search('体检日期', $rs)) {
+            $dur->type = 1;
             $dur->save();
             return "\common\models\Examination";
         }
-        $field_Pregnancy=\common\models\Pregnancy::$field;
-        if(!array_diff($field_Pregnancy,$rs) || array_search('产妇姓名',$rs)){
-            $dur->type=2;
+        $field_Pregnancy = \common\models\Pregnancy::$field;
+        if (!array_diff($field_Pregnancy, $rs) || array_search('产妇姓名', $rs)) {
+            $dur->type = 2;
             $dur->save();
             return "\common\models\Pregnancy";
         }
-        $field_ChildInfo=ChildInfo::$field;
-        if(!array_diff($field_ChildInfo,$rs) || (array_search('母亲姓名',$rs) && array_search('母亲身份证号',$rs))){
-            $dur->type=3;
+        $field_ChildInfo = ChildInfo::$field;
+        if (!array_diff($field_ChildInfo, $rs) || (array_search('母亲姓名', $rs) && array_search('母亲身份证号', $rs))) {
+            $dur->type = 3;
             $dur->save();
             return "\common\models\ChildInfo";
         }
-        $field_ChildInfo=ChildInfo::$field;
-        if((array_search('所属社区站',$rs) && array_search('本年度是否收取家医服务费',$rs))){
-            $dur->type=4;
+        $field_ChildInfo = ChildInfo::$field;
+        if ((array_search('所属社区站', $rs) && array_search('本年度是否收取家医服务费', $rs))) {
+            $dur->type = 4;
             $dur->save();
             return "\common\models\PublicHealth";
         }
