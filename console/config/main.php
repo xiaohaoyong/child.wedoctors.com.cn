@@ -59,14 +59,25 @@ return [
     ],
     'components' => [
         'log' => [
+            'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error', 'warning', 'info'],
+                    'categories' => ['application'],
+                    'except' => [],
+                    'logFile' => '@runtime/logs/app.log',
+                    'maxLogFiles' => 10, // 保留最近的10个日志文件
+                    'enableRotation' => true,
+                    'dirMode' => 0777,
+                    'fileMode' => 0666,
                 ],
             ],
         ],
-
+        'errorHandler' => [
+            'class' => 'yii\web\ErrorHandler',
+            'errorAction' => 'site/error',
+        ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager', // 使用数据库管理配置文件
         ],
