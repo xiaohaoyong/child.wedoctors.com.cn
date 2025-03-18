@@ -28,7 +28,7 @@ class TextExcelController extends Controller
 {
     public function actionIndex()
     {
-        $inputFile = '110548.xlsx';
+        $inputFile = '/tmp/110548.xlsx';
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFile);
         $data = $spreadsheet->getActiveSheet()->toArray();
         var_dump($data);exit;
