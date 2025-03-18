@@ -9,8 +9,17 @@ $params = array_merge(
 return [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
-
+    'bootstrap' => [
+        // 添加自定义错误处理
+        function () {
+            set_error_handler(function ($severity, $message, $file, $line) {
+                if (!(error_reporting() & $severity)) {
+                    return;
+                }
+                throw new \ErrorException($message, 0, $severity, $file, $line);
+            }, E_ALL);
+        },
+    ],
     'controllerNamespace' => 'console\controllers',
     'controllerMap' => [
         'fixture' => [
@@ -66,7 +75,10 @@ return [
                 ],
             ],
         ],
-        
+        'errorHandler' => [
+            'class' => 'yii\console\ErrorHandler',
+            'silentExitOnException' => false, // 关闭静默退出，显示错误详情
+        ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager', // 使用数据库管理配置文件
         ],
