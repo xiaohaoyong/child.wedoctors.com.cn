@@ -93,6 +93,7 @@ class DataUpdateController extends BeanstalkController
         $objRead = new Xlsx();   //建立reader对象
         $objRead->setReadDataOnly(true);
         $obj = $objRead->load($localfile);  //建立excel对象
+        var_dump($obj);exit;
         $currSheet = $obj->getSheet(0);   //获取指定的sheet表
         $columnH = $currSheet->getHighestColumn();   //取得最大的列号
         $highestColumnNum = Coordinate::columnIndexFromString($columnH);
