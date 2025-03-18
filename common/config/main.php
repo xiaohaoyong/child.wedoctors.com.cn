@@ -14,7 +14,7 @@ $config= [
 
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
-            'dateFormat' => 'php:Y-m-d',  // 更推荐使用PHP格式（兼容性更好）
+            'dateFormat' => 'php:Y/m/d',  // 更推荐使用PHP格式（兼容性更好）
             'datetimeFormat' => 'php:Y-m-d H:i:s',
             'timeFormat' => 'php:H:i:s',
         ],
