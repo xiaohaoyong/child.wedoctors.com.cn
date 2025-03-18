@@ -28,6 +28,8 @@ class TextExcelController extends Controller
 {
     public function actionIndex()
     {
+        ini_set('memory_limit','1500M');
+
         $inputFile = '/tmp/110548.xlsx';
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFile);
         $data = $spreadsheet->getActiveSheet()->toArray();
