@@ -87,7 +87,8 @@ class DataUpdateController extends BeanstalkController
             $log->saveLog();
             return self::DELETE;
         }
-
+        error_reporting(E_ALL);
+        ini_set('display_errors', '1');
 
 
         if (empty($localfile) OR !file_exists($localfile)) {
