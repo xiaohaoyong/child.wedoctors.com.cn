@@ -98,6 +98,7 @@ class DataUpdateController extends BeanstalkController
             return self::DELETE;
         }
         ini_set('memory_limit','1500M');
+        $log->addLog("开始解析");
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($localfile);
         $data = $spreadsheet->getActiveSheet()->toArray();
