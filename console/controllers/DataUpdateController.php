@@ -98,54 +98,92 @@ class DataUpdateController extends BeanstalkController
             return self::DELETE;
         }
         ini_set('memory_limit','1500M');
-        $log->addLog("开始解析");
 
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($localfile);
-        $data = $spreadsheet->getActiveSheet()->toArray();
-        $log->addLog("解析成功");
+        $objRead = new Xlsx();   //建立reader对象
+        $objRead->setReadDataOnly(true);
+        $obj = $objRead->load($localfile);  //建立excel对象
+        $currSheet = $obj->getSheet(0);   //获取指定的sheet表
+        $columnH = $currSheet->getHighestColumn();   //取得最大的列号
+        $highestColumnNum = Coordinate::columnIndexFromString($columnH);
+        $rowCnt = $currSheet->getHighestRow();   //获取总行数
+        $log->addLog("文件解析成功");
 
         $dur->state=2;
+        $dur->num=$rowCnt-1;
         $dur->save();
 
-        $headerRow = array_shift($data);
-        $table=self::type($headerRow,$dur);
-        if($table) {
-            $log->addLog("匹配成功$table");
+        $field_index=[];
+        for ($_row = 1; $_row <= $rowCnt; $_row++) {  //
+            $rs = [];
+            for ($_column = 0; $_column < $highestColumnNum; $_column++) {
+                $a = "";
+                $b = $_column % 26;
+                $c = floor($_column / 26);
+                if ($c > 0) {
+                    $a = chr($c - 1 + 65);
+                }
+                $a = $a . chr($b + 65);
+                $cellId = $a . $_row;
+                $cellValue = $currSheet->getCell($cellId)->getValue();
 
-            if ($table != '\common\models\ChildInfo') {
-                $return = $this->mapTableData($table::$field, $data);
-            } else {
-                $return = $this->mapTableData($table::$field, $data, '');
+                if ($_row == 1) {
+                    $fields[$_column]=$cellValue;
+                } else {
+                    if ($field_index[$_column] && $cellValue !== '') {
+                        $rs[$field_index[$_column]] = $cellValue ? (string)$cellValue : 0;
+                    }
+                }
             }
-            $log->addLog("开始导入");
-            foreach ($return as $k=>$v) {
-                $table::inputData($v, $hospitalid);
+            if ($_row != 1) {
+                var_dump($rs);
+                $return = $table::inputData($rs, $hospitalid);
+                if($return==2){
+                    $dur->new_num=$dur->new_num+1;
+                    $dur->save();
+                }
+            }else{
+                $table=self::type($fields,$dur);
+                if($table) {
+                    $log->addLog($table);
+                    foreach ($fields as $k => $v) {
+                        $fk = array_search($v, $table::$field);
+                        if ($fk !== false) {
+                            if ($table != '\common\models\ChildInfo') {
+                                $field_index[$k] = 'field' . $fk;
+                            } else {
+                                $field_index[$k] = $fk;
+                            }
+                        }
+                    }
+                    switch ($table){
+                        case '\common\models\ChildInfo':
+                            ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);
+                            $to_object="ChildInfo";
+                            break;
+                        case '\common\models\Examination':
+                            $to_object="Examination";
+                            break;
+                        case '\common\models\Pregnancy':
+                            $to_object="Pregnancy";
+                            break;
+                        case '\common\models\PublicHealth':
+                            $to_object="PublicHealth";
+                            break;
+                    }
+                    $ossClient->copyObject($bucket, $object, $bucket, $hospitalid."list/".$to_object.date('Ymd')."xlsx");
+                    $log->addLog("另存文件");
+                    $log->saveLog();
+                }else{
+                    $ossClient->deleteObject($bucket, $object);
+                    $dur->state=4;
+                    $dur->save();
+                    return self::DELETE;
+                }
             }
-            $log->addLog("导入成功");
-
-            switch ($table){
-                case '\common\models\ChildInfo':
-                    ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);
-                    $to_object="ChildInfo";
-                    break;
-                case '\common\models\Examination':
-                    $to_object="Examination";
-                    break;
-                case '\common\models\Pregnancy':
-                    $to_object="Pregnancy";
-                    break;
-                case '\common\models\PublicHealth':
-                    $to_object="PublicHealth";
-                    break;
-            }
-            $ossClient->copyObject($bucket, $object, $bucket, $hospitalid."list/".$to_object.date('Ymd')."xlsx");
-
-        }else{
-            $ossClient->deleteObject($bucket, $object);
-            $dur->state=4;
-            $dur->save();
-            return self::DELETE;
         }
+        $obj->disconnectWorksheets();
+        $log->saveLog();
+
         $dur->state=3;
         $dur->save();
         $ossClient->deleteObject($bucket, $object);
@@ -181,37 +219,5 @@ class DataUpdateController extends BeanstalkController
             return "\common\models\PublicHealth";
         }
         return false;
-    }
-
-    function mapTableData($field, $data,$prefix='field') {
-        // 反转字段数组，中文作为键，英文作为值
-        $flippedField = array_flip($field);
-
-        // 提取表头行，剩下的数据行
-        $headerRow = array_shift($data);
-
-        // 构建列索引到英文键的映射
-        $columnMap = [];
-        foreach ($headerRow as $index => $chineseHeader) {
-            if (isset($flippedField[$chineseHeader])) {
-                $columnMap[$index] = $prefix.$flippedField[$chineseHeader];
-            }
-            // 忽略未定义的表头列
-        }
-
-        // 转换数据行
-        $processedData = [];
-        foreach ($data as $row) {
-            $newRow = [];
-            foreach ($row as $index => $value) {
-                if (isset($columnMap[$index])) {
-                    $newRow[$columnMap[$index]] = $value;
-                }
-                // 忽略未映射的列
-            }
-            $processedData[] = $newRow;
-        }
-
-        return $processedData;
     }
 }
