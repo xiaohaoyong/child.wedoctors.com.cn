@@ -101,19 +101,26 @@ class DataUpdateController extends BeanstalkController
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($localfile);
         $data = $spreadsheet->getActiveSheet()->toArray();
+        $log->addLog("解析成功");
+
         $dur->state=2;
         $dur->save();
 
         $headerRow = array_shift($data);
         $table=self::type($headerRow,$dur);
         if($table) {
+            $log->addLog("匹配成功$table");
 
             if ($table != '\common\models\ChildInfo') {
                 $return = $this->mapTableData($table::$field, $data);
             } else {
                 $return = $this->mapTableData($table::$field, $data, '');
             }
-            $table::inputData($return, $hospitalid);
+            $log->addLog("开始导入");
+            foreach ($return as $k=>$v) {
+                $table::inputData($v, $hospitalid);
+            }
+            $log->addLog("导入成功");
 
             switch ($table){
                 case '\common\models\ChildInfo':
