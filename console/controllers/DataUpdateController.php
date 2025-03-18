@@ -130,7 +130,7 @@ class DataUpdateController extends BeanstalkController
                 if ($_row == 1) {
                     $fields[$_column]=$cellValue;
                 } else {
-                    if ($field_index[$_column] && $cellValue !== '') {
+                    if (isset($field_index[$_column]) && $cellValue !== '') {
                         $rs[$field_index[$_column]] = $cellValue ? (string)$cellValue : 0;
                     }
                 }
