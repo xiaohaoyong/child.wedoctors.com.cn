@@ -78,6 +78,7 @@ class DataUpdateController extends BeanstalkController
             $log->saveLog();
             return self::DELETE;
         }
+        $log->addLog("下载成功121212");
 
 
         if (empty($localfile) or !file_exists($localfile)) {
