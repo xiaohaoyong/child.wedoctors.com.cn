@@ -88,10 +88,16 @@ class DataUpdateController extends BeanstalkController
 
             return self::DELETE;
         }
+        $log->addLog("下载成功2");
+
         ini_set('memory_limit', '1500M');
 
         $objRead = new Xlsx();   //建立reader对象
+        $log->addLog("下载成功3");
+
         $objRead->setReadDataOnly(true);
+        $log->addLog("下载成功4");
+
         $obj = $objRead->load($localfile);  //建立excel对象
         var_dump($obj);exit;
         $currSheet = $obj->getSheet(0);   //获取指定的sheet表
