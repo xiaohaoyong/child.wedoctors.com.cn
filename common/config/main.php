@@ -29,7 +29,12 @@ $config= [
             ],
         ],
     ],
-
+    'formatter' => [
+        'class' => 'yii\i18n\Formatter',
+        'dateFormat' => 'yyyy-MM-dd',
+        'datetimeFormat' => 'yyyy-MM-dd HH:mm:ss',
+        'timeFormat' => 'HH:mm:ss',
+    ],
     'modules' => [
         'redactor' => [
             'class' => 'common\components\redactor\RedactorModule',
