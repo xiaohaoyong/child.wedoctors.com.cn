@@ -44,13 +44,7 @@ class ChildInfoInput
      */
     public function inputData($value,$hospitalid=0)
     {
-        if (preg_match("/\d+/", $value['mother_phone'],$mother_phone)) {
-            $value['mother_phone'] = $mother_phone[0];
-        }
-        if (preg_match("/\d+/", $value['father_phone'],$father_phone)) {
-            $value['father_phone'] = $father_phone[0];
-        }
-        if (preg_match("/\d+/", $value['field12'],$field12)) {
+        if (isset($value['field12']) && preg_match("/\d+/", $value['field12'],$field12)) {
             $value['field12'] = $field12[0];
         }
 
