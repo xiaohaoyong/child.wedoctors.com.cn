@@ -181,4 +181,35 @@ class DataUpdateController extends BeanstalkController
         }
         return false;
     }
+    function mapTableData($field, $data,$prefix='field') {
+        // 反转字段数组，中文作为键，英文作为值
+        $flippedField = array_flip($field);
+
+        // 提取表头行，剩下的数据行
+        $headerRow = array_shift($data);
+
+        // 构建列索引到英文键的映射
+        $columnMap = [];
+        foreach ($headerRow as $index => $chineseHeader) {
+            if (isset($flippedField[$chineseHeader])) {
+                $columnMap[$index] = $prefix.$flippedField[$chineseHeader];
+            }
+            // 忽略未定义的表头列
+        }
+
+        // 转换数据行
+        $processedData = [];
+        foreach ($data as $row) {
+            $newRow = [];
+            foreach ($row as $index => $value) {
+                if (isset($columnMap[$index])) {
+                    $newRow[$columnMap[$index]] = $value;
+                }
+                // 忽略未映射的列
+            }
+            $processedData[] = $newRow;
+        }
+
+        return $processedData;
+    }
 }
