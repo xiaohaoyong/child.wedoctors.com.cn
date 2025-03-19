@@ -205,7 +205,7 @@ class DataUpdateController extends BeanstalkController
         foreach ($data as $row) {
             $newRow = [];
             foreach ($row as $index => $value) {
-                if (isset($columnMap[$index])) {
+                if (isset($columnMap[$index]) && !is_null($value)) {
                     $newRow[$columnMap[$index]] = $value;
                 }
                 // 忽略未映射的列
