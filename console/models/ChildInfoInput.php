@@ -118,7 +118,7 @@ class ChildInfoInput
 
         if (!$this->user->id) {
             $user = $this->user;
-            $user->phone = $this->getPhone($value);
+            $user->phone = 0;
             $user->source = 2;
             $user->type = 1;
             if (!$user->save()) {
