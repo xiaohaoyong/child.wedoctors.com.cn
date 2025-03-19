@@ -105,22 +105,19 @@ class DataUpdateController extends BeanstalkController
         $dur->state=2;
         $dur->save();
 
+        $data1 = $data;
         $headerRow = array_shift($data);
         $table=self::type($headerRow,$dur);
         if($table) {
             $log->addLog("匹配成功$table");
 
-            $headerRow = array_shift($data);
-            var_dump($headerRow);exit;
             if ($table != '\common\models\ChildInfo') {
-                $return = $this->mapTableData($table::$field, $data);
+                $return = $this->mapTableData($table::$field, $data1);
             } else {
-                $return = $this->mapTableData($table::$field, $data, '');
+                $return = $this->mapTableData($table::$field, $data1, '');
             }
-            var_dump($return);exit;
             $log->addLog("开始导入");
             foreach ($return as $k=>$v) {
-                var_dump($v);
                 $table::inputData($v, $hospitalid);
             }
             $log->addLog("导入成功");
