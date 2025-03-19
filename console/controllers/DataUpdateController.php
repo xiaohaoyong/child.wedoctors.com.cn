@@ -117,6 +117,7 @@ class DataUpdateController extends BeanstalkController
             }
             $log->addLog("开始导入");
             foreach ($return as $k=>$v) {
+                var_dump($v);
                 $table::inputData($v, $hospitalid);
             }
             $log->addLog("导入成功");
