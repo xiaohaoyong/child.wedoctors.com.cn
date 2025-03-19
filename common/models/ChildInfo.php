@@ -117,7 +117,7 @@ class ChildInfo extends \yii\db\ActiveRecord
         'field33' => '父亲职业',
         'field30' => '母亲文化程度',
         'field29' => '母亲职业',
-        'field28' => '母亲出生日期',
+        'field28' => '母亲生日',
         'field12' => '联系人电话',
         'field11' => '联系人姓名',
         'field44' => '户籍所在省（北京市）',
