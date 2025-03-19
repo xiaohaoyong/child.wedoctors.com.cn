@@ -110,11 +110,14 @@ class DataUpdateController extends BeanstalkController
         if($table) {
             $log->addLog("匹配成功$table");
 
+            $headerRow = array_shift($data);
+            var_dump($headerRow);exit;
             if ($table != '\common\models\ChildInfo') {
                 $return = $this->mapTableData($table::$field, $data);
             } else {
                 $return = $this->mapTableData($table::$field, $data, '');
             }
+            var_dump($return);exit;
             $log->addLog("开始导入");
             foreach ($return as $k=>$v) {
                 var_dump($v);
