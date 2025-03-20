@@ -383,7 +383,7 @@ class AppointController extends \api\modules\v3\controllers\AppointController
                 $rs_num[$v->time_type] = $v->num;
             }
 
-            if ($doctorid != 176156) {
+            if ($doctorid != 176156 and $doctorid != 1601981) {
                 unset($rs[19]); unset($rs[20]);
             }
 
