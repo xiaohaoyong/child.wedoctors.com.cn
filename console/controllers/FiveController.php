@@ -28,7 +28,8 @@ class FiveController extends Controller
 {
     public function actionUpdateData()
     {
-        
+        ini_set('memory_limit','4096M');
+
         $access=Access::find()
             ->where(['doctorid'=>0])
             ->andWhere(['>','createtime',1736784000])
