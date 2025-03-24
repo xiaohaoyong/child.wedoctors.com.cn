@@ -28,114 +28,115 @@ class FiveController extends Controller
 {
     public function actionUpdateData()
     {
-        $access=Access::find()->where(['doctorid'=>0])->all();
+        
+        $access=Access::find()
+            ->where(['doctorid'=>0])
+            ->andWhere(['>','createtime',1736784000])
+            ->andWhere(['month'=>0])
+            ->andWhere(['type'=>1])
+            ->all();
         foreach($access as $k=>$v){
-            $doctorParent=DoctorParent::findOne(['parentid'=>$v->userid]);
-            if($doctorParent) {
-                $v->doctorid = $doctorParent->doctorid;
-            }else{
+            echo $v->cid."\n";
+            $appoint=Appoint::findOne($v->cid);
+            $child=ChildInfo::findOne($appoint->childid);
+            if($child) {
+                $day=ceil(($v->createtime-$child->birthday)/86400);
+                echo $day;
+                $v->month = $day;
             }
-
-            if($v->type==1){
-                $appoint=Appoint::findOne($v->cid);
-                $child=ChildInfo::findOne($appoint->childid);
-                if($child) {
-                    $day=ceil(($v->createtime-$child->birthday)/86400);
-                    echo $day;
-                    $v->month = $day;
-                }
-            }
+            $v->doctorid = $appoint->doctorid;
             $v->save();
             var_dump($v->firstErrors);
 
             echo "\n";
         }
-        $tmp=TmpLog::find()->where(['doctorid'=>0])->andWhere(['fid'=>1985])->all();
-        foreach($tmp as $k=>$v){
-            $userLogin=UserLogin::findOne(['openid'=>$v->openid]);
-            $doctorParent=DoctorParent::findOne(['parentid'=>$userLogin->userid]);
-            $v->doctorid=$doctorParent->doctorid;
-            $child=ChildInfo::find()->where(['userid'=>$userLogin->userid])->orderBy('birthday asc')->one();
-            if($child) {
-                $day=ceil(($v->createtime-$child->birthday)/86400);
-                echo $day;echo "\n";
-                $v->day = $day;
-            }
-            $v->save();
-        }
+//        $tmp=TmpLog::find()->where(['doctorid'=>0])->andWhere(['fid'=>1985])->all();
+//        foreach($tmp as $k=>$v){
+//            $userLogin=UserLogin::findOne(['openid'=>$v->openid]);
+//            $doctorParent=DoctorParent::findOne(['parentid'=>$userLogin->userid]);
+//            $v->doctorid=$doctorParent->doctorid;
+//            $child=ChildInfo::find()->where(['userid'=>$userLogin->userid])->orderBy('birthday asc')->one();
+//            if($child) {
+//                $day=ceil(($v->createtime-$child->birthday)/86400);
+//                echo $day;echo "\n";
+//                $v->day = $day;
+//            }
+//            $v->save();
+//        }
     }
 
     public function actionExcel()
     {
-        $stime=strtotime('2023-04-01');
-        $etime=strtotime('2023-05-01');
-        $userDoctor = UserDoctor::find()->all();
+        $stime=strtotime('2025-01-14');
+        $etime=strtotime('2025-02-04');
+        $userDoctor = UserDoctor::find()->groupBy('county')->all();
         foreach ($userDoctor as $k=>$v){
             $rs=[];
-            $doctorids = $v->userid;
+            $doctorids = UserDoctor::find()->select('userid')->where(['county'=>$v->county])->column();
             $doctorParent=DoctorParent::find()->select('parentid')
-                ->where(['doctorid'=>$doctorids])
-                ->andWhere(['>','createtime',$stime])
-                ->andWhere(['<','createtime',$etime])->column();
-            $child=ChildInfo::find()->where(['userid'=>$doctorParent])->all();
-            $c=0;
-            foreach($child as $ck=>$cv){
-                $dp=DoctorParent::find()->where(['parentid'=>$cv->userid])->one();
-                if(ceil(($dp->createtime-$cv->birthday)/86400)<30)
-                {
-                    $c++;
-                }
-            }
-            $rs[]=$doctorids;
+                ->leftJoin('child_info', '`child_info`.`userid` = `doctor_parent`.`parentid`')
+                ->where(['doctor_parent.doctorid'=>$doctorids])
+                ->andWhere(['>','child_info.birthday',strtotime('2024-04-01')])
+                ->count();
+            //$child=ChildInfo::find()->where(['userid'=>$doctorParent])->where(['>','birthday',strtotime('2024-04-01')])->count();
+//            $c=0;
+//            foreach($child as $ck=>$cv){
+//                $dp=DoctorParent::find()->where(['parentid'=>$cv->userid])->one();
+//                if(ceil(($dp->createtime-$cv->birthday)/86400)<30)
+//                {
+//                    $c++;
+//                }
+//            }
+            //$rs[]=$doctorids;
 
             $rs[]=Area::$all[$v->county];
 
-            $rs[]=$c;
-            //推送总人数（小于74天的）
-            $tmpLog=TmpLog::find()
-                ->select('openid')
-                ->where(['>','createtime',$stime])
-                ->andWhere(['<','createtime',$etime])
-                ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['fid'=>1985])
-                ->andWhere(['>=','day',0])
-                ->andWhere(['<=','day',30])
-                ->column();
-            $rs[]=count($tmpLog);
-            //打开人数(小于74天的)
-
-            $userids=UserLogin::find()->select('userid')->where(['in','openid',$tmpLog])->column();
-            $acc=Access::find()
-                ->select('userid')
-                ->where(['>','createtime',$stime])
-                ->andWhere(['<','createtime',$etime])
-                ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['in','userid',$userids])
-                ->andWhere(['cid'=>1985])
-                ->column();
-            $acc=array_unique($acc);
-            $rs[]=count($acc);
+            $rs[]=$doctorParent;
+//            //推送总人数（小于74天的）
+//            $tmpLog=TmpLog::find()
+//                ->select('openid')
+//                ->where(['>','createtime',$stime])
+//                ->andWhere(['<','createtime',$etime])
+//                ->andWhere(['doctorid'=>$doctorids])
+//                ->andWhere(['fid'=>1985])
+//                ->andWhere(['>=','day',0])
+//                ->andWhere(['<=','day',30])
+//                ->column();
+//            $rs[]=count($tmpLog);
+//            //打开人数(小于74天的)
+//
+//            $userids=UserLogin::find()->select('userid')->where(['in','openid',$tmpLog])->column();
+//            $acc=Access::find()
+//                ->select('userid')
+//                ->where(['>','createtime',$stime])
+//                ->andWhere(['<','createtime',$etime])
+//                ->andWhere(['doctorid'=>$doctorids])
+//                ->andWhere(['in','userid',$userids])
+//                ->andWhere(['cid'=>1985])
+//                ->column();
+//            $acc=array_unique($acc);
+//            $rs[]=count($acc);
             //停留10秒以上的人数
 
-            $acc=Access::find()
-                ->select('userid')
-                ->where(['>','createtime',$stime])
-                ->andWhere(['<','createtime',$etime])
-                ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['in','userid',$userids])
-                ->andWhere(['>','long',9])
-                ->andWhere(['cid'=>1985])
-                ->column();
-            $acc=array_unique($acc);
-            $rs[]=count($acc);
+//            $acc=Access::find()
+//                ->select('userid')
+//                ->where(['>','createtime',$stime])
+//                ->andWhere(['<','createtime',$etime])
+//                ->andWhere(['doctorid'=>$doctorids])
+//                ->andWhere(['in','userid',$userids])
+//                ->andWhere(['>','long',9])
+//                ->andWhere(['cid'=>1985])
+//                ->column();
+//            $acc=array_unique($acc);
+//            $rs[]=count($acc);
             //预约弹窗总人数（小于74天）
             $acc=Access::find()
                 ->select('userid')
                 ->where(['>','createtime',$stime])
                 ->andWhere(['<','createtime',$etime])
                 ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['>=','month',0])
-                ->andWhere(['<=','month',30])
+//                ->andWhere(['>=','month',0])
+//                ->andWhere(['<=','month',30])
                 ->andWhere(['type'=>1])
                 ->column();
             $acc=array_unique($acc);
@@ -146,10 +147,10 @@ class FiveController extends Controller
                 ->where(['>','createtime',$stime])
                 ->andWhere(['<','createtime',$etime])
                 ->andWhere(['doctorid'=>$doctorids])
-                ->andWhere(['>=','month',0])
-                ->andWhere(['<=','month',30])
+//                ->andWhere(['>=','month',0])
+//                ->andWhere(['<=','month',30])
                 ->andWhere(['type'=>1])
-                ->andWhere(['>','long',9])
+                ->andWhere(['>','long',10])
                 ->column();
             $acc=array_unique($acc);
             $rs[]=count($acc);
