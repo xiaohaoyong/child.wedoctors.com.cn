@@ -69,7 +69,7 @@ class FiveController extends Controller
     public function actionExcel()
     {
         $stime=strtotime('2025-01-14');
-        $etime=strtotime('2025-02-04');
+        $etime=strtotime('2025-03-24');
         $userDoctor = UserDoctor::find()->groupBy('county')->all();
         foreach ($userDoctor as $k=>$v){
             $rs=[];
