@@ -346,6 +346,9 @@ class Examination extends \yii\db\ActiveRecord
     }
     public static function inputData($row,$hospitalid)
     {
+        if(!isset($row['field2'])){
+            return 3;
+        }
         //if($row['field4']<'2018-01-01 00:00:00'){ echo "end\n";return;}
 
         //$row['field4'] = substr($row['field4'], 0, strlen($row['field4']) - 11);
