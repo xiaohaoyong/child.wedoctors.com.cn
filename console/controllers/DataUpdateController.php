@@ -114,6 +114,7 @@ class DataUpdateController extends BeanstalkController
             if ($table != '\common\models\ChildInfo') {
                 $return = $this->mapTableData($table::$field, $data1);
             } else {
+                ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);
                 $return = $this->mapTableData($table::$field, $data1, '');
             }
             $log->addLog("开始导入");
@@ -126,7 +127,6 @@ class DataUpdateController extends BeanstalkController
 
             switch ($table){
                 case '\common\models\ChildInfo':
-                    ChildInfo::updateAll(['admin'=>0],'source ='.$hospitalid);
                     $to_object="ChildInfo";
                     break;
                 case '\common\models\Examination':
