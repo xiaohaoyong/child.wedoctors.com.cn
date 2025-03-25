@@ -48,7 +48,7 @@ class ChildInfoInput
             $value['field12'] = $field12[0];
         }
 
-        $this->log= new Log('childInfoUpdate');
+        $this->log= new Log('childInfoUpdate',true);
 
         if($hospitalid) {
             $this->hospitalid = $hospitalid;
