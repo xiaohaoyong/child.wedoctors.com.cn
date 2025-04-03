@@ -37,7 +37,7 @@ class WorkerController extends BeanstalkController
         $sentData = $job->getData();
         $artid=$sentData->artid;
         $userids=$sentData->userids;
-        $log=new \common\components\Log("pushWorker");
+        $log=new \common\components\Log("pushWorker",true);
         $log->addLog($artid);
         $log->addLog(implode("||",$userids));
 
