@@ -352,6 +352,11 @@ class Examination extends \yii\db\ActiveRecord
         //if($row['field4']<'2018-01-01 00:00:00'){ echo "end\n";return;}
 
         //$row['field4'] = substr($row['field4'], 0, strlen($row['field4']) - 11);
+        if(!isset($row['field4']))
+        {
+            $row['field4'] = '';
+        }
+
         $ex = self::find()->andFilterWhere(['field1' => $row['field1']])
             ->andFilterWhere(['field2' => $row['field2']])
             ->andFilterWhere(['field3' => $row['field3']])
@@ -366,9 +371,11 @@ class Examination extends \yii\db\ActiveRecord
             $ex=new Examination();
         }
 
-        $child = ChildInfo::find()->andFilterWhere(['eid' => trim($row['field93'])])
-            ->andFilterWhere(['source' => $hospitalid])
-            ->one();
+        if(isset($row['field93'])) {
+            $child = ChildInfo::find()->andFilterWhere(['eid' => trim($row['field93'])])
+                ->andFilterWhere(['source' => $hospitalid])
+                ->one();
+        }
         if(!$child) {
             $child = ChildInfo::find()->andFilterWhere(['name' => trim($row['field1'])])
                 ->andFilterWhere(['birthday' => strtotime($row['field19'])])
